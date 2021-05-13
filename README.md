@@ -37,9 +37,6 @@ HTTPS Port 443 Source: Anywhere
 
 8. sudo pip3 install pipenv
 
-9. sudo apt install gunicorn
-
-10. pip install Flask-JSONRPC (暂时不用)
 
 **Clone File from Github:**
 git clone https://github.com/AI-Apollo/Apollo.git
@@ -49,12 +46,8 @@ sudo passwd(first time)
 
 su (password: 1)
 
-pipenv install gunicorn (if the project does not have gunicorn)
 pipenv install
 pipenv shell
-
-pip install Flask==1.1.2 Flask-Cors==3.0.10 （if no environment）
-pip install flask-script （if no environment）
 
 gunicorn --bind 0.0.0.0:80 app:app (run)
 

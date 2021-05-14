@@ -1,9 +1,12 @@
 from redis import Redis
 
 conn = Redis(host='127.0.0.1')
+conn.delete(*conn.keys())
+# value = conn['Apollo_flask_backendeyJjc3JmX3Rva2VuIjoiNjZlMGM1YjE1M2QzYTJhZDFhZThmNDExYmYxZjU2MmEzNjYyMTdjNCIsIm5hbWUiOiJ0ZXN0MiIsInJvb20iOiJiIn0.YJ3uLw.I-D9vBaBb71Hc1vBov-jx8McAzc']
+# print(value)
+
 v = conn.keys()
-value = conn['Apollo_flask_backendeyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyX2luZm8iOnsiaWQiOiJhYWFhYSIsIm5hbWUiOiJBcG9sbG8ifX0.YJzdcw.VbQT1lZDTbIQ2VFg_NcJ-z-QlsE']
-print(v,value)
+print(v)
 
 
 
@@ -64,18 +67,34 @@ app.session_interface = RedisSessionInterface()
 '''
 组件:
 1. flask-session:
+    Redis/SQLalchemy...
 
 2. 数据库连接池: DBUtils(pymysql) => 2种连接方式(SQL/ORM)
+    减少损耗，提升性能
+
 
 3. wtforms
+    对python web框架做表单验证
 
 4. SQLAlchemy
+    关系对象映射
+    类 => 表
+    对象 => 记录（一行数据）
+
+    当有了对应关系之后，不再需要编写SQL语句， 取而代之的是操作: 类，对象。
+        ORM: models.User.objects.filter(id_gt=1,type__name='x')
+
 
 5. flask-script
 
 6. flask-migrate
-
+    数据库迁移
 '''
+# __mro__ 继承顺序
+# __dict__ 类中所有元素或者对象中所有元素
+
+# metaclass 指定类由什么type创建
+
 
 # 装饰器
 # def wrapper(func):
@@ -95,3 +114,16 @@ app.session_interface = RedisSessionInterface()
 #     return a1+1000
 
 # print(add.__name__)
+
+'''
+1. 进程线程？
+2. 需要wss吗
+3. 需要ssh吗
+'''
+
+'''
+1. 传文件
+2. 一个用户加入多个聊天
+3. 同意才聊天
+4. 数据库
+'''

@@ -1,4 +1,5 @@
-from Items import create_app
+# from flask_script import Manager
+# from flask_socketio import SocketIO
 # from flask import Flask, jsonify
 
 # app = Flask(__name__)
@@ -7,29 +8,13 @@ from Items import create_app
 # from flask_script import Manager
 # from application import jsonrpc
 #
-# # configuration
-# DEBUG = True
-#
-# # instantiate the app
-# app = Flask(__name__)
-# app.config.from_object(__name__)
-#
-# # enable CORS
-# CORS(app, resources={r'/*': {'origins': '*'}})
-#
-# # Using Command Line
-# manager = Manager(app=app)
-#
-# sanity check route
-# @app.route('/index', methods=['GET'])
-# def ping_pong():
-#     return jsonify('Hello!')
-#
-# @jsonrpc.method(name="Home.index")
-# def index():
-#     return "hello world!"
+from Items import create_app, socketio
 app = create_app()
-if __name__ == '__main__':
-    # manager.run()
-    app.run()
+# manager = Manager(app)
 
+if __name__ == '__main__':
+    socketio.run(app, debug = True)
+
+    # manager.run()
+    # app.run()
+    # python manage.py runserver -d -r -h 0.0.0.0 -p 5000 (运行)

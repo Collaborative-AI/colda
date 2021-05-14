@@ -1,0 +1,140 @@
+<html>
+    <head>
+        <link rel="shortcut icon" href="#">
+        <title>Flask-SocketIO-Chat: {{ room }}</title>
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            var socket;
+            $(document).ready(function(){
+                socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+                socket.on('connect', function() {
+                    console.log("domain",document.domain);
+                    console.log("socket",socket);
+                    socket.emit('joined', {});
+                });
+                socket.on('status', function(data) {
+                    $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
+                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                });
+                socket.on('message', function(data) {
+                    $('#chat').val($('#chat').val() + data.msg + '\n');
+                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                });
+                $('#text').keypress(function(e) {
+                    var code = e.keyCode || e.which;
+                    if (code == 13) {
+                        text = $('#text').val();
+                        $('#text').val('');
+                        socket.emit('text', {msg: text});
+                    }
+                });
+            });
+            function leave_room() {
+                socket.emit('left', {}, function() {
+                    socket.disconnect();
+
+                    // go back to the login page
+                    window.location.href = "{{ url_for('main.index') }}";
+                });
+            }
+            function send_file() {
+              console.log("zheli1");
+              var
+                fileInput = document.getElementById('test-image-file'),
+                info = document.getElementById('test-file-info'),
+                preview = document.getElementById('test-image-preview');
+                // 监听change事件:
+                
+                // 清除背景图片:
+                  // preview.style.backgroundImage = '';
+                  // 检查文件是否选择:
+                  if (!fileInput.value) {
+                      info.innerHTML = '没有选择文件';
+                      return;
+                  }
+                  // 获取File引用:
+                  var file = fileInput.files[0];
+                  console.log(file);
+                  // 获取File信息:
+                  info.innerHTML = '文件: ' + file.name + '<br>' +
+                                  '大小: ' + file.size + '<br>' +
+                                  '修改: ' + file.lastModifiedDate;
+                      console.log("zheli2");
+                  // if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+                  //     alert('不是有效的图片文件!');
+                  //     return;
+                  // }
+                  if (!file.name || !(file.name.endsWith('.jpg') || file.name.endsWith('.png') || file.name.endsWith('.gif') || file.name.endsWith('.csv'))) {
+                    alert('Can only upload image file.');
+                    return false;
+                  }
+                  // 读取文件:
+                  var reader = new FileReader();
+                  reader.onload = function(e) {
+                      var
+                          data = e.target.result; // 'data:image/jpeg;base64,/9j/4AAQSk...(base64编码)...'            
+                      // preview.style.backgroundImage = 'url(' + data + ')';
+                      socket.emit('file', {msg: data});
+                  };
+                  // 以DataURL的形式读取文件:
+                  reader.readAsDataURL(file);
+                  // reader.readAsArrayBuffer(file);
+
+              // var f = document.getElementById('test-file-upload');
+              // var filename = f.value; // 'C:\fakepath\test.png'
+              // if (!filename || !(filename.endsWith('.jpg') || filename.endsWith('.png') || filename.endsWith('.gif') || filename.endsWith('.csv'))) {
+              //     alert('Can only upload image file.');
+              //     return false;
+              // }
+              
+            //     // file = $('#file').val();
+            //     console.log("aaaaaaaaaaaaa")
+            //     print("111111111111111111")
+            //     var files = $('input[name="fileTrans"]').prop('files');//获取到文件列表
+
+            //     if(files.length == 0){
+            //         alert('请选择文件');
+            //         return;
+            //     }else{
+            //         print("222222222222")
+            //         var reader = new FileReader();//新建一个FileReader
+            //         reader.readAsText(files[0], "gbk");//读取文件
+            //         reader.onload = function(evt){ //读取完文件之后会回来这里
+            //             var fileString = evt.target.result;
+            //             var a = CSV.parse(fileString, {
+            //                 header: ['test']
+            //             });
+            // 　　　　　　
+            //         console.log(a);
+            //         }
+            //     }
+            }
+            
+        </script>
+    </head>
+    <body>
+        <h1>Flask-SocketIO-Chat: {{ room }}</h1>
+        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
+        <input id="text" size="80" placeholder="Enter your message here"><br><br>
+
+        <input id="test-image-file" type="file" accept=".jpg,.png,.csv" /><br><br>
+        <div id='test-file-info'>
+          None File Now
+        </div>
+        <button value="submit" onclick="send_file();">Submit</button><br><br>
+        
+        
+        
+        <!-- <input id="file" size="80" placeholder="Upload your file here"><br><br>
+        <input type="submit"/><br><br> -->
+
+        <!-- <form action='/store' method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".jpg,.png,.csv" />
+            <input type="submit" value="Submit" />
+            
+        </form>  -->
+
+        <a href="#" onclick="leave_room();">Leave this room</a>
+    </body>
+</html>

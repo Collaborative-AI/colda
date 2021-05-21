@@ -3,8 +3,6 @@ from flask.templating import render_template
 from werkzeug.utils import redirect
 from flask_socketio import emit, join_room, leave_room
 from .. import socketio
-import os
-from . import main
 from redis import Redis
 # from werkzeug import secure_filename
 
@@ -23,17 +21,21 @@ message传递字符串，JSON传递JSON
 @socketio.on('init', namespace='/index')
 def init(message):
     
+    # session['name_to_random_index'] = (form.name.data, random_index)
     name_to_random_index = session.get('name_to_random_index')
     print("name_to_random_index", name_to_random_index)
 
     conn = Redis(host='127.0.0.1')
     conn.set(name=name_to_random_index[0],value=name_to_random_index[1])
-    print(conn.keys())
+    # print(conn.keys())
 
     cur_index = name_to_random_index[1]
     join_room(cur_index)
     
-    print("init")
+    print("init-------------------")
+    print("text",session.get('name', ''))
+    print("sid",request.sid)
+
     emit('status', {'msg': "Login Successfully"}, room=cur_index)
     # emit('status', {'msg': session.get('name') + ':' }, room=cur_index)
 
@@ -53,13 +55,12 @@ def send_message(message):
 
 @socketio.on('accept', namespace='/index')
 def accept(message):
-    print("bbbbb")
+
     session['room'] = "a"
 
     name = session.get('name', '')
     room = session.get('room', '')
 
-    print("ccccc")
     # return render_template('chat.html', name=name, room=room)
     emit('redirect', {'url': url_for('main.chat')})
     # conn = Redis(host='127.0.0.1')
@@ -87,6 +88,7 @@ def joined(message):
 def text(message,methods=['GET', 'POST']):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
+    print("chat------------------")
     print("text",session.get('name', ''))
     print("sid",request.sid)
     room = session.get('room')
@@ -96,12 +98,9 @@ def text(message,methods=['GET', 'POST']):
 def file(message, methods=['GET', 'POST']):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
-    print("oooo3")
-    print(message['msg'])
         # f.save(secure_filename(f.filename))
         # from flask import current_app
-        # f.save(os.path.join(current_app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
-    print("oooo2")
+        # f.save(os.path.join(current_app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))  
     room = session.get('room')
     emit('message', {'msg': session.get('name') + ':' + message['msg']}, room=room)
     # emit('json', {'msg': session.get('name') + ':' + "shoudaole"}, room=room)

@@ -1,9 +1,10 @@
 from flask import Flask
 from flask_session import Session
 from flask_socketio import SocketIO
+from flask_cors import CORS
 
 socketio = SocketIO()
-
+  
 def create_app():
     app = Flask(__name__)
     app.config.from_object('setting.DevelopmentConfig')
@@ -20,6 +21,12 @@ def create_app():
     # Substitue session to redis
     Session(app)
 
-    socketio.init_app(app)
+    # CORS(app, resources={r'/*': {'origins': '*'}})
+    # socketio.init_app(app)
+    
+    CORS(app, supports_credentials=True) # HTTP/HTTPS 跨域
+    # socketio = SocketIO(app, cors_allowed_origins="*") # websocket 跨域
+    socketio.init_app(app=app,cors_allowed_origins="*")
+
     return app
 

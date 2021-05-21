@@ -3,7 +3,12 @@ from . import main
 from .forms import NameForm, RoomForm
 import random
 
-@main.route('/', methods=['GET', 'POST'])
+
+@main.route('/ceshi',methods=['GET'])
+def ceshi():
+  return "chenggong"
+
+@main.route('/diyi', methods=['GET', 'POST'])
 def Login():
     """Login form to enter a room."""
     form = NameForm()
@@ -30,8 +35,8 @@ def Login():
 #     render_template('main_page.html')
     
 
-@main.route('/index', methods=['GET', 'POST'])
-def index():
+@main.route('/index1', methods=['GET', 'POST'])
+def index1():
     """Login form to enter a room."""
     form = RoomForm()
     # form = ConnectUserForm()
@@ -56,3 +61,4 @@ def chat():
     if name == '' or room == '':
         return redirect(url_for('main.index'))
     return render_template('chat.html', name=name, room=room)
+

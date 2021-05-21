@@ -4,6 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/ping">Ping</router-link> |
+      <router-link to="/ceshi">Ceshi</router-link> |
       <router-link to="/books">Books</router-link>
     </div>
     <router-view/>

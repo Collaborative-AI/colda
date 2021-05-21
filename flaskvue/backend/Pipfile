@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-gunicorn = "*"
+gunicorn = "==20.1.0"
 flask = "*"
 flask-session = "*"
 redis = "*"
@@ -12,7 +12,7 @@ redis = "*"
 dbutils = "*"
 wtforms = "*"
 flask-script = "*"
-eventlet = "*"
+eventlet = "==0.30.2"
 greenlet = "*"
 flask-wtf = "*"
 markupsafe = "*"
@@ -23,6 +23,8 @@ six = "*"
 python-engineio = "==3.13.2"
 python-socketio = "==4.6.0"
 flask-socketio = "==4.3.1"
+pyinstaller = "*"
+flask-cors = "*"
 
 [dev-packages]
 

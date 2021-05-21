@@ -1,7 +1,6 @@
 # from flask_script import Manager
 # from flask_socketio import SocketIO
 # from flask import Flask, jsonify
-
 # app = Flask(__name__)
 # from flask import Flask, jsonify
 # from flask_cors import CORS
@@ -13,8 +12,8 @@ app = create_app()
 # manager = Manager(app)
 
 if __name__ == '__main__':
-    socketio.run(app, debug = True)
-
+    # socketio.run(app, debug = True, host="127.0.0.1", port=5000)
+    socketio.run(app, debug = True, host="127.0.0.1", port=5000)
     # manager.run()
     # app.run()
     # python manage.py runserver -d -r -h 0.0.0.0 -p 5000 (运行)

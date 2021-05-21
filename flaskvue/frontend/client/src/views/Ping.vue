@@ -1,34 +1,52 @@
 <template>
   <div class="container">
-    <button type="button" class="btn btn-primary">{{ msg }}</button>
+    {{ msg }}
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 
+// import request from '../network/request';
+import {request} from '@/network/request';
 export default {
   name: 'Ping',
   data() {
     return {
-      msg: '',
+      msg: 'aaaaaaaaaaaaaaaaaaaa',
     };
   },
-  methods: {
-    getMessage() {
-      const path = 'http://localhost:5000/ping';
-      axios.get(path)
-        .then((res) => {
-          this.msg = res.data;
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(error);
-        });
+  
+  created() {
+    request({
+      url: 'https://domain/chatroom/index'
+    }).then(res =>{ 
+      this.msg = res
+      console.log(res);
+    }).catch(err => {
+      this.msg = "error"
+      console.log(err);
+    })
+  },
+  
+  sockets: {
+    connect: function() {
+      console.log('socket connected')
+    },
+    // Monitor the data coming from the sound (custom prompt)
+    response: function(res) {
+      this.$message.success(res.msg)
+    },
+    // Monitor data from the backend (custom message)
+    chat_message: function(msg) {
+      this.messages.push(msg)
     },
   },
-  created() {
-    this.getMessage();
-  },
-};
+    methods: {
+      onMsgSubmit(msg){  
+        this.$socket.emit('user_input', msg)
+      }
+    },
+}
+
+
 </script>

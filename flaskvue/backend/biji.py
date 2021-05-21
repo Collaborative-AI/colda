@@ -116,14 +116,47 @@ app.session_interface = RedisSessionInterface()
 # print(add.__name__)
 
 '''
-1. 进程线程？
+1. 进程 线程？
 2. 需要wss吗
 3. 需要ssh吗
 '''
 
 '''
-1. 传文件
+1. data:y
+2. model
+'''
+
+'''
+server
+Match: A,B,Intersect
+
+后面: Intersect
+'''
+'''
+Serverdatabase
+    Conversation ID
+        match: A, B, Intersect
+        UserA_initial:
+        UserB_initial:
+        Intersect_initial:
+        "第几次+(A,B)": url_for(y), intersect
+        
+db_metadata:
+    Conversation ID
+        match: A, B, Intersect
+        UserA_initial:
+        UserB_initial:
+        Intersect_initial:
+        autoinc: url_for(y)
+'''
+
+'''
+1. 传文件 (1)
 2. 一个用户加入多个聊天
-3. 同意才聊天
-4. 数据库
+3. 同意才聊天 (1)
+4. 数据库 (1)
+
+1. 确定数据库, 选择与结构
+2. 比对文件
+3. 加入多个聊天
 '''

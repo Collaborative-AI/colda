@@ -7,6 +7,17 @@ import axios from './http'
 import 'bootstrap/dist/css/bootstrap.css';
 import store from './store';
 import VueToasted  from 'vue-toasted'
+import moment from 'moment'
+// Import Bootstrap css and js files
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap'
+
+// Styles required by the bootstrap-markdown editor
+import './assets/bootstrap-markdown/css/bootstrap-markdown.min.css'
+import './assets/bootstrap-markdown/css/custom.css'
+import './assets/icon-awesome/css/font-awesome.min.css'
+
+import $ from 'jquery'
 
 Vue.use(VueToasted, {
   // 主题样式 primary/outline/bubble
@@ -28,7 +39,7 @@ Vue.use(VueToasted, {
 Vue.config.productionTip = false;
 
 Vue.prototype.$axios = axios
-
+Vue.prototype.$moment = moment
 new Vue({
   router,
   store,

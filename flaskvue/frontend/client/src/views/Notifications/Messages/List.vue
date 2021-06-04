@@ -41,9 +41,12 @@
           <router-link v-bind:to="{ path: `/user/${message.sender.id}` }">
             <span v-if="message.is_new" class="d-inline-block g-pos-rel">
               <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span>
-              <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+              
+              <!-- <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username"> -->
+              <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
             </span>
-            <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+            <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
+            <!-- <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username"> -->
           </router-link>
         </div>
         <div class="align-self-center g-px-10">
@@ -78,7 +81,7 @@
 
 <script>
 import store from '../../../store'
-import Pagination from '../../Base/Pagination'
+import Pagination from '../../../components/Pagination'
 
 export default {
   name: 'List',  // this is the name of the component
@@ -103,7 +106,7 @@ export default {
         per_page = this.$route.query.per_page
       }
       
-      const path = `/api/users/${id}/messages-senders/?page=${page}&per_page=${per_page}`
+      const path = `/users/${id}/messages-senders/?page=${page}&per_page=${per_page}`
       this.$axios.get(path)
         .then((response) => {
           // handle success

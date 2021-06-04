@@ -70,11 +70,32 @@ def get_user(id):
 @main.route('/users/<int:id>', methods=['PUT'])
 @token_auth.login_required
 def update_user(id):
-    '''
-      Modify a User. Implement Later
-    '''
-    
-    return "Welcome to Update!"
+    user = User.query.get_or_404(id)
+    data = request.get_json()
+    if not data:
+        return bad_request('You must post JSON data.')
+
+    message = {}
+    if 'username' in data and not data.get('username', None).strip():
+        message['username'] = 'Please provide a valid username.'
+
+    pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+    if 'email' in data and not re.match(pattern, data.get('email', None)):
+        message['email'] = 'Please provide a valid email address.'
+
+    if 'username' in data and data['username'] != user.username and \
+            User.query.filter_by(username=data['username']).first():
+        message['username'] = 'Please use a different username.'
+    if 'email' in data and data['email'] != user.email and \
+            User.query.filter_by(email=data['email']).first():
+        message['email'] = 'Please use a different email address.'
+
+    if message:
+        return bad_request(message)
+
+    user.from_dict(data, new_user=False)
+    db.session.commit()
+    return jsonify(user.to_dict())
 
 
 @main.route('/users/<int:id>', methods=['DELETE'])

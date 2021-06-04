@@ -8,16 +8,28 @@ import VueScrollTo from 'vue-scrollto'
 // which is lazy-loaded when the route is visited.
 
 // Authentication
-const Register = () => import(/* webpackChunkName: "about" */ '@/views/Auth/Register.vue')
-const Login = () => import(/* webpackChunkName: "about" */ '@/views/Auth/Login.vue')
+const Register = () => import('@/views/Auth/Register.vue')
+const Login = () => import('@/views/Auth/Login.vue')
 
-const Home = () => import(/* webpackChunkName: "about" */ '../views/Home.vue')
-const Profile = () => import(/* webpackChunkName: "about" */ '../views/Profile.vue')
-const Chat = () => import(/* webpackChunkName: "about" */ '../views/Chat.vue')
-const Notification = () => import(/* webpackChunkName: "about" */ '../views/Notification.vue')
-const Askhelp = () => import(/* webpackChunkName: "about" */ '../views/Askhelp.vue')
-const Shiyan = () => import(/* webpackChunkName: "about" */ '../views/Shiyan.vue')
-const RecivedComments = () => import(/* webpackChunkName: "about" */ '../views/ReceivedRequest.vue')
+const Home = () => import('../views/Home.vue')
+const Shiyan = () => import('../views/Shiyan.vue')
+
+// User Resources
+const Resource = () => import('../views/Resources/Resource.vue')
+const MessagesIndexResource = () => import('../views/Resources/Messages/Index.vue')
+const SentMessagesResource = () => import('../Resources/Messages/List.vue')
+const MessagesHistoryResource = () => import('../views/Resources/Messages/History.vue')
+
+// User Notifications
+const Notifications = () => import('../views/Notifications/Notifications.vue')
+const RecivedComments = () => import('../views/Notifications/RecivedComments.vue')
+const MessagesIndex = () => import('../views/Notifications/Messages/Index.vue')
+const RecivedMessages = () => import('../Notifications/Messages/List.vue')
+const MessagesHistory = () => import('../views/Notifications/Messages/History.vue')
+
+// User Personal Settings
+const Settings = () => import('../views/Settings/Settings.vue')
+const Profile = () => import('../views/Settings/Profile.vue')
 
 Vue.use(VueRouter);
 
@@ -70,44 +82,89 @@ const routes = [
     component: Login,
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile,
-    meta: {
-        requiresAuth: true
-    }
-  },
-  {
-    path: '/chat',
-    name: 'Chat',
-    component: Chat,
-    meta: {
-        requiresAuth: true
-    }
-  },
-  {
-    path: '/notification',
-    name: 'Notification',
-    component: Notification,
+    // Modify personal information
+    path: '/settings',
+    component: Settings,
     children: [
         { 
             path: '', 
-            redirect: 'comments' 
+            component: Profile 
         },
-        {   path: 'comments', 
-            component: RecivedComments 
-        }
+        {   path: 'profile', 
+            name: 'SettingProfile', 
+            component: Profile 
+        },
     ],
     meta: {
-        requiresAuth: true
+      requiresAuth: true
     }
   },
   {
-    path: '/askhelp',
-    name: 'Askhelp',
-    component: Askhelp,
+    // User Resources
+    path: '/resource',
+    component: Resource,
+    children: [
+        { 
+            path: '', 
+            component: MessagesIndexResource 
+        },
+        { 
+            path: 'messages', 
+            component: MessagesIndexResource,
+              children: [
+                  // 默认匹配，你给哪些人发送过私信
+                  { 
+                      path: '', 
+                      name: 'MessagesIndexResource', 
+                      component: SentMessagesResource 
+                  },
+                  // 与某个用户之间的全部历史对话记录
+                  { 
+                      path: 'history', 
+                      name: 'MessagesHistoryResource', 
+                      component: MessagesHistoryResource 
+                  }
+              ]
+          }
+        ],
     meta: {
-        requiresAuth: true
+      requiresAuth: true
+    }
+  },
+  {
+    // 用户通知
+    path: '/notifications',
+    component: Notifications,
+    children: [
+        { 
+            path: '', 
+            component: MessagesIndex 
+        },
+        {   path: 'comments', 
+            name: 'RecivedComments', 
+            component: RecivedComments 
+        },
+        { 
+            path: 'messages', 
+            component: MessagesIndex,
+            children: [
+                // 默认匹配，哪些人给你发送过私信
+                { 
+                    path: '', 
+                    name: 'MessagesIndex', 
+                    component: RecivedMessages
+                },
+                // 与某个用户之间的全部历史对话记录
+                { 
+                    path: 'history', 
+                    name: 'MessagesHistory', 
+                    component: MessagesHistory
+                }
+            ]
+        },
+    ],
+    meta: {
+      requiresAuth: true
     }
   },
   {

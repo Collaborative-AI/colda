@@ -42,6 +42,8 @@ class User(PaginatedAPIMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     name = db.Column(db.String(64))
+    location = db.Column(db.String(64))
+    about_me = db.Column(db.Text())
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     last_message_read_time = db.Column(db.DateTime)
 
@@ -62,6 +64,11 @@ class User(PaginatedAPIMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
+    def avatar(self, size):
+        '''头像'''
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -74,10 +81,13 @@ class User(PaginatedAPIMixin, db.Model):
         data = {
             'id': self.id,
             'name': self.name,
+            'location': self.location,
+            'about_me': self.about_me,
             'username': self.username,
             'last_seen': self.last_seen.isoformat() + 'Z',
             '_links': {
-                'self': url_for('main.get_user', id=self.id)
+                'self': url_for('main.get_user', id=self.id),
+                'avatar': self.avatar(128),
             }
         }
         
@@ -87,7 +97,7 @@ class User(PaginatedAPIMixin, db.Model):
 
     # change Json to User Object
     def from_dict(self, data, new_user=False):
-        for key in ['username','email', 'name']:
+        for key in ['username','email', 'name', 'about_me', 'location']:
             if key in data:
                 setattr(self, key, data[key])
         if new_user and 'password' in data:

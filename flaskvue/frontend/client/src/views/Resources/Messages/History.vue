@@ -49,9 +49,11 @@
               <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="d-flex align-self-end g-mr-12">
                 <span v-if="message.is_new" class="d-inline-block g-pos-rel">
                   <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span>
-                  <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+                  <!-- <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username"> -->
+                  <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
                 </span>
-                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+                <!-- <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username"> -->
+                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
               </router-link>
               <!-- End Chat. Message Area. Message. Avatar. -->
 
@@ -105,9 +107,11 @@
               <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="d-flex align-self-end g-ml-12">
                 <span v-if="message.is_new" class="d-inline-block g-pos-rel">
                   <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span>
-                  <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+                  <!-- v-bind:src="message.sender._links.avatar" -->
+                  <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2"  src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
                 </span>
-                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+                <!-- v-bind:src="message.sender._links.avatar" -->
+                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2"  src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
               </router-link>
               <!-- End Chat. Message Area. Message. Avatar. -->
             </div>
@@ -155,7 +159,7 @@
 import store from '../../../store'
 // 导入 vue-markdown 组件解析 markdown 原文为　HTML
 import VueMarkdown from 'vue-markdown'
-import Pagination from '../../Base/Pagination'
+import Pagination from '../../../components/Pagination'
 
 export default {
   name: 'History',  //this is the name of the component
@@ -177,7 +181,7 @@ export default {
   },
   methods: {
     getUser (id) {
-      const path = `/api/users/${id}`
+      const path = `/users/${id}`
       this.$axios.get(path)
         .then((response) => {
           // handle success
@@ -199,7 +203,7 @@ export default {
         per_page = this.$route.query.per_page
       }
       
-      const path = `/api/users/${id}/history-messages/?from=${this.$route.query.from}&page=${page}&per_page=${per_page}`
+      const path = `/users/${id}/history-messages/?from=${this.$route.query.from}&page=${page}&per_page=${per_page}`
       this.$axios.get(path)
         .then((response) => {
           // handle success
@@ -232,7 +236,7 @@ export default {
         recipient_id: this.user.id,
         body: this.replyMessageForm.body
       }
-      this.$axios.post('/api/messages/', payload)
+      this.$axios.post('/messages/', payload)
         .then((response) => {
           // handle success
           this.$toasted.success(`Successed send the private message to ${this.user.name || this.user.username}.`, { icon: 'fingerprint' })

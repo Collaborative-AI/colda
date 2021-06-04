@@ -1,7 +1,13 @@
+import os
 from datetime import timedelta
 from redis import Redis
+from dotenv import load_dotenv
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'), encoding='utf-8')
 
 class Config(object):
+    
     DEBUG = True
     SECRET_KEY = 'adasdaxcw!!!--xq4213'
 
@@ -18,6 +24,14 @@ class Config(object):
     # default port is 6379
     SESSION_REDIS = Redis(host='127.0.0.1',port=6379)
 
+    # JWT secret key
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'Apollo'
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    MESSAGES_PER_PAGE = 10
 
 class ProductionConfig(Config):
     pass

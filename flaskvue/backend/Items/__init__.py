@@ -1,32 +1,59 @@
 from flask import Flask
-from flask_session import Session
-from flask_socketio import SocketIO
-from flask_cors import CORS
+from Items.extensions import cors, db, migrate
+from Items.main import main as main_blueprint
+# from flask_session import Session
 
-socketio = SocketIO()
-  
-def create_app():
+
+def create_app(config_class=None):
+    '''Factory Pattern: Create Flask app.'''
     app = Flask(__name__)
-    app.config.from_object('setting.DevelopmentConfig')
-    # app.debug = True
-    # app.config['SECRET_KEY'] = 'gjr39dkjn344_!67#'
 
-    # Initialize Blueprint
-    # from .main import account
-    # from .main import home
-    # app.register_blueprint(account.account)
-    # app.register_blueprint(home.home)
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
-    # Substitue session to redis
-    Session(app)
+    # Initialization flask app
+    configure_app(app, config_class)
+    configure_blueprints(app)
+    configure_extensions(app)
 
-    # CORS(app, resources={r'/*': {'origins': '*'}})
-    # socketio.init_app(app)
-    
-    CORS(app, supports_credentials=True) # HTTP/HTTPS 跨域
-    # socketio = SocketIO(app, cors_allowed_origins="*") # websocket 跨域
-    socketio.init_app(app=app,cors_allowed_origins="*")
+    configure_before_handlers(app)
+    configure_after_handlers(app)
+    configure_errorhandlers(app)
 
     return app
+
+
+def configure_app(app, config_class):
+    app.config.from_object(config_class)
+    # 不检查路由中最后是否有斜杠/
+    app.url_map.strict_slashes = False
+
+
+def configure_blueprints(app):
+    # 注册 blueprint
+    # from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+
+def configure_extensions(app):
+    '''Configures the extensions.'''
+    # Enable CORS
+    cors.init_app(app)
+    # Init Flask-SQLAlchemy
+    db.init_app(app)
+    # Init Flask-Migrate
+    migrate.init_app(app, db)
+
+
+def configure_before_handlers(app):
+    '''Configures the before request handlers'''
+    pass
+
+
+def configure_after_handlers(app):
+    '''Configures the after request handlers'''
+    pass
+
+
+def configure_errorhandlers(app):
+    '''Configures the error handlers'''
+    pass
+
 

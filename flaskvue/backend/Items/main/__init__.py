@@ -2,5 +2,4 @@ from flask import Blueprint
 
 main = Blueprint('main', __name__)
 
-from . import routes, events, chat_room
-# from . import chatroom
+from . import users, askhelp, messages, auth, tokens, errors, notifications

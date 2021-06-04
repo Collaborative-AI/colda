@@ -1,18 +1,39 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <alert 
+      v-for="(alert, index) in alerts" :key="index"
+      v-bind:variant="alert.variant"
+      v-bind:message="alert.message">
+    </alert>
+    <button type="button" class="btn btn-primary">HomePage</button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import Alert from '@/components/Alert'
 
 export default {
-  name: 'Home',
+  name: 'Home',  // Name of the component
   components: {
-    HelloWorld,
+    alert: Alert
   },
-};
+  data () {
+    return {
+      alerts: [
+        {
+          variant: 'info',
+          message: 'Hi'
+        },
+        {
+          variant: 'danger',
+          message: 'Oops..'
+        },
+        {
+          variant: 'success',
+          message: 'OK'
+        }
+      ]
+    }
+  }
+}
 </script>

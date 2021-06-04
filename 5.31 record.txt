@@ -1,0 +1,21 @@
+Training:
+1. A call S for permission (call for help) 
+2. S search the people that can help A (search online users (later)
+3. S send permission to the helpers (help permission) (2 or 3, later)
+4. S requires A's ID, A send ID
+5. S stores the ID and requires B for ID, B sends the ID
+6. Match the ID
+7. S inform the matched ID to A, B
+8. A send the initial situation to S (Json)
+9. S transfers the initial situation
+10. A,B train the local model based on the initial situation and the matched ID
+11. B sends the output of the model to S, S sends the output of the model to A
+12. A updates the initial situation and transmitts to S   (8-12, repeat T times, produce T local models)
+
+Testing:
+1. 1-7 same 
+2. A, B tests the local models based on the matched ID => 2T results
+3. B uploads T results to S. S transmits the T(B) results to A
+4. A obtains the final results from B's results
+
+xa ya xb => identified ID matching (xa+xb => ya)

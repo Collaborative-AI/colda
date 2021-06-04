@@ -18,9 +18,17 @@
     "core-js": "^3.6.5",
     "electron": "^12.0.9",
     "electron-build": "0.0.3",
+    "jquery": "^3.6.0",
+    "json": "^11.0.0",
+    "popper.js": "^1.16.1",
+    "qs": "^6.10.1",
+    "vee-validate": "^4.4.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "vue-socket.io": "^3.0.10"
+    "vue-scrollto": "^2.20.0",
+    "vue-socket.io": "^3.0.10",
+    "vue-toasted": "^1.1.28",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

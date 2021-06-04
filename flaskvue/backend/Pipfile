@@ -25,6 +25,13 @@ python-socketio = "==4.6.0"
 flask-socketio = "==4.3.1"
 pyinstaller = "*"
 flask-cors = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+flask-httpauth = "*"
+pyjwt = "==1.6.4"
+python-dotenv = "*"
+httpie = "*"
+coverage = "*"
 
 [dev-packages]
 

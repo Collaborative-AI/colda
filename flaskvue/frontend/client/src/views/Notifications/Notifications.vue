@@ -81,6 +81,7 @@
 
 <script>
 import store from '../../store'
+import $ from 'jquery'
 
 export default {
   name: 'Notifications',  // this is the name of the component
@@ -88,12 +89,8 @@ export default {
     return {
       sharedState: store.state,
       user: '',
-      notifications: {
-        unread_recived_comments_count: 0,
+      notifications: {  
         unread_messages_count: 0,
-        unread_follows_count: 0,
-        unread_likes_count: 0,
-        unread_followeds_posts_count: 0
       }
     }
   },
@@ -119,25 +116,11 @@ export default {
           const len = response.data.length
           for(var i = 0; i < len; i++) {
             switch (response.data[i].name) {
-              case 'unread_recived_comments_count':
-                this.notifications.unread_recived_comments_count = response.data[i].payload
-                break
-              
+                       
               case 'unread_messages_count':
                 this.notifications.unread_messages_count = response.data[i].payload
                 break
               
-              case 'unread_follows_count':
-                this.notifications.unread_follows_count = response.data[i].payload
-                break
-              
-              case 'unread_likes_count':
-                this.notifications.unread_likes_count = response.data[i].payload
-                break
-              
-              case 'unread_followeds_posts_count':
-                this.notifications.unread_followeds_posts_count = response.data[i].payload
-                break
             }
             since = response.data[i].timestamp
           }

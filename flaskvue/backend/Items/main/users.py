@@ -38,7 +38,7 @@ def create_user():
 
     user = User()
     user.from_dict(data, new_user=True)
-
+    print("user",user)
     # Add to database
     db.session.add(user)
     db.session.commit()
@@ -63,9 +63,12 @@ def get_users():
 def get_user(id):
     '''Return a User'''
     user = User.query.get_or_404(id)
+    print("id------",id)
+    print("user------",user)
+    print("g.current", g.current_user)
     if g.current_user == user:
         return jsonify(user.to_dict(include_email=True))
-
+    return jsonify(user.to_dict())
 
 @main.route('/users/<int:id>', methods=['PUT'])
 @token_auth.login_required
@@ -111,11 +114,14 @@ def delete_user(id):
 def get_user_notifications(id):
     '''返回该用户的新通知'''
     user = User.query.get_or_404(id)
+
+    print("user_notification", user)
     if g.current_user != user:
         return error_response(403)
     # 只返回上次看到的通知以来发生的新通知
     # 比如用户在 10:00:00 请求一次该API，在 10:00:10 再次请求该API只会返回 10:00:00 之后产生的新通知
     since = request.args.get('since', 0.0, type=float)
+    print("since",since)
     notifications = user.notifications.filter(
         Notification.timestamp > since).order_by(Notification.timestamp.asc())
     return jsonify([n.to_dict() for n in notifications])
@@ -135,7 +141,7 @@ def get_user_messages_recipients(id):
             'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
     data = Message.to_collection_dict(
         user.messages_sent.group_by(Message.recipient_id).order_by(Message.timestamp.desc()), page, per_page,
-        'api.get_user_messages_recipients', id=id)
+        'main.get_user_messages_recipients', id=id)
         
     # 我给每个用户发的私信，他们有没有未读的
     for item in data['items']:
@@ -167,7 +173,7 @@ def get_user_messages_senders(id):
             'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
     data = Message.to_collection_dict(
         user.messages_received.group_by(Message.sender_id).order_by(Message.timestamp.desc()), page, per_page,
-        'api.get_user_messages_senders', id=id)
+        'main.get_user_messages_senders', id=id)
 
     # 这个用户发给我的私信有没有新的
     last_read_time = user.last_messages_read_time or datetime(1900, 1, 1)
@@ -209,7 +215,7 @@ def get_user_history_messages(id):
     q2 = Message.query.filter(Message.sender_id == id, Message.recipient_id == from_id)
     # 按时间正序排列构成完整的对话时间线
     history_messages = q1.union(q2).order_by(Message.timestamp)
-    data = Message.to_collection_dict(history_messages, page, per_page, 'api.get_user_history_messages', id=id)
+    data = Message.to_collection_dict(history_messages, page, per_page, 'main.get_user_history_messages', id=id)
     # 现在这一页的 data['items'] 包含对方发给我和我发给对方的
     # 需要创建一个新列表，只包含对方发给我的，用来查看哪些私信是新的
     recived_messages = [item for item in data['items'] if item['sender']['id'] != id]

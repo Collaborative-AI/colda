@@ -14,7 +14,10 @@ from Items.main.auth import token_auth
 @token_auth.login_required
 def create_message():
     '''Send Request to other users'''
+    print("aaa")
+    
     data = request.get_json()
+    print('data',data)
     if not data:
         return bad_request('You must post JSON data.')
     if 'body' not in data or not data.get('body'):
@@ -28,8 +31,10 @@ def create_message():
 
     message = Message()
     message.from_dict(data)
+    print("message1-----", message)
     message.sender = g.current_user
     message.recipient = user
+    print("message2----", message)
     db.session.add(message)
 
     # 给私信接收者发送新私信通知

@@ -45,7 +45,7 @@ class User(PaginatedAPIMixin, db.Model):
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
-    last_message_read_time = db.Column(db.DateTime)
+    last_messages_read_time = db.Column(db.DateTime)
 
     # Message User sent
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id',
@@ -109,6 +109,8 @@ class User(PaginatedAPIMixin, db.Model):
         self.notifications.filter_by(name=name).delete()
         # 为用户添加通知，写入数据库
         n = Notification(name=name, payload_json=json.dumps(data), user=self)
+        print("self_add_notification",self)
+        print("add_notification",n)
         db.session.add(n)
         return n
 

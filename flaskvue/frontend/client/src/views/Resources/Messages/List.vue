@@ -41,11 +41,11 @@
           <router-link v-bind:to="{ path: `/user/${message.recipient.id}` }">
             <span v-if="message.is_new" class="d-inline-block g-pos-rel">
               <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span>
-              <!-- <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.recipient._links.avatar" v-bind:alt="message.recipient.name || message.recipient.username"> -->
-              <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" src="../../../assets/logo.png" v-bind:alt="message.recipient.name || message.recipient.username">
+              <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.recipient._links.avatar" v-bind:alt="message.recipient.name || message.recipient.username">
+              <!-- <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" src="../../../assets/logo.png" v-bind:alt="message.recipient.name || message.recipient.username"> -->
             </span>
-            <!-- <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.recipient._links.avatar" v-bind:alt="message.recipient.name || message.recipient.username"> -->
-            <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" src="../../../assets/logo.png" v-bind:alt="message.recipient.name || message.recipient.username">
+            <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.recipient._links.avatar" v-bind:alt="message.recipient.name || message.recipient.username">
+            <!-- <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" src="../../../assets/logo.png" v-bind:alt="message.recipient.name || message.recipient.username"> -->
           </router-link>
         </div>
         <div class="align-self-center g-px-10">

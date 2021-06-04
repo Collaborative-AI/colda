@@ -27,18 +27,12 @@
 
           <!-- 菜单列表 -->
           <ul class="list-unstyled mb-0">
-            <li class="g-pb-3">
+            <!-- <li class="g-pb-3">
               <router-link v-bind:to="{ name: 'PostsResource' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-education-008 u-line-icon-pro"></i></span>
                 Posts
               </router-link>
-            </li>
-            <li class="g-py-3">
-              <router-link v-bind:to="{ name: 'CommentsResource' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
-                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-finance-206 u-line-icon-pro"></i></span>
-                Comments
-              </router-link>
-            </li>
+            </li> -->
             <li class="g-py-3">
               <router-link v-bind:to="{ name: 'MessagesIndexResource' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-communication-154 u-line-icon-pro"></i></span>
@@ -64,6 +58,7 @@
 
 <script>
 import store from '../../store'
+import $ from 'jquery'
 
 export default {
   name: 'Resource',  // this is the name of the component

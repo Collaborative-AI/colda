@@ -78,7 +78,7 @@ export default {
         }
       }).then((response) => {
           // handle success
-          window.localStorage.setItem('madblog-token', response.data.token)
+          window.localStorage.setItem('Apollo-token', response.data.token)
           store.loginAction()
 
           const name = JSON.parse(atob(response.data.token.split('.')[1])).name

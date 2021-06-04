@@ -49,11 +49,11 @@
               <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="d-flex align-self-end g-mr-12">
                 <span v-if="message.is_new" class="d-inline-block g-pos-rel">
                   <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span>
-                  <!-- <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username"> -->
-                  <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
+                  <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+                  <!-- <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username"> -->
                 </span>
-                <!-- <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username"> -->
-                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
+                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+                <!-- <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username"> -->
               </router-link>
               <!-- End Chat. Message Area. Message. Avatar. -->
 
@@ -61,13 +61,14 @@
               <div class="media-body">
                 <div class="d-inline-block g-width-300 g-width-auto--sm g-bg-gray-light-v8 g-font-size-12 g-font-size-default--lg g-color-gray-dark-v6 g-rounded-10 g-pa-10-15">
                   <p class="mb-0">
+                    {{ message.body }}
                     <!-- vue-markdown 开始解析markdown，它是子组件，通过 props 给它传值即可
                     v-highlight 是自定义指令，用 highlight.js 语法高亮 -->
-                    <vue-markdown
+                    <!-- <vue-markdown
                       :source="message.body"
                       class="markdown-body"
                       v-highlight>
-                    </vue-markdown>
+                    </vue-markdown> -->
                   </p>
                 </div>
               </div>
@@ -91,13 +92,14 @@
               <div class="ml-auto">
                 <div class="d-inline-block g-width-300 g-width-auto--sm g-bg-lightblue-v6 g-font-size-12 g-font-size-default--lg g-color-gray-dark-v6 g-rounded-10 g-pa-10-15">
                   <p class="mb-0">
+                    {{ message.body }}
                     <!-- vue-markdown 开始解析markdown，它是子组件，通过 props 给它传值即可
                     v-highlight 是自定义指令，用 highlight.js 语法高亮 -->
-                    <vue-markdown
+                    <!-- <vue-markdown
                       :source="message.body"
                       class="markdown-body"
                       v-highlight>
-                    </vue-markdown>
+                    </vue-markdown> -->
                   </p>
                 </div>
               </div>
@@ -107,11 +109,12 @@
               <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="d-flex align-self-end g-ml-12">
                 <span v-if="message.is_new" class="d-inline-block g-pos-rel">
                   <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span>
-                  <!-- v-bind:src="message.sender._links.avatar" -->
-                  <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2"  src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
+                   <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2"  v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+                  <!-- <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2"  src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username"> -->
                 </span>
-                <!-- v-bind:src="message.sender._links.avatar" -->
-                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2"  src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
+              
+                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2"  v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
+                <!-- <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2"  src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username"> -->
               </router-link>
               <!-- End Chat. Message Area. Message. Avatar. -->
             </div>
@@ -145,8 +148,9 @@
   <!-- Reply Message Form -->
   <form id="replyMessageForm" @submit.prevent="onSubmitReply" @reset.prevent="onResetReply" class="g-mb-40">
     <div class="form-group">
-      <textarea v-model="replyMessageForm.body" class="form-control" id="replyMessageFormBody" rows="5" placeholder=" 悄悄话..."></textarea>
-      <small class="form-control-feedback" v-show="replyMessageForm.bodyError">{{ replyMessageForm.bodyError }}</small>
+      <input type="text" v-model="typein_message" placeholder="Type in message">
+      <!-- <textarea v-model="replyMessageForm.body" class="form-control" id="replyMessageFormBody" rows="5" placeholder=" 悄悄话..."></textarea>
+      <small class="form-control-feedback" v-show="replyMessageForm.bodyError">{{ replyMessageForm.bodyError }}</small> -->
     </div>
     <button type="reset" class="btn btn-secondary">Cancel</button>
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -160,6 +164,7 @@ import store from '../../../store'
 // 导入 vue-markdown 组件解析 markdown 原文为　HTML
 import VueMarkdown from 'vue-markdown'
 import Pagination from '../../../components/Pagination'
+import $ from 'jquery'
 
 export default {
   name: 'History',  //this is the name of the component
@@ -172,6 +177,7 @@ export default {
       sharedState: store.state,
       user: '',
       messages: '',
+      typein_message: '',
       replyMessageForm: {
         body: '',
         errors: 0,  // 发送私信时，表单验证是否有错误
@@ -215,26 +221,27 @@ export default {
         })
     },
     onSubmitReply () {
-      this.replyMessageForm.errors = 0  // 重置
+      // this.replyMessageForm.errors = 0  // 重置
 
-      if (!this.replyMessageForm.body) {
-        this.replyMessageForm.errors++
-        this.replyMessageForm.bodyError = 'Body is required.'
-        // 给 bootstrap-markdown 编辑器内容添加警示样式，而不是添加到 #post_body 上
-        $('#replyMessageForm .md-editor').closest('.form-group').addClass('u-has-error-v1')  // Bootstrap 4
-      } else {
-        this.replyMessageForm.bodyError = null
-        $('#replyMessageForm .md-editor').closest('.form-group').removeClass('u-has-error-v1')
-      }
+      // if (!this.replyMessageForm.body) {
+      //   this.replyMessageForm.errors++
+      //   this.replyMessageForm.bodyError = 'Body is required.'
+      //   // 给 bootstrap-markdown 编辑器内容添加警示样式，而不是添加到 #post_body 上
+      //   $('#replyMessageForm .md-editor').closest('.form-group').addClass('u-has-error-v1')  // Bootstrap 4
+      // } else {
+      //   this.replyMessageForm.bodyError = null
+      //   $('#replyMessageForm .md-editor').closest('.form-group').removeClass('u-has-error-v1')
+      // }
 
-      if (this.replyMessageForm.errors > 0) {
-        // 表单验证没通过时，不继续往下执行，即不会通过 axios 调用后端API
-        return false
-      }
+      // if (this.replyMessageForm.errors > 0) {
+      //   // 表单验证没通过时，不继续往下执行，即不会通过 axios 调用后端API
+      //   return false
+      // }
 
       const payload = {
         recipient_id: this.user.id,
-        body: this.replyMessageForm.body
+        // body: this.replyMessageForm.body
+        body: this.typein_message
       }
       this.$axios.post('/messages/', payload)
         .then((response) => {
@@ -250,23 +257,24 @@ export default {
         })
     },
     onResetReply () {
-      this.replyMessageForm.body = ''
-      this.replyMessageForm.bodyError = null
-      $('#replyMessageForm .md-editor').closest('.form-group').removeClass('u-has-error-v1')
+      // this.replyMessageForm.body = ''
+      // this.replyMessageForm.bodyError = null
+      // $('#replyMessageForm .md-editor').closest('.form-group').removeClass('u-has-error-v1')
+      this.typein_message = ''
     },
   },
   created () {
     this.getUser(this.$route.query.from)
     this.getUserHistoryMessages(this.sharedState.user_id)
     // 初始化 bootstrap-markdown 插件
-    $(document).ready(function() {
-      $("#replyMessageFormBody").markdown({
-        autofocus:false,
-        savable:false,
-        iconlibrary: 'fa',  // 使用Font Awesome图标
-        language: 'zh'
-      })
-    })
+    // $(document).ready(function() {
+    //   $("#replyMessageFormBody").markdown({
+    //     autofocus:false,
+    //     savable:false,
+    //     iconlibrary: 'fa',  // 使用Font Awesome图标
+    //     language: 'zh'
+    //   })
+    // })
   },
   // 当路由变化后(比如变更查询参数 page 和 per_page)重新加载数据
   beforeRouteUpdate (to, from, next) {

@@ -17,14 +17,14 @@ const Shiyan = () => import('../views/Shiyan.vue')
 // User Resources
 const Resource = () => import('../views/Resources/Resource.vue')
 const MessagesIndexResource = () => import('../views/Resources/Messages/Index.vue')
-const SentMessagesResource = () => import('../Resources/Messages/List.vue')
+const SentMessagesResource = () => import('../views/Resources/Messages/List.vue')
 const MessagesHistoryResource = () => import('../views/Resources/Messages/History.vue')
 
 // User Notifications
 const Notifications = () => import('../views/Notifications/Notifications.vue')
-const RecivedComments = () => import('../views/Notifications/RecivedComments.vue')
+// const RecivedComments = () => import('../views/Notifications/RecivedComments.vue')
 const MessagesIndex = () => import('../views/Notifications/Messages/Index.vue')
-const RecivedMessages = () => import('../Notifications/Messages/List.vue')
+const RecivedMessages = () => import('../views/Notifications/Messages/List.vue')
 const MessagesHistory = () => import('../views/Notifications/Messages/History.vue')
 
 // User Personal Settings
@@ -140,10 +140,10 @@ const routes = [
             path: '', 
             component: MessagesIndex 
         },
-        {   path: 'comments', 
-            name: 'RecivedComments', 
-            component: RecivedComments 
-        },
+        // {   path: 'comments', 
+        //     name: 'RecivedComments', 
+        //     component: RecivedComments 
+        // },
         { 
             path: 'messages', 
             component: MessagesIndex,

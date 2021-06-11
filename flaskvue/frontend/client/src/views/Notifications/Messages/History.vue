@@ -145,7 +145,7 @@
   <!-- End Pagination #04 -->
 
   <!-- Reply Message Form -->
-  <form id="replyMessageForm" @submit.prevent="onSubmitReply" @reset.prevent="onResetReply" class="g-mb-40">
+  <form v-if="showOnce" id="replyMessageForm" @submit.prevent="onSubmitReply" @reset.prevent="onResetReply" class="g-mb-40">
     <div class="form-group">
       <input type="text" v-model="typein_message" placeholder="Type in message">
       <!-- <textarea v-model="replyMessageForm.body" class="form-control" id="replyMessageFormBody" rows="5" placeholder=" 悄悄话..."></textarea>
@@ -177,6 +177,7 @@ export default {
       user: '',
       messages: '',
       typein_message: '',
+      showOnce: true,
       replyMessageForm: {
         body: '',
         errors: 0,  // 发送私信时，表单验证是否有错误
@@ -259,6 +260,7 @@ export default {
       // this.replyMessageForm.body = ''
       // this.replyMessageForm.bodyError = null
       // $('#replyMessageForm .md-editor').closest('.form-group').removeClass('u-has-error-v1')
+      this.showOnce = false
       this.typein_message = ''
     },
   },

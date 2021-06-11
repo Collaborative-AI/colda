@@ -31,13 +31,16 @@ def create_message():
 
     message = Message()
     message.from_dict(data)
-    print("message1-----", message)
+   
+    message.sender_id = g.current_user.id
+
     message.sender = g.current_user
     message.recipient = user
-    print("message2----", message)
+    
+    print("message.time", message.timestamp)
     db.session.add(message)
 
-    # 给私信接收者发送新私信通知
+    # send message notification to the recipient
     user.add_notification('unread_messages_count',
                           user.new_recived_messages())
     db.session.commit()
@@ -60,14 +63,14 @@ def get_messages():
 @main.route('/messages/<int:id>', methods=['GET'])
 @token_auth.login_required
 def get_message(id):
-    '''返回单个私信'''
+    '''return one message'''
     message = Message.query.get_or_404(id)
     return jsonify(message.to_dict())
 
 @main.route('/messages/<int:id>', methods=['PUT'])
 @token_auth.login_required
 def update_message(id):
-    '''修改单个私信'''
+    '''modify one message'''
     message = Message.query.get_or_404(id)
     if g.current_user != message.sender:
         return error_response(403)
@@ -84,7 +87,7 @@ def update_message(id):
 @main.route('/messages/<int:id>', methods=['DELETE'])
 @token_auth.login_required
 def delete_message(id):
-    '''删除单个私信'''
+    '''delete one message'''
     message = Message.query.get_or_404(id)
     if g.current_user != message.sender:
         return error_response(403)

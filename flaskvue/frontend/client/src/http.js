@@ -14,6 +14,7 @@ axios.interceptors.request.use(function (config) {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
+  console.log("config", config)
   return config
 }, function (error) {
   // Do something with request error
@@ -23,6 +24,7 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
   // Do something with response data
+  console.log("response", response)
   return response
 }, function (error) {
   // Do something with response error

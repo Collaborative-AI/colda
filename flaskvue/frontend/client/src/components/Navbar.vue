@@ -20,6 +20,9 @@
           <li class="nav-item">
             <router-link to="/ping" class="nav-link">Ping</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
+          </li>
 
         </ul>
         
@@ -31,7 +34,11 @@
 
         <ul v-if="sharedState.is_authenticated" class="nav navbar-nav navbar-right">
           <li class="nav-item g-mr-20">
-            <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Send to testb</router-link>
+            <button @click="find_recipient">Call For Help</button>
+            <!-- <router-link v-bind:to="{ name: 'Shiyan' }" class="nav-link">Call For Help</router-link> -->
+          </li>
+          <li class="nav-item g-mr-20">
+            <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Call For Help</router-link>
           </li>
           <li class="nav-item g-mr-20">
             <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Notifications <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
@@ -79,6 +86,31 @@ export default {
       store.logoutAction()
       this.$toasted.show('You have been logged out.', { icon: 'fingerprint' })
       this.$router.push('/login')
+    },
+    find_recipient () {
+      const payload = {
+        recipient_id: 5,
+      }
+      this.$axios.post('/find_recipient/', payload)
+        .then((response) => {
+          // handle success
+          this.$toasted.success(`Successed send the help`, { icon: 'fingerprint' })
+          
+          // Create File
+
+
+
+          // Upload the matching ID file
+
+
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error.response.data)
+          this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+        })
+
+
     }
   },
   mounted () {
@@ -86,47 +118,45 @@ export default {
     $(function() {
       let since = 0
       let total_notifications_count = 0  // 总通知计数
-      let unread_recived_comments_count = 0  // 收到的新评论通知计数
-      let unread_messages_count = 0  // 收到的新私信通知计数
-      let unread_follows_count = 0  // 新粉丝通知计数
-      let unread_likes_count = 0  // 新的喜欢或赞的通知计数
-      let unread_followeds_posts_count = 0  // 用户关注的人的新文章通知计数
+      let unread_request_count = 0  // 收到的新评论通知计数
+      let unread_match_id_count = 0  // 收到的新私信通知计数
+      let unread_initial_situation_count = 0  // 新粉丝通知计数
+      let unread_output_count = 0  // 新的喜欢或赞的通知计数
       
       setInterval(function() {
-        if (window.localStorage.getItem('madblog-token')) {
+        if (window.localStorage.getItem('Apollo-token')) {
           // 如果用户已登录，才开始请求 API
-          const payload = JSON.parse(atob(window.localStorage.getItem('madblog-token').split('.')[1]))
+          const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
           const user_id = payload.user_id
           const path = `/users/${user_id}/notifications/?since=${since}`
+          console.log("since shua xin",since)
           axios.get(path)
             .then((response) => {
               // handle success
               for(var i = 0; i < response.data.length; i++) {
                 switch (response.data[i].name) {
-                  case 'unread_recived_comments_count':
-                    unread_recived_comments_count = response.data[i].payload
+                  case 'unread request':
+                    unread_request_count = response.data[i].payload
                     break
                   
-                  case 'unread_messages_count':
-                    unread_messages_count = response.data[i].payload
+                  case 'unread match id':
+                    unread_match_id_count = response.data[i].payload
                     break
                   
-                  case 'unread_follows_count':
-                    unread_follows_count = response.data[i].payload
+                  case 'unread initial situation':
+                    unread_initial_situation_count = response.data[i].payload
                     break
                   
-                  case 'unread_likes_count':
-                    unread_likes_count = response.data[i].payload
+                  case 'unread output':
+                    unread_output_count = response.data[i].payload
                     break
 
-                  case 'unread_followeds_posts_count':
-                    unread_followeds_posts_count = response.data[i].payload
-                    break
                 }
                 since = response.data[i].timestamp
+                console.log("since",since)
               }
 
-              total_notifications_count = unread_recived_comments_count + unread_messages_count + unread_follows_count + unread_likes_count + unread_followeds_posts_count
+              total_notifications_count = unread_request_count + unread_match_id_count + unread_initial_situation_count + unread_output_count
               // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标
               $('#new_notifications_count').text(total_notifications_count)
               $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');

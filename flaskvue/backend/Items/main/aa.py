@@ -45,9 +45,6 @@ class User(PaginatedAPIMixin, db.Model):
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
-
-    last_requests_read_time = db.Column(db.DateTime)
-
     last_messages_read_time = db.Column(db.DateTime)
 
     # Message User sent
@@ -58,16 +55,6 @@ class User(PaginatedAPIMixin, db.Model):
     messages_received = db.relationship('Message',
                                         foreign_keys='Message.recipient_id',
                                         backref='recipient', lazy='dynamic',
-                                        cascade='all, delete-orphan')
-    
-    # Message User sent
-    match_sponsor = db.relationship('Matched', foreign_keys='Matched.sponsor_id',
-                                    backref='matchsponsor', lazy='dynamic',
-                                    cascade='all, delete-orphan')
-    # Message User received
-    match_recipient = db.relationship('Matched',
-                                        foreign_keys='Matched.recipient_id',
-                                        backref='matchrecipient', lazy='dynamic',
                                         cascade='all, delete-orphan')
 
     # Notification
@@ -122,20 +109,16 @@ class User(PaginatedAPIMixin, db.Model):
         self.notifications.filter_by(name=name).delete()
         # 为用户添加通知，写入数据库
         n = Notification(name=name, payload_json=json.dumps(data), user=self)
+        print("self_add_notification",self)
+        print("add_notification",n)
         db.session.add(n)
         return n
-        
+
     def new_recived_messages(self):
         '''用户未读的私信计数'''
         last_read_time = self.last_messages_read_time or datetime(1900, 1, 1)
         return Message.query.filter_by(recipient=self).filter(
             Message.timestamp > last_read_time).count()
-
-    def new_request(self):
-        '''用户未读的请求数'''
-        last_request_time = self.last_requests_read_time or datetime(1900, 1, 1)
-        return Matched.query.filter_by(recipient=self).filter(
-            Matched.timestamp > last_request_time).count()
 
     def update_jwt(self):
         self.last_seen = datetime.utcnow()
@@ -175,8 +158,6 @@ class Message(PaginatedAPIMixin, db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    task_id = db.Column(db.String(120), index=True)
-    rounds = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Message {}>'.format(self.id)
@@ -190,8 +171,6 @@ class Message(PaginatedAPIMixin, db.Model):
             'sender': self.sender.to_dict(),
             'recipient': self.recipient.to_dict(),
             'timestamp': self.timestamp,
-            'task_id': self.task_id,
-            'rounds': self.rounds,
             '_links': {
                 'self': url_for('main.get_message', id=self.id),
                 'sender_url': url_for('main.get_user', id=self.sender_id),
@@ -214,8 +193,6 @@ class Notification(PaginatedAPIMixin, db.Model):
     timestamp = db.Column(db.Float, index=True, default=time)
     payload_json = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    sender_random_id = db.Column(db.Integer)
-    task_id = db.Column(db.String(120), index=True)
 
     def __repr__(self):
         return '<Notification {}>'.format(self.id)
@@ -234,8 +211,6 @@ class Notification(PaginatedAPIMixin, db.Model):
             },
             'timestamp': self.timestamp,
             'payload': self.get_data(),
-            'sender_random_id': self.sender_random_id,
-            'task_id': self.task_id,
             '_links': {
                 'self': url_for('main.get_notification', id=self.id),
                 'user_url': url_for('main.get_user', id=self.user_id)
@@ -245,49 +220,5 @@ class Notification(PaginatedAPIMixin, db.Model):
 
     def from_dict(self, data):
         for key in ['body', 'timestamp']:
-            if key in data:
-                setattr(self, key, data[key])
-
-class Matched(PaginatedAPIMixin, db.Model):  
-    __tablename__ = 'matched'
-    id = db.Column(db.Integer, primary_key=True)
-    task_id = db.Column(db.String(120), index=True)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
-    # sponsor_id = db.Column(db.String(120), db.ForeignKey('users.id'))
-    # recipient_id = db.Column(db.String(120), db.ForeignKey('users.id'))
-
-    sponsor_id = db.Column(db.String(120))
-    recipient_id = db.Column(db.String(120))
-
-    Matched_id_file =  db.Column(db.Text)
-    sponsor_random_id = db.Column(db.String(120))
-    recipient_random_id = db.Column(db.String(120))
-
-    def __repr__(self):
-        return '<Match {}>'.format(self.id)
-
-    def get_data(self):
-        return json.loads(str(self.payload_json))
-
-    def to_dict(self):
-        data = {
-            'id': self.id,
-            'task_id': self.task_id,
-            'user': {
-                'id': self.sponser_id,
-            },
-            'timestamp': self.timestamp,
-            'sponsor_random_id': self.sponsor_random_id,
-            'recipient_random_id': self.recipient_id,
-            # '_links': {
-            #     'self': url_for('main.get_notification', id=self.id),
-            #     'user_url': url_for('main.get_user', id=self.user_id)
-            # }
-        }
-        return data
-
-    def from_dict(self, data):
-        for key in ['file_to_match', 'timestamp']:
             if key in data:
                 setattr(self, key, data[key])

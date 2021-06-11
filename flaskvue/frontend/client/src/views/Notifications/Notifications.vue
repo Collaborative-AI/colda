@@ -7,8 +7,8 @@
           <!-- 用户头像 -->
           <div v-if="user" class="text-center g-pos-rel g-mb-30">
             <div class="g-width-100 g-height-100 mx-auto mb-3">
-              <img class="img-fluid rounded-circle g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../assets/logo.png" v-bind:alt="user.name || user.username">
-              <!-- <img class="img-fluid rounded-circle g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="user._links.avatar" v-bind:alt="user.name || user.username"> -->
+              <!-- <img class="img-fluid rounded-circle g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../assets/logo.png" v-bind:alt="user.name || user.username"> -->
+              <img class="img-fluid rounded-circle g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="user._links.avatar" v-bind:alt="user.name || user.username">
             </div>
 
             <span class="d-block g-font-weight-500">{{ user.name || user.username }}</span>
@@ -27,39 +27,18 @@
 
           <!-- 菜单列表 -->
           <ul class="list-unstyled mb-0">
-            <li class="g-pb-3">
+            <!-- <li class="g-pb-3">
               <router-link v-bind:to="{ name: 'RecivedComments' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-finance-206 u-line-icon-pro"></i></span>
                 Comments
                 <span v-if="notifications.unread_recived_comments_count" class="u-label g-font-size-11 g-bg-pink g-rounded-20 g-px-8 g-ml-15">{{ notifications.unread_recived_comments_count }}</span>
               </router-link>
-            </li>
+            </li> -->
             <li class="g-py-3">
               <router-link v-bind:to="{ name: 'MessagesIndex' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-communication-154 u-line-icon-pro"></i></span>
                 Messages
                 <span v-if="notifications.unread_messages_count" class="u-label g-font-size-11 g-bg-pink g-rounded-20 g-px-8 g-ml-15">{{ notifications.unread_messages_count }}</span>
-              </router-link>
-            </li>
-            <li class="g-py-3">
-              <router-link v-bind:to="{ name: 'Follows' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
-                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-finance-067 u-line-icon-pro"></i></span>
-                Follows
-                <span v-if="notifications.unread_follows_count" class="u-label g-font-size-11 g-bg-pink g-rounded-20 g-px-8 g-ml-15">{{ notifications.unread_follows_count }}</span>
-              </router-link>
-            </li>
-            <li class="g-py-3">
-              <router-link v-bind:to="{ name: 'Likes' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
-                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-medical-008 u-line-icon-pro"></i></span>
-                Likes
-                <span v-if="notifications.unread_likes_count" class="u-label g-font-size-11 g-bg-pink g-rounded-20 g-px-8 g-ml-15">{{ notifications.unread_likes_count }}</span>
-              </router-link>
-            </li>
-            <li class="g-py-3">
-              <router-link v-bind:to="{ name: 'FollowingPosts' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
-                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-education-008 u-line-icon-pro"></i></span>
-                Following Posts
-                <span v-if="notifications.unread_followeds_posts_count" class="u-label g-font-size-11 g-bg-pink g-rounded-20 g-px-8 g-ml-15">{{ notifications.unread_followeds_posts_count }}</span>
               </router-link>
             </li>
           </ul>
@@ -110,6 +89,7 @@ export default {
     getUserNotifications (id) {
       let since = 0
       const path = `/users/${id}/notifications/?since=${since}`
+      console.log("notification shua xin",since)
       this.$axios.get(path)
         .then((response) => {
           // handle success
@@ -123,6 +103,7 @@ export default {
               
             }
             since = response.data[i].timestamp
+            console.log("notification",since)
           }
         })
         .catch((error) => {

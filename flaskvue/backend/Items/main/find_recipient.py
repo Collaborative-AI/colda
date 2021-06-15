@@ -21,32 +21,39 @@ def find_recipient():
     if not data:
         return bad_request('You must post JSON data.')
     
-    # hardcode 
-    user = User.query.get_or_404(5)
-    if g.current_user == user:
-        return bad_request('You cannot send private matched to yourself.')
+    # find recipient algorithm, return all_recipient_id
 
+    # Now hardcode
+    # testa: id 4(sponsor), testb: id 5(recipient), testc: id 6(recipient)
+    all_recipient_id = [5,6]
+
+    # Unique in each task
     task_id = uuid.uuid4()
-   
-    matched = Matched()
-    matched.from_dict(data)
-    matched.sender = g.current_user
-    matched.recipient = user
-    matched.task_id = task_id
-
     sponsor_random_id = uuid.uuid4()
-    matched.sponsor_random_id = sponsor_random_id
 
-    recipient_random_id = uuid.uuid4()
-    matched.recipient_random_id = recipient_random_id
+    for recipient_id in all_recipient_id:
+        user = User.query.get_or_404(recipient_id)
+        if g.current_user == user:
+            return bad_request('You cannot send private matched to yourself.')
+      
+        matched = Matched()
+        matched.from_dict(data)
+        matched.sponsor_id = g.current_user.id
+        matched.recipient_id_pair = user.id
+        matched.task_id = task_id
 
-    db.session.add(matched)
+        matched.sponsor_random_id = sponsor_random_id
 
-    # send matched notification to the recipient
-    user.add_notification('unread request',
-                          user.new_request()) 
-                        
-    db.session.commit()
+        recipient_random_id = uuid.uuid4()
+        matched.recipient_random_id_pair = recipient_random_id
+
+        db.session.add(matched)
+
+        # send matched notification to the recipient
+        user.add_notification('unread request',
+                              user.new_request()) 
+                            
+        db.session.commit()
 
     dict = {"new_task_id": task_id}
     response = jsonify(dict)

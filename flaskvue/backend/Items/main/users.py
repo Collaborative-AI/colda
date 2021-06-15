@@ -109,24 +109,6 @@ def delete_user(id):
     '''
     return "Welcome to Delete!"
 
-@main.route('/users/<int:id>/notifications/', methods=['GET'])
-@token_auth.login_required
-def get_user_notifications(id):
-    '''返回该用户的新通知'''
-    user = User.query.get_or_404(id)
-
-    
-    if g.current_user != user:
-        return error_response(403)
-    # 只返回上次看到的通知以来发生的新通知
-    # 比如用户在 10:00:00 请求一次该API，在 10:00:10 再次请求该API只会返回 10:00:00 之后产生的新通知
-    since = request.args.get('since', 0.0, type=float)
-    print("since",since)
-    notifications = user.notifications.filter(
-        Notification.timestamp > since).order_by(Notification.timestamp.asc())
-    return jsonify([n.to_dict() for n in notifications])
-
-
 @main.route('/users/<int:id>/messages-recipients/', methods=['GET'])
 @token_auth.login_required
 def get_user_messages_recipients(id):
@@ -172,9 +154,26 @@ def get_user_messages_senders(id):
     per_page = min(
         request.args.get(
             'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
+    
+    # fanhui = user.messages_received.group_by(Message.sender_id).order_by(Message.timestamp.desc()).all()
+    # print("fanhui",fanhui)
+    # for i in range(len(fanhui)):
+    #     print(fanhui[i].timestamp)
+
+    # fanhui2 = Message.query.filter(Message.recipient_id == g.current_user.id).all()
+    # print("fanhui2",fanhui2)
+    # # print("fanhui3",[r[0] for r in fanhui2])
+    # for i in fanhui2:
+    #     print(i.timestamp)
+
+    # fanhui3 = Message.query.group_by(Message.sender_id).all()
+    # print("fanhui3", fanhui3)
+
     data = Message.to_collection_dict(
         user.messages_received.group_by(Message.sender_id).order_by(Message.timestamp.desc()), page, per_page,
         'main.get_user_messages_senders', id=id)
+    print("data",data)
+    print("item",data["items"])
 
     # 这个用户发给我的私信有没有新的
     last_read_time = user.last_messages_read_time or datetime(1900, 1, 1)
@@ -193,6 +192,7 @@ def get_user_messages_senders(id):
     new_items = sorted(new_items, key=itemgetter('timestamp'))
     data['items'] = new_items + not_new_items
     return jsonify(data)
+
 
 @main.route('/users/<int:id>/history-messages/', methods=['GET'])
 @token_auth.login_required
@@ -241,3 +241,21 @@ def get_user_history_messages(id):
     messages.sort(key=data['items'].index)  # 保持 messages 列表元素的顺序跟 data['items'] 一样
     data['items'] = messages
     return jsonify(data)
+
+
+@main.route('/users/<int:id>/notifications/', methods=['GET'])
+@token_auth.login_required
+def get_user_notifications(id):
+    '''返回该用户的新通知'''
+    user = User.query.get_or_404(id)
+
+    
+    if g.current_user != user:
+        return error_response(403)
+    # 只返回上次看到的通知以来发生的新通知
+    # 比如用户在 10:00:00 请求一次该API，在 10:00:10 再次请求该API只会返回 10:00:00 之后产生的新通知
+    since = request.args.get('since', 0.0, type=float)
+    print("since",since)
+    notifications = user.notifications.filter(
+        Notification.timestamp > since).order_by(Notification.timestamp.asc())
+    return jsonify([n.to_dict() for n in notifications])

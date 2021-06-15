@@ -65,8 +65,11 @@ export default {
             const payload = {
         
         // body: this.replyMessageForm.body
-             file: res
+             file: JSON.stringify(res),
             }
+
+      console.log("stringify",JSON.stringify(res))
+      console.log("parse",JSON.parse(JSON.stringify(res)))
 
             // , {headers:{'Content-Type':'application/x-www-form-urlencoded' }}
       this.$axios.post('/ceshi/', payload)
@@ -79,8 +82,8 @@ export default {
         })
         .catch((error) => {
           // handle error
-          console.log(error)
-          this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+          // console.log(error)
+          // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
         })
       })      
     }

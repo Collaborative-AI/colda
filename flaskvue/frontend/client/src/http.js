@@ -2,11 +2,17 @@ import Vue from 'vue'
 import axios from 'axios'
 import router from './router'
 import store from './store'
+import Qs from 'qs'
 
 // 基础配置
 axios.defaults.timeout = 5000  // 超时时间
 axios.defaults.baseURL = 'http://localhost:5000'
-
+// axios.defaults.transformRequest = [ function(data) {
+//                                       console.log("laiguo")
+//                                       data = JSON.stringify(data)
+//                                       console.log("data", data)
+//                                       return data
+//                                     } ],
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent
@@ -14,6 +20,17 @@ axios.interceptors.request.use(function (config) {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
+  
+  // console.log("a", JSON.stringify(["match_id", "xa", "ya"]))
+  
+  // data = JSON.stringify(config.data.file) 
+  // console.log("data",data)
+    
+
+    // console.log("file", Qs.stringify(config.data.file, {arrayFormat: 'repeat'}))
+    // return Qs.stringify(config.data.file, {arrayFormat: 'repeat'})
+    
+  
   console.log("config", config)
   return config
 }, function (error) {

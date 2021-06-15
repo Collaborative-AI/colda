@@ -7,6 +7,15 @@
 4. Install Package: pipenv install + package name
 
 5. Migrate the database: 
+     0. migration .env add (render_as_batch=True,)
+     (with connectable.connect() as connection:
+        context.configure(
+            connection=connection,
+            target_metadata=target_metadata,
+            render_as_batch=True,
+            process_revision_directives=process_revision_directives,
+            **current_app.extensions['migrate'].configure_args
+        ))
      1. flask db migrate -m "comment"
      2. flask db upgrade (flask db downgrade => rollback)
             

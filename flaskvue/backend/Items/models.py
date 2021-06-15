@@ -48,6 +48,8 @@ class User(PaginatedAPIMixin, db.Model):
 
     last_requests_read_time = db.Column(db.DateTime)
 
+    last_matched_file_read_time = db.Column(db.DateTime)
+
     last_messages_read_time = db.Column(db.DateTime)
 
     # Message User sent
@@ -61,14 +63,14 @@ class User(PaginatedAPIMixin, db.Model):
                                         cascade='all, delete-orphan')
     
     # Message User sent
-    match_sponsor = db.relationship('Matched', foreign_keys='Matched.sponsor_id',
-                                    backref='matchsponsor', lazy='dynamic',
-                                    cascade='all, delete-orphan')
-    # Message User received
-    match_recipient = db.relationship('Matched',
-                                        foreign_keys='Matched.recipient_id',
-                                        backref='matchrecipient', lazy='dynamic',
-                                        cascade='all, delete-orphan')
+    # match_sponsor = db.relationship('Matched', foreign_keys='Matched.sponsor_id',
+    #                                 backref='matchsponsor', lazy='dynamic',
+    #                                 cascade='all, delete-orphan')
+    # # Message User received
+    # match_recipient = db.relationship('Matched',
+    #                                     foreign_keys='Matched.recipient_id_pair',
+    #                                     backref='matchrecipient', lazy='dynamic',
+    #                                     cascade='all, delete-orphan')
 
     # Notification
     notifications = db.relationship('Notification', backref='user',
@@ -134,8 +136,14 @@ class User(PaginatedAPIMixin, db.Model):
     def new_request(self):
         '''用户未读的请求数'''
         last_request_time = self.last_requests_read_time or datetime(1900, 1, 1)
-        return Matched.query.filter_by(recipient=self).filter(
-            Matched.timestamp > last_request_time).count()
+        return Matched.query.filter_by(recipient_id_pair=self.id).filter(
+            Matched.request_timestamp > last_request_time).count()
+
+    def new_match_id(self):
+        '''用户未读的match完的id'''
+        last_match_time = self.last_matched_file_read_time or datetime(1900, 1, 1)
+        return Matched.query.filter_by(recipient_id_pair=self.id).filter(
+            Matched.match_id_timestamp > last_match_time).count()
 
     def update_jwt(self):
         self.last_seen = datetime.utcnow()
@@ -252,17 +260,17 @@ class Matched(PaginatedAPIMixin, db.Model):
     __tablename__ = 'matched'
     id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.String(120), index=True)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
+    request_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    match_id_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     # sponsor_id = db.Column(db.String(120), db.ForeignKey('users.id'))
-    # recipient_id = db.Column(db.String(120), db.ForeignKey('users.id'))
+    # recipient_id_pair = db.Column(db.String(120), db.ForeignKey('users.id'))
 
     sponsor_id = db.Column(db.String(120))
-    recipient_id = db.Column(db.String(120))
+    recipient_id_pair = db.Column(db.String(120))
 
     Matched_id_file =  db.Column(db.Text)
     sponsor_random_id = db.Column(db.String(120))
-    recipient_random_id = db.Column(db.String(120))
+    recipient_random_id_pair = db.Column(db.String(120))
 
     def __repr__(self):
         return '<Match {}>'.format(self.id)
@@ -277,9 +285,10 @@ class Matched(PaginatedAPIMixin, db.Model):
             'user': {
                 'id': self.sponser_id,
             },
-            'timestamp': self.timestamp,
+            'request_timestamp': self.request_timestamp,
+            'match_id_timestamp': self.match_id_timestamp,
             'sponsor_random_id': self.sponsor_random_id,
-            'recipient_random_id': self.recipient_id,
+            'recipient_random_id_pair': self.recipient_random_id_pair,
             # '_links': {
             #     'self': url_for('main.get_notification', id=self.id),
             #     'user_url': url_for('main.get_user', id=self.user_id)

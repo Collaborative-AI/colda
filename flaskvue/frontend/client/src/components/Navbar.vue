@@ -37,9 +37,19 @@
             <button @click="find_recipient">Call For Help</button>
             <!-- <router-link v-bind:to="{ name: 'Shiyan' }" class="nav-link">Call For Help</router-link> -->
           </li>
-          <li class="nav-item g-mr-20">
+          <!-- <li class="nav-item g-mr-20">
             <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Call For Help</router-link>
-          </li>
+          </li> -->
+          <div v-if="sponsor_request_show">
+            <input type="file" name="csvfile" ref="csvData" />
+            <input type="button" @click="sponsor_csv()" value="JS转换"/>
+          </div>
+
+          <div v-if="unread_request_show">
+            <input type="file" name="csvfile" ref="csvData" />
+            <input type="button" @click="recipient_csv()" value="JS转换"/>
+          </div>
+
           <li class="nav-item g-mr-20">
             <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Notifications <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
           </li>
@@ -74,11 +84,17 @@ import store from '../store'
 import axios from 'axios'
 import $ from 'jquery'
 
+// change csv to array
+import csv2arr from '@/assets/csv-arr'
+
 export default {
   name: 'Navbar',  //this is the name of the component
   data () {
     return {
-      sharedState: store.state
+      sharedState: store.state,
+      sponsor_request_show: false,
+      unread_request_show: false,
+      task_id: '',
     }
   },
   methods: {
@@ -87,6 +103,8 @@ export default {
       this.$toasted.show('You have been logged out.', { icon: 'fingerprint' })
       this.$router.push('/login')
     },
+
+    // sponsor find recipient
     find_recipient () {
       const payload = {
         recipient_id: 5,
@@ -95,13 +113,11 @@ export default {
         .then((response) => {
           // handle success
           this.$toasted.success(`Successed send the help`, { icon: 'fingerprint' })
-          
+          this.task_id = response.data["new_task_id"]
           // Create File
 
-
-
           // Upload the matching ID file
-
+          this.sponsor_request_show = true
 
         })
         .catch((error) => {
@@ -111,7 +127,74 @@ export default {
         })
 
 
+    },
+
+    sponsor_csv() {
+          csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
+            this.sponsor_request_show = false
+            this.task_id = ''
+
+            console.log('sponsor数据', res)
+            const payload = {
+              // task_id = this.task_id,
+        // body: this.replyMessageForm.body
+              file: JSON.stringify(res),
+            }
+
+
+            // , {headers:{'Content-Type':'application/x-www-form-urlencoded' }}
+          this.$axios.post('/match_sponsor_id/', payload)
+            .then((response) => {
+          // handle success
+          // this.$toasted.success(`Successed send the private message to ${this.user.name || this.user.username}.`, { icon: 'fingerprint' })
+          // this.onResetReply()
+          // this.getUserHistoryMessages(this.sharedState.user_id)
+            console.log(response)
+          })
+          .catch((error) => {
+          // handle error
+          // console.log(error)
+          // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+          })
+        })      
+    },
+
+    recipient_csv() {
+          csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
+            this.sponsor_request_show = false
+            this.task_id = ''
+
+            console.log('recipient数据', res)
+            const payload = {
+              // task_id = this.task_id,
+        // body: this.replyMessageForm.body
+              file: JSON.stringify(res),
+            }
+
+
+            // , {headers:{'Content-Type':'application/x-www-form-urlencoded' }}
+          this.$axios.post('/match_sponsor_id/', payload)
+            .then((response) => {
+          // handle success
+          // this.$toasted.success(`Successed send the private message to ${this.user.name || this.user.username}.`, { icon: 'fingerprint' })
+          // this.onResetReply()
+          // this.getUserHistoryMessages(this.sharedState.user_id)
+            console.log(response)
+          })
+          .catch((error) => {
+          // handle error
+          // console.log(error)
+          // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+          })
+        })      
+    },
+
+    unread_request() {
+      this.unread_request_show = true
+
+
     }
+
   },
   mounted () {
     // 轮询 /api/users/<int:id>/notifications/ 请求用户的新通知
@@ -155,6 +238,13 @@ export default {
                 since = response.data[i].timestamp
                 console.log("since",since)
               }
+
+              if (unread_request_count != 0){
+                this.unread_request()
+              }
+
+
+
 
               total_notifications_count = unread_request_count + unread_match_id_count + unread_initial_situation_count + unread_output_count
               // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标

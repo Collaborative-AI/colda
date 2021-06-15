@@ -130,70 +130,129 @@ export default {
     },
 
     sponsor_csv() {
-          csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
-            this.sponsor_request_show = false
-            this.task_id = ''
+      csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
+        this.sponsor_request_show = false
+        this.task_id = ''
 
-            console.log('sponsor数据', res)
-            const payload = {
-              // task_id = this.task_id,
-        // body: this.replyMessageForm.body
-              file: JSON.stringify(res),
-            }
+        console.log('sponsor数据', res)
+        const payload = {
+          // task_id = this.task_id,
+          // body: this.replyMessageForm.body
+          file: JSON.stringify(res),
+        }
 
 
-            // , {headers:{'Content-Type':'application/x-www-form-urlencoded' }}
-          this.$axios.post('/match_sponsor_id/', payload)
-            .then((response) => {
-          // handle success
-          // this.$toasted.success(`Successed send the private message to ${this.user.name || this.user.username}.`, { icon: 'fingerprint' })
-          // this.onResetReply()
-          // this.getUserHistoryMessages(this.sharedState.user_id)
-            console.log(response)
-          })
-          .catch((error) => {
-          // handle error
-          // console.log(error)
-          // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-          })
-        })      
+        // , {headers:{'Content-Type':'application/x-www-form-urlencoded' }}
+      this.$axios.post('/match_sponsor_id/', payload)
+        .then((response) => {
+      // handle success
+      // this.$toasted.success(`Successed send the private message to ${this.user.name || this.user.username}.`, { icon: 'fingerprint' })
+      // this.onResetReply()
+      // this.getUserHistoryMessages(this.sharedState.user_id)
+        console.log(response)
+      })
+      .catch((error) => {
+      // handle error
+      // console.log(error)
+      // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+      })
+    })      
     },
 
     recipient_csv() {
-          csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
-            this.sponsor_request_show = false
-            this.task_id = ''
+      csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
+        this.sponsor_request_show = false
+        this.task_id = ''
 
-            console.log('recipient数据', res)
-            const payload = {
-              // task_id = this.task_id,
-        // body: this.replyMessageForm.body
-              file: JSON.stringify(res),
-            }
+        console.log('recipient数据', res)
+        const payload = {
+          // task_id = this.task_id,
+          // body: this.replyMessageForm.body
+          file: JSON.stringify(res),
+        }
 
 
-            // , {headers:{'Content-Type':'application/x-www-form-urlencoded' }}
-          this.$axios.post('/match_sponsor_id/', payload)
-            .then((response) => {
-          // handle success
-          // this.$toasted.success(`Successed send the private message to ${this.user.name || this.user.username}.`, { icon: 'fingerprint' })
-          // this.onResetReply()
-          // this.getUserHistoryMessages(this.sharedState.user_id)
-            console.log(response)
-          })
-          .catch((error) => {
-          // handle error
-          // console.log(error)
-          // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-          })
-        })      
+        // , {headers:{'Content-Type':'application/x-www-form-urlencoded' }}
+      this.$axios.post('/match_recipient_id/', payload)
+        .then((response) => {
+      // handle success
+      // this.$toasted.success(`Successed send the private message to ${this.user.name || this.user.username}.`, { icon: 'fingerprint' })
+      // this.onResetReply()
+      // this.getUserHistoryMessages(this.sharedState.user_id)
+        console.log(response)
+      })
+      .catch((error) => {
+      // handle error
+      // console.log(error)
+      // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+      })
+    })      
     },
 
     unread_request() {
       this.unread_request_show = true
+    },
 
+    unread_match_id() {
+      
+      const payload = {
+        task_id: this.task_id,
+      }
 
-    }
+      // check if the current client is sponsor or not of the specific task
+      this.$axios.post('/check_sponsor/', payload)
+        .then((response) => {
+      // handle success
+          if (response.data["sponsor"] == "true"){
+            this.unread_match_id_sponsor()
+          }  
+          else{
+            this.unread_match_id_recipient()
+          }
+            
+        console.log(response)
+      })
+      .catch((error) => {
+      // handle error
+      // console.log(error)
+      // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+      })
+    },
+
+    unread_match_id_sponsor() {
+      // create local file
+
+      // calculate initial situation
+
+      // send situation
+      const payload = {
+        initial_situation: null,
+      }
+
+      // check if the current client is sponsor or not of the specific task
+      this.$axios.post('/check_sponsor/', payload)
+        .then((response) => {
+      // handle success
+          if (response.data["sponsor"] == "true"){
+            this.unread_match_id_sponsor()
+          }  
+          else{
+            this.unread_match_id_recipient()
+          }
+            
+        console.log(response)
+      })
+      .catch((error) => {
+      // handle error
+      // console.log(error)
+      // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+      })
+    },
+
+    unread_match_id_recipient() {
+      // create local file
+    },
+
 
   },
   mounted () {
@@ -226,7 +285,7 @@ export default {
                     unread_match_id_count = response.data[i].payload
                     break
                   
-                  case 'unread initial situation':
+                  case 'unread situation':
                     unread_initial_situation_count = response.data[i].payload
                     break
                   
@@ -243,6 +302,9 @@ export default {
                 this.unread_request()
               }
 
+              if (unread_match_id_count != 0){
+                this.unread_match_id()
+              }
 
 
 

@@ -222,7 +222,7 @@ class Notification(PaginatedAPIMixin, db.Model):
     timestamp = db.Column(db.Float, index=True, default=time)
     payload_json = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    sender_random_id = db.Column(db.Integer)
+    # sender_random_id = db.Column(db.Integer)
     task_id = db.Column(db.String(120), index=True)
 
     def __repr__(self):
@@ -242,7 +242,7 @@ class Notification(PaginatedAPIMixin, db.Model):
             },
             'timestamp': self.timestamp,
             'payload': self.get_data(),
-            'sender_random_id': self.sender_random_id,
+            # 'sender_random_id': self.sender_random_id,
             'task_id': self.task_id,
             '_links': {
                 'self': url_for('main.get_notification', id=self.id),

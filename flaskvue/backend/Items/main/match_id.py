@@ -39,7 +39,7 @@ def match_sponsor_id():
     # response = Matched.query.filter(Matched.sponsor_id == g.current_user, task_id = task_id).with_entities(Matched.Matched_id_file)
 
     # response is a list
-    response = Matched.query.filter(Matched.sponsor_id == g.current_user, Matched.task_id == task_id)
+    response = Matched.query.filter(Matched.sponsor_id == g.current_user, Matched.task_id == task_id).all()
 
     # count the distinct id in the Sponsor ID file
     data_array_id = {}
@@ -109,9 +109,9 @@ def match_recipient_id():
 
     # Update last_requests_read_time
     user = User.query.get_or_404(g.current_user.id)
-    last_requests_read_time = user.last_messages_read_time or datetime(1900, 1, 1)
+    last_requests_read_time = user.last_requests_read_time or datetime(1900, 1, 1)
     # one record for a recipient_id_pair per task
-    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user, Matched.task_id == task_id)
+    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user, Matched.task_id == task_id).all()
 
     # If can be omitted
     if last_requests_read_time > record['request_timestamp']:
@@ -122,7 +122,7 @@ def match_recipient_id():
         
         # Updata Notification
         user.add_notification('unread request', user.new_request()) 
-
+        db.session.commit()
 
     data_array = json.loads(data['file'])
 

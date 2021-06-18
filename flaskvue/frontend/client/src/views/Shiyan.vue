@@ -2,12 +2,22 @@
   <div>
     <input type="file" name="csvfile" ref="csvData" />
     <input type="button" @click="csv()" value="JS转换"/>
+
+    <button @click="create()">create file</button>
+
+    <button @click="pass()">pass parameter</button>
+
   </div>
 </template>
 
 
 <script>
-
+//const { require } = window
+const fs = window.require('fs');
+const address = 'tem/' + 'b/'
+// const { require } = window
+// const fs = require('fs')
+// const path = require('path');
 // Encapsulated network request
 // import {request} from '@/network/request';
 // import {request_withdata} from '@/network/request';
@@ -16,7 +26,12 @@
 // import { Field, Form } from 'vee-validate';
 
 import csv2arr from '@/assets/csv-arr'
-
+// import $ from 'jquery'
+// import { mkdir } from 'fs';
+//import fs from 'fs'
+// import path from 'path'
+//const fs = window.fs
+// const fs = window.fs;
 export default {
   name: "Shiyan",
   // components: {
@@ -37,6 +52,59 @@ export default {
   },
 
   methods: {
+
+    pass() {
+
+      const a = 6
+      this.pass1(a)
+    },
+
+    pass1(parameter) {
+      console.log(parameter)
+    },
+    create() {
+      //const fs = require('fs')
+
+      
+      console.log("aaaaa");
+      // $(function() {
+      //   fs.mkdirSync('Rabbit');
+      // })
+      fs.readFile('/home/qile/Documents/Apollo/test.txt', 'utf8' , (err, data) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        console.log(data)
+      })
+      // fs.mkdirSync(`Rabbit`);
+      // import { mkdir } from 'fs';
+
+      // 创建 /tmp/a/apple，不管 `/tmp` 和 /tmp/a 是否存在。
+      const address = 'tem/' + 'c/'
+      const new_address = address + 'bbb'
+      fs.mkdir(new_address, { recursive: true }, (err) => {
+        if (err) throw err;
+        // console.log("wancheng")
+        // let prefix = 6
+        // const filename = prefix + 'file2.txt'
+        // fs.open(new_address + filename, 'w', function (err, file) {
+        //   if (err) throw err;
+        //   console.log('Saved!');
+        // });
+        
+      });
+      // console.log("zzz");
+      // fs.mkdir('/Rabbit', (err) => {
+      //   if(err) throw err; // 如果出现错误就抛出错误信息
+
+      //   console.log('文件夹创建成功');
+      // })
+      // mkdir('/tmp/a/apple', { recursive: true }, (err) => {
+      //   if (err) throw err;
+      // });
+    },
+
     submit(e) {
       let file = e.target.files[0];
       const payload = {

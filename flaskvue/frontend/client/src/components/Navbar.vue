@@ -83,6 +83,8 @@ import store from '../store'
 // 在 JQuery 中使用 axios 的话需要重新导入，不能使用 main.js 中定义的 Vue 全局属性 this.$axios
 import axios from 'axios'
 import $ from 'jquery'
+// use Node API
+const fs = window.require('fs');
 
 // change csv to array
 import csv2arr from '@/assets/csv-arr'
@@ -112,9 +114,14 @@ export default {
       this.$axios.post('/find_recipient/', payload)
         .then((response) => {
           // handle success
-          this.$toasted.success(`Successed send the help`, { icon: 'fingerprint' })
+          this.$toasted.success(`Successed call for help`, { icon: 'fingerprint' })
           this.task_id = response.data["new_task_id"]
+
           // Create File
+          const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/'
+          fs.mkdir(new_address, { recursive: true }, (err) => {
+            if (err) throw err;
+          });
 
           // Upload the matching ID file
           this.sponsor_request_show = true
@@ -132,58 +139,22 @@ export default {
     sponsor_csv() {
       csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
         this.sponsor_request_show = false
-        this.task_id = ''
 
         console.log('sponsor数据', res)
         const payload = {
-          // task_id = this.task_id,
-          // body: this.replyMessageForm.body
+          task_id: this.task_id,
           file: JSON.stringify(res),
         }
 
-
-        // , {headers:{'Content-Type':'application/x-www-form-urlencoded' }}
       this.$axios.post('/match_sponsor_id/', payload)
         .then((response) => {
-      // handle success
-      // this.$toasted.success(`Successed send the private message to ${this.user.name || this.user.username}.`, { icon: 'fingerprint' })
-      // this.onResetReply()
-      // this.getUserHistoryMessages(this.sharedState.user_id)
+        // handle success
         console.log(response)
+        this.$toasted.success(`Successed send the csv file.`, { icon: 'fingerprint' })
       })
       .catch((error) => {
       // handle error
-      // console.log(error)
-      // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-      })
-    })      
-    },
-
-    recipient_csv() {
-      csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
-        this.sponsor_request_show = false
-        this.task_id = ''
-
-        console.log('recipient数据', res)
-        const payload = {
-          // task_id = this.task_id,
-          // body: this.replyMessageForm.body
-          file: JSON.stringify(res),
-        }
-
-
-        // , {headers:{'Content-Type':'application/x-www-form-urlencoded' }}
-      this.$axios.post('/match_recipient_id/', payload)
-        .then((response) => {
-      // handle success
-      // this.$toasted.success(`Successed send the private message to ${this.user.name || this.user.username}.`, { icon: 'fingerprint' })
-      // this.onResetReply()
-      // this.getUserHistoryMessages(this.sharedState.user_id)
-        console.log(response)
-      })
-      .catch((error) => {
-      // handle error
-      // console.log(error)
+        console.log(error)
       // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
       })
     })      
@@ -192,6 +163,34 @@ export default {
     unread_request() {
       this.unread_request_show = true
     },
+
+    recipient_csv() {
+      csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
+        this.unread_request_show  = false
+
+        console.log('recipient数据', res)
+        const payload = {
+          task_id: this.task_id,
+          // body: this.replyMessageForm.body
+          file: JSON.stringify(res),
+        }
+
+      this.$axios.post('/match_recipient_id/', payload)
+        .then((response) => {
+        // handle success
+        this.$toasted.success(`Successed send the csv file.`, { icon: 'fingerprint' })
+      // this.onResetReply()
+      // this.getUserHistoryMessages(this.sharedState.user_id)
+        console.log(response)
+      })
+      .catch((error) => {
+      // handle error
+      // console.log(error)
+      // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+      })
+    })      
+    },
+
 
     unread_match_id() {
       
@@ -221,8 +220,29 @@ export default {
 
     unread_match_id_sponsor() {
       // create local file
-
+      const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/'
+      fs.mkdir(new_address, { recursive: true }, (err) => {
+        if (err) throw err;
+      
+        const filename = 
+        fs.open(new_address + filename, 'w', function (err, file) {
+          if (err) throw err;
+          console.log('Saved!');
+        });
+      });
       // calculate initial situation
+
+      // store the initial situation in the disk
+      const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/' + 'round1/'
+      fs.mkdir(new_address, { recursive: true }, (err) => {
+        if (err) throw err;
+      
+        const filename = 
+        fs.open(new_address + filename, 'w', function (err, file) {
+          if (err) throw err;
+          console.log('Saved!');
+        });
+      });
 
       // send initial situation
       const payload = {
@@ -241,7 +261,13 @@ export default {
     },
 
     unread_match_id_recipient() {
-      // create local file and Store the Matched id file
+      // create local file
+      const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/'
+      fs.mkdir(new_address, { recursive: true }, (err) => {
+        if (err) throw err;
+      });
+
+      // store the Matched id file
 
     },
 
@@ -276,6 +302,7 @@ export default {
       // get output
 
       // store output
+      
     },
 
     unread_situation_recipient() {

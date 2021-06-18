@@ -24,17 +24,20 @@ def match_sponsor_id():
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'file' not in data or not data.get('file'):
-        return bad_request('File is required.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
-
+    if 'recipient_num' not in data or not data.get('recipient_num'):
+        return bad_request('recipient_num is required.')    
+    if 'file' not in data or not data.get('file'):
+        return bad_request('File is required.')
+    
     data_array = json.loads(data['file'])
     task_id = data.get('task_id')
+    recipient_num = data.get('recipient_num')
 
     response = Matched.query.filter(Matched.sponsor_id == g.current_user, Matched.task_id == task_id).all()
 
-    # response is a list
+    # while loop, wait for all recipients update match id file
     match_ID_recipient_upload = 0
     while match_ID_recipient_upload < len(response):
         response = Matched.query.filter(Matched.sponsor_id == g.current_user, Matched.task_id == task_id).all()
@@ -79,12 +82,14 @@ def match_sponsor_id():
     user = User.query.get_or_404(g.current_user.id)
     user.add_notification('unread match id', user.new_match_id()) 
 
-    dict = {"stored": "stored"}
+    dict = {"stored": "successfully", "task_id": task_id, "recipient_num": recipient_num}
     response = jsonify(dict)
 
     response.status_code = 201
+
     # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = url_for('main.get_matched', id=matched.id)
+    response.headers['Location'] = None
+    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
     
     return response
 
@@ -97,12 +102,15 @@ def match_recipient_id():
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'File' not in data or not data.get('File'):
-        return bad_request('File is required.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
+    if 'recipient_num' not in data or not data.get('recipient_num'):
+        return bad_request('recipient_num is required.')
+    if 'file' not in data or not data.get('file'):
+        return bad_request('file is required.')
 
     task_id = data.get('task_id')
+    recipient_num = data.get('recipient_num')
 
     # Update last_requests_read_time
     user = User.query.get_or_404(g.current_user.id)
@@ -135,11 +143,12 @@ def match_recipient_id():
     Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == g.current_user.id).update({"Matched_id_file": jsonify(data_array_id)})
     db.session.commit()
                         
-    dict = {"stored": "stored"}
+    dict = {"stored": "stored", "task_id": task_id, "recipient_num": recipient_num}
     response = jsonify(dict)
 
     response.status_code = 201
     # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = url_for('main.get_matched', id=matched.id)
+    response.headers['Location'] = None
+    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
     
     return response

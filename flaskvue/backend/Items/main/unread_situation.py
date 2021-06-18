@@ -29,6 +29,14 @@ def check_situation_sponsor():
     if query.sponsor_id == g.current_user.id:
         isSponsor = True
 
+    cur_rounds = 0
+    if isSponsor:
+        query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
+        cur_rounds = query.rounds
+    else:
+        query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
+        cur_rounds = query.rounds
+
     # Update the Notification
     user = User.query.get_or_404(g.current_user.id)
     last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
@@ -52,6 +60,7 @@ def check_situation_sponsor():
     else:
         dict = {"sponsor": "false"}
 
+    dict['rounds'] = cur_rounds
     response = jsonify(dict)
 
     response.status_code = 204
@@ -74,24 +83,35 @@ def send_output():
 
     output = data.get('output')
     task_id = data.get('task_id')
+    recipient_num = data.get('recipient_num')
 
+    # extract sponsor_id
     query = Matched.query.filter(Matched.task_id == task_id).first()
 
     message = Message()
     message.from_dict(data)
-
     message.sender_id = g.current_user.id
     message.recipient_id = query.sponsor_id
     message.task_id = task_id
+    
+    get_round_num = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
+    message.rounds = get_round_num.rounds
     
     # Store the output
     message.output = output
     db.session.add(message)
 
-    user = User.query.get_or_404(query.sponsor_id)
-    # send message notification to the recipient
-    user.add_notification('unread output', user.new_output())
-    db.session.commit()
+    all_cur_round_messages = Message.query.filter(Message.recipient_id == query.sponsor_id, Message.task_id == task_id, Message.rounds == get_round_num.rounds).all()
+    output_upload = 0
+    for row in all_cur_round_messages:
+        if row.output:
+            output_upload += 1
+
+        if output_upload == recipient_num:
+            user = User.query.get_or_404(query.sponsor_id)
+            # send message notification to the sponsor when all recipient upload the output
+            user.add_notification('unread output', user.new_output())
+            db.session.commit()
 
     dict = {"send_output": "successfully"}
     response = jsonify(dict)

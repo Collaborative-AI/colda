@@ -10,6 +10,7 @@ from Items.models import User, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
+
 @main.route('/send_situation/', methods=['POST'])
 @token_auth.login_required
 def send_situation():

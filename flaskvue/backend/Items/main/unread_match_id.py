@@ -65,6 +65,41 @@ def check_match_id_sponsor():
 
     response.status_code = 201
     # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = url_for('main.get_matched', id=matched.id)
+    response.headers['Location'] = None
+    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
     
     return response
+
+@main.route('/users/<int:id>/match_id_file/', methods=['GET'])
+@token_auth.login_required
+def get_user_match_id(id):
+
+    user = User.query.get_or_404(id)
+    if g.current_user != user:
+        return error_response(403)
+
+    task_id = request.args.get('task_id', 0, type=int)
+
+    # check if the current client is the sponsor
+    isSponsor = False
+    query = Matched.query.filter(Matched.task_id == task_id).first()
+    if query.sponsor_id == g.current_user.id:
+        isSponsor = True
+
+    data = {}
+    if isSponsor:
+        query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
+
+        data = {
+            'match_id_file': [item for item in query.Matched_id_file],
+            'recipient_random_id_pair': [item for item in query.recipient_random_id_pair]
+        }
+    else:
+        query = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id).all()
+
+        data = {
+            'match_id_file': [item for item in query.Matched_id_file],
+            'sponsor_random_id': [item for item in query.sponsor_random_id]
+        }
+
+    return jsonify(data)

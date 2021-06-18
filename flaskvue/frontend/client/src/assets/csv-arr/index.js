@@ -22,7 +22,9 @@ function csv(file) {
   return new Promise((resolve, reject) => {
   // let file = this.$refs.csvData.files[0]
     const fReader = new FileReader()
+    console.log("file1",file)
     fReader.readAsDataURL(file)
+    console.log("file2",file)
     fReader.onload = function(evt) {
       const data = evt.target.result
       // console.log( data );

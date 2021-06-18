@@ -16,6 +16,7 @@ class PaginatedAPIMixin(object):
         # 如果当前没有任何资源时，或者前端请求的 page 越界时，都会抛出 404 错误
         # 由 @bp.app_errorhandler(404) 自动处理，即响应 JSON 数据：{ error: "Not Found" }
         resources = query.paginate(page, per_page, False)
+        print("resources.items-----------------------------------",resources.items)
         data = {
             'items': [item.to_dict() for item in resources.items],
             '_meta': {
@@ -245,7 +246,8 @@ class Notification(PaginatedAPIMixin, db.Model):
     payload_json = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # sender_random_id = db.Column(db.Integer)
-    task_id = db.Column(db.String(120), index=True)
+    # task_id = db.Column(db.String(120), index=True)
+    # recipient_num = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Notification {}>'.format(self.id)
@@ -265,7 +267,8 @@ class Notification(PaginatedAPIMixin, db.Model):
             'timestamp': self.timestamp,
             'payload': self.get_data(),
             # 'sender_random_id': self.sender_random_id,
-            'task_id': self.task_id,
+            # 'task_id': self.task_id,
+            # 'recipient_num': self.recipient_num,
             '_links': {
                 'self': url_for('main.get_notification', id=self.id),
                 'user_url': url_for('main.get_user', id=self.user_id)

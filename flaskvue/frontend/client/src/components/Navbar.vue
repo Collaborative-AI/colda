@@ -97,6 +97,7 @@ export default {
       sponsor_request_show: false,
       unread_request_show: false,
       task_id: '',
+      recipient_num: 0,
     }
   },
   methods: {
@@ -115,10 +116,11 @@ export default {
         .then((response) => {
           // handle success
           this.$toasted.success(`Successed call for help`, { icon: 'fingerprint' })
-          this.task_id = response.data["new_task_id"]
+          this.task_id = response.data.task_id
+          this.recipient_num = response.data.recipient_num
 
-          // Create File
-          const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/'
+          // Create 'Local_Data/id/task_id/' folder
+          const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
           fs.mkdir(new_address, { recursive: true }, (err) => {
             if (err) throw err;
           });
@@ -143,13 +145,14 @@ export default {
         console.log('sponsor数据', res)
         const payload = {
           task_id: this.task_id,
+          recipient_num: this.recipient_num,
           file: JSON.stringify(res),
         }
 
       this.$axios.post('/match_sponsor_id/', payload)
         .then((response) => {
         // handle success
-        console.log(response)
+        console.log("sponsor_id", response)
         this.$toasted.success(`Successed send the csv file.`, { icon: 'fingerprint' })
       })
       .catch((error) => {
@@ -171,17 +174,16 @@ export default {
         console.log('recipient数据', res)
         const payload = {
           task_id: this.task_id,
-          // body: this.replyMessageForm.body
+          recipient_num: this.recipient_num,
           file: JSON.stringify(res),
         }
 
       this.$axios.post('/match_recipient_id/', payload)
         .then((response) => {
         // handle success
+        console.log("recipient_id", response)
         this.$toasted.success(`Successed send the csv file.`, { icon: 'fingerprint' })
-      // this.onResetReply()
-      // this.getUserHistoryMessages(this.sharedState.user_id)
-        console.log(response)
+        
       })
       .catch((error) => {
       // handle error
@@ -202,7 +204,7 @@ export default {
       this.$axios.post('/check_match_id_sponsor/', payload)
         .then((response) => {
       // handle success
-          if (response.data["sponsor"] == "true"){
+          if (response.data.sponsor == "true"){
             this.unread_match_id_sponsor()
           }  
           else{
@@ -219,26 +221,62 @@ export default {
     },
 
     unread_match_id_sponsor() {
-      // create local file
-      const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/'
-      fs.mkdir(new_address, { recursive: true }, (err) => {
-        if (err) throw err;
       
-        const filename = 
-        fs.open(new_address + filename, 'w', function (err, file) {
-          if (err) throw err;
-          console.log('Saved!');
-        });
+      // Create 'Local_Data/id/task_id/Match/' folder
+      const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/' + 'Match/'
+      fs.mkdir(Match_folder, { recursive: true }, (err) => {
+        if (err) throw err;
       });
+
+      // Obtain Match_id file
+      const path = `/users/${this.sharedState.user_id}/match_id_file/?task_id=${this.task_id}`
+      this.$axios.get(path)
+        .then((response) => {
+
+          // iterate the match_id_file
+          for(let i = 0;i < response.data.match_id_file.length; i++){
+
+            const cur_recipient = response.data.recipient_random_id_pair[i];
+            const filename = this.sharedState.user_id + '_to_' + cur_recipient + '.csv';
+
+            const cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
+            cur_match_id_file = cur_match_id_file.join('\n');
+
+            // Store match_id file
+            fs.writeFile(Match_folder + filename, cur_match_id_file, function (err) {
+              if (err) throw err;
+              console.log('Saved!');
+            });
+          }
+          
+        })
+        .catch((error) => {
+          // handle error
+          console.error(error)
+        }) 
+
+      
       // calculate initial situation
 
-      // store the initial situation in the disk
-      const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/' + 'round1/'
-      fs.mkdir(new_address, { recursive: true }, (err) => {
+      // store initial situation
+      // Create 'Local_Data/id/task_id/Match/round0' folder
+      const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/' + 'Match/' + 'round0/'
+      fs.mkdir(Round0_folder, { recursive: true }, (err) => {
         if (err) throw err;
       
-        const filename = 
-        fs.open(new_address + filename, 'w', function (err, file) {
+        const filename = 'Sent_Initial_Situation.csv';
+        
+        // temporary data
+        let arr =  new Array(5);   
+        for(let i = 0;i < arr.length; i++){
+          arr[i] = new Array(5);    
+        }
+        arr[0][1] = 1
+        arr[0][2] = 2
+        arr = arr.join('\n');
+
+        // Store match_id file
+        fs.writeFile(Round0_folder + filename, arr, function (err) {
           if (err) throw err;
           console.log('Saved!');
         });
@@ -261,13 +299,35 @@ export default {
     },
 
     unread_match_id_recipient() {
-      // create local file
-      const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/'
-      fs.mkdir(new_address, { recursive: true }, (err) => {
+
+      // Create 'Local_Data/id/task_id/Match/' folder
+      const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/' + 'Match/'
+      fs.mkdir(Match_folder, { recursive: true }, (err) => {
         if (err) throw err;
       });
 
-      // store the Matched id file
+      // Obtain Match_id file
+      const path = `/users/${this.sharedState.user_id}/match_id_file/?task_id=${this.task_id}`
+      this.$axios.get(path)
+        .then((response) => {
+
+          const cur_sponsor = response.data.sponsor_random_id;
+          const filename = cur_sponsor + '_to_' + this.sharedState.user_id + '.csv';
+
+          const cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
+          cur_match_id_file = cur_match_id_file.join('\n');
+
+          // Store match_id file
+          fs.writeFile(Match_folder + filename, cur_match_id_file, function (err) {
+            if (err) throw err;
+            console.log('Saved!');
+          });
+          
+        })
+        .catch((error) => {
+          // handle error
+          console.error(error)
+        }) 
 
     },
 
@@ -282,11 +342,11 @@ export default {
       this.$axios.post('/check_situation_sponsor/', payload)
         .then((response) => {
       // handle success
-          if (response.data["sponsor"] == "true"){
-            this.unread_situation_sponsor()
+          if (response.data.sponsor == "true"){
+            this.unread_situation_sponsor(response.data.rounds)
           }  
           else{
-            this.unread_situation_recipient()
+            this.unread_situation_recipient(response.data.rounds)
           }
             
         console.log(response)
@@ -296,24 +356,60 @@ export default {
       })
     },
 
-    unread_situation_sponsor() {
+    unread_situation_sponsor(rounds) {
       // train the model
 
       // get output
 
       // store output
-      
+      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/' + 'Match/' + rounds + '/'
+      const filename = 'Sponsor_Trained_Local_Model.csv';
+        
+        // temporary data
+        let arr =  new Array(5);   
+        for(let i = 0;i < arr.length; i++){
+          arr[i] = new Array(5);    
+        }
+        arr[0][1] = "sponsor_trained_local_model"
+        arr[0][2] = 5
+        arr = arr.join('\n');
+
+        // Store match_id file
+        fs.writeFile(Round_folder + filename, arr, function (err) {
+          if (err) throw err;
+          console.log('Saved!');
+        });
     },
 
-    unread_situation_recipient() {
+    unread_situation_recipient(rounds) {
       // train the model
 
       // get output
 
+      // store output
+      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/' + 'Match/' + rounds + '/'
+      const filename = 'Recipient_Trained_Local_Model.csv';
+        
+      // temporary data
+      let arr =  new Array(5);   
+      for(let i = 0;i < arr.length; i++){
+        arr[i] = new Array(5);    
+      }
+      arr[0][1] = "recipient_trained_local_model"
+      arr[0][2] = 5
+      arr = arr.join('\n');
+
+      // Store match_id file
+      fs.writeFile(Round_folder + filename, arr, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+      });
+
       // send output
       const payload = {
+        task_id: this.task_id,
+        recipient_num: this.recipient_num,
         output: "output",
-        task_id: this.task_id
       }
 
       this.$axios.post('/send_output/', payload)
@@ -326,6 +422,7 @@ export default {
       })
     },
     
+
     unread_output() {
 
       // Update Notification
@@ -336,18 +433,47 @@ export default {
       this.$axios.post('/update_output_notification/', update_output_notification)
         .then((response) => {
         // handle success
-        console.log(response)
+
+        const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/' + 'Match/' + response.data.rounds + '/'
+        // Obtain output from recipient
+        const path = `/users/${this.sharedState.user_id}/output/?task_id=${this.task_id}&recipient_num=${this.recipient_num}`
+        this.$axios.get(path)
+          .then((response) => {
+
+            // iterate the match_id_file
+            for(let i = 0;i < response.data.output.length; i++){
+
+              const cur_recipient = response.data.recipient_random_id_pair[i];
+              const filename = cur_recipient + '_to_' + this.sharedState.user_id + '.csv';
+
+              const cur_output = JSON.parse(response.data.output[i]);
+              cur_output = cur_output.join('\n');
+
+              // Store the output
+              fs.writeFile(Round_folder + filename, cur_output, function (err) {
+                if (err) throw err;
+                console.log('Saved!');
+              });
+            }
+            
+          })
+          .catch((error) => {
+            // handle error
+            console.error(error)
+          }) 
+
+          // Create Folder: current_path/Local Data/task_id/roundn+1
+          const new_Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + this.task_id + '/' + 'Match/' + response.data.rounds+1 + '/'
+          fs.mkdir(new_Round_folder, { recursive: true }, (err) => {
+            if (err) throw err;
+          });
+
+          // Update initial situation
+        
       })
       .catch((error) => {
-      })
+      })      
 
-      // Create local file
-
-
-      // Update initial situation
-
-
-      
       // send situation
       const payload = {
         initial_situation: null,
@@ -413,22 +539,23 @@ export default {
                 }
                 since = response.data[i].timestamp
                 console.log("since",since)
-              }
 
-              if (unread_request_count != 0){
+                if (unread_request_count != 0){
                 this.unread_request()
-              }
+                }
 
-              if (unread_match_id_count != 0){
-                this.unread_match_id()
-              }
+                if (unread_match_id_count != 0){
+                  this.unread_match_id()
+                }
 
-              if (unread_situation_count != 0){
-                this.unread_situation()
-              }
+                if (unread_situation_count != 0){
+                  this.unread_situation()
+                }
 
-              if (unread_output_count != 0){
-                this.unread_output()
+                if (unread_output_count != 0){
+                  this.unread_output()
+                }
+
               }
 
               total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count

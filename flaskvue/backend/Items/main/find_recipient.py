@@ -50,15 +50,16 @@ def find_recipient():
         db.session.add(matched)
 
         # send matched notification to the recipient
-        user.add_notification('unread request',
-                              user.new_request()) 
+        user.add_notification('unread request', user.new_request()) 
                             
         db.session.commit()
 
-    dict = {"new_task_id": task_id}
+    dict = {"task_id": task_id, 'recipient_num': len(all_recipient_id)}
     response = jsonify(dict)
     response.status_code = 201
+
     # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = url_for('main.get_matched', id=matched.id)
+    response.headers['Location'] = None
+    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
     
     return response

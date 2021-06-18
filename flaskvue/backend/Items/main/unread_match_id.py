@@ -17,9 +17,9 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
 
-@main.route('/check_sponsor/', methods=['POST'])
+@main.route('/check_match_id_sponsor/', methods=['POST'])
 @token_auth.login_required
-def check_sponsor():
+def check_match_id_sponsor():
 
     data = request.get_json()
     if not data:
@@ -29,11 +29,20 @@ def check_sponsor():
     
     task_id = data.get('task_id')
 
+    # check if the current client is the sponsor
+    isSponsor = False
+    query = Matched.query.filter(Matched.task_id == task_id).first()
+    if query.sponsor_id == g.current_user.id:
+        isSponsor = True
+
     # Update the Notification
     user = User.query.get_or_404(g.current_user.id)
     last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
 
-    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user, Matched.task_id == task_id).all()
+    if isSponsor:
+        record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).order_by(Matched.match_id_timestamp.desc()).first()
+    else:
+        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id).all()
 
     # If can be omitted
     if last_matched_file_read_time > record['match_id_timestamp']:
@@ -42,11 +51,12 @@ def check_sponsor():
         # submit to database
         db.session.commit()
         
-    # check if the current client is the sponsor
-    query = Matched.query.filter(Matched.task_id == task_id).first()
+        # Updata Notification
+        user.add_notification('unread match id', user.new_match_id()) 
+        db.session.commit()
 
     dict = {}
-    if query.sponsor_id == g.current_user.id:
+    if isSponsor:
         dict = {"sponsor": "true"}
     else:
         dict = {"sponsor": "false"}

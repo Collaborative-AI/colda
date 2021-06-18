@@ -6,9 +6,9 @@ Training:
 5. S stores the ID and requires B for ID, B sends the ID
 6. Match the ID
 7. S informs the matched ID to A, B
-8. A sends the initial situation to S (Json), trains the local model based on the initial situation and the matched ID
+8. A sends the initial situation to S (Json)
 9. S transfers the initial situation to B
-10. B train the local model based on the initial situation and the matched ID
+10. A,B train the local model based on the initial situation and the matched ID
 11. B sends the output of the model to S, S sends the output of the model to A
 12. A updates the initial situation and transmitts to S   (8-12, repeat T times, produce T local models)
 

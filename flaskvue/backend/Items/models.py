@@ -50,6 +50,10 @@ class User(PaginatedAPIMixin, db.Model):
 
     last_matched_file_read_time = db.Column(db.DateTime)
 
+    last_situation_read_time = db.Column(db.DateTime)
+
+    last_output_read_time = db.Column(db.DateTime)
+
     last_messages_read_time = db.Column(db.DateTime)
 
     # Message User sent
@@ -145,6 +149,18 @@ class User(PaginatedAPIMixin, db.Model):
         return Matched.query.filter_by(recipient_id_pair=self.id).filter(
             Matched.match_id_timestamp > last_match_time).count()
 
+    def new_situation(self):
+        '''用户未读的situation'''
+        last_situation_time = self.last_situation_read_time or datetime(1900, 1, 1)
+        return Message.query.filter_by(recipient_id=self.id).filter(
+            Message.situation_timestamp > last_situation_time).count()
+    
+    def new_output(self):
+        '''用户未读的output'''
+        last_output_time = self.last_output_read_time or datetime(1900, 1, 1)
+        return Message.query.filter_by(recipient_id=self.id).filter(
+            Message.output_timestamp > last_output_time).count()
+
     def update_jwt(self):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
@@ -181,10 +197,14 @@ class Message(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    situation_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    output_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     task_id = db.Column(db.String(120), index=True)
     rounds = db.Column(db.Integer)
+    situation = db.Column(db.Text)
+    output = db.Column(db.Text)
 
     def __repr__(self):
         return '<Message {}>'.format(self.id)
@@ -198,6 +218,8 @@ class Message(PaginatedAPIMixin, db.Model):
             'sender': self.sender.to_dict(),
             'recipient': self.recipient.to_dict(),
             'timestamp': self.timestamp,
+            'situation_timestamp': self.situation_timestamp,
+            'output_timestamp': self.output_timestamp,
             'task_id': self.task_id,
             'rounds': self.rounds,
             '_links': {

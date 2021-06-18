@@ -37,9 +37,9 @@
             <button @click="find_recipient">Call For Help</button>
             <!-- <router-link v-bind:to="{ name: 'Shiyan' }" class="nav-link">Call For Help</router-link> -->
           </li>
-          <!-- <li class="nav-item g-mr-20">
-            <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Call For Help</router-link>
-          </li> -->
+          <li class="nav-item g-mr-20">
+            <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Send to B</router-link>
+          </li>
           <div v-if="sponsor_request_show">
             <input type="file" name="csvfile" ref="csvData" />
             <input type="button" @click="sponsor_csv()" value="JS转换"/>
@@ -200,7 +200,7 @@ export default {
       }
 
       // check if the current client is sponsor or not of the specific task
-      this.$axios.post('/check_sponsor/', payload)
+      this.$axios.post('/check_match_id_sponsor/', payload)
         .then((response) => {
       // handle success
           if (response.data["sponsor"] == "true"){
@@ -224,33 +224,119 @@ export default {
 
       // calculate initial situation
 
-      // send situation
+      // send initial situation
       const payload = {
         initial_situation: null,
+        initial_rounds: "true",
+        task_id: this.task_id
       }
 
+      this.$axios.post('/send_situation/', payload)
+        .then((response) => {
+        // handle success
+        console.log(response)
+      })
+      .catch((error) => {
+      })
+    },
+
+    unread_match_id_recipient() {
+      // create local file and Store the Matched id file
+
+    },
+
+    unread_situation() {
+
       // check if the current client is sponsor or not of the specific task
-      this.$axios.post('/check_sponsor/', payload)
+      const payload = {
+        task_id: this.task_id,
+      }
+
+      // check if the current client is sponsor or not of the specific task, update situation notification
+      this.$axios.post('/check_situation_sponsor/', payload)
         .then((response) => {
       // handle success
           if (response.data["sponsor"] == "true"){
-            this.unread_match_id_sponsor()
+            this.unread_situation_sponsor()
           }  
           else{
-            this.unread_match_id_recipient()
+            this.unread_situation_recipient()
           }
             
         console.log(response)
       })
       .catch((error) => {
-      // handle error
-      // console.log(error)
-      // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+      
       })
     },
 
-    unread_match_id_recipient() {
-      // create local file
+    unread_situation_sponsor() {
+      // train the model
+
+      // get output
+
+      // store output
+    },
+
+    unread_situation_recipient() {
+      // train the model
+
+      // get output
+
+      // send output
+      const payload = {
+        output: "output",
+        task_id: this.task_id
+      }
+
+      this.$axios.post('/send_output/', payload)
+        .then((response) => {
+        // handle success
+        console.log(response)
+
+      })
+      .catch((error) => {
+      })
+    },
+    
+    unread_output() {
+
+      // Update Notification
+      const update_output_notification = {
+        task_id: this.task_id
+      }
+
+      this.$axios.post('/update_output_notification/', update_output_notification)
+        .then((response) => {
+        // handle success
+        console.log(response)
+      })
+      .catch((error) => {
+      })
+
+      // Create local file
+
+
+      // Update initial situation
+
+
+      
+      // send situation
+      const payload = {
+        initial_situation: null,
+        initial_rounds: "false",
+        task_id: this.task_id
+      }
+
+      // check if the current client is sponsor or not of the specific task
+      this.$axios.post('/send_situation/', payload)
+        .then((response) => {
+        // handle success
+        console.log(response)
+      })
+      .catch((error) => {
+      })
+
     },
 
 
@@ -262,9 +348,10 @@ export default {
       let total_notifications_count = 0  // 总通知计数
       let unread_request_count = 0  // 收到的新评论通知计数
       let unread_match_id_count = 0  // 收到的新私信通知计数
-      let unread_initial_situation_count = 0  // 新粉丝通知计数
+      let unread_situation_count = 0  // 新粉丝通知计数
       let unread_output_count = 0  // 新的喜欢或赞的通知计数
-      
+      let unread_messages_count = 0
+
       setInterval(function() {
         if (window.localStorage.getItem('Apollo-token')) {
           // 如果用户已登录，才开始请求 API
@@ -286,13 +373,16 @@ export default {
                     break
                   
                   case 'unread situation':
-                    unread_initial_situation_count = response.data[i].payload
+                    unread_situation_count = response.data[i].payload
                     break
                   
                   case 'unread output':
                     unread_output_count = response.data[i].payload
                     break
 
+                  case 'unread_messages_count':
+                    unread_messages_count = response.data[i].payload
+                    break
                 }
                 since = response.data[i].timestamp
                 console.log("since",since)
@@ -306,9 +396,15 @@ export default {
                 this.unread_match_id()
               }
 
+              if (unread_situation_count != 0){
+                this.unread_situation()
+              }
 
+              if (unread_output_count != 0){
+                this.unread_output()
+              }
 
-              total_notifications_count = unread_request_count + unread_match_id_count + unread_initial_situation_count + unread_output_count
+              total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count
               // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标
               $('#new_notifications_count').text(total_notifications_count)
               $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');

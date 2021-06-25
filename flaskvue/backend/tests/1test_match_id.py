@@ -7,7 +7,7 @@ from Items.models import User, Message, Notification, Matched
 from tests import TestConfig
 
 
-class FindAPITestCase(unittest.TestCase):
+class Match_ID_APITestCase(unittest.TestCase):
     def setUp(self):
         '''每个测试之前执行'''
         self.app = create_app(TestConfig)  # 创建Flask应用
@@ -45,7 +45,52 @@ class FindAPITestCase(unittest.TestCase):
             'Content-Type': 'application/json'
         }
 
+
     def test_match_recipient_id_one_user(self):
+
+        # Simulate 1 recipient.Construct 1 Matched row in find_recipient first.
+        # From recipient side: Test the 1 Matched row after match_recipient_id
+
+        u1 = User(username='unittest', email='john@163.com')
+        u1.set_password('123')
+        u2 = User(username='unittest2', email='john@163.com')
+        u2.set_password('123')
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+
+        # 附带JWT到请求头中
+        headers = self.get_token_auth_headers('unittest', '123')
+        list_content = [2]
+        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        json_response = json.loads(response.get_data(as_text=True))
+        task_id = json_response['task_id']
+
+        headers = self.get_token_auth_headers('unittest2', '123')
+        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+
+        json_response = json.loads(response.get_data(as_text=True))
+
+        stored = json_response['stored']
+        task_id_response = json_response['task_id']
+        # test return messages
+        self.assertEqual(stored, "recipient match id stored")
+        self.assertEqual(task_id, task_id_response)
+
+        query = Matched.query.filter(Matched.task_id == task_id).all()
+        # test stored file content
+        self.assertEqual(json.loads(query[0].Matched_id_file), [0,4,1])
+
+
+    def test_match_recipient_id_two_users(self):
+      
+        # Simulate 2 recipients.Construct 2 Matched rows in find_recipient first.
+        # From recipient side: Test the 2 Matched rows after match_recipient_id
+        
         u1 = User(username='unittest', email='john@163.com')
         u1.set_password('123')
         u2 = User(username='unittest2', email='john@163.com')
@@ -59,21 +104,142 @@ class FindAPITestCase(unittest.TestCase):
 
         # 附带JWT到请求头中
         headers = self.get_token_auth_headers('unittest', '123')
-        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'task_id': 'aa', 'file': json.dumps(file_content)})
-
-        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 204)
-
+        list_content = [2,3]
+        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
-        stored = json_response['stored']
         task_id = json_response['task_id']
 
-        query = Matched.query.filter(Matched.task_id == task_id).all()
-        self.assertEqual(query.sponsor_id, 1) 
-        queries = Matched.query.filter(Matched.task_id == task_id).all()
-        sponsor_random_id = queries[0].sponsor_random_id
-        for i in range(len(queries)):
-            self.assertEqual(queries[i].sponsor_id, 1) 
-            self.assertEqual(queries[i].task_id, task_id)
-            self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
+        # test1
+        headers = self.get_token_auth_headers('unittest2', '123')
+        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+
+        json_response = json.loads(response.get_data(as_text=True))
+
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 2).all()
+        self.assertEqual(json.loads(query[0].Matched_id_file), [0,4,1])
+
+        # test2
+        headers = self.get_token_auth_headers('unittest3', '123')
+        file_content = [['a','b','c'],[7,1,2],[8,5,6],[12,3,6],[]]
+        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+
+        json_response = json.loads(response.get_data(as_text=True))
+
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3).all()
+        self.assertEqual(json.loads(query[0].Matched_id_file), [7,8,12])
+
+        # test3
+        headers = self.get_token_auth_headers('unittest3', '123')
+        file_content = [['a','b','c'],[7,1,2],[8,5,6],[12,3,6]]
+        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+
+        json_response = json.loads(response.get_data(as_text=True))
+
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3).all()
+        self.assertEqual(json.loads(query[0].Matched_id_file), [7,8])
+    
+
+    def test_match_sponsor_id_one_user(self):
+        
+        # Simulate 1 recipient.
+        # 1. Construct 1 Matched row in find_recipient.
+        # 2. Recipient upload ID file
+        # 3. Sponsor upload, match the same ID
+
+        u1 = User(username='unittest', email='john@163.com')
+        u1.set_password('123')
+        u2 = User(username='unittest2', email='john@163.com')
+        u2.set_password('123')
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+
+        # 1. Construct 1 Matched row in find_recipient.
+        headers = self.get_token_auth_headers('unittest', '123')
+        list_content = [2]
+        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        json_response = json.loads(response.get_data(as_text=True))
+        task_id = json_response['task_id']
+
+        # 2. Recipient upload ID file
+        headers = self.get_token_auth_headers('unittest2', '123')
+        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+
+        # 3. Sponsor upload, match the same ID
+        headers = self.get_token_auth_headers('unittest', '123')
+        file_content = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
+        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        response = self.client.post('/match_sponsor_id/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['stored'], "sponsor stores match id file successfully")
+        self.assertEqual(json_response['task_id'], task_id)
+
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.sponsor_id == 1).all()
+        self.assertEqual(json.loads(query[0].Matched_id_file), [4])
+
+
+    def match_sponsor_id_two_users(self):
+        # Simulate 2 recipient.
+        # 1. Construct 2 Matched row2 in find_recipient.
+        # 2. Recipients upload ID file
+        # 3. Sponsor upload, match the same ID
+
+        u1 = User(username='unittest', email='john@163.com')
+        u1.set_password('123')
+        u2 = User(username='unittest2', email='john@163.com')
+        u2.set_password('123')
+        u3 = User(username='unittest3', email='john@163.com')
+        u3.set_password('123')
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.add(u3)
+        db.session.commit()
+
+        # 1. Construct 1 Matched row in find_recipient.
+        headers = self.get_token_auth_headers('unittest', '123')
+        list_content = [2,3]
+        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        json_response = json.loads(response.get_data(as_text=True))
+        task_id = json_response['task_id']
+
+        # 2. Recipient upload ID file
+        headers = self.get_token_auth_headers('unittest2', '123')
+        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[12],[16],[17],[18],[]]
+        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+
+        headers = self.get_token_auth_headers('unittest3', '123')
+        file_content = [['a','b','c'],[2,1,2],[3,5,6],[4,3,6],[5],[12],[18],[]]
+        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+
+        # 3. Sponsor upload, match the same ID
+        headers = self.get_token_auth_headers('unittest', '123')
+        file_content = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19],[]]
+        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        response = self.client.post('/match_sponsor_id/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+
+        json_response = json.loads(response.get_data(as_text=True))
+
+        # check sponsor match id file with user 2
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 2).all()
+        self.assertEqual(json.loads(query[0].Matched_id_file), [4,12,16,17])
+
+        # check sponsor match id file with user 3
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3).all()
+        self.assertEqual(json.loads(query[0].Matched_id_file), [3,12])

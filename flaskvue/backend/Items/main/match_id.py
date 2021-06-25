@@ -1,5 +1,6 @@
 import uuid
 import json
+import time
 
 from sqlalchemy import update
 from flask import Flask, session, request, g, current_app
@@ -32,17 +33,18 @@ def match_sponsor_id():
     data_array = json.loads(data['file'])
     task_id = data.get('task_id')
 
-    response = Matched.query.filter(Matched.sponsor_id == g.current_user, Matched.task_id == task_id).all()
+    response = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
 
     # while loop, wait for all recipients update match id file
     match_ID_recipient_upload = 0
     while match_ID_recipient_upload < len(response):
-        response = Matched.query.filter(Matched.sponsor_id == g.current_user, Matched.task_id == task_id).all()
+        response = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
 
         match_ID_recipient_upload = 0
         for row in response:
-            if response.Matched_id_file:
+            if row.Matched_id_file:
                 match_ID_recipient_upload += 1
+        time.sleep(2)
 
     # count the distinct id in the Sponsor ID file
     data_array_id = {}
@@ -67,23 +69,20 @@ def match_sponsor_id():
             same_id_keys.append(i)
         
         # update the db
-        Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == row.recipient_id_pair).update({"Matched_id_file": jsonify(same_id_keys), "match_id_timestamp": datetime.utcnow})
+        Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == row.recipient_id_pair).update({"Matched_id_file": json.dumps(same_id_keys), "match_id_timestamp": datetime.utcnow()})
         db.session.commit()
 
         # send matched notification to the recipient
         user = User.query.get_or_404(row.recipient_id_pair)
         user.add_notification('unread match id', user.new_match_id()) 
-        
-    
+
     # when all match_id match, add notification to sponsor
     user = User.query.get_or_404(g.current_user.id)
     user.add_notification('unread match id', user.new_match_id()) 
 
-    dict = {"stored": "successfully", "task_id": task_id}
+    dict = {"stored": "sponsor stores match id file successfully", "task_id": task_id}
     response = jsonify(dict)
 
-    response.status_code = 204
-    
     return response
 
 
@@ -109,8 +108,8 @@ def match_recipient_id():
     record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id).all()
 
     # If can be omitted
-    if record['request_timestamp'] > last_requests_read_time:
-        user.last_requests_read_time = record['request_timestamp']
+    if record[0].request_timestamp > last_requests_read_time:
+        user.last_requests_read_time = record[0].request_timestamp
 
         # submit to database
         db.session.commit()
@@ -130,12 +129,10 @@ def match_recipient_id():
     response = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id)
 
     # update the db
-    Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == g.current_user.id).update({"Matched_id_file": jsonify(data_array_id)})
+    Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == g.current_user.id).update({"Matched_id_file": json.dumps(data_array_id)})
     db.session.commit()
                         
     dict = {"stored": "recipient match id stored", "task_id": task_id}
     response = jsonify(dict)
-
-    response.status_code = 204
     
     return response

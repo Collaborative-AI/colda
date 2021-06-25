@@ -91,6 +91,7 @@ def get_user_match_id(id):
     # check if the current client is the sponsor
     isSponsor = False
     query = Matched.query.filter(Matched.task_id == task_id).first()
+    print("query", query)
     if query.sponsor_id == g.current_user.id:
         isSponsor = True
 
@@ -99,15 +100,15 @@ def get_user_match_id(id):
         query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
 
         data = {
-            'match_id_file': [item for item in query.Matched_id_file],
-            'recipient_random_id_pair': [item for item in query.recipient_random_id_pair]
+            'match_id_file': [item.Matched_id_file for item in query],
+            'recipient_random_id_pair': [item.recipient_random_id_pair for item in query]
         }
     else:
         query = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id).all()
 
         data = {
-            'match_id_file': [item for item in query.Matched_id_file],
-            'sponsor_random_id': [item for item in query.sponsor_random_id]
+            'match_id_file': [item.Matched_id_file for item in query],
+            'sponsor_random_id': [item.sponsor_random_id for item in query]
         }
 
     return jsonify(data)

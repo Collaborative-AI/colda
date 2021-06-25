@@ -46,6 +46,8 @@ class FindAPITestCase(unittest.TestCase):
         }
 
     def test_find_recipient_no_data(self):
+
+        # check find_recipient function with no data uploaded
         u1 = User(username='unittest', email='john@163.com')
         u1.set_password('123')
         db.session.add(u1)
@@ -62,6 +64,11 @@ class FindAPITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_find_recipient_two_recipients(self):
+
+        # Check 1 sponsor with 2 recipients
+        # Construct 2 new Matched rows
+        # Check the Notification of each recipient
+
         u1 = User(username='unittest', email='john@163.com')
         u1.set_password('123')
         u2 = User(username='unittest2', email='john@163.com')
@@ -81,7 +88,6 @@ class FindAPITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
         json_response = json.loads(response.get_data(as_text=True))
-
         task_id = json_response['task_id']
         recipient_num = json_response['recipient_num']
 
@@ -93,4 +99,26 @@ class FindAPITestCase(unittest.TestCase):
             self.assertEqual(queries[i].task_id, task_id)
             self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
         
+        # Check the Notification of user 2
+        headers = self.get_token_auth_headers('unittest2', '123')
+        response = self.client.get('/users/2/notifications/', headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response[0]['name'], "unread request")
+        self.assertEqual(json_response[0]['payload'], 1)
+
+        # User 3 cannot check the notification of user 2
+        headers = self.get_token_auth_headers('unittest3', '123')
+        response = self.client.get('/users/2/notifications/', headers=headers)
+        self.assertEqual(response.status_code, 403)
+
+        # Check the Notification of user 3
+        headers = self.get_token_auth_headers('unittest3', '123')
+        response = self.client.get('/users/3/notifications/', headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response[0]['name'], "unread request")
+        self.assertEqual(json_response[0]['payload'], 1)
 

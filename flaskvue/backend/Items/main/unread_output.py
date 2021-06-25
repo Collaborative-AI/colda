@@ -18,23 +18,30 @@ def update_output_notification():
     
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'task_id_list' not in data or not data.get('task_id_list'):
+        return bad_request('task_id_list is required.')
 
-    task_id = data.get('task_id')
+    task_id_list = data.get('task_id_list')
 
     # Update the Notification 
     user = User.query.get_or_404(g.current_user.id)
     last_output_read_time = user.last_output_read_time or datetime(1900, 1, 1)
-    record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id).order_by(Message.output_timestamp.desc()).first()
 
-    cur_rounds = 0
-    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
-    cur_rounds = query.rounds
+    lastest_time = float("-inf")
+    for i in range(len(task_id_list)):
+        record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.output_timestamp.desc()).first()
+        if record['output_timestamp'] > lastest_time:
+            lastest_time = record['output_timestamp']
+
+    return_dict = {}
+    for i in range(len(task_id_list)):
+        query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.rounds.desc()).first()
+        cur_rounds = query.rounds
+        return_dict[str(task_id_list[i])] = cur_rounds
 
     # If can be omitted
-    if last_output_read_time > record['output_timestamp']:
-        user.last_output_read_time = record['output_timestamp']
+    if lastest_time > last_output_read_time:
+        user.last_output_read_time = lastest_time
 
         # submit to database
         db.session.commit()
@@ -43,10 +50,7 @@ def update_output_notification():
         user.add_notification('unread output', user.new_output()) 
         db.session.commit()
     
-    dict = {}
-
-    dict['rounds'] = cur_rounds
-    response = jsonify(dict)
+    response = jsonify(return_dict)
 
     response.status_code = 204
     
@@ -61,10 +65,11 @@ def get_user_match_id(id):
         return error_response(403)
 
     task_id = request.args.get('task_id', 0, type=int)
-    recipient_num = request.args.get('recipient_num', 0, type=int)
+    # recipient_num = request.args.get('recipient_num', 0, type=int)
+    rounds = request.args.get('rounds', 0, type=int)
 
     data = {}
-    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).all()
+    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds).order_by(Message.rounds.desc()).all()
 
     output_files = []
     recipient_random_ids = []
@@ -72,16 +77,13 @@ def get_user_match_id(id):
         if row.output:
 
             output_files.append(row.output)
-            recipient_random_id = Matched.query.filter(Matched.recipient_id_pair == row.sender_id, Message.task_id == task_id).first()
-            recipient_random_ids.append(recipient_random_id)
-        
-        if len(output_files) == recipient_num:
-            break
+            # recipient_random_id = Matched.query.filter(Matched.recipient_id_pair == row.sender_id, Message.task_id == task_id).first()
+            # recipient_random_ids.append(recipient_random_id)
+            recipient_random_ids.append(row.sender_random_id)
 
     data = {
         'output': [item for item in output_files],
         'recipient_random_id_pair': [item for item in recipient_random_ids]
     }
-
 
     return jsonify(data)  

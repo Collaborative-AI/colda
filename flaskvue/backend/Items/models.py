@@ -1,3 +1,4 @@
+from flask.json import jsonify
 import jwt
 import json
 
@@ -127,8 +128,15 @@ class User(PaginatedAPIMixin, db.Model):
         '''给用户实例对象增加通知'''
         # 如果具有相同名称的通知已存在，则先删除该通知
         self.notifications.filter_by(name=name).delete()
+
+        task_id_list = data[0]
+        sender_random_id_list = data[1]
+        count = len(task_id_list)
+
         # 为用户添加通知，写入数据库
-        n = Notification(name=name, payload_json=json.dumps(data), user=self)
+        n = Notification(name=name, payload_json=json.dumps(count), user=self,
+            sender_random_id_list=jsonify(sender_random_id_list),task_id_list=jsonify(task_id_list))
+
         db.session.add(n)
         return n
         
@@ -141,26 +149,67 @@ class User(PaginatedAPIMixin, db.Model):
     def new_request(self):
         '''用户未读的请求数'''
         last_request_time = self.last_requests_read_time or datetime(1900, 1, 1)
-        return Matched.query.filter_by(recipient_id_pair=self.id).filter(
-            Matched.request_timestamp > last_request_time).count()
+
+        query = Matched.query.filter_by(recipient_id_pair=self.id).filter(
+            Matched.request_timestamp > last_request_time).all()
+        
+        task_id_list = []
+        sender_random_id_list = []
+        for i in range(len(query)):
+            task_id_list.append(query[i].task_id)
+
+            # sender must be sponsor
+            sender_random_id_list.append(query[i].sponsor_random_id)
+
+        return [task_id_list, sender_random_id_list]
 
     def new_match_id(self):
         '''用户未读的match完的id'''
         last_match_time = self.last_matched_file_read_time or datetime(1900, 1, 1)
-        return Matched.query.filter_by(recipient_id_pair=self.id).filter(
-            Matched.match_id_timestamp > last_match_time).count()
+        query = Matched.query.filter_by(recipient_id_pair=self.id).filter(
+            Matched.match_id_timestamp > last_match_time).all()
+
+        task_id_list = []
+        sender_random_id_list = []
+        for i in range(len(query)):
+            task_id_list.append(query[i].task_id)
+
+            # sender must be sponsor
+            sender_random_id_list.append(query[i].sponsor_random_id)
+
+        return [task_id_list, sender_random_id_list]
 
     def new_situation(self):
         '''用户未读的situation'''
         last_situation_time = self.last_situation_read_time or datetime(1900, 1, 1)
-        return Message.query.filter_by(recipient_id=self.id).filter(
-            Message.situation_timestamp > last_situation_time).count()
+        query = Message.query.filter_by(recipient_id=self.id).filter(
+            Message.situation_timestamp > last_situation_time).all()
+        
+        task_id_list = []
+        sender_random_id_list = []
+        for i in range(len(query)):
+            task_id_list.append(query[i].task_id)
+
+            # sender must be sponsor
+            sender_random_id_list.append(query[i].sender_random_id)
+
+        return [task_id_list, sender_random_id_list]
     
     def new_output(self):
         '''用户未读的output'''
         last_output_time = self.last_output_read_time or datetime(1900, 1, 1)
-        return Message.query.filter_by(recipient_id=self.id).filter(
-            Message.output_timestamp > last_output_time).count()
+        query = Message.query.filter_by(recipient_id=self.id).filter(
+            Message.output_timestamp > last_output_time).all()
+        
+        task_id_list = []
+        sender_random_id_list = []
+        for i in range(len(query)):
+            task_id_list.append(query[i].task_id)
+
+            # sender must be sponsor
+            sender_random_id_list.append(query[i].sender_random_id)
+
+        return [task_id_list, sender_random_id_list]
 
     def update_jwt(self):
         self.last_seen = datetime.utcnow()
@@ -201,6 +250,7 @@ class Message(PaginatedAPIMixin, db.Model):
     situation_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     output_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    sender_random_id = db.Column(db.String(120))
     recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     task_id = db.Column(db.String(120), index=True)
     rounds = db.Column(db.Integer)
@@ -241,10 +291,15 @@ class Message(PaginatedAPIMixin, db.Model):
 class Notification(PaginatedAPIMixin, db.Model):  
     __tablename__ = 'notifications'
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    # category of notification
     name = db.Column(db.String(128), index=True)
     timestamp = db.Column(db.Float, index=True, default=time)
     payload_json = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    sender_random_id_list = db.Column(db.Text)
+    task_id_list = db.Column(db.Text)
+
     # sender_random_id = db.Column(db.Integer)
     # task_id = db.Column(db.String(120), index=True)
     # recipient_num = db.Column(db.Integer)
@@ -254,6 +309,12 @@ class Notification(PaginatedAPIMixin, db.Model):
 
     def get_data(self):
         return json.loads(str(self.payload_json))
+
+    def get_sender_random_id_list(self):
+        return json.loads(str(self.sender_random_id_list))
+    
+    def get_task_id_list(self):
+        return json.loads(str(self.task_id_list))
 
     def to_dict(self):
         data = {
@@ -266,13 +327,15 @@ class Notification(PaginatedAPIMixin, db.Model):
             },
             'timestamp': self.timestamp,
             'payload': self.get_data(),
+            'sender_random_id_list': self.get_sender_random_id_list(),
+            'task_id_list': self.get_task_id_list(),
             # 'sender_random_id': self.sender_random_id,
             # 'task_id': self.task_id,
             # 'recipient_num': self.recipient_num,
-            '_links': {
-                'self': url_for('main.get_notification', id=self.id),
-                'user_url': url_for('main.get_user', id=self.user_id)
-            }
+            # '_links': {
+            #     'self': url_for('main.get_notification', id=self.id),
+            #     'user_url': url_for('main.get_user', id=self.user_id)
+            # }
         }
         return data
 

@@ -13,7 +13,7 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
 
-@main.route('/find_recipient/', methods=['POST'])
+@main.route('/find_recipient/', methods=['GET'])
 @token_auth.login_required
 def find_recipient():
 
@@ -56,10 +56,10 @@ def find_recipient():
 
     dict = {"task_id": task_id, 'recipient_num': len(all_recipient_id)}
     response = jsonify(dict)
-    response.status_code = 201
+    # response.status_code = 201
 
     # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = None
+    # response.headers['Location'] = None
     # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
     
     return response

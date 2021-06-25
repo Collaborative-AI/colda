@@ -6,7 +6,7 @@ from datetime import datetime
 from Items import db
 # import BluePrint
 from Items.main import main
-from Items.models import User, Message
+from Items.models import User, Message, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
@@ -34,7 +34,13 @@ def send_situation():
 
     # Now hardcode
     # testa: id 4(sponsor), testb: id 5(recipient), testc: id 6(recipient)
-    all_recipient_id = [5,6]
+    query_of_task = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
+    sender_random_id = query_of_task[0].sponsor_random_id
+
+    # should be [5,6]
+    all_recipient_id = []
+    for i in query_of_task:
+        all_recipient_id.append(i.recipient_id_pair)
 
     # send to myself too
     all_recipient_id.append(g.current_user.id)
@@ -58,6 +64,7 @@ def send_situation():
         
         # Store the situation
         message.situation = situation
+        message.sender_random_id = sender_random_id
         
         db.session.add(message)
 

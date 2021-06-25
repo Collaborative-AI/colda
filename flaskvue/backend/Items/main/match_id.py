@@ -49,7 +49,7 @@ def match_sponsor_id():
 
     # count the distinct id in the Sponsor ID file
     data_array_id = {}
-    for i in range(1,len(data_array)):
+    for i in range(1,len(data_array)-1):
         if data_array[i][0] not in data_array_id:
             data_array_id[data_array[i][0]] = 1
 
@@ -70,7 +70,7 @@ def match_sponsor_id():
             same_id_keys.append(i)
         
         # update the db
-        Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == row.recipient_id_pair).update({"Matched_id_file": jsonify(same_id_keys)})
+        Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == row.recipient_id_pair).update({"Matched_id_file": jsonify(same_id_keys), "match_id_timestamp": datetime.utcnow})
         db.session.commit()
 
         # send matched notification to the recipient
@@ -104,13 +104,10 @@ def match_recipient_id():
         return bad_request('You must post JSON data.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
-    if 'recipient_num' not in data or not data.get('recipient_num'):
-        return bad_request('recipient_num is required.')
     if 'file' not in data or not data.get('file'):
         return bad_request('file is required.')
 
     task_id = data.get('task_id')
-    recipient_num = data.get('recipient_num')
 
     # Update last_requests_read_time
     user = User.query.get_or_404(g.current_user.id)
@@ -119,7 +116,7 @@ def match_recipient_id():
     record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id).all()
 
     # If can be omitted
-    if last_requests_read_time > record['request_timestamp']:
+    if record['request_timestamp'] > last_requests_read_time:
         user.last_requests_read_time = record['request_timestamp']
 
         # submit to database
@@ -133,7 +130,7 @@ def match_recipient_id():
 
     # extract ID
     data_array_id = []
-    for i in range(1,len(data_array)):
+    for i in range(1,len(data_array)-1):
         data_array_id.append(data_array[i][0])
 
     # response is a row
@@ -143,7 +140,7 @@ def match_recipient_id():
     Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == g.current_user.id).update({"Matched_id_file": jsonify(data_array_id)})
     db.session.commit()
                         
-    dict = {"stored": "stored", "task_id": task_id, "recipient_num": recipient_num}
+    dict = {"stored": "stored", "task_id": task_id}
     response = jsonify(dict)
 
     response.status_code = 201

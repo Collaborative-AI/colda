@@ -16,37 +16,49 @@ from Items.models import User, matched, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
-
-@main.route('/check_match_id_sponsor/', methods=['POST'])
+@main.route('/update_match_id_notification/', methods=['POST'])
 @token_auth.login_required
-def check_match_id_sponsor():
+def update_match_id_notification():
 
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
-    
-    task_id = data.get('task_id')
+    if 'sender_random_id_list' not in data or not data.get('sender_random_id_list'):
+        return bad_request('sender_random_id_list is required.')
+    if 'task_id_list' not in data or not data.get('task_id_list'):
+        return bad_request('task_id_list is required.')
 
-    # check if the current client is the sponsor
-    isSponsor = False
-    query = Matched.query.filter(Matched.task_id == task_id).first()
-    if query.sponsor_id == g.current_user.id:
-        isSponsor = True
+    task_id_list = data.get('task_id_list')
 
-    # Update the Notification
-    user = User.query.get_or_404(g.current_user.id)
-    last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
+    check_dict = {}
+    lastest_time = float("-inf")
+    for i in range(len(task_id_list)):
+        # check if the current client is the sponsor
+        isSponsor = False
+        query = Matched.query.filter(Matched.task_id == task_id_list[i]).first()
+        if query.sponsor_id == g.current_user.id:
+            isSponsor = True
 
-    if isSponsor:
-        record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).order_by(Matched.match_id_timestamp.desc()).first()
-    else:
-        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id).all()
+        # Update the Notification
+        user = User.query.get_or_404(g.current_user.id)
+        last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
 
-    # If can be omitted
-    if last_matched_file_read_time > record['match_id_timestamp']:
-        user.last_matched_file_read_time = record['match_id_timestamp']
+        if isSponsor:
+            record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id_list[i]).order_by(Matched.match_id_timestamp.desc()).first()
+        else:
+            record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
+
+        # get the latest output timestamp
+        if record['match_id_timestamp'] > lastest_time:
+            lastest_time = record['match_id_timestamp']
+        
+        if isSponsor:
+            check_dict[task_id_list[i]] = 1
+        else:
+            check_dict[task_id_list[i]] = 0
+
+    if lastest_time > last_matched_file_read_time:
+        user.last_matched_file_read_time = lastest_time
 
         # submit to database
         db.session.commit()
@@ -55,12 +67,8 @@ def check_match_id_sponsor():
         user.add_notification('unread match id', user.new_match_id()) 
         db.session.commit()
 
-    dict = {}
-    if isSponsor:
-        dict = {"sponsor": "true"}
-    else:
-        dict = {"sponsor": "false"}
-
+    dict = {"check_sponsor": check_dict}
+    
     response = jsonify(dict)
 
     response.status_code = 201

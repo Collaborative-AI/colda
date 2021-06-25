@@ -11,59 +11,71 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
 
-@main.route('/check_situation_sponsor/', methods=['POST'])
+@main.route('/update_situation_notification/', methods=['POST'])
 @token_auth.login_required
-def check_situation_sponsor():
+def update_situation_notification():
 
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
-    
-    task_id = data.get('task_id')
+    if 'sender_random_id_list' not in data or not data.get('sender_random_id_list'):
+        return bad_request('sender_random_id_list is required.')
+    if 'task_id_list' not in data or not data.get('task_id_list'):
+        return bad_request('task_id_list is required.')
 
-    # check if the current client is the sponsor
-    isSponsor = False
-    query = Matched.query.filter(Matched.task_id == task_id).first()
-    if query.sponsor_id == g.current_user.id:
-        isSponsor = True
+    task_id_list = data.get('task_id_list')
 
-    cur_rounds = 0
-    if isSponsor:
-        query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
-        cur_rounds = query.rounds
-    else:
-        query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
-        cur_rounds = query.rounds
+    check_dict = {}
+    rounds_dict = {}
+    lastest_time = float("-inf")
+    for i in range(len(task_id_list)):
+        # check if the current client is the sponsor
+        isSponsor = False
+        query = Matched.query.filter(Matched.task_id == task_id_list[i]).first()
+        if query.sponsor_id == g.current_user.id:
+            isSponsor = True
 
-    # Update the Notification
-    user = User.query.get_or_404(g.current_user.id)
-    last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
-    
-    record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
+        # Update the Notification
+        user = User.query.get_or_404(g.current_user.id)
+        last_situation_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
 
-    # If can be omitted
-    if last_situation_read_time > record['situation_timestamp']:
-        user.last_situation_read_time = record['situation_timestamp']
+        cur_rounds = 0
+        if isSponsor:
+            record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id_list[i]).order_by(Matched.match_id_timestamp.desc()).first()
+            cur_rounds = query.rounds
+        else:
+            record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
+            cur_rounds = query.rounds
+
+        # get the latest output timestamp
+        if record['situation_timestamp'] > lastest_time:
+            lastest_time = record['situation_timestamp']
+        
+        if isSponsor:
+            check_dict[task_id_list[i]] = 1
+        else:
+            check_dict[task_id_list[i]] = 0
+        
+        rounds_dict[task_id_list[i]] = cur_rounds
+
+    if lastest_time > last_situation_read_time:
+        user.last_situation_read_time = lastest_time
 
         # submit to database
         db.session.commit()
         
         # Updata Notification
-        user.add_notification('unread situation', user.new_situation()) 
+        user.add_notification('unread match id', user.new_match_id()) 
         db.session.commit()
 
-    dict = {}
-    if isSponsor:
-        dict = {"sponsor": "true"}
-    else:
-        dict = {"sponsor": "false"}
-
-    dict['rounds'] = cur_rounds
+    dict = {"check_sponsor": check_dict, "rounds": rounds_dict}
+    
     response = jsonify(dict)
 
-    response.status_code = 204
+    response.status_code = 201
+    # HTTP协议要求201响应包含一个值为新资源URL的Location头部
+    response.headers['Location'] = None
+    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
     
     return response
 
@@ -78,37 +90,43 @@ def send_output():
         return bad_request('You must post JSON data.')
     if 'output' not in data or not data.get('output'):
         return bad_request('output is required.')
+    if 'rounds' not in data or not data.get('rounds'):
+        return bad_request('rounds is required.')  
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
     output = data.get('output')
+    rounds = data.get('rounds')
     task_id = data.get('task_id')
-    recipient_num = data.get('recipient_num')
 
     # extract sponsor_id
-    query = Matched.query.filter(Matched.task_id == task_id).first()
+    queries = Matched.query.filter(Matched.task_id == task_id).all()
+    recipient_num = len(queries)
 
     message = Message()
     message.from_dict(data)
     message.sender_id = g.current_user.id
-    message.recipient_id = query.sponsor_id
+    message.recipient_id = queries[0].sponsor_id
     message.task_id = task_id
-    
-    get_round_num = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
-    message.rounds = get_round_num.rounds
-    
+    message.rounds = rounds
+
     # Store the output
     message.output = output
+
+    for i in range(len(queries)):
+      if queries[i].recipient_id_pair == g.current_user.id:
+        message.sender_random_id = queries[i].recipient_random_id_pair
+
     db.session.add(message)
 
-    all_cur_round_messages = Message.query.filter(Message.recipient_id == query.sponsor_id, Message.task_id == task_id, Message.rounds == get_round_num.rounds).all()
+    all_cur_round_messages = Message.query.filter(Message.recipient_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds).all()
     output_upload = 0
     for row in all_cur_round_messages:
         if row.output:
             output_upload += 1
 
         if output_upload == recipient_num:
-            user = User.query.get_or_404(query.sponsor_id)
+            user = User.query.get_or_404(queries[0].sponsor_id)
             # send message notification to the sponsor when all recipient upload the output
             user.add_notification('unread output', user.new_output())
             db.session.commit()

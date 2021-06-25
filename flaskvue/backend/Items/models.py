@@ -41,7 +41,7 @@ class User(PaginatedAPIMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
+    email = db.Column(db.String(120), index=True)
     password_hash = db.Column(db.String(128))
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
@@ -131,11 +131,16 @@ class User(PaginatedAPIMixin, db.Model):
 
         task_id_list = data[0]
         sender_random_id_list = data[1]
+
+        # print("task_id_list", task_id_list, json.dumps(task_id_list))
+        # print(json.loads(json.dumps(task_id_list)))
+        # print("sender", sender_random_id_list)
+
         count = len(task_id_list)
 
         # 为用户添加通知，写入数据库
         n = Notification(name=name, payload_json=json.dumps(count), user=self,
-            sender_random_id_list=jsonify(sender_random_id_list),task_id_list=jsonify(task_id_list))
+            sender_random_id_list=json.dumps(sender_random_id_list),task_id_list=json.dumps(task_id_list))
 
         db.session.add(n)
         return n
@@ -353,12 +358,12 @@ class Matched(PaginatedAPIMixin, db.Model):
     # sponsor_id = db.Column(db.String(120), db.ForeignKey('users.id'))
     # recipient_id_pair = db.Column(db.String(120), db.ForeignKey('users.id'))
 
-    sponsor_id = db.Column(db.String(120))
-    recipient_id_pair = db.Column(db.String(120))
+    sponsor_id = db.Column(db.Integer)
+    recipient_id_pair = db.Column(db.Integer)
 
-    Matched_id_file =  db.Column(db.Text)
+    Matched_id_file =  db.Column(db.Text, nullable=True)
     sponsor_random_id = db.Column(db.String(120))
-    recipient_random_id_pair = db.Column(db.String(120))
+    recipient_random_id_pair = db.Column(db.String(120),unique=True)
 
     def __repr__(self):
         return '<Match {}>'.format(self.id)

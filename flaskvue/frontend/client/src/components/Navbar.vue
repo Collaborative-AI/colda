@@ -111,15 +111,12 @@ export default {
 
     // sponsor find recipient
     find_recipient () {
-      const payload = {
-        recipient_id: 5,
-      }
-      this.$axios.post('/find_recipient/', payload)
+      
+      this.$axios.get('/find_recipient/')
         .then((response) => {
           // handle success
           this.$toasted.success(`Successed call for help`, { icon: 'fingerprint' })
           this.task_id = response.data.task_id
-          this.recipient_num = response.data.recipient_num
 
           // Create 'Local_Data/id/task_id/' folder
           const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
@@ -146,7 +143,6 @@ export default {
         console.log('sponsor数据', res)
         const payload = {
           task_id: this.task_id,
-          recipient_num: this.recipient_num,
           file: JSON.stringify(res),
         }
 
@@ -164,18 +160,19 @@ export default {
     })      
     },
 
-    // unread_request() {
-    //   this.unread_request_show = true
-    // },
-
     unread_request(sender_random_id_list, task_id_list) {
+      this.unread_request_show = true
+      this.task_id = task_id_list[0]
+    },
+
+    unread_request() {
       
       csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
       this.unread_request_show  = false
 
       console.log('recipient数据', res)
       const payload = {
-        task_id: task_id_list[0],
+        task_id: this.task_id,
         file: JSON.stringify(res),
       }
 
@@ -230,7 +227,7 @@ export default {
       
       // Create 'Local_Data/id/task_id/Match/' folder
       const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
-      let go_on = false;
+
       // async
       fs.mkdir(Match_folder, { recursive: true }, (err) => {
 
@@ -258,10 +255,7 @@ export default {
               // async
               fs.writeFile(Match_folder + filename, cur_match_id_file, function (err) {
                 if (err) throw err;
-                cur_finished_file += 1;
-                if (cur_finished_file == response.data.length){
-                  go_on = true;
-                }
+                
                 console.log('Saved!');
               });
             }
@@ -276,70 +270,76 @@ export default {
       
       // calculate initial situation
       // simulate
-      while (!go_on){
+      function sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
       }
 
-
-      // store initial situation
-      // Create 'Local_Data/id/task_id/Match/round0' folder
-      const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + 'round0/'
-      // async
-      fs.mkdir(Round0_folder, { recursive: true }, (err) => {
-
-        // call back
-        if (err) throw err;
-
-        const filename = 'Sent_Initial_Situation.csv';
-        
-        // temporary data
-        let arr =  new Array(5);   
-        for(let i = 0;i < arr.length; i++){
-          arr[i] = new Array(5);    
-        }
-        arr[0][1] = 1
-        arr[0][2] = 2
-        arr = arr.join('\n');
-
-        // Store match_id file
+      // 用法
+      sleep(3000).then(() => {
+        // store initial situation
+        // Create 'Local_Data/id/task_id/Match/round0' folder
+        const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + 'round0/'
         // async
-        fs.writeFile(Round0_folder + filename, arr, function (err) {
+        fs.mkdir(Round0_folder, { recursive: true }, (err) => {
 
           // call back
           if (err) throw err;
-          console.log('Saved!');
-          
-          // async
-          fs.readFile(Round0_folder + filename, 'utf8' , (err, data) => {
 
-            if (err) {
-              console.error(err)
-              return
-            }
+          const filename = 'Sent_Initial_Situation.csv';
+          
+          // temporary data
+          let arr =  new Array(5);   
+          for(let i = 0;i < arr.length; i++){
+            arr[i] = new Array(5);    
+          }
+          arr[0][1] = 1
+          arr[0][2] = 2
+          arr = arr.join('\n');
+
+          // Store match_id file
+          // async
+          fs.writeFile(Round0_folder + filename, arr, function (err) {
 
             // call back
-            data_array = data.split("\n");
-            console.log(data)
-            const payload = {
-              situation: data_array,
-              initial_rounds: "true",
-              task_id: task_id
-            }
-
-            // send initial situation
+            if (err) throw err;
+            console.log('Saved!');
+            
             // async
-            this.$axios.post('/send_situation/', payload)
-              .then((response) => {
-              // handle success
-              console.log("sponsor match_id finished!!!")
-              console.log(response)
-            })
-            .catch((error) => {
+            fs.readFile(Round0_folder + filename, 'utf8' , (err, data) => {
+
+              if (err) {
+                console.error(err)
+                return
+              }
+
+              // call back
+              data_array = data.split("\n");
+              console.log(data)
+              const payload = {
+                situation: data_array,
+                initial_rounds: "true",
+                task_id: task_id
+              }
+
+              // send initial situation
+              // async
+              this.$axios.post('/send_situation/', payload)
+                .then((response) => {
+                // handle success
+                console.log("sponsor match_id finished!!!")
+                console.log(response)
+              })
+              .catch((error) => {
+              })
+
             })
 
-          })
+          });
+        });    
 
-        });
-      });
+      })
+
+      
 
     
     },
@@ -525,10 +525,9 @@ export default {
 
       const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + rounds + '/'
       // Obtain output from recipients
-      const path = `/users/${this.sharedState.user_id}/output/?task_id=${task_id}&rounds=${rounds}`
+      const url = `/users/${this.sharedState.user_id}/output/?task_id=${task_id}&rounds=${rounds}`
 
-      let go_on = false;
-      this.$axios.get(path)
+      this.$axios.get(url)
         .then((response) => {
           
           let cur_finished_file = 0;
@@ -546,10 +545,7 @@ export default {
             // async
             fs.writeFile(Round_folder + filename, cur_output, function (err) {
               if (err) throw err;
-              cur_finished_file += 1;
-              if (cur_finished_file == response.data.output.length){
-                go_on = true;
-              }
+
               console.log('Output model from recipient Saved!!!');
             });
           }
@@ -560,66 +556,66 @@ export default {
           console.error(error)
         }) 
 
-      while (!go_on){
+      function sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
       }
 
-      // Create Folder: current_path/Local Data/task_id/roundn+1
-      const new_Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + rounds+1 + '/'
-      fs.mkdir(new_Round_folder, { recursive: true }, (err) => {
-        if (err) throw err;
-
-        // Update initial situation
-        const filename = 'Update_Initial_Situation.csv';
-          
-        let arr =  new Array(5);   
-        for(let i = 0;i < arr.length; i++){
-          arr[i] = new Array(5);    
-        }
-        arr[0][1] = "Update_Initial_Situation"
-        arr[0][2] = 5
-        arr = arr.join('\n');
-
-        // Store match_id file
-        fs.writeFile(new_Round_folder + filename, arr, function (err) {
+      // 用法
+      sleep(3000).then(() => {
+        // Create Folder: current_path/Local Data/task_id/roundn+1
+        const new_Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + rounds+1 + '/'
+        fs.mkdir(new_Round_folder, { recursive: true }, (err) => {
           if (err) throw err;
-          console.log('Recipient situation Saved!');
 
-          fs.readFile(new_Round_folder + filename, 'utf8' , (err, data) => {
+          // Update initial situation
+          const filename = 'Update_Initial_Situation.csv';
+            
+          let arr =  new Array(5);   
+          for(let i = 0;i < arr.length; i++){
+            arr[i] = new Array(5);    
+          }
+          arr[0][1] = "Update_Initial_Situation"
+          arr[0][2] = 5
+          arr = arr.join('\n');
 
-            if (err) {
-              console.error(err)
-              return
-            }
+          // Store match_id file
+          fs.writeFile(new_Round_folder + filename, arr, function (err) {
+            if (err) throw err;
+            console.log('Recipient situation Saved!');
 
-            // call back
-            data_array = data.split("\n");
-            console.log(data)
-            const payload = {
-              situation: data_array,
-              initial_rounds: "false",
-              task_id: task_id
-            }
+            fs.readFile(new_Round_folder + filename, 'utf8' , (err, data) => {
 
-            // send updated situation
-            // async
-            this.$axios.post('/send_situation/', payload)
-              .then((response) => {
-              // handle success
-              console.log("Output update situation!!")
-              console.log(response)
+              if (err) {
+                console.error(err)
+                return
+              }
+
+              // call back
+              data_array = data.split("\n");
+              console.log(data)
+              const payload = {
+                situation: data_array,
+                initial_rounds: "false",
+                task_id: task_id
+              }
+
+              // send updated situation
+              // async
+              this.$axios.post('/send_situation/', payload)
+                .then((response) => {
+                // handle success
+                console.log("Output update situation!!")
+                console.log(response)
+              })
+              .catch((error) => {
+              })
             })
-            .catch((error) => {
-            })
+          });  
+        });
 
-          })
-        });  
-
-      });
-
-
+      })
 
     },
-
 
   },
   mounted () {

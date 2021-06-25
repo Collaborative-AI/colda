@@ -12,7 +12,7 @@ from Items import db
 # import BluePrint
 from Items.main import main
 
-from Items.models import User, matched, Matched
+from Items.models import User, Notification, Matched, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 

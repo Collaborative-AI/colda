@@ -24,9 +24,13 @@
         1. modify the python code in Test files
         2. Running: flask test
     
-7. 2 users:
+7. 3 users:
       1. id=4 username=testa email=126@gmail.com password=123
       2. id=5 username=testb email=127@gmail.com password=123
+      2. id=6 username=testc password=123
+
+8. unittest must start with test(filename)
+
 
 
 Second way:

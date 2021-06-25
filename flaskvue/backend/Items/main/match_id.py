@@ -12,7 +12,7 @@ from Items import db
 # import BluePrint
 from Items.main import main
 
-from Items.models import User, matched, Matched
+from Items.models import User, Notification, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
@@ -25,15 +25,12 @@ def match_sponsor_id():
     if not data:
         return bad_request('You must post JSON data.')
     if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
-    if 'recipient_num' not in data or not data.get('recipient_num'):
-        return bad_request('recipient_num is required.')    
+        return bad_request('task_id is required.')  
     if 'file' not in data or not data.get('file'):
         return bad_request('File is required.')
     
     data_array = json.loads(data['file'])
     task_id = data.get('task_id')
-    recipient_num = data.get('recipient_num')
 
     response = Matched.query.filter(Matched.sponsor_id == g.current_user, Matched.task_id == task_id).all()
 
@@ -82,14 +79,10 @@ def match_sponsor_id():
     user = User.query.get_or_404(g.current_user.id)
     user.add_notification('unread match id', user.new_match_id()) 
 
-    dict = {"stored": "successfully", "task_id": task_id, "recipient_num": recipient_num}
+    dict = {"stored": "successfully", "task_id": task_id}
     response = jsonify(dict)
 
-    response.status_code = 201
-
-    # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = None
-    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
+    response.status_code = 204
     
     return response
 
@@ -140,12 +133,9 @@ def match_recipient_id():
     Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == g.current_user.id).update({"Matched_id_file": jsonify(data_array_id)})
     db.session.commit()
                         
-    dict = {"stored": "stored", "task_id": task_id}
+    dict = {"stored": "recipient match id stored", "task_id": task_id}
     response = jsonify(dict)
 
-    response.status_code = 201
-    # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = None
-    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
+    response.status_code = 204
     
     return response

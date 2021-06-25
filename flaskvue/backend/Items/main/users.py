@@ -38,12 +38,15 @@ def create_user():
 
     user = User()
     user.from_dict(data, new_user=True)
-    print("user",user)
+    # print("user",user)
     # Add to database
     db.session.add(user)
     db.session.commit()
 
+    print("aaa",user.to_dict())
     response = jsonify(user.to_dict())
+    print('------------',response)
+
     response.status_code = 201
     response.headers['Location'] = url_for('main.get_user', id=user.id)  
 
@@ -63,9 +66,9 @@ def get_users():
 def get_user(id):
     '''Return a User'''
     user = User.query.get_or_404(id)
-    print("id------",id)
-    print("user------",user)
-    print("g.current", g.current_user)
+    # print("id------",id)
+    # print("user------",user)
+    # print("g.current", g.current_user)
     if g.current_user == user:
         return jsonify(user.to_dict(include_email=True))
     return jsonify(user.to_dict())
@@ -172,8 +175,8 @@ def get_user_messages_senders(id):
     data = Message.to_collection_dict(
         user.messages_received.group_by(Message.sender_id).order_by(Message.timestamp.desc()), page, per_page,
         'main.get_user_messages_senders', id=id)
-    print("data",data)
-    print("item",data["items"])
+    # print("data",data)
+    # print("item",data["items"])
 
     # 这个用户发给我的私信有没有新的
     last_read_time = user.last_messages_read_time or datetime(1900, 1, 1)
@@ -217,7 +220,7 @@ def get_user_history_messages(id):
     # 按时间正序排列构成完整的对话时间线
     history_messages = q1.union(q2).order_by(Message.timestamp)
     data = Message.to_collection_dict(history_messages, page, per_page, 'main.get_user_history_messages', id=id)
-    print("page",page,"length",len(data['items']))
+    # print("page",page,"length",len(data['items']))
     # 现在这一页的 data['items'] 包含对方发给我和我发给对方的
     # 需要创建一个新列表，只包含对方发给我的，用来查看哪些私信是新的
     recived_messages = [item for item in data['items'] if item['sender']['id'] != id]

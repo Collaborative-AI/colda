@@ -1,6 +1,6 @@
 from Items import create_app
 from Items.extensions import db
-from Items.models import User, Notification, Message
+from Items.models import User, Notification, Message, Matched
 from setting import Config
 
 app = create_app(Config)
@@ -14,7 +14,7 @@ def test():
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'User': User, 'Notification': Notification, 'Message': Message}
+    return {'db': db, 'User': User, 'Notification': Notification, 'Message': Message, 'Matched': Matched}
 
 
 

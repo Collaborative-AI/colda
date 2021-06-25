@@ -14,7 +14,7 @@ def verify_password(username, password):
     if user is None:
         return False
     g.current_user = user
-    print("idididid", g.current_user.id)
+    # print("idididid", g.current_user.id)
     return user.check_password(password)
 
 

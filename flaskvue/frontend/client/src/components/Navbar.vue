@@ -194,8 +194,8 @@ export default {
     unread_match_id(sender_random_id_list, task_id_list) {
       
       const update_match_id_notification = {
-          sender_random_id_list: sender_random_id_list,
-          task_id_list: task_id_list,
+          sender_random_id_list: JSON.stringify(sender_random_id_list),
+          task_id_list: JSON.stringify(task_id_list),
       }
 
       this.$axios.post('/update_match_id_notification/', update_match_id_notification)
@@ -255,7 +255,6 @@ export default {
               // async
               fs.writeFile(Match_folder + filename, cur_match_id_file, function (err) {
                 if (err) throw err;
-                
                 console.log('Saved!');
               });
             }
@@ -266,7 +265,6 @@ export default {
             console.error(error)
           }) 
       });
-
       
       // calculate initial situation
       // simulate

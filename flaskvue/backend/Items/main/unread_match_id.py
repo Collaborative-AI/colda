@@ -21,6 +21,7 @@ from Items.main.auth import token_auth
 def update_match_id_notification():
 
     data = request.get_json()
+
     if not data:
         return bad_request('You must post JSON data.')
     if 'sender_random_id_list' not in data or not data.get('sender_random_id_list'):
@@ -31,7 +32,7 @@ def update_match_id_notification():
     task_id_list = data.get('task_id_list')
 
     check_dict = {}
-    lastest_time = float("-inf")
+    lastest_time = datetime(1900, 1, 1)
     for i in range(len(task_id_list)):
         # check if the current client is the sponsor
         isSponsor = False
@@ -43,14 +44,14 @@ def update_match_id_notification():
         user = User.query.get_or_404(g.current_user.id)
         last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
 
-        if isSponsor:
-            record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id_list[i]).order_by(Matched.match_id_timestamp.desc()).first()
-        else:
-            record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
+        # if isSponsor:
+        #     record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id_list[i]).order_by(Matched.match_id_timestamp.desc()).first()
+        # else:
+        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
 
         # get the latest output timestamp
-        if record['match_id_timestamp'] > lastest_time:
-            lastest_time = record['match_id_timestamp']
+        if record[0].match_id_timestamp > lastest_time:
+            lastest_time = record[0].match_id_timestamp
         
         if isSponsor:
             check_dict[task_id_list[i]] = 1
@@ -70,11 +71,6 @@ def update_match_id_notification():
     dict = {"check_sponsor": check_dict}
     
     response = jsonify(dict)
-
-    response.status_code = 201
-    # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = None
-    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
     
     return response
 
@@ -82,11 +78,15 @@ def update_match_id_notification():
 @token_auth.login_required
 def get_user_match_id(id):
 
+    data = request.get_json()
+    # print(data)
     user = User.query.get_or_404(id)
     if g.current_user != user:
         return error_response(403)
 
-    task_id = request.args.get('task_id', 0, type=int)
+    # task_id = request.args.get('task_id', 0, type=int)
+    # print("task_id-----------------------", task_id)
+    task_id = data.get('task_id')
 
     # check if the current client is the sponsor
     isSponsor = False
@@ -97,7 +97,7 @@ def get_user_match_id(id):
 
     data = {}
     if isSponsor:
-        query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
+        query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair != g.current_user.id, Matched.task_id == task_id).all()
 
         data = {
             'match_id_file': [item.Matched_id_file for item in query],

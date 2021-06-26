@@ -91,13 +91,19 @@ class FindAPITestCase(unittest.TestCase):
         task_id = json_response['task_id']
         recipient_num = json_response['recipient_num']
 
+        # check Matched database new rows, include sponsor to sponsor
         queries = Matched.query.filter(Matched.task_id == task_id).all()
-        self.assertEqual(len(queries), recipient_num)
+        self.assertEqual(len(queries), recipient_num+1)
         sponsor_random_id = queries[0].sponsor_random_id
         for i in range(len(queries)):
             self.assertEqual(queries[i].sponsor_id, 1) 
             self.assertEqual(queries[i].task_id, task_id)
             self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
+
+        # check the row that sponsor to sponsor
+        queries = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 1).all()
+        self.assertEqual(len(queries), 1)
+        self.assertEqual(queries[0].sponsor_id, 1)
         
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', '123')

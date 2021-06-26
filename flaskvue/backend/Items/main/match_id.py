@@ -33,18 +33,18 @@ def match_sponsor_id():
     data_array = json.loads(data['file'])
     task_id = data.get('task_id')
 
-    response = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
+    response = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair != g.current_user.id, Matched.task_id == task_id).all()
 
     # while loop, wait for all recipients update match id file
     match_ID_recipient_upload = 0
     while match_ID_recipient_upload < len(response):
-        response = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
+        response = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair != g.current_user.id, Matched.task_id == task_id).all()
 
         match_ID_recipient_upload = 0
         for row in response:
             if row.Matched_id_file:
                 match_ID_recipient_upload += 1
-        time.sleep(2)
+        time.sleep(3)
 
     # count the distinct id in the Sponsor ID file
     data_array_id = {}
@@ -54,7 +54,7 @@ def match_sponsor_id():
 
     # match id file
     for row in response:
-
+        # if row.Matched_id_file:
         same_id = {}
         db_array = json.loads(row.Matched_id_file)
         
@@ -74,17 +74,20 @@ def match_sponsor_id():
 
         # send matched notification to the recipient
         user = User.query.get_or_404(row.recipient_id_pair)
+  
         user.add_notification('unread match id', user.new_match_id()) 
 
     # when all match_id match, add notification to sponsor
     user = User.query.get_or_404(g.current_user.id)
+    Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == g.current_user.id).update({"match_id_timestamp": datetime.utcnow()})
+    db.session.commit()
+    # print("user_id", g.current_user.id)
     user.add_notification('unread match id', user.new_match_id()) 
 
     dict = {"stored": "sponsor stores match id file successfully", "task_id": task_id}
     response = jsonify(dict)
 
     return response
-
 
 
 @main.route('/match_recipient_id/', methods=['POST'])

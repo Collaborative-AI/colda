@@ -25,7 +25,7 @@ def find_recipient():
     if 'recipient_id_list' not in data or not data.get('recipient_id_list'):
         return bad_request('recipient_id_list is required.')
 
-    recipient_id_list =  json.loads(data['recipient_id_list'])
+    recipient_id_list = json.loads(data['recipient_id_list'])
  
     # Now hardcode
     # testa: id 4(sponsor), testb: id 5(recipient), testc: id 6(recipient)
@@ -37,8 +37,6 @@ def find_recipient():
 
     for recipient_id in recipient_id_list:
         user = User.query.get_or_404(recipient_id)
-        if g.current_user == user:
-            return bad_request('You cannot send private matched to yourself.')
       
         matched = Matched()
         matched.sponsor_id = g.current_user.id
@@ -54,7 +52,16 @@ def find_recipient():
 
         # send matched notification to the recipient
         user.add_notification('unread request', user.new_request()) 
-                            
+    
+    user = User.query.get_or_404(g.current_user.id)
+    matched = Matched()
+    matched.sponsor_id = g.current_user.id
+    matched.recipient_id_pair = g.current_user.id
+    matched.task_id = task_id
+    matched.sponsor_random_id = sponsor_random_id
+    matched.recipient_random_id_pair = sponsor_random_id
+    db.session.add(matched)                        
+    
     db.session.commit()
 
     data = {"task_id": task_id, 'recipient_num': len(recipient_id_list)}
@@ -69,3 +76,4 @@ def find_recipient():
     # response.status_code = 204
     
     return response
+

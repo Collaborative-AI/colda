@@ -171,6 +171,7 @@ class User(PaginatedAPIMixin, db.Model):
     def new_match_id(self):
         '''用户未读的match完的id'''
         last_match_time = self.last_matched_file_read_time or datetime(1900, 1, 1)
+
         query = Matched.query.filter_by(recipient_id_pair=self.id).filter(
             Matched.match_id_timestamp > last_match_time).all()
 

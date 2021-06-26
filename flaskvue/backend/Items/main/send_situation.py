@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
@@ -16,10 +18,10 @@ from Items.main.auth import token_auth
 def send_situation():
 
     data = request.get_json()
-    
+
     if not data:
         return bad_request('You must post JSON data.')
-    if 'situation' not in data or not data.get('body'):
+    if 'situation' not in data or not data.get('situation'):
         return bad_request('situation is required.')
     if 'initial_rounds' not in data or not data.get('initial_rounds'):
         return bad_request('initial_rounds is required.')
@@ -28,8 +30,7 @@ def send_situation():
 
     # json
     situation = data.get('situation')
-    
-    rounds = data.get('initial_rounds')
+    rounds_indicator = data.get('initial_rounds')
     task_id = data.get('task_id')
 
     # Now hardcode
@@ -37,18 +38,18 @@ def send_situation():
     query_of_task = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
     sender_random_id = query_of_task[0].sponsor_random_id
 
-    # should be [5,6]
+    # should be [4,5,6], including sponsor itself
     all_recipient_id = []
     for i in query_of_task:
         all_recipient_id.append(i.recipient_id_pair)
 
-    # send to myself too
-    all_recipient_id.append(g.current_user.id)
+    cur_round = 0
+    if rounds_indicator != "true":
+        query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
+        cur_round = query.rounds + 1
 
     for recipient_id in all_recipient_id:
         user = User.query.get_or_404(recipient_id)
-        if g.current_user == user:
-            return bad_request('You cannot send private message to yourself.')
 
         message = Message()
         message.from_dict(data)
@@ -56,14 +57,10 @@ def send_situation():
         message.sender_id = g.current_user.id
         message.recipient_id = user.id
         message.task_id = task_id
-        if rounds == "true":
-            message.rounds = 0
-        else:
-            query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
-            message.rounds = query.rounds + 1
+        message.rounds = cur_round
         
         # Store the situation
-        message.situation = situation
+        message.situation = json.dumps(situation)
         message.sender_random_id = sender_random_id
         
         db.session.add(message)
@@ -73,8 +70,7 @@ def send_situation():
         db.session.commit()
 
     # return response
-    response = jsonify(message.to_dict())
-    response.status_code = 201
-    # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = url_for('main.get_message', id=message.id)
+    dict = {"message": "send situation successfully!"}
+    response = jsonify(dict)
+
     return response

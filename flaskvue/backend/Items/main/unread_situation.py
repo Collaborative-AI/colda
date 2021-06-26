@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
@@ -27,7 +29,7 @@ def update_situation_notification():
 
     check_dict = {}
     rounds_dict = {}
-    lastest_time = float("-inf")
+    lastest_time = datetime(1900, 1, 1)
     for i in range(len(task_id_list)):
         # check if the current client is the sponsor
         isSponsor = False
@@ -39,17 +41,12 @@ def update_situation_notification():
         user = User.query.get_or_404(g.current_user.id)
         last_situation_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
 
-        cur_rounds = 0
-        if isSponsor:
-            record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id_list[i]).order_by(Matched.match_id_timestamp.desc()).first()
-            cur_rounds = query.rounds
-        else:
-            record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
-            cur_rounds = query.rounds
-
+        record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
+        cur_rounds = record.rounds
+        
         # get the latest output timestamp
-        if record['situation_timestamp'] > lastest_time:
-            lastest_time = record['situation_timestamp']
+        if record.situation_timestamp > lastest_time:
+            lastest_time = record.situation_timestamp
         
         if isSponsor:
             check_dict[task_id_list[i]] = 1
@@ -65,17 +62,12 @@ def update_situation_notification():
         db.session.commit()
         
         # Updata Notification
-        user.add_notification('unread match id', user.new_match_id()) 
+        user.add_notification('unread situation', user.new_situation()) 
         db.session.commit()
 
     dict = {"check_sponsor": check_dict, "rounds": rounds_dict}
     
     response = jsonify(dict)
-
-    response.status_code = 201
-    # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    response.headers['Location'] = None
-    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
     
     return response
 
@@ -85,12 +77,12 @@ def update_situation_notification():
 def send_output():
 
     data = request.get_json()
-    
+
     if not data:
         return bad_request('You must post JSON data.')
     if 'output' not in data or not data.get('output'):
         return bad_request('output is required.')
-    if 'rounds' not in data or not data.get('rounds'):
+    if 'rounds' not in data:
         return bad_request('rounds is required.')  
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
@@ -101,7 +93,7 @@ def send_output():
 
     # extract sponsor_id
     queries = Matched.query.filter(Matched.task_id == task_id).all()
-    recipient_num = len(queries)
+    recipient_num = len(queries) - 1
 
     message = Message()
     message.from_dict(data)
@@ -111,13 +103,14 @@ def send_output():
     message.rounds = rounds
 
     # Store the output
-    message.output = output
+    message.output = json.dumps(output)
 
     for i in range(len(queries)):
       if queries[i].recipient_id_pair == g.current_user.id:
         message.sender_random_id = queries[i].recipient_random_id_pair
 
     db.session.add(message)
+    db.session.commit()
 
     all_cur_round_messages = Message.query.filter(Message.recipient_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds).all()
     output_upload = 0
@@ -131,9 +124,8 @@ def send_output():
             user.add_notification('unread output', user.new_output())
             db.session.commit()
 
-    dict = {"send_output": "successfully"}
+    dict = {"send_output": "send output successfully"}
     response = jsonify(dict)
-    response.status_code = 204
     
     return response
 

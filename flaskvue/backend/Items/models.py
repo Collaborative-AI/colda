@@ -210,10 +210,11 @@ class User(PaginatedAPIMixin, db.Model):
         task_id_list = []
         sender_random_id_list = []
         for i in range(len(query)):
-            task_id_list.append(query[i].task_id)
+            if query[i].output:
+                task_id_list.append(query[i].task_id)
 
-            # sender must be sponsor
-            sender_random_id_list.append(query[i].sender_random_id)
+                # sender must be sponsor
+                sender_random_id_list.append(query[i].sender_random_id)
 
         return [task_id_list, sender_random_id_list]
 
@@ -278,12 +279,7 @@ class Message(PaginatedAPIMixin, db.Model):
             'situation_timestamp': self.situation_timestamp,
             'output_timestamp': self.output_timestamp,
             'task_id': self.task_id,
-            'rounds': self.rounds,
-            '_links': {
-                'self': url_for('main.get_message', id=self.id),
-                'sender_url': url_for('main.get_user', id=self.sender_id),
-                'recipient_url': url_for('main.get_user', id=self.recipient_id)
-            }    
+            'rounds': self.rounds, 
         } 
         return data
     

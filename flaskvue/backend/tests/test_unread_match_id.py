@@ -7,7 +7,7 @@ from Items.models import User, Message, Notification, Matched
 from tests import TestConfig
 
 
-class Match_ID_APITestCase(unittest.TestCase):
+class Unread_Match_ID_APITestCase(unittest.TestCase):
 
     def setUp(self):
         '''每个测试之前执行'''
@@ -170,7 +170,7 @@ class Match_ID_APITestCase(unittest.TestCase):
 
         # 1. Construct 1 Matched row in find_recipient.
         headers = self.get_token_auth_headers('unittest', '123')
-        list_content = [2]
+        list_content = [2,3]
         data = json.dumps({'recipient_id_list': json.dumps(list_content)})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
@@ -203,7 +203,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3).all()
         self.assertEqual(json.loads(query[0].Matched_id_file), [3,4])
 
-        # 4. Check the Notification of sponsor
+        # 4. Check the Notification of sponsor (updated in match_sponsor_id() (in match_id.py)) of sponsor
         headers = self.get_token_auth_headers('unittest', '123')
         response = self.client.get('/users/1/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
@@ -212,13 +212,12 @@ class Match_ID_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[0]['name'], "unread match id")
         self.assertEqual(json_response[0]['payload'], 1)
 
-        # 5. Check Update_situation_notification() (unread_match_id.py)
+        # 5. Check update_match_id_notification() (unread_match_id.py) result of sponsor
         data = json.dumps({'task_id_list': json_response[0]['task_id_list'], 
             'sender_random_id_list': json_response[0]['sender_random_id_list']})
         response = self.client.post('/update_match_id_notification/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-
         self.assertEqual(json_response['check_sponsor'][str(task_id)], 1)
 
         # 6. Check Notification
@@ -289,8 +288,6 @@ class Match_ID_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[1]['name'], "unread match id")
         self.assertEqual(json_response[1]['payload'], 0)
 
-
-        
     def test_get_user_match_id(self):
 
         # Simulate 1 recipient.

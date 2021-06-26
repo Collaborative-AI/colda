@@ -91,7 +91,6 @@ def get_user_match_id(id):
     # check if the current client is the sponsor
     isSponsor = False
     query = Matched.query.filter(Matched.task_id == task_id).first()
-    print("query", query)
     if query.sponsor_id == g.current_user.id:
         isSponsor = True
 

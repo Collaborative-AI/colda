@@ -39,9 +39,12 @@ def update_situation_notification():
 
         # Update the Notification
         user = User.query.get_or_404(g.current_user.id)
-        last_situation_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
+        last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
 
         record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
+        # record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).all()
+        # for i in record:
+        #     print()
         cur_rounds = record.rounds
         
         # get the latest output timestamp

@@ -48,6 +48,7 @@ def send_situation():
         query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
         cur_round = query.rounds + 1
 
+    # print("all_recipient_id", all_recipient_id)
     for recipient_id in all_recipient_id:
         user = User.query.get_or_404(recipient_id)
 

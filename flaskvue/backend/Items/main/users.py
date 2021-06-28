@@ -258,7 +258,7 @@ def get_user_notifications(id):
     # 只返回上次看到的通知以来发生的新通知
     # 比如用户在 10:00:00 请求一次该API，在 10:00:10 再次请求该API只会返回 10:00:00 之后产生的新通知
     since = request.args.get('since', 0.0, type=float)
-    print("since",since)
+    # print("since",since)
     notifications = user.notifications.filter(
         Notification.timestamp > since).order_by(Notification.timestamp.asc())
     return jsonify([n.to_dict() for n in notifications])

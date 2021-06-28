@@ -190,14 +190,20 @@ class User(PaginatedAPIMixin, db.Model):
         last_situation_time = self.last_situation_read_time or datetime(1900, 1, 1)
         query = Message.query.filter_by(recipient_id=self.id).filter(
             Message.situation_timestamp > last_situation_time).all()
-        
+
+        # print("last_situation_time",last_situation_time)
+        # if self.id == 1:
+        #     for i in query:
+        #         print(i.situation_timestamp)
+
         task_id_list = []
         sender_random_id_list = []
         for i in range(len(query)):
-            task_id_list.append(query[i].task_id)
+            if not query[i].output:
+                task_id_list.append(query[i].task_id)
 
-            # sender must be sponsor
-            sender_random_id_list.append(query[i].sender_random_id)
+                # sender must be sponsor
+                sender_random_id_list.append(query[i].sender_random_id)
 
         return [task_id_list, sender_random_id_list]
     

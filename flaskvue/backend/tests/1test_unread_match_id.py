@@ -105,7 +105,6 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         response = self.client.post('/update_match_id_notification/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-
         self.assertEqual(json_response['check_sponsor'][str(task_id)], 1)
 
         # 6. Check Notification

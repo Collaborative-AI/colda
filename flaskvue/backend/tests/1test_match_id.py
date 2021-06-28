@@ -315,7 +315,6 @@ class Match_ID_APITestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest', '123')
         response = self.client.get('/users/1/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
-
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response), 1)
         self.assertEqual(json_response[0]['name'], "unread match id")
@@ -325,9 +324,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest2', '123')
         response = self.client.get('/users/2/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
-
         json_response = json.loads(response.get_data(as_text=True))
-
         self.assertEqual(len(json_response), 2)
         self.assertEqual(json_response[0]['name'], "unread request")
         self.assertEqual(json_response[0]['payload'], 0)
@@ -338,9 +335,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest3', '123')
         response = self.client.get('/users/3/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
-
         json_response = json.loads(response.get_data(as_text=True))
-
         self.assertEqual(len(json_response), 2)
         self.assertEqual(json_response[0]['name'], "unread request")
         self.assertEqual(json_response[0]['payload'], 0)

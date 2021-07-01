@@ -23,14 +23,11 @@ def send_situation():
         return bad_request('You must post JSON data.')
     if 'situation' not in data or not data.get('situation'):
         return bad_request('situation is required.')
-    if 'initial_rounds' not in data or not data.get('initial_rounds'):
-        return bad_request('initial_rounds is required.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
     # json
     situation = data.get('situation')
-    rounds_indicator = data.get('initial_rounds')
     task_id = data.get('task_id')
 
     # Now hardcode
@@ -43,10 +40,12 @@ def send_situation():
     for i in query_of_task:
         all_recipient_id.append(i.recipient_id_pair)
 
+    # check message
     cur_round = 0
-    if rounds_indicator != "true":
-        query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
+    query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
+    if query is not None:
         cur_round = query.rounds + 1
+        
 
     # print("all_recipient_id", all_recipient_id)
     for recipient_id in all_recipient_id:

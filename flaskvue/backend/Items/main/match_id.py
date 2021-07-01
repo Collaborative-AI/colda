@@ -47,26 +47,32 @@ def match_sponsor_id():
         time.sleep(3)
 
     # count the distinct id in the Sponsor ID file
-    data_array_id = {}
+    data_array_id = set()
     for i in range(1,len(data_array)-1):
-        if data_array[i][0] not in data_array_id:
-            data_array_id[data_array[i][0]] = 1
+        data_array_id.add(data_array[i][0])
+            
+    # data_array_id = {}
+    # for i in range(1,len(data_array)-1):
+    #     if data_array[i][0] not in data_array_id:
+    #         data_array_id[data_array[i][0]] = 1
 
     # match id file
     for row in response:
         # if row.Matched_id_file:
         same_id = {}
         db_array = json.loads(row.Matched_id_file)
-        
-        # previous stored id
-        for i in range(len(db_array)):
-            if db_array[i] in data_array_id:
-                same_id[db_array[i]] = 1
 
-        # Store the key, dont need the value
-        same_id_keys = []
-        for i in same_id.keys():
-            same_id_keys.append(i)
+        same_id_keys = list(data_array_id & set(db_array))
+        
+        # # previous stored id
+        # for i in range(len(db_array)):
+        #     if db_array[i] in data_array_id:
+        #         same_id[db_array[i]] = 1
+
+        # # Store the key, dont need the value
+        # same_id_keys = []
+        # for i in same_id.keys():
+        #     same_id_keys.append(i)
         
         # update the db
         Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == row.recipient_id_pair).update({"Matched_id_file": json.dumps(same_id_keys), "match_id_timestamp": datetime.utcnow()})
@@ -124,12 +130,11 @@ def match_recipient_id():
     data_array = json.loads(data['file'])
 
     # extract ID
-    data_array_id = []
+    data_array_id = set()
     for i in range(1,len(data_array)-1):
-        data_array_id.append(data_array[i][0])
-
-    # response is a row
-    response = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id)
+        data_array_id.add(data_array[i][0])
+    
+    data_array_id = list(data_array_id)
 
     # update the db
     Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == g.current_user.id).update({"Matched_id_file": json.dumps(data_array_id)})

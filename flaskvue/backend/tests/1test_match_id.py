@@ -97,7 +97,7 @@ class Match_ID_APITestCase(unittest.TestCase):
 
         query = Matched.query.filter(Matched.task_id == task_id).all()
         # test stored file content
-        self.assertEqual(json.loads(query[0].Matched_id_file), [0,4,1])
+        self.assertEqual(json.loads(query[0].Matched_id_file), [0,1,4])
 
         # 4. Check Updated Notification
         headers = self.get_token_auth_headers('unittest2', '123')
@@ -146,7 +146,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
 
         query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 2).all()
-        self.assertEqual(json.loads(query[0].Matched_id_file), [0,4,1])
+        self.assertEqual(json.loads(query[0].Matched_id_file), [0,1,4])
 
         # test2
         headers = self.get_token_auth_headers('unittest3', '123')
@@ -158,7 +158,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
 
         query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3).all()
-        self.assertEqual(json.loads(query[0].Matched_id_file), [7,8,12])
+        self.assertEqual(set(json.loads(query[0].Matched_id_file)), set([7,8,12]))
 
         # test3
         headers = self.get_token_auth_headers('unittest3', '123')
@@ -170,7 +170,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
 
         query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3).all()
-        self.assertEqual(json.loads(query[0].Matched_id_file), [7,8])
+        self.assertEqual(set(json.loads(query[0].Matched_id_file)), set([7,8]))
     
         # 3. Check Updated Notification
         headers = self.get_token_auth_headers('unittest2', '123')
@@ -305,7 +305,7 @@ class Match_ID_APITestCase(unittest.TestCase):
 
         # check sponsor match id file with user 2
         query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 2).all()
-        self.assertEqual(json.loads(query[0].Matched_id_file), [4,12,16,17])
+        self.assertEqual(json.loads(query[0].Matched_id_file), [16,17,4,12])
 
         # check sponsor match id file with user 3
         query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3).all()

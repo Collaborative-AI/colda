@@ -77,7 +77,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         # 2. send_situation() (in send_situation.py)
         headers = self.get_token_auth_headers('unittest', '123')
         situation_content = [[1,2,3], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'initial_rounds': "true", 'task_id': task_id})
+        data = json.dumps({'situation': situation_content, 'task_id': task_id})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
@@ -149,7 +149,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         # 2. send_situation() (in send_situation.py)
         headers = self.get_token_auth_headers('unittest', '123')
         situation_content = [[1,2,3], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'initial_rounds': "true", 'task_id': task_id})
+        data = json.dumps({'situation': situation_content, 'task_id': task_id})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
@@ -191,7 +191,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         # 4. send_situation() again (in send_situation.py)
         headers = self.get_token_auth_headers('unittest', '123')
         situation_content = [[3,2,1], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'initial_rounds': "false", 'task_id': task_id})
+        data = json.dumps({'situation': situation_content, 'task_id': task_id})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 

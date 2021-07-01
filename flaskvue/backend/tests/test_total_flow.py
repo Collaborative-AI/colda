@@ -249,8 +249,8 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('recipient_random_id_pair'))
         # test match id file
         match_id_file_list = json_response['match_id_file']
-        self.assertEqual(json.loads(match_id_file_list[0]), [4,12,16,17])
-        self.assertEqual(json.loads(match_id_file_list[1]), [3,4,12])
+        self.assertEqual(set(json.loads(match_id_file_list[0])), set([4,12,16,17]))
+        self.assertEqual(set(json.loads(match_id_file_list[1])), set([3,4,12]))
 
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'task_id': task_id})
@@ -261,7 +261,7 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
         match_id_file_list = json_response['match_id_file']
-        self.assertEqual(json.loads(match_id_file_list[0]), [4,12,16,17])
+        self.assertEqual(set(json.loads(match_id_file_list[0])), set([4,12,16,17]))
 
         headers = self.get_token_auth_headers('unittest3', '123')
         data = json.dumps({'task_id': task_id})
@@ -272,12 +272,12 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
         match_id_file_list = json_response['match_id_file']
-        self.assertEqual(json.loads(match_id_file_list[0]), [3,4,12])
+        self.assertEqual(set(json.loads(match_id_file_list[0])), set([3,4,12]))
 
         # 10. sponsor calls send_situation() (in send_situation.py)
         headers = self.get_token_auth_headers('unittest', '123')
         situation_content = [[1,2,3], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'initial_rounds': "true", 'task_id': task_id})
+        data = json.dumps({'situation': situation_content, 'task_id': task_id})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -438,7 +438,7 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         # 17. sponsor calls: send_situation(), goes into new round 
         headers = self.get_token_auth_headers('unittest', '123')
         situation_content = [[3,2,1], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'initial_rounds': "false", 'task_id': task_id})
+        data = json.dumps({'situation': situation_content, 'task_id': task_id})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 

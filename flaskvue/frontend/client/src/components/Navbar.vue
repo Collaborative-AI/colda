@@ -112,6 +112,7 @@ export default {
     // sponsor find recipient
     find_recipient () {
       
+      // PROMISE
       this.$axios.get('/find_recipient/')
         .then((response) => {
           // handle success
@@ -267,6 +268,7 @@ export default {
       });
       
       // calculate initial situation
+
       // simulate
       function sleep (time) {
         return new Promise((resolve) => setTimeout(resolve, time));
@@ -416,6 +418,8 @@ export default {
 
     unread_situation_sponsor(rounds, sender_random_id, task_id) {
       // train the model
+      // 1. python shiyan.py --argument1 argument2
+      // 2. 内嵌python
 
       // get output
 
@@ -478,12 +482,12 @@ export default {
             output: data_array,
           }
 
-          // send initial situation
+          // send output
           // async
           this.$axios.post('/send_output/', payload)
             .then((response) => {
             // handle success
-            console.log("Recipient situation finished!!!")
+            console.log("Recipient output finished!!!")
             console.log(response)
           })
           .catch((error) => {

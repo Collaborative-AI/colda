@@ -110,20 +110,20 @@ export default {
     //     // }
     //     // console.log("diyici");
     //   }else{
-    //     function sleep (time) {
-    //       return new Promise((resolve) => setTimeout(resolve, time));
-    //     }
+        // function sleep (time) {
+        //   return new Promise((resolve) => setTimeout(resolve, time));
+        // }
 
-    //     // 用法
-    //     sleep(500).then(() => {
-    //         for (let i = 0; i < 20000000; i++){
-    //           if(i%100000 == 0){
-    //             console.log("bbbbbbbbb", i)
-    //           }
-    //         }
-    //         console.log("dierci");
-    //         this.test2();
-    //     })
+        // // 用法
+        // sleep(500).then(() => {
+        //     for (let i = 0; i < 20000000; i++){
+        //       if(i%100000 == 0){
+        //         console.log("bbbbbbbbb", i)
+        //       }
+        //     }
+        //     console.log("dierci");
+        //     this.test2();
+        // })
     //     // for (let i = 0; i < 8; i++){
         
         

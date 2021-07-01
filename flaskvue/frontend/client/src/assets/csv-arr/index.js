@@ -25,14 +25,17 @@ function csv(file) {
     console.log("file1",file)
     fReader.readAsDataURL(file)
     console.log("file2",file)
+
     fReader.onload = function(evt) {
       const data = evt.target.result
       // console.log( data );
       const encoding = checkEncoding(data)
       // console.log(encoding);
       // 转换成二维数组，需要引入Papaparse.js
+
       Papa.parse(file, {
         encoding: encoding,
+
         complete: function(results) {		// UTF8 \r\n与\n混用时有可能会出问题
           // console.log(results)
           const res = results.data
@@ -41,7 +44,9 @@ function csv(file) {
           }
           resolve(res)
         }
+
       })
+
     }
   })
 }

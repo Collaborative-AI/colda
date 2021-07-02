@@ -247,7 +247,7 @@ class Unread_Output_APITestCase(unittest.TestCase):
         # get_user_output()
         data = json.dumps({'task_id_list': json_response[-1]['task_id_list']})
         data = json.dumps({'task_id': task_id, 'rounds': 0})
-        response = self.client.get('/users/1/output/', headers=headers, data=data)
+        response = self.client.post('/users/1/output/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json.loads(json_response['output'][0]), [[3,123,6], [88,5,6], [7,99,9]])
@@ -256,13 +256,13 @@ class Unread_Output_APITestCase(unittest.TestCase):
         # only call this function with id that is sponsor
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'task_id': task_id, 'rounds': 0})
-        response = self.client.get('/users/2/output/', headers=headers, data=data)
+        response = self.client.post('/users/2/output/', headers=headers, data=data)
         self.assertEqual(response.status_code, 403)
 
         # only call this function with id that is sponsor, check if the caller and the id is the same
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'task_id': task_id, 'rounds': 0})
-        response = self.client.get('/users/1/output/', headers=headers, data=data)
+        response = self.client.post('/users/1/output/', headers=headers, data=data)
         self.assertEqual(response.status_code, 403)
 
         

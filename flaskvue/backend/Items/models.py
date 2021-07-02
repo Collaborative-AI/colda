@@ -366,7 +366,7 @@ class Matched(PaginatedAPIMixin, db.Model):
 
     Matched_id_file =  db.Column(db.Text, nullable=True)
     sponsor_random_id = db.Column(db.String(120))
-    recipient_random_id_pair = db.Column(db.String(120),unique=True)
+    recipient_random_id_pair = db.Column(db.String(120))
 
     def __repr__(self):
         return '<Match {}>'.format(self.id)

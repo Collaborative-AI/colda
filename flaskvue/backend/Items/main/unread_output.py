@@ -53,7 +53,7 @@ def update_output_notification():
     
     return response
 
-@main.route('/users/<int:id>/output/', methods=['GET'])
+@main.route('/users/<int:id>/output/', methods=['POST'])
 @token_auth.login_required
 def get_user_output(id):
 

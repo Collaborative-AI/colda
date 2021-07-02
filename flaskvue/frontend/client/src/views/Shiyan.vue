@@ -33,7 +33,7 @@ const address = 'tem/' + 'b/'
 
 // Validation form
 // import { Field, Form } from 'vee-validate';
-
+import axios from 'axios'
 import csv2arr from '@/assets/csv-arr'
 // import $ from 'jquery'
 // import { mkdir } from 'fs';
@@ -75,33 +75,147 @@ export default {
         a += 1
       }
     },
+
+    test3() {
+          // this.$axios.post('/send_output/', payload)
+          //   .then((response) => {
+          //   // handle success
+          //   console.log("Recipient output finished!!!")
+          //   console.log(response)
+          // })
+          // .catch((error) => {
+          // })
+
+          // 测试代码
+    //     console.log('main1');
+
+    //     // 该函数仅在 Node.js 环境下可以使用
+    //     process.nextTick(function() {
+    //         console.log('process.nextTick1');
+    //         process.nextTick(function() {
+    //             console.log('process.nextTick3');
+    //         });
+    //     });
+
+    //     setTimeout(function() {
+    //         console.log('setTimeout');
+    //         process.nextTick(function() {
+    //             console.log('process.nextTick2');
+    //         });
+    //     }, 0);
+
+    //     new Promise(function(resolve, reject) {
+    //         console.log('promise');
+    //         resolve();
+    //     }).then(function() {
+    //         console.log('promise then');
+    //         Promise.resolve().then(function() {
+    //   console.log("Promise resolved again");
+    //   Promise.resolve().then(function() {
+    //   console.log("Promise resolved again again");
+    // });
+    // });
+
+          const params= {
+                // situation: data_array,
+                // initial_rounds: "true",
+                // task_id: task_id
+                id: 5
+              }
+
+          // axios.get('/ceshi/5/?id=5')
+          // axios.get('/ceshi/', {params:{id:5}})
+          axios.get('/ceshi/', {params})
+            .then((response) => {
+            // handle success
+            console.log("Recipient output finished!!!")
+            console.log(response)
+          })
+          .catch((error) => {
+          })
+
+
+
+
+        // });
+
+        console.log('main2');
+
+
+    },
     test_async() {
-      this.test(["a","b"]),
-      this.test(["c"])
+      // this.test(true),
+      // this.test2(true)
+      this.test3(true)
+    },
+    test4 (){
+      for (let i = 0; i < 20000000; i++){
+                if(i%100000 == 0){
+                  console.log("aaaaaaaaaaaaaaaaaaaaaaa", i)
+                }
+              }
+              let z = 555555;
+              setTimeout(function() {
+            console.log('setTimeout');
+            console.log(z);
+            // process.nextTick(function() {
+            //     console.log('process.nextTick2');
+            // });
+        }, 0);
+        
+    },
+    
+    test(indicator) {
+        if(indicator){
+
+          // function sleep (time) {
+          //   return new Promise((resolve) => setTimeout(resolve, time));
+          // }
+
+          // // 用法
+          // sleep(500).then(() => {
+          //     for (let i = 0; i < 20000000; i++){
+          //       if(i%100000 == 0){
+          //         console.log("aaaaaaaaaaaaaaaaaaaaaaa", i)
+          //       }
+          //     }
+          //     console.log("diyici");
+          //     // this.test2();
+          // })
+        let z = 6666;
+          Promise.resolve().then(function() {
+          console.log(z);
+           console.log("Promise resolved again again");
+           Promise.resolve().then(function() {
+          console.log(z);
+           console.log("Promise resolved again again");
+          });
+          });
+          this.test4();
+        console.log("zuihou")
+        }
     },
 
+    
+    test2(indicator) {
+      if(indicator){
 
-    // test2(content) {
-    //   console.log("test2",content)
-    // },
-    // test(indicator) {
-    //   if(indicator){
+        function sleep (time) {
+          return new Promise((resolve) => setTimeout(resolve, time));
+        }
 
-    //     function sleep (time) {
-    //       return new Promise((resolve) => setTimeout(resolve, time));
-    //     }
-
-    //     // 用法
-    //     sleep(500).then(() => {
-    //         for (let i = 0; i < 20000000; i++){
-    //           if(i%100000 == 0){
-    //             console.log("aaaaaaaaaaaaaaaaaaaaaaa", i)
-    //           }
-    //         }
-    //         console.log("diyici");
-    //         this.test2();
-    //     })
-
+        // 用法
+        sleep(450).then(() => {
+            for (let i = 0; i < 20000000; i++){
+              if(i%100000 == 0){
+                console.log("bbbbbbbbb", i)
+              }
+            }
+            console.log("diyici");
+            // this.test2();
+        })
+      }
+    },
     //     console.log("++++++++++++++++++++++++++++")
     //     // for (let i = 0; i < 20000000; i++){
     //     //   if(i%100000 == 0){

@@ -252,13 +252,19 @@ def get_user_notifications(id):
     '''返回该用户的新通知'''
     user = User.query.get_or_404(id)
 
-    
     if g.current_user != user:
         return error_response(403)
     # 只返回上次看到的通知以来发生的新通知
     # 比如用户在 10:00:00 请求一次该API，在 10:00:10 再次请求该API只会返回 10:00:00 之后产生的新通知
-    since = request.args.get('since', 0.0, type=float)
+    # since = request.args.get('since', 0.0, type=float)
+    since = 0.0
     # print("since",since)
     notifications = user.notifications.filter(
         Notification.timestamp > since).order_by(Notification.timestamp.asc())
-    return jsonify([n.to_dict() for n in notifications])
+    
+    notifications2 = user.notifications.order_by(Notification.timestamp.asc())
+    # print("notification2", notifications2)
+    # for n in notifications2:
+    #   print(n)
+
+    return jsonify([n.to_dict() for n in notifications2])

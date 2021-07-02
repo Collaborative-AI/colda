@@ -85,14 +85,16 @@ def send_output():
         return bad_request('You must post JSON data.')
     if 'output' not in data or not data.get('output'):
         return bad_request('output is required.')
-    if 'rounds' not in data:
-        return bad_request('rounds is required.')  
+    # if 'rounds' not in data:
+    #     return bad_request('rounds is required.')  
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
     output = data.get('output')
-    rounds = data.get('rounds')
+    # rounds = data.get('rounds')
     task_id = data.get('task_id')
+
+    rounds = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first().rounds
 
     # extract sponsor_id
     queries = Matched.query.filter(Matched.task_id == task_id).all()

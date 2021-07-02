@@ -82,6 +82,7 @@ def match_sponsor_id():
         user = User.query.get_or_404(row.recipient_id_pair)
   
         user.add_notification('unread match id', user.new_match_id()) 
+        db.session.commit()
 
     # when all match_id match, add notification to sponsor
     user = User.query.get_or_404(g.current_user.id)
@@ -89,7 +90,8 @@ def match_sponsor_id():
     db.session.commit()
     # print("user_id", g.current_user.id)
     user.add_notification('unread match id', user.new_match_id()) 
-
+    db.session.commit()
+    
     dict = {"stored": "sponsor stores match id file successfully", "task_id": task_id}
     response = jsonify(dict)
 

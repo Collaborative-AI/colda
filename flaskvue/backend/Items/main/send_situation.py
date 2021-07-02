@@ -64,7 +64,7 @@ def send_situation():
         message.sender_random_id = sender_random_id
         
         db.session.add(message)
-
+        db.session.commit()
         # send message notification to the recipient
         user.add_notification('unread situation', user.new_situation())
         db.session.commit()

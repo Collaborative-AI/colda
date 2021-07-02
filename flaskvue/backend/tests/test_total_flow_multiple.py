@@ -441,7 +441,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
             # 16. sponsor calls: get_user_output() (in unread_output.py), gets output files
             data = json.dumps({'task_id_list': json_response[-1]['task_id_list']})
             data = json.dumps({'task_id': task_id, 'rounds': 0})
-            response = self.client.get('/users/1/output/', headers=headers, data=data)
+            response = self.client.post('/users/1/output/', headers=headers, data=data)
             self.assertEqual(response.status_code, 200)
             json_response = json.loads(response.get_data(as_text=True))
             self.assertEqual(json.loads(json_response['output'][0]), [[3,123,6], [88,5,6], [7,99,9]])

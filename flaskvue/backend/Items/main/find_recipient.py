@@ -49,10 +49,12 @@ def find_recipient():
         matched.recipient_random_id_pair = recipient_random_id
 
         db.session.add(matched)
-
+        db.session.commit()
         # send matched notification to the recipient
         user.add_notification('unread request', user.new_request()) 
-    
+        db.session.commit()
+
+    # A A
     user = User.query.get_or_404(g.current_user.id)
     matched = Matched()
     matched.sponsor_id = g.current_user.id
@@ -60,8 +62,8 @@ def find_recipient():
     matched.task_id = task_id
     matched.sponsor_random_id = sponsor_random_id
     matched.recipient_random_id_pair = sponsor_random_id
-    db.session.add(matched)                        
     
+    db.session.add(matched)                        
     db.session.commit()
 
     data = {"task_id": task_id, 'recipient_num': len(recipient_id_list)}

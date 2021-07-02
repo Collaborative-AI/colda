@@ -262,9 +262,11 @@ def get_user_notifications(id):
     notifications = user.notifications.filter(
         Notification.timestamp > since).order_by(Notification.timestamp.asc())
     
-    notifications2 = user.notifications.order_by(Notification.timestamp.asc())
+    for row in notifications:
+        print(row)
+    # notifications2 = user.notifications.order_by(Notification.timestamp.asc())
     # print("notification2", notifications2)
     # for n in notifications2:
     #   print(n)
-
-    return jsonify([n.to_dict() for n in notifications2])
+    # print(notifications2)
+    return jsonify([n.to_dict() for n in notifications])

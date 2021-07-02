@@ -65,7 +65,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         # 1. 附带JWT到请求头中, Construct 1 Matched row in find_recipient first.
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
@@ -130,7 +130,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         # 1. 附带JWT到请求头中, Construct 2 Matched rows in find_recipient().
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
@@ -208,7 +208,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         # 1. Construct 1 Matched row in find_recipient.
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
@@ -279,7 +279,7 @@ class Match_ID_APITestCase(unittest.TestCase):
         # 1. Construct 1 Matched row in find_recipient.
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']

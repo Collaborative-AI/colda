@@ -25,8 +25,9 @@ def find_recipient():
     if 'recipient_id_list' not in data or not data.get('recipient_id_list'):
         return bad_request('recipient_id_list is required.')
 
-    recipient_id_list = json.loads(data['recipient_id_list'])
- 
+    recipient_id_list = data['recipient_id_list']
+    print("recipient_id_list", recipient_id_list)
+
     # Now hardcode
     # testa: id 4(sponsor), testb: id 5(recipient), testc: id 6(recipient)
 
@@ -34,7 +35,7 @@ def find_recipient():
     task_id = str(uuid.uuid4())
 
     sponsor_random_id = str(uuid.uuid4())
-
+    print(g.current_user.id, type(g.current_user.id),"1")
     for recipient_id in recipient_id_list:
         user = User.query.get_or_404(recipient_id)
       
@@ -47,13 +48,12 @@ def find_recipient():
 
         recipient_random_id = str(uuid.uuid4())
         matched.recipient_random_id_pair = recipient_random_id
-
         db.session.add(matched)
         db.session.commit()
         # send matched notification to the recipient
         user.add_notification('unread request', user.new_request()) 
         db.session.commit()
-
+    print(g.current_user.id, type(g.current_user.id),"2")
     # A A
     user = User.query.get_or_404(g.current_user.id)
     matched = Matched()
@@ -63,19 +63,22 @@ def find_recipient():
     matched.sponsor_random_id = sponsor_random_id
     matched.recipient_random_id_pair = sponsor_random_id
     
-    db.session.add(matched)                        
+    db.session.add(matched) 
+    print(g.current_user.id, type(g.current_user.id),"3")                       
     db.session.commit()
+
+    print(g.current_user.id, type(g.current_user.id),"4")
+
+    query = Matched.query.filter(Matched.task_id == task_id).all()
+    for row in query:
+        print("all_find_recipient_query", row.sponsor_id, type(row.sponsor_id))
+
+    query = Matched.query.filter(Matched.task_id == task_id).first()
+    print("find_recipient_query", query.sponsor_id, type(query.sponsor_id))
 
     data = {"task_id": task_id, 'recipient_num': len(recipient_id_list)}
     
-    # response.status_code = 201
-
-    # HTTP协议要求201响应包含一个值为新资源URL的Location头部
-    # response.headers['Location'] = None
-    # response.headers['Location'] = url_for('main.get_matched', id=matched.id)
     response = jsonify(data)
-    # print("find",response)
-    # response.status_code = 204
     
     return response
 

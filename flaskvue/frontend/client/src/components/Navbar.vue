@@ -98,7 +98,7 @@ export default {
       sharedState: store.state,
       sponsor_request_show: false,
       unread_request_show: false,
-      task_id: '',
+      task_id: null,
       recipient_num: 0,
     }
   },
@@ -112,8 +112,11 @@ export default {
     // sponsor find recipient
     find_recipient () {
       
+      const payload = {
+        recipient_id_list: [5]
+      }
       // PROMISE
-      this.$axios.get('/find_recipient/')
+      this.$axios.post('/find_recipient/', payload)
         .then((response) => {
           // handle success
           console.log("Sponsor calls for help", response)
@@ -125,7 +128,8 @@ export default {
           fs.mkdir(new_address, { recursive: true }, (err) => {
             if (err) throw err;
 
-            console.log("Sponsor creates" + 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/')
+            console.log("Sponsor creates " + new_address)
+            this.$toasted.success("Sponsor creates " + new_address, { icon: 'fingerprint' })
           });
 
           // Upload the matching ID file
@@ -134,10 +138,10 @@ export default {
         })
         .catch((error) => {
           // handle error
+          console.log(error)
           // console.log(error.response.data)
           // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
         })
-
     },
 
     sponsor_csv() {
@@ -165,11 +169,14 @@ export default {
     },
 
     unread_request(sender_random_id_list, task_id_list) {
+
+      console.log("this.unread_request")
+      
       this.unread_request_show = true
       this.task_id = task_id_list[0]
     },
 
-    unread_request() {
+    recipient_csv() {
       
       csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
       this.unread_request_show  = false
@@ -187,35 +194,41 @@ export default {
         this.$toasted.success(`Recipient sends the csv file.`, { icon: 'fingerprint' })
         })
         .catch((error) => {
+          console.log(error)
         })
       }) 
-           
     },
 
     unread_match_id(sender_random_id_list, task_id_list) {
       
       const update_match_id_notification = {
-          sender_random_id_list: JSON.stringify(sender_random_id_list),
-          task_id_list: JSON.stringify(task_id_list),
+          sender_random_id_list: sender_random_id_list,
+          task_id_list: task_id_list,
       }
 
       this.$axios.post('/update_match_id_notification/', update_match_id_notification)
         .then((response) => {
           // handle success            
-          console.log("Update the match id notification", response)
+          console.log("Update match id notification response", response)
+          this.$toasted.success("Update the match id notification", { icon: 'fingerprint' })
+
           for (let i = 0; i < sender_random_id_list.length; i++){
             // check if the current client is sponsor or not of the specific task
             // handle success
-            if (response.data.check_sponsor[task_id_list[i]] == true){
+            console.log("check sponsor: match id notification", response.data.check_sponsor[task_id_list[i]])
+            if (response.data.check_sponsor[task_id_list[i]] == 1){
+              console.log("unread_match_id_sponsor")
               this.unread_match_id_sponsor(sender_random_id_list[i], task_id_list[i])
             }  
             else{
+              console.log("unread_match_id_recipient")
               this.unread_match_id_recipient(sender_random_id_list[i], task_id_list[i])
             }
           }
         })
         .catch((error) => {
           // handle error
+          console.log(error)
           // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
         })
     },
@@ -224,27 +237,35 @@ export default {
       
       // Create 'Local_Data/id/task_id/Match/' folder
       const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
+      let vm = this;
 
       // async
       fs.mkdir(Match_folder, { recursive: true }, (err) => {
 
         // call back
         if (err) throw err;
-        console.log("Sponsor creates" + Match_folder)
+        console.log("Sponsor creates " + Match_folder)
+        this.$toasted.success("Sponsor creates " + Match_folder, { icon: 'fingerprint' })
         // Obtain Match_id file
         // async
-        const path = `/users/${this.sharedState.user_id}/match_id_file/?task_id=${task_id}`
-        this.$axios.get(path)
+        const payload = {
+          task_id: task_id
+        }
+        
+        const path = `/users/${vm.sharedState.user_id}/match_id_file/`
+        vm.$axios.post(path, payload)
           .then((response) => {
             // call back
             // iterate the match_id_file
             console.log("Sponsor gets matched id file")
+            vm.$toasted.success("Sponsor gets matched id file", { icon: 'fingerprint' })
+
             for(let i = 0;i < response.data.match_id_file.length; i++){
 
               const cur_recipient = response.data.recipient_random_id_pair[i];
-              const filename = this.sharedState.user_id + '_to_' + cur_recipient + '.csv';
+              const filename = vm.sharedState.user_id + '_to_' + cur_recipient + '.csv';
 
-              const cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
+              let cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
               cur_match_id_file = cur_match_id_file.join('\n');
 
               // Store match_id file with different recipient
@@ -252,10 +273,13 @@ export default {
               fs.writeFile(Match_folder + filename, cur_match_id_file, function (err) {
                 if (err) throw err;
                 console.log('Sponsor Saved Matched id File!');
+                vm.$toasted.success('Sponsor Saved Matched id File!', { icon: 'fingerprint' })
+
               });
             }
           })
           .catch((error) => {
+            console.log(error)
             // handle error
           }) 
       });
@@ -270,8 +294,8 @@ export default {
       // 用法
       sleep(5000).then(() => {
         // store initial situation
-        // Create 'Local_Data/id/task_id/Match/round0' folder
-        const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + 'round0/'
+        // Create 'Local_Data/id/task_id/0' folder
+        const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/0/'
         // async
         fs.mkdir(Round0_folder, { recursive: true }, (err) => {
 
@@ -279,6 +303,8 @@ export default {
           if (err) throw err;
 
           console.log("Sponsor creates" + Round0_folder)
+          vm.$toasted.success("Sponsor creates" + Round0_folder, { icon: 'fingerprint' })
+
           const filename = 'Sent_Initial_Situation.csv';
           
           // temporary data
@@ -296,34 +322,28 @@ export default {
 
             // call back
             if (err) throw err;
-            console.log('Sponsor Saved' + filename);
+            console.log('Sponsor Saved ' + filename);
+            vm.$toasted.success('Sponsor Saved ' + filename, { icon: 'fingerprint' })
             
+            let data_array = arr.split("\n")
+
+            const payload = {
+              situation: data_array,
+              task_id: task_id
+            }
+
+            // send initial situation
             // async
-            fs.readFile(Round0_folder + filename, 'utf8' , (err, data) => {
-
-              if (err) {
-                console.error(err)
-                return
-              }
-
-              // call back
-              data_array = data.split("\n");
-              console.log(data)
-              const payload = {
-                situation: data_array,
-                task_id: task_id
-              }
-
-              // send initial situation
-              // async
-              this.$axios.post('/send_situation/', payload)
-                .then((response) => {
-                // handle success
-                console.log("sponsor sends the situation", response)
-              })
-              .catch((error) => {
-              })
+            vm.$axios.post('/send_situation/', payload)
+              .then((response) => {
+              // handle success
+              console.log("sponsor sends the situation", response)
+              vm.$toasted.success("sponsor sends the situation", { icon: 'fingerprint' })
             })
+            .catch((error) => {
+              console.log(error)
+            })
+
           });
         });    
       })
@@ -337,19 +357,24 @@ export default {
         // call back
         if (err) throw err;
 
-        console.log("Recipient creates" + Match_folder)
+        console.log("Recipient creates " + Match_folder)
+        this.$toasted.success("Recipient creates " + Match_folder, { icon: 'fingerprint' })
         
         // Obtain Match_id file
-        const path = `/users/${this.sharedState.user_id}/match_id_file/?task_id=${task_id}`
+        const payload = {
+          task_id: task_id
+        }
+        const path = `/users/${this.sharedState.user_id}/match_id_file/`
         // async
-        this.$axios.get(path)
+        this.$axios.post(path, payload)
           .then((response) => {
-
+ 
             console.log("Recipient gets matched id file", response)
+            this.$toasted.success("Recipient gets matched id file", { icon: 'fingerprint' })
             const cur_sponsor = response.data.sponsor_random_id;
-            const filename = cur_sponsor + '_to_' + this.sharedState.user_id + '.csv';
+            const filename = this.sharedState.user_id + '_to_' + cur_sponsor + '.csv';
 
-            const cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
+            let cur_match_id_file = JSON.parse(response.data.match_id_file[0]);
             cur_match_id_file = cur_match_id_file.join('\n');
 
             // Store match_id file
@@ -357,20 +382,19 @@ export default {
             fs.writeFile(Match_folder + filename, cur_match_id_file, function (err) {
               if (err) throw err;
               console.log("Recipient saves matched id file")
+              // this.$toasted.success("Recipient saves matched id file", { icon: 'fingerprint' })
             });
-            
+    
           })
           .catch((error) => {
             // handle error
             console.error(error)
           }) 
       });
-      
-
     },
 
     unread_situation(sender_random_id_list, task_id_list) {
-      
+
       const update_situation_notification = {
           sender_random_id_list: sender_random_id_list,
           task_id_list: task_id_list,
@@ -380,11 +404,12 @@ export default {
         .then((response) => {
           // handle success            
           console.log("Update the situation notification", response)
+          this.$toasted.success("Update the situation notification", { icon: 'fingerprint' })
           for (let i = 0; i < sender_random_id_list.length; i++){
 
               // check if the current client is sponsor or not of the specific task
               // handle success
-              if (response.data.check_sponsor[task_id_list[i]] == true){
+              if (response.data.check_sponsor[task_id_list[i]] == 1){
                 this.unread_situation_sponsor(response.data.rounds[task_id_list[i]],
                   sender_random_id_list[i], task_id_list[i])
               }  
@@ -392,19 +417,18 @@ export default {
                 this.unread_situation_recipient(response.data.rounds[task_id_list[i]],
                   sender_random_id_list[i], task_id_list[i])
               }
-                
-              console.log(response)
           }
         })
         .catch((error) => {
         // handle error
+        console.log(error);
         // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
         })
-
     },
 
     unread_situation_sponsor(rounds, sender_random_id, task_id) {
-      console("cur round is:", rounds)
+      console.log("cur round is:", rounds);
+      let vm = this;
       // train the model
       // 1. python shiyan.py --argument1 argument2
       // 2. 内嵌python
@@ -412,7 +436,7 @@ export default {
       // get output
 
       // store output
-      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + rounds + '/'
+      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
       const filename = 'Sponsor_Trained_Local_Model.csv';
         
       // temporary data
@@ -427,42 +451,89 @@ export default {
       // Store match_id file
       fs.writeFile(Round_folder + filename, arr, function (err) {
         if (err) throw err;
-        console.log("Sponsor saved" + filename + "at" + Round_folder);
+        console.log("Sponsor saved " + filename + " at " + Round_folder);
+        vm.$toasted.success("Sponsor saved " + filename + " at " + Round_folder, { icon: 'fingerprint' })
       });
     },
 
     unread_situation_recipient(rounds, sender_random_id, task_id) {
+      
+      let vm = this;
+
+      // Create 'Local_Data/id/task_id/rounds' folder
+      // store the situation from sponsor
+      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
+      fs.mkdir(Round_folder, { recursive: true }, (err) => {
+            if (err) throw err;
+
+        console.log("Recipient creates " + Round_folder)
+        this.$toasted.success("Recipient creates " + Round_folder, { icon: 'fingerprint' })
+
+        const payload = {
+          task_id: task_id,
+          rounds: rounds
+        }
+        
+        const path = `/users/${vm.sharedState.user_id}/situation_file/`
+        vm.$axios.post(path, payload)
+          .then((response) => {
+            // call back
+            // store the situation file
+
+            console.log("Recipient gets situation file")
+            vm.$toasted.success("Sponsor gets situation file", { icon: 'fingerprint' })
+
+            const cur_sender = response.data.sender_random_id;
+            const filename = cur_sender + '_to_' + vm.sharedState.user_id + '.csv';
+
+            let cur_situation_file = JSON.parse(response.data.situation);
+            cur_situation_file = cur_situation_file.join('\n');
+
+            // Store match_id file with different recipient
+            // async
+            fs.writeFile(Round_folder + filename, cur_situation_file, function (err) {
+              if (err) throw err;
+              console.log('Recipient Saved Situation File!');
+              vm.$toasted.success('Recipient Saved Situation File!', { icon: 'fingerprint' })
+            });
+          })
+          .catch((error) => {
+            console.log(error)
+            // handle error
+          }) 
+
+      });
+
       // train the model
 
       // get output
 
       // store output
-      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + rounds + '/'
-      const filename = 'Recipient_Trained_Local_Model.csv';
-        
-      // temporary data
-      let arr =  new Array(5);   
-      for(let i = 0;i < arr.length; i++){
-        arr[i] = new Array(5);    
+      function sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
       }
-      arr[0][1] = "recipient_trained_local_model"
-      arr[0][2] = 5
-      arr = arr.join('\n');
 
-      // Store match_id file
-      fs.writeFile(Round_folder + filename, arr, function (err) {
-        if (err) throw err;
-        console.log("Recipient saved" + filename + "at" + Round_folder);
-        fs.readFile(Round_folder + filename, 'utf8' , (err, data) => {
+      // 用法
+      sleep(5000).then(() => {
+        const filename = 'Recipient_Trained_Local_Model.csv';
+        
+        // temporary data
+        let arr =  new Array(5);   
+        for(let i = 0;i < arr.length; i++){
+          arr[i] = new Array(5);    
+        }
+        arr[0][1] = "recipient_trained_local_model"
+        arr[0][2] = 5
+        arr = arr.join('\n');
 
-          if (err) {
-            console.error(err)
-            return
-          }
+        // Store match_id file
+        fs.writeFile(Round_folder + filename, arr, function (err) {
+          if (err) throw err;
+          console.log("Recipient saved " + filename + " at " + Round_folder);
+          vm.$toasted.success("Recipient saved " + filename + " at " + Round_folder, { icon: 'fingerprint' })
 
-          // call back
-          console.log(data)
-          data_array = data.split("\n");
+          let data_array = arr.split("\n")
+
           const payload = {
             task_id: task_id,
             output: data_array,
@@ -470,23 +541,25 @@ export default {
 
           // send output
           // async
-          this.$axios.post('/send_output/', payload)
+          vm.$axios.post('/send_output/', payload)
             .then((response) => {
             // handle success
             console.log("Recipient sends output", response)
+            vm.$toasted.success("Recipient sends output", { icon: 'fingerprint' })
           })
           .catch((error) => {
+            console.log(error)
           })
         })
-      });
+      })
     },
     
     unread_output(sender_random_id_list, task_id_list) {
 
-      let divide_dict = {}
-      for(let i = 0;task_id_list.length; i++){
-        divide_dict[task_id_list[i]] = divide_dict.get(task_id_list[i],[]).append(sender_random_id_list[i])
-      }
+      // let divide_dict = {}
+      // for(let i = 0;task_id_list.length; i++){
+      //   divide_dict[task_id_list[i]] = divide_dict.get(task_id_list[i],[]).append(sender_random_id_list[i])
+      // }
 
       // Update Notification
       const update_output_notification = {
@@ -497,31 +570,43 @@ export default {
         .then((response) => {
           // devide the task_id_list by task id
           console.log("Update the output notification", response)
-          for (const [task_id, cur_task_sender_random_ids] of Object.entries(divide_dict)) {
-            this.unread_output_singleTask(response.data.task_id, task_id, cur_task_sender_random_ids)
-          }
+          this.$toasted.success("Update the output notification", { icon: 'fingerprint' })
+          // for (const [task_id, cur_task_sender_random_ids] of Object.entries(divide_dict)) {
+          //   console.log("output task_id", response.data[task_id])
+          //   this.unread_output_singleTask(response.data[task_id], task_id, cur_task_sender_random_ids)
+          // }
+          console.log("output task_id", response.data[task_id_list[0]], task_id_list[0], sender_random_id_list)
+          this.unread_output_singleTask(response.data[task_id_list[0]], task_id_list[0], sender_random_id_list)
       })
       .catch((error) => {
+        console.log(error)
       })  
 
     },
 
     unread_output_singleTask(rounds, task_id, cur_task_sender_random_ids){
 
-      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + rounds + '/'
+      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
+      let vm = this
       // Obtain output from recipients
-      const url = `/users/${this.sharedState.user_id}/output/?task_id=${task_id}&rounds=${rounds}`
 
-      this.$axios.get(url)
+      const payload = {
+        task_id: task_id,
+        rounds: rounds
+      }
+      const url = `/users/${this.sharedState.user_id}/output/`
+
+      this.$axios.post(url, payload)
         .then((response) => {
           console.log("Sponsor gets output model")
+          vm.$toasted.success("Sponsor gets output model", { icon: 'fingerprint' })
           // iterate the match_id_file
           for(let i = 0;i < response.data.output.length; i++){
 
-            const cur_recipient = response.data.recipient_random_id_pair[i];
+            const cur_recipient = response.data.sender_random_ids_list[i];
             const filename = cur_recipient + '_to_' + this.sharedState.user_id + '.csv';
 
-            const cur_output = JSON.parse(response.data.output[i]);
+            let cur_output = JSON.parse(response.data.output[i]);
             cur_output = cur_output.join('\n');
 
             // Store the output
@@ -529,9 +614,9 @@ export default {
             fs.writeFile(Round_folder + filename, cur_output, function (err) {
               if (err) throw err;
               console.log('Sponsor saves Output model');
+              vm.$toasted.success('Sponsor saves Output model', { icon: 'fingerprint' })
             });
           }
-          
         })
         .catch((error) => {
           // handle error
@@ -543,12 +628,14 @@ export default {
       }
 
       // 用法
-      sleep(3000).then(() => {
+      sleep(4000).then(() => {
         // Create Folder: current_path/Local Data/task_id/roundn+1
-        const new_Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/' + rounds+1 + '/'
+        const new_Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds+1 + '/'
+
         fs.mkdir(new_Round_folder, { recursive: true }, (err) => {
           if (err) throw err;
           console.log("Sponsor creates" + new_Round_folder)
+          vm.$toasted.success("Sponsor creates" + new_Round_folder, { icon: 'fingerprint' })
           // Update initial situation
           const filename = 'Update_Initial_Situation.csv';
             
@@ -563,43 +650,41 @@ export default {
           // Store match_id file
           fs.writeFile(new_Round_folder + filename, arr, function (err) {
             if (err) throw err;
-            console.log("Sponsor saved" + filename + "at" + new_Round_folder);
+            console.log("Sponsor saved update initial situation " + filename + "at" + new_Round_folder);
+            vm.$toasted.success("Sponsor saved update initial situation " + filename + "at" + new_Round_folder, { icon: 'fingerprint' })
 
-            fs.readFile(new_Round_folder + filename, 'utf8' , (err, data) => {
+            // call back
+            let data_array = arr.split("\n");
 
-              if (err) {
-                console.error(err)
-                return
-              }
+            const payload = {
+              situation: data_array,
+              task_id: task_id
+            }
 
-              // call back
-              data_array = data.split("\n");
-              console.log(data)
-              const payload = {
-                situation: data_array,
-                task_id: task_id
-              }
-
-              // send updated situation
-              // async
-              this.$axios.post('/send_situation/', payload)
-                .then((response) => {
-                // handle success
-                console.log("Sponsor updates situation", response)
-              })
-              .catch((error) => {
-              })
+            // send updated situation
+            // async
+            vm.$axios.post('/send_situation/', payload)
+              .then((response) => {
+              // handle success
+              console.log("Sponsor updates situation", response)
+              vm.$toasted.success("Sponsor updates situation", { icon: 'fingerprint' })
+            })
+            .catch((error) => {
+              console.log(error)
             })
           });  
         });
-
       })
-
     },
-
   },
+
   mounted () {
     // 轮询 /api/users/<int:id>/notifications/ 请求用户的新通知
+    window.unread_request = this.unread_request;
+    window.unread_match_id = this.unread_match_id;
+    window.unread_situation = this.unread_situation;
+    window.unread_output = this.unread_output;
+
     $(function() {
       let since = 0
       let total_notifications_count = 0  // 总通知计数
@@ -622,6 +707,7 @@ export default {
           axios.get(path)
             .then((response) => {
               // handle success
+
               for(let i = 0; i < response.data.length; i++) {
                 sender_random_id_list = response.data[i].sender_random_id_list;
                 task_id_list = response.data[i].task_id_list;
@@ -629,27 +715,28 @@ export default {
                 if (response.data[i].payload != 0){
                   switch (response.data[i].name) {
                   case 'unread request':
+                    
                     unread_request_count = response.data[i].payload
-                    this.unread_request(sender_random_id_list, task_id_list)
-                  
-                    if (this.unread_request_show == false){
-                      this.unread_request_show = true
-                    }
+                    console.log("unread_request_count", unread_request_count)
+                    unread_request(sender_random_id_list, task_id_list)
                     break
                   
                   case 'unread match id':
                     unread_match_id_count = response.data[i].payload
-                    this.unread_match_id(sender_random_id_list, task_id_list)
+                    console.log("unread_match_id_count", unread_match_id_count)
+                    unread_match_id(sender_random_id_list, task_id_list)
                     break
                   
                   case 'unread situation':
                     unread_situation_count = response.data[i].payload
-                    this.unread_situation(sender_random_id_list, task_id_list)
+                    console.log("unread_situation_count", unread_situation_count)
+                    unread_situation(sender_random_id_list, task_id_list)
                     break
                   
                   case 'unread output':
                     unread_output_count = response.data[i].payload
-                    this.unread_output(sender_random_id_list, task_id_list)
+                    console.log("unread_output_count", unread_output_count)
+                    unread_output(sender_random_id_list, task_id_list)
                     break
 
                   case 'unread_messages_count':
@@ -693,10 +780,10 @@ export default {
             })
             .catch((error) => {
               // handle error
-              console.error(error)
+              console.log(error)
             })
         }
-      }, 10000)
+      }, 15000)
     })
   }
 }

@@ -8,7 +8,7 @@
     <button @click="tiqu()">tiqu</button>
 
     <button @click="test_async()">test async</button>
-
+    <button @click="delete_all_rows()">delete_all_rows</button>
     <div v-for="task_id in task_id_list" :key="task_id.id">
       {{ task_id }}
       <input type="file" name="csvfile" ref="csvData" />
@@ -63,6 +63,18 @@ export default {
   },
 
   methods: {
+    delete_all_rows() {
+      axios.get('/delete_all_rows/')
+        .then((response) => {
+        // handle success
+        console.log("delete_all_rows", response)
+        // console.log(response)
+      })
+      .catch((error) => {
+      })
+
+    },
+    
     test(cur_list) {
       this.length = cur_list.length
       this.success = 0

@@ -30,33 +30,44 @@ def update_match_id_notification():
         return bad_request('task_id_list is required.')
 
     task_id_list = data.get('task_id_list')
+    print("update match_id_notification", task_id_list, type(task_id_list), len(task_id_list), g.current_user.id)
 
     check_dict = {}
     lastest_time = datetime(1900, 1, 1)
+    last_matched_file_read_time = datetime(1900, 1, 1)
+
     for i in range(len(task_id_list)):
         # check if the current client is the sponsor
         isSponsor = False
         query = Matched.query.filter(Matched.task_id == task_id_list[i]).first()
-        if query.sponsor_id == g.current_user.id:
-            isSponsor = True
-
-        # Update the Notification
-        user = User.query.get_or_404(g.current_user.id)
-        last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
-
-        # if isSponsor:
-        #     record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id_list[i]).order_by(Matched.match_id_timestamp.desc()).first()
-        # else:
-        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
-
-        # get the latest output timestamp
-        if record[0].match_id_timestamp > lastest_time:
-            lastest_time = record[0].match_id_timestamp
         
-        if isSponsor:
-            check_dict[task_id_list[i]] = 1
-        else:
-            check_dict[task_id_list[i]] = 0
+        if query:
+            print("match_id_query", query)
+            print("match_id_query.sponsor_id", query.sponsor_id, type(query.sponsor_id))
+            print("g.current_user.id", g.current_user.id, type(g.current_user.id))
+            if int(query.sponsor_id) == g.current_user.id:
+                isSponsor = True
+
+            # Update the Notification
+            user = User.query.get_or_404(g.current_user.id)
+            last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
+
+            # if isSponsor:
+            #     record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id_list[i]).order_by(Matched.match_id_timestamp.desc()).first()
+            # else:
+            record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
+
+            # get the latest output timestamp
+            if record[0].match_id_timestamp > lastest_time:
+                lastest_time = record[0].match_id_timestamp
+            
+            print("isSponsor", isSponsor)
+            if isSponsor:
+                print("sponsor")
+                check_dict[task_id_list[i]] = 1
+            else:
+                print("recipient")
+                check_dict[task_id_list[i]] = 0
 
     if lastest_time > last_matched_file_read_time:
         user.last_matched_file_read_time = lastest_time
@@ -67,14 +78,14 @@ def update_match_id_notification():
         # Updata Notification
         user.add_notification('unread match id', user.new_match_id()) 
         db.session.commit()
-
+    print("check_dict", check_dict)
     dict = {"check_sponsor": check_dict}
     
     response = jsonify(dict)
     
     return response
 
-@main.route('/users/<int:id>/match_id_file/', methods=['GET'])
+@main.route('/users/<int:id>/match_id_file/', methods=['POST'])
 @token_auth.login_required
 def get_user_match_id(id):
 
@@ -91,7 +102,7 @@ def get_user_match_id(id):
     # check if the current client is the sponsor
     isSponsor = False
     query = Matched.query.filter(Matched.task_id == task_id).first()
-    if query.sponsor_id == g.current_user.id:
+    if int(query.sponsor_id) == g.current_user.id:
         isSponsor = True
 
     data = {}

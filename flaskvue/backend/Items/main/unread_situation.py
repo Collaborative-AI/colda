@@ -30,33 +30,36 @@ def update_situation_notification():
     check_dict = {}
     rounds_dict = {}
     lastest_time = datetime(1900, 1, 1)
+    last_situation_read_time = datetime(1900, 1, 1)
+
     for i in range(len(task_id_list)):
         # check if the current client is the sponsor
         isSponsor = False
         query = Matched.query.filter(Matched.task_id == task_id_list[i]).first()
-        if query.sponsor_id == g.current_user.id:
-            isSponsor = True
+        if query:
+            if int(query.sponsor_id) == g.current_user.id:
+                isSponsor = True
 
-        # Update the Notification
-        user = User.query.get_or_404(g.current_user.id)
-        last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
+            # Update the Notification
+            user = User.query.get_or_404(g.current_user.id)
+            last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
 
-        record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
-        # record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).all()
-        # for i in record:
-        #     print()
-        cur_rounds = record.rounds
-        
-        # get the latest output timestamp
-        if record.situation_timestamp > lastest_time:
-            lastest_time = record.situation_timestamp
-        
-        if isSponsor:
-            check_dict[task_id_list[i]] = 1
-        else:
-            check_dict[task_id_list[i]] = 0
-        
-        rounds_dict[task_id_list[i]] = cur_rounds
+            record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
+            # record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).all()
+            # for i in record:
+            #     print()
+            cur_rounds = record.rounds
+            
+            # get the latest output timestamp
+            if record.situation_timestamp > lastest_time:
+                lastest_time = record.situation_timestamp
+            
+            if isSponsor:
+                check_dict[task_id_list[i]] = 1
+            else:
+                check_dict[task_id_list[i]] = 0
+            
+            rounds_dict[task_id_list[i]] = cur_rounds
 
     if lastest_time > last_situation_read_time:
         user.last_situation_read_time = lastest_time
@@ -73,6 +76,44 @@ def update_situation_notification():
     response = jsonify(dict)
     
     return response
+
+
+@main.route('/users/<int:id>/situation_file/', methods=['POST'])
+@token_auth.login_required
+def get_user_situation(id):
+
+    data = request.get_json()
+    if not data:
+        return bad_request('You must post JSON data.')
+    if 'task_id' not in data or not data.get('task_id'):
+        return bad_request('task_id is required.')
+    if 'rounds' not in data:
+        return bad_request('rounds is required.')
+
+    task_id = data.get('task_id')
+    rounds = data.get('rounds')
+
+    # check if the caller and the id is the same
+    user = User.query.get_or_404(id)
+    if g.current_user != user:
+        return error_response(403)
+
+    data = {}
+    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds).order_by(Message.rounds.desc()).all()
+
+    situation_file = None
+    sender_random_id = None
+    for row in query:
+        if row.situation:
+            situation_file = row.situation
+            sender_random_id = row.sender_random_id
+
+    data = {
+        'situation': situation_file,
+        'sender_random_id': sender_random_id
+    }
+
+    return jsonify(data)  
 
 
 @main.route('/send_output/', methods=['POST'])

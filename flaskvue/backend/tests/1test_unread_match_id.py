@@ -67,7 +67,7 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         # 1. Construct 1 Matched row in find_recipient.
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
@@ -102,6 +102,11 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         # 5. Check Update_situation_notification() (unread_match_id.py)
         data = json.dumps({'task_id_list': json_response[0]['task_id_list'], 
             'sender_random_id_list': json_response[0]['sender_random_id_list']})
+
+        query = Matched.query.filter(Matched.task_id == json_response[0]['task_id_list'][0]).first()
+        print("--------------------", query.sponsor_id)
+        self.assertEqual(query.sponsor_id, int(1))
+
         response = self.client.post('/update_match_id_notification/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -170,7 +175,7 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         # 1. Construct 1 Matched row in find_recipient.
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
@@ -238,6 +243,7 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[1]['name'], "unread match id")
         self.assertEqual(json_response[1]['payload'], 1)
 
+        print("task_id", json_response[1]['task_id_list'])
         # 5. Check Update_match_id_notification() (unread_match_id.py)
         data = json.dumps({'task_id_list': json_response[1]['task_id_list'], 
             'sender_random_id_list': json_response[1]['sender_random_id_list']})
@@ -305,7 +311,7 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         # 1. Construct 1 Matched row in find_recipient.
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
@@ -326,7 +332,7 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest', '123')
         data = json.dumps({'task_id': task_id})
         # get => params; post => data
-        response = self.client.get('/users/1/match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/1/match_id_file/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         
         json_response = json.loads(response.get_data(as_text=True))
@@ -345,7 +351,7 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         # 5. check recipient: recipient call get_user_match_id()
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'task_id': task_id})
-        response = self.client.get('/users/2/match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/2/match_id_file/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         
         json_response = json.loads(response.get_data(as_text=True))

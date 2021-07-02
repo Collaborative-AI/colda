@@ -53,7 +53,8 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         # 2. send_situation() (in send_situation.py)
         # 3. check new notification
         # 4. update_situation_notification() (in unread_situation.py)
-        # 5. check new notification
+        # 5. recipient check situation file from sponsor
+        # 6. check new notification
 
         u1 = User(username='unittest', email='john@163.com')
         u1.set_password('123')
@@ -69,7 +70,7 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         # 1. find_recipient() (in find_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
@@ -141,7 +142,14 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         self.assertEqual(json_response['check_sponsor'][str(task_id)], 0)
         self.assertEqual(json_response['rounds'][str(task_id)], 0)
 
-        # 5. check new notification
+        # 5. get_user_situation()
+        data = json.dumps({'task_id': task_id, 'rounds': 0})
+        response = self.client.post('/users/2/situation_file/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json.loads(json_response['situation']), [[1,2,3], [4,5,6], [7,8,9]])
+
+        # 6. check new notification
         response = self.client.get('/users/2/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -169,7 +177,14 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         self.assertEqual(json_response['check_sponsor'][str(task_id)], 0)
         self.assertEqual(json_response['rounds'][str(task_id)], 0)
 
-        # 5. check new notification
+        # 5. get_user_situation()
+        data = json.dumps({'task_id': task_id, 'rounds': 0})
+        response = self.client.post('/users/3/situation_file/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json.loads(json_response['situation']), [[1,2,3], [4,5,6], [7,8,9]])
+
+        # 6. check new notification
         response = self.client.get('/users/3/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -201,7 +216,7 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         # 1. find_recipient() (in find_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
@@ -348,7 +363,7 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         # 1. find_recipient() (in find_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))

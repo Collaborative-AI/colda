@@ -67,7 +67,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         # 1. find_recipient() (in find_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
@@ -139,7 +139,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         # 1. find_recipient() (in find_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': json.dumps(list_content)})
+        data = json.dumps({'recipient_id_list': list_content})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 

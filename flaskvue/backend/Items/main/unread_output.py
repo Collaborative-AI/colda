@@ -32,11 +32,12 @@ def update_output_notification():
     return_dict = {}
     for i in task_id_list:
         record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == i).order_by(Message.output_timestamp.desc()).first()
-        cur_rounds = record.rounds
-        return_dict[str(i)] = cur_rounds
+        if record:
+            cur_rounds = record.rounds
+            return_dict[str(i)] = cur_rounds
 
-        if record.output_timestamp > lastest_time:
-            lastest_time = record.output_timestamp
+            if record.output_timestamp > lastest_time:
+                lastest_time = record.output_timestamp
 
     # If can be omitted
     if lastest_time > last_output_read_time:
@@ -70,7 +71,7 @@ def get_user_output(id):
 
     # only call this function with id that is sponsor
     query = Matched.query.filter(Matched.task_id == task_id).first()
-    if query.sponsor_id != id:
+    if int(query.sponsor_id) != id:
         return error_response(403)
 
     # check if the caller and the id is the same

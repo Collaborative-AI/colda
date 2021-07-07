@@ -8,6 +8,9 @@
     <button @click="tiqu()">tiqu</button>
 
     <button @click="test_async()">test async</button>
+    <button @click="sync()">Sync</button>
+    <button @click="interval()">test interval</button>
+    <button @click="set()">test set</button>
     <button @click="delete_all_rows()">delete_all_rows</button>
     <div v-for="task_id in task_id_list" :key="task_id.id">
       {{ task_id }}
@@ -63,6 +66,120 @@ export default {
   },
 
   methods: {
+
+    set() {
+      console.log("1")
+      let arr =  new Array(5);   
+        // for(let i = 0;i < arr.length; i++){
+        //   arr[i] = new Array(5);    
+        // }
+        arr[0] = 1
+        arr[1] = 5
+        arr[2] = 1
+        arr[3] = 1
+        arr[4] = 2
+      console.log("2", arr.length)
+      let mySet = new Set()
+      for (let i = 0; i < arr.length; i++){
+        console.log("arr[i]", arr[i])
+        mySet.add(arr[i])
+      }
+      console.log("3",mySet.size)
+      let myArr = Array.from(mySet)
+      console.log("4", myArr.length)
+      for (let i = 0; i < myArr.length; i++){
+        console.log("myArr[i]", myArr[i])
+      }
+      console.log("5")
+    },
+    interval() {
+      let count = 1;
+      let getTime = window.performance;
+      let startTime = getTime.now();
+      console.log("starttune",startTime)
+
+      function sleep(time) {
+        let startTime = window.performance.now();
+        while (window.performance.now() - startTime < time) {}
+      }
+
+      function ce() {
+        console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
+        // setTimeout(() => {
+        //   // let startTime = window.performance.now();
+        //   console.log(`任务队列函数${count}${startTime}`)
+        // }, 700)
+        // {params}
+          // axios.get('/ceshi/')
+          //   .then((response) => {
+          //   // handle success
+          //     console.log("11111111111")
+          //     sleep(700)
+          //     console.log("222222222")
+
+          //     // axios.get('/ceshi/')
+          //     //   .then((response) => {
+          //     //   // handle success
+          //     //   console.log("33333")
+          //     //   sleep(500)
+          //     //   console.log("4444")
+          //     //   })
+          //     //   .catch((error) => {
+          //     //   })
+          // })
+          // .catch((error) => {
+          // })
+          // function doubleAfter2seconds(num) {
+          //     return new Promise((resolve, reject) => {
+          //         setTimeout(() => {
+          //             resolve(2 * num)
+          //         }, 500);
+          //     } )
+          // }
+
+          // async function testResult() {
+          //   let result1 = await doubleAfter2seconds(30);
+          //   let result2 = await doubleAfter2seconds(40);
+          //   console.log(result1);
+          //   console.log(result2)
+          // }
+
+          // testResult();
+        sleep(500); // 程序滞留500ms
+        console.log(`第${count}次结束 ${getTime.now() - startTime}`); // 显示结束时间
+        count += 1;
+        console.log("--------------------")
+        setTimeout(function(){ce()}, 300);
+      }
+
+      ce()
+
+    },
+    sync() {
+      const Match_folder = 'Local_Data/' + '5' + '/' + '66666' + '/' + 'Match/'
+
+      fs.mkdirSync(Match_folder, { recursive: true})
+      fs.mkdirSync(Match_folder, { recursive: true})
+
+      const filename = 'Sent_Initial_Situation.csv';
+          
+      // temporary data
+      let arr =  new Array(5);   
+      for(let i = 0;i < arr.length; i++){
+        arr[i] = new Array(5);    
+      }
+      arr[0][1] = "Sponsor Situation File"
+      arr[0][2] = 2
+      arr = arr.join('\n');
+
+      let res = fs.writeFileSync(Match_folder + filename, arr);
+      console.log(res);
+
+      let data = fs.readFileSync(Match_folder + filename, 'utf-8');
+      console.log(data.toString());
+
+    },
+
     delete_all_rows() {
       axios.get('/delete_all_rows/')
         .then((response) => {
@@ -89,6 +206,13 @@ export default {
     },
 
     test3() {
+
+      // fs.readFile(Round0_folder + filename, 'utf8' , (err, data) => {
+      // })
+      // .catch((error) => {
+      //  })
+
+
           // this.$axios.post('/send_output/', payload)
           //   .then((response) => {
           //   // handle success

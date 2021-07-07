@@ -31,7 +31,7 @@ axios.interceptors.request.use(function (config) {
     // return Qs.stringify(config.data.file, {arrayFormat: 'repeat'})
     
   
-  console.log("config", config)
+  // console.log("config", config)
   return config
 }, function (error) {
   // Do something with request error
@@ -41,7 +41,7 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
   // Do something with response data
-  console.log("response", response)
+  console.log("axios response", response)
   return response
 }, function (error) {
   // Do something with response error

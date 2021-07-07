@@ -7,6 +7,8 @@ app = create_app(Config)
 
 @app.cli.command()
 def test():
+   # flask test
+   # flask run
     '''Run the unit tests.'''
     import unittest
     tests = unittest.TestLoader().discover('tests')  # 找到 tests 目录

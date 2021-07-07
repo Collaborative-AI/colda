@@ -3,6 +3,7 @@
 2. pipenv shell
 
 3. flask run
+（进入到Apollo/flaskvue/backend， 1，2为安装和启动环境， 3为启动， 测试为flask test）
 
 4. Install Package: pipenv install + package name
 
@@ -29,18 +30,18 @@
       2. id=5 username=testb email=127@gmail.com password=123
       2. id=6 username=testc password=123
 
-8. unittest must start with test(filename)
+8. unittest must start with test(filename )
 
 
 
-Second way:
+<!-- Second way:
 1. configure the make_shell_context() in manage.py (Start a python interpreter containing the context of the application)
 
 2. Execution:
         Use HTTPie to test the API (need 2 terminals)
             1. run the flask in one terminal (1-3 steps) (must run the server)
             2. Do 1-2 steps in another terminal, then command. Example: 
-            http POST http://localhost:5000/users username=test1 password=123
+            http POST http://localhost:5000/users username=test1 password=123 -->
 
 
 

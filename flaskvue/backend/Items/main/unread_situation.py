@@ -152,7 +152,12 @@ def send_output():
     message.output = json.dumps(output)
 
     for i in range(len(queries)):
-      if queries[i].recipient_id_pair == g.current_user.id:
+      if int(queries[i].recipient_id_pair) == g.current_user.id:
+        print("----------queries[i].recipient_random_id_pair", queries[i].recipient_random_id_pair)
+        print("----------queries[i].recipient_id_pair", queries[i].recipient_id_pair)
+        print("----------queries[i].sponsor_id", queries[i].sponsor_id)
+        print("----------queries[i].sponsor_random_id", queries[i].sponsor_random_id)
+        # print("----------queries[i].output", queries[i].output)
         message.sender_random_id = queries[i].recipient_random_id_pair
 
     db.session.add(message)
@@ -167,6 +172,7 @@ def send_output():
         if output_upload == recipient_num:
             user = User.query.get_or_404(queries[0].sponsor_id)
             # send message notification to the sponsor when all recipient upload the output
+            print("-----------------sendoutput", g.current_user.id)
             user.add_notification('unread output', user.new_output())
             db.session.commit()
 

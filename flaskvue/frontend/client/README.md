@@ -1,5 +1,10 @@
 # client
 
+1. 启动步骤:
+    1. 进入/Apollo/flaskvue/frontend/client后，npm install
+    2. npm run electron:serve
+
+
 ## Project setup
 ```
 npm install
@@ -24,7 +29,9 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 vue add electron-builder
-npm run electron:serve
+
+
+
 
 
 

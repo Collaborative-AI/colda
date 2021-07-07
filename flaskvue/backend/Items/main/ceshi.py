@@ -18,12 +18,12 @@ from Items.main.auth import token_auth
 def ceshi():
   print("jinlaile!!!!!")
 
-  zzz = id
-  print("aaaa", zzz)
-  args = request.args.get("id")
-  print("oo", args)
-  file_obj = request.get_json()
-  print(file_obj)
+  # zzz = id
+  # print("aaaa", zzz)
+  # args = request.args.get("id")
+  # print("oo", args)
+  # file_obj = request.get_json()
+  # print(file_obj)
 
   # print("zhuanhuan", json.loads(file_obj['file']))
 

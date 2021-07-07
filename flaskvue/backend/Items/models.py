@@ -213,6 +213,7 @@ class User(PaginatedAPIMixin, db.Model):
         query = Message.query.filter_by(recipient_id=self.id).filter(
             Message.output_timestamp > last_output_time).all()
         
+        print("new_output---------------------",self.id)
         task_id_list = []
         sender_random_id_list = []
         for i in range(len(query)):

@@ -244,7 +244,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         # 9. sponsor and recipient call: get_user_match_id() (in unread_match_id.py), get matched id file
         headers = self.get_token_auth_headers('unittest', '123')
         data = json.dumps({'task_id': task_id})
-        response = self.client.get('/users/1/match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/1/match_id_file/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertIsNotNone(json_response.get('match_id_file'))
@@ -256,7 +256,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
 
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'task_id': task_id})
-        response = self.client.get('/users/2/match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/2/match_id_file/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertIsNotNone(json_response.get('match_id_file'))
@@ -267,7 +267,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
 
         headers = self.get_token_auth_headers('unittest3', '123')
         data = json.dumps({'task_id': task_id})
-        response = self.client.get('/users/3/match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/3/match_id_file/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertIsNotNone(json_response.get('match_id_file'))

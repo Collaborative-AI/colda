@@ -83,7 +83,8 @@ class FindAPITestCase(unittest.TestCase):
         # 附带JWT到请求头中
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': list_content})
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
@@ -99,6 +100,7 @@ class FindAPITestCase(unittest.TestCase):
             self.assertEqual(queries[i].sponsor_id, 1) 
             self.assertEqual(queries[i].task_id, task_id)
             self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
+            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 4, 1]))
 
         # check the row that sponsor to sponsor
         queries = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 1).all()

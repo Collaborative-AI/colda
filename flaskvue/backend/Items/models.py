@@ -372,6 +372,7 @@ class Matched(PaginatedAPIMixin, db.Model):
     recipient_id_pair = db.Column(db.Integer)
 
     Matched_id_file =  db.Column(db.Text, nullable=True)
+    matched_done = db.Column(db.Integer, nullable=True)
     sponsor_random_id = db.Column(db.String(120))
     recipient_random_id_pair = db.Column(db.String(120))
 

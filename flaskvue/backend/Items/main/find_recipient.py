@@ -24,8 +24,19 @@ def find_recipient():
         return bad_request('You must post JSON data.')
     if 'recipient_id_list' not in data or not data.get('recipient_id_list'):
         return bad_request('recipient_id_list is required.')
+    if 'id_file' not in data or not data.get('id_file'):
+        return bad_request('id_file is required.')
 
     recipient_id_list = data['recipient_id_list']
+    id_file = data['id_file']
+    
+    # extract ID
+    data_array_id = set()
+    for i in range(1,len(id_file)-1):
+        data_array_id.add(id_file[i][0])
+    
+    data_array_id = list(data_array_id)
+
     print("recipient_id_list", recipient_id_list)
 
     # Now hardcode
@@ -33,9 +44,9 @@ def find_recipient():
 
     # Unique in each task
     task_id = str(uuid.uuid4())
-
     sponsor_random_id = str(uuid.uuid4())
-    print(g.current_user.id, type(g.current_user.id),"1")
+
+    # print(g.current_user.id, type(g.current_user.id),"1")
     for recipient_id in recipient_id_list:
         user = User.query.get_or_404(recipient_id)
       
@@ -48,12 +59,14 @@ def find_recipient():
 
         recipient_random_id = str(uuid.uuid4())
         matched.recipient_random_id_pair = recipient_random_id
+
+        matched.Matched_id_file = json.dumps(data_array_id)
         db.session.add(matched)
         db.session.commit()
         # send matched notification to the recipient
         user.add_notification('unread request', user.new_request()) 
         db.session.commit()
-    print(g.current_user.id, type(g.current_user.id),"2")
+    # print(g.current_user.id, type(g.current_user.id),"2")
     # A A
     user = User.query.get_or_404(g.current_user.id)
     matched = Matched()
@@ -62,19 +75,25 @@ def find_recipient():
     matched.task_id = task_id
     matched.sponsor_random_id = sponsor_random_id
     matched.recipient_random_id_pair = sponsor_random_id
-    
+    matched.Matched_id_file = json.dumps(data_array_id)
     db.session.add(matched) 
-    print(g.current_user.id, type(g.current_user.id),"3")                       
+    # print(g.current_user.id, type(g.current_user.id),"3")                       
     db.session.commit()
 
-    print(g.current_user.id, type(g.current_user.id),"4")
+    # print(g.current_user.id, type(g.current_user.id),"4")
 
-    query = Matched.query.filter(Matched.task_id == task_id).all()
-    for row in query:
-        print("all_find_recipient_query", row.sponsor_id, type(row.sponsor_id))
+    # query = Matched.query.filter(Matched.task_id == task_id).all()
+    # for row in query:
+    #     print("all_find_recipient_query", row.sponsor_id, type(row.sponsor_id), row.recipient_id_pair, type(row.recipient_id_pair))
 
-    query = Matched.query.filter(Matched.task_id == task_id).first()
-    print("find_recipient_query", query.sponsor_id, type(query.sponsor_id))
+    # record1 = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair == 2, Matched.task_id == task_id).first()
+    # print("1111111", json.loads(record1.Matched_id_file))
+
+    # record2 = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair == str(2), Matched.task_id == task_id).first()
+    # print("22222", json.loads(record2.Matched_id_file))
+    
+    # query = Matched.query.filter(Matched.task_id == task_id).first()
+    # print("find_recipient_query", query.sponsor_id, type(query.sponsor_id))
 
     data = {"task_id": task_id, 'recipient_num': len(recipient_id_list)}
     

@@ -40,10 +40,10 @@
           <li class="nav-item g-mr-20">
             <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Send to B</router-link>
           </li>
-          <div v-if="sponsor_request_show">
+          <!-- <div v-if="sponsor_request_show">
             <input type="file" name="csvfile" ref="csvData" />
             <input type="button" @click="sponsor_csv()" value="JS转换"/>
-          </div>
+          </div> -->
 
           <div v-if="unread_request_show">
             <input type="file" name="csvfile" ref="csvData" />
@@ -96,9 +96,7 @@ export default {
   data () {
     return {
       sharedState: store.state,
-      sponsor_request_show: false,
       unread_request_show: false,
-      task_id: null,
       recipient_num: 0,
       max_round: 4.
     }
@@ -113,16 +111,28 @@ export default {
     // sponsor find recipient
     find_recipient () {
       
+      const sponsor_data_folder = 'Sponsor_Data/'
+      fs.mkdirSync(sponsor_data_folder, { recursive: true})
+
+      const filename = 'shiyan.csv'
+      const data = fs.readFileSync(sponsor_data_folder + filename,
+        {encoding:'utf8', flag:'r'});
+      
+      let data_array = data.split("\n")
+
       const payload = {
-        recipient_id_list: [5]
+        recipient_id_list: [5],
+        id_file: data_array
       }
-      // PROMISE
+      
       this.$axios.post('/find_recipient/', payload)
         .then((response) => {
           // handle success
           console.log("Sponsor calls for help", response)
           this.$toasted.success(`Sponsor calls for help`, { icon: 'fingerprint' })
-          this.task_id = response.data.task_id
+
+          console.log("Sponsor sends id file")
+          this.$toasted.success(`Sponsor sends id file`, { icon: 'fingerprint' })
 
           // Create 'Local_Data/id/task_id/' folder
           const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
@@ -131,8 +141,8 @@ export default {
           console.log("Sponsor creates " + new_address)
           this.$toasted.success("Sponsor creates " + new_address, { icon: 'fingerprint' })
           
-          // Upload the matching ID file
-          this.sponsor_request_show = true
+          // // Upload the matching ID file
+          // this.sponsor_request_show = true
 
         })
         .catch((error) => {
@@ -143,60 +153,105 @@ export default {
         })
     },
 
-    sponsor_csv() {
-      csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
-        this.sponsor_request_show = false
+    // sponsor_csv() {
+    //   csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
+    //     this.sponsor_request_show = false
 
-        console.log('sponsor数据', res)
-        const payload = {
-          task_id: this.task_id,
-          file: JSON.stringify(res),
-        }
+    //     console.log('sponsor数据', res)
+    //     const payload = {
+    //       task_id: this.task_id,
+    //       file: res,
+    //     }
 
-      this.$axios.post('/match_sponsor_id/', payload)
-        .then((response) => {
-        // handle success
-        console.log(`Sponsor sends the csv file.`, response)
-        this.$toasted.success(`Sponsor sends the csv file.`, { icon: 'fingerprint' })
-      })
-      .catch((error) => {
-      // handle error
-        console.log(error)
-      // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-      })
-    })      
-    },
+    //   this.$axios.post('/match_sponsor_id/', payload)
+    //     .then((response) => {
+    //     // handle success
+    //     console.log(`Sponsor sends the csv file.`, response)
+    //     this.$toasted.success(`Sponsor sends the csv file.`, { icon: 'fingerprint' })
+    //   })
+    //   .catch((error) => {
+    //   // handle error
+    //     console.log(error)
+    //   // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+    //   })
+    // })      
+    // },
 
     unread_request(sender_random_id_list, task_id_list) {
-
-      console.log("this.unread_request")
       
-      this.unread_request_show = true
-      this.task_id = task_id_list[0]
-    },
-
-    recipient_csv() {
-      
-      csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
-      this.unread_request_show  = false
-
-      console.log('recipient数据', res)
-      const payload = {
-        task_id: this.task_id,
-        file: JSON.stringify(res),
+      const update_request_notification = {
+          sender_random_id_list: sender_random_id_list,
+          task_id_list: task_id_list,
       }
 
-      this.$axios.post('/match_recipient_id/', payload)
+      this.$axios.post('/update_request_notification/', update_request_notification)
         .then((response) => {
-        // handle success
-        console.log(`Recipient sends the csv file.`, response)
-        this.$toasted.success(`Recipient sends the csv file.`, { icon: 'fingerprint' })
+          // handle success            
+          console.log("Update request notification response", response)
+          this.$toasted.success("Update the request notification", { icon: 'fingerprint' })
+
+          for (let i = 0; i < sender_random_id_list.length; i++){
+            // check if the current client is sponsor or not of the specific task
+            // handle success
+            const recipient_data_folder = 'Recipient_Data/'
+            fs.mkdirSync(recipient_data_folder, { recursive: true})
+
+            const filename = 'shiyan.csv'
+            const data = fs.readFileSync(recipient_data_folder + filename,
+              {encoding:'utf8', flag:'r'});
+      
+            let data_array = data.split("\n")
+
+            const payload = {
+              task_id: task_id_list[i],
+              file: data_array
+            }
+            
+            this.$axios.post('/match_recipient_id/', payload)
+              .then((response) => {
+                // handle success
+                console.log("Recipient uploads id file", response)
+                this.$toasted.success(`Recipient uploads id file`, { icon: 'fingerprint' })
+              })
+              .catch((error) => {
+                // handle error
+                console.log(error)
+                // console.log(error.response.data)
+                // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+              })
+          }
         })
         .catch((error) => {
+          // handle error
           console.log(error)
+          // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
         })
-      }) 
+
+
     },
+
+    // recipient_csv() {
+      
+    //   csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
+    //   this.unread_request_show  = false
+
+    //   console.log('recipient数据', res)
+    //   const payload = {
+    //     task_id: this.task_id,
+    //     file: res,
+    //   }
+
+    //   this.$axios.post('/match_recipient_id/', payload)
+    //     .then((response) => {
+    //     // handle success
+    //     console.log(`Recipient sends the csv file.`, response)
+    //     this.$toasted.success(`Recipient sends the csv file.`, { icon: 'fingerprint' })
+    //     })
+    //     .catch((error) => {
+    //       console.log(error)
+    //     })
+    //   }) 
+    // },
 
     unread_match_id(sender_random_id_list, task_id_list) {
       
@@ -408,7 +463,6 @@ export default {
 
 
 
-      
       // 1. local db
 
 
@@ -754,7 +808,7 @@ export default {
               setTimeout(function(){
                 console.log("polling again")
                 polling()
-              }, 10000);
+              }, 15000);
             
             })
             .catch((error) => {
@@ -764,7 +818,7 @@ export default {
         }else{
           setTimeout(function(){
             polling()
-          }, 10000);
+          }, 15000);
         }
         console.log(`第${count}次结束 ${getTime.now() - startTime}`); // 显示开始时间
         count += 1

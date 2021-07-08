@@ -24,10 +24,6 @@ def update_output_notification():
     task_id_list = data.get('task_id_list')
     task_id_list = set(task_id_list)
 
-    # Update the Notification 
-    user = User.query.get_or_404(g.current_user.id)
-    last_output_read_time = user.last_output_read_time or datetime(1900, 1, 1)
-
     lastest_time = datetime(1900, 1, 1)
     return_dict = {}
     for i in task_id_list:
@@ -39,7 +35,9 @@ def update_output_notification():
             if record.output_timestamp > lastest_time:
                 lastest_time = record.output_timestamp
 
-    # If can be omitted
+    # Update the Notification 
+    user = User.query.get_or_404(g.current_user.id)
+    last_output_read_time = user.last_output_read_time or datetime(1900, 1, 1)
     if lastest_time > last_output_read_time:
         user.last_output_read_time = lastest_time
 

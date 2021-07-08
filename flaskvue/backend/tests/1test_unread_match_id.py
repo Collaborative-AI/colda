@@ -75,13 +75,13 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         # 2. Recipient upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
         file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_recipient_id/', headers=headers, data=data)
 
         # 3. Sponsor upload, match the same ID
         headers = self.get_token_auth_headers('unittest', '123')
         file_content = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
-        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_sponsor_id/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -183,18 +183,18 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         # 2. Recipient upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
         file_content = [['a','b','c'],[0,1,2],[4,5,6],[2,3,6],[]]
-        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_recipient_id/', headers=headers, data=data)
 
         headers = self.get_token_auth_headers('unittest3', '123')
         file_content = [['a','b','c'],[2,1,2],[3,5,6],[4,3,6],[5],[12],[18],[]]
-        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_recipient_id/', headers=headers, data=data)
 
         # 3. Sponsor upload, match the same ID
         headers = self.get_token_auth_headers('unittest', '123')
         file_content = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
-        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_sponsor_id/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -319,13 +319,13 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
          # 2. Recipient upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
         file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_recipient_id/', headers=headers, data=data)
 
         # 3. Sponsor upload, match the same ID
         headers = self.get_token_auth_headers('unittest', '123')
         file_content = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
-        data = json.dumps({'task_id': task_id, 'file': json.dumps(file_content)})
+        data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_sponsor_id/', headers=headers, data=data)
         
         # 4. check sponsor: sponsor call get_user_match_id()

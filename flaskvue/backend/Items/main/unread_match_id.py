@@ -34,7 +34,6 @@ def update_match_id_notification():
 
     check_dict = {}
     lastest_time = datetime(1900, 1, 1)
-    last_matched_file_read_time = datetime(1900, 1, 1)
 
     for i in range(len(task_id_list)):
         # check if the current client is the sponsor
@@ -48,13 +47,6 @@ def update_match_id_notification():
             if int(query.sponsor_id) == g.current_user.id:
                 isSponsor = True
 
-            # Update the Notification
-            user = User.query.get_or_404(g.current_user.id)
-            last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
-
-            # if isSponsor:
-            #     record = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id_list[i]).order_by(Matched.match_id_timestamp.desc()).first()
-            # else:
             record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
 
             # get the latest output timestamp
@@ -69,6 +61,9 @@ def update_match_id_notification():
                 print("recipient")
                 check_dict[task_id_list[i]] = 0
 
+     # Update the Notification
+    user = User.query.get_or_404(g.current_user.id)
+    last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
     if lastest_time > last_matched_file_read_time:
         user.last_matched_file_read_time = lastest_time
 

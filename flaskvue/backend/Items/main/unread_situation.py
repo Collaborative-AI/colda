@@ -30,7 +30,6 @@ def update_situation_notification():
     check_dict = {}
     rounds_dict = {}
     lastest_time = datetime(1900, 1, 1)
-    last_situation_read_time = datetime(1900, 1, 1)
 
     for i in range(len(task_id_list)):
         # check if the current client is the sponsor
@@ -39,10 +38,6 @@ def update_situation_notification():
         if query:
             if int(query.sponsor_id) == g.current_user.id:
                 isSponsor = True
-
-            # Update the Notification
-            user = User.query.get_or_404(g.current_user.id)
-            last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
 
             record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
             # record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).all()
@@ -61,6 +56,9 @@ def update_situation_notification():
             
             rounds_dict[task_id_list[i]] = cur_rounds
 
+    # Update the Notification
+    user = User.query.get_or_404(g.current_user.id)
+    last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
     if lastest_time > last_situation_read_time:
         user.last_situation_read_time = lastest_time
 

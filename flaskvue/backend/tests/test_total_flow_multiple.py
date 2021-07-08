@@ -7,7 +7,7 @@ from Items.models import User, Message, Notification, Matched
 from tests import TestConfig
 
 
-class Test_total_flow_APITestCase(unittest.TestCase):
+class Test_total_flow_multiple_APITestCase(unittest.TestCase):
 
     def setUp(self):
         '''每个测试之前执行'''
@@ -46,7 +46,7 @@ class Test_total_flow_APITestCase(unittest.TestCase):
             'Content-Type': 'application/json'
         }
     
-    def test_total_flow_once(self):
+    def test_total_flow_multiple(self):
 
         # 1 sponsor and 2 recipients:
 
@@ -62,6 +62,8 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         # 8. sponsor and recipients call update_match_id_notification() (in unread_match_id.py) and check updated notification (unread match id => 0)
         # 9. sponsor and recipient call: get_user_match_id() (in unread_match_id.py), get matched id file
         # 10. sponsor calls send_situation() (in send_situation.py)
+
+        # while loop (multiple rounds), test 3 rounds
         # 11. sponsor and recipients check notification (unread situation => 1)
          
         # 12. sponsor and recipients call update_situation_notification() (in unread_situation.py) and check updated notification (unread situation => 0)
@@ -86,7 +88,8 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         # 1. sponsor call: find_recipient() (in finc_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': list_content})
+        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19],[]]
+        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -99,9 +102,9 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest2', '123')
         response = self.client.get('/users/2/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response[-1]['name'], "unread request")
-        self.assertEqual(json_response[-1]['payload'], 1)
+        json_response2 = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response2[-1]['name'], "unread request")
+        self.assertEqual(json_response2[-1]['payload'], 1)
 
         # User 3 cannot check the notification of user 2
         headers = self.get_token_auth_headers('unittest3', '123')
@@ -112,21 +115,26 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest3', '123')
         response = self.client.get('/users/3/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response[-1]['name'], "unread request")
-        self.assertEqual(json_response[-1]['payload'], 1)
+        json_response3 = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response3[-1]['name'], "unread request")
+        self.assertEqual(json_response3[-1]['payload'], 1)
 
-        # 4. recipients call: match_recipient_id() (in match_id.py) and upload file
-        # Recipients upload ID file
+        # 4. update request notification
         headers = self.get_token_auth_headers('unittest2', '123')
-        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[12],[16],[17],[18],[]]
-        data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+        data = json.dumps({'sender_random_id_list': json_response2[-1]['sender_random_id_list'], 
+            'task_id_list': json_response2[-1]['task_id_list']})
+        response = self.client.post('/update_request_notification/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['update request successfully'], "true")
 
         headers = self.get_token_auth_headers('unittest3', '123')
-        file_content = [['a','b','c'],[2,1,2],[3,5,6],[4,3,6],[5],[12],[18],[]]
-        data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+        data = json.dumps({'sender_random_id_list': json_response3[-1]['sender_random_id_list'], 
+            'task_id_list': json_response3[-1]['task_id_list']})
+        response = self.client.post('/update_request_notification/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['update request successfully'], "true")
 
         # 5. recipients check updated notification (unread_request => 0)
         # Check the Notification of user 2
@@ -145,13 +153,17 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[-1]['name'], "unread request")
         self.assertEqual(json_response[-1]['payload'], 0)
 
-        # 6. sponsor call: match_sponsor_id() (in match_id.py) and upload file
-        headers = self.get_token_auth_headers('unittest', '123')
-        file_content = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19],[]]
+        # 6. recipients call: match_recipient_id() (in match_id.py) and upload file
+        # Recipients upload ID file
+        headers = self.get_token_auth_headers('unittest2', '123')
+        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[12],[16],[17],[18],[]]
         data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_sponsor_id/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
+        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+
+        headers = self.get_token_auth_headers('unittest3', '123')
+        file_content = [['a','b','c'],[2,1,2],[3,5,6],[4,3,6],[5],[12],[18],[]]
+        data = json.dumps({'task_id': task_id, 'file': file_content})
+        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
 
         # 7. sponsor and recipients check notification (unread match id) (unread match id => 1)
         # Check the Notification of sponsor
@@ -290,164 +302,175 @@ class Test_total_flow_APITestCase(unittest.TestCase):
             self.assertEqual(queries[i].sender_id, 1)
             self.assertEqual(json.loads(queries[i].situation), [[1,2,3], [4,5,6], [7,8,9]])
 
-        # 11. sponsor and recipients check notification (unread situation => 1)
-        headers = self.get_token_auth_headers('unittest', '123')
-        response = self.client.get('/users/1/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response_1 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response_1), 2)
-        self.assertEqual(json_response_1[-1]['name'], "unread situation")
-        self.assertEqual(json_response_1[-1]['payload'], 1)
+        test_round = 0
+        while test_round < 3:
+            print("test_round", test_round)
+            # 11. sponsor and recipients check notification (unread situation => 1)
+            headers = self.get_token_auth_headers('unittest', '123')
+            response = self.client.get('/users/1/notifications/', headers=headers)
+            self.assertEqual(response.status_code, 200)
+            json_response_1 = json.loads(response.get_data(as_text=True))
+            if test_round == 0:
+                self.assertEqual(len(json_response_1), 2)
+            else:
+                self.assertEqual(len(json_response_1), 3)
+            
+            self.assertEqual(json_response_1[-1]['name'], "unread situation")
+            self.assertEqual(json_response_1[-1]['payload'], 1)
 
-        headers = self.get_token_auth_headers('unittest2', '123')
-        response = self.client.get('/users/2/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response_2 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response_2), 3)
-        self.assertEqual(json_response_2[-1]['name'], "unread situation")
-        self.assertEqual(json_response_2[-1]['payload'], 1)
+            headers = self.get_token_auth_headers('unittest2', '123')
+            response = self.client.get('/users/2/notifications/', headers=headers)
+            self.assertEqual(response.status_code, 200)
+            json_response_2 = json.loads(response.get_data(as_text=True))
+            self.assertEqual(len(json_response_2), 3)
+            self.assertEqual(json_response_2[-1]['name'], "unread situation")
+            self.assertEqual(json_response_2[-1]['payload'], 1)
 
-        headers = self.get_token_auth_headers('unittest3', '123')
-        response = self.client.get('/users/3/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response_3 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response_3), 3)
-        self.assertEqual(json_response_3[-1]['name'], "unread situation")
-        self.assertEqual(json_response_3[-1]['payload'], 1)
+            headers = self.get_token_auth_headers('unittest3', '123')
+            response = self.client.get('/users/3/notifications/', headers=headers)
+            self.assertEqual(response.status_code, 200)
+            json_response_3 = json.loads(response.get_data(as_text=True))
+            self.assertEqual(len(json_response_3), 3)
+            self.assertEqual(json_response_3[-1]['name'], "unread situation")
+            self.assertEqual(json_response_3[-1]['payload'], 1)
 
-        # 12. sponsor and recipients call update_situation_notification() (in unread_situation.py) and check updated notification (unread situation => 0)
-        headers = self.get_token_auth_headers('unittest', '123')
-        data = json.dumps({'sender_random_id_list': json_response_1[-1]['sender_random_id_list'], 
-            'task_id_list': json_response_1[-1]['task_id_list']})
-        response = self.client.post('/update_situation_notification/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response['check_sponsor']), 1)
-        self.assertEqual(len(json_response['rounds']), 1)
-        self.assertEqual(json_response['check_sponsor'][str(task_id)], 1)
-        self.assertEqual(json_response['rounds'][str(task_id)], 0)
+            # 12. sponsor and recipients call update_situation_notification() (in unread_situation.py) and check updated notification (unread situation => 0)
+            headers = self.get_token_auth_headers('unittest', '123')
+            data = json.dumps({'sender_random_id_list': json_response_1[-1]['sender_random_id_list'], 
+                'task_id_list': json_response_1[-1]['task_id_list']})
+            response = self.client.post('/update_situation_notification/', headers=headers, data=data)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(len(json_response['check_sponsor']), 1)
+            self.assertEqual(len(json_response['rounds']), 1)
+            self.assertEqual(json_response['check_sponsor'][str(task_id)], 1)
+            self.assertEqual(json_response['rounds'][str(task_id)], test_round)
 
-        headers = self.get_token_auth_headers('unittest2', '123')
-        data = json.dumps({'sender_random_id_list': json_response_2[-1]['sender_random_id_list'], 
-            'task_id_list': json_response_2[-1]['task_id_list']})
-        response = self.client.post('/update_situation_notification/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response['check_sponsor']), 1)
-        self.assertEqual(len(json_response['rounds']), 1)
-        self.assertEqual(json_response['check_sponsor'][str(task_id)], 0)
-        self.assertEqual(json_response['rounds'][str(task_id)], 0)
+            headers = self.get_token_auth_headers('unittest2', '123')
+            data = json.dumps({'sender_random_id_list': json_response_2[-1]['sender_random_id_list'], 
+                'task_id_list': json_response_2[-1]['task_id_list']})
+            response = self.client.post('/update_situation_notification/', headers=headers, data=data)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(len(json_response['check_sponsor']), 1)
+            self.assertEqual(len(json_response['rounds']), 1)
+            self.assertEqual(json_response['check_sponsor'][str(task_id)], 0)
+            self.assertEqual(json_response['rounds'][str(task_id)], test_round)
 
-        headers = self.get_token_auth_headers('unittest3', '123')
-        data = json.dumps({'sender_random_id_list': json_response_3[-1]['sender_random_id_list'], 
-            'task_id_list': json_response_3[-1]['task_id_list']})
-        response = self.client.post('/update_situation_notification/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response['check_sponsor']), 1)
-        self.assertEqual(len(json_response['rounds']), 1)
-        self.assertEqual(json_response['check_sponsor'][str(task_id)], 0)
-        self.assertEqual(json_response['rounds'][str(task_id)], 0)
+            headers = self.get_token_auth_headers('unittest3', '123')
+            data = json.dumps({'sender_random_id_list': json_response_3[-1]['sender_random_id_list'], 
+                'task_id_list': json_response_3[-1]['task_id_list']})
+            response = self.client.post('/update_situation_notification/', headers=headers, data=data)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(len(json_response['check_sponsor']), 1)
+            self.assertEqual(len(json_response['rounds']), 1)
+            self.assertEqual(json_response['check_sponsor'][str(task_id)], 0)
+            self.assertEqual(json_response['rounds'][str(task_id)], test_round)
 
-        headers = self.get_token_auth_headers('unittest', '123')
-        response = self.client.get('/users/1/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response), 2)
-        self.assertEqual(json_response[-1]['name'], "unread situation")
-        self.assertEqual(json_response[-1]['payload'], 0)
+            headers = self.get_token_auth_headers('unittest', '123')
+            response = self.client.get('/users/1/notifications/', headers=headers)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            if test_round == 0:
+                self.assertEqual(len(json_response_1), 2)
+            else:
+                self.assertEqual(len(json_response_1), 3)
+            self.assertEqual(json_response[-1]['name'], "unread situation")
+            self.assertEqual(json_response[-1]['payload'], 0)
 
-        headers = self.get_token_auth_headers('unittest2', '123')
-        response = self.client.get('/users/2/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response), 3)
-        self.assertEqual(json_response[-1]['name'], "unread situation")
-        self.assertEqual(json_response[-1]['payload'], 0)
+            headers = self.get_token_auth_headers('unittest2', '123')
+            response = self.client.get('/users/2/notifications/', headers=headers)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(len(json_response), 3)
+            self.assertEqual(json_response[-1]['name'], "unread situation")
+            self.assertEqual(json_response[-1]['payload'], 0)
 
-        headers = self.get_token_auth_headers('unittest3', '123')
-        response = self.client.get('/users/3/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response), 3)
-        self.assertEqual(json_response[-1]['name'], "unread situation")
-        self.assertEqual(json_response[-1]['payload'], 0)
-        
-        # 13. recipients call send_output() (in unread situation.py)
-        headers = self.get_token_auth_headers('unittest2', '123')
-        output_content = [[3,123,6], [88,5,6], [7,99,9]]
-        data = json.dumps({'output': output_content, 'rounds': 0, 'task_id': task_id})
-        response = self.client.post('/send_output/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['send_output'], "send output successfully")
-        queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == 0).all()
-        self.assertEqual(len(queries), 2)
-        self.assertEqual(queries[-1].sender_id, 2)
-        self.assertEqual(json.loads(queries[-1].output), [[3,123,6], [88,5,6], [7,99,9]])
+            headers = self.get_token_auth_headers('unittest3', '123')
+            response = self.client.get('/users/3/notifications/', headers=headers)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(len(json_response), 3)
+            self.assertEqual(json_response[-1]['name'], "unread situation")
+            self.assertEqual(json_response[-1]['payload'], 0)
+            
+            # 13. recipients call send_output() (in unread situation.py)
+            headers = self.get_token_auth_headers('unittest2', '123')
+            output_content = [[3,123,6], [88,5,6], [7,99,9]]
+            data = json.dumps({'output': output_content, 'rounds': test_round, 'task_id': task_id})
+            response = self.client.post('/send_output/', headers=headers, data=data)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(json_response['send_output'], "send output successfully")
+            queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == test_round).all()
+            self.assertEqual(len(queries), 2)
+            self.assertEqual(queries[-1].sender_id, 2)
+            self.assertEqual(json.loads(queries[-1].output), [[3,123,6], [88,5,6], [7,99,9]])
 
-        headers = self.get_token_auth_headers('unittest3', '123')
-        output_content = [[6,123,6], [88,5,6], [7,87.6,9]]
-        data = json.dumps({'output': output_content, 'rounds': 0, 'task_id': task_id})
-        response = self.client.post('/send_output/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['send_output'], "send output successfully")
-        queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == 0).all()
-        self.assertEqual(len(queries), 3)
-        self.assertEqual(queries[-1].sender_id, 3)
-        self.assertEqual(json.loads(queries[-1].output), [[6,123,6], [88,5,6], [7,87.6,9]])
+            headers = self.get_token_auth_headers('unittest3', '123')
+            output_content = [[6,123,6], [88,5,6], [7,87.6,9]]
+            data = json.dumps({'output': output_content, 'rounds': test_round, 'task_id': task_id})
+            response = self.client.post('/send_output/', headers=headers, data=data)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(json_response['send_output'], "send output successfully")
+            queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == test_round).all()
+            self.assertEqual(len(queries), 3)
+            self.assertEqual(queries[-1].sender_id, 3)
+            self.assertEqual(json.loads(queries[-1].output), [[6,123,6], [88,5,6], [7,87.6,9]])
 
-        # 14. sponsor check notification (unread output => 1)
-        headers = self.get_token_auth_headers('unittest', '123')
-        response = self.client.get('/users/1/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response), 3)
-        self.assertEqual(json_response[-2]['name'], "unread situation")
-        self.assertEqual(json_response[-2]['payload'], 0)
-        self.assertEqual(json_response[-1]['name'], "unread output")
-        self.assertEqual(json_response[-1]['payload'], 2)
+            # 14. sponsor check notification (unread output => 1)
+            headers = self.get_token_auth_headers('unittest', '123')
+            response = self.client.get('/users/1/notifications/', headers=headers)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(len(json_response), 3)
+            self.assertEqual(json_response[-2]['name'], "unread situation")
+            self.assertEqual(json_response[-2]['payload'], 0)
+            self.assertEqual(json_response[-1]['name'], "unread output")
+            self.assertEqual(json_response[-1]['payload'], 2)
 
-        # 15. sponsor calls: update_output_notification() (in unread_output.py) and check updated notification (unread output => 0)
-        data = json.dumps({'task_id_list': json_response[-1]['task_id_list']})
-        response = self.client.post('/update_output_notification/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        # check rounds
-        self.assertEqual(json_response[str(task_id)], 0)
+            # 15. sponsor calls: update_output_notification() (in unread_output.py) and check updated notification (unread output => 0)
+            data = json.dumps({'task_id_list': json_response[-1]['task_id_list']})
+            response = self.client.post('/update_output_notification/', headers=headers, data=data)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            # check rounds
+            self.assertEqual(json_response[str(task_id)], test_round)
 
-        response = self.client.get('/users/1/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response), 3)
-        self.assertEqual(json_response[-2]['name'], "unread situation")
-        self.assertEqual(json_response[-2]['payload'], 0)
-        self.assertEqual(json_response[-1]['name'], "unread output")
-        self.assertEqual(json_response[-1]['payload'], 0)
+            response = self.client.get('/users/1/notifications/', headers=headers)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(len(json_response), 3)
+            self.assertEqual(json_response[-2]['name'], "unread situation")
+            self.assertEqual(json_response[-2]['payload'], 0)
+            self.assertEqual(json_response[-1]['name'], "unread output")
+            self.assertEqual(json_response[-1]['payload'], 0)
 
-        # 16. sponsor calls: get_user_output() (in unread_output.py), gets output files
-        data = json.dumps({'task_id_list': json_response[-1]['task_id_list']})
-        data = json.dumps({'task_id': task_id, 'rounds': 0})
-        response = self.client.post('/users/1/output/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json.loads(json_response['output'][0]), [[3,123,6], [88,5,6], [7,99,9]])
-        self.assertEqual(json.loads(json_response['output'][1]), [[6,123,6], [88,5,6], [7,87.6,9]])
+            # 16. sponsor calls: get_user_output() (in unread_output.py), gets output files
+            data = json.dumps({'task_id_list': json_response[-1]['task_id_list']})
+            data = json.dumps({'task_id': task_id, 'rounds': 0})
+            response = self.client.post('/users/1/output/', headers=headers, data=data)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(json.loads(json_response['output'][0]), [[3,123,6], [88,5,6], [7,99,9]])
+            self.assertEqual(json.loads(json_response['output'][1]), [[6,123,6], [88,5,6], [7,87.6,9]])
 
-        # 17. sponsor calls: send_situation(), goes into new round 
-        headers = self.get_token_auth_headers('unittest', '123')
-        situation_content = [[3,2,1], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'task_id': task_id})
-        response = self.client.post('/send_situation/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
+            # 17. sponsor calls: send_situation(), goes into new round 
+            headers = self.get_token_auth_headers('unittest', '123')
+            situation_content = [[3,2,1], [4,5,6], [7,8,9]]
+            data = json.dumps({'situation': situation_content, 'task_id': task_id})
+            response = self.client.post('/send_situation/', headers=headers, data=data)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['message'], 'send situation successfully!')
-
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.rounds == 1).all()
-        self.assertEqual(len(queries), len(list_content)+1)
-        for i in range(len(queries)):
-            self.assertEqual(queries[i].rounds, 1)
-            self.assertEqual(queries[i].sender_id, 1)
-            self.assertEqual(json.loads(queries[i].situation), [[3,2,1], [4,5,6], [7,8,9]])
+            queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.rounds == test_round+1).all()
+            self.assertEqual(len(queries), len(list_content)+1)
+            for i in range(len(queries)):
+                self.assertEqual(queries[i].rounds, test_round+1)
+                self.assertEqual(queries[i].sender_id, 1)
+                self.assertEqual(json.loads(queries[i].situation), [[3,2,1], [4,5,6], [7,8,9]])
+            
+            test_round += 1

@@ -11,6 +11,7 @@
     <button @click="sync()">Sync</button>
     <button @click="interval()">test interval</button>
     <button @click="set()">test set</button>
+    <button @click="diaoyong()">test python shell</button>
     <button @click="delete_all_rows()">delete_all_rows</button>
     <div v-for="task_id in task_id_list" :key="task_id.id">
       {{ task_id }}
@@ -26,7 +27,11 @@
 //const { require } = window
 const fs = window.require('fs');
 const xlsx2json = window.require("node-xlsx");
+
 const address = 'tem/' + 'b/'
+// const ex = require("child_process").execFileSync;
+const ex = window.require("child_process");
+
 // const { require } = window
 // const fs = require('fs')
 // const path = require('path');
@@ -66,6 +71,62 @@ export default {
   },
 
   methods: {
+    diaoyong() {
+      // $.ajax({
+      //   type: "POST",
+      //   url: "~/pythoncode.py",
+      //   data: { param: text}
+      // }).done(function( o ) {
+      //   // do something
+      // });
+      // const pyshell =  window.require('python-shell');
+
+      // const filepath = "Python_Code/"
+      // const filename = "hello.py"
+
+      // pyshell.run(filepath+filename,  function  (err, results)  {
+      // if  (err)  throw err;
+      // console.log('hello.py finished.');
+      // console.log('results', results);
+      // });
+
+      // var exec = require('child_process').exec;
+      // var arg1 = 'hello';
+      // var arg2 = 'world';
+      // var filename = 'hello.py'
+      // exec('python'+' '+filename+' '+arg1+' '+arg2,function(err,stdout,stderr){
+      //     if(err)
+      //     {
+      //         console.log('stderr',err);
+      //     }
+      //     if(stdout)
+      //     {
+      //         console.log('stdout',stdout);
+      //     }
+
+      // });
+
+      // /home/qile/Documents/Apollo/flaskvue/frontend/client/
+      try{
+        let stdout = ex.execSync('python Python_Code/hello.py ' + 1 + ' ' + 2, {encoding: 'utf8'})
+        console.log('比较结果：', stdout);
+      }catch{
+        console.log("wrong")
+
+      }
+
+      const a = [];
+      a.push("11")
+      console.log(a)
+
+      let b = [];
+      b.push("2")
+      console.log(b)
+
+      
+
+
+    },
 
     set() {
       console.log("1")

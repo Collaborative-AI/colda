@@ -728,6 +728,12 @@ export default {
     window.unread_situation = this.unread_situation;
     window.unread_output = this.unread_output;
 
+    // window.unread_match_id_sponsor = this.unread_match_id_sponsor
+    // window.unread_match_id_recipient = this.unread_match_id_recipient
+    // window.unread_situation_sponsor = this.unread_situation_sponsor
+    // window.unread_situation_recipient = this.unread_situation_recipient
+    // window.unread_output_singleTask = this.unread_output_singleTask
+
     let count = 1;
     let getTime = window.performance;
     let startTime = getTime.now();
@@ -756,8 +762,7 @@ export default {
             .then((response) => {
               // handle success
               console.log("--------------------------------------------------------- new polling")
-
-
+              let promise_list = [];
               for(let i = 0; i < response.data.length; i++) {
                 sender_random_id_list = response.data[i].sender_random_id_list;
                 task_id_list = response.data[i].task_id_list;
@@ -768,24 +773,182 @@ export default {
                   case 'unread request':
                     unread_request_count = response.data[i].payload
                     console.log("unread_request_count", unread_request_count)
+
+                    // const update_request_notification = {
+                    //   sender_random_id_list: sender_random_id_list,
+                    //   task_id_list: task_id_list,
+                    // }
+
+                    // let unread_request_promise = this.$axios.post('/update_request_notification/', update_request_notification)
+                    // promise_list.push(unread_request_promise);
+
+                    // unread_request_promise.then((response) => {
+                    //     // handle success            
+                    //     console.log("Update request notification response", response)
+                    //     this.$toasted.success("Update the request notification", { icon: 'fingerprint' })
+
+                    //     for (let i = 0; i < sender_random_id_list.length; i++){
+                    //       // check if the current client is sponsor or not of the specific task
+                    //       // handle success
+                    //       const recipient_data_folder = 'Recipient_Data/'
+                    //       fs.mkdirSync(recipient_data_folder, { recursive: true})
+
+                    //       const filename = 'shiyan.csv'
+                    //       const data = fs.readFileSync(recipient_data_folder + filename,
+                    //         {encoding:'utf8', flag:'r'});
+                    
+                    //       let data_array = data.split("\n")
+
+                    //       const payload = {
+                    //         task_id: task_id_list[i],
+                    //         file: data_array
+                    //       }
+                          
+                    //       this.$axios.post('/match_recipient_id/', payload)
+                    //         .then((response) => {
+                    //           // handle success
+                    //           console.log("Recipient uploads id file", response)
+                    //           this.$toasted.success(`Recipient uploads id file`, { icon: 'fingerprint' })
+                    //         })
+                    //         .catch((error) => {
+                    //           // handle error
+                    //           console.log(error)
+                    //           // console.log(error.response.data)
+                    //           // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+                    //         })
+                    //     }
+                    //   })
+                    //   .catch((error) => {
+                    //     // handle error
+                    //     console.log(error)
+                    //     // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+                    //   })
                     unread_request(sender_random_id_list, task_id_list)
                     break
                   
                   case 'unread match id':
                     unread_match_id_count = response.data[i].payload
                     console.log("unread_match_id_count", unread_match_id_count)
+
+                    // const update_match_id_notification = {
+                    //   sender_random_id_list: sender_random_id_list,
+                    //   task_id_list: task_id_list,
+                    // }
+
+                    // let unread_match_id_promise = this.$axios.post('/update_match_id_notification/', update_match_id_notification)
+                    // promise_list.push(unread_match_id_promise);
+
+                    // unread_match_id_promise.then((response) => {
+                    //   // handle success            
+                    //   console.log("Update match id notification response", response)
+                    //   this.$toasted.success("Update the match id notification", { icon: 'fingerprint' })
+
+                    //   for (let i = 0; i < sender_random_id_list.length; i++){
+                    //     // check if the current client is sponsor or not of the specific task
+                    //     // handle success
+                    //     console.log("check sponsor: match id notification", response.data.check_sponsor[task_id_list[i]])
+                    //     if (response.data.check_sponsor[task_id_list[i]] == 1){
+                    //       console.log("unread_match_id_sponsor")
+                    //       this.unread_match_id_sponsor(sender_random_id_list[i], task_id_list[i])
+                    //     }  
+                    //     else{
+                    //       console.log("unread_match_id_recipient")
+                    //       this.unread_match_id_recipient(sender_random_id_list[i], task_id_list[i])
+                    //     }
+                    //   }
+                    // })
+                    // .catch((error) => {
+                    //   // handle error
+                    //   console.log(error)
+                    //   // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+                    // })
+
+
                     unread_match_id(sender_random_id_list, task_id_list)
                     break
                   
                   case 'unread situation':
                     unread_situation_count = response.data[i].payload
                     console.log("unread_situation_count", unread_situation_count)
+
+                    // const update_situation_notification = {
+                    //   sender_random_id_list: sender_random_id_list,
+                    //   task_id_list: task_id_list,
+                    // }
+
+                    // let unread_situation_promise = this.$axios.post('/update_situation_notification/', update_situation_notification)
+                    // promise_list.push(unread_situation_promise);
+
+                    // unread_situation_promise.then((response) => {
+                    //     // handle success            
+                    //     console.log("Update the situation notification", response)
+                    //     this.$toasted.success("Update the situation notification", { icon: 'fingerprint' })
+                    //     for (let i = 0; i < sender_random_id_list.length; i++){
+
+                    //         // check if the current client is sponsor or not of the specific task
+                    //         // handle success
+                    //         if (response.data.check_sponsor[task_id_list[i]] == 1){
+                    //           this.unread_situation_sponsor(response.data.rounds[task_id_list[i]],
+                    //             sender_random_id_list[i], task_id_list[i])
+                    //         }  
+                    //         else{
+                    //           this.unread_situation_recipient(response.data.rounds[task_id_list[i]],
+                    //             sender_random_id_list[i], task_id_list[i])
+                    //         }
+                    //     }
+                    //   })
+                    //   .catch((error) => {
+                    //     // handle error
+                    //     console.log(error);
+                    //     // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+                    //   })
+
+
                     unread_situation(sender_random_id_list, task_id_list)
                     break
                   
                   case 'unread output':
                     unread_output_count = response.data[i].payload
                     console.log("unread_output_count", unread_output_count)
+
+                    // let task_id_set = new Set()
+                    // for (let i = 0; i < task_id_list.length; i++){
+                    //   console.log("arr[i]", task_id_list[i])
+                    //   task_id_set.add(task_id_list[i])
+                    // }
+
+                    // let distinct_task_id_list = Array.from(task_id_set)
+
+                    // // Update Notification
+                    // const update_output_notification = {
+                    //   task_id_list: task_id_list
+                    // }
+
+                    // let unread_output_promise = this.$axios.post('/update_output_notification/', update_output_notification)
+                    // promise_list.push(unread_output_promise);
+
+                    // unread_output_promise.then((response) => {
+                    //     // devide the task_id_list by task id
+                    //     console.log("Update the output notification", response)
+                    //     this.$toasted.success("Update the output notification", { icon: 'fingerprint' })
+                    //     // for (const [task_id, cur_task_sender_random_ids] of Object.entries(divide_dict)) {
+                    //     //   console.log("output task_id", response.data[task_id])
+                    //     //   this.unread_output_singleTask(response.data[task_id], task_id, cur_task_sender_random_ids)
+                    //     // }
+                    //     for (let i = 0; i < distinct_task_id_list.length; i++){
+                    //       console.log("output task_id", response.data[distinct_task_id_list[i]], distinct_task_id_list[i])
+                    //       this.unread_output_singleTask(response.data[distinct_task_id_list[i]], distinct_task_id_list[i])
+                    //     }
+                    // })
+                    // .catch((error) => {
+                    //   console.log(error)
+                    // }) 
+
+
+
+
+
+
                     unread_output(sender_random_id_list, task_id_list)
                     break
 
@@ -805,11 +968,25 @@ export default {
               $('#new_notifications_count').text(total_notifications_count)
               $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');
             
+              // if (promise_list.length >= 1){
+              //   Promise.all(promise_list).then((resArr) => {
+                  
+
+
+              //   });
+              // }else{
+              //   setTimeout(function(){
+              //     console.log("polling again")
+              //     polling()
+              //   }, 15000)
+              // }
+              
               setTimeout(function(){
-                console.log("polling again")
-                polling()
-              }, 15000);
-            
+                  console.log("polling again")
+                  polling()
+                }, 15000)
+
+              
             })
             .catch((error) => {
               // handle error

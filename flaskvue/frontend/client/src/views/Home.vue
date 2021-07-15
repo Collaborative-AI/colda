@@ -5,6 +5,14 @@
       v-bind:variant="alert.variant"
       v-bind:message="alert.message">
     </alert>
+
+    <ul class="content">
+       <li v-for="msg in $store.state.msg" :key="msg">
+         {{ msg }}
+       </li>
+    </ul>
+
+
     <button type="button" class="btn btn-primary">HomePage</button>
   </div>
 </template>
@@ -14,6 +22,7 @@ import Alert from '@/components/Alert'
 
 export default {
   name: 'Home',  // Name of the component
+  // props: ['log'],
   components: {
     alert: Alert
   },
@@ -32,7 +41,7 @@ export default {
           variant: 'success',
           message: 'OK'
         }
-      ]
+      ],
     }
   }
 }

@@ -4,6 +4,7 @@ export default {
       is_authenticated: window.localStorage.getItem('Apollo-token') ? true : false,
       // 用户登录后，就算刷新页面也能再次计算出 user_id
       user_id: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id : 0,
+      msg: [],
       // 用户登录后，就算刷新页面也能再次计算出 user_name
     //   user_name: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_name : '',
       // 用户登录后，就算刷新页面也能再次计算出 user_avatar
@@ -25,5 +26,5 @@ export default {
       this.state.user_id = 0
     //   this.state.user_name = ''
     //   this.state.user_avatar = ''
-    }
+    },
   }

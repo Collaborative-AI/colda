@@ -112,7 +112,6 @@ export default {
         console.log('比较结果：', stdout);
       }catch{
         console.log("wrong")
-
       }
 
       const a = [];

@@ -8,6 +8,11 @@
           Apollo 
       </router-link>
       </div>
+
+      <!-- <div class="content">
+        <Home :log="log"></Home>
+      </div> -->
+
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -83,18 +88,22 @@ import store from '../store'
 // 在 JQuery 中使用 axios 的话需要重新导入，不能使用 main.js 中定义的 Vue 全局属性 this.$axios
 import axios from 'axios'
 import $ from 'jquery'
-
 // use Node API
 const fs = window.require('fs');
 const xlsx2json = window.require("node-xlsx");
 
 // change csv to array
 import csv2arr from '@/assets/csv-arr'
+import Home from '../views/Home.vue'
 
 export default {
   name: 'Navbar',  //this is the name of the component
+  components: {
+      Home
+    },
   data () {
     return {
+      log: ["a","b"],
       sharedState: store.state,
       unread_request_show: false,
       recipient_num: 0,
@@ -110,7 +119,7 @@ export default {
 
     // sponsor find recipient
     find_recipient () {
-      
+       
       const sponsor_data_folder = 'Sponsor_Data/'
       fs.mkdirSync(sponsor_data_folder, { recursive: true})
 
@@ -130,9 +139,11 @@ export default {
           // handle success
           console.log("Sponsor calls for help", response)
           this.$toasted.success(`Sponsor calls for help`, { icon: 'fingerprint' })
+          this.$store.state.msg.push(`Sponsor calls for help`)
 
           console.log("Sponsor sends id file")
           this.$toasted.success(`Sponsor sends id file`, { icon: 'fingerprint' })
+          this.$store.state.msg.push(`Sponsor sends id file`)
 
           // Create 'Local_Data/id/task_id/' folder
           const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
@@ -140,7 +151,7 @@ export default {
 
           console.log("Sponsor creates " + new_address)
           this.$toasted.success("Sponsor creates " + new_address, { icon: 'fingerprint' })
-          
+          this.$store.state.msg.push("Sponsor creates " + new_address)
           // // Upload the matching ID file
           // this.sponsor_request_show = true
 
@@ -189,6 +200,7 @@ export default {
           // handle success            
           console.log("Update request notification response", response)
           this.$toasted.success("Update the request notification", { icon: 'fingerprint' })
+          this.$store.state.msg.push("Update the request notification")
 
           for (let i = 0; i < sender_random_id_list.length; i++){
             // check if the current client is sponsor or not of the specific task
@@ -212,6 +224,7 @@ export default {
                 // handle success
                 console.log("Recipient uploads id file", response)
                 this.$toasted.success(`Recipient uploads id file`, { icon: 'fingerprint' })
+                this.$store.state.msg.push(`Recipient uploads id file`)
               })
               .catch((error) => {
                 // handle error
@@ -265,6 +278,7 @@ export default {
           // handle success            
           console.log("Update match id notification response", response)
           this.$toasted.success("Update the match id notification", { icon: 'fingerprint' })
+          this.$store.state.msg.push("Update the match id notification")
 
           for (let i = 0; i < sender_random_id_list.length; i++){
             // check if the current client is sponsor or not of the specific task
@@ -272,10 +286,12 @@ export default {
             console.log("check sponsor: match id notification", response.data.check_sponsor[task_id_list[i]])
             if (response.data.check_sponsor[task_id_list[i]] == 1){
               console.log("unread_match_id_sponsor")
+              this.$store.state.msg.push("unread_match_id_sponsor")
               this.unread_match_id_sponsor(sender_random_id_list[i], task_id_list[i])
             }  
             else{
               console.log("unread_match_id_recipient")
+              this.$store.state.msg.push("unread_match_id_recipient")
               this.unread_match_id_recipient(sender_random_id_list[i], task_id_list[i])
             }
           }
@@ -297,6 +313,7 @@ export default {
       
       console.log("Sponsor creates " + Match_folder)
       this.$toasted.success("Sponsor creates " + Match_folder, { icon: 'fingerprint' })
+      this.$store.state.msg.push("Sponsor creates " + Match_folder)
       // Obtain Match_id file
       // async
       const payload = {
@@ -310,6 +327,7 @@ export default {
           // iterate the match_id_file
           console.log("Sponsor gets matched id file")
           vm.$toasted.success("Sponsor gets matched id file", { icon: 'fingerprint' })
+          vm.$store.state.msg.push("Sponsor gets matched id file")
 
           for(let i = 0;i < response.data.match_id_file.length; i++){
             const cur_recipient = response.data.recipient_random_id_pair[i];
@@ -323,6 +341,7 @@ export default {
             
             console.log('Sponsor Saved Matched id File!');
             vm.$toasted.success('Sponsor Saved Matched id File!', { icon: 'fingerprint' })
+            vm.$store.state.msg.push('Sponsor Saved Matched id File!')
           }
 
           // calculate initial situation
@@ -339,6 +358,7 @@ export default {
 
           console.log("Sponsor creates" + Round0_folder)
           vm.$toasted.success("Sponsor creates" + Round0_folder, { icon: 'fingerprint' })
+          vm.$store.state.msg.push("Sponsor creates" + Round0_folder)
 
           const filename = 'Sent_Initial_Situation.csv';
           
@@ -356,6 +376,7 @@ export default {
           
           console.log('Sponsor Saved ' + filename);
           vm.$toasted.success('Sponsor Saved ' + filename, { icon: 'fingerprint' })
+          vm.$store.state.msg.push('Sponsor Saved ' + filename)
           
           let data_array = arr.split("\n")
 
@@ -371,6 +392,7 @@ export default {
             // handle success
             console.log("sponsor sends the situation", response)
             vm.$toasted.success("sponsor sends the situation", { icon: 'fingerprint' })
+            vm.$store.state.msg.push("sponsor sends the situation")
           })
           .catch((error) => {
             console.log(error)
@@ -391,6 +413,7 @@ export default {
       
       console.log("Recipient creates " + Match_folder)
       this.$toasted.success("Recipient creates " + Match_folder, { icon: 'fingerprint' })
+      this.$store.state.msg.push("Recipient creates " + Match_folder)
       
       // Obtain Match_id file
       const payload = {
@@ -414,7 +437,7 @@ export default {
          
           console.log("Recipient saves matched id file")
           this.$toasted.success("Recipient saves matched id file", { icon: 'fingerprint' })
-
+          this.$store.state.msg.push("Recipient saves matched id file")
         })
         .catch((error) => {
           // handle error
@@ -435,6 +458,8 @@ export default {
           // handle success            
           console.log("Update the situation notification", response)
           this.$toasted.success("Update the situation notification", { icon: 'fingerprint' })
+          this.$store.state.msg.push("Update the situation notification")
+
           for (let i = 0; i < sender_random_id_list.length; i++){
 
               // check if the current client is sponsor or not of the specific task
@@ -458,7 +483,7 @@ export default {
 
     unread_situation_sponsor(rounds, sender_random_id, task_id) {
       console.log("cur round is:", rounds, task_id);
-      
+      this.$store.state.msg.push("cur round is: " + rounds.toString())
       let vm = this;
 
 
@@ -492,6 +517,7 @@ export default {
       fs.writeFileSync(Round_folder + filename, arr)
       console.log("Sponsor saved " + filename + " at " + Round_folder);
       vm.$toasted.success("Sponsor saved " + filename + " at " + Round_folder, { icon: 'fingerprint' })
+      this.$store.state.msg.push("Sponsor saved " + filename + " at " + Round_folder)
 
     },
 
@@ -506,6 +532,7 @@ export default {
       
       console.log("Recipient creates " + Round_folder)
       this.$toasted.success("Recipient creates " + Round_folder, { icon: 'fingerprint' })
+      this.$store.state.msg.push("Recipient creates " + Round_folder)
 
       const payload = {
         task_id: task_id,
@@ -520,6 +547,7 @@ export default {
 
           console.log("Recipient gets situation file")
           vm.$toasted.success("Recipient gets situation file", { icon: 'fingerprint' })
+          this.$store.state.msg.push("Recipient gets situation file")
 
           const cur_sender = response.data.sender_random_id;
           const filename = cur_sender + '_to_' + vm.sharedState.user_id + '.csv';
@@ -531,6 +559,7 @@ export default {
           fs.writeFileSync(Round_folder + filename, cur_situation_file)
           console.log('Recipient Saved Situation File!');
           vm.$toasted.success('Recipient Saved Situation File!', { icon: 'fingerprint' })
+          this.$store.state.msg.push('Recipient Saved Situation File!')
 
           // train the model
           function sleep(time) {
@@ -558,6 +587,7 @@ export default {
 
           console.log("Recipient saved " + filename1 + " at " + Round_folder);
           vm.$toasted.success("Recipient saved " + filename1 + " at " + Round_folder, { icon: 'fingerprint' })
+          this.$store.state.msg.push("Recipient saved " + filename1 + " at " + Round_folder)
 
           let data_array = arr.split("\n")
 
@@ -573,6 +603,7 @@ export default {
             // handle success
             console.log("Recipient sends output", response)
             vm.$toasted.success("Recipient sends output", { icon: 'fingerprint' })
+            this.$store.state.msg.push("Recipient sends output")
           })
           .catch((error) => {
             console.log(error)
@@ -608,6 +639,7 @@ export default {
           // devide the task_id_list by task id
           console.log("Update the output notification", response)
           this.$toasted.success("Update the output notification", { icon: 'fingerprint' })
+          this.$store.state.msg.push("Update the output notification")
           // for (const [task_id, cur_task_sender_random_ids] of Object.entries(divide_dict)) {
           //   console.log("output task_id", response.data[task_id])
           //   this.unread_output_singleTask(response.data[task_id], task_id, cur_task_sender_random_ids)
@@ -640,6 +672,7 @@ export default {
         .then((response) => {
           console.log("Sponsor gets output model")
           vm.$toasted.success("Sponsor gets output model", { icon: 'fingerprint' })
+          this.$store.state.msg.push("Sponsor gets output model")
           // iterate the match_id_file
           for(let i = 0;i < response.data.output.length; i++){
 
@@ -653,7 +686,7 @@ export default {
             fs.writeFileSync(Round_folder + filename, cur_output)
             console.log('Sponsor saves Output model');
             vm.$toasted.success('Sponsor saves Output model', { icon: 'fingerprint' })
-
+            this.$store.state.msg.push('Sponsor saves Output model')
             // terminate
             if ((rounds+1) >= this.max_round){
               continue;
@@ -664,6 +697,7 @@ export default {
 
               console.log("Sponsor creates " + new_Round_folder)
               vm.$toasted.success("Sponsor creates " + new_Round_folder, { icon: 'fingerprint' })
+              this.$store.state.msg.push("Sponsor creates " + new_Round_folder)
               // Update situation
 
               function sleep(time) {
@@ -687,7 +721,7 @@ export default {
               
               console.log("Sponsor saved update situation " + filename1 + " at " + new_Round_folder);
               vm.$toasted.success("Sponsor saved update situation " + filename1 + " at " + new_Round_folder, { icon: 'fingerprint' })
-
+              this.$store.state.msg.push("Sponsor saved update situation " + filename1 + " at " + new_Round_folder)
 
               let data_array = arr.split("\n");
 
@@ -703,6 +737,7 @@ export default {
                 // handle success
                 console.log("Sponsor updates situation done", response)
                 vm.$toasted.success("Sponsor updates situation done", { icon: 'fingerprint' })
+                this.$store.state.msg.push("Sponsor updates situation done")
               })
               .catch((error) => {
                 console.log(error)
@@ -748,6 +783,8 @@ export default {
       let unread_messages_count = 0
       let sender_random_id_list = []
       let task_id_list = []
+      
+      let vm = this
 
       function polling() {
         console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
@@ -761,6 +798,7 @@ export default {
           axios.get(path)
             .then((response) => {
               // handle success
+             
               console.log("--------------------------------------------------------- new polling")
               let promise_list = [];
               for(let i = 0; i < response.data.length; i++) {
@@ -863,7 +901,6 @@ export default {
                     //   // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
                     // })
 
-
                     unread_match_id(sender_random_id_list, task_id_list)
                     break
                   
@@ -902,7 +939,6 @@ export default {
                     //     console.log(error);
                     //     // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
                     //   })
-
 
                     unread_situation(sender_random_id_list, task_id_list)
                     break
@@ -943,10 +979,6 @@ export default {
                     // .catch((error) => {
                     //   console.log(error)
                     // }) 
-
-
-
-
 
 
                     unread_output(sender_random_id_list, task_id_list)

@@ -1,9 +1,15 @@
-1. pipenv install
+1. First time launch:
+    1. cd into backend
+    2. pip install pipenv
+    3. pipenv install
+    4. pipenv shell
+    5. flask run
 
-2. pipenv shell
+2. launch after first time
+    1. pipenv install
+    2. pipenv shell
+    3. flask run
 
-3. flask run
-（进入到Apollo/flaskvue/backend， 1，2为安装和启动环境， 3为启动， 测试为flask test）
 
 4. Install Package: pipenv install + package name
 

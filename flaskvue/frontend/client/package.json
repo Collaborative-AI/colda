@@ -25,6 +25,7 @@
     "moment": "^2.29.1",
     "papaparse": "^5.3.1",
     "popper.js": "^1.16.1",
+    "python-shell": "^3.0.0",
     "qs": "^6.10.1",
     "vee-validate": "^4.4.0",
     "vue": "^2.6.11",

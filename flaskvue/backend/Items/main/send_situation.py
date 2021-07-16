@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 
 from flask import Flask, session, request, g, current_app

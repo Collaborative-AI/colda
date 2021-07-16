@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask.json import jsonify
 import jwt
 import json

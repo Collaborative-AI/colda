@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import re
 from operator import itemgetter
 from flask import Flask, session, request, g, current_app

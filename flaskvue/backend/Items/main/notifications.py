@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import jsonify, g
 from Items.main import main
 from Items.main.auth import token_auth

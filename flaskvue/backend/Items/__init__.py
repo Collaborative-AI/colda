@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask
 from Items.extensions import cors, db, migrate
 from Items.main import main as main_blueprint

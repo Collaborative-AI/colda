@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import jsonify, g
 from Items import db
 from Items.main import main

@@ -734,6 +734,7 @@ export default {
           const user_id = payload.user_id
           // const path = `/users/${user_id}/notifications/?since=${since}`
           const path = `/users/${user_id}/notifications/`
+          // const path = ''
           // console.log("since shua xin",since)
           axios.get(path)
             .then((response) => {

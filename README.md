@@ -27,7 +27,7 @@ HTTPS Port 443 Source: Anywhere
 
 4. ssh ubuntu@<YOUR_IP_ADDRESS> (IPV4 address of the EC2 Instance, for example, 18.222.25.78)
 
-5. ssh -i keyname.pem ubuntu@server (server is the IPV4 DNS of the EC2 Instance, for example: ec2-18-222-25-78.us-east-2.compute.amazonaws.com (our first instance))    (do (3 and 4) or 5)
+5. ssh -i keyname.pem ubuntu@server (server is the IPV4 DNS of the EC2 Instance, for example: ec2-18-222-25-78.us-east-2.compute.amazonaws.com (our first instance))    (do 3 and (4 or 5))
 
    **First Login:**
 
@@ -36,7 +36,6 @@ HTTPS Port 443 Source: Anywhere
 7. sudo apt install python3 python3-pip tmux htop
 
 8. sudo pip3 install pipenv
-
 
 **Clone File from Github:**
 git clone https://github.com/AI-Apollo/Apollo.git
@@ -49,21 +48,15 @@ su (password: 1)
 pipenv install
 pipenv shell
 
-gunicorn --bind 0.0.0.0:80 app:app (run)
+```py
+pipenv install flask
+```
 
-**Create the flask file directly:**
-mkdir Apolloapp
-cd Apolloapp
-python3.6 -m venv venv
-source venv/bin/activate
-pip install Flask==1.1.2 Flask-Cors==3.0.10
-pip install flask-script
-sudo nano app.py
-type in the code
-python app.py runserver -d -r -h 0.0.0.0 -p 5000 (运行)
+gunicorn --bind 0.0.0.0:80 manage:app (run)
 
-Restart the instance need to restart the environment:
-source venv/bin/activate
+```py
+sudo fuser -k 8000/tcp (清除端口)
+```
 
 **Some Bugs:**
 OSError: [Errno 98] Address already in use

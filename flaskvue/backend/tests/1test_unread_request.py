@@ -81,13 +81,10 @@ class Unread_Request_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[-1]['payload'], 1)
         
         # 3. update request notification
-        data = json.dumps({'sender_random_id_list': json_response[-1]['sender_random_id_list'], 
-            'task_id_list': json_response[-1]['task_id_list']})
-        response = self.client.post('/update_request_notification/', headers=headers, data=data)
+        data = json.dumps({'response_data': json_response})
+        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        print("json_response", json_response)
-        self.assertEqual(json_response['update request successfully'], "true")
 
         # 4. check update notification
         response = self.client.get('/users/2/notifications/', headers=headers)
@@ -177,20 +174,14 @@ class Unread_Request_APITestCase(unittest.TestCase):
         
         # 3. update request notification
         headers = self.get_token_auth_headers('unittest2', '123')
-        data = json.dumps({'sender_random_id_list': json_response2[-1]['sender_random_id_list'], 
-            'task_id_list': json_response2[-1]['task_id_list']})
-        response = self.client.post('/update_request_notification/', headers=headers, data=data)
+        data = json.dumps({'response_data': json_response2})
+        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['update request successfully'], "true")
 
         headers = self.get_token_auth_headers('unittest3', '123')
-        data = json.dumps({'sender_random_id_list': json_response3[-1]['sender_random_id_list'], 
-            'task_id_list': json_response3[-1]['task_id_list']})
-        response = self.client.post('/update_request_notification/', headers=headers, data=data)
+        data = json.dumps({'response_data': json_response3})
+        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['update request successfully'], "true")
 
         # 4. check update notification
         headers = self.get_token_auth_headers('unittest2', '123')

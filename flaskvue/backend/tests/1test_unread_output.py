@@ -70,7 +70,8 @@ class Unread_Output_APITestCase(unittest.TestCase):
         # 1. find_recipient() (in find_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': list_content})
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -129,11 +130,11 @@ class Unread_Output_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[1]['payload'], 2)
 
         # 5. update_output_notification() (in unread_output.py)
-        data = json.dumps({'task_id_list': json_response[-1]['task_id_list']})
-        response = self.client.post('/update_output_notification/', headers=headers, data=data)
+        data = json.dumps({'response_data': json_response})
+        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response[str(task_id)], 0)
+        self.assertEqual(json_response["unread output"]["rounds_dict"][str(task_id)], 0)
 
         # 6. check notification
         response = self.client.get('/users/1/notifications/', headers=headers)
@@ -141,7 +142,7 @@ class Unread_Output_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response), 2)
         self.assertEqual(json_response[0]['name'], "unread situation")
-        self.assertEqual(json_response[0]['payload'], 1)
+        self.assertEqual(json_response[0]['payload'], 0)
         self.assertEqual(json_response[1]['name'], "unread output")
         self.assertEqual(json_response[1]['payload'], 0)
 
@@ -169,7 +170,8 @@ class Unread_Output_APITestCase(unittest.TestCase):
         # 1. find_recipient() (in find_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': list_content})
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -228,11 +230,11 @@ class Unread_Output_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[1]['payload'], 2)
 
         # 5. update_output_notification() (in unread_output.py)
-        data = json.dumps({'task_id_list': json_response[-1]['task_id_list']})
-        response = self.client.post('/update_output_notification/', headers=headers, data=data)
+        data = json.dumps({'response_data': json_response})
+        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response[str(task_id)], 0)
+        self.assertEqual(json_response["unread output"]["rounds_dict"][str(task_id)], 0)
 
         # 6. check notification
         response = self.client.get('/users/1/notifications/', headers=headers)
@@ -240,7 +242,7 @@ class Unread_Output_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response), 2)
         self.assertEqual(json_response[0]['name'], "unread situation")
-        self.assertEqual(json_response[0]['payload'], 1)
+        self.assertEqual(json_response[0]['payload'], 0)
         self.assertEqual(json_response[1]['name'], "unread output")
         self.assertEqual(json_response[1]['payload'], 0)
 

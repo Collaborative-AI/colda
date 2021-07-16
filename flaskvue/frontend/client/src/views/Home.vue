@@ -7,7 +7,7 @@
     </alert>
 
     <ul class="content">
-       <li v-for="msg in $store.state.msg" :key="msg">
+       <li v-for="(msg, index) in $store.state.msg" :key="index">
          {{ msg }}
        </li>
     </ul>

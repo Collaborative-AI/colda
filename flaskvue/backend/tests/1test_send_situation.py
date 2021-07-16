@@ -67,7 +67,8 @@ class Send_Situation_APITestCase(unittest.TestCase):
         # 1. find_recipient() (in find_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': list_content})
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
@@ -139,7 +140,8 @@ class Send_Situation_APITestCase(unittest.TestCase):
         # 1. find_recipient() (in find_recipient.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
-        data = json.dumps({'recipient_id_list': list_content})
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 

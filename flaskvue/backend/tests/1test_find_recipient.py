@@ -113,8 +113,8 @@ class FindAPITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response[0]['name'], "unread request")
-        self.assertEqual(json_response[0]['payload'], 1)
+        self.assertEqual(json_response[-1]['name'], "unread request")
+        self.assertEqual(json_response[-1]['payload'], 1)
 
         # User 3 cannot check the notification of user 2
         headers = self.get_token_auth_headers('unittest3', '123')
@@ -127,6 +127,6 @@ class FindAPITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response[0]['name'], "unread request")
-        self.assertEqual(json_response[0]['payload'], 1)
+        self.assertEqual(json_response[-1]['name'], "unread request")
+        self.assertEqual(json_response[-1]['payload'], 1)
 

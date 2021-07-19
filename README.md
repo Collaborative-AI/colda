@@ -27,7 +27,7 @@
 
    2. sudo chmod 0600 keyname.pem (first time)
 
-   3. ssh-add keyname.pem (first time)
+   3. ssh-add keyname.pem (every time)
 
    4. ssh ubuntu@<YOUR_IP_ADDRESS> (IPV4 address of the EC2 Instance, for example, 18.222.25.78)
 
@@ -68,7 +68,27 @@ sudo fuser -k 80/tcp (gunicorn connection fail)
 
 
 
+ctrl a + d (detached screen inside)
 
+ctrl a + k (kill screen inside)
+
+
+
+screen -ls
+
+screen -r screenID (login screen)
+
+screen -S screenID (new screen)
+
+
+
+screen -D screenID (detach screen outside)
+
+screen -XS screenID quit (kill screen outside)
+
+
+
+tmux 
 
 **Client:**
 
@@ -105,3 +125,4 @@ sudo fuser -k 80/tcp (gunicorn connection fail)
    1. pipenv install
    2. pipenv shell
    3. flask run
+

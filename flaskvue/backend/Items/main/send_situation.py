@@ -33,7 +33,7 @@ def send_situation():
 
     # Now hardcode
     # testa: id 4(sponsor), testb: id 5(recipient), testc: id 6(recipient)
-    query_of_task = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id).all()
+    query_of_task = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
     sender_random_id = query_of_task[0].sponsor_random_id
 
     # should be [4,5,6], including sponsor itself
@@ -43,11 +43,11 @@ def send_situation():
 
     # check message
     cur_round = 0
-    query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first()
+    query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
     if query is not None:
         cur_round = query.rounds + 1
         
-
+    print("all_recipient_id+++++++++++++++++++++++", all_recipient_id)
     # print("all_recipient_id", all_recipient_id)
     for recipient_id in all_recipient_id:
         user = User.query.get_or_404(recipient_id)
@@ -64,6 +64,8 @@ def send_situation():
         message.situation = json.dumps(situation)
         message.sender_random_id = sender_random_id
         
+        message.test_indicator = "train"
+
         db.session.add(message)
         db.session.commit()
         # send message notification to the recipient

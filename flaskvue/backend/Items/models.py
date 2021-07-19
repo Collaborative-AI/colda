@@ -57,6 +57,12 @@ class User(PaginatedAPIMixin, db.Model):
 
     last_output_read_time = db.Column(db.DateTime)
 
+    last_test_requests_read_time = db.Column(db.DateTime)
+
+    last_test_matched_file_read_time = db.Column(db.DateTime)
+
+    last_test_output_read_time = db.Column(db.DateTime)
+
     last_messages_read_time = db.Column(db.DateTime)
 
     # Message User sent
@@ -271,6 +277,7 @@ class Message(PaginatedAPIMixin, db.Model):
     rounds = db.Column(db.Integer)
     situation = db.Column(db.Text)
     output = db.Column(db.Text)
+    test_indicator = db.Column(db.String(10))
 
     def __repr__(self):
         return '<Message {}>'.format(self.id)
@@ -376,6 +383,8 @@ class Matched(PaginatedAPIMixin, db.Model):
     matched_done = db.Column(db.Integer, nullable=True)
     sponsor_random_id = db.Column(db.String(120))
     recipient_random_id_pair = db.Column(db.String(120))
+
+    test_indicator = db.Column(db.String(10))
 
     def __repr__(self):
         return '<Match {}>'.format(self.id)

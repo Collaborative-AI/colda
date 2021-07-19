@@ -14,67 +14,67 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
 
-@main.route('/update_situation_notification/', methods=['POST'])
-@token_auth.login_required
-def update_situation_notification():
+# @main.route('/update_situation_notification/', methods=['POST'])
+# @token_auth.login_required
+# def update_situation_notification():
 
-    data = request.get_json()
-    if not data:
-        return bad_request('You must post JSON data.')
-    if 'sender_random_id_list' not in data or not data.get('sender_random_id_list'):
-        return bad_request('sender_random_id_list is required.')
-    if 'task_id_list' not in data or not data.get('task_id_list'):
-        return bad_request('task_id_list is required.')
+#     data = request.get_json()
+#     if not data:
+#         return bad_request('You must post JSON data.')
+#     if 'sender_random_id_list' not in data or not data.get('sender_random_id_list'):
+#         return bad_request('sender_random_id_list is required.')
+#     if 'task_id_list' not in data or not data.get('task_id_list'):
+#         return bad_request('task_id_list is required.')
 
-    task_id_list = data.get('task_id_list')
+#     task_id_list = data.get('task_id_list')
 
-    check_dict = {}
-    rounds_dict = {}
-    lastest_time = datetime(1900, 1, 1)
+#     check_dict = {}
+#     rounds_dict = {}
+#     lastest_time = datetime(1900, 1, 1)
 
-    for i in range(len(task_id_list)):
-        # check if the current client is the sponsor
-        isSponsor = False
-        query = Matched.query.filter(Matched.task_id == task_id_list[i]).first()
-        if query:
-            if int(query.sponsor_id) == g.current_user.id:
-                isSponsor = True
+#     for i in range(len(task_id_list)):
+#         # check if the current client is the sponsor
+#         isSponsor = False
+#         query = Matched.query.filter(Matched.task_id == task_id_list[i]).first()
+#         if query:
+#             if int(query.sponsor_id) == g.current_user.id:
+#                 isSponsor = True
 
-            record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
-            # record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).all()
-            # for i in record:
-            #     print()
-            cur_rounds = record.rounds
+#             record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
+#             # record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).all()
+#             # for i in record:
+#             #     print()
+#             cur_rounds = record.rounds
             
-            # get the latest output timestamp
-            if record.situation_timestamp > lastest_time:
-                lastest_time = record.situation_timestamp
+#             # get the latest output timestamp
+#             if record.situation_timestamp > lastest_time:
+#                 lastest_time = record.situation_timestamp
             
-            if isSponsor:
-                check_dict[task_id_list[i]] = 1
-            else:
-                check_dict[task_id_list[i]] = 0
+#             if isSponsor:
+#                 check_dict[task_id_list[i]] = 1
+#             else:
+#                 check_dict[task_id_list[i]] = 0
             
-            rounds_dict[task_id_list[i]] = cur_rounds
+#             rounds_dict[task_id_list[i]] = cur_rounds
 
-    # Update the Notification
-    user = User.query.get_or_404(g.current_user.id)
-    last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
-    if lastest_time > last_situation_read_time:
-        user.last_situation_read_time = lastest_time
+#     # Update the Notification
+#     user = User.query.get_or_404(g.current_user.id)
+#     last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
+#     if lastest_time > last_situation_read_time:
+#         user.last_situation_read_time = lastest_time
 
-        # submit to database
-        db.session.commit()
+#         # submit to database
+#         db.session.commit()
         
-        # Updata Notification
-        user.add_notification('unread situation', user.new_situation()) 
-        db.session.commit()
+#         # Updata Notification
+#         user.add_notification('unread situation', user.new_situation()) 
+#         db.session.commit()
 
-    dict = {"check_sponsor": check_dict, "rounds": rounds_dict}
+#     dict = {"check_sponsor": check_dict, "rounds": rounds_dict}
     
-    response = jsonify(dict)
+#     response = jsonify(dict)
     
-    return response
+#     return response
 
 
 @main.route('/users/<int:id>/situation_file/', methods=['POST'])
@@ -98,7 +98,7 @@ def get_user_situation(id):
         return error_response(403)
 
     data = {}
-    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds).order_by(Message.rounds.desc()).all()
+    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").order_by(Message.rounds.desc()).all()
 
     situation_file = None
     sender_random_id = None
@@ -134,10 +134,10 @@ def send_output():
     # rounds = data.get('rounds')
     task_id = data.get('task_id')
 
-    rounds = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id).order_by(Message.rounds.desc()).first().rounds
+    rounds = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first().rounds
 
     # extract sponsor_id
-    queries = Matched.query.filter(Matched.task_id == task_id).all()
+    queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
     recipient_num = len(queries) - 1
 
     message = Message()
@@ -149,6 +149,7 @@ def send_output():
 
     # Store the output
     message.output = json.dumps(output)
+    message.test_indicator = "train"
 
     for i in range(len(queries)):
       if int(queries[i].recipient_id_pair) == g.current_user.id:
@@ -162,9 +163,10 @@ def send_output():
     db.session.add(message)
     db.session.commit()
 
-    all_cur_round_messages = Message.query.filter(Message.recipient_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds).all()
+    all_cur_round_messages = Message.query.filter(Message.recipient_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
     output_upload = 0
     for row in all_cur_round_messages:
+        print("row", row)
         if row.output:
             output_upload += 1
 

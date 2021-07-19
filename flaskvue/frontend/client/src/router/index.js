@@ -138,30 +138,44 @@ const routes = [
     children: [
         { 
             path: '', 
-            component: MessagesIndex 
+            component: MessagesIndex, 
+            children: [
+              // 默认匹配，哪些人给你发送过私信
+              { 
+                  path: '', 
+                  name: 'MessagesIndex', 
+                  component: RecivedMessages
+              },
+              // 与某个用户之间的全部历史对话记录
+              { 
+                  path: 'history', 
+                  name: 'MessagesHistory', 
+                  component: MessagesHistory
+              }
+          ]
         },
         // {   path: 'comments', 
         //     name: 'RecivedComments', 
         //     component: RecivedComments 
         // },
-        { 
-            path: 'messages', 
-            component: MessagesIndex,
-            children: [
-                // 默认匹配，哪些人给你发送过私信
-                { 
-                    path: '', 
-                    name: 'MessagesIndex', 
-                    component: RecivedMessages
-                },
-                // 与某个用户之间的全部历史对话记录
-                { 
-                    path: 'history', 
-                    name: 'MessagesHistory', 
-                    component: MessagesHistory
-                }
-            ]
-        },
+        // { 
+        //     path: 'messages', 
+        //     component: MessagesIndex,
+        //     children: [
+        //         // 默认匹配，哪些人给你发送过私信
+        //         { 
+        //             path: '', 
+        //             name: 'MessagesIndex', 
+        //             component: RecivedMessages
+        //         },
+        //         // 与某个用户之间的全部历史对话记录
+        //         { 
+        //             path: 'history', 
+        //             name: 'MessagesHistory', 
+        //             component: MessagesHistory
+        //         }
+        //     ]
+        // },
     ],
     meta: {
       requiresAuth: true

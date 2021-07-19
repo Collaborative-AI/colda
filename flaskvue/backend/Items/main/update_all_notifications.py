@@ -42,7 +42,7 @@ def update_all_notifications():
                 check_dict = {}
                 lastest_time = datetime(1900, 1, 1)
                 for j in range(len(task_id_list)):
-                    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j]).all()
+                    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "train").all()
                     # get the latest output timestamp
                     if record[0].match_id_timestamp > lastest_time:
                         lastest_time = record[0].match_id_timestamp
@@ -77,7 +77,7 @@ def update_all_notifications():
                         if int(query.sponsor_id) == g.current_user.id:
                             isSponsor = True
 
-                        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j]).all()
+                        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "train").all()
 
                         # get the latest output timestamp
                         if record[0].match_id_timestamp > lastest_time:
@@ -118,7 +118,7 @@ def update_all_notifications():
                         if int(query.sponsor_id) == g.current_user.id:
                             isSponsor = True
 
-                        record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[j]).order_by(Message.situation_timestamp.desc()).first()
+                        record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[j], Message.test_indicator == "train").order_by(Message.situation_timestamp.desc()).first()
                         cur_rounds = record.rounds
                         
                         # get the latest output timestamp
@@ -155,7 +155,7 @@ def update_all_notifications():
                 lastest_time = datetime(1900, 1, 1)
                 rounds_dict = {}
                 for j in task_id_list:
-                    record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == j).order_by(Message.output_timestamp.desc()).first()
+                    record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == j, Message.test_indicator == "train").order_by(Message.output_timestamp.desc()).first()
                     if record:
                         cur_rounds = record.rounds
                         rounds_dict[str(j)] = cur_rounds

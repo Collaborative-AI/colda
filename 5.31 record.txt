@@ -19,3 +19,9 @@ Testing:
 4. A obtains the final results from B's results
 
 xa ya xb => identified ID matching (xa+xb => ya)
+
+
+1. setting: 3 options:
+	1. matching id file(for training) location/matching id file(for testing) location
+	2. raw data file(for training) location/raw data file(for testing) location
+	3. target data file(for training) location

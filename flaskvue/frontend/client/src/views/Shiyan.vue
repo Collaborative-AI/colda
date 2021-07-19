@@ -13,6 +13,7 @@
     <button @click="set()">test set</button>
     <button @click="diaoyong()">test python shell</button>
     <button @click="delete_all_rows()">delete_all_rows</button>
+    <button @click="delete_all_logs()">delete_all_logs</button>
     <div v-for="task_id in task_id_list" :key="task_id.id">
       {{ task_id }}
       <input type="file" name="csvfile" ref="csvData" />
@@ -71,6 +72,12 @@ export default {
   },
 
   methods: {
+    delete_all_logs() {
+      this.$store.state.msg = [];
+
+
+
+    },
     diaoyong() {
       // $.ajax({
       //   type: "POST",

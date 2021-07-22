@@ -31,6 +31,7 @@ const fs = window.require('fs');
 const xlsx2json = window.require("node-xlsx");
 const join = window.require('path').join;
 const address = 'tem/' + 'b/'
+const os = window.require('os');
 // const ex = require("child_process").execFileSync;
 const ex = window.require("child_process");
 
@@ -74,34 +75,56 @@ export default {
 
   methods: {
     duqu(){
-      function findSync(startPath) {
-        let result=[];
-        function finder(path) {
-            let files=fs.readdirSync(path);
-            files.forEach((val,index) => {
-                let fPath=join(path,val);
-                let stats=fs.statSync(fPath);
-                console.log("val", val)
-                console.log("stats", fPath, stats)
-                if(stats.isDirectory()) finder(fPath);
-                if(stats.isFile()&&val=="Sponsor_Trained_Local_Model.csv") {
-                  // result.push(fPath);
-                  let data = fs.readFileSync(fPath,
-                    {encoding:'utf8', flag:'r'});
-                  result.push(data);
-                }
-            });
+      // function findSync(startPath) {
+      //   let result=[];
+      //   function finder(path) {
+      //       let files=fs.readdirSync(path);
+      //       files.forEach((val,index) => {
+      //           let fPath=join(path,val);
+      //           let stats=fs.statSync(fPath);
+      //           console.log("val", val)
+      //           console.log("stats", fPath, stats)
+      //           if(stats.isDirectory()) finder(fPath);
+      //           if(stats.isFile()&&val=="Sponsor_Trained_Local_Model.csv") {
+      //             // result.push(fPath);
+      //             let data = fs.readFileSync(fPath,
+      //               {encoding:'utf8', flag:'r'});
+      //             result.push(data);
+      //           }
+      //       });
 
-        }
-        // let startPath = 'Local_Data/4/7cb0e4af-1736-4717-a809-5772c08a1603'
-        finder(startPath);
-        return result;
-      }
+      //   }
+      //   finder(startPath);
+      //   return result;
+      // }
       
-      let fileNames=findSync('Local_Data/4/7cb0e4af-1736-4717-a809-5772c08a1603');
-      for (let i = 0;i < fileNames.length; i++){
-        console.log(fileNames[i]);
+      // let fileNames=findSync('Local_Data/4/7cb0e4af-1736-4717-a809-5772c08a1603');
+      // for (let i = 0;i < fileNames.length; i++){
+      //   console.log(fileNames[i]);
+      // }
+      const route = "Local_Data/4/a4ddab0b-79a6-483b-a894-280f01cbd0af/Log.txt"
+      try {
+        const data = fs.appendFileSync(route, "1.22222\n")
+        console.log("data", data)
+        fs.appendFileSync(route, "3.22222\n")
+        fs.appendFileSync(route, "4.@@@@\n")
+        //文件写入成功。
+
+        const data1 = fs.readFileSync(route,
+          {encoding:'utf8', flag:'r'});
+        
+        console.log("data", data1, data1.split("\n"))
+      } catch (err) {
+        console.error(err)
       }
+
+      try {
+        route = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
+        fs.appendFileSync(route, "1.22222\n")
+      } catch (err) {
+        console.error(err)
+      }
+
     },
     
 

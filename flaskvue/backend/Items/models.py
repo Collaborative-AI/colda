@@ -233,6 +233,7 @@ class User(PaginatedAPIMixin, db.Model):
         return [task_id_list, sender_random_id_list]
 
     def new_test_request(self):
+
         last_test_request_time = self.last_test_requests_read_time or datetime(1900, 1, 1)
 
         query = Matched.query.filter_by(recipient_id_pair=self.id).filter(

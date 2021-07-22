@@ -739,7 +739,7 @@ export default {
             console.log("2.2 Test: Recipient uploads id file", response)
             this.$toasted.success(`2.2 Test: Recipient uploads id file`, { icon: 'fingerprint' })
             this.$store.state.msg.push(`2.2 Test: Recipient uploads id file`)
-            this.$store.state.msg.push("--------------------------2. Unread Test Request DOne")
+            this.$store.state.msg.push("--------------------------2. Unread Test Request Done")
           })
           .catch((error) => {
             // handle error
@@ -794,7 +794,7 @@ export default {
         task_id: task_id
       }
       
-      const path = `/users/${vm.sharedState.user_id}/match_id_file/`
+      const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
       vm.$axios.post(path, payload)
         .then((response) => {
           // call back
@@ -825,53 +825,48 @@ export default {
           }
           sleep(5000); // 程序滞留5000ms
 
-          // store initial situation
-          // Create 'Local_Data/id/task_id/0' folder
-          const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/0/'
-          fs.mkdirSync(Round0_folder, { recursive: true})
-
-          console.log("3.6 Test: Sponsor creates " + Round0_folder)
-          vm.$toasted.success("3.6 Test: Sponsor creates " + Round0_folder, { icon: 'fingerprint' })
-          vm.$store.state.msg.push("3.6 Test: Sponsor creates " + Round0_folder)
-
-          const filename = 'Sent_Initial_Situation.csv';
-          
-          // temporary data
-          let arr =  new Array(5);   
-          for(let i = 0;i < arr.length; i++){
-            arr[i] = new Array(5);    
-          }
-          arr[0][1] = "Sponsor Situation File"
-          arr[0][2] = 2
-          arr = arr.join('\n');
-
-          // Store match_id file
-          fs.writeFileSync(Round0_folder + filename, arr)
-          
-          console.log('3.7 Test: Sponsor Saved ' + filename);
-          vm.$toasted.success('3.7 Test: Sponsor Saved ' + filename, { icon: 'fingerprint' })
-          vm.$store.state.msg.push('3.7 Test: Sponsor Saved ' + filename)
-          
-          let data_array = arr.split("\n")
-
-          const payload1 = {
-            situation: data_array,
-            task_id: task_id
+          function find_Train_Models(startPath) {
+          let result=[];
+          function finder(path) {
+              let files=fs.readdirSync(path);
+              files.forEach((val,index) => {
+                  let fPath=join(path,val);
+                  let stats=fs.statSync(fPath);
+                  // console.log("val", val)
+                  // console.log("stats", fPath, stats)
+                  if(stats.isDirectory()) finder(fPath);
+                  if(stats.isFile()&&val=="Sponsor_Trained_Local_Model.csv") {
+                    // result.push(fPath);
+                    let data = fs.readFileSync(fPath,
+                      {encoding:'utf8', flag:'r'});
+                    result.push(data);
+                  }
+              });
+            }
+            finder(startPath);
+            return result;
           }
 
-          // send initial situation
-          // async
-          vm.$axios.post('/send_situation/', payload1)
-            .then((response) => {
-            // handle success
-            console.log("3.8 Test: sponsor sends the situation", response)
-            vm.$toasted.success("3.8 Test: sponsor sends the situation", { icon: 'fingerprint' })
-            vm.$store.state.msg.push("3.8 Test: sponsor sends the situation")
-            this.$store.state.msg.push("-------------------------- 3. Test: Unread Test Match ID Done")
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+          let train_path = 'Local_Data/' + this.sharedState.user_id + '/' + task_id;
+          let files = find_Train_Models(train_path);
+          
+          console.log("3.6 Test: Sponsor gets all train models")
+          vm.$toasted.success("3.6 Test: Sponsor gets all train models", { icon: 'fingerprint' })
+          vm.$store.state.msg.push("3.6 Test: Sponsor gets all train models")
+
+          const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
+          fs.mkdirSync(Test_Output_folder, { recursive: true});
+
+          for (let i = 0;i < files.length; i++){
+            console.log(files[i]);
+            let filename = "Test_Models" + i.toString();
+            fs.writeFileSync(Test_Output_folder + filename, files[i])
+          }
+          
+          console.log("3.7 Test: Sponsor stores all test model results")
+          vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
+          vm.$store.state.msg.push("3.7 Test: Sponsor stores all test model results")
+          this.$store.state.msg.push("--------------------------2. Unread Test Match ID Done")
 
         })
         .catch((error) => {
@@ -880,27 +875,28 @@ export default {
         }) 
     },
 
-    unread_test_match_id_recipient() {
+    unread_test_match_id_recipient(task_id) {
       // Create 'Local_Data/id/task_id/Match/' folder
-      const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
+      let vm = this;
+      const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Match/'
       fs.mkdirSync(Match_folder, { recursive: true})
       
-      console.log("3.3 Recipient creates " + Match_folder)
-      this.$toasted.success("3.3 Recipient creates " + Match_folder, { icon: 'fingerprint' })
-      this.$store.state.msg.push("3.3 Recipient creates " + Match_folder)
+      console.log("3.3 Test: Match Folder: Sponsor creates " + Match_folder)
+      this.$toasted.success("3.3 Test: Match Folder: Sponsor creates " + Match_folder, { icon: 'fingerprint' })
+      this.$store.state.msg.push("3.3 Test: Match Folder: Sponsor creates " + Match_folder)
       
       // Obtain Match_id file
       const payload = {
         task_id: task_id
       }
-      const path = `/users/${this.sharedState.user_id}/match_id_file/`
+      const path = `/users/${this.sharedState.user_id}/test_match_id_file/`
       // async
       this.$axios.post(path, payload)
         .then((response) => {
 
-          console.log("3.4 Recipient gets matched id file", response)
-          this.$toasted.success("3.4 Recipient gets matched id file", { icon: 'fingerprint' })
-          this.$store.state.msg.push("3.4 Recipient gets matched id file")
+          console.log("3.4 Test: Recipient gets matched id file", response)
+          this.$toasted.success("3.4 Test: Recipient gets matched id file", { icon: 'fingerprint' })
+          this.$store.state.msg.push("3.4 Test: Recipient gets matched id file")
           
           const cur_sponsor = response.data.sponsor_random_id;
           const filename = this.sharedState.user_id + '_to_' + cur_sponsor + '.csv';
@@ -911,10 +907,78 @@ export default {
           // Store match_id file
           fs.writeFileSync(Match_folder + filename, cur_match_id_file)
          
-          console.log("3.5 Recipient saves matched id file")
-          this.$toasted.success("3.5 Recipient saves matched id file", { icon: 'fingerprint' })
-          this.$store.state.msg.push("3.5 Recipient saves matched id file")
-          this.$store.state.msg.push("-------------------------- 3. Unread Match ID Done")
+          console.log("3.5 Test: Recipient saves matched id file")
+          this.$toasted.success("3.5 Test: Recipient saves matched id file", { icon: 'fingerprint' })
+          this.$store.state.msg.push("3.5 Test: Recipient saves matched id file")
+
+          // Test T Results
+          function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(5000); // 程序滞留5000ms
+
+          function find_Train_Models(startPath) {
+          let result=[];
+          function finder(path) {
+              let files=fs.readdirSync(path);
+              files.forEach((val,index) => {
+                  let fPath=join(path,val);
+                  let stats=fs.statSync(fPath);
+                  // console.log("val", val)
+                  // console.log("stats", fPath, stats)
+                  if(stats.isDirectory()) finder(fPath);
+                  if(stats.isFile()&&val=="Recipient_Trained_Local_Model.csv") {
+                    // result.push(fPath);
+                    let data = fs.readFileSync(fPath,
+                      {encoding:'utf8', flag:'r'});
+                    result.push(data);
+                  }
+              });
+            }
+            finder(startPath);
+            return result;
+          }
+
+          let train_path = 'Local_Data/' + this.sharedState.user_id + '/' + task_id;
+          let files = find_Train_Models(train_path);
+          
+          console.log("3.6 Test: Recipient gets all train models")
+          vm.$toasted.success("3.6 Test: Recipient gets all train models", { icon: 'fingerprint' })
+          vm.$store.state.msg.push("3.6 Test: Recipient gets all train models")
+
+          const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
+          fs.mkdirSync(Test_Output_folder, { recursive: true});
+
+          for (let i = 0;i < files.length; i++){
+            console.log(files[i]);
+            let filename = "Test_Models" + i.toString();
+            fs.writeFileSync(Test_Output_folder + filename, files[i])
+          }
+          
+          console.log("3.7 Test: Recipient stores all test model results")
+          vm.$toasted.success("3.7 Test: Recipient stores all test model results", { icon: 'fingerprint' })
+          vm.$store.state.msg.push("3.7 Test: Recipient stores all test model results")
+          
+          const payload1 = {
+            task_id: task_id,
+            output: files
+          }
+
+          // send output
+          // async
+          vm.$axios.post('/send_test_output/', payload1)
+            .then((response) => {
+            // handle success
+            console.log("3.9 Test: Recipient sends all test model results", response)
+            vm.$toasted.success("3.9 Test: Recipient sends all test model results", { icon: 'fingerprint' })
+            this.$store.state.msg.push("3.9 Test: Recipient sends all test model results")
+            this.$store.state.msg.push("-------------------------- 4. Unread Match ID Done")
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+
         })
         .catch((error) => {
           // handle error
@@ -922,9 +986,61 @@ export default {
         }) 
     },
 
-    unread_test_situation() {
+    unread_test_output(unread_test_output_notification) {
+      this.$store.state.msg.push("-------------------------- 4. Unread Test Output")
+      console.log("4.1 Update Test output notification", unread_test_output_notification)
+      this.$toasted.success("4.1 Update Test output notification", { icon: 'fingerprint' })
+      this.$store.state.msg.push("4.1 Update Test output notification")
 
+      let cur_unread_test_output_Taskid_dict = unread_test_output_notification["check_dict"]
+
+      for (let task_id in cur_unread_test_output_Taskid_dict){
+        this.unread_test_output_singleTask(task_id);
+      }
     },
+
+    unread_test_output_singleTask(rounds, task_id){
+
+      const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
+      let vm = this
+      // Obtain output from recipients
+
+      const payload = {
+        task_id: task_id,
+      }
+      const url = `/users/${this.sharedState.user_id}/test_output/`
+
+      this.$axios.post(url, payload)
+        .then((response) => {
+          console.log("4.2 Test: Sponsor gets Recipients' Test output model")
+          vm.$toasted.success("4.2 Test: Sponsor gets Recipients' Test output model", { icon: 'fingerprint' })
+          this.$store.state.msg.push("4.2 Test: Sponsor gets Recipients' Test output model")
+          // iterate the match_id_file
+          for(let i = 0;i < response.data.output.length; i++){
+
+            const cur_recipient = response.data.sender_random_ids_list[i];
+            const filename = cur_recipient + '_to_' + this.sharedState.user_id + '.csv';
+
+            let multiple_outputs_from_one_recipient = JSON.parse(response.data.output[i]);
+            for (let j = 0; j < multiple_outputs_from_one_recipient.length; j++){
+              let cur_output = multiple_outputs_from_one_recipient[j].join('\n');
+
+              // Store the output
+              fs.writeFileSync(Round_folder + filename, cur_output)
+              console.log("4.3 Test: Sponsor saves Recipients' Output model");
+              vm.$toasted.success("4.3 Test: Sponsor saves Recipients' Output model", { icon: 'fingerprint' })
+              this.$store.state.msg.push("4.3 Test: Sponsor saves Recipients' Output model")
+              this.$store.state.msg.push("-------------------------- 4. Unread Test Output Done")
+            }
+            
+          }
+        })
+        .catch((error) => {
+          // handle error
+          console.error(error)
+        }) 
+    },
+
 
   },
 
@@ -935,6 +1051,10 @@ export default {
     window.unread_match_id = this.unread_match_id;
     window.unread_situation = this.unread_situation;
     window.unread_output = this.unread_output;
+
+    window.unread_test_request = this.unread_test_request;
+    window.unread_test_match_id = this.unread_test_match_id;
+    window.unread_test_output = this.unread_test_output;
 
     // window.unread_match_id_sponsor = this.unread_match_id_sponsor
     // window.unread_match_id_recipient = this.unread_match_id_recipient
@@ -989,9 +1109,9 @@ export default {
                 let unread_output_notification = response.data["unread output"]
 
                 // test stage
-                // let unread_test_request_notification = response.data["unread_test_request"]
-                // let unread_test_match_id_notification = response.data["unread_test_match_id"]
-                // let unread_test_situation_notification = response.data["unread_test_situation"]
+                let unread_test_request_notification = response.data["unread test request"]
+                let unread_test_match_id_notification = response.data["unread test match id"]
+                let unread_test_output_notification = response.data["unread test output"]
 
 
                 console.log("unread_request_notification",unread_request_notification,
@@ -1017,6 +1137,18 @@ export default {
 
                 if (unread_output_notification["rounds_dict"]){
                     unread_output(unread_output_notification)
+                }
+
+                if (unread_test_request_notification["check_dict"]){
+                    unread_test_request(unread_test_request_notification)
+                }
+
+                if (unread_test_match_id_notification["check_dict"]){
+                    unread_test_match_id(unread_test_match_id_notification)
+                }
+
+                if (unread_test_output_notification["check_dict"]){
+                    unread_test_output(unread_test_output_notification)
                 }
               })
               .catch((error) => {

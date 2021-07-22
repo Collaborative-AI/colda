@@ -285,7 +285,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id).all()
+        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.test_indicator == "train").all()
         self.assertEqual(len(queries), len(list_content)+1)
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 0)
@@ -390,7 +390,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             json_response = json.loads(response.get_data(as_text=True))
             self.assertEqual(json_response['send_output'], "send output successfully")
-            queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == test_round).all()
+            queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
             self.assertEqual(len(queries), 2)
             self.assertEqual(queries[-1].sender_id, 2)
             self.assertEqual(json.loads(queries[-1].output), [[3,123,6], [88,5,6], [7,99,9]])
@@ -402,7 +402,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             json_response = json.loads(response.get_data(as_text=True))
             self.assertEqual(json_response['send_output'], "send output successfully")
-            queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == test_round).all()
+            queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
             self.assertEqual(len(queries), 3)
             self.assertEqual(queries[-1].sender_id, 3)
             self.assertEqual(json.loads(queries[-1].output), [[6,123,6], [88,5,6], [7,87.6,9]])
@@ -452,7 +452,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
             json_response = json.loads(response.get_data(as_text=True))
             self.assertEqual(json_response['message'], 'send situation successfully!')
 
-            queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.rounds == test_round+1).all()
+            queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.rounds == test_round+1, Message.test_indicator == "train").all()
             self.assertEqual(len(queries), len(list_content)+1)
             for i in range(len(queries)):
                 self.assertEqual(queries[i].rounds, test_round+1)

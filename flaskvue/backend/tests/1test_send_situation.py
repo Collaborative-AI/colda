@@ -85,7 +85,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id).all()
+        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.test_indicator == "train").all()
         self.assertEqual(len(queries), len(list_content)+1)
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 0)
@@ -158,7 +158,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id).all()
+        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.test_indicator == "train").all()
         self.assertEqual(len(queries), len(list_content)+1)
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 0)
@@ -200,7 +200,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.rounds == 1).all()
+        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.rounds == 1, Message.test_indicator == "train").all()
         self.assertEqual(len(queries), len(list_content)+1)
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 1)

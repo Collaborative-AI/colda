@@ -151,9 +151,9 @@ class Unread_Request_APITestCase(unittest.TestCase):
         response = self.client.post('/find_recipient/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
-        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 2).all()
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 2, Matched.test_indicator == "train").all()
         self.assertEqual(set(json.loads(query[0].Matched_id_file)), set([0,1,4]))
-        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3).all()
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3, Matched.test_indicator == "train").all()
         self.assertEqual(set(json.loads(query[0].Matched_id_file)), set([0,1,4]))
 
         # 2. Check the Notification of user 2
@@ -210,7 +210,7 @@ class Unread_Request_APITestCase(unittest.TestCase):
         self.assertEqual(stored, "recipient match id stored")
         self.assertEqual(task_id, task_id_response)
         # test matched id file
-        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 2).all()
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 2, Matched.test_indicator == "train").all()
         self.assertEqual(set(json.loads(query[0].Matched_id_file)), set([0,4]))
 
         # should not exist notification yet
@@ -231,7 +231,7 @@ class Unread_Request_APITestCase(unittest.TestCase):
         self.assertEqual(stored, "recipient match id stored")
         self.assertEqual(task_id, task_id_response)
         # test matched id file
-        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3).all()
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3, Matched.test_indicator == "train").all()
         self.assertEqual(set(json.loads(query[0].Matched_id_file)), set([0]))
 
         # 6. Check Updated Notification

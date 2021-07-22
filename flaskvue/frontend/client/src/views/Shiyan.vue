@@ -14,6 +14,7 @@
     <button @click="diaoyong()">test python shell</button>
     <button @click="delete_all_rows()">delete_all_rows</button>
     <button @click="delete_all_logs()">delete_all_logs</button>
+    <button @click="duqu()">duqu</button>
     <div v-for="task_id in task_id_list" :key="task_id.id">
       {{ task_id }}
       <input type="file" name="csvfile" ref="csvData" />
@@ -28,7 +29,7 @@
 //const { require } = window
 const fs = window.require('fs');
 const xlsx2json = window.require("node-xlsx");
-
+const join = window.require('path').join;
 const address = 'tem/' + 'b/'
 // const ex = require("child_process").execFileSync;
 const ex = window.require("child_process");
@@ -72,6 +73,38 @@ export default {
   },
 
   methods: {
+    duqu(){
+      function findSync(startPath) {
+        let result=[];
+        function finder(path) {
+            let files=fs.readdirSync(path);
+            files.forEach((val,index) => {
+                let fPath=join(path,val);
+                let stats=fs.statSync(fPath);
+                console.log("val", val)
+                console.log("stats", fPath, stats)
+                if(stats.isDirectory()) finder(fPath);
+                if(stats.isFile()&&val=="Sponsor_Trained_Local_Model.csv") {
+                  // result.push(fPath);
+                  let data = fs.readFileSync(fPath,
+                    {encoding:'utf8', flag:'r'});
+                  result.push(data);
+                }
+            });
+
+        }
+        // let startPath = 'Local_Data/4/7cb0e4af-1736-4717-a809-5772c08a1603'
+        finder(startPath);
+        return result;
+      }
+      
+      let fileNames=findSync('Local_Data/4/7cb0e4af-1736-4717-a809-5772c08a1603');
+      for (let i = 0;i < fileNames.length; i++){
+        console.log(fileNames[i]);
+      }
+    },
+    
+
     delete_all_logs() {
       this.$store.state.msg = [];
 

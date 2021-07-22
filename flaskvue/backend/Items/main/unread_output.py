@@ -94,3 +94,42 @@ def get_user_output(id):
     }
 
     return jsonify(data)  
+
+@main.route('/users/<int:id>/test_output/', methods=['POST'])
+@token_auth.login_required
+def get_user_test_output(id):
+
+    data = request.get_json()
+    if not data:
+        return bad_request('You must post JSON data.')
+    if 'task_id' not in data or not data.get('task_id'):
+        return bad_request('task_id is required.')
+
+    task_id = data.get('task_id')
+
+    # only call this function with id that is sponsor
+    query = Matched.query.filter(Matched.task_id == task_id).first()
+    if int(query.sponsor_id) != id:
+        return error_response(403)
+
+    # check if the caller and the id is the same
+    user = User.query.get_or_404(id)
+    if g.current_user != user:
+        return error_response(403)
+
+    data = {}
+    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "test").all()
+
+    output_files = []
+    sender_random_ids = []
+    for row in query:
+        if row.output:
+            output_files.append(row.output)
+            sender_random_ids.append(row.sender_random_id)
+
+    data = {
+        'output': output_files,
+        'sender_random_ids_list': sender_random_ids
+    }
+
+    return jsonify(data)  

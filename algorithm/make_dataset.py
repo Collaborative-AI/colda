@@ -8,11 +8,12 @@ parser.add_argument('--data_name', default='BostonHousing', type=str)
 parser.add_argument('--num_users', default=2, type=int)
 args = vars(parser.parse_args())
 
+root = 'exp'
 
 def main():
     data_name = args['data_name']
     num_users = args['num_users']
-    path = os.path.join('.', '{}_{}'.format(data_name, num_users))
+    path = os.path.join('.', '{}_{}'.format(root, data_name, num_users))
     if os.path.exists(path):
         os.remove(path)
     feature_split = split_dataset(data_name, num_users)

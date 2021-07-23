@@ -95,11 +95,12 @@ def get_user_output(id):
 
     return jsonify(data)  
 
-@main.route('/users/<int:id>/test_output/', methods=['POST'])
+@main.route('/test_output/', methods=['POST'])
 @token_auth.login_required
-def get_user_test_output(id):
-
+def get_user_test_output():
+    print("##############################")
     data = request.get_json()
+    print("##############################", data)
     if not data:
         return bad_request('You must post JSON data.')
     if 'task_id' not in data or not data.get('task_id'):
@@ -108,14 +109,10 @@ def get_user_test_output(id):
     task_id = data.get('task_id')
 
     # only call this function with id that is sponsor
-    query = Matched.query.filter(Matched.task_id == task_id).first()
-    if int(query.sponsor_id) != id:
+    query = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "test").first()
+    if int(query.sponsor_id) != g.current_user.id:
         return error_response(403)
 
-    # check if the caller and the id is the same
-    user = User.query.get_or_404(id)
-    if g.current_user != user:
-        return error_response(403)
 
     data = {}
     query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "test").all()

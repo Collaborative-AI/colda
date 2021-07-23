@@ -6,11 +6,11 @@
       v-bind:message="alert.message">
     </alert>
 
-    <ul class="content">
+    <!-- <ul class="content">
        <li v-for="(msg, index) in $store.state.msg" :key="index">
          {{ msg }}
        </li>
-    </ul>
+    </ul> -->
 
 
     <button type="button" class="btn btn-primary">HomePage</button>

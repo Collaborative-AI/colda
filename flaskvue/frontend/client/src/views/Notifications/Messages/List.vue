@@ -5,7 +5,7 @@
       <!-- Panel Header -->
       <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
         <h3 class="h6 mb-0">
-          <i class="icon-bubbles g-pos-rel g-top-1 g-mr-5"></i> Received Messages <small v-if="messages">(共 {{ messages._meta.total_items }} 条, {{ messages._meta.total_pages }} 页)</small>
+          <i class="icon-bubbles g-pos-rel g-top-1 g-mr-5"></i> Participated Tasks <small v-if="messages">(Total: {{ messages._meta.total_items }} tasks, {{ messages._meta.total_pages }} pages)</small>
         </h3>
         <div class="dropdown g-mb-10 g-mb-0--md">
           <span class="d-block g-color-primary--hover g-cursor-pointer g-mr-minus-5 g-pa-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -38,29 +38,29 @@
       <div class="d-flex justify-content-start g-brd-around g-brd-gray-light-v4 g-brd-left-1 g-pa-20 g-mb-10"
         v-for="(message, index) in messages.items" v-bind:key="index">
         <div class="g-mt-2">
-          <router-link v-bind:to="{ path: `/user/${message.sender.id}` }">
+          <!-- <router-link v-bind:to="{ path: `/user/${message.sender.id}` }">
             <span v-if="message.is_new" class="d-inline-block g-pos-rel">
               <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span>
               
               <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
-              <!-- <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username"> -->
+              
             </span>
-            <!-- <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username"> -->
+            
             <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
-          </router-link>
+          </router-link> -->
         </div>
         <div class="align-self-center g-px-10">
           <h5 class="h5 g-color-gray-dark-v1 mb-0">
-            <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="g-text-underline--none--hover">
+            <!-- <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="g-text-underline--none--hover">
               <span class="g-mr-5">{{ message.sender.name || message.sender.username }}</span>
-            </router-link>
-            <small class="g-font-size-12 g-color-aqua">给你发送了<small v-if="message.new_count" class="g-font-size-12 g-color-deeporange"> {{ message.new_count }} 条新 </small>私信</small>
+            </router-link> -->
+            <small class="g-font-size-12 g-color-aqua">Task ID: <small v-if="message.task_id" class="g-font-size-12 g-color-deeporange"> {{ message.task_id }} </small></small>
           </h5>
-          <p class="m-0">{{ $moment(message.timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</p>
+          <p class="m-0">{{ $moment(message.match_id_timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</p>
         </div>
         <div class="align-self-center ml-auto">
-          <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.sender.id } }">
-            <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">聊天记录</button>
+          <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id } }">
+            <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Details</button>
           </router-link>
         </div>
       </div>
@@ -95,7 +95,29 @@ export default {
     }
   },
   methods: {
-    getUserMessagesSenders (id) {
+    // getUserMessagesSenders (id) {
+    //   let page = 1
+    //   let per_page = 5
+    //   if (typeof this.$route.query.page != 'undefined') {
+    //     page = this.$route.query.page
+    //   }
+
+    //   if (typeof this.$route.query.per_page != 'undefined') {
+    //     per_page = this.$route.query.per_page
+    //   }
+      
+    //   const path = `/users/${id}/messages-senders/?page=${page}&per_page=${per_page}`
+    //   this.$axios.get(path)
+    //     .then((response) => {
+    //       // handle success
+    //       this.messages = response.data
+    //     })
+    //     .catch((error) => {
+    //       // handle error
+    //       console.error(error)
+    //     })
+    // }
+    getUserHistory (id) {
       let page = 1
       let per_page = 5
       if (typeof this.$route.query.page != 'undefined') {
@@ -105,8 +127,8 @@ export default {
       if (typeof this.$route.query.per_page != 'undefined') {
         per_page = this.$route.query.per_page
       }
-      
-      const path = `/users/${id}/messages-senders/?page=${page}&per_page=${per_page}`
+     
+      const path = `/get_user_history/?page=${page}&per_page=${per_page}`
       this.$axios.get(path)
         .then((response) => {
           // handle success
@@ -119,12 +141,14 @@ export default {
     }
   },
   created () {
-    this.getUserMessagesSenders(this.sharedState.user_id)
+    // this.getUserMessagesSenders(this.sharedState.user_id)
+    this.getUserHistory(this.sharedState.user_id)
   },
   // 当路由变化后(比如变更查询参数 page 和 per_page)重新加载数据
   beforeRouteUpdate (to, from, next) {
     next()
-    this.getUserMessagesSenders(this.sharedState.user_id)
+    // this.getUserMessagesSenders(this.sharedState.user_id)
+    this.getUserHistory(this.sharedState.user_id)
   }
 }
 </script>

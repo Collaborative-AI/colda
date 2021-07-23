@@ -42,7 +42,7 @@ def update_all_notifications():
                 check_dict = {}
                 lastest_time = datetime(1900, 1, 1)
                 for j in range(len(task_id_list)):
-                    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "train").all()
+                    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "train").order_by(Matched.request_timestamp.desc()).all()
                     # get the latest output timestamp
                     if record[0].request_timestamp > lastest_time:
                         lastest_time = record[0].request_timestamp
@@ -77,7 +77,7 @@ def update_all_notifications():
                         if int(query.sponsor_id) == g.current_user.id:
                             isSponsor = True
 
-                        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "train").all()
+                        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "train").order_by(Matched.match_id_timestamp.desc()).all()
 
                         # get the latest output timestamp
                         if record[0].match_id_timestamp > lastest_time:
@@ -183,7 +183,7 @@ def update_all_notifications():
                 check_dict = {}
                 lastest_time = datetime(1900, 1, 1)
                 for j in range(len(task_id_list)):
-                    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "test").all()
+                    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "test").order_by(Matched.request_timestamp.desc()).all()
                     # get the latest output timestamp
                     if record[0].request_timestamp > lastest_time:
                         lastest_time = record[0].request_timestamp
@@ -218,7 +218,7 @@ def update_all_notifications():
                         if int(query.sponsor_id) == g.current_user.id:
                             isSponsor = True
 
-                        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "test").all()
+                        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "test").order_by(Matched.match_id_timestamp.desc()).all()
 
                         # get the latest output timestamp
                         if record[0].match_id_timestamp > lastest_time:

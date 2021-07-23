@@ -1,0 +1,38 @@
+---------------------- Train Stage Starts
+---------------------- 1. Find Recipient
+1.1 Sponsor calls for help
+1.2 Sponsor sends id file
+1.3 Sponsor creates Local_Data/5/75e05ce4-ebbc-42b7-a37a-092d32299b9f/
+---------------------- 1. Find Recipient Done
+----------------------2. Unread Request
+2.1 Update the request notification
+2.2 Recipient uploads id file
+--------------------------2. Unread Request Done
+----------------------2. Unread Request
+2.1 Update the request notification
+2.2 Recipient uploads id file
+--------------------------2. Unread Request Done
+----------------------2. Unread Request
+2.1 Update the request notification
+2.2 Recipient uploads id file
+--------------------------2. Unread Request Done
+----------------------2. Unread Request
+2.1 Update the request notification
+2.2 Recipient uploads id file
+--------------------------2. Unread Request Done
+----------------------2. Unread Request
+2.1 Update the request notification
+2.2 Recipient uploads id file
+--------------------------2. Unread Request Done
+----------------------2. Unread Request
+2.1 Update the request notification
+2.2 Recipient uploads id file
+--------------------------2. Unread Request Done
+----------------------2. Unread Request
+2.1 Update the request notification
+2.2 Recipient uploads id file
+--------------------------2. Unread Request Done
+----------------------2. Unread Request
+2.1 Update the request notification
+2.2 Recipient uploads id file
+--------------------------2. Unread Request Done

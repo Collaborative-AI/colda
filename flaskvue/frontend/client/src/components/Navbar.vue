@@ -90,6 +90,7 @@ import axios from 'axios'
 import $ from 'jquery'
 // use Node API
 const fs = window.require('fs');
+const join = window.require('path').join;
 const xlsx2json = window.require("node-xlsx");
 
 // change csv to array
@@ -107,7 +108,7 @@ export default {
       sharedState: store.state,
       unread_request_show: false,
       recipient_num: 0,
-      max_round: 4.
+      max_round: 2.
     }
   },
   methods: {
@@ -145,6 +146,10 @@ export default {
           console.log("1.2 Sponsor sends id file")
           this.$toasted.success(`1.2 Sponsor sends id file`, { icon: 'fingerprint' })
 
+          // Create 'Local_Data/id/task_id/' folder
+          const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
+          fs.mkdirSync(new_address, { recursive: true})
+
           try {
             fs.appendFileSync(Log_address, "---------------------- Train Stage Starts\n")
             fs.appendFileSync(Log_address, "---------------------- 1. Find Recipient\n")
@@ -153,11 +158,6 @@ export default {
           } catch (err) {
             console.error(err)
           }
-
-
-          // Create 'Local_Data/id/task_id/' folder
-          const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
-          fs.mkdirSync(new_address, { recursive: true})
 
           console.log("1.3 Sponsor creates " + new_address)
           this.$toasted.success("1.3 Sponsor creates " + new_address, { icon: 'fingerprint' })
@@ -214,6 +214,9 @@ export default {
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
       for (let task_id in cur_unread_request_Taskid_dict){
         
+        const Recipient_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
+        fs.mkdirSync(Recipient_store_folder, { recursive: true})
+
         const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
         try {
           fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
@@ -769,9 +772,11 @@ export default {
             const cur_recipient = response.data.sender_random_ids_list[i];
             const filename = cur_recipient + '_to_' + this.sharedState.user_id + '.csv';
 
+            console.log("cur_output^^^^^^^^", response.data.output[i])
             let cur_output = JSON.parse(response.data.output[i]);
+            console.log("cur_output^^^^^^^^1", cur_output)
             cur_output = cur_output.join('\n');
-
+            console.log("cur_output^^^^^^^^2", cur_output)
             // Store the output
             fs.writeFileSync(Round_folder + filename, cur_output)
             console.log('5.3 Sponsor saves Output model');
@@ -783,6 +788,7 @@ export default {
             }
             // terminate
             if ((rounds+1) >= this.max_round){
+              fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n")
               continue;
             }
              // Create Folder: current_path/Local Data/task_id/roundn+1
@@ -874,7 +880,7 @@ export default {
           console.error(err)
         }
 
-        const recipient_data_folder = 'Test/Recipient_Data/'
+        const recipient_data_folder = 'Test_Recipient_Data/'
         fs.mkdirSync(recipient_data_folder, { recursive: true})
 
         const filename = 'shiyan.csv'
@@ -912,7 +918,7 @@ export default {
 
 
     unread_test_match_id(unread_test_match_id_notification) {
-      console.log("3.1 Update Test match id notification response", unread_match_id_notification)
+      console.log("3.1 Update Test match id notification response", unread_test_match_id_notification)
       this.$toasted.success("3.1 Update the Test match id notification", { icon: 'fingerprint' })
 
       let cur_unread_test_match_id_Taskid_dict = unread_test_match_id_notification["check_dict"]
@@ -921,7 +927,7 @@ export default {
 
         const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
         try {
-          fs.appendFileSync(Log_address, "-----------------------Test Stage: 3.Unread Test Match ID\n")
+          fs.appendFileSync(Log_address, "-----------------------3.Unread Test Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Test: Update the Test match id notification\n")
         } catch (err) {
           console.error(err)
@@ -1223,7 +1229,7 @@ export default {
       }
     },
 
-    unread_test_output_singleTask(rounds, task_id){
+    unread_test_output_singleTask(task_id){
 
       const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
       const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
@@ -1233,7 +1239,7 @@ export default {
       const payload = {
         task_id: task_id,
       }
-      const url = `/users/${this.sharedState.user_id}/test_output/`
+      const url = `/test_output/`
 
       this.$axios.post(url, payload)
         .then((response) => {
@@ -1248,13 +1254,19 @@ export default {
           for(let i = 0;i < response.data.output.length; i++){
 
             const cur_recipient = response.data.sender_random_ids_list[i];
-            const filename = cur_recipient + '_to_' + this.sharedState.user_id + '.csv';
+            let filename = cur_recipient + '_to_' + this.sharedState.user_id + '.csv';
 
             let multiple_outputs_from_one_recipient = JSON.parse(response.data.output[i]);
+            console.log("multiple_outputs_from_one_recipient", multiple_outputs_from_one_recipient)
             for (let j = 0; j < multiple_outputs_from_one_recipient.length; j++){
-              let cur_output = multiple_outputs_from_one_recipient[j].join('\n');
-
+              
+              console.log("cur_test output^^^^^^^^", multiple_outputs_from_one_recipient[j])
+              let cur_output = multiple_outputs_from_one_recipient[j];
+              console.log("cur_test output^^^^^^^^1", cur_output)
+              // cur_output = cur_output.split('\n');
+              // console.log("cur_test output^^^^^^^^2", cur_output)
               // Store the output
+              filename = filename + j.toString();
               fs.writeFileSync(Test_Output_folder + filename, cur_output)
               console.log("4.3 Test: Sponsor saves Recipients' Output model");
               vm.$toasted.success("4.3 Test: Sponsor saves Recipients' Output model", { icon: 'fingerprint' })
@@ -1355,6 +1367,14 @@ export default {
                   unread_situation_notification["check_dict"])
                 console.log("unread_output_notification",unread_output_notification,
                   unread_output_notification["check_dict"])
+
+                console.log("unread_test_request_notification",unread_test_request_notification,
+                  unread_test_request_notification["check_dict"])
+                console.log("unread_test_match_id_notification",unread_test_match_id_notification,
+                  unread_test_match_id_notification["check_dict"])
+                console.log("unread_test_output_notification",unread_test_output_notification,
+                  unread_test_output_notification["check_dict"])
+
 
                 if (unread_request_notification["check_dict"] ){
                     unread_request(unread_request_notification)

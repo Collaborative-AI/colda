@@ -37,7 +37,7 @@
             <li class="g-py-3">
               <router-link v-bind:to="{ name: 'MessagesIndex' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-communication-154 u-line-icon-pro"></i></span>
-                Messages
+                History
                 <span v-if="notifications.unread_messages_count" class="u-label g-font-size-11 g-bg-pink g-rounded-20 g-px-8 g-ml-15">{{ notifications.unread_messages_count }}</span>
               </router-link>
             </li>

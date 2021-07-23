@@ -78,3 +78,25 @@ def delete_all_rows():
       db.session.commit()
 
   return "done"
+
+@main.route('/delete_test_rows/', methods=['GET'])
+@token_auth.login_required
+def delete_test_rows():
+  
+  # Message, Matched, Notification
+  queries = Matched.query.filter(Matched.test_indicator == "test").all()
+  for row in queries:
+      db.session.delete(row)
+      db.session.commit()
+
+  Messages = Message.query.filter(Message.test_indicator == "test").all()
+  for row in Messages:
+      db.session.delete(row)
+      db.session.commit()
+
+  Notifications = Notification.query.all()
+  for row in Notifications:
+      db.session.delete(row)
+      db.session.commit()
+
+  return "done"

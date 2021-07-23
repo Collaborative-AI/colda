@@ -27,14 +27,14 @@ class PaginatedAPIMixin(object):
                 'total_pages': resources.pages,
                 'total_items': resources.total
             },
-            '_links': {
-                'self': url_for(endpoint, page=page, per_page=per_page,
-                                **kwargs),
-                'next': url_for(endpoint, page=page + 1, per_page=per_page,
-                                **kwargs) if resources.has_next else None,
-                'prev': url_for(endpoint, page=page - 1, per_page=per_page,
-                                **kwargs) if resources.has_prev else None
-            }
+            # '_links': {
+            #     'self': url_for(endpoint, page=page, per_page=per_page,
+            #                     **kwargs),
+            #     'next': url_for(endpoint, page=page + 1, per_page=per_page,
+            #                     **kwargs) if resources.has_next else None,
+            #     'prev': url_for(endpoint, page=page - 1, per_page=per_page,
+            #                     **kwargs) if resources.has_prev else None
+            # }
         }
         return data
 
@@ -424,6 +424,7 @@ class Matched(PaginatedAPIMixin, db.Model):
     __tablename__ = 'matched'
     id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.String(120), index=True)
+    
     request_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     match_id_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
@@ -450,9 +451,6 @@ class Matched(PaginatedAPIMixin, db.Model):
         data = {
             'id': self.id,
             'task_id': self.task_id,
-            'user': {
-                'id': self.sponser_id,
-            },
             'request_timestamp': self.request_timestamp,
             'match_id_timestamp': self.match_id_timestamp,
             'sponsor_random_id': self.sponsor_random_id,

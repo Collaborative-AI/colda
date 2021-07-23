@@ -1,0 +1,41 @@
+----------------------2. Unread Request
+2.1 Update the request notification
+2.2 Recipient uploads id file
+--------------------------2. Unread Request Done
+-------------------------- 3. Unread Match ID
+3.1 Update the match id notification
+3.2 Unread_match_id_recipient
+3.3 Recipient creates Local_Data/5/9d3f2f73-a332-43db-b5fa-07b89521b723/Match/
+3.4 Recipient gets matched id file
+3.5 Recipient saves matched id file
+-------------------------- 3. Unread Match ID Done
+-------------------------- 4. Unread Situation
+4.1 Update the situation notification
+4.2 Recipient creates Local_Data/5/9d3f2f73-a332-43db-b5fa-07b89521b723/0/
+4.3 Recipient gets situation file
+4.4 Recipient Saved Situation File!
+4.5 Recipient saved Recipient_Trained_Local_Model.csv at Local_Data/5/9d3f2f73-a332-43db-b5fa-07b89521b723/0/
+4.6 Recipient sends output
+-------------------------- 4. Unread Situation Done
+-------------------------- 4. Unread Situation
+4.1 Update the situation notification
+4.2 Recipient creates Local_Data/5/9d3f2f73-a332-43db-b5fa-07b89521b723/1/
+4.3 Recipient gets situation file
+4.4 Recipient Saved Situation File!
+4.5 Recipient saved Recipient_Trained_Local_Model.csv at Local_Data/5/9d3f2f73-a332-43db-b5fa-07b89521b723/1/
+4.6 Recipient sends output
+-------------------------- 4. Unread Situation Done
+-----------------------Test Stage: 2.Unread Test Request
+2.1 Update Test request notification
+2.2 Test: Recipient uploads id file
+--------------------------2. Unread Test Request Done
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_recipient
+3.3 Test: Match Folder: Sponsor creates Local_Data/5/9d3f2f73-a332-43db-b5fa-07b89521b723/Test/Match/
+3.4 Test: Recipient gets matched id file
+3.5 Test: Recipient saves matched id file
+3.6 Test: Recipient gets all train models
+3.7 Test: Recipient stores all test model results
+3.8 Test: Recipient sends all test model results
+-------------------------- 3. Unread Test Match ID Done

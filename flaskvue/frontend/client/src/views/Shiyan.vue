@@ -14,6 +14,9 @@
     <button @click="diaoyong()">test python shell</button>
     <button @click="delete_all_rows()">delete_all_rows</button>
     <button @click="delete_all_logs()">delete_all_logs</button>
+    <button @click="delete_test_rows()">delete_test_rows</button>
+
+
     <button @click="duqu()">duqu</button>
     <div v-for="task_id in task_id_list" :key="task_id.id">
       {{ task_id }}
@@ -74,6 +77,18 @@ export default {
   },
 
   methods: {
+
+     delete_test_rows() {
+      axios.get('/delete_test_rows/')
+        .then((response) => {
+        // handle success
+        console.log("delete_test_rows", response)
+        // console.log(response)
+      })
+      .catch((error) => {
+      })
+
+    },
     duqu(){
       // function findSync(startPath) {
       //   let result=[];

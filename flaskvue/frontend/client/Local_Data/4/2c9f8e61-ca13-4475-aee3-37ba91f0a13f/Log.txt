@@ -1,0 +1,185 @@
+---------------------- Train Stage Starts
+---------------------- 1. Find Recipient
+1.1 Sponsor calls for help
+1.2 Sponsor sends id file
+1.3 Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/
+---------------------- 1. Find Recipient Done
+-------------------------- 3. Unread Match ID
+3.1 Update the match id notification
+3.2 Unread_match_id_sponsor
+3.3 Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Match/
+3.4 Sponsor gets matched id file
+3.5 Sponsor Saved Matched id File!
+3.6 Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/0/
+3.7 Sponsor Saved Sent_Initial_Situation.csv
+3.8 sponsor sends the situation
+-------------------------- 3. Unread Match ID Done
+-------------------------- 4. Unread Situation
+4.1 Update the situation notification
+4.2 Cur round is: 0
+4.3 Sponsor saved Sponsor_Trained_Local_Model.csv at Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/0/
+-------------------------- 4. Unread Situation Done
+-------------------------- 5. Unread Output
+5.1 Update the output notification
+5.2 Sponsor gets output model
+5.3 Sponsor saves Output model
+5.4 Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/1/
+5.5 Sponsor saved update situation Update_Initial_Situation.csv at Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/1/
+5.6 Sponsor updates situation done
+-------------------------- 5. Unread Output Done
+-------------------------- 4. Unread Situation
+4.1 Update the situation notification
+4.2 Cur round is: 1
+4.3 Sponsor saved Sponsor_Trained_Local_Model.csv at Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/1/
+-------------------------- 4. Unread Situation Done
+-------------------------- 5. Unread Output
+5.1 Update the output notification
+5.2 Sponsor gets output model
+5.3 Sponsor saves Output model
+5.4 Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/2/
+5.5 Sponsor saved update situation Update_Initial_Situation.csv at Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/2/
+5.6 Sponsor updates situation done
+-------------------------- 5. Unread Output Done
+-------------------------- 4. Unread Situation
+4.1 Update the situation notification
+4.2 Cur round is: 2
+4.3 Sponsor saved Sponsor_Trained_Local_Model.csv at Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/2/
+-------------------------- 4. Unread Situation Done
+-------------------------- 5. Unread Output
+5.1 Update the output notification
+5.2 Sponsor gets output model
+5.3 Sponsor saves Output model
+5.4 Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/3/
+5.5 Sponsor saved update situation Update_Initial_Situation.csv at Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/3/
+5.6 Sponsor updates situation done
+-------------------------- 5. Unread Output Done
+-------------------------- 4. Unread Situation
+4.1 Update the situation notification
+4.2 Cur round is: 3
+4.3 Sponsor saved Sponsor_Trained_Local_Model.csv at Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/3/
+-------------------------- 4. Unread Situation Done
+-------------------------- 5. Unread Output
+5.1 Update the output notification
+5.2 Sponsor gets output model
+5.3 Sponsor saves Output model
+---------------------- Train Stage Ends
+---------------------- Test Stage Starts
+---------------------- 1. Test: Find Test Recipient
+1.1 Test: Sponsor calls for test
+1.2 Test: Sponsor sends id file
+---------------------- Test Stage Starts
+---------------------- 1. Test: Find Test Recipient
+1.1 Test: Sponsor calls for test
+1.2 Test: Sponsor sends id file
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!
+-----------------------Test Stage: 3.Unread Test Match ID
+3.1 Test: Update the Test match id notification
+3.2 Test: Unread_test_match_id_sponsor
+3.3 Test: Match Folder: Sponsor creates Local_Data/4/2c9f8e61-ca13-4475-aee3-37ba91f0a13f/Test/Match/
+3.4 Test: Sponsor gets matched id file
+3.5 Test: Sponsor Saved Matched id File!
+3.5 Test: Sponsor Saved Matched id File!

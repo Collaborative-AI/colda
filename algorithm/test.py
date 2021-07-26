@@ -11,6 +11,8 @@ parser.add_argument('--round', default=None, type=int)
 args = vars(parser.parse_args())
 
 root = 'exp'
+
+
 def main():
     data_name = args['data_name']
     client_id = args['client_id']
@@ -18,21 +20,11 @@ def main():
     round = args['round']
     assert round > 0
     data = np.genfromtxt(os.path.join(root, data_name, client_id, 'test', 'data.csv'), delimiter=',')
-    model = load(os.path.join(root, data_name, client_id, task_id, 'test', round, 'model.pkl'))
+    model = load(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'model.pkl'))
     output = model.predict(data)
-    makedir_exist_ok(os.path.join(root, data_name, client_id, task_id, 'test', round, 'output'))
-    np.savetxt(os.path.join(root, data_name, client_id, task_id, 'test', round, 'output', '{}.csv'.format(client_id)),
-               output, delimiter=",")
+    makedir_exist_ok(os.path.join(root, data_name, client_id, task_id, 'test', str(round), 'output'))
+    np.savetxt(os.path.join(root, data_name, client_id, task_id, 'test', str(round), 'output', '{}.csv'.format(client_id)), output, delimiter=",")
     return
-
-
-def make_init(target):
-    init = np.mean(target)
-    return init
-
-
-def make_res(output, target):
-    return 2 * (target - output)
 
 
 if __name__ == "__main__":

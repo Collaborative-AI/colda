@@ -1,6 +1,7 @@
 import argparse
 import os
 import shutil
+from utils import makedir_exist_ok
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--data_name', default='BostonHousing', type=str)
@@ -19,11 +20,12 @@ def main():
     client_ids = os.listdir(os.path.join(root, '{}'.format(data_name)))
     for i in range(len(client_ids)):
         if client_ids[i] != client_id:
+            makedir_exist_ok(os.path.join(root, data_name, client_ids[i], task_id, 'train', str(round)))
             if round == 0:
-                shutil.copy(os.path.join(root, data_name, client_id, task_id, 'train', round, 'init.csv'),
-                            os.path.join(root, data_name, client_ids[i], task_id, 'train', round, 'init.csv'))
-            shutil.copy(os.path.join(root, data_name, client_id, task_id, 'train', round, 'res.csv'),
-                        os.path.join(root, data_name, client_ids[i], task_id, 'train', round, 'res.csv'))
+                shutil.copy(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'init.csv'),
+                            os.path.join(root, data_name, client_ids[i], task_id, 'train', str(round), 'init.csv'))
+            shutil.copy(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'),
+                        os.path.join(root, data_name, client_ids[i], task_id, 'train', str(round), 'res.csv'))
     return
 
 

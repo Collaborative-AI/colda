@@ -17,31 +17,34 @@ def main():
     client_id = '0'
     task_id = args['task_id']
     round = args['round']
-    makedir_exist_ok(os.path.join(root, '{}_{}'.format(data_name, client_id, task_id, round)))
     target = np.genfromtxt(os.path.join(root, data_name, client_id, 'train', 'target.csv'), delimiter=',')
+    makedir_exist_ok(os.path.join(root, data_name, client_id, task_id, 'train', str(round)))
     if round == 0:
-        init = make_init(target)
+        init = make_init(target).reshape(-1)
+        print(init)
         res = make_res(init, target)
         history = init
-        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', round, 'init.csv'), init, delimiter=",")
-        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', round, 'res.csv'), res, delimiter=",")
+        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'init.csv'), init,
+                   delimiter=",")
+        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'), res,
+                   delimiter=",")
         np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', 'history.csv'), history, delimiter=",")
     else:
         output = []
-        client_ids = os.listdir(
-            os.path.join('.', '{}_{}'.format(root, data_name, client_id, task_id, 'train', round - 1, 'output')))
-        for i in range(len(client_ids)):
-            output_i = np.genfromtxt(os.path.join(root, '{}_{}'.format(
-                data_name, client_id, task_id, round - 1, 'output',
-                '{}.csv'.format(client_ids[i]))), delimiter=',')
+        client_outputs = os.listdir(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'output'))
+        for i in range(len(client_outputs)):
+            output_i = np.genfromtxt(
+                os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'output', client_outputs[i]),
+                delimiter=',')
             output.append(output_i.reshape(-1, 1))
-        output = np.concatenate(output, axis=1)
-        output = np.mean(output, dim=-1)
+        output = np.concatenate(output, axis=-1)
+        output = np.mean(output, axis=-1)
         history = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', 'history.csv'),
                                 delimiter=',')
         history = history + output
-        res = make_res(output, target)
-        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', round, 'res.csv'), res, delimiter=",")
+        res = make_res(history, target)
+        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'), res,
+                   delimiter=",")
         np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', 'history.csv'), history, delimiter=",")
     return
 
@@ -52,6 +55,7 @@ def make_init(target):
 
 
 def make_res(output, target):
+    print('Loss: {}'.format(np.sqrt(((target - output) ** 2).mean())))
     return 2 * (target - output)
 
 

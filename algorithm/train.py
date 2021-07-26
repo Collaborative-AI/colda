@@ -21,24 +21,16 @@ def main():
     round = args['round']
     assert round > 0
     data = np.genfromtxt(os.path.join(root, data_name, client_id, 'train', 'data.csv'), delimiter=',')
-    target = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', round - 1, 'res.csv'),
+    target = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round - 1), 'res.csv'),
                            delimiter=',')
     model = LinearRegression().fit(data, target)
-    save(model, os.path.join(root, data_name, client_id, task_id, 'train', round, 'model.pkl'))
+    save(model, os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'model.pkl'))
     output = model.predict(data)
-    makedir_exist_ok(os.path.join(root, data_name, client_id, task_id, 'train', round, 'output'))
-    np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', round, 'output', '{}.csv'.format(client_id)),
-               output, delimiter=",")
+    makedir_exist_ok(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'output'))
+    np.savetxt(
+        os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'output', '{}.csv'.format(client_id)),
+        output, delimiter=",")
     return
-
-
-def make_init(target):
-    init = np.mean(target)
-    return init
-
-
-def make_res(output, target):
-    return 2 * (target - output)
 
 
 if __name__ == "__main__":

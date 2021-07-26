@@ -20,10 +20,10 @@ def main():
     run = args['run']
     client_ids = os.listdir(os.path.join(root, '{}'.format(data_name)))
     for i in range(len(client_ids)):
-        if int(client_ids[i]) != client_id:
-            shutil.copy(os.path.join(root, data_name, client_ids[i], task_id, run, round, 'output',
+        if client_ids[i] != client_id:
+            shutil.copy(os.path.join(root, data_name, client_ids[i], task_id, run, str(round), 'output',
                                      '{}.csv'.format(client_ids[i])),
-                        os.path.join(root, data_name, client_id, task_id, run, round, 'output',
+                        os.path.join(root, data_name, client_id, task_id, run, str(round), 'output',
                                      '{}.csv'.format(client_ids[i])))
     return
 

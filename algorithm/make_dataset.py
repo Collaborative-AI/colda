@@ -1,6 +1,7 @@
 import argparse
 import numpy as np
 import os
+import shutil
 from utils import makedir_exist_ok
 
 parser = argparse.ArgumentParser()
@@ -13,9 +14,8 @@ root = 'exp'
 def main():
     data_name = args['data_name']
     num_users = args['num_users']
-    path = os.path.join('.', '{}_{}'.format(root, data_name, num_users))
-    if os.path.exists(path):
-        os.remove(path)
+    path = os.path.join('.', os.path.join(root, '{}'.format(data_name, num_users)))
+    shutil.rmtree(path)
     feature_split = split_dataset(data_name, num_users)
     train_set, test_set = make_data(data_name)
     for i in range(num_users):
@@ -27,8 +27,8 @@ def main():
         makedir_exist_ok(os.path.join(path, str(i), 'test'))
         np.savetxt(os.path.join(path, str(i), 'train', 'id.csv'), train_id_i, delimiter=",")
         np.savetxt(os.path.join(path, str(i), 'train', 'data.csv'), train_data_i, delimiter=",")
-        np.savetxt(os.path.join(path, str(i), 'test', 'id.csv'), test_data_i, delimiter=",")
-        np.savetxt(os.path.join(path, str(i), 'test', 'data.csv'), train_data_i, delimiter=",")
+        np.savetxt(os.path.join(path, str(i), 'test', 'id.csv'), test_id_i, delimiter=",")
+        np.savetxt(os.path.join(path, str(i), 'test', 'data.csv'), test_data_i, delimiter=",")
         if i == 0:
             np.savetxt(os.path.join(path, str(i), 'train', 'target.csv'), train_target_i, delimiter=",")
             np.savetxt(os.path.join(path, str(i), 'test', 'target.csv'), test_target_i, delimiter=",")

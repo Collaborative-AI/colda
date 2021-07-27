@@ -1,5 +1,6 @@
 import argparse
 import numpy as np
+from scipy.optimize import minimize
 import os
 from utils import makedir_exist_ok
 
@@ -28,7 +29,8 @@ def main():
                    delimiter=",")
         np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'), res,
                    delimiter=",")
-        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', 'history.csv'), history, delimiter=",")
+        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'history.csv'), history,
+                   delimiter=",")
     else:
         output = []
         client_outputs = os.listdir(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'output'))
@@ -39,13 +41,22 @@ def main():
             output.append(output_i.reshape(-1, 1))
         output = np.concatenate(output, axis=-1)
         output = np.mean(output, axis=-1)
-        history = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', 'history.csv'),
-                                delimiter=',')
-        history = history + output
+        history = np.genfromtxt(
+            os.path.join(root, data_name, client_id, task_id, 'train', str(round - 1), 'history.csv'),
+            delimiter=',')
+        alpha = np.ones(1)
+        func_ = minimize(func, alpha, (history, output, target))
+        alpha = func_.x
+        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'alpha.csv'), alpha,
+                   delimiter=",")
+        history = history + alpha * output
+        loss = np.sqrt(((target - history) ** 2).mean())
+        print('Round: {}, RMSE: {}'.format(round, loss))
         res = make_res(history, target)
         np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'), res,
                    delimiter=",")
-        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', 'history.csv'), history, delimiter=",")
+        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'history.csv'), history,
+                   delimiter=",")
     return
 
 
@@ -57,6 +68,12 @@ def make_init(target):
 def make_res(output, target):
     print('Loss: {}'.format(np.sqrt(((target - output) ** 2).mean())))
     return 2 * (target - output)
+
+
+def func(alpha, history, output, target):
+    new_output = history + alpha * output
+    loss = ((target - new_output) ** 2).mean()
+    return loss
 
 
 if __name__ == "__main__":

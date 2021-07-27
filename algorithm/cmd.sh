@@ -18,6 +18,8 @@ python train.py --client_id 0 --task_id 123 --round 2
 python train.py --client_id 1 --task_id 123 --round 2
 # gather output from assistors (sponsor)
 python gather.py --task_id 123 --round 2 --run train
+# make alpha
+python make_res.py --task_id 123 --round 2
 
 # test sponsor and assistors
 python test.py --client_id 0 --task_id 123 --round 1
@@ -30,3 +32,8 @@ python gather.py --task_id 123 --round 2 --run test
 python eval.py --task_id 123 --round 0
 python eval.py --task_id 123 --round 1
 python eval.py --task_id 123 --round 2
+
+# baseline
+python baseline.py --client_id oracle
+python baseline.py --client_id 0
+python baseline.py --client_id 1

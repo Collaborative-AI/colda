@@ -15,12 +15,18 @@ root = 'exp'
 def main():
     data_name = args['data_name']
     client_id = args['client_id']
-    train_data = np.genfromtxt(os.path.join(root, data_name, client_id, 'train', 'data.csv'), delimiter=',')
-    test_data = np.genfromtxt(os.path.join(root, data_name, client_id, 'test', 'data.csv'), delimiter=',')
-    train_target = np.genfromtxt(os.path.join(root, data_name, '0', 'train', 'target.csv'),
-                                 delimiter=',')
-    test_target = np.genfromtxt(os.path.join(root, data_name, '0', 'test', 'target.csv'),
-                                delimiter=',')
+    if client_id == 'oracle':
+        train_data = np.genfromtxt(os.path.join(root, data_name, 'oracle', 'train', 'data.csv'), delimiter=',')
+        test_data = np.genfromtxt(os.path.join(root, data_name, 'oracle', 'test', 'data.csv'), delimiter=',')
+        train_target = np.genfromtxt(os.path.join(root, data_name, 'oracle', 'train', 'target.csv'), delimiter=',')
+        test_target = np.genfromtxt(os.path.join(root, data_name, 'oracle', 'test', 'target.csv'), delimiter=',')
+    else:
+        train_data = np.genfromtxt(os.path.join(root, data_name, client_id, 'train', 'data.csv'), delimiter=',')
+        test_data = np.genfromtxt(os.path.join(root, data_name, client_id, 'test', 'data.csv'), delimiter=',')
+        train_target = np.genfromtxt(os.path.join(root, data_name, '0', 'train', 'target.csv'),
+                                     delimiter=',')
+        test_target = np.genfromtxt(os.path.join(root, data_name, '0', 'test', 'target.csv'),
+                                    delimiter=',')
     model = LinearRegression().fit(train_data, train_target)
     test_output = model.predict(test_data)
     loss = np.sqrt(((test_target - test_output) ** 2).mean())

@@ -15,9 +15,20 @@ def main():
     data_name = args['data_name']
     num_users = args['num_users']
     path = os.path.join('.', os.path.join(root, '{}'.format(data_name, num_users)))
-    shutil.rmtree(path)
+    if os.path.exists(path):
+        shutil.rmtree(path)
     feature_split = split_dataset(data_name, num_users)
     train_set, test_set = make_data(data_name)
+    train_id, train_data, train_target = train_set
+    test_id, test_data, test_target = test_set
+    makedir_exist_ok(os.path.join(path, 'oracle', 'train'))
+    makedir_exist_ok(os.path.join(path, 'oracle', 'test'))
+    np.savetxt(os.path.join(path, 'oracle', 'train', 'id.csv'), train_id, delimiter=",")
+    np.savetxt(os.path.join(path, 'oracle', 'train', 'data.csv'), train_data, delimiter=",")
+    np.savetxt(os.path.join(path, 'oracle', 'train', 'target.csv'), train_target, delimiter=",")
+    np.savetxt(os.path.join(path, 'oracle', 'test', 'id.csv'), test_id, delimiter=",")
+    np.savetxt(os.path.join(path, 'oracle', 'test', 'data.csv'), test_data, delimiter=",")
+    np.savetxt(os.path.join(path, 'oracle', 'test', 'target.csv'), test_target, delimiter=",")
     for i in range(num_users):
         train_id_i, train_data_i, train_target_i = train_set
         train_data_i = train_data_i[:, feature_split[i]]

@@ -22,7 +22,8 @@ def main():
         loss = np.sqrt(((target - init) ** 2).mean())
     else:
         client_ids = os.listdir(os.path.join(root, '{}'.format(data_name)))
-        output = []
+        client_ids.remove('oracle')
+        history = init
         for i in range(round):
             output_i = []
             for j in range(len(client_ids)):
@@ -32,10 +33,10 @@ def main():
                 output_i.append(output_i_j.reshape(-1, 1))
             output_i = np.concatenate(output_i, axis=-1)
             output_i = np.mean(output_i, axis=-1)
-            output.append(output_i.reshape(-1, 1))
-        output = np.concatenate(output, axis=-1)
-        output = init + np.sum(output, axis=-1)
-        loss = np.sqrt(((target - output) ** 2).mean())
+            alpha = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', str(i + 1), 'alpha.csv'),
+                                 delimiter=',')
+            history = history + alpha * output_i
+        loss = np.sqrt(((target - history) ** 2).mean())
     print('Round: {}, RMSE: {}'.format(round, loss))
     return
 

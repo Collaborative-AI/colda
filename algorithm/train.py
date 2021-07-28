@@ -19,9 +19,8 @@ def main():
     client_id = args['client_id']
     task_id = args['task_id']
     round = args['round']
-    assert round > 0
     data = np.genfromtxt(os.path.join(root, data_name, client_id, 'train', 'data.csv'), delimiter=',')
-    target = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round - 1), 'res.csv'),
+    target = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'),
                            delimiter=',')
     model = LinearRegression().fit(data, target)
     save(model, os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'model.pkl'))

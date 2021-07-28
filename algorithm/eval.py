@@ -18,26 +18,26 @@ def main():
     round = args['round']
     init = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', '0', 'init.csv'), delimiter=',')
     target = np.genfromtxt(os.path.join(root, data_name, client_id, 'test', 'target.csv'), delimiter=',')
-    if round == 0:
+    if round == -1:
         loss = np.sqrt(((target - init) ** 2).mean())
     else:
         client_ids = os.listdir(os.path.join(root, '{}'.format(data_name)))
         client_ids.remove('oracle')
-        history = init
-        for i in range(round):
+        result = init
+        for i in range(round + 1):
             output_i = []
             for j in range(len(client_ids)):
                 output_i_j = np.genfromtxt(
-                    os.path.join(root, data_name, client_id, task_id, 'test', str(i + 1), 'output',
+                    os.path.join(root, data_name, client_id, task_id, 'test', str(i), 'output',
                                  '{}.csv'.format(client_ids[j])), delimiter=',')
                 output_i.append(output_i_j.reshape(-1, 1))
             output_i = np.concatenate(output_i, axis=-1)
             output_i = np.mean(output_i, axis=-1)
-            alpha = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', str(i + 1), 'alpha.csv'),
+            alpha = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', str(i), 'alpha.csv'),
                                  delimiter=',')
-            history = history + alpha * output_i
-        loss = np.sqrt(((target - history) ** 2).mean())
-    print('Round: {}, RMSE: {}'.format(round, loss))
+            result = result + alpha * output_i
+        loss = np.sqrt(((target - result) ** 2).mean())
+    print('Test Round: {}, RMSE: {}'.format(round, loss))
     return
 
 

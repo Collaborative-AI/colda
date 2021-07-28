@@ -18,7 +18,6 @@ def main():
     client_id = args['client_id']
     task_id = args['task_id']
     round = args['round']
-    assert round > 0
     data = np.genfromtxt(os.path.join(root, data_name, client_id, 'test', 'data.csv'), delimiter=',')
     model = load(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'model.pkl'))
     output = model.predict(data)

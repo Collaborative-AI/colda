@@ -21,9 +21,6 @@ def main():
     for i in range(len(client_ids)):
         if client_ids[i] != client_id:
             makedir_exist_ok(os.path.join(root, data_name, client_ids[i], task_id, 'train', str(round)))
-            if round == 0:
-                shutil.copy(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'init.csv'),
-                            os.path.join(root, data_name, client_ids[i], task_id, 'train', str(round), 'init.csv'))
             shutil.copy(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'),
                         os.path.join(root, data_name, client_ids[i], task_id, 'train', str(round), 'res.csv'))
     return

@@ -20,8 +20,12 @@ def main():
     task_id = args['task_id']
     round = args['round']
     data = np.genfromtxt(os.path.join(root, data_name, client_id, 'train', 'data.csv'), delimiter=',')
-    target = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'),
+    target = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'residual.csv'),
                            delimiter=',')
+    if client_id != '0':
+        assistor_idx = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', 'matched_idx',
+                                                   '{}.csv'.format('0')), delimiter=',').astype(np.int64)
+        data = data[assistor_idx]
     model = LinearRegression().fit(data, target)
     save(model, os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'model.pkl'))
     output = model.predict(data)

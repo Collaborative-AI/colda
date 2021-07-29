@@ -25,18 +25,26 @@ def main():
         client_ids.remove('oracle')
         result = init
         for i in range(round + 1):
-            output_i = []
+            output_i = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'test', str(i), 'output',
+                                                  '{}.csv'.format(client_id)), delimiter=',')
+            count_i = np.ones(output_i.shape[0])
             for j in range(len(client_ids)):
-                output_i_j = np.genfromtxt(
-                    os.path.join(root, data_name, client_id, task_id, 'test', str(i), 'output',
-                                 '{}.csv'.format(client_ids[j])), delimiter=',')
-                output_i.append(output_i_j.reshape(-1, 1))
-            output_i = np.concatenate(output_i, axis=-1)
-            output_i = np.mean(output_i, axis=-1)
+                if client_ids[j] != client_id:
+                    sponsor_idx_j = np.genfromtxt(
+                        os.path.join(root, data_name, client_id, task_id, 'test', 'matched_idx',
+                                     '{}.csv'.format(client_ids[j])), delimiter=',').astype(np.int64)
+                    output_i_j = np.genfromtxt(
+                        os.path.join(root, data_name, client_id, task_id, 'test', str(i), 'output',
+                                     '{}.csv'.format(client_ids[j])), delimiter=',')
+                    output_i[sponsor_idx_j] = output_i[sponsor_idx_j] + output_i_j
+                    count_i[sponsor_idx_j] = count_i[sponsor_idx_j] + 1
+            output_i = output_i / count_i
             alpha = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'train', str(i), 'alpha.csv'),
-                                 delimiter=',')
+                                  delimiter=',')
             result = result + alpha * output_i
         loss = np.sqrt(((target - result) ** 2).mean())
+        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'test', str(round), 'result.csv'), result,
+                   delimiter=",")
     print('Test Round: {}, RMSE: {}'.format(round, loss))
     return
 

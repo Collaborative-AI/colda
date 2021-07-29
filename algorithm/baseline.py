@@ -23,9 +23,9 @@ def main():
     else:
         train_data = np.genfromtxt(os.path.join(root, data_name, client_id, 'train', 'data.csv'), delimiter=',')
         test_data = np.genfromtxt(os.path.join(root, data_name, client_id, 'test', 'data.csv'), delimiter=',')
-        train_target = np.genfromtxt(os.path.join(root, data_name, '0', 'train', 'target.csv'),
+        train_target = np.genfromtxt(os.path.join(root, data_name, client_id, 'train', 'target.csv'),
                                      delimiter=',')
-        test_target = np.genfromtxt(os.path.join(root, data_name, '0', 'test', 'target.csv'),
+        test_target = np.genfromtxt(os.path.join(root, data_name, client_id, 'test', 'target.csv'),
                                     delimiter=',')
     model = LinearRegression().fit(train_data, train_target)
     test_output = model.predict(test_data)

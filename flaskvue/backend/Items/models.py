@@ -331,6 +331,7 @@ class Message(PaginatedAPIMixin, db.Model):
     situation = db.Column(db.Text)
     output = db.Column(db.Text)
     test_indicator = db.Column(db.String(10))
+    test_id = db.Column(db.String(120), index=True)
 
     def __repr__(self):
         return '<Message {}>'.format(self.id)
@@ -440,7 +441,8 @@ class Matched(PaginatedAPIMixin, db.Model):
     recipient_random_id_pair = db.Column(db.String(120))
 
     test_indicator = db.Column(db.String(10))
-
+    test_id = db.Column(db.String(120), index=True)
+    
     def __repr__(self):
         return '<Match {}>'.format(self.id)
 

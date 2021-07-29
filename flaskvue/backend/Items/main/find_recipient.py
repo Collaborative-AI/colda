@@ -5,6 +5,8 @@ import json
 from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
+from datetime import datetime
+
 from Items import db
 
 # import BluePrint
@@ -135,10 +137,12 @@ def find_test_recipient():
 
     print("recipient_id_list", recipient_id_list)
 
+    Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "test").all()
     # Now hardcode
     # testa: id 4(sponsor), testb: id 5(recipient), testc: id 6(recipient)
 
-    # Unique in each task
+    # Unique in each test
+    test_id = str(uuid.uuid4())
     sponsor_random_id = str(uuid.uuid4())
 
     # print(g.current_user.id, type(g.current_user.id),"1")
@@ -157,6 +161,8 @@ def find_test_recipient():
 
         matched.Matched_id_file = json.dumps(data_array_id)
         matched.test_indicator = "test"
+        matched.test_id = test_id
+
         db.session.add(matched)
         db.session.commit()
         # send matched notification to the recipient
@@ -173,6 +179,8 @@ def find_test_recipient():
     matched.recipient_random_id_pair = sponsor_random_id
     matched.Matched_id_file = json.dumps(data_array_id)
     matched.test_indicator = "test"
+    matched.test_id = test_id
+    
     db.session.add(matched) 
     # print(g.current_user.id, type(g.current_user.id),"3")                       
     db.session.commit()
@@ -192,7 +200,7 @@ def find_test_recipient():
     # query = Matched.query.filter(Matched.task_id == task_id).first()
     # print("find_recipient_query", query.sponsor_id, type(query.sponsor_id))
 
-    data = {"task_id": task_id, 'recipient_num': len(recipient_id_list)}
+    data = {"task_id": task_id, 'recipient_num': len(recipient_id_list), 'test_id': test_id}
     
     response = jsonify(data)
     

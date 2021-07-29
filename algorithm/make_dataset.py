@@ -1,8 +1,10 @@
 import argparse
+import sklearn
 import numpy as np
 import os
 import shutil
 from utils import makedir_exist_ok
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--data_name', default='BostonHousing', type=str)
@@ -43,6 +45,8 @@ def main():
         if i == 0:
             np.savetxt(os.path.join(path, str(i), 'train', 'target.csv'), train_target_i, delimiter=",")
             np.savetxt(os.path.join(path, str(i), 'test', 'target.csv'), test_target_i, delimiter=",")
+    print("nihao")
+    print("nihao2")
     return
 
 

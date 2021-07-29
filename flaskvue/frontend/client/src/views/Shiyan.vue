@@ -15,7 +15,7 @@
     <button @click="delete_all_rows()">delete_all_rows</button>
     <button @click="delete_all_logs()">delete_all_logs</button>
     <button @click="delete_test_rows()">delete_test_rows</button>
-
+    <button @click="try_db()">try_db</button>
 
     <button @click="duqu()">duqu</button>
     <div v-for="task_id in task_id_list" :key="task_id.id">
@@ -23,6 +23,21 @@
       <input type="file" name="csvfile" ref="csvData" />
       <input type="button" @click="csv()" value="JS转换"/>
     </div>
+    
+    <input type="file" id="ipt" @change="getpath()" webkitdirectory directory multiple>
+    <button @click="getpath()">get path</button>
+    <button @click="sqlite()">sqlite</button>
+    <!-- <div>
+      <el-form ref="form" :model="form" label-width="120px" style="width: 50%">
+      <el-form-item label="保存至文件夹">
+        <input type="file" id="file" hidden @change="fileChange" webkitdirectory>
+        <el-input placeholder="请输入内容" v-model="form.imgSavePath" class="input-with-select">
+          <el-button slot="append" icon="el-icon-folder" type="success" @click="btnChange"></el-button>
+        </el-input>
+      </el-form-item>
+    </el-form>
+    </div> -->
+    
 
   </div>
 </template>
@@ -37,7 +52,8 @@ const address = 'tem/' + 'b/'
 const os = window.require('os');
 // const ex = require("child_process").execFileSync;
 const ex = window.require("child_process");
-
+const dialog = window.require('electron').remote;
+const sqlite3 = window.require('sqlite3').verbose();
 // const { require } = window
 // const fs = require('fs')
 // const path = require('path');
@@ -49,6 +65,9 @@ const ex = window.require("child_process");
 // import { Field, Form } from 'vee-validate';
 import axios from 'axios'
 import csv2arr from '@/assets/csv-arr'
+// import sq3 from 'sqlite3'
+// import fse from 'fs-extra';
+// import path from 'path';
 // import $ from 'jquery'
 // import { mkdir } from 'fs';
 //import fs from 'fs'
@@ -67,7 +86,10 @@ export default {
       messages: [],
       task_id_list: [],
       length: 0,
-      success: 0
+      success: 0,
+      form: {
+        imgSavePath: ''
+      }
     };
   },
 
@@ -77,8 +99,130 @@ export default {
   },
 
   methods: {
+      try_db() {
+        // let db = new sqlite3.Database(':memory:');
 
-     delete_test_rows() {
+        // db.serialize(function() {
+        // db.run("CREATE TABLE lorem (info TEXT)");
+
+        // let stmt = db.prepare("INSERT INTO lorem VALUES (?)");
+        // for (var i = 0; i < 10; i++) {
+        //   stmt.run("Ipsum " + i);
+        // }
+
+        // stmt.finalize();
+
+        //   let rows = document.getElementById("database");
+        //   db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
+        //     let item = document.createElement("li");
+        //     item.textContent = "" + row.id + ": " + row.info;
+        //     rows.appendChild(item);
+        //   });
+        // });
+
+        // db.close();
+        var db = new sqlite3.Database('abcd');
+
+        db.serialize(function() {
+          db.run("CREATE TABLE user (id INT, dt TEXT)");
+
+          var stmt = db.prepare("INSERT INTO user VALUES (?,?)");
+          for (var i = 0; i < 10; i++) {
+          
+          var d = new Date();
+          var n = d.toLocaleTimeString();
+          stmt.run(i, n);
+          }
+          stmt.finalize();
+
+          db.each("SELECT id, dt FROM user", function(err, row) {
+              console.log("User id : "+row.id, row.dt);
+          });
+        });
+
+        db.close();
+      },
+         getpath() {
+        let ipt = document.getElementById('ipt').files
+        console.log(ipt);
+        ipt = ipt.files[0];
+        let stats=fs.statSync(ipt.path);
+        if (stats.isDirectory() == false){
+          alert("please choose file");
+        }else{
+          console.log(ipt);
+        }
+        // let path = dialog.showOpenDialog({
+        //   properties:['openDirectory']
+        // })
+        // console.log(path)
+     },
+
+//       sqlite(){
+//         const dbPath = path.join("/home/qile/Documents/Apollo/flaskvue/frontend/client/sqlite"
+// , 'data.sqlite3');
+//         fse.ensureFileSync(dbPath);
+
+//         const sqlite3 = sq3.verbose();
+//         const db = new sqlite3.Database(dbPath);
+//         db.serialize(() => {
+//           /**
+//            * 物品表 GOODS
+//            * name 品名
+//            * standard_buy_unit_price 标准进价
+//            * standard_sell_unit_price 标准售价
+//            * total_amount 总金额
+//            * total_count 总数量
+//            * remark 备注
+//            * create_time 创建时间
+//            * update_time 修改时间
+//            */
+//           db.run(`CREATE TABLE GOODS(
+//             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+//             name VARCHAR(255) NOT NULL,
+//             standard_buy_unit_price DECIMAL(15,2) NOT NULL,
+//             standard_sell_unit_price DECIMAL(15,2) NOT NULL,
+//             total_amount DECIMAL(15,2) NOT NULL,
+//             total_count DECIMAL(15,3) NOT NULL,
+//             remark VARCHAR(255) NOT NULL,
+//             create_time INTEGER NOT NULL,
+//             update_time INTEGER NOT NULL
+//             )`, err => {
+//             console.log(err);
+//           });
+
+//           /**
+//            * 进出明细表 GOODS_DETAIL_LIST
+//            * goods_id 物品id
+//            * count 计数（+加 -减）
+//            * actual_buy_unit_price 实际进价
+//            * actual_sell_unit_price 实际售价
+//            * amount 实际金额
+//            * remark 备注
+//            * latest 是否某物品最新一条记录（不是最新操作无法删除）（1是 0不是）
+//            * create_time 创建时间
+//            * update_time 修改时间
+//            */
+//           db.run(`CREATE TABLE GOODS_DETAIL_LIST(
+//             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+//             goods_id INTEGER NOT NULL, 
+//             count DECIMAL(15,3) NOT NULL,
+//             actual_sell_unit_price DECIMAL(15,2) NOT NULL,
+//             actual_buy_unit_price DECIMAL(15,2) NOT NULL,
+//             amount DECIMAL(15,2) NOT NULL,
+//             remark VARCHAR(255) NOT NULL,
+//             latest INTEGER NOT NULL,
+//             create_time INTEGER NOT NULL,
+//             update_time INTEGER NOT NULL,
+//             FOREIGN KEY (goods_id) REFERENCES GOODS(id)
+//             )`, err => {
+//             console.log(err);
+//           });
+//         });
+//       },
+
+
+    delete_test_rows() {
       axios.get('/delete_test_rows/')
         .then((response) => {
         // handle success
@@ -186,19 +330,21 @@ export default {
 
       // /home/qile/Documents/Apollo/flaskvue/frontend/client/
       try{
-        let stdout = ex.execSync('python Python_Code/hello.py ' + 1 + ' ' + 2, {encoding: 'utf8'})
-        console.log('比较结果：', stdout);
+        let stdout = ex.execSync('python3 ../../../algorithm/make_dataset.py --num_users 2', {encoding: 'utf8'})
+        // let stdout = ex.execSync('python ../../../algorithm/hello.py', {encoding: 'utf8'})
+
+        console.log(stdout.split("\n"))
       }catch{
         console.log("wrong")
       }
 
-      const a = [];
-      a.push("11")
-      console.log(a)
+      // const a = [];
+      // a.push("11")
+      // console.log(a)
 
-      let b = [];
-      b.push("2")
-      console.log(b)
+      // let b = [];
+      // b.push("2")
+      // console.log(b)
 
       
 

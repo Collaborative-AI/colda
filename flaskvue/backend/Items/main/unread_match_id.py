@@ -93,6 +93,7 @@ def get_user_match_id(id):
 
     # task_id = request.args.get('task_id', 0, type=int)
     # print("task_id-----------------------", task_id)
+    
     task_id = data.get('task_id')
 
     # check if the current client is the sponsor
@@ -132,24 +133,25 @@ def get_user_test_match_id(id):
 
     # task_id = request.args.get('task_id', 0, type=int)
     # print("task_id-----------------------", task_id)
-    task_id = data.get('task_id')
+    test_id = data.get('test_id')
 
+    user = User.query.get_or_404(g.current_user.id)
     # check if the current client is the sponsor
     isSponsor = False
-    query = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "test").first()
+    query = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").first()
     if int(query.sponsor_id) == g.current_user.id:
         isSponsor = True
 
     data = {}
     if isSponsor:
-        query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "test").all()
+        query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair != g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").all()
 
         data = {
             'match_id_file': [item.Matched_id_file for item in query],
             'recipient_random_id_pair': [item.recipient_random_id_pair for item in query]
         }
     else:
-        query = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "test").all()
+        query = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").all()
 
         data = {
             'match_id_file': [item.Matched_id_file for item in query],
@@ -166,17 +168,18 @@ def send_test_output():
 
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'test_id' not in data or not data.get('test_id'):
+        return bad_request('test_id is required.')
     if 'output' not in data or not data.get('output'):
         return bad_request('output is required.')
 
     output = data.get('output')
-    task_id = data.get('task_id')
-
+    test_id = data.get('test_id')
+    user = User.query.get_or_404(g.current_user.id)
     # extract sponsor_id
-    queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "test").all()
+    queries = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").all()
     recipient_num = len(queries) - 1
+    task_id = queries[0].task_id
 
     message = Message()
     message.from_dict(data)
@@ -187,6 +190,7 @@ def send_test_output():
     # Store the output
     message.output = json.dumps(output)
     message.test_indicator = "test"
+    message.test_id = test_id
 
     for i in range(len(queries)):
       if int(queries[i].recipient_id_pair) == g.current_user.id:
@@ -194,16 +198,19 @@ def send_test_output():
         print("----------queries[i].recipient_id_pair", queries[i].recipient_id_pair)
         print("----------queries[i].sponsor_id", queries[i].sponsor_id)
         print("----------queries[i].sponsor_random_id", queries[i].sponsor_random_id)
+        print("----------queries[i].sponsor_random_id", queries[i].test_id, queries[i].task_id)
         # print("----------queries[i].output", queries[i].output)
         message.sender_random_id = queries[i].recipient_random_id_pair
 
     db.session.add(message)
     db.session.commit()
 
-    all_cur_round_messages = Message.query.filter(Message.recipient_id == queries[0].sponsor_id, Message.task_id == task_id, Message.test_indicator == "test").all()
+   
+    all_cur_round_messages = Message.query.filter(Message.recipient_id == queries[0].sponsor_id, Message.test_id == test_id, Message.test_indicator == "test").all()
+
     output_upload = 0
     for row in all_cur_round_messages:
-        print("row", row)
+        print("row(((((((((((((((((((((((-----------------------------------------)))))))))))))))))))))))", row)
         if row.output:
             output_upload += 1
 

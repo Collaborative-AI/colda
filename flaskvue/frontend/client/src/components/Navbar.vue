@@ -120,16 +120,22 @@ export default {
 
     // sponsor find recipient
     find_recipient () {
-       
-      const sponsor_data_folder = 'Sponsor_Data/'
       
-      fs.mkdirSync(sponsor_data_folder, { recursive: true})
+      try{
+        let stdout = ex.execSync('python3 ../../../algorithm/make_dataset.py --num_users 2', {encoding: 'utf8'})
+        console.log(stdout.split("\n"))
+      }catch{
+        console.log("wrong")
+      }
 
-      const filename = 'shiyan.csv'
-      const data = fs.readFileSync(sponsor_data_folder + filename,
-        {encoding:'utf8', flag:'r'});
+      // const sponsor_data_folder = 'Sponsor_Data/'
+      // fs.mkdirSync(sponsor_data_folder, { recursive: true})
+
+      // const filename = 'shiyan.csv'
+      // const data = fs.readFileSync(sponsor_data_folder + filename,
+      //   {encoding:'utf8', flag:'r'});
       
-      let data_array = data.split("\n")
+      // let data_array = data.split("\n")
 
       const payload = {
         recipient_id_list: [5],
@@ -147,8 +153,9 @@ export default {
           this.$toasted.success(`1.2 Sponsor sends id file`, { icon: 'fingerprint' })
 
           // Create 'Local_Data/id/task_id/' folder
-          const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
-          fs.mkdirSync(new_address, { recursive: true})
+          // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
+          // fs.mkdirSync(new_address, { recursive: true})
+          
 
           try {
             fs.appendFileSync(Log_address, "---------------------- Train Stage Starts\n")
@@ -159,18 +166,15 @@ export default {
             console.error(err)
           }
 
-          console.log("1.3 Sponsor creates " + new_address)
-          this.$toasted.success("1.3 Sponsor creates " + new_address, { icon: 'fingerprint' })
+          // console.log("1.3 Sponsor creates " + new_address)
+          // this.$toasted.success("1.3 Sponsor creates " + new_address, { icon: 'fingerprint' })
 
           try {
-            fs.appendFileSync(Log_address, "1.3 Sponsor creates " + new_address + "\n")
+            // fs.appendFileSync(Log_address, "1.3 Sponsor creates " + new_address + "\n")
             fs.appendFileSync(Log_address, "---------------------- 1. Find Recipient Done\n")
           } catch (err) {
             console.error(err)
           }
-
-          // // Upload the matching ID file
-          // this.sponsor_request_show = true
 
         })
         .catch((error) => {
@@ -214,8 +218,8 @@ export default {
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
       for (let task_id in cur_unread_request_Taskid_dict){
         
-        const Recipient_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
-        fs.mkdirSync(Recipient_store_folder, { recursive: true})
+        // const Recipient_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
+        // fs.mkdirSync(Recipient_store_folder, { recursive: true})
 
         const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
         try {
@@ -225,14 +229,14 @@ export default {
           console.error(err)
         }
 
-        const recipient_data_folder = 'Recipient_Data/'
-        fs.mkdirSync(recipient_data_folder, { recursive: true})
+        // const recipient_data_folder = 'Recipient_Data/'
+        // fs.mkdirSync(recipient_data_folder, { recursive: true})
 
-        const filename = 'shiyan.csv'
-        const data = fs.readFileSync(recipient_data_folder + filename,
-          {encoding:'utf8', flag:'r'});
+        // const filename = 'shiyan.csv'
+        // const data = fs.readFileSync(recipient_data_folder + filename,
+        //   {encoding:'utf8', flag:'r'});
   
-        let data_array = data.split("\n")
+        // let data_array = data.split("\n")
 
         const payload = {
           task_id: task_id,
@@ -329,11 +333,11 @@ export default {
     unread_match_id_sponsor(task_id) {
       
       // Create 'Local_Data/id/task_id/Match/' folder
-      const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
+      // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
       const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
       let vm = this;
 
-      fs.mkdirSync(Match_folder, { recursive: true})
+      // fs.mkdirSync(Match_folder, { recursive: true})
       
       console.log("3.3 Match Folder: Sponsor creates " + Match_folder)
       this.$toasted.success("3.3 Match Folder: Sponsor creates " + Match_folder, { icon: 'fingerprint' })
@@ -372,6 +376,13 @@ export default {
             cur_match_id_file = cur_match_id_file.join('\n');
 
             // Store match_id file with different recipient
+            try{
+              let stdout = ex.execSync('python3 ../../../algorithm/match.py --task_id '+ response.data.task_id + ' --round 0', {encoding: 'utf8'})
+              console.log(stdout.split("\n"))
+            }catch{
+              console.log("wrong")
+            }
+
             fs.writeFileSync(Match_folder + filename, cur_match_id_file)
             
             console.log('3.5 Sponsor Saved Matched id File!');
@@ -392,8 +403,14 @@ export default {
 
           // store initial situation
           // Create 'Local_Data/id/task_id/0' folder
-          const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/0/'
-          fs.mkdirSync(Round0_folder, { recursive: true})
+          // const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/0/'
+          // fs.mkdirSync(Round0_folder, { recursive: true})
+          try{
+            let residual_address = ex.execSync('python3 ../../../algorithm/make_residual.py --task_id '+ task_id + ' --round 0', {encoding: 'utf8'})
+            console.log(residual_address.split("\n"))
+          }catch{
+            console.log("wrong")
+          }
 
           console.log("3.6 Sponsor creates " + Round0_folder)
           vm.$toasted.success("3.6 Sponsor creates " + Round0_folder, { icon: 'fingerprint' })
@@ -403,29 +420,30 @@ export default {
           } catch (err) {
             console.error(err)
           }
-          const filename = 'Sent_Initial_Situation.csv';
           
-          // temporary data
-          let arr =  new Array(5);   
-          for(let i = 0;i < arr.length; i++){
-            arr[i] = new Array(5);    
-          }
-          arr[0][1] = "Sponsor Situation File"
-          arr[0][2] = 2
-          arr = arr.join('\n');
+          // const filename = 'Sent_Initial_Situation.csv';
+          
+          // // temporary data
+          // let arr =  new Array(5);   
+          // for(let i = 0;i < arr.length; i++){
+          //   arr[i] = new Array(5);    
+          // }
+          // arr[0][1] = "Sponsor Situation File"
+          // arr[0][2] = 2
+          // arr = arr.join('\n');
 
-          // Store match_id file
-          fs.writeFileSync(Round0_folder + filename, arr)
+          // // Store match_id file
+          // fs.writeFileSync(Round0_folder + filename, arr)
           
-          console.log('3.7 Sponsor Saved ' + filename);
-          vm.$toasted.success('3.7 Sponsor Saved ' + filename, { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, '3.7 Sponsor Saved ' + filename + "\n")
-          } catch (err) {
-            console.error(err)
-          }
-          
-          let data_array = arr.split("\n")
+          // console.log('3.7 Sponsor Saved ' + filename);
+          // vm.$toasted.success('3.7 Sponsor Saved ' + filename, { icon: 'fingerprint' })
+          // try {
+          //   fs.appendFileSync(Log_address, '3.7 Sponsor Saved ' + filename + "\n")
+          // } catch (err) {
+          //   console.error(err)
+          // }
+          const data = fs.readFileSync(residual_address, {encoding:'utf8', flag:'r'});
+          let data_array = data.split("\n")
 
           const payload1 = {
             situation: data_array,
@@ -460,9 +478,10 @@ export default {
     unread_match_id_recipient(task_id) {
 
       // Create 'Local_Data/id/task_id/Match/' folder
-      const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
+      
+      // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
+      // fs.mkdirSync(Match_folder, { recursive: true})
       const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
-      fs.mkdirSync(Match_folder, { recursive: true})
       
       console.log("3.3 Recipient creates " + Match_folder)
       this.$toasted.success("3.3 Recipient creates " + Match_folder, { icon: 'fingerprint' })
@@ -494,8 +513,15 @@ export default {
           let cur_match_id_file = JSON.parse(response.data.match_id_file[0]);
           cur_match_id_file = cur_match_id_file.join('\n');
 
+          try{
+            let Match_folder_position = ex.execSync('python3 ../../../algorithm/match.py --task_id '+ response.data.task_id + ' --round 0', {encoding: 'utf8'})
+            console.log(Match_folder_position.split("\n"))
+          }catch{
+            console.log("wrong")
+          }
+
           // Store match_id file
-          fs.writeFileSync(Match_folder + filename, cur_match_id_file)
+          fs.writeFileSync(Match_folder_position + filename, cur_match_id_file)
          
           console.log("3.5 Recipient saves matched id file")
           this.$toasted.success("3.5 Recipient saves matched id file", { icon: 'fingerprint' })
@@ -569,20 +595,30 @@ export default {
       // get output
 
       // store output
-      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
-      const filename = 'Sponsor_Trained_Local_Model.csv';
-        
-      // temporary data
-      let arr =  new Array(5);   
-      for(let i = 0;i < arr.length; i++){
-        arr[i] = new Array(5);    
-      }
-      arr[0][1] = "sponsor_trained_local_model"
-      arr[0][2] = 5
-      arr = arr.join('\n');
 
-      // Store match_id file
-      fs.writeFileSync(Round_folder + filename, arr)
+      // const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
+      // const filename = 'Sponsor_Trained_Local_Model.csv';
+        
+      // // temporary data
+      // let arr =  new Array(5);   
+      // for(let i = 0;i < arr.length; i++){
+      //   arr[i] = new Array(5);    
+      // }
+      // arr[0][1] = "sponsor_trained_local_model"
+      // arr[0][2] = 5
+      // arr = arr.join('\n');
+      // fs.writeFileSync(Round_folder + filename, arr)
+
+      try{
+        let train_situation_output = ex.execSync('python3 ../../../algorithm/train..py --client_id '+ this.sharedState.user_id + ' --task_id '+ task_id + ' --round ' + rounds, {encoding: 'utf8'})
+        console.log(train_situation_output.split("\n"))
+      }catch{
+        console.log("wrong")
+      }
+
+
+
+      
       console.log("4.3 Sponsor saved " + filename + " at " + Round_folder);
       vm.$toasted.success("4.3 Sponsor saved " + filename + " at " + Round_folder, { icon: 'fingerprint' })
 
@@ -640,7 +676,14 @@ export default {
           cur_situation_file = cur_situation_file.join('\n');
 
           // Store match_id file with different recipient
-          fs.writeFileSync(Round_folder + filename, cur_situation_file)
+          try{
+            let Situation_Folder_Position = ex.execSync('python3 ../../../algorithm/match.py --task_id '+ response.data.task_id + ' --round 0', {encoding: 'utf8'})
+            console.log(Situation_Folder_Position.split("\n"))
+          }catch{
+            console.log("wrong")
+          }
+
+          fs.writeFileSync(Situation_Folder_Position + filename, cur_situation_file)
           console.log('4.4 Recipient Saved Situation File!');
           vm.$toasted.success('4.4 Recipient Saved Situation File!', { icon: 'fingerprint' })
           try {
@@ -659,29 +702,34 @@ export default {
 
           // store output
 
-          const filename1 = 'Recipient_Trained_Local_Model.csv';
+          // const filename1 = 'Recipient_Trained_Local_Model.csv';
           
-          // temporary data
-          let arr =  new Array(5);   
-          for(let i = 0;i < arr.length; i++){
-            arr[i] = new Array(5);    
+          // // temporary data
+          // let arr =  new Array(5);   
+          // for(let i = 0;i < arr.length; i++){
+          //   arr[i] = new Array(5);    
+          // }
+          // arr[0][1] = "recipient_trained_local_model"
+          // arr[0][2] = 5
+          // arr = arr.join('\n');
+
+          // // Store match_id file
+          // fs.writeFileSync(Round_folder + filename1, arr)
+
+          // console.log("4.5 Recipient saved " + filename1 + " at " + Round_folder);
+          // vm.$toasted.success("4.5 Recipient saved " + filename1 + " at " + Round_folder, { icon: 'fingerprint' })
+          // try {
+          //   fs.appendFileSync(Log_address, "4.5 Recipient saved " + filename1 + " at " + Round_folder + "\n")
+          // } catch (err) {
+          //   console.error(err)
+          // }
+
+          try{
+            let train_situation_output = ex.execSync('python3 ../../../algorithm/train..py --client_id '+ this.sharedState.user_id + ' --task_id '+ task_id + ' --round ' + rounds, {encoding: 'utf8'})
+            console.log(train_situation_output.split("\n"))
+          }catch{
+            console.log("wrong")
           }
-          arr[0][1] = "recipient_trained_local_model"
-          arr[0][2] = 5
-          arr = arr.join('\n');
-
-          // Store match_id file
-          fs.writeFileSync(Round_folder + filename1, arr)
-
-          console.log("4.5 Recipient saved " + filename1 + " at " + Round_folder);
-          vm.$toasted.success("4.5 Recipient saved " + filename1 + " at " + Round_folder, { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, "4.5 Recipient saved " + filename1 + " at " + Round_folder + "\n")
-          } catch (err) {
-            console.error(err)
-          }
-
-          let data_array = arr.split("\n")
 
           const payload1 = {
             task_id: task_id,
@@ -746,7 +794,7 @@ export default {
     unread_output_singleTask(rounds, task_id){
 
       const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
-      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
+      // const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
       let vm = this
       // Obtain output from recipients
 
@@ -766,7 +814,7 @@ export default {
           } catch (err) {
             console.error(err)
           }
-          // iterate the match_id_file
+          // iterate the output file
           for(let i = 0;i < response.data.output.length; i++){
 
             const cur_recipient = response.data.sender_random_ids_list[i];
@@ -778,6 +826,14 @@ export default {
             cur_output = cur_output.join('\n');
             console.log("cur_output^^^^^^^^2", cur_output)
             // Store the output
+
+            try{
+              let Output_Folder_Position = ex.execSync('python3 ../../../algorithm/match.py --task_id '+ task_id + ' --round ' + rounds, {encoding: 'utf8'})
+              console.log(Output_Folder_Position.split("\n"))
+            }catch{
+              console.log("wrong")
+            }
+
             fs.writeFileSync(Round_folder + filename, cur_output)
             console.log('5.3 Sponsor saves Output model');
             vm.$toasted.success('5.3 Sponsor saves Output model', { icon: 'fingerprint' })
@@ -792,68 +848,81 @@ export default {
               continue;
             }
              // Create Folder: current_path/Local Data/task_id/roundn+1
-            const new_Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + (rounds+1) + '/'
-            fs.mkdirSync(new_Round_folder, { recursive: true})
+            // const new_Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + (rounds+1) + '/'
+            // fs.mkdirSync(new_Round_folder, { recursive: true})
 
-              console.log("5.4 Sponsor creates " + new_Round_folder)
-              vm.$toasted.success("5.4 Sponsor creates " + new_Round_folder, { icon: 'fingerprint' })
-              try {
-                fs.appendFileSync(Log_address, "5.4 Sponsor creates " + new_Round_folder + "\n")
-              } catch (err) {
-                console.error(err)
-              }
-              // Update situation
+            try{
+              let make_result = ex.execSync('python3 ../../../algorithm/make_result.py --task_id '+ task_id + ' --round ' + rounds, {encoding: 'utf8'})
+              console.log(make_result.split("\n"))
+            }catch{
+              console.log("wrong")
+            }
 
-              function sleep(time) {
-                let startTime = window.performance.now();
-                while (window.performance.now() - startTime < time) {}
-              }
-              sleep(5000); // 程序滞留15000ms
+            console.log("5.4 Sponsor creates " + new_Round_folder)
+            vm.$toasted.success("5.4 Sponsor creates " + new_Round_folder, { icon: 'fingerprint' })
+            try {
+              fs.appendFileSync(Log_address, "5.4 Sponsor creates " + new_Round_folder + "\n")
+            } catch (err) {
+              console.error(err)
+            }
+            // Update situation
 
-              const filename1 = 'Update_Initial_Situation.csv';
-                
-              let arr =  new Array(5);   
-              for(let i = 0;i < arr.length; i++){
-                arr[i] = new Array(5);    
-              }
-              arr[0][1] = "Update_Initial_Situation"
-              arr[0][2] = 5
-              arr = arr.join('\n');
+            function sleep(time) {
+              let startTime = window.performance.now();
+              while (window.performance.now() - startTime < time) {}
+            }
+            sleep(5000); // 程序滞留15000ms
 
-              // Store match_id file
-              fs.writeFileSync(new_Round_folder + filename1, arr)
+            // const filename1 = 'Update_Initial_Situation.csv';
               
-              console.log("5.5 Sponsor saved update situation " + filename1 + " at " + new_Round_folder);
-              vm.$toasted.success("5.5 Sponsor saved update situation " + filename1 + " at " + new_Round_folder, { icon: 'fingerprint' })
+            // let arr =  new Array(5);   
+            // for(let i = 0;i < arr.length; i++){
+            //   arr[i] = new Array(5);    
+            // }
+            // arr[0][1] = "Update_Initial_Situation"
+            // arr[0][2] = 5
+            // arr = arr.join('\n');
+
+            // // Store match_id file
+            // fs.writeFileSync(new_Round_folder + filename1, arr)
+            
+            // console.log("5.5 Sponsor saved update situation " + filename1 + " at " + new_Round_folder);
+            // vm.$toasted.success("5.5 Sponsor saved update situation " + filename1 + " at " + new_Round_folder, { icon: 'fingerprint' })
+            // try {
+            //   fs.appendFileSync(Log_address, "5.5 Sponsor saved update situation " + filename1 + " at " + new_Round_folder + "\n")
+            // } catch (err) {
+            //   console.error(err)
+            // }
+            try{
+              let make_residual = ex.execSync('python3 ../../../algorithm/make_residual.py --task_id '+ task_id + ' --round ' + (rounds+1), {encoding: 'utf8'})
+              console.log(make_residual.split("\n"))
+            }catch{
+              console.log("wrong")
+            }
+            let data_array = arr.split("\n");
+
+            const payload1 = {
+              situation: data_array,
+              task_id: task_id
+            }
+
+            // send updated situation
+            // async
+            vm.$axios.post('/send_situation/', payload1)
+              .then((response) => {
+              // handle success
+              console.log("5.6 Sponsor updates situation done", response)
+              vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
               try {
-                fs.appendFileSync(Log_address, "5.5 Sponsor saved update situation " + filename1 + " at " + new_Round_folder + "\n")
+                fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
+                fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
               } catch (err) {
                 console.error(err)
               }
-              let data_array = arr.split("\n");
-
-              const payload1 = {
-                situation: data_array,
-                task_id: task_id
-              }
-
-              // send updated situation
-              // async
-              vm.$axios.post('/send_situation/', payload1)
-                .then((response) => {
-                // handle success
-                console.log("5.6 Sponsor updates situation done", response)
-                vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
-                try {
-                  fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
-                  fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
-                } catch (err) {
-                  console.error(err)
-                }
-              })
-              .catch((error) => {
-                console.log(error)
-              })
+            })
+            .catch((error) => {
+              console.log(error)
+            })
 
           }
         })
@@ -869,8 +938,11 @@ export default {
       console.log("2.1 Update Test request notification response", unread_test_request_notification)
       this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
-      let cur_unread_test_request_Taskid_dict = unread_test_request_notification["check_dict"]
-      for (let task_id in cur_unread_test_request_Taskid_dict){
+      let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
+      let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
+
+      for (let test_id in cur_unread_test_request_Testid_dict){
+        task_id = test_id_to_task_id[test_id]
 
         const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
         try {
@@ -880,19 +952,19 @@ export default {
           console.error(err)
         }
 
-        const recipient_data_folder = 'Test_Recipient_Data/'
-        fs.mkdirSync(recipient_data_folder, { recursive: true})
+        // const recipient_data_folder = 'Test_Recipient_Data/'
+        // fs.mkdirSync(recipient_data_folder, { recursive: true})
 
-        const filename = 'shiyan.csv'
-        const data = fs.readFileSync(recipient_data_folder + filename,
-          {encoding:'utf8', flag:'r'});
+        // const filename = 'shiyan.csv'
+        // const data = fs.readFileSync(recipient_data_folder + filename,
+        //   {encoding:'utf8', flag:'r'});
   
-        let data_array = data.split("\n")
+        // let data_array = data.split("\n")
 
-        const payload = {
-          task_id: task_id,
-          file: data_array
-        }
+        // const payload = {
+        //   test_id: test_id,
+        //   file: data_array
+        // }
         
         this.$axios.post('/match_test_recipient_id/', payload)
           .then((response) => {
@@ -916,14 +988,15 @@ export default {
     },
 
 
-
     unread_test_match_id(unread_test_match_id_notification) {
       console.log("3.1 Update Test match id notification response", unread_test_match_id_notification)
       this.$toasted.success("3.1 Update the Test match id notification", { icon: 'fingerprint' })
 
-      let cur_unread_test_match_id_Taskid_dict = unread_test_match_id_notification["check_dict"]
+      let cur_unread_test_match_id_Testid_dict = unread_test_match_id_notification["check_dict"]
+      let test_id_to_task_id = unread_test_match_id_notification["test_id_to_task_id"]
 
-      for (let task_id in cur_unread_test_match_id_Taskid_dict){
+      for (let test_id in cur_unread_test_match_id_Testid_dict){
+        task_id = test_id_to_task_id[test_id]
 
         const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
         try {
@@ -933,7 +1006,7 @@ export default {
           console.error(err)
         }
 
-        let check_sponsor = cur_unread_test_match_id_Taskid_dict[task_id]
+        let check_sponsor = cur_unread_test_match_id_Testid_dict[test_id]
         
         if (check_sponsor == 1){
           console.log("3.2 Unread_test_match_id_sponsor")
@@ -942,7 +1015,7 @@ export default {
           } catch (err) {
             console.error(err)
           }
-          this.unread_test_match_id_sponsor(task_id)
+          this.unread_test_match_id_sponsor(task_id, test_id)
         }  
         else{
           console.log("3.2 Unread_test_match_id_recipient")
@@ -951,19 +1024,19 @@ export default {
           } catch (err) {
             console.error(err)
           }
-          this.unread_test_match_id_recipient(task_id)
+          this.unread_test_match_id_recipient(task_id, test_id)
         }
       }
     },
 
-    unread_test_match_id_sponsor(task_id) {
+    unread_test_match_id_sponsor(task_id, test_id) {
 
       // Create 'Local_Data/id/task_id/Match/' folder
-      const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Match/'
+      // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + test_id + '/' + 'Match/'
       const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
       let vm = this;
 
-      fs.mkdirSync(Match_folder, { recursive: true})
+      // fs.mkdirSync(Match_folder, { recursive: true})
       
       console.log("3.3 Test: Match Folder: Sponsor creates " + Match_folder)
       this.$toasted.success("3.3 Test: Match Folder: Sponsor creates " + Match_folder, { icon: 'fingerprint' })
@@ -976,7 +1049,7 @@ export default {
       // Obtain Match_id file
       // async
       const payload = {
-        task_id: task_id
+        test_id: test_id
       }
       
       const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
@@ -1000,6 +1073,12 @@ export default {
             cur_match_id_file = cur_match_id_file.join('\n');
 
             // Store match_id file with different recipient
+            try{
+              let stdout = ex.execSync('python3 ../../../algorithm/test_match.py --task_id '+ response.data.task_id + ' --round 0', {encoding: 'utf8'})
+              console.log(stdout.split("\n"))
+            }catch{
+              console.log("wrong")
+            }
             fs.writeFileSync(Match_folder + filename, cur_match_id_file)
             
             console.log('3.5 Test: Sponsor Saved Matched id File!');
@@ -1018,47 +1097,54 @@ export default {
           }
           sleep(5000); // 程序滞留5000ms
 
-          function find_Train_Models(startPath) {
-          let result=[];
-          function finder(path) {
-              let files=fs.readdirSync(path);
-              files.forEach((val,index) => {
-                  let fPath=join(path,val);
-                  let stats=fs.statSync(fPath);
-                  // console.log("val", val)
-                  // console.log("stats", fPath, stats)
-                  if(stats.isDirectory()) finder(fPath);
-                  if(stats.isFile()&&val=="Sponsor_Trained_Local_Model.csv") {
-                    // result.push(fPath);
-                    let data = fs.readFileSync(fPath,
-                      {encoding:'utf8', flag:'r'});
-                    result.push(data);
-                  }
-              });
-            }
-            finder(startPath);
-            return result;
+          // function find_Train_Models(startPath) {
+          // let result=[];
+          // function finder(path) {
+          //     let files=fs.readdirSync(path);
+          //     files.forEach((val,index) => {
+          //         let fPath=join(path,val);
+          //         let stats=fs.statSync(fPath);
+          //         // console.log("val", val)
+          //         // console.log("stats", fPath, stats)
+          //         if(stats.isDirectory()) finder(fPath);
+          //         if(stats.isFile()&&val=="Sponsor_Trained_Local_Model.csv") {
+          //           // result.push(fPath);
+          //           let data = fs.readFileSync(fPath,
+          //             {encoding:'utf8', flag:'r'});
+          //           result.push(data);
+          //         }
+          //     });
+          //   }
+          //   finder(startPath);
+          //   return result;
+          // }
+
+          // let train_path = 'Local_Data/' + this.sharedState.user_id + '/' + task_id;
+          // let files = find_Train_Models(train_path);
+          
+          // console.log("3.6 Test: Sponsor gets all train models")
+          // vm.$toasted.success("3.6 Test: Sponsor gets all train models", { icon: 'fingerprint' })
+          // try {
+          //   fs.appendFileSync(Log_address, "3.6 Test: Sponsor gets all train models\n")
+          // } catch (err) {
+          //   console.error(err)
+          // }
+          // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
+          // fs.mkdirSync(Test_Output_folder, { recursive: true});
+
+          // for (let i = 0;i < files.length; i++){
+          //   console.log(files[i]);
+          //   let filename = "Test_Models" + i.toString();
+          //   fs.writeFileSync(Test_Output_folder + filename, files[i])
+          // }
+          
+          try{
+            let test_output = ex.execSync('python3 ../../../algorithm/test..py --client_id '+ this.sharedState.user_id + ' --task_id '+ task_id + ' --round ' + rounds, {encoding: 'utf8'})
+            console.log(test_output.split("\n"))
+          }catch{
+            console.log("wrong")
           }
 
-          let train_path = 'Local_Data/' + this.sharedState.user_id + '/' + task_id;
-          let files = find_Train_Models(train_path);
-          
-          console.log("3.6 Test: Sponsor gets all train models")
-          vm.$toasted.success("3.6 Test: Sponsor gets all train models", { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, "3.6 Test: Sponsor gets all train models\n")
-          } catch (err) {
-            console.error(err)
-          }
-          const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
-          fs.mkdirSync(Test_Output_folder, { recursive: true});
-
-          for (let i = 0;i < files.length; i++){
-            console.log(files[i]);
-            let filename = "Test_Models" + i.toString();
-            fs.writeFileSync(Test_Output_folder + filename, files[i])
-          }
-          
           console.log("3.7 Test: Sponsor stores all test model results")
           vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
           try {
@@ -1075,12 +1161,13 @@ export default {
         }) 
     },
 
-    unread_test_match_id_recipient(task_id) {
+    unread_test_match_id_recipient(task_id, test_id) {
       // Create 'Local_Data/id/task_id/Match/' folder
       let vm = this;
-      const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Match/'
+      // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Match/'
+      // fs.mkdirSync(Match_folder, { recursive: true})
       const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
-      fs.mkdirSync(Match_folder, { recursive: true})
+      
       
       console.log("3.3 Test: Match Folder: Sponsor creates " + Match_folder)
       this.$toasted.success("3.3 Test: Match Folder: Sponsor creates " + Match_folder, { icon: 'fingerprint' })
@@ -1091,7 +1178,7 @@ export default {
       }
       // Obtain Match_id file
       const payload = {
-        task_id: task_id
+        test_id: test_id
       }
       const path = `/users/${this.sharedState.user_id}/test_match_id_file/`
       // async
@@ -1113,6 +1200,12 @@ export default {
           cur_match_id_file = cur_match_id_file.join('\n');
 
           // Store match_id file
+          try{
+            let Match_folder_position = ex.execSync('python3 ../../../algorithm/test_match.py --task_id '+ response.data.task_id + ' --round 0', {encoding: 'utf8'})
+            console.log(Match_folder_position.split("\n"))
+          }catch{
+            console.log("wrong")
+          }
           fs.writeFileSync(Match_folder + filename, cur_match_id_file)
          
           console.log("3.5 Test: Recipient saves matched id file")
@@ -1130,48 +1223,55 @@ export default {
           }
           sleep(5000); // 程序滞留5000ms
 
-          function find_Train_Models(startPath) {
-          let result=[];
-          function finder(path) {
-              let files=fs.readdirSync(path);
-              files.forEach((val,index) => {
-                  let fPath=join(path,val);
-                  let stats=fs.statSync(fPath);
-                  // console.log("val", val)
-                  // console.log("stats", fPath, stats)
-                  if(stats.isDirectory()) finder(fPath);
-                  if(stats.isFile()&&val=="Recipient_Trained_Local_Model.csv") {
-                    // result.push(fPath);
-                    let data = fs.readFileSync(fPath,
-                      {encoding:'utf8', flag:'r'});
-                    result.push(data);
-                  }
-              });
-            }
-            finder(startPath);
-            return result;
-          }
+          // function find_Train_Models(startPath) {
+          // let result=[];
+          // function finder(path) {
+          //     let files=fs.readdirSync(path);
+          //     files.forEach((val,index) => {
+          //         let fPath=join(path,val);
+          //         let stats=fs.statSync(fPath);
+          //         // console.log("val", val)
+          //         // console.log("stats", fPath, stats)
+          //         if(stats.isDirectory()) finder(fPath);
+          //         if(stats.isFile()&&val=="Recipient_Trained_Local_Model.csv") {
+          //           // result.push(fPath);
+          //           let data = fs.readFileSync(fPath,
+          //             {encoding:'utf8', flag:'r'});
+          //           result.push(data);
+          //         }
+          //     });
+          //   }
+          //   finder(startPath);
+          //   return result;
+          // }
 
-          let train_path = 'Local_Data/' + this.sharedState.user_id + '/' + task_id;
-          let files = find_Train_Models(train_path);
+          // let train_path = 'Local_Data/' + this.sharedState.user_id + '/' + task_id;
+          // let files = find_Train_Models(train_path);
           
-          console.log("3.6 Test: Recipient gets all train models")
-          vm.$toasted.success("3.6 Test: Recipient gets all train models", { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, "3.6 Test: Recipient gets all train models\n")
-          } catch (err) {
-            console.error(err)
-          }
+          // console.log("3.6 Test: Recipient gets all train models")
+          // vm.$toasted.success("3.6 Test: Recipient gets all train models", { icon: 'fingerprint' })
+          // try {
+          //   fs.appendFileSync(Log_address, "3.6 Test: Recipient gets all train models\n")
+          // } catch (err) {
+          //   console.error(err)
+          // }
 
-          const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
-          fs.mkdirSync(Test_Output_folder, { recursive: true});
+          // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
+          // fs.mkdirSync(Test_Output_folder, { recursive: true});
 
-          for (let i = 0;i < files.length; i++){
-            console.log(files[i]);
-            let filename = "Test_Models" + i.toString();
-            fs.writeFileSync(Test_Output_folder + filename, files[i])
-          }
+          // for (let i = 0;i < files.length; i++){
+          //   console.log(files[i]);
+          //   let filename = "Test_Models" + i.toString();
+          //   fs.writeFileSync(Test_Output_folder + filename, files[i])
+          // }
           
+          try{
+            let test_output = ex.execSync('python3 ../../../algorithm/test..py --client_id '+ this.sharedState.user_id + ' --task_id '+ task_id + ' --round ' + rounds, {encoding: 'utf8'})
+            console.log(test_output.split("\n"))
+          }catch{
+            console.log("wrong")
+          }
+
           console.log("3.7 Test: Recipient stores all test model results")
           vm.$toasted.success("3.7 Test: Recipient stores all test model results", { icon: 'fingerprint' })
           try {
@@ -1181,7 +1281,7 @@ export default {
           }
           
           const payload1 = {
-            task_id: task_id,
+            test_id: test_id,
             output: files
           }
 
@@ -1215,9 +1315,12 @@ export default {
       console.log("4.1 Update Test output notification", unread_test_output_notification)
       this.$toasted.success("4.1 Update Test output notification", { icon: 'fingerprint' })
 
-      let cur_unread_test_output_Taskid_dict = unread_test_output_notification["check_dict"]
+      let cur_unread_test_output_Testid_dict = unread_test_output_notification["check_dict"]
+      let test_id_to_task_id = unread_test_output_notification["test_id_to_task_id"]
 
-      for (let task_id in cur_unread_test_output_Taskid_dict){
+      for (let test_id in cur_unread_test_output_Testid_dict){
+        task_id = test_id_to_task_id[test_id]
+
         const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
         try {
           fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output\n")
@@ -1225,19 +1328,19 @@ export default {
         } catch (err) {
           console.error(err)
         }
-        this.unread_test_output_singleTask(task_id);
+        this.unread_test_output_singleTask(task_id, test_id);
       }
     },
 
-    unread_test_output_singleTask(task_id){
+    unread_test_output_singleTask(task_id, test_id){
 
-      const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
+      // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
       const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
       let vm = this
       // Obtain output from recipients
 
       const payload = {
-        task_id: task_id,
+        test_id: test_id,
       }
       const url = `/test_output/`
 
@@ -1267,15 +1370,33 @@ export default {
               // console.log("cur_test output^^^^^^^^2", cur_output)
               // Store the output
               filename = filename + j.toString();
+              try{
+                let Situation_Folder_Position = ex.execSync('python3 ../../../algorithm/match.py --task_id '+ response.data.task_id + ' --round 0', {encoding: 'utf8'})
+                console.log(Situation_Folder_Position.split("\n"))
+              }catch{
+                console.log("wrong")
+              }
               fs.writeFileSync(Test_Output_folder + filename, cur_output)
               console.log("4.3 Test: Sponsor saves Recipients' Output model");
               vm.$toasted.success("4.3 Test: Sponsor saves Recipients' Output model", { icon: 'fingerprint' })
               try {
                 fs.appendFileSync(Log_address, "4.3 Test: Sponsor saves Recipients' Output model\n")
-                fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
               } catch (err) {
                 console.error(err)
               }
+            }
+            try {
+              fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
+              fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
+            } catch (err) {
+              console.error(err)
+            }
+
+            try{
+              let Evaluation_Output = ex.execSync('python3 ../../../algorithm/eval.py --task_id '+ task_id + ' --round ' + rounds, {encoding: 'utf8'})
+              console.log(Evaluation_Output.split("\n"))
+            }catch{
+              console.log("wrong")
             }
             
           }

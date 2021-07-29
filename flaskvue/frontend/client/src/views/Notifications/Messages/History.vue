@@ -253,6 +253,10 @@ export default {
           console.log("1.2 Test: Sponsor sends id file")
           this.$toasted.success(`1.2 Test: Sponsor sends id file`, { icon: 'fingerprint' })
 
+          // Create 'Local_Data/id/task_id/' folder
+          // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/' + response.data.test_id + '/'
+          // fs.mkdirSync(new_address, { recursive: true})
+
           try {
             fs.appendFileSync(Log_address, "\n---------------------- Test Stage Starts\n")
             fs.appendFileSync(Log_address, "---------------------- 1. Test: Find Test Recipient\n")

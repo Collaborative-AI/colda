@@ -2,22 +2,24 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "author": "UMN",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "dist": "electron-builder",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
-  "main": "background.js",
+  "main": "./src/main.js",
   "dependencies": {
+    "aws-sdk": "^2.953.0",
     "axios": "^0.21.1",
     "babel-runtime": "^6.26.0",
     "bootstrap": "^4.6.0",
     "core-js": "^3.6.5",
-    "electron": "^12.0.9",
     "electron-build": "0.0.3",
     "jquery": "^3.6.0",
     "jschardet": "^3.0.0",
@@ -27,6 +29,7 @@
     "popper.js": "^1.16.1",
     "python-shell": "^3.0.0",
     "qs": "^6.10.1",
+    "sqlite3": "^5.0.2",
     "vee-validate": "^4.4.0",
     "vue": "^2.6.11",
     "vue-markdown": "^2.2.4",
@@ -43,8 +46,8 @@
     "@vue/eslint-config-airbnb": "^5.0.2",
     "babel-eslint": "^10.1.0",
     "electron": "^12.0.0",
+    "electron-builder": "^22.11.7",
     "electron-devtools-installer": "^3.1.0",
-    "electron-packager": "^15.3.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
     "fs": "0.0.1-security",
@@ -70,5 +73,20 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "build": {
+    "productName": "Apollo",
+    "appId": "com.apollo.app",
+    "compression": "store",
+    "linux": {
+      "icon": "build/linux-unpacked/resources/app/src/assets/packaging.png",
+      "target": [
+        "AppImage"
+      ]
+    },
+    "directories": {
+      "output": "build"
+    },
+    "asar": false
+  }
 }

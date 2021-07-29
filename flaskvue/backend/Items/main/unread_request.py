@@ -137,14 +137,17 @@ def match_test_recipient_id():
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    # if 'task_id' not in data or not data.get('task_id'):
+    #     return bad_request('task_id is required.')
     if 'file' not in data or not data.get('file'):
         return bad_request('file is required.')
+    if 'test_id' not in data or not data.get('test_id'):
+        return bad_request('test_id is required.')
 
-    task_id = data.get('task_id')
+    # task_id = data.get('task_id')
+    test_id = data.get('test_id')
 
-    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "test").first()
+    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
     sponsor_id = record.sponsor_id
 
     data_array = data['file']
@@ -156,13 +159,14 @@ def match_test_recipient_id():
     db_array = json.loads(record.Matched_id_file)
     same_id_keys = list(data_array_id & set(db_array))
 
-    all_cur_task_matches = Matched.query.filter(Matched.recipient_id_pair != sponsor_id, Matched.task_id == task_id, Matched.test_indicator == "test").all()
+    user = User.query.get_or_404(g.current_user.id)
+    all_cur_task_matches = Matched.query.filter(Matched.recipient_id_pair != sponsor_id, Matched.test_id == test_id, Matched.test_indicator == "test").all()
     id_file_upload = 0
     for row in all_cur_task_matches:
 
         if int(row.recipient_id_pair) == g.current_user.id:
             print("---matching---------------",row.recipient_id_pair, type(row.recipient_id_pair))
-            Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == g.current_user.id, Matched.test_indicator == "test").update({"Matched_id_file": json.dumps(same_id_keys), "matched_done": 1})
+            Matched.query.filter(Matched.test_id == test_id, Matched.recipient_id_pair == g.current_user.id, Matched.test_indicator == "test").update({"Matched_id_file": json.dumps(same_id_keys), "matched_done": 1})
             db.session.commit()
             id_file_upload += 1
         elif row.matched_done and int(row.matched_done) == 1:
@@ -170,12 +174,12 @@ def match_test_recipient_id():
 
         if id_file_upload == len(all_cur_task_matches):
 
-            queries = Matched.query.filter(Matched.recipient_id_pair != sponsor_id, Matched.task_id == task_id, Matched.test_indicator == "test").all()
+            queries = Matched.query.filter(Matched.recipient_id_pair != sponsor_id, Matched.test_id == test_id, Matched.test_indicator == "test").all()
 
             for row in queries:
 
                 # update the db
-                Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == row.recipient_id_pair, Matched.test_indicator == "test").update({"match_id_timestamp": datetime.utcnow()})
+                Matched.query.filter(Matched.test_id == test_id, Matched.recipient_id_pair == row.recipient_id_pair, Matched.test_indicator == "test").update({"match_id_timestamp": datetime.utcnow()})
                 db.session.commit()
 
                 # send matched notification to the recipient
@@ -190,7 +194,7 @@ def match_test_recipient_id():
             db.session.commit()
 
                   
-    dict = {"stored": "recipient test match id stored", "task_id": task_id}
+    dict = {"stored": "recipient test match id stored", "test_id": test_id}
     response = jsonify(dict)
     
     return response

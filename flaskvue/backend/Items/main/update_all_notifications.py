@@ -154,11 +154,11 @@ def update_all_notifications():
 
                 lastest_time = datetime(1900, 1, 1)
                 rounds_dict = {}
-                for j in task_id_list:
-                    record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == j, Message.test_indicator == "train").order_by(Message.output_timestamp.desc()).first()
+                for j in range(len(task_id_list)):
+                    record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[j], Message.test_indicator == "train").order_by(Message.output_timestamp.desc()).first()
                     if record:
                         cur_rounds = record.rounds
-                        rounds_dict[str(j)] = cur_rounds
+                        rounds_dict[task_id_list[j]] = cur_rounds
 
                         if record.output_timestamp > lastest_time:
                             lastest_time = record.output_timestamp
@@ -179,15 +179,20 @@ def update_all_notifications():
                 returndict["unread output"]["rounds_dict"] = rounds_dict
 
             elif response_data[i]["name"] == "unread test request":
-                print("unread test request", task_id_list)
+                test_id_list = task_id_list
+                print("unread test request", test_id_list)
                 check_dict = {}
+                test_id_to_task_id = {}
                 lastest_time = datetime(1900, 1, 1)
-                for j in range(len(task_id_list)):
-                    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "test").order_by(Matched.request_timestamp.desc()).all()
+
+                for j in range(len(test_id_list)):
+                    record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.test_id == test_id_list[j], Matched.test_indicator == "test").order_by(Matched.request_timestamp.desc()).all()
                     # get the latest output timestamp
                     if record[0].request_timestamp > lastest_time:
                         lastest_time = record[0].request_timestamp
-                    check_dict[task_id_list[j]] = 1
+                    check_dict[test_id_list[j]] = 1
+                    test_id_to_task_id[test_id_list[j]] = record[0].task_id
+
                 # Update the Notification
                 user = User.query.get_or_404(g.current_user.id)
                 last_test_requests_read_time = user.last_test_requests_read_time or datetime(1900, 1, 1)          
@@ -200,16 +205,19 @@ def update_all_notifications():
                     db.session.commit()
 
                 returndict["unread test request"]["check_dict"] = check_dict
+                returndict["unread test request"]["test_id_to_task_id"] = test_id_to_task_id
 
-            elif response_data[i]["name"] == "unread test match id":    
-                print("unread test match id", task_id_list)
+            elif response_data[i]["name"] == "unread test match id":   
+                test_id_list = task_id_list 
+                print("unread test match id", test_id_list)
                 check_dict = {}
+                test_id_to_task_id = {}
                 lastest_time = datetime(1900, 1, 1)
 
-                for j in range(len(task_id_list)):
+                for j in range(len(test_id_list)):
                     # check if the current client is the sponsor
                     isSponsor = False
-                    query = Matched.query.filter(Matched.task_id == task_id_list[j]).first()
+                    query = Matched.query.filter(Matched.task_id == test_id_list[j]).first()
                     
                     if query:
                         print("test match_id_query", query)
@@ -218,7 +226,7 @@ def update_all_notifications():
                         if int(query.sponsor_id) == g.current_user.id:
                             isSponsor = True
 
-                        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "test").order_by(Matched.match_id_timestamp.desc()).all()
+                        record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.test_id == test_id_list[j], Matched.test_indicator == "test").order_by(Matched.match_id_timestamp.desc()).all()
 
                         # get the latest output timestamp
                         if record[0].match_id_timestamp > lastest_time:
@@ -227,10 +235,12 @@ def update_all_notifications():
                         print("isSponsor", isSponsor)
                         if isSponsor:
                             print("sponsor")
-                            check_dict[task_id_list[j]] = 1
+                            check_dict[test_id_list[j]] = 1
                         else:
                             print("recipient")
-                            check_dict[task_id_list[j]] = 0
+                            check_dict[test_id_list[j]] = 0
+
+                        test_id_to_task_id[test_id_list[j]] = record[0].task_id
 
                 # Update the Notification
                 user = User.query.get_or_404(g.current_user.id)
@@ -244,21 +254,25 @@ def update_all_notifications():
                     db.session.commit()
                     
                 returndict["unread test match id"]["check_dict"] = check_dict
+                returndict["unread test match id"]["test_id_to_task_id"] = test_id_to_task_id
 
             elif response_data[i]["name"] == "unread test output":
-                print("unread test output", task_id_list)
-                task_id_list = set(task_id_list)
-
-                lastest_time = datetime(1900, 1, 1)
+                test_id_list = task_id_list
+                print("unread test output", test_id_list)
+                test_id_list = set(test_id_list)
                 check_dict = {}
-                for j in task_id_list:
-                    record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == j, Message.test_indicator == "test").order_by(Message.output_timestamp.desc()).first()
+                test_id_to_task_id = {}
+                lastest_time = datetime(1900, 1, 1)
+                
+                for j in range(len(test_id_list)):
+                    record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.test_id == test_id_list[j], Message.test_indicator == "test").order_by(Message.output_timestamp.desc()).first()
                     if record:
                         cur_rounds = record.rounds
-                        check_dict[str(j)] = 1
+                        check_dict[test_id_list[j]] = 1
 
                         if record.output_timestamp > lastest_time:
                             lastest_time = record.output_timestamp
+                        test_id_to_task_id[test_id_list[j]] = record.task_id
 
                 # Update the Notification 
                 user = User.query.get_or_404(g.current_user.id)
@@ -274,6 +288,7 @@ def update_all_notifications():
                     db.session.commit()
 
                 returndict["unread test output"]["check_dict"] = check_dict
+                returndict["unread test output"]["test_id_to_task_id"] = test_id_to_task_id
     # print("returndict", returndict)
     return returndict
 

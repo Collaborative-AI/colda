@@ -316,3 +316,37 @@ export default {
 //   connection: 'http://127.0.0.1:5000/chatroom',
 //   // extraHeaders: {"Access-Control-Allow-Origin": '*'},
 // }));
+
+electron windows 打包:
+
+"target": "NSIS",
+"nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+
+
+"linux": {
+      "icon": "build/linux-unpacked/resources/app/src/assets/packaging.png",
+      "target": [
+        "snap"
+      ]
+    },
+
+
+"win": {
+      "icon": "build/linux-unpacked/resources/app/icons/icon.ico"
+    },
+    "target": "NSIS",
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },

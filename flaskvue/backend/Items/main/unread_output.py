@@ -103,19 +103,18 @@ def get_user_test_output():
     print("##############################", data)
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'test_id' not in data or not data.get('test_id'):
+        return bad_request('test_id is required.')
 
-    task_id = data.get('task_id')
-
+    test_id = data.get('test_id')
+    user = User.query.get_or_404(g.current_user.id)
     # only call this function with id that is sponsor
-    query = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "test").first()
+    query = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").first()
     if int(query.sponsor_id) != g.current_user.id:
         return error_response(403)
 
-
     data = {}
-    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "test").all()
+    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.test_id == test_id, Message.test_indicator == "test").all()
 
     output_files = []
     sender_random_ids = []

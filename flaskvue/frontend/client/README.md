@@ -17,6 +17,8 @@
     1. cd into frontend/client, npm install
     2. npm run electron:serve
 
+3. package:
+    1. npm run dist
 
 
 

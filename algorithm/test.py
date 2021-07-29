@@ -19,10 +19,16 @@ def main():
     task_id = args['task_id']
     round = args['round']
     data = np.genfromtxt(os.path.join(root, data_name, client_id, 'test', 'data.csv'), delimiter=',')
+    if client_id != '0':
+        assistor_idx = np.genfromtxt(os.path.join(root, data_name, client_id, task_id, 'test', 'matched_idx',
+                                                   '{}.csv'.format('0')), delimiter=',').astype(np.int64)
+        data = data[assistor_idx]
     model = load(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'model.pkl'))
     output = model.predict(data)
     makedir_exist_ok(os.path.join(root, data_name, client_id, task_id, 'test', str(round), 'output'))
-    np.savetxt(os.path.join(root, data_name, client_id, task_id, 'test', str(round), 'output', '{}.csv'.format(client_id)), output, delimiter=",")
+    np.savetxt(
+        os.path.join(root, data_name, client_id, task_id, 'test', str(round), 'output', '{}.csv'.format(client_id)),
+        output, delimiter=",")
     return
 
 

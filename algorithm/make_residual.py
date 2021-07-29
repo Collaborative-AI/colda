@@ -1,6 +1,5 @@
 import argparse
 import numpy as np
-from scipy.optimize import minimize
 import os
 from utils import makedir_exist_ok
 
@@ -25,7 +24,7 @@ def main():
         residual = make_residual(init, target)
         np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'init.csv'), init,
                    delimiter=",")
-        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'), residual,
+        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'residual.csv'), residual,
                    delimiter=",")
         loss = np.sqrt(((target - init) ** 2).mean())
         print('Train Round: -1, RMSE: {}'.format(loss))
@@ -33,9 +32,7 @@ def main():
         result = np.genfromtxt(
             os.path.join(root, data_name, client_id, task_id, 'train', str(round - 1), 'result.csv'), delimiter=',')
         residual = make_residual(result, target)
-        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'res.csv'), residual,
-                   delimiter=",")
-        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'history.csv'), result,
+        np.savetxt(os.path.join(root, data_name, client_id, task_id, 'train', str(round), 'residual.csv'), residual,
                    delimiter=",")
     return
 

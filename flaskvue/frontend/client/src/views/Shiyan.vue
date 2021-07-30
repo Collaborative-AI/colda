@@ -124,8 +124,8 @@ export default {
         var db = new sqlite3.Database('abcd');
 
         db.serialize(function() {
-          db.run("CREATE TABLE user (id INT, dt TEXT)");
-
+          // db.run("CREATE TABLE user (id INT, dt TEXT)");
+          db.run("CREATE TABLE IF NOT EXISTS user (id INT, dt TEXT)")
           var stmt = db.prepare("INSERT INTO user VALUES (?,?)");
           for (var i = 0; i < 10; i++) {
           

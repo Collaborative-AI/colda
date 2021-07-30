@@ -2,6 +2,7 @@
 import uuid
 import json
 import time
+import numpy as np
 
 from sqlalchemy import update
 from flask import Flask, session, request, g, current_app
@@ -80,6 +81,13 @@ def match_recipient_id():
     sponsor_id = record.sponsor_id
 
     data_array = data['file']
+
+    # db_array: sponsor match id file
+    # data_array: recipient match id file
+
+    # x 本地id
+    # y 有交集的id
+    # intersect1d(x,y) x_index => 本地的index顺序
 
     data_array_id = set()
     for i in range(1,len(data_array)-1):

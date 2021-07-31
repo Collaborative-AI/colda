@@ -10,8 +10,8 @@ python baseline.py --root ./data --task_id 123 --num_users 2 --match_rate 0.5
 
 # default
 # hash id
-python hash_id.py  --id_path ./data/BostonHousing/2/123/1.0/0/all/id.csv --root ./exp --self_id 0 --run default
-python hash_id.py  --id_path ./data/BostonHousing/2/123/1.0/1/all/id.csv --root ./exp --self_id 1 --run default
+python hash_id.py --id_path ./data/BostonHousing/2/123/1.0/0/all/id.csv --root ./exp --self_id 0 --run default
+python hash_id.py --id_path ./data/BostonHousing/2/123/1.0/1/all/id.csv --root ./exp --self_id 1 --run default
 
 # Train
 # hash id

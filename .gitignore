@@ -113,7 +113,8 @@ ENV/
 # ~$*.ppt*
 
 # # data
-# data
+data/
+
 
 # # model
 # model/

@@ -1,7 +1,6 @@
 import argparse
 import os
 import numpy as np
-from utils import makedir_exist_ok
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', default=None, type=str)
@@ -22,20 +21,23 @@ def main():
     from_id = args['from_id']
     if run == 'train':
         self_id_path = os.path.join(root, self_id, 'task', task_id, run, 'id', '{}.csv'.format(self_id))
-        from_id_path = os.path.join(root, self_id, 'task', task_id, run, 'id', '{}.csv'.format(from_id))
-        self_from_matched_idx_path = os.path.join(root, self_id, 'task', task_id, run, 'matched_idx')
+        from_id_path = os.path.join(root, from_id, 'task', task_id, run, 'id', '{}.csv'.format(from_id))
+        self_from_match_id_path = os.path.join(root, self_id, 'task', task_id, run, 'id', '{}.csv'.format(from_id))
+        from_self_match_id_path = os.path.join(root, from_id, 'task', task_id, run, 'id', '{}.csv'.format(self_id))
     elif run == 'test' and test_id is not None:
         self_id_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'id', '{}.csv'.format(self_id))
-        from_id_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'id', '{}.csv'.format(from_id))
-        self_from_matched_idx_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'matched_idx')
+        from_id_path = os.path.join(root, from_id, 'task', task_id, run, test_id, 'id', '{}.csv'.format(from_id))
+        self_from_match_id_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'id',
+                                               '{}.csv'.format(from_id))
+        from_self_match_id_path = os.path.join(root, from_id, 'task', task_id, run, test_id, 'id',
+                                               '{}.csv'.format(self_id))
     else:
         raise ValueError('Not valid run')
     self_id_data = np.genfromtxt(self_id_path, delimiter=',', dtype=np.str_)
     from_id_data = np.genfromtxt(from_id_path, delimiter=',', dtype=np.str_)
-    _, self_from_matched_idx, _ = np.intersect1d(self_id_data, from_id_data, return_indices=True)
-    makedir_exist_ok(self_from_matched_idx_path)
-    np.savetxt(os.path.join(self_from_matched_idx_path, '{}.csv'.format(from_id)), self_from_matched_idx,
-               delimiter=",")
+    matched_id_data = np.intersect1d(self_id_data, from_id_data)
+    np.savetxt(self_from_match_id_path, matched_id_data, delimiter=",", fmt='%s')
+    np.savetxt(from_self_match_id_path, matched_id_data, delimiter=",", fmt='%s')
     return
 
 

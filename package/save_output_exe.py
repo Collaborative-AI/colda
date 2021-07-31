@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', default=None, type=str)
@@ -21,14 +22,18 @@ def main():
     round = args['round']
     from_id = args['from_id']
     if run == 'train':
-        output_path = os.path.join(root, self_id, 'task', task_id, run, 'round', str(round), 'output',
+        from_output_path = os.path.join(root, from_id, 'task', task_id, run, 'round', str(round), 'output',
+                                   '{}.csv'.format(from_id))
+        self_output_path = os.path.join(root, self_id, 'task', task_id, run, 'round', str(round), 'output',
                                    '{}.csv'.format(from_id))
     elif run == 'test' and test_id is not None:
-        output_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'round', str(round), 'output',
+        from_output_path = os.path.join(root, from_id, 'task', task_id, run, test_id, 'round', str(round), 'output',
+                                   '{}.csv'.format(from_id))
+        self_output_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'round', str(round), 'output',
                                    '{}.csv'.format(from_id))
     else:
         raise ValueError('Not valid run')
-    print(output_path)
+    shutil.copy(from_output_path, self_output_path)
     return
 
 

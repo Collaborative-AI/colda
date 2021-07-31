@@ -1,6 +1,6 @@
 import argparse
 import os
-from utils import makedir_exist_ok
+import shutil
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', default=None, type=str)
@@ -17,10 +17,11 @@ def main():
     task_id = args['task_id']
     round = args['round']
     from_id = args['from_id']
-    residual_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'residual')
-    makedir_exist_ok(residual_path)
-    residual_path = os.path.join(residual_path, '{}.csv'.format(self_id))
-    print(residual_path)
+    self_residual_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'residual',
+                                      '{}.csv'.format(self_id))
+    from_residual_path = os.path.join(root, from_id, 'task', task_id, 'train', 'round', str(round), 'residual',
+                                      '{}.csv'.format(self_id))
+    shutil.copy(from_residual_path, self_residual_path)
     return
 
 

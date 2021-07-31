@@ -41,11 +41,11 @@ def load(path, mode='pickle'):
     return
 
 
-def log(msg, self_id, task_id, test_id=None):
+def log(msg, root, self_id, task_id, test_id=None):
     if test_id is None:
-        log_path = os.path.join('Local_Data', self_id, task_id, 'train', 'Log.txt')
+        log_path = os.path.join(root, self_id, 'task', task_id, 'train', 'log.txt')
     else:
-        log_path = os.path.join('Local_Data', self_id, task_id, 'test', test_id, 'Log.txt')
-    with open(log_path, 'a''') as f:
+        log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'log.txt')
+    with open(log_path, 'a') as f:
         f.write(msg + '\n')
     return

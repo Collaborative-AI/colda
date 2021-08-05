@@ -45,9 +45,9 @@ class FindAPITestCase(unittest.TestCase):
             'Content-Type': 'application/json'
         }
 
-    def test_find_recipient_no_data(self):
+    def test_find_assistor_no_data(self):
 
-        # check find_recipient function with no data uploaded
+        # check find_assistor function with no data uploaded
         u1 = User(username='unittest', email='john@163.com')
         u1.set_password('123')
         db.session.add(u1)
@@ -56,18 +56,18 @@ class FindAPITestCase(unittest.TestCase):
         # 附带JWT到请求头中
         headers = self.get_token_auth_headers('unittest', '123')
         
-        response = self.client.post('/find_recipient/', headers=headers)
+        response = self.client.post('/find_assistor/', headers=headers)
         self.assertEqual(response.status_code, 400)
 
-        data = json.dumps({'recipient_id_list': None})
-        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        data = json.dumps({'assistor_id_list': None})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 400)
 
-    def test_find_recipient_two_recipients(self):
+    def test_find_assistor_two_assistors(self):
 
-        # Check 1 sponsor with 2 recipients
+        # Check 1 sponsor with 2 assistors
         # Construct 2 new Matched rows
-        # Check the Notification of each recipient
+        # Check the Notification of each assistor
 
         u1 = User(username='unittest', email='john@163.com')
         u1.set_password('123')
@@ -82,18 +82,23 @@ class FindAPITestCase(unittest.TestCase):
 
         # 附带JWT到请求头中
         headers = self.get_token_auth_headers('unittest', '123')
-        list_content = [2,3]
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
-        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        response = self.client.get('/create_new_train_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
-        recipient_num = json_response['recipient_num']
+
+        list_content = [2,3]
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['task_id'], task_id)
+        assistor_num = json_response['assistor_num']
 
         # check Matched database new rows, include sponsor to sponsor
         queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
-        self.assertEqual(len(queries), recipient_num+1)
+        self.assertEqual(len(queries), assistor_num+1)
         sponsor_random_id = queries[0].sponsor_random_id
         for i in range(len(queries)):
             self.assertEqual(queries[i].sponsor_id, 1) 
@@ -102,7 +107,7 @@ class FindAPITestCase(unittest.TestCase):
             self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 4, 1]))
 
         # check the row that sponsor to sponsor
-        queries = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 1, Matched.test_indicator == "train").all()
+        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == 1, Matched.test_indicator == "train").all()
         self.assertEqual(len(queries), 1)
         self.assertEqual(queries[0].sponsor_id, 1)
         
@@ -152,7 +157,7 @@ class FindAPITestCase(unittest.TestCase):
         response = self.client.post('/check_sponsor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['result'], "recipient")
+        self.assertEqual(json_response['result'], "assistor")
 
         headers = self.get_token_auth_headers('unittest3', '123')
         response = self.client.get('/get_user_history/', headers=headers)
@@ -164,4 +169,4 @@ class FindAPITestCase(unittest.TestCase):
         response = self.client.post('/check_sponsor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['result'], "recipient")
+        self.assertEqual(json_response['result'], "assistor")

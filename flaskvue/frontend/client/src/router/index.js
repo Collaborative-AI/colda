@@ -19,6 +19,7 @@ const Resource = () => import('../views/Resources/Resource.vue')
 const MessagesIndexResource = () => import('../views/Resources/Messages/Index.vue')
 const SentMessagesResource = () => import('../views/Resources/Messages/List.vue')
 const MessagesHistoryResource = () => import('../views/Resources/Messages/History.vue')
+const FindAssistorHelper = () => import('../views/Resources/find_assistor.vue')
 
 // User Notifications
 const Notifications = () => import('../views/Notifications/Notifications.vue')
@@ -127,9 +128,11 @@ const routes = [
               ]
           }
         ],
-    meta: {
-      requiresAuth: true
-    }
+      // path: '/find_assistor',
+      // component: FindAssistorHelper,
+      // meta: {
+      //   requiresAuth: true
+      // }
   },
   {
     // 用户通知

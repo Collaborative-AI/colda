@@ -46,15 +46,15 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
             'Content-Type': 'application/json'
         }
     
-    def test_update_test_match_id_notification_one_recipient(self):
+    def test_update_test_match_id_notification_one_assistor(self):
         
-        # Simulate 1 recipient.
-        # 1. Construct 1 Matched row in find_recipient().(find_recipient.py)
-        # 2. recipients check notification (unread_request => 1)
-        # 3. recipients update request notification
-        # 4. recipients check updated notification (unread_request => 0)
-        # 5. Recipient upload ID file
-        # 6. Check the Notification of sponsor and recipient
+        # Simulate 1 assistor.
+        # 1. Construct 1 Matched row in find_assistor().(find_assistor.py)
+        # 2. assistors check notification (unread_request => 1)
+        # 3. assistors update request notification
+        # 4. assistors check updated notification (unread_request => 0)
+        # 5. assistor upload ID file
+        # 6. Check the Notification of sponsor and assistor
         # 7. Check update_all_notifications() (update_all_notifications.py)
         # 8. Check updated Notification
 
@@ -66,22 +66,22 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         db.session.add(u2)
         db.session.commit()
 
-        # 1. Construct 1 Matched row in find_recipient.
+        # 1. Construct 1 Matched row in find_assistor.
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2]
         file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
-        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
-        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
 
         headers = self.get_token_auth_headers('unittest', '123')
         file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
         data = json.dumps({'task_id': task_id, 'id_file': file})
-        response = self.client.post('/find_test_recipient/', headers=headers, data=data)
+        response = self.client.post('/find_test_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
-        # 2. recipients check notification (unread_request => 1)
+        # 2. assistors check notification (unread_request => 1)
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', '123')
         response = self.client.get('/users/2/notifications/', headers=headers)
@@ -96,7 +96,7 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         response = self.client.post('/update_all_notifications/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         
-        # 4. recipients check updated notification (unread_request => 0)
+        # 4. assistors check updated notification (unread_request => 0)
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', '123')
         response = self.client.get('/users/2/notifications/', headers=headers)
@@ -105,15 +105,15 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[-1]['name'], "unread test request")
         self.assertEqual(json_response[-1]['payload'], 0)
 
-        # 5. Recipient upload ID file
+        # 5. assistor upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
         file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
         data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_test_recipient_id/', headers=headers, data=data)
+        response = self.client.post('/match_test_assistor_id/', headers=headers, data=data)
         query = Matched.query.filter(Matched.task_id == task_id, Matched.sponsor_id == 1, Matched.test_indicator == "test").all()
         self.assertEqual(set(json.loads(query[0].Matched_id_file)), set([0,1,4]))
 
-        # 6. Check the Notification of sponsor and recipient
+        # 6. Check the Notification of sponsor and assistor
         headers = self.get_token_auth_headers('unittest', '123')
         response = self.client.get('/users/1/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
@@ -167,14 +167,14 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[-1]['payload'], 0)
         
 
-    def test_update_test_match_id_notification_two_recipients(self):
-         # Simulate 1 recipient.
-        # 1. Construct 1 Matched row in find_recipient().(find_recipient.py)
-        # 2. recipients check notification (unread_request => 1)
-        # 3. recipients update request notification
-        # 4. recipients check updated notification (unread_request => 0)
-        # 5. Recipient upload ID file
-        # 6. Check the Notification of sponsor and recipient
+    def test_update_test_match_id_notification_two_assistors(self):
+         # Simulate 1 assistor.
+        # 1. Construct 1 Matched row in find_assistor().(find_assistor.py)
+        # 2. assistors check notification (unread_request => 1)
+        # 3. assistors update request notification
+        # 4. assistors check updated notification (unread_request => 0)
+        # 5. assistor upload ID file
+        # 6. Check the Notification of sponsor and assistor
         # 7. Check update_all_notifications() (update_all_notifications.py)
         # 8. Check updated Notification
 
@@ -189,22 +189,22 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         db.session.add(u3)
         db.session.commit()
 
-        # 1. Construct 1 Matched row in find_recipient.
+        # 1. Construct 1 Matched row in find_assistor.
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
         file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
-        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
-        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
 
         headers = self.get_token_auth_headers('unittest', '123')
         file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
         data = json.dumps({'task_id': task_id, 'id_file': file})
-        response = self.client.post('/find_test_recipient/', headers=headers, data=data)
+        response = self.client.post('/find_test_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
-        # 2. recipients check notification (unread_request => 1)
+        # 2. assistors check notification (unread_request => 1)
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', '123')
         response = self.client.get('/users/2/notifications/', headers=headers)
@@ -232,7 +232,7 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         response = self.client.post('/update_all_notifications/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
-        # 4. recipients check updated notification (unread_request => 0)
+        # 4. assistors check updated notification (unread_request => 0)
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', '123')
         response = self.client.get('/users/2/notifications/', headers=headers)
@@ -249,22 +249,22 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[-1]['name'], "unread test request")
         self.assertEqual(json_response[-1]['payload'], 0)
 
-        # 5. Recipient upload ID file
+        # 5. assistor upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
         file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
         data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_test_recipient_id/', headers=headers, data=data)
+        response = self.client.post('/match_test_assistor_id/', headers=headers, data=data)
         query = Matched.query.filter(Matched.task_id == task_id, Matched.sponsor_id == 1, Matched.test_indicator == "test").all()
         self.assertEqual(json.loads(query[0].Matched_id_file), [4])
 
         headers = self.get_token_auth_headers('unittest3', '123')
         file_content = [['a','b','c'],[8,1,2],[4,5,6],[1,3,6],[]]
         data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_test_recipient_id/', headers=headers, data=data)
-        query = Matched.query.filter(Matched.task_id == task_id, Matched.recipient_id_pair == 3, Matched.test_indicator == "test").first()
+        response = self.client.post('/match_test_assistor_id/', headers=headers, data=data)
+        query = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == 3, Matched.test_indicator == "test").first()
         self.assertEqual(set(json.loads(query.Matched_id_file)), set([8, 4]))
 
-        # 6. Check the Notification of sponsor and recipient
+        # 6. Check the Notification of sponsor and assistor
         headers = self.get_token_auth_headers('unittest', '123')
         response = self.client.get('/users/1/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
@@ -355,10 +355,10 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
             
     def test_send_test_output(self):
 
-        # sponsor and 2 recipients, only recipient  would go into send_output()
-        # 1. find_recipient() (in find_recipient.py)
+        # sponsor and 2 assistors, only assistor  would go into send_output()
+        # 1. find_assistor() (in find_assistor.py)
         # 2. send_situation() (in send_situation.py)
-        # 3. send_output() (in unread_situation.py) only recipient can send
+        # 3. send_output() (in unread_situation.py) only assistor can send
         # 4. check new notification
 
         u1 = User(username='unittest', email='john@163.com')
@@ -372,12 +372,12 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         db.session.add(u3)
         db.session.commit()
 
-        # 1. find_recipient() (in find_recipient.py)
+        # 1. find_assistor() (in find_assistor.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
         file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
-        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
@@ -385,10 +385,10 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest', '123')
         file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
         data = json.dumps({'task_id': task_id, 'id_file': file})
-        response = self.client.post('/find_test_recipient/', headers=headers, data=data)
+        response = self.client.post('/find_test_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
-        # 3. send_output() (in unread_situation.py) only recipient can send
+        # 3. send_output() (in unread_situation.py) only assistor can send
         headers = self.get_token_auth_headers('unittest2', '123')
         output = [[[1,2,3], [4,5,6], [7,8,9]],[[2,3],[4,5]]]
         data = json.dumps({'output': output, 'task_id': task_id})
@@ -396,12 +396,12 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['send_test_output'], "send test output successfully")
-        queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.test_indicator == "test").all()
+        queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.test_indicator == "test").all()
         self.assertEqual(len(queries), 1)
         self.assertEqual(queries[0].sender_id, 2)
         self.assertEqual(json.loads(queries[0].output), [[[1,2,3], [4,5,6], [7,8,9]],[[2,3],[4,5]]])
 
-        # should not have unread output now, the notification updates only when all recipients in 
+        # should not have unread output now, the notification updates only when all assistors in 
         # current task have uploaded
         headers = self.get_token_auth_headers('unittest', '123')
         response = self.client.get('/users/1/notifications/', headers=headers)
@@ -416,7 +416,7 @@ class Unread_Test_Match_ID_APITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['send_test_output'], "send test output successfully")
-        queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.test_indicator == "test").all()
+        queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.test_indicator == "test").all()
         self.assertEqual(len(queries), 2)
         self.assertEqual(queries[1].sender_id, 3)
         self.assertEqual(json.loads(queries[1].output), [[[6,123,6], [88,5,6], [7,87.6,9]],[[2]]])

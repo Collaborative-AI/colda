@@ -48,7 +48,7 @@ from Items.main.auth import token_auth
 #             if int(query.sponsor_id) == g.current_user.id:
 #                 isSponsor = True
 
-#             record = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
+#             record = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
 
 #             # get the latest output timestamp
 #             if record[0].match_id_timestamp > lastest_time:
@@ -59,7 +59,7 @@ from Items.main.auth import token_auth
 #                 print("sponsor")
 #                 check_dict[task_id_list[i]] = 1
 #             else:
-#                 print("recipient")
+#                 print("assistor")
 #                 check_dict[task_id_list[i]] = 0
 
 #      # Update the Notification
@@ -104,14 +104,14 @@ def get_user_match_id(id):
 
     data = {}
     if isSponsor:
-        query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
+        query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
 
         data = {
             'match_id_file': [item.Matched_id_file for item in query],
-            'recipient_random_id_pair': [item.recipient_random_id_pair for item in query]
+            'assistor_random_id_pair': [item.assistor_random_id_pair for item in query]
         }
     else:
-        query = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
+        query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
 
         data = {
             'match_id_file': [item.Matched_id_file for item in query],
@@ -144,14 +144,14 @@ def get_user_test_match_id(id):
 
     data = {}
     if isSponsor:
-        query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.recipient_id_pair != g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").all()
+        query = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.assistor_id_pair != g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").all()
 
         data = {
             'match_id_file': [item.Matched_id_file for item in query],
-            'recipient_random_id_pair': [item.recipient_random_id_pair for item in query]
+            'assistor_random_id_pair': [item.assistor_random_id_pair for item in query]
         }
     else:
-        query = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").all()
+        query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").all()
 
         data = {
             'match_id_file': [item.Matched_id_file for item in query],
@@ -159,6 +159,26 @@ def get_user_test_match_id(id):
         }
 
     return jsonify(data)
+
+
+# @main.route('/get_task_id_max_rounds/', methods=['POST'])
+# @token_auth.login_required
+# def get_task_id_max_rounds():
+#     data = request.get_json()
+#     if not data:
+#         return bad_request('You must post JSON data.')
+#     if 'test_id' not in data or not data.get('test_id'):
+#         return bad_request('test_id is required.')
+    
+#     task_id = data['task_id']
+
+#     query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id,  Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
+
+#     data = {"max_rounds": query.rounds}
+#     response = jsonify(data)
+    
+#     return response
+
 
 @main.route('/send_test_output/', methods=['POST'])
 @token_auth.login_required
@@ -178,13 +198,13 @@ def send_test_output():
     user = User.query.get_or_404(g.current_user.id)
     # extract sponsor_id
     queries = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").all()
-    recipient_num = len(queries) - 1
+    assistor_num = len(queries) - 1
     task_id = queries[0].task_id
 
     message = Message()
     message.from_dict(data)
     message.sender_id = g.current_user.id
-    message.recipient_id = queries[0].sponsor_id
+    message.assistor_id = queries[0].sponsor_id
     message.task_id = task_id
 
     # Store the output
@@ -193,20 +213,20 @@ def send_test_output():
     message.test_id = test_id
 
     for i in range(len(queries)):
-      if int(queries[i].recipient_id_pair) == g.current_user.id:
-        print("----------queries[i].recipient_random_id_pair", queries[i].recipient_random_id_pair)
-        print("----------queries[i].recipient_id_pair", queries[i].recipient_id_pair)
+      if int(queries[i].assistor_id_pair) == g.current_user.id:
+        print("----------queries[i].assistor_random_id_pair", queries[i].assistor_random_id_pair)
+        print("----------queries[i].assistor_id_pair", queries[i].assistor_id_pair)
         print("----------queries[i].sponsor_id", queries[i].sponsor_id)
         print("----------queries[i].sponsor_random_id", queries[i].sponsor_random_id)
         print("----------queries[i].sponsor_random_id", queries[i].test_id, queries[i].task_id)
         # print("----------queries[i].output", queries[i].output)
-        message.sender_random_id = queries[i].recipient_random_id_pair
+        message.sender_random_id = queries[i].assistor_random_id_pair
 
     db.session.add(message)
     db.session.commit()
 
    
-    all_cur_round_messages = Message.query.filter(Message.recipient_id == queries[0].sponsor_id, Message.test_id == test_id, Message.test_indicator == "test").all()
+    all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.test_id == test_id, Message.test_indicator == "test").all()
 
     output_upload = 0
     for row in all_cur_round_messages:
@@ -214,9 +234,9 @@ def send_test_output():
         if row.output:
             output_upload += 1
 
-        if output_upload == recipient_num:
+        if output_upload == assistor_num:
             user = User.query.get_or_404(queries[0].sponsor_id)
-            # send message notification to the sponsor when all recipient upload the output
+            # send message notification to the sponsor when all assistor upload the output
             print("-----------------send test output", g.current_user.id)
             user.add_notification('unread test output', user.new_test_output())
             db.session.commit()

@@ -26,6 +26,7 @@ def main():
     hash_id = np.array(list(map(make_hash, id)))
     if run == 'default':
         hash_id_path = os.path.join(root, self_id, run, 'id')
+        print(hash_id_path)
         makedir_exist_ok(hash_id_path)
         np.savetxt(os.path.join(hash_id_path, '{}.csv'.format(self_id)), hash_id, delimiter=",", fmt='%s')
     elif run == 'train':

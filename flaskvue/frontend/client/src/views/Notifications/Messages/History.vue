@@ -156,7 +156,7 @@
     <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
   <!-- </form> -->
   <div >
-    <button v-show="isSponsor" @click="find_test_recipient( $route.query.from )">Call for Test</button>
+    <button v-show="isSponsor" @click="find_test_assistor( $route.query.from )">Call for Test</button>
   </div>
   
   <!-- End Reply Message Form -->
@@ -227,57 +227,86 @@ export default {
         })
     },
 
-    find_test_recipient(task_id) {
-      const sponsor_data_folder = 'Test_Sponsor_Data/'
+    find_test_assistor(task_id) {
+      // const sponsor_data_folder = 'Test_Sponsor_Data/'
       
-      fs.mkdirSync(sponsor_data_folder, { recursive: true})
+      // fs.mkdirSync(sponsor_data_folder, { recursive: true})
 
-      const filename = 'shiyan.csv'
-      const data = fs.readFileSync(sponsor_data_folder + filename,
-        {encoding:'utf8', flag:'r'});
+      // const filename = 'shiyan.csv'
+      // const data = fs.readFileSync(sponsor_data_folder + filename,
+      //   {encoding:'utf8', flag:'r'});
       
-      let data_array = data.split("\n")
-
-      const payload = {
-        task_id: task_id,
-        id_file: data_array
-      }
+      // let data_array = data.split("\n")
       
-      this.$axios.post('/find_test_recipient/', payload)
+      this.$axios.get('/create_new_test_task/')
         .then((response) => {
-          const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
-          // handle success
-          console.log("1.1 Test: Sponsor calls for help", response)
-          this.$toasted.success(`1.1 Test: Sponsor calls for help`, { icon: 'fingerprint' })
+          
+          let test_id = response.data.test_id
 
-          console.log("1.2 Test: Sponsor sends id file")
-          this.$toasted.success(`1.2 Test: Sponsor sends id file`, { icon: 'fingerprint' })
-
-          // Create 'Local_Data/id/task_id/' folder
-          // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/' + response.data.test_id + '/'
-          // fs.mkdirSync(new_address, { recursive: true})
-
-          try {
-            fs.appendFileSync(Log_address, "\n---------------------- Test Stage Starts\n")
-            fs.appendFileSync(Log_address, "---------------------- 1. Test: Find Test Recipient\n")
-            fs.appendFileSync(Log_address, "1.1 Test: Sponsor calls for test\n")
-            fs.appendFileSync(Log_address, "1.2 Test: Sponsor sends id file\n")
-            fs.appendFileSync(Log_address, "---------------------- 1. Test: Find Test Recipient Done\n")
-          } catch (err) {
-            console.error(err)
+          let match_id_address = './data/BostonHousing/2/123/1.0/0/test/id.csv'
+          try{
+            let test_hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ./exp --self_id ' + user_id + '--task_id ' + task_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+            console.log(test_hash_id_file_address)
+          }catch{
+            console.log("wrong")
           }
 
-          // // Upload the matching ID file
-          // this.sponsor_request_show = true
+          test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
+    
+          let test_hash_id_file_data_array = test_hash_id_file_data.split("\n")
+
+
+          const payload = {
+            task_id: task_id,
+            test_id: test_id, 
+            id_file: test_hash_id_file_data_array
+          }
+          
+          this.$axios.post('/find_test_assistor/', payload)
+            .then((response) => {
+              const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'test/' + response.data.test_id + '/Log.txt'
+              // handle success
+              console.log("1.1 Test: Sponsor calls for help", response)
+              this.$toasted.success(`1.1 Test: Sponsor calls for help`, { icon: 'fingerprint' })
+
+              console.log("1.2 Test: Sponsor sends id file")
+              this.$toasted.success(`1.2 Test: Sponsor sends id file`, { icon: 'fingerprint' })
+
+              // Create 'Local_Data/id/task_id/' folder
+              // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/' + response.data.test_id + '/'
+              // fs.mkdirSync(new_address, { recursive: true})
+
+              try {
+                fs.appendFileSync(Log_address, "\n---------------------- Test Stage Starts\n")
+                fs.appendFileSync(Log_address, "---------------------- 1. Test: Find Test assistor\n")
+                fs.appendFileSync(Log_address, "1.1 Test: Sponsor calls for test\n")
+                fs.appendFileSync(Log_address, "1.2 Test: Sponsor sends id file\n")
+                fs.appendFileSync(Log_address, "---------------------- 1. Test: Find Test assistor Done\n")
+              } catch (err) {
+                console.error(err)
+              }
+
+              // // Upload the matching ID file
+              // this.sponsor_request_show = true
+
+            })
+            .catch((error) => {
+              // handle error
+              console.log(error)
+              // console.log(error.response.data)
+              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            })
 
         })
         .catch((error) => {
-          // handle error
           console.log(error)
-          // console.log(error.response.data)
-          // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
         })
+      
     }
+
+
+
+
     // getUser (id) {
     //   const path = `/users/${id}`
     //   this.$axios.get(path)
@@ -331,7 +360,7 @@ export default {
       // }
 
     //   const payload = {
-    //     recipient_id: this.user.id,
+    //     assistor_id: this.user.id,
     //     // body: this.replyMessageForm.body
     //     body: this.typein_message
     //   }

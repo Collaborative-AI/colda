@@ -33,7 +33,7 @@ def get_user_history():
     print("c")
     
     participated_task = Matched.to_collection_dict(
-        Matched.query.filter(Matched.recipient_id_pair == g.current_user.id).group_by(Matched.task_id).order_by(Matched.match_id_timestamp.desc()), page, per_page, 
+        Matched.query.filter(Matched.assistor_id_pair == g.current_user.id).group_by(Matched.task_id).order_by(Matched.match_id_timestamp.desc()), page, per_page, 
           'None', id=g.current_user.id)
 
     sorted_items = sorted(participated_task['items'], key=itemgetter('match_id_timestamp'), reverse=True)
@@ -54,7 +54,7 @@ def check_sponsor():
     
     task_id = data['task_id']
   
-    query = Matched.query.filter(Matched.recipient_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
+    query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
     
     data = ""
     print("))))))))))))))))%", query.sponsor_id, g.current_user.id)
@@ -63,7 +63,7 @@ def check_sponsor():
         data = "sponsor"
     else:
         print("yyyyyyyyyy")
-        data = "recipient"
+        data = "assistor"
 
     dict = {"result": data}
     return jsonify(dict)

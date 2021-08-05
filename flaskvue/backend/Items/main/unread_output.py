@@ -28,7 +28,7 @@ from Items.main.auth import token_auth
 #     lastest_time = datetime(1900, 1, 1)
 #     return_dict = {}
 #     for i in task_id_list:
-#         record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == i).order_by(Message.output_timestamp.desc()).first()
+#         record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == i).order_by(Message.output_timestamp.desc()).first()
 #         if record:
 #             cur_rounds = record.rounds
 #             return_dict[str(i)] = cur_rounds
@@ -79,7 +79,7 @@ def get_user_output(id):
         return error_response(403)
 
     data = {}
-    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").order_by(Message.rounds.desc()).all()
+    query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").order_by(Message.rounds.desc()).all()
 
     output_files = []
     sender_random_ids = []
@@ -114,7 +114,7 @@ def get_user_test_output():
         return error_response(403)
 
     data = {}
-    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.test_id == test_id, Message.test_indicator == "test").all()
+    query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.test_id == test_id, Message.test_indicator == "test").all()
 
     output_files = []
     sender_random_ids = []

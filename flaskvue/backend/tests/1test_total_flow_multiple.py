@@ -48,26 +48,26 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
     
     def test_total_flow_multiple(self):
 
-        # 1 sponsor and 2 recipients:
+        # 1 sponsor and 2 assistors:
 
-        # 1. sponsor call: find_recipient() (in finc_recipient.py)
+        # 1. sponsor call: find_assistor() (in finc_assistor.py)
         # 2. get task_id
 
-        # 3. recipients check notification (unread_request => 1)
-        # 4. recipients call: match_recipient_id() (in match_id.py) and upload file
-        # 5. recipients check updated notification (unread_request => 0)
+        # 3. assistors check notification (unread_request => 1)
+        # 4. assistors call: match_assistor_id() (in match_id.py) and upload file
+        # 5. assistors check updated notification (unread_request => 0)
         # 6. sponsor call: match_sponsor_id() (in match_id.py) and upload file
-        # 7. sponsor and recipients check notification (unread match id) (unread match id => 1)
+        # 7. sponsor and assistors check notification (unread match id) (unread match id => 1)
 
-        # 8. sponsor and recipients call update_match_id_notification() (in unread_match_id.py) and check updated notification (unread match id => 0)
-        # 9. sponsor and recipient call: get_user_match_id() (in unread_match_id.py), get matched id file
+        # 8. sponsor and assistors call update_match_id_notification() (in unread_match_id.py) and check updated notification (unread match id => 0)
+        # 9. sponsor and assistor call: get_user_match_id() (in unread_match_id.py), get matched id file
         # 10. sponsor calls send_situation() (in send_situation.py)
 
         # while loop (multiple rounds), test 3 rounds
-        # 11. sponsor and recipients check notification (unread situation => 1)
+        # 11. sponsor and assistors check notification (unread situation => 1)
          
-        # 12. sponsor and recipients call update_situation_notification() (in unread_situation.py) and check updated notification (unread situation => 0)
-        # 13. recipients call send_output() (in unread situation.py)
+        # 12. sponsor and assistors call update_situation_notification() (in unread_situation.py) and check updated notification (unread situation => 0)
+        # 13. assistors call send_output() (in unread situation.py)
 
         # 14. sponsor check notification (unread output => 1)
         # 15. sponsor calls: update_output_notification() (in unread_output.py) and check updated notification (unread output => 0)
@@ -85,19 +85,19 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         db.session.add(u3)
         db.session.commit()
 
-        # 1. sponsor call: find_recipient() (in finc_recipient.py)
+        # 1. sponsor call: find_assistor() (in finc_assistor.py)
         headers = self.get_token_auth_headers('unittest', '123')
         list_content = [2,3]
         file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19],[]]
-        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
-        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
 
         # 2. get task_id
         task_id = json_response['task_id']
         
-        # 3. recipients check notification (unread_request => 1)
+        # 3. assistors check notification (unread_request => 1)
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', '123')
         response = self.client.get('/users/2/notifications/', headers=headers)
@@ -130,7 +130,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         response = self.client.post('/update_all_notifications/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
 
-        # 5. recipients check updated notification (unread_request => 0)
+        # 5. assistors check updated notification (unread_request => 0)
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', '123')
         response = self.client.get('/users/2/notifications/', headers=headers)
@@ -147,19 +147,19 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[-1]['name'], "unread request")
         self.assertEqual(json_response[-1]['payload'], 0)
 
-        # 6. recipients call: match_recipient_id() (in match_id.py) and upload file
-        # Recipients upload ID file
+        # 6. assistors call: match_assistor_id() (in match_id.py) and upload file
+        # assistors upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
         file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[12],[16],[17],[18],[]]
         data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+        response = self.client.post('/match_assistor_id/', headers=headers, data=data)
 
         headers = self.get_token_auth_headers('unittest3', '123')
         file_content = [['a','b','c'],[2,1,2],[3,5,6],[4,3,6],[5],[12],[18],[]]
         data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_recipient_id/', headers=headers, data=data)
+        response = self.client.post('/match_assistor_id/', headers=headers, data=data)
 
-        # 7. sponsor and recipients check notification (unread match id) (unread match id => 1)
+        # 7. sponsor and assistors check notification (unread match id) (unread match id => 1)
         # Check the Notification of sponsor
         headers = self.get_token_auth_headers('unittest', '123')
         response = self.client.get('/users/1/notifications/', headers=headers)
@@ -191,7 +191,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         self.assertEqual(json_response_3[-1]['name'], "unread match id")
         self.assertEqual(json_response_3[-1]['payload'], 1)
 
-        # 8. sponsor and recipients call update_match_id_notification() (in unread_match_id.py) and check updated notification (unread match id => 0)
+        # 8. sponsor and assistors call update_match_id_notification() (in unread_match_id.py) and check updated notification (unread match id => 0)
         headers = self.get_token_auth_headers('unittest', '123')
         data = json.dumps({'response_data': json_response_1})
         response = self.client.post('/update_all_notifications/', headers=headers, data=data)
@@ -241,14 +241,14 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         self.assertEqual(json_response[-1]['name'], "unread match id")
         self.assertEqual(json_response[-1]['payload'], 0)
 
-        # 9. sponsor and recipient call: get_user_match_id() (in unread_match_id.py), get matched id file
+        # 9. sponsor and assistor call: get_user_match_id() (in unread_match_id.py), get matched id file
         headers = self.get_token_auth_headers('unittest', '123')
         data = json.dumps({'task_id': task_id})
         response = self.client.post('/users/1/match_id_file/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertIsNotNone(json_response.get('match_id_file'))
-        self.assertIsNotNone(json_response.get('recipient_random_id_pair'))
+        self.assertIsNotNone(json_response.get('assistor_random_id_pair'))
         # test match id file
         match_id_file_list = json_response['match_id_file']
         self.assertEqual(set(json.loads(match_id_file_list[0])), set([4,12,16,17]))
@@ -295,7 +295,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         test_round = 0
         while test_round < 3:
             print("test_round", test_round)
-            # 11. sponsor and recipients check notification (unread situation => 1)
+            # 11. sponsor and assistors check notification (unread situation => 1)
             headers = self.get_token_auth_headers('unittest', '123')
             response = self.client.get('/users/1/notifications/', headers=headers)
             self.assertEqual(response.status_code, 200)
@@ -324,7 +324,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
             self.assertEqual(json_response_3[-1]['name'], "unread situation")
             self.assertEqual(json_response_3[-1]['payload'], 1)
 
-            # 12. sponsor and recipients call update_situation_notification() (in unread_situation.py) and check updated notification (unread situation => 0)
+            # 12. sponsor and assistors call update_situation_notification() (in unread_situation.py) and check updated notification (unread situation => 0)
             headers = self.get_token_auth_headers('unittest', '123')
             data = json.dumps({'response_data': json_response_1})
             response = self.client.post('/update_all_notifications/', headers=headers, data=data)
@@ -382,7 +382,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
             self.assertEqual(json_response[-1]['name'], "unread situation")
             self.assertEqual(json_response[-1]['payload'], 0)
             
-            # 13. recipients call send_output() (in unread situation.py)
+            # 13. assistors call send_output() (in unread situation.py)
             headers = self.get_token_auth_headers('unittest2', '123')
             output_content = [[3,123,6], [88,5,6], [7,99,9]]
             data = json.dumps({'output': output_content, 'rounds': test_round, 'task_id': task_id})
@@ -390,7 +390,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             json_response = json.loads(response.get_data(as_text=True))
             self.assertEqual(json_response['send_output'], "send output successfully")
-            queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
+            queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
             self.assertEqual(len(queries), 2)
             self.assertEqual(queries[-1].sender_id, 2)
             self.assertEqual(json.loads(queries[-1].output), [[3,123,6], [88,5,6], [7,99,9]])
@@ -402,7 +402,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             json_response = json.loads(response.get_data(as_text=True))
             self.assertEqual(json_response['send_output'], "send output successfully")
-            queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
+            queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
             self.assertEqual(len(queries), 3)
             self.assertEqual(queries[-1].sender_id, 3)
             self.assertEqual(json.loads(queries[-1].output), [[6,123,6], [88,5,6], [7,87.6,9]])

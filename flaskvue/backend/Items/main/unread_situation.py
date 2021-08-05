@@ -40,8 +40,8 @@ from Items.main.auth import token_auth
 #             if int(query.sponsor_id) == g.current_user.id:
 #                 isSponsor = True
 
-#             record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
-#             # record = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id_list[i]).all()
+#             record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
+#             # record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id_list[i]).all()
 #             # for i in record:
 #             #     print()
 #             cur_rounds = record.rounds
@@ -98,7 +98,7 @@ def get_user_situation(id):
         return error_response(403)
 
     data = {}
-    query = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").order_by(Message.rounds.desc()).all()
+    query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").order_by(Message.rounds.desc()).all()
 
     situation_file = None
     sender_random_id = None
@@ -134,16 +134,16 @@ def send_output():
     # rounds = data.get('rounds')
     task_id = data.get('task_id')
 
-    rounds = Message.query.filter(Message.recipient_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first().rounds
+    rounds = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first().rounds
 
     # extract sponsor_id
     queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
-    recipient_num = len(queries) - 1
+    assistor_num = len(queries) - 1
 
     message = Message()
     message.from_dict(data)
     message.sender_id = g.current_user.id
-    message.recipient_id = queries[0].sponsor_id
+    message.assistor_id = queries[0].sponsor_id
     message.task_id = task_id
     message.rounds = rounds
 
@@ -152,27 +152,27 @@ def send_output():
     message.test_indicator = "train"
 
     for i in range(len(queries)):
-      if int(queries[i].recipient_id_pair) == g.current_user.id:
-        print("----------queries[i].recipient_random_id_pair", queries[i].recipient_random_id_pair)
-        print("----------queries[i].recipient_id_pair", queries[i].recipient_id_pair)
+      if int(queries[i].assistor_id_pair) == g.current_user.id:
+        print("----------queries[i].assistor_random_id_pair", queries[i].assistor_random_id_pair)
+        print("----------queries[i].assistor_id_pair", queries[i].assistor_id_pair)
         print("----------queries[i].sponsor_id", queries[i].sponsor_id)
         print("----------queries[i].sponsor_random_id", queries[i].sponsor_random_id)
         # print("----------queries[i].output", queries[i].output)
-        message.sender_random_id = queries[i].recipient_random_id_pair
+        message.sender_random_id = queries[i].assistor_random_id_pair
 
     db.session.add(message)
     db.session.commit()
 
-    all_cur_round_messages = Message.query.filter(Message.recipient_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
+    all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
     output_upload = 0
     for row in all_cur_round_messages:
         print("row", row)
         if row.output:
             output_upload += 1
 
-        if output_upload == recipient_num:
+        if output_upload == assistor_num:
             user = User.query.get_or_404(queries[0].sponsor_id)
-            # send message notification to the sponsor when all recipient upload the output
+            # send message notification to the sponsor when all assistor upload the output
             print("-----------------sendoutput", g.current_user.id)
             user.add_notification('unread output', user.new_output())
             db.session.commit()

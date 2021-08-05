@@ -16,6 +16,7 @@
     <button @click="delete_all_logs()">delete_all_logs</button>
     <button @click="delete_test_rows()">delete_test_rows</button>
     <button @click="try_db()">try_db</button>
+    <button @click="python()">python</button>
 
     <button @click="duqu()">duqu</button>
     <div v-for="task_id in task_id_list" :key="task_id.id">
@@ -65,6 +66,8 @@ const sqlite3 = window.require('sqlite3').verbose();
 // import { Field, Form } from 'vee-validate';
 import axios from 'axios'
 import csv2arr from '@/assets/csv-arr'
+import db from '../db.js'
+import store from '../store'
 // import sq3 from 'sqlite3'
 // import fse from 'fs-extra';
 // import path from 'path';
@@ -89,7 +92,8 @@ export default {
       success: 0,
       form: {
         imgSavePath: ''
-      }
+      },
+      sharedState: store.state,
     };
   },
 
@@ -99,6 +103,56 @@ export default {
   },
 
   methods: {
+      python(){
+          // let save_match_id_file_pos = null;
+          // try{
+          //   save_match_id_file_pos = ex.execSync('python3 ../../../package/test.py --root ../../../package/exp --self_id 0 --task_id abc --test_id def --round 1 --data_path ../../../package/data/BostonHousing/2/123/1.0/0/test/data.csv', {encoding: 'utf8'})
+          //   console.log(save_match_id_file_pos, typeof(save_match_id_file_pos))
+            
+
+          // }catch{
+          //   console.log("wrong")
+          // }
+
+          // // delete "\n"
+          // save_match_id_file_pos = save_match_id_file_pos.replace(/\n/g, '')
+          // let save_match_id_file_pos_list = save_match_id_file_pos.split('?')
+          // console.log(save_match_id_file_pos_list)
+
+          // let all_data = []
+          // for (let i = 0; i < save_match_id_file_pos_list.length; i++){
+
+          //   let cur_file = save_match_id_file_pos_list[i];
+
+          //   let save_match_id_file_pos_data = fs.readFileSync(cur_file, {encoding:'utf8', flag:'r'});
+          //   console.log("not splite", save_match_id_file_pos_data)
+          //   let save_match_id_file_pos_data_array = save_match_id_file_pos_data.split("\n")
+          //   console.log(save_match_id_file_pos_data_array)
+          //   all_data.push(save_match_id_file_pos_data_array)
+          // }
+          // console.log(all_data)
+
+          // 读取是每行会变为string, 多行为array, 读多个文件为二维矩阵
+          // 写入时要join, 变单个array为string
+          let ceshi1 = './ceshi1.csv'
+          let ceshi2 = './ceshi2.csv'
+          let all_data = [];
+          let ceshi1_data = fs.readFileSync(ceshi1, {encoding:'utf8', flag:'r'})
+          let ceshi2_data = fs.readFileSync(ceshi2, {encoding:'utf8', flag:'r'})
+
+          let ceshi1_data_array = ceshi1_data.split("\n")
+          let ceshi2_data_array = ceshi2_data.split("\n")
+
+          all_data.push(ceshi1_data_array)
+          all_data.push(ceshi2_data_array)
+          console.log(all_data)
+          fs.writeFileSync("./ceshi3.csv", all_data[0].join("\n"))
+          
+
+          
+      },
+
+    // fs.mkdirSync(assistor_data_folder, { recursive: true})
       try_db() {
         // let db = new sqlite3.Database(':memory:');
 
@@ -121,26 +175,37 @@ export default {
         // });
 
         // db.close();
-        var db = new sqlite3.Database('abcd');
+        // var db = new sqlite3.Database('Apollo_Client');
 
-        db.serialize(function() {
-          // db.run("CREATE TABLE user (id INT, dt TEXT)");
-          db.run("CREATE TABLE IF NOT EXISTS user (id INT, dt TEXT)")
-          var stmt = db.prepare("INSERT INTO user VALUES (?,?)");
-          for (var i = 0; i < 10; i++) {
+        // db.serialize(function() {
+        //   // db.run("CREATE TABLE user (id INT, dt TEXT)");
+        //   // db.run("CREATE TABLE IF NOT EXISTS user (id INT, dt TEXT)")
+        //   db.run("CREATE TABLE IF NOT EXISTS User (id int primary key not null, user_id int, default_data_path text, default_id_path text)")
+        //   // var stmt = db.prepare("INSERT INTO user VALUES (?,?)");
+        //   // for (var i = 0; i < 10; i++) {
           
-          var d = new Date();
-          var n = d.toLocaleTimeString();
-          stmt.run(i, n);
+        //   // var d = new Date();
+        //   // var n = d.toLocaleTimeString();
+        //   // stmt.run(i, n);
+        //   // }
+        //   // stmt.finalize();
+
+        //   // db.each("SELECT id, dt FROM user", function(err, row) {
+        //   //     console.log("User id : "+row.id, row.dt);
+        //   // });
+        // });
+
+        // db.close();
+        db.run(`INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES (1, 'love', 'consume')`)
+        let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + 1;
+        db.get(select_sentence, function(err, row){
+          console.log(row)
+          if (row == null){
+            console.log("no")
           }
-          stmt.finalize();
+        })
+        // console.log(a)
 
-          db.each("SELECT id, dt FROM user", function(err, row) {
-              console.log("User id : "+row.id, row.dt);
-          });
-        });
-
-        db.close();
       },
          getpath() {
         let ipt = document.getElementById('ipt').files
@@ -261,27 +326,36 @@ export default {
       // for (let i = 0;i < fileNames.length; i++){
       //   console.log(fileNames[i]);
       // }
-      const route = "Local_Data/4/a4ddab0b-79a6-483b-a894-280f01cbd0af/Log.txt"
-      try {
-        const data = fs.appendFileSync(route, "1.22222\n")
-        console.log("data", data)
-        fs.appendFileSync(route, "3.22222\n")
-        fs.appendFileSync(route, "4.@@@@\n")
-        //文件写入成功。
 
-        const data1 = fs.readFileSync(route,
-          {encoding:'utf8', flag:'r'});
+      // const route = "Local_Data/4/a4ddab0b-79a6-483b-a894-280f01cbd0af/Log.txt"
+      // try {
+      //   const data = fs.appendFileSync(route, "1.22222\n")
+      //   console.log("data", data)
+      //   fs.appendFileSync(route, "3.22222\n")
+      //   fs.appendFileSync(route, "4.@@@@\n")
+      //   //文件写入成功。
+
+      //   const data1 = fs.readFileSync(route,
+      //     {encoding:'utf8', flag:'r'});
         
-        console.log("data", data1, data1.split("\n"))
-      } catch (err) {
-        console.error(err)
-      }
+      //   console.log("data", data1, data1.split("\n"))
+      // } catch (err) {
+      //   console.error(err)
+      // }
 
-      try {
-        route = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
-        fs.appendFileSync(route, "1.22222\n")
-      } catch (err) {
-        console.error(err)
+      // try {
+      //   route = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
+      //   fs.appendFileSync(route, "1.22222\n")
+      // } catch (err) {
+      //   console.error(err)
+      // }
+      try{
+        let save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --self_id ' + this.sharedState.user_id 
+          + ' --task_id '+ 2 + ' --from_id ' + 1 + ' --run train', {encoding: 'utf8'})
+        console.log(save_match_id_file_pos)
+        console.log(save_match_id_file_pos.split("\n"))
+      }catch{
+        console.log("wrong")
       }
 
     },

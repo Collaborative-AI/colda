@@ -48,12 +48,12 @@ class Unread_Situation_APITestCase(unittest.TestCase):
     
     def test_update_situation_notification(self):
 
-        # sponsor and 2 recipients, only sponsor would go into this function
-        # 1. find_recipient() (in find_recipient.py)
+        # sponsor and 2 assistors, only sponsor would go into this function
+        # 1. find_assistor() (in find_assistor.py)
         # 2. send_situation() (in send_situation.py)
         # 3. check new notification
         # 4. update_situation_notification() (in unread_situation.py)
-        # 5. recipient check situation file from sponsor
+        # 5. assistor check situation file from sponsor
         # 6. check new notification
 
         u1 = User(username='unittest', email='john@163.com')
@@ -67,33 +67,44 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         db.session.add(u3)
         db.session.commit()
 
-        # 1. find_recipient() (in find_recipient.py)
+        # 1. find_assistor() (in find_assistor.py)
         headers = self.get_token_auth_headers('unittest', '123')
-        list_content = [2,3]
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
-        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        response = self.client.get('/create_new_train_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
-
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
 
+        list_content = [2,3]
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['task_id'], task_id)
+
+        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != 1, Matched.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
+        assistor_random_id_list = []
+        for i in range(len(queries)):
+            assistor_random_id_list.append(queries[i].assistor_random_id_pair)
+        
         # 2. send_situation() (in send_situation.py)
         headers = self.get_token_auth_headers('unittest', '123')
-        situation_content = [[1,2,3], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'task_id': task_id})
+        residual_list = [[[1,2,3], [4,5,6], [7,8,9]], [[1,2], [3,4]]]
+        data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.test_indicator == "train").all()
-        self.assertEqual(len(queries), len(list_content)+1)
+        queries = Message.query.filter(Message.assistor_id != 1, Message.task_id == task_id, Message.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 0)
             self.assertEqual(queries[i].sender_id, 1)
-            self.assertEqual(json.loads(queries[i].situation), [[1,2,3], [4,5,6], [7,8,9]])
-        
+            self.assertEqual(queries[i].assistor_id, list_content[i])
+            self.assertEqual(json.loads(queries[i].situation), residual_list[i])
+          
         # 3. check new notification
         headers = self.get_token_auth_headers('unittest', '123')
         response = self.client.get('/users/1/notifications/', headers=headers)
@@ -179,7 +190,7 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         response = self.client.post('/users/3/situation_file/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json.loads(json_response['situation']), [[1,2,3], [4,5,6], [7,8,9]])
+        self.assertEqual(json.loads(json_response['situation']), [[1,2], [3,4]])
 
         # 6. check new notification
         response = self.client.get('/users/3/notifications/', headers=headers)
@@ -191,8 +202,8 @@ class Unread_Situation_APITestCase(unittest.TestCase):
 
     def test_noninitial_round_update_situation_notification(self):
 
-        # sponsor and 2 recipients, only sponsor would go into this function
-        # 1. find_recipient() (in find_recipient.py)
+        # sponsor and 2 assistors, only sponsor would go into this function
+        # 1. find_assistor() (in find_assistor.py)
         # 2. send_situation() (in send_situation.py)
         # 3. send_situation() again (in send_situation.py)
         # 4. check notification
@@ -210,49 +221,60 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         db.session.add(u3)
         db.session.commit()
 
-        # 1. find_recipient() (in find_recipient.py)
+        # 1. find_assistor() (in find_assistor.py)
         headers = self.get_token_auth_headers('unittest', '123')
-        list_content = [2,3]
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
-        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        response = self.client.get('/create_new_train_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
-
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
 
+        list_content = [2,3]
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['task_id'], task_id)
+
+        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != 1, Matched.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
+        assistor_random_id_list = []
+        for i in range(len(queries)):
+            assistor_random_id_list.append(queries[i].assistor_random_id_pair)
+        
         # 2. send_situation() (in send_situation.py)
         headers = self.get_token_auth_headers('unittest', '123')
-        situation_content = [[1,2,3], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'task_id': task_id})
+        residual_list = [[[1,2,3], [4,5,6], [7,8,9]], [[1,2], [3,4]]]
+        data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.test_indicator == "train").all()
-        self.assertEqual(len(queries), len(list_content)+1)
+        queries = Message.query.filter(Message.assistor_id != 1, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 0)
             self.assertEqual(queries[i].sender_id, 1)
-            self.assertEqual(json.loads(queries[i].situation), [[1,2,3], [4,5,6], [7,8,9]])
+            self.assertEqual(queries[i].assistor_id, list_content[i])
+            self.assertEqual(json.loads(queries[i].situation), residual_list[i])
         
         # 3. send_situation() again (in send_situation.py)
         headers = self.get_token_auth_headers('unittest', '123')
-        situation_content = [[3,2,1], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'task_id': task_id})
+        residual_list = [[[3,2,1], [4,5,6], [7,8,9]], [[15,2], [3,4]]]
+        data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
-
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.rounds == 1, Message.test_indicator == "train").all()
-        self.assertEqual(len(queries), len(list_content)+1)
+        queries = Message.query.filter(Message.assistor_id != 1, Message.task_id == task_id, Message.rounds == 1, Message.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 1)
             self.assertEqual(queries[i].sender_id, 1)
-            self.assertEqual(json.loads(queries[i].situation), [[3,2,1], [4,5,6], [7,8,9]])
+            self.assertEqual(queries[i].assistor_id, list_content[i])
+            self.assertEqual(json.loads(queries[i].situation), residual_list[i])
 
         # 4. check notification
         headers = self.get_token_auth_headers('unittest', '123')
@@ -337,10 +359,10 @@ class Unread_Situation_APITestCase(unittest.TestCase):
 
     def test_send_output(self):
 
-        # sponsor and 2 recipients, only recipient  would go into send_output()
-        # 1. find_recipient() (in find_recipient.py)
+        # sponsor and 2 assistors, only assistor  would go into send_output()
+        # 1. find_assistor() (in find_assistor.py)
         # 2. send_situation() (in send_situation.py)
-        # 3. send_output() (in unread_situation.py) only recipient can send
+        # 3. send_output() (in unread_situation.py) only assistor can send
         # 4. check new notification
 
         u1 = User(username='unittest', email='john@163.com')
@@ -354,24 +376,37 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         db.session.add(u3)
         db.session.commit()
 
-        # 1. find_recipient() (in find_recipient.py)
+        # 1. find_assistor() (in find_assistor.py)
         headers = self.get_token_auth_headers('unittest', '123')
-        list_content = [2,3]
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'recipient_id_list': list_content, 'id_file': file})
-        response = self.client.post('/find_recipient/', headers=headers, data=data)
+        response = self.client.get('/create_new_train_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
 
+        list_content = [2,3]
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['task_id'], task_id)
+
+        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != 1, Matched.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
+        assistor_random_id_list = []
+        for i in range(len(queries)):
+            assistor_random_id_list.append(queries[i].assistor_random_id_pair)
+
         # 2. send_situation() (in send_situation.py)
         headers = self.get_token_auth_headers('unittest', '123')
-        situation_content = [[1,2,3], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'task_id': task_id})
+        residual_list = [[[1,2,3], [4,5,6], [7,8,9]], [[1,2], [3,4]]]
+        data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        # 3. send_output() (in unread_situation.py) only recipient can send
+        # 3. send_output() (in unread_situation.py) only assistor can send
         headers = self.get_token_auth_headers('unittest2', '123')
         output_content = [[3,123,6], [88,5,6], [7,99,9]]
         data = json.dumps({'output': output_content, 'rounds': 0, 'task_id': task_id})
@@ -379,12 +414,12 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['send_output'], "send output successfully")
-        queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
+        queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
         self.assertEqual(len(queries), 2)
         self.assertEqual(queries[1].sender_id, 2)
         self.assertEqual(json.loads(queries[1].output), [[3,123,6], [88,5,6], [7,99,9]])
 
-        # should not have unread output now, the notification updates only when all recipients in 
+        # should not have unread output now, the notification updates only when all assistors in 
         # current task have uploaded
         headers = self.get_token_auth_headers('unittest', '123')
         response = self.client.get('/users/1/notifications/', headers=headers)
@@ -401,7 +436,7 @@ class Unread_Situation_APITestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['send_output'], "send output successfully")
-        queries = Message.query.filter(Message.recipient_id == 1, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
+        queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
         self.assertEqual(len(queries), 3)
         self.assertEqual(queries[2].sender_id, 3)
         self.assertEqual(json.loads(queries[2].output), [[6,123,6], [88,5,6], [7,87.6,9]])

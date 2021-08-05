@@ -71,8 +71,8 @@ class User(PaginatedAPIMixin, db.Model):
                                     cascade='all, delete-orphan')
     # Message User received
     messages_received = db.relationship('Message',
-                                        foreign_keys='Message.recipient_id',
-                                        backref='recipient', lazy='dynamic',
+                                        foreign_keys='Message.assistor_id',
+                                        backref='assistor', lazy='dynamic',
                                         cascade='all, delete-orphan')
     
     # Message User sent
@@ -80,9 +80,9 @@ class User(PaginatedAPIMixin, db.Model):
     #                                 backref='matchsponsor', lazy='dynamic',
     #                                 cascade='all, delete-orphan')
     # # Message User received
-    # match_recipient = db.relationship('Matched',
-    #                                     foreign_keys='Matched.recipient_id_pair',
-    #                                     backref='matchrecipient', lazy='dynamic',
+    # match_assistor = db.relationship('Matched',
+    #                                     foreign_keys='Matched.assistor_id_pair',
+    #                                     backref='matchassistor', lazy='dynamic',
     #                                     cascade='all, delete-orphan')
 
     # Notification
@@ -155,14 +155,14 @@ class User(PaginatedAPIMixin, db.Model):
     def new_recived_messages(self):
         '''用户未读的私信计数'''
         last_read_time = self.last_messages_read_time or datetime(1900, 1, 1)
-        return Message.query.filter_by(recipient=self).filter(
+        return Message.query.filter_by(assistor=self).filter(
             Message.timestamp > last_read_time).count()
 
     def new_request(self):
         '''用户未读的请求数'''
         last_request_time = self.last_requests_read_time or datetime(1900, 1, 1)
 
-        query = Matched.query.filter_by(recipient_id_pair=self.id).filter(
+        query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
             Matched.request_timestamp > last_request_time, Matched.test_indicator == "train").all()
         
         task_id_list = []
@@ -179,7 +179,7 @@ class User(PaginatedAPIMixin, db.Model):
         '''用户未读的match完的id'''
         last_match_time = self.last_matched_file_read_time or datetime(1900, 1, 1)
 
-        query = Matched.query.filter_by(recipient_id_pair=self.id).filter(
+        query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
             Matched.match_id_timestamp > last_match_time, Matched.test_indicator == "train").all()
 
         task_id_list = []
@@ -195,7 +195,7 @@ class User(PaginatedAPIMixin, db.Model):
     def new_situation(self):
         '''用户未读的situation'''
         last_situation_time = self.last_situation_read_time or datetime(1900, 1, 1)
-        query = Message.query.filter_by(recipient_id=self.id).filter(
+        query = Message.query.filter_by(assistor_id=self.id).filter(
             Message.situation_timestamp > last_situation_time, Message.test_indicator == "train").all()
 
         # print("last_situation_time",last_situation_time)
@@ -217,7 +217,7 @@ class User(PaginatedAPIMixin, db.Model):
     def new_output(self):
         '''用户未读的output'''
         last_output_time = self.last_output_read_time or datetime(1900, 1, 1)
-        query = Message.query.filter_by(recipient_id=self.id).filter(
+        query = Message.query.filter_by(assistor_id=self.id).filter(
             Message.output_timestamp > last_output_time, Message.test_indicator == "train").all()
         
         print("new_output---------------------",self.id)
@@ -236,51 +236,51 @@ class User(PaginatedAPIMixin, db.Model):
 
         last_test_request_time = self.last_test_requests_read_time or datetime(1900, 1, 1)
 
-        query = Matched.query.filter_by(recipient_id_pair=self.id).filter(
+        query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
             Matched.request_timestamp > last_test_request_time, Matched.test_indicator == "test").all()
         
-        task_id_list = []
+        test_id_list = []
         sender_random_id_list = []
         for i in range(len(query)):
-            task_id_list.append(query[i].task_id)
+            test_id_list.append(query[i].test_id)
 
             # sender must be sponsor
             sender_random_id_list.append(query[i].sponsor_random_id)
 
-        return [task_id_list, sender_random_id_list]
+        return [test_id_list, sender_random_id_list]
 
     def new_test_match_id(self):
         last_test_match_time = self.last_test_matched_file_read_time or datetime(1900, 1, 1)
 
-        query = Matched.query.filter_by(recipient_id_pair=self.id).filter(
+        query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
             Matched.match_id_timestamp > last_test_match_time, Matched.test_indicator == "test").all()
 
-        task_id_list = []
+        test_id_list = []
         sender_random_id_list = []
         for i in range(len(query)):
-            task_id_list.append(query[i].task_id)
+            test_id_list.append(query[i].test_id)
 
             # sender must be sponsor
             sender_random_id_list.append(query[i].sponsor_random_id)
 
-        return [task_id_list, sender_random_id_list]
+        return [test_id_list, sender_random_id_list]
 
     def new_test_output(self):
         last_test_output_time = self.last_test_output_read_time or datetime(1900, 1, 1)
-        query = Message.query.filter_by(recipient_id=self.id).filter(
+        query = Message.query.filter_by(assistor_id=self.id).filter(
             Message.output_timestamp > last_test_output_time, Message.test_indicator == "test").all()
         
         print("new_output---------------------",self.id)
-        task_id_list = []
+        test_id_list = []
         sender_random_id_list = []
         for i in range(len(query)):
             if query[i].output:
-                task_id_list.append(query[i].task_id)
+                test_id_list.append(query[i].test_id)
 
                 # sender must be sponsor
                 sender_random_id_list.append(query[i].sender_random_id)
 
-        return [task_id_list, sender_random_id_list]
+        return [test_id_list, sender_random_id_list]
 
 
     def update_jwt(self):
@@ -325,7 +325,7 @@ class Message(PaginatedAPIMixin, db.Model):
     
     sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     sender_random_id = db.Column(db.String(120))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    assistor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     task_id = db.Column(db.String(120), index=True)
     rounds = db.Column(db.Integer)
     situation = db.Column(db.Text)
@@ -343,7 +343,7 @@ class Message(PaginatedAPIMixin, db.Model):
             'id': self.id,
             'body': self.body,
             'sender': self.sender.to_dict(),
-            'recipient': self.recipient.to_dict(),
+            'assistor': self.assistor.to_dict(),
             'timestamp': self.timestamp,
             'situation_timestamp': self.situation_timestamp,
             'output_timestamp': self.output_timestamp,
@@ -373,7 +373,7 @@ class Notification(PaginatedAPIMixin, db.Model):
 
     # sender_random_id = db.Column(db.Integer)
     # task_id = db.Column(db.String(120), index=True)
-    # recipient_num = db.Column(db.Integer)
+    # assistor_num = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Notification {}>'.format(self.id)
@@ -408,7 +408,7 @@ class Notification(PaginatedAPIMixin, db.Model):
             'task_id_list': self.get_task_id_list(),
             # 'sender_random_id': self.sender_random_id,
             # 'task_id': self.task_id,
-            # 'recipient_num': self.recipient_num,
+            # 'assistor_num': self.assistor_num,
             # '_links': {
             #     'self': url_for('main.get_notification', id=self.id),
             #     'user_url': url_for('main.get_user', id=self.user_id)
@@ -430,15 +430,15 @@ class Matched(PaginatedAPIMixin, db.Model):
     match_id_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     # sponsor_id = db.Column(db.String(120), db.ForeignKey('users.id'))
-    # recipient_id_pair = db.Column(db.String(120), db.ForeignKey('users.id'))
+    # assistor_id_pair = db.Column(db.String(120), db.ForeignKey('users.id'))
 
     sponsor_id = db.Column(db.Integer)
-    recipient_id_pair = db.Column(db.Integer)
+    assistor_id_pair = db.Column(db.Integer)
 
     Matched_id_file =  db.Column(db.Text, nullable=True)
     matched_done = db.Column(db.Integer, nullable=True)
     sponsor_random_id = db.Column(db.String(120))
-    recipient_random_id_pair = db.Column(db.String(120))
+    assistor_random_id_pair = db.Column(db.String(120))
 
     test_indicator = db.Column(db.String(10))
     test_id = db.Column(db.String(120), index=True)
@@ -456,7 +456,7 @@ class Matched(PaginatedAPIMixin, db.Model):
             'request_timestamp': self.request_timestamp,
             'match_id_timestamp': self.match_id_timestamp,
             'sponsor_random_id': self.sponsor_random_id,
-            'recipient_random_id_pair': self.recipient_random_id_pair,
+            'assistor_random_id_pair': self.assistor_random_id_pair,
             # '_links': {
             #     'self': url_for('main.get_notification', id=self.id),
             #     'user_url': url_for('main.get_user', id=self.user_id)

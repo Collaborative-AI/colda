@@ -23,6 +23,8 @@ def main():
     round = args['round']
     from_id = args['from_id']
     data_path = args['data_path']
+    # print("1")
+    # print(os.path.dirname(__file__))
     data = np.genfromtxt(data_path, delimiter=',')
     if from_id is not None:
         self_from_idx = np.genfromtxt(

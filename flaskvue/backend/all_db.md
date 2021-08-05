@@ -15,8 +15,8 @@
                                     cascade='all, delete-orphan')
       # Message User received
       messages_received = db.relationship('Message',
-                                        foreign_keys='Message.recipient_id',
-                                        backref='recipient', lazy='dynamic',
+                                        foreign_keys='Message.assistor_id',
+                                        backref='assistor', lazy='dynamic',
                                         cascade='all, delete-orphan')
 
       # Notification
@@ -30,7 +30,7 @@
       body = db.Column(db.Text)
       timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
       sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-      recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+      assistor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
       task_id = db.Column(db.Integer, index=True, unique=True)
       rounds = db.Column(db.Integer)
 
@@ -53,7 +53,7 @@
       id = db.Column(db.Integer, primary_key=True)
       task_id = db.Column(db.Integer, index=True, unique=True)
       starter_initial = db.Column(db.String)
-      recipient_initial = db.Column(db.String)
+      assistor_initial = db.Column(db.String)
       
       Intersect_initial = db.Column(db.String)
       round: 
@@ -64,7 +64,7 @@
       task_id = db.Column(db.Integer, primary_key=True)
       rounds = db.Column(db.Integer)
       sender_id = db.Column(db.Integer)
-      recipient_id = db.Column(db.Integer)
+      assistor_id = db.Column(db.Integer)
       body = db.Column(db.Text)
       timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 

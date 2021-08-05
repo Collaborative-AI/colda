@@ -219,7 +219,7 @@ def update_all_notifications():
                 for j in range(len(test_id_list)):
                     # check if the current client is the sponsor
                     isSponsor = False
-                    query = Matched.query.filter(Matched.task_id == test_id_list[j]).first()
+                    query = Matched.query.filter(Matched.test_id == test_id_list[j]).first()
                     task_id_of_test_id = query.task_id
 
                     if query:
@@ -231,6 +231,7 @@ def update_all_notifications():
 
                         record = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id_list[j], Matched.test_indicator == "test").order_by(Matched.match_id_timestamp.desc()).all()
 
+                        print("$$$$$$$", task_id_of_test_id)
                         max_round_query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id_of_test_id,  Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
 
                         # get the latest output timestamp
@@ -246,8 +247,13 @@ def update_all_notifications():
                             check_dict[test_id_list[j]] = 0
 
                         test_id_to_task_id[test_id_list[j]] = record[0].task_id
-                        max_rounds[test_id_list[j]] = max_round_query.rounds
-                        
+
+                        if not max_round_query:
+                            max_rounds[test_id_list[j]] = 0
+                        else:
+                            max_rounds[test_id_list[j]] = max_round_query.rounds
+                           
+
                 # Update the Notification
                 user = User.query.get_or_404(g.current_user.id)
                 last_test_matched_file_read_time = user.last_test_matched_file_read_time or datetime(1900, 1, 1)

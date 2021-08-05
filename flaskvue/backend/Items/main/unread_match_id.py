@@ -224,7 +224,6 @@ def send_test_output():
 
     db.session.add(message)
     db.session.commit()
-
    
     all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.test_id == test_id, Message.test_indicator == "test").all()
 

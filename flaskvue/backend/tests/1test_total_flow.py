@@ -85,16 +85,26 @@ class Test_total_flow_APITestCase(unittest.TestCase):
 
         # 1. sponsor call: find_assistor() (in finc_assistor.py)
         headers = self.get_token_auth_headers('unittest', '123')
+        response = self.client.get('/create_new_train_task/', headers=headers)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        # 2. get task id
+        task_id = json_response['task_id']
+
         list_content = [2,3]
         file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19],[]]
-        data = json.dumps({'assistor_id_list': list_content, 'id_file': file})
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['task_id'], task_id)
 
-        # 2. get task_id
-        task_id = json_response['task_id']
-        
+        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != 1, Matched.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
+        assistor_random_id_list = []
+        for i in range(len(queries)):
+            assistor_random_id_list.append(queries[i].assistor_random_id_pair)
+
         # 3. assistors check notification (unread_request => 1)
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', '123')
@@ -276,19 +286,20 @@ class Test_total_flow_APITestCase(unittest.TestCase):
 
         # 10. sponsor calls send_situation() (in send_situation.py)
         headers = self.get_token_auth_headers('unittest', '123')
-        situation_content = [[1,2,3], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'task_id': task_id})
+        residual_list = [[[1,2,3], [4,5,6], [7,8,9]], [[1,2], [3,4]]]
+        data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.test_indicator == "train").all()
-        self.assertEqual(len(queries), len(list_content)+1)
+        queries = Message.query.filter(Message.assistor_id != 1, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 0)
             self.assertEqual(queries[i].sender_id, 1)
-            self.assertEqual(json.loads(queries[i].situation), [[1,2,3], [4,5,6], [7,8,9]])
+            self.assertEqual(queries[i].assistor_id, list_content[i])
+            self.assertEqual(json.loads(queries[i].situation), residual_list[i])
 
         # 11. sponsor and assistors check notification (unread situation => 1)
         headers = self.get_token_auth_headers('unittest', '123')
@@ -434,17 +445,17 @@ class Test_total_flow_APITestCase(unittest.TestCase):
 
         # 17. sponsor calls: send_situation(), goes into new round 
         headers = self.get_token_auth_headers('unittest', '123')
-        situation_content = [[3,2,1], [4,5,6], [7,8,9]]
-        data = json.dumps({'situation': situation_content, 'task_id': task_id})
+        residual_list = [[[1,2,3], [4,5,6]], [[1,2]]]
+        data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
-
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.sender_id == 1, Message.task_id == task_id, Message.rounds == 1, Message.test_indicator == "train").all()
-        self.assertEqual(len(queries), len(list_content)+1)
+        queries = Message.query.filter(Message.assistor_id != 1, Message.task_id == task_id, Message.rounds == 1, Message.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 1)
             self.assertEqual(queries[i].sender_id, 1)
-            self.assertEqual(json.loads(queries[i].situation), [[3,2,1], [4,5,6], [7,8,9]])
+            self.assertEqual(queries[i].assistor_id, list_content[i])
+            self.assertEqual(json.loads(queries[i].situation), residual_list[i])

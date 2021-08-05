@@ -82,15 +82,26 @@ class Find_Test_APITestCase(unittest.TestCase):
 
         # 附带JWT到请求头中
         headers = self.get_token_auth_headers('unittest', '123')
-        list_content = [2,3]
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'assistor_id_list': list_content, 'id_file': file})
-        response = self.client.post('/find_assistor/', headers=headers, data=data)
+        response = self.client.get('/create_new_train_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
+
+        list_content = [2,3]
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['task_id'], task_id)
         assistor_num = json_response['assistor_num']
 
+        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != 1, Matched.test_indicator == "train").all()
+        self.assertEqual(len(queries), len(list_content))
+        assistor_random_id_list = []
+        for i in range(len(queries)):
+            assistor_random_id_list.append(queries[i].assistor_random_id_pair)
+        
         # check Matched database new rows, include sponsor to sponsor
         queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == 'train').all()
         self.assertEqual(len(queries), assistor_num+1)
@@ -101,33 +112,42 @@ class Find_Test_APITestCase(unittest.TestCase):
             self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
             self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 4, 1]))
 
-        # 附带JWT到请求头中
+        # create test id
         headers = self.get_token_auth_headers('unittest', '123')
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
-        data = json.dumps({'task_id': task_id, 'id_file': file})
+        response = self.client.get('/create_new_test_task/', headers=headers)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        test_id = json_response['test_id']
+
+        file = [['a','b','c'],[0,1,2],[5,5,6],[1,3,6],[]]
+        data = json.dumps({'task_id': task_id, 'id_file': file, 'test_id': test_id})
         response = self.client.post('/find_test_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
-
         json_response = json.loads(response.get_data(as_text=True))
-        task_id = json_response['task_id']
+        self.assertEqual(json_response['task_id'], task_id)
+        self.assertEqual(json_response['test_id'], test_id)
         assistor_num = json_response['assistor_num']
 
         # check Matched database new rows, include sponsor to sponsor
-        queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == 'test').all()
+        queries = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == 'test').all()
         self.assertEqual(len(queries), assistor_num+1)
         sponsor_random_id = queries[0].sponsor_random_id
         for i in range(len(queries)):
             self.assertEqual(queries[i].sponsor_id, 1) 
             self.assertEqual(queries[i].task_id, task_id)
+            self.assertEqual(queries[i].test_id, test_id)
             self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
-            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 4, 1]))
+            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 5, 1]))
 
         # check the row that sponsor to sponsor
-        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == 1, Matched.test_indicator == 'train').all()
-        self.assertEqual(len(queries), 1)
+        queries = Matched.query.filter(Matched.task_id == task_id).all()
+        self.assertEqual(len(queries), 6)
         self.assertEqual(queries[0].sponsor_id, 1)
-        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == 1, Matched.test_indicator == 'test').all()
-        self.assertEqual(len(queries), 1)
+        queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == 'train').all()
+        self.assertEqual(len(queries), 3)
+        self.assertEqual(queries[0].sponsor_id, 1)
+        queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_id == test_id, Matched.test_indicator == 'test').all()
+        self.assertEqual(len(queries), 3)
         self.assertEqual(queries[0].sponsor_id, 1)
         
         # Check the Notification of user 2

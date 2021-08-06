@@ -100,9 +100,9 @@ export default {
     const user_id = this.sharedState.user_id
     this.getUser(user_id)
     // tooltip
-    $(document).ready(function(){
-      $('[data-toggle="tooltip"]').tooltip(); 
-    })
+    // $(document).ready(function(){
+    //   $('[data-toggle="tooltip"]').tooltip(); 
+    // })
   }
 }
 </script>

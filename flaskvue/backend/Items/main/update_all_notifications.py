@@ -9,7 +9,7 @@ from datetime import datetime
 from Items import db
 # import BluePrint
 from Items.main import main
-from Items.models import User, Message, Matched
+from Items.models import User, Message, Matched, Notification
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
@@ -32,6 +32,7 @@ def update_all_notifications():
     print("list", response_data[0]["sender_random_id_list"])
 
     returndict = {"unread request":{}, "unread match id":{}, "unread situation":{}, "unread output":{}, "unread test request":{}, "unread test match id":{}, "unread test output":{}}
+    user = User.query.get_or_404(g.current_user.id)
     for i in range(len(response_data)):
         sender_random_id_list = response_data[i]["sender_random_id_list"]
         task_id_list = response_data[i]["task_id_list"]
@@ -48,7 +49,7 @@ def update_all_notifications():
                         lastest_time = record[0].request_timestamp
                     check_dict[task_id_list[j]] = 1
                 # Update the Notification
-                user = User.query.get_or_404(g.current_user.id)
+
                 last_requests_read_time = user.last_requests_read_time or datetime(1900, 1, 1)          
                 if lastest_time > last_requests_read_time:
                     user.last_requests_read_time = lastest_time
@@ -92,7 +93,7 @@ def update_all_notifications():
                             check_dict[task_id_list[j]] = 0
 
                 # Update the Notification
-                user = User.query.get_or_404(g.current_user.id)
+
                 last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
                 if lastest_time > last_matched_file_read_time:
                     user.last_matched_file_read_time = lastest_time
@@ -133,7 +134,7 @@ def update_all_notifications():
                         rounds_dict[task_id_list[j]] = cur_rounds
 
                 # Update the Notification
-                user = User.query.get_or_404(g.current_user.id)
+
                 last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
                 if lastest_time > last_situation_read_time:
                     user.last_situation_read_time = lastest_time
@@ -164,7 +165,7 @@ def update_all_notifications():
                             lastest_time = record.output_timestamp
 
                 # Update the Notification 
-                user = User.query.get_or_404(g.current_user.id)
+
                 last_output_read_time = user.last_output_read_time or datetime(1900, 1, 1)
                 if lastest_time > last_output_read_time:
                     user.last_output_read_time = lastest_time
@@ -194,7 +195,7 @@ def update_all_notifications():
                     test_id_to_task_id[test_id_list[j]] = record[0].task_id
 
                 # Update the Notification
-                user = User.query.get_or_404(g.current_user.id)
+
                 last_test_requests_read_time = user.last_test_requests_read_time or datetime(1900, 1, 1)          
                 if lastest_time > last_test_requests_read_time:
                     user.last_test_requests_read_time = lastest_time
@@ -255,7 +256,7 @@ def update_all_notifications():
                            
 
                 # Update the Notification
-                user = User.query.get_or_404(g.current_user.id)
+
                 last_test_matched_file_read_time = user.last_test_matched_file_read_time or datetime(1900, 1, 1)
                 if lastest_time > last_test_matched_file_read_time:
                     user.last_test_matched_file_read_time = lastest_time
@@ -290,7 +291,7 @@ def update_all_notifications():
 
 
                 # Update the Notification 
-                user = User.query.get_or_404(g.current_user.id)
+
                 last_test_output_read_time = user.last_test_output_read_time or datetime(1900, 1, 1)
                 if lastest_time > last_test_output_read_time:
                     user.last_test_output_read_time = lastest_time
@@ -305,5 +306,10 @@ def update_all_notifications():
                 returndict["unread test output"]["check_dict"] = check_dict
                 returndict["unread test output"]["test_id_to_task_id"] = test_id_to_task_id
     # print("returndict", returndict)
+
+    notifications = user.notifications.filter(
+        Notification.timestamp > 0).order_by(Notification.timestamp.asc())
+    returndict['Updated Notification'] = [n.to_dict() for n in notifications]
+
     return returndict
 

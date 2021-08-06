@@ -25,9 +25,32 @@
       <input type="button" @click="csv()" value="JS转换"/>
     </div>
     
-    <input type="file" id="ipt" @change="getpath()" webkitdirectory directory multiple>
+    <input type="file" id="ipt" @change="getpath()">
     <button @click="getpath()">get path</button>
     <button @click="sqlite()">sqlite</button>
+
+    <div id="example-4">
+      <input type="radio" id="one" value="One" v-model="picked" v-on:change="change()">
+      <label for="one">Dont Response to Request</label>
+      <br>
+      <input type="radio" id="two" value="Two" v-model="picked" v-on:change="change2()">
+      <label for="two">Response</label>
+      <br>
+      <span>Picked: {{ picked }}</span>
+    </div>
+
+     <form @submit.prevent="onSubmit">
+      <div class="form-group">
+        <label for="name">Default Data Path</label>
+        <input type="text" v-model="profileForm.default_data_path" class="form-control" id="name" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="location">Default Id Path</label>
+        <input type="text" v-model="profileForm.default_id_path" class="form-control" id="location" placeholder="">
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+
     <!-- <div>
       <el-form ref="form" :model="form" label-width="120px" style="width: 50%">
       <el-form-item label="保存至文件夹">
@@ -53,8 +76,12 @@ const address = 'tem/' + 'b/'
 const os = window.require('os');
 // const ex = require("child_process").execFileSync;
 const ex = window.require("child_process");
-const dialog = window.require('electron').remote;
+const remote = window.require('electron').remote;
 const sqlite3 = window.require('sqlite3').verbose();
+
+// const remote = window.require('electron').remote 
+// const dialog = remote.dialog;
+// const dialog = window.require('electron')
 // const { require } = window
 // const fs = require('fs')
 // const path = require('path');
@@ -94,6 +121,11 @@ export default {
         imgSavePath: ''
       },
       sharedState: store.state,
+      picked: "One",
+      profileForm: {
+        default_data_path: "",
+        default_id_path: "",
+      }
     };
   },
 
@@ -103,6 +135,119 @@ export default {
   },
 
   methods: {
+    getUser (id) {
+      let vm = this
+      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+      db.get(select_sentence, function(err, row){
+        console.log(row)
+
+        if (row != null){
+          vm.profileForm.default_data_path = row.default_data_path
+          vm.profileForm.default_id_path = row.default_id_path
+        }
+
+        if (row == null | row.default_data_path == "" | row.default_id_path == "" ){
+          console.log("get false")
+          vm.sharedState.set_default = false
+          vm.sharedState.receive_request = false
+        }
+        
+      })
+    },
+      getpath() {
+          // let ipt = document.getElementById('ipt').files
+          // console.log("1", ipt);
+          // ipt = ipt[0];
+          // console.log("2", ipt);
+
+          // dialog.showOpenDialogSync(mainWindow, {
+          //   properties: ['openFile', 'openDirectory']
+          // })
+          console.log(remote.showOpenDialog({ properties: ['openFile', 'multiSelections'] }))
+          // console.log(this.$electron.remote.dialog.showOpenDialog({properties: ['openFile', 'openDirectory', 'multiSelections']}))
+          
+          // let stats=fs.statSync(ipt.path);
+          // if (stats.isDirectory() == false){
+          //   alert("please choose file");
+          // }else{
+          //   console.log(ipt);
+          // }
+          // let path = dialog.showOpenDialog({
+          //   properties:['openDirectory']
+          // })
+          // console.log(path)
+      },
+      change() {
+        console.log("change")
+        this.sharedState.receive_request = false
+      },
+      change2() {
+        console.log("change2")
+        if (this.picked == "Two"){
+          console.log("ainiaini")
+        }
+        let vm = this
+        let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+        db.get(select_sentence, function(err, row){
+          console.log(row)
+
+          if (row == null | row.default_data_path == "" | row.default_id_path == "" ){
+            console.log("get false")
+            vm.sharedState.set_default = false
+            vm.sharedState.receive_request = false
+            vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
+            vm.picked = "One";
+            console.log(this.picked)
+          }
+          else{
+            vm.sharedState.receive_request = true
+          }
+          
+        })
+      },
+      onSubmit (e) {
+
+        let vm = this;
+        let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+
+        db.get(select_sentence, function(err, row){
+          console.log(row)
+          
+          
+          if (row == null){
+            // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES (1, 'love', 'consume')`)
+            let insert_new_val = `INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES 
+              (`+vm.sharedState.user_id+`, "`+vm.profileForm.default_data_path+`", "`+vm.profileForm.default_id_path+`")`
+            console.log(insert_new_val)
+            db.run(insert_new_val)
+          }else{
+
+            if (vm.profileForm.default_data_path == "" | vm.profileForm.default_id_path == "" ){
+              vm.sharedState.set_default = false
+              vm.sharedState.receive_request = false
+              console.log("false")
+            }
+
+            db.serialize(function() {
+            let update_default_data_path = 'UPDATE "User_Default_Path"'
+                      +' SET "default_data_path" = "' + vm.profileForm.default_data_path
+                       + '" WHERE "user_id" = ' + vm.sharedState.user_id
+            console.log(update_default_data_path)           
+            db.run(update_default_data_path)
+
+            let update_default_id_path = 'UPDATE "User_Default_Path"'
+                      +' SET "default_id_path" = "' + vm.profileForm.default_id_path
+                       + '" WHERE "user_id" = ' + vm.sharedState.user_id
+            console.log(update_default_id_path)
+            db.run(update_default_id_path)
+
+          });
+
+          }
+          
+        })
+        
+      },
       python(){
 
         // fs.mkdirSync(Round_folder, { recursive: true})
@@ -224,21 +369,7 @@ export default {
         // console.log(a)
 
       },
-         getpath() {
-        let ipt = document.getElementById('ipt').files
-        console.log(ipt);
-        ipt = ipt.files[0];
-        let stats=fs.statSync(ipt.path);
-        if (stats.isDirectory() == false){
-          alert("please choose file");
-        }else{
-          console.log(ipt);
-        }
-        // let path = dialog.showOpenDialog({
-        //   properties:['openDirectory']
-        // })
-        // console.log(path)
-     },
+         
 
 //       sqlite(){
 //         const dbPath = path.join("/home/qile/Documents/Apollo/flaskvue/frontend/client/sqlite"
@@ -939,6 +1070,10 @@ export default {
     // },
     
   },
+  created () {
+    const user_id = this.sharedState.user_id
+    this.getUser(user_id)
+  }
 
 };
 </script>

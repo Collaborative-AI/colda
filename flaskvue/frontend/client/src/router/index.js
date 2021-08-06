@@ -71,6 +71,9 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    meta: {
+      requiresAuth: true
+    }
   },  
   {
     path: '/register',
@@ -96,6 +99,9 @@ const routes = [
             component: Profile 
         },
     ],
+    // path: 'profile', 
+    // name: 'SettingProfile', 
+    // component: Profile,
     meta: {
       requiresAuth: true
     }
@@ -128,11 +134,11 @@ const routes = [
               ]
           }
         ],
-      // path: '/find_assistor',
-      // component: FindAssistorHelper,
-      // meta: {
-      //   requiresAuth: true
-      // }
+      path: '/find_assistor',
+      component: FindAssistorHelper,
+      meta: {
+        requiresAuth: true
+      }
   },
   {
     // 用户通知

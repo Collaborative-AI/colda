@@ -34,6 +34,7 @@
 
 <script>
 import store from '../../store'
+import db from '../../db'
 
 export default {
   name: 'Profile',  //this is the name of the component
@@ -41,34 +42,80 @@ export default {
     return {
       sharedState: store.state,
       profileForm: {
-        name: '',
-        location: '',
-        about_me: ''
-      }
+        default_data_path: "",
+        default_id_path: ""
+      },
     }
   },
   methods: {
-    getUser (id) {
+    getUser (id) {let vm = this
       let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
       db.get(select_sentence, function(err, row){
         console.log(row)
-        // if (row == null){
-        //   console.log("no")
-        // }
 
-      this.profileForm.default_data_path = row.default_data_path
-      this.profileForm.default_id_path = row.default_id_path
+        if (row != null){
+          vm.profileForm.default_data_path = row.default_data_path
+          vm.profileForm.default_id_path = row.default_id_path
+        }
+
+        if (row == null){
+          console.log("get false")
+          vm.sharedState.set_default = false
+          vm.sharedState.receive_request = false
+        }else{
+            if (row.default_data_path == "" | row.default_id_path == ""){
+            console.log("get false")
+            vm.sharedState.set_default = false
+            vm.sharedState.receive_request = false
+          }
+        }
+
+        
+
+        
       })
     },
     onSubmit (e) {
-      const user_id = this.sharedState.user_id
+      let vm = this;
+      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
 
-      db.serialize(function() {
-        db.run('UPDATE default_data_path = ' + this.profileForm.default_data_path + 'WHERE user_id = ' + user_id)
-        db.run('UPDATE default_id_path = ' + this.profileForm.default_id_path + 'WHERE user_id = ' + user_id)
-      });
+      db.get(select_sentence, function(err, row){
+        console.log(row)
+        
+        
+        if (row == null){
+          // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES (1, 'love', 'consume')`)
+          let insert_new_val = `INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES 
+            (`+vm.sharedState.user_id+`, "`+vm.profileForm.default_data_path+`", "`+vm.profileForm.default_id_path+`")`
+          console.log(insert_new_val)
+          db.run(insert_new_val)
+        }else{
 
-      
+          if (vm.profileForm.default_data_path == "" | vm.profileForm.default_id_path == "" ){
+            vm.sharedState.set_default = false
+            vm.sharedState.receive_request = false
+            console.log("false")
+          }
+
+          db.serialize(function() {
+            let update_default_data_path = 'UPDATE "User_Default_Path"'
+                      +' SET "default_data_path" = "' + vm.profileForm.default_data_path
+                        + '" WHERE "user_id" = ' + vm.sharedState.user_id
+            console.log(update_default_data_path)           
+            db.run(update_default_data_path)
+
+            let update_default_id_path = 'UPDATE "User_Default_Path"'
+                      +' SET "default_id_path" = "' + vm.profileForm.default_id_path
+                        + '" WHERE "user_id" = ' + vm.sharedState.user_id
+            console.log(update_default_id_path)
+            db.run(update_default_id_path)
+
+          });
+        }    
+      })
+
+
+
       // const path = `/users/${user_id}`
       // const payload = {
       //   name: this.profileForm.name,

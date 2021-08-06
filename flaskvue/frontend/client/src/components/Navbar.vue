@@ -37,7 +37,17 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
         </form>
 
+        
+
         <ul v-if="sharedState.is_authenticated" class="nav navbar-nav navbar-right">
+          <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
+          <label for="not_receive">Dont Response to Request</label>
+          <br>
+          <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
+          <label for="receive">Response</label>
+          <br>
+          <span>Picked: {{ picked }}</span>
+
           <li class="nav-item g-mr-20">
             <button @click="find_assistor">Call For Help</button>
             <!-- <router-link v-bind:to="{ name: 'Shiyan' }" class="nav-link">Call For Help</router-link> -->
@@ -64,7 +74,7 @@
               <img v-bind:src="sharedState.user_avatar" class="g-brd-around g-brd-gray-light-v3 g-pa-2 rounded-circle rounded mCS_img_loaded"> {{ sharedState.user_name }}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link v-bind:to="{ path: `/user/${sharedState.user_id}` }" class="dropdown-item"><i class="icon-star g-pos-rel g-top-1 g-mr-5"></i> Your profile</router-link>
+              <!-- <router-link v-bind:to="{ path: `/user/${sharedState.user_id}` }" class="dropdown-item"><i class="icon-star g-pos-rel g-top-1 g-mr-5"></i> Your profile</router-link> -->
               <!-- <router-link v-bind:to="{ name: 'PostsResource' }" class="dropdown-item"><i class="icon-share g-pos-rel g-top-1 g-mr-5"></i> Your resource</router-link> -->
               <router-link v-bind:to="{ name: 'SettingProfile' }" class="dropdown-item"><i class="icon-settings g-pos-rel g-top-1 g-mr-5"></i> Settings</router-link>
               <div class="dropdown-divider"></div>
@@ -88,6 +98,8 @@ import store from '../store'
 // 在 JQuery 中使用 axios 的话需要重新导入，不能使用 main.js 中定义的 Vue 全局属性 this.$axios
 import axios from 'axios'
 import $ from 'jquery'
+import db from '../db'
+
 // use Node API
 const fs = window.require('fs');
 const join = window.require('path').join;
@@ -111,6 +123,7 @@ export default {
       assistor_num: 0,
       max_round: 3,
       root: '../../../package/exp',
+      picked: "not_receive",
     }
   },
   methods: {
@@ -120,6 +133,29 @@ export default {
       this.$router.push('/login')
     },
 
+    not_receive() {
+      this.sharedState.receive_request = false
+    },
+    receive() {
+
+      let vm = this
+      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+      db.get(select_sentence, function(err, row){
+        console.log(row)
+
+        if (row == null | row.default_data_path == "" | row.default_id_path == "" ){
+          console.log("get false")
+          vm.sharedState.set_default = false
+          vm.sharedState.receive_request = false
+          vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
+          vm.picked = "One";
+        }
+        else{
+          vm.sharedState.receive_request = true
+        }
+        
+      })
+    },
     // sponsor find assistor
     find_assistor () {
       
@@ -181,6 +217,8 @@ export default {
             // fs.mkdirSync(new_address, { recursive: true})
 
             try {
+              fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
+              fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
               fs.appendFileSync(Log_address, "---------------------- Train Stage Starts\n")
               fs.appendFileSync(Log_address, "---------------------- 1. Find assistor\n")
               fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
@@ -214,8 +252,6 @@ export default {
           console.log(error)
 
         })
-      
-     
     },
 
     // sponsor_csv() {
@@ -244,61 +280,66 @@ export default {
 
     unread_request(unread_request_notification) {
       
-      console.log("2.1 Update request notification response", unread_request_notification)
-      this.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
+      if (this.sharedState.receive_request == true){
+        console.log("2.1 Update request notification response", unread_request_notification)
+        this.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
 
-      let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
-      for (let task_id in cur_unread_request_Taskid_dict){
-        
-        // const assistor_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
-        // fs.mkdirSync(assistor_store_folder, { recursive: true})
+        let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
+        for (let task_id in cur_unread_request_Taskid_dict){
+          
+          // const assistor_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
+          // fs.mkdirSync(assistor_store_folder, { recursive: true})
 
-        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
-        
- 
-        let match_id_address = '../../../package/data/BostonHousing/2/123/1.0/1/train/id.csv'
-        let hash_id_file_address = null;
-        try{
-          hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ' + this.root 
-                                    + ' --self_id ' + this.sharedState.user_id + ' --task_id ' + task_id + ' --run train', {encoding: 'utf8'})
-          hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
-          console.log(hash_id_file_address)
-        }catch(err){
-            console.log(err)
+          const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+          
+          let match_id_address = '../../../package/data/BostonHousing/2/123/1.0/1/train/id.csv'
+          let hash_id_file_address = null;
+          try{
+            hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ' + this.root 
+                                      + ' --self_id ' + this.sharedState.user_id + ' --task_id ' + task_id + ' --run train', {encoding: 'utf8'})
+            hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
+            console.log(hash_id_file_address)
+          }catch(err){
+              console.log(err)
+          }
+
+          try {
+            fs.appendFileSync(Log_address, "\n You are Assistor\n")
+            fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
+            fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
+            fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
+          } catch (err) {
+            console.error(err)
+          }
+          let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
+
+          const match_assistor_id_data = {
+            task_id: task_id,
+            file: hash_id_file_data,
+          }
+          
+          this.$axios.post('/match_assistor_id/', match_assistor_id_data)
+            .then((response) => {
+              // handle success
+              console.log("2.2 assistor uploads id file", response)
+              this.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
+
+              try {
+                fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
+                fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
+              } catch (err) {
+                console.error(err)
+              }
+            })
+            .catch((error) => {
+              // handle error
+              console.log(error)
+              // console.log(error.response.data)
+              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            })
         }
-
-        try {
-          fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
-          fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
-        } catch (err) {
-          console.error(err)
-        }
-        let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
-
-        const match_assistor_id_data = {
-          task_id: task_id,
-          file: hash_id_file_data,
-        }
-        
-        this.$axios.post('/match_assistor_id/', match_assistor_id_data)
-          .then((response) => {
-            // handle success
-            console.log("2.2 assistor uploads id file", response)
-            this.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
-
-            try {
-              fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
-              fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
-            } catch (err) {
-              console.error(err)
-            }
-          })
-          .catch((error) => {
-            // handle error
-            console.log(error)
-            // console.log(error.response.data)
-            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-          })
+      }else{
+        console.log("unread request: If you want to receive, open receive")
       }
     },
 
@@ -951,77 +992,83 @@ export default {
     unread_test_request(unread_test_request_notification) {
       
       // Only assistor calls this function
-      let vm = this;
-      console.log("2.1 Update Test request notification response", unread_test_request_notification)
-      this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
+      if (this.sharedState.receive_request == true){
+        let vm = this;
+        console.log("2.1 Update Test request notification response", unread_test_request_notification)
+        this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
-      let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
-      let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
+        let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
+        let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
 
-      for (let test_id in cur_unread_test_request_Testid_dict){
-        let task_id = test_id_to_task_id[test_id]
+        for (let test_id in cur_unread_test_request_Testid_dict){
+          let task_id = test_id_to_task_id[test_id]
 
-        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
-        
+          const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
+          
 
-        // const assistor_data_folder = 'Test_assistor_Data/'
-        // fs.mkdirSync(assistor_data_folder, { recursive: true})
+          // const assistor_data_folder = 'Test_assistor_Data/'
+          // fs.mkdirSync(assistor_data_folder, { recursive: true})
 
-        // const filename = 'shiyan.csv'
-        // const data = fs.readFileSync(assistor_data_folder + filename,
-        //   {encoding:'utf8', flag:'r'});
-  
-        // let data_array = data.split("\n")
+          // const filename = 'shiyan.csv'
+          // const data = fs.readFileSync(assistor_data_folder + filename,
+          //   {encoding:'utf8', flag:'r'});
+    
+          // let data_array = data.split("\n")
 
-        // const payload = {
-        //   test_id: test_id,
-        //   file: data_array
-        // }
-        
-        let match_id_address = '../../../package/data/BostonHousing/2/123/1.0/1/test/id.csv'
-        let test_hash_id_file_address = null
-        try{
-          test_hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ' + this.root 
-                                    + ' --self_id ' + this.sharedState.user_id + ' --task_id ' + task_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
-          test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
-          console.log(test_hash_id_file_address)
-        }catch(err){
-          console.log(err)
+          // const payload = {
+          //   test_id: test_id,
+          //   file: data_array
+          // }
+          
+          let match_id_address = '../../../package/data/BostonHousing/2/123/1.0/1/test/id.csv'
+          let test_hash_id_file_address = null
+          try{
+            test_hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ' + this.root 
+                                      + ' --self_id ' + this.sharedState.user_id + ' --task_id ' + task_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+            test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
+            console.log(test_hash_id_file_address)
+          }catch(err){
+            console.log(err)
+          }
+
+          try {
+            fs.appendFileSync(Log_address, "\n You are Assistor\n")
+            fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
+            fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
+            fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
+            fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
+          } catch (err) {
+            console.error(err)
+          }
+
+          let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
+
+          const match_test_assistor_id_data = {
+            file: test_hash_id_file_data,
+            test_id: test_id
+          }
+
+          this.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
+            .then((response) => {
+              // handle success
+              console.log("2.2 Test: assistor uploads id file", response)
+              this.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
+              try {
+                fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
+                fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
+              } catch (err) {
+                console.error(err)
+              }
+            })
+            .catch((error) => {
+              // handle error
+              console.log(error)
+              // console.log(error.response.data)
+              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            })
         }
-
-        try {
-          fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
-          fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
-          fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
-        } catch (err) {
-          console.error(err)
-        }
-
-        let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
-
-        const match_test_assistor_id_data = {
-          file: test_hash_id_file_data,
-          test_id: test_id
-        }
-
-        this.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
-          .then((response) => {
-            // handle success
-            console.log("2.2 Test: assistor uploads id file", response)
-            this.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
-            try {
-              fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
-              fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
-            } catch (err) {
-              console.error(err)
-            }
-          })
-          .catch((error) => {
-            // handle error
-            console.log(error)
-            // console.log(error.response.data)
-            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-          })
+      }else{
+        console.log("If you want to receive, open receive")
       }
     },
 
@@ -1242,7 +1289,7 @@ export default {
           const from_id = response.data.sponsor_random_id;
           let cur_match_id_file = JSON.parse(response.data.match_id_file[0]);
           cur_match_id_file = cur_match_id_file.join('\n');
-          console.log("cur_match_id_file", cur_match_id_file)
+
           // Store match_id file from sponsor
           let test_save_match_id_file_pos = null;
           try{
@@ -1440,14 +1487,8 @@ export default {
 
             for (let j = 0; j < multiple_outputs_from_one_assistor.length; j++){
               
-              console.log("cur_test output^^^^^^^^", multiple_outputs_from_one_assistor[j])
               let cur_output = multiple_outputs_from_one_assistor[j];
-              console.log("cur_test output^^^^^^^^1", cur_output)
-              // cur_output = cur_output.split('\n');
-              // console.log("cur_test output^^^^^^^^2", cur_output)
-              // Store the output
               
-
               // Store test output from assistors
               let test_save_output_pos = null
               try{

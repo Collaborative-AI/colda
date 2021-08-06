@@ -158,6 +158,9 @@
   <div >
     <button v-show="isSponsor" @click="find_test_assistor( $route.query.from )">Call for Test</button>
   </div>
+  <!-- <div >
+    <button @click="get_test_history_id( $route.query.from )">Load Test Log</button>
+  </div> -->
   
   <!-- End Reply Message Form -->
 </div>
@@ -183,7 +186,7 @@ export default {
     return {
       sharedState: store.state,
       user: '',
-      messages: null,
+      messages: [],
       typein_message: '',
       showOnce: true,
       replyMessageForm: {
@@ -201,11 +204,19 @@ export default {
     getLog(task_id) {
       const train_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
       let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
-      this.messages = Log_content.split("\n")
+      Log_content = Log_content.split("\n")
+      for (let i = 0; i < Log_content.length; i++){
+        this.messages.push(Log_content[i])
+      }
 
+    
       // const test_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + response.data.test_id + '/log.txt'
     },
+    // get_test_history_id(task_id) {
 
+
+
+    // },
     checkSponsor(task_id) {
       const payload = {
         task_id: task_id,
@@ -220,6 +231,25 @@ export default {
           }else{
             this.isSponsor = false
             // console.log("#############2", this.isSponsor)
+          }
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error)
+        })
+
+        this.$axios.post('/get_test_history_id/', payload)
+        .then((response) => {
+
+          let test_id_list = response.data.test_id_list;
+          for (let i = 0; i < test_id_list.length; i++){
+            const test_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id_list[i] + '/log.txt'
+            let test_log_content = fs.readFileSync(test_log_address, {encoding:'utf8', flag:'r'});
+            test_log_content = test_log_content.split("\n")
+            for (let i = 0; i < test_log_content.length; i++){
+              this.messages.push(test_log_content[i])
+            }
+            
           }
         })
         .catch((error) => {
@@ -279,7 +309,9 @@ export default {
               // fs.mkdirSync(new_address, { recursive: true})
 
               try {
-                fs.appendFileSync(Log_address, "\n---------------------- Test Stage Starts\n")
+                fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
+                fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
+                fs.appendFileSync(Log_address, "---------------------- Test Stage Starts\n")
                 fs.appendFileSync(Log_address, "---------------------- 1. Test: Find Test assistor\n")
                 fs.appendFileSync(Log_address, "1.1 Test: Sponsor calls for test\n")
                 fs.appendFileSync(Log_address, "1.2 Test: Sponsor sends id file\n")

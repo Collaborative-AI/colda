@@ -249,3 +249,27 @@ def find_test_assistor():
     
     return response
 
+@main.route('/get_test_history_id', methods=['POST'])
+@token_auth.login_required
+def get_test_history_id():
+
+    # find assistor algorithm, return all_assistor_id
+    data = request.get_json()
+    if not data:
+        return bad_request('You must post JSON data.')
+    if 'task_id' not in data or not data.get('task_id'):
+        return bad_request('task_id is required.')
+    
+    task_id = data['task_id']
+
+    records = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "test").all()
+
+    test_id_list = []
+    for row in records:
+        test_id_list.append(row.test_id)
+    
+    data = {"test_id_list": test_id_list}
+    print("test_id_list", data)
+    response = jsonify(data)
+    
+    return response

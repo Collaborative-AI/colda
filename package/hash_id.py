@@ -26,17 +26,28 @@ def main():
     hash_id = np.array(list(map(make_hash, id)))
     if run == 'default':
         hash_id_path = os.path.join(root, self_id, run, 'id')
-        print(hash_id_path)
         makedir_exist_ok(hash_id_path)
         np.savetxt(os.path.join(hash_id_path, '{}.csv'.format(self_id)), hash_id, delimiter=",", fmt='%s')
+        hash_id_path = os.path.join(hash_id_path, '{}.csv'.format(self_id))
     elif run == 'train':
         hash_id_path = os.path.join(root, self_id, 'task', task_id, run, 'id')
         makedir_exist_ok(hash_id_path)
         np.savetxt(os.path.join(hash_id_path, '{}.csv'.format(self_id)), hash_id, delimiter=",", fmt='%s')
+        hash_id_path = os.path.join(hash_id_path, '{}.csv'.format(self_id))
+        
+        log_path = os.path.join(root, self_id, 'task', task_id, 'train')
+        makedir_exist_ok(log_path)
+        open(os.path.join(log_path, "log.txt"),"a") 
+
     elif run == 'test' and test_id is not None:
         hash_id_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'id')
         makedir_exist_ok(hash_id_path)
         np.savetxt(os.path.join(hash_id_path, '{}.csv'.format(self_id)), hash_id, delimiter=",", fmt='%s')
+        hash_id_path = os.path.join(hash_id_path, '{}.csv'.format(self_id))
+
+        log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id)
+        makedir_exist_ok(log_path)
+        open(os.path.join(log_path, "log.txt"),"a") 
     else:
         raise ValueError('Not valid run')
     print(hash_id_path)

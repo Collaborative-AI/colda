@@ -57,12 +57,21 @@ def find_assistor():
     id_file = data['id_file']
     task_id = data['task_id']
 
-    # extract ID
+    id_file = id_file.split("\n")
     data_array_id = set()
-    for i in range(1,len(id_file)-1):
-        data_array_id.add(id_file[i][0])
+    for i in range(len(id_file)):
+        if id_file[i]: 
+            data_array_id.add(id_file[i])
     
     data_array_id = list(data_array_id)
+
+
+    # extract ID
+    # data_array_id = set()
+    # for i in range(1,len(id_file)):
+    #     data_array_id.add(id_file[i][0])
+    
+    # data_array_id = list(data_array_id)
 
     print("assistor_id_list", assistor_id_list)
 
@@ -155,12 +164,20 @@ def find_test_assistor():
     for row in assistor_id_queries:
         assistor_id_list.append(row.assistor_id_pair)
 
-    # extract ID
+    id_file = id_file.split("\n")
     data_array_id = set()
-    for i in range(1,len(id_file)-1):
-        data_array_id.add(id_file[i][0])
+    for i in range(len(id_file)):
+        if id_file[i]: 
+            data_array_id.add(id_file[i])
     
     data_array_id = list(data_array_id)
+
+    # # extract ID
+    # data_array_id = set()
+    # for i in range(1,len(id_file)):
+    #     data_array_id.add(id_file[i][0])
+    
+    # data_array_id = list(data_array_id)
 
     print("assistor_id_list", assistor_id_list)
 

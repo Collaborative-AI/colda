@@ -72,7 +72,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         task_id = json_response['task_id']
 
         list_content = [2,3]
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
         data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -157,7 +157,7 @@ class Send_Situation_APITestCase(unittest.TestCase):
         task_id = json_response['task_id']
 
         list_content = [2,3]
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
         data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -183,7 +183,6 @@ class Send_Situation_APITestCase(unittest.TestCase):
         self.assertEqual(len(queries), len(list_content)+1)
         queries = Message.query.filter(Message.assistor_id != 1, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
         self.assertEqual(len(queries), len(list_content))
-
         for i in range(len(queries)):
             self.assertEqual(queries[i].rounds, 0)
             self.assertEqual(queries[i].sender_id, 1)

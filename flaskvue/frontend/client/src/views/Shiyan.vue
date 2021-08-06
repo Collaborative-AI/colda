@@ -104,49 +104,66 @@ export default {
 
   methods: {
       python(){
-          // let save_match_id_file_pos = null;
-          // try{
-          //   save_match_id_file_pos = ex.execSync('python3 ../../../package/test.py --root ../../../package/exp --self_id 0 --task_id abc --test_id def --round 1 --data_path ../../../package/data/BostonHousing/2/123/1.0/0/test/data.csv', {encoding: 'utf8'})
-          //   console.log(save_match_id_file_pos, typeof(save_match_id_file_pos))
+
+        // fs.mkdirSync(Round_folder, { recursive: true})
+          let save_match_id_file_pos = null;
+          try{
+            save_match_id_file_pos = ex.execSync('python3 ../../../package/test.py --root ../../../package/exp --self_id 0 --task_id abc --test_id def --round 1 --data_path ../../../package/data/BostonHousing/2/123/1.0/0/test/data.csv', {encoding: 'utf8'})
+            console.log(save_match_id_file_pos, typeof(save_match_id_file_pos))
             
 
-          // }catch{
-          //   console.log("wrong")
-          // }
+          }catch{
+            console.log("wrong")
+          }
 
-          // // delete "\n"
-          // save_match_id_file_pos = save_match_id_file_pos.replace(/\n/g, '')
-          // let save_match_id_file_pos_list = save_match_id_file_pos.split('?')
-          // console.log(save_match_id_file_pos_list)
+          // delete "\n"
 
-          // let all_data = []
-          // for (let i = 0; i < save_match_id_file_pos_list.length; i++){
+          // '../../../package'
+          // ' + this.root + '
+          save_match_id_file_pos = save_match_id_file_pos.replace(/\n/g, '')
+          let save_match_id_file_pos_list = save_match_id_file_pos.split('?')
+          console.log(save_match_id_file_pos_list)
 
-          //   let cur_file = save_match_id_file_pos_list[i];
+          let all_data = []
+          for (let i = 0; i < save_match_id_file_pos_list.length; i++){
 
-          //   let save_match_id_file_pos_data = fs.readFileSync(cur_file, {encoding:'utf8', flag:'r'});
-          //   console.log("not splite", save_match_id_file_pos_data)
-          //   let save_match_id_file_pos_data_array = save_match_id_file_pos_data.split("\n")
-          //   console.log(save_match_id_file_pos_data_array)
-          //   all_data.push(save_match_id_file_pos_data_array)
-          // }
-          // console.log(all_data)
+            let cur_file = save_match_id_file_pos_list[i];
+            // let gain = save_match_id_file_pos_list[i];
+            // gain = gain.split("/")
+            // console.log(gain)
+            // let random = gain[gain.length-1].split(".")[0]
+            // console.log(random)
 
-          // 读取是每行会变为string, 多行为array, 读多个文件为二维矩阵
-          // 写入时要join, 变单个array为string
+            let save_match_id_file_pos_data = fs.readFileSync(cur_file, {encoding:'utf8', flag:'r'});
+            console.log("not splite", save_match_id_file_pos_data)
+            let save_match_id_file_pos_data_array = save_match_id_file_pos_data.split("\n")
+            console.log(save_match_id_file_pos_data_array)
+            all_data.push(save_match_id_file_pos_data_array)
+          }
+          console.log(all_data)
+
+          // 读取是每行(列数多则加,号)，会变为string， 去\n
+          // splite后多行为array, 读多个文件为二维矩阵
+
+          // 写入时要join('\n'), 变单个array为string
+
           let ceshi1 = './ceshi1.csv'
           let ceshi2 = './ceshi2.csv'
-          let all_data = [];
+          let all_data1 = [];
           let ceshi1_data = fs.readFileSync(ceshi1, {encoding:'utf8', flag:'r'})
+          console.log("ceshi1_data", ceshi1_data)
           let ceshi2_data = fs.readFileSync(ceshi2, {encoding:'utf8', flag:'r'})
+          console.log("ceshi2_data", ceshi2_data)
 
           let ceshi1_data_array = ceshi1_data.split("\n")
+          console.log("ceshi1_data_array", ceshi1_data_array)
           let ceshi2_data_array = ceshi2_data.split("\n")
+          console.log("ceshi2_data_array", ceshi2_data_array)
 
-          all_data.push(ceshi1_data_array)
-          all_data.push(ceshi2_data_array)
-          console.log(all_data)
-          fs.writeFileSync("./ceshi3.csv", all_data[0].join("\n"))
+          all_data1.push(ceshi1_data)
+          all_data1.push(ceshi2_data)
+          console.log(all_data1)
+          fs.writeFileSync("./ceshi3.csv", all_data1[0])
           
 
           

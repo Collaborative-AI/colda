@@ -93,7 +93,7 @@ const fs = window.require('fs');
 const join = window.require('path').join;
 const xlsx2json = window.require("node-xlsx");
 const sqlite3 = window.require('sqlite3').verbose();;
-
+const ex = window.require("child_process");
 // change csv to array
 import csv2arr from '@/assets/csv-arr'
 import Home from '../views/Home.vue'
@@ -109,7 +109,8 @@ export default {
       sharedState: store.state,
       unread_request_show: false,
       assistor_num: 0,
-      max_round: 2.
+      max_round: 3,
+      root: '../../../package/exp',
     }
   },
   methods: {
@@ -123,12 +124,12 @@ export default {
     find_assistor () {
       
       // this.$router.push()
-      try{
-        let stdout = ex.execSync('python3 ../../../package/make_dataset.py --root ./data --task_id ' + task_id + ' --num_users 2 --match_rate 1', {encoding: 'utf8'})
-        console.log(stdout.split("\n"))
-      }catch{
-        console.log("wrong")
-      }
+      // try{
+      //   let stdout = ex.execSync('python3 ../../../package/make_dataset.py --root ../../../package/data --task_id 123 --num_users 2 --match_rate 1', {encoding: 'utf8'})
+      //   console.log(stdout.split("\n"))
+      // }catch{
+      //   console.log("wrong")
+      // }
 
       // const sponsor_data_folder = 'Sponsor_Data/'
       // fs.mkdirSync(sponsor_data_folder, { recursive: true})
@@ -144,21 +145,22 @@ export default {
         .then((response) => {
           let task_id = response.data.task_id
         
-          let match_id_address = './data/BostonHousing/2/123/1.0/0/train/id.csv'
-          try{
-            let hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ./exp --self_id ' + user_id + '--task_id ' + task_id + ' --run train', {encoding: 'utf8'})
-            console.log(hash_id_file_address)
-          }catch{
-            console.log("wrong")
+          let match_id_address = '../../../package/data/BostonHousing/2/123/1.0/0/train/id.csv'
+          let hash_id_file_address = null;
+          try{   
+            hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ' + this.root 
+                                    + ' --self_id ' + this.sharedState.user_id + ' --task_id ' + task_id + ' --run train', {encoding: 'utf8'})  
+            hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
+            console.log("hash_id_file_address", hash_id_file_address)
+          }catch(err){
+            console.log(err)
           }
 
-          hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
-    
-          let hash_id_file_data_array = hash_id_file_data.split("\n")
+          let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
 
           const find_assistor_data = {
-            id_file: hash_id_file_data_array,
-            assistor_id_list: [5],
+            assistor_id_list: [2],
+            id_file: hash_id_file_data,
             task_id: task_id
           }
 
@@ -166,7 +168,7 @@ export default {
           .then((response) => {
             let user_id = this.sharedState.user_id
 
-            const Log_address = 'Local_Data/' + user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
+            const Log_address = this.root + '/' + user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
             // handle success
             console.log("1.1 Sponsor calls for help", response)
             this.$toasted.success(`1.1 Sponsor calls for help`, { icon: 'fingerprint' })
@@ -251,29 +253,31 @@ export default {
         // const assistor_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
         // fs.mkdirSync(assistor_store_folder, { recursive: true})
 
-        const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
+        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+        
+ 
+        let match_id_address = '../../../package/data/BostonHousing/2/123/1.0/1/train/id.csv'
+        let hash_id_file_address = null;
+        try{
+          hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ' + this.root 
+                                    + ' --self_id ' + this.sharedState.user_id + ' --task_id ' + task_id + ' --run train', {encoding: 'utf8'})
+          hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
+          console.log(hash_id_file_address)
+        }catch(err){
+            console.log(err)
+        }
+
         try {
           fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
           fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
         } catch (err) {
           console.error(err)
         }
- 
-        let match_id_address = './data/BostonHousing/2/123/1.0/1/train/id.csv'
-        try{
-          let hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ./exp --self_id ' + user_id + '--task_id ' + task_id + ' --run train', {encoding: 'utf8'})
-          console.log(hash_id_file_address)
-        }catch{
-          console.log("wrong")
-        }
-
-        hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
-  
-        let hash_id_file_data_array = hash_id_file_data.split("\n")
+        let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
 
         const match_assistor_id_data = {
-          file: hash_id_file_data_array,
-          task_id: task_id
+          task_id: task_id,
+          file: hash_id_file_data,
         }
         
         this.$axios.post('/match_assistor_id/', match_assistor_id_data)
@@ -330,8 +334,8 @@ export default {
       let cur_unread_match_id_Taskid_dict = unread_match_id_notification["check_dict"]
 
       for (let task_id in cur_unread_match_id_Taskid_dict){
-
-        const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
+        
+        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
         try {
           fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Update the match id notification\n")
@@ -366,7 +370,7 @@ export default {
       
       // Create 'Local_Data/id/task_id/Match/' folder
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
-      const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
+      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
       let vm = this;
 
       // Obtain Match_id file
@@ -380,53 +384,54 @@ export default {
         .then((response) => {
           // call back
           // iterate the match_id_file
-          console.log("3.4 Sponsor gets matched id file")
-          vm.$toasted.success("3.4 Sponsor gets matched id file", { icon: 'fingerprint' })
+          console.log("3.3 Sponsor gets matched id file")
+          vm.$toasted.success("3.3 Sponsor gets matched id file", { icon: 'fingerprint' })
 
           try {
-            fs.appendFileSync(Log_address, "3.4 Sponsor gets matched id file\n")
+            fs.appendFileSync(Log_address, "3.3 Sponsor gets matched id file\n")
           } catch (err) {
             console.error(err)
           }
 
           for(let i = 0;i < response.data.match_id_file.length; i++){
+
             const from_id = response.data.assistor_random_id_pair[i];
-            // const filename = vm.sharedState.user_id + '_to_' + cur_assistor + '.csv';
-
             let cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
-            cur_match_id_file = cur_match_id_file.join('\n');
+            cur_match_id_file = cur_match_id_file.join("\n")
 
+            console.log("cur_match_id_file", cur_match_id_file)
             // Store match_id file from different assistor
+            let save_match_id_file_pos = null;
             try{
-              let save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --root ./exp --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + + ' --run train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+              save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --root ' + this.root + ' --self_id ' + vm.sharedState.user_id 
+                + ' --task_id '+ task_id + ' --run train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+              save_match_id_file_pos = save_match_id_file_pos.replace(/\n/g, '')  
               console.log(save_match_id_file_pos)
-            }catch{
-              console.log("wrong")
+            }catch(err){
+              console.log(err)
             }
 
             fs.writeFileSync(save_match_id_file_pos, cur_match_id_file)
-            console.log('3.5 Sponsor Saved Matched id File at ' + save_match_id_file_pos);
-            vm.$toasted.success('3.5 Sponsor Saved Matched id File at ' + save_match_id_file_pos, { icon: 'fingerprint' })
+            console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos);
+            vm.$toasted.success('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos, { icon: 'fingerprint' })
             try {
-              fs.appendFileSync(Log_address, "3.5 Sponsor Saved Matched id File at " + save_match_id_file_pos + "\n")
+              fs.appendFileSync(Log_address, "3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos + "\n")
             } catch (err) {
               console.error(err)
             }
 
             // match_id (from different assistor) to index 
             try{
-              let id_to_index = ex.execSync('python3 ../../../package/make_match_idx.py --root ./exp --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + + ' --run train' + ' --from_id ' + from_id , {encoding: 'utf8'})
-              console.log(id_to_index)
-            }catch{
-              console.log("wrong")
+              let make_match_idx_done = ex.execSync('python3 ../../../package/make_match_idx.py --root ' + this.root + ' --self_id ' + vm.sharedState.user_id 
+                + ' --task_id '+ task_id + ' --run train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+            }catch(err){
+              console.log(err)
             }
 
-            console.log('3.6 Sponsor matches id to index');
-            vm.$toasted.success('3.6 Sponsor matches id to index', { icon: 'fingerprint' })
+            console.log('3.5 Sponsor matches id to index');
+            vm.$toasted.success('3.5 Sponsor matches id to index', { icon: 'fingerprint' })
             try {
-              fs.appendFileSync(Log_address, "3.6 Sponsor matches id to index\n")
+              fs.appendFileSync(Log_address, "3.5 Sponsor matches id to index\n")
             } catch (err) {
               console.error(err)
             }
@@ -444,76 +449,56 @@ export default {
           // Create 'Local_Data/id/task_id/0' folder
           // const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/0/'
           // fs.mkdirSync(Round0_folder, { recursive: true})
+          let target_id_address = '../../../package/data/BostonHousing/2/123/1.0/0/train/target.csv'
+          let make_residual_multiple_paths = null;
           try{
-            let make_residual_multiple_paths = ex.execSync('python3 ../../../package/make_residual.py --root ./exp --self_id ' + vm.sharedState.user_id 
+            make_residual_multiple_paths = ex.execSync('python3 ../../../package/make_residual.py --root ' + this.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --round 0 ' + ' --target_path ' + target_id_address, {encoding: 'utf8'})
-            make_residual_multiple_paths = make_residual_multiple_paths.split("\n")
+            make_residual_multiple_paths = make_residual_multiple_paths.replace(/\n/g, '')
+            make_residual_multiple_paths = make_residual_multiple_paths.split('?')
             console.log(make_residual_multiple_paths)
-          }catch{
-            console.log("wrong")
+          }catch(err){
+            console.log(err)
           }
 
           console.log("3.6 Sponsor makes residual finished")
           vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
-
           try {
             fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
           } catch (err) {
             console.error(err)
           }
-          
-          // const filename = 'Sent_Initial_Situation.csv';
-          
-          // // temporary data
-          // let arr =  new Array(5);   
-          // for(let i = 0;i < arr.length; i++){
-          //   arr[i] = new Array(5);    
-          // }
-          // arr[0][1] = "Sponsor Situation File"
-          // arr[0][2] = 2
-          // arr = arr.join('\n');
 
-          // // Store match_id file
-          // fs.writeFileSync(Round0_folder + filename, arr)
-          
-          // console.log('3.7 Sponsor Saved ' + filename);
-          // vm.$toasted.success('3.7 Sponsor Saved ' + filename, { icon: 'fingerprint' })
-          // try {
-          //   fs.appendFileSync(Log_address, '3.7 Sponsor Saved ' + filename + "\n")
-          // } catch (err) {
-          //   console.error(err)
-          // }
-
-          // 修改分割, 修改后端 send situation
+          // Read Files
           let all_residual_data = [];
-          let all_assistor_random_id = [];
+          let assistor_random_id_list = [];
 
-          for (let i = 0; i < make_residual_multiple_paths.length-1; i++){
+          for (let i = 0; i < make_residual_multiple_paths.length; i++){
 
-            const data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
-            let data_array = data.split("\n")
-            all_residual_data.push(data_array);
+            let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+            all_residual_data.push(data);
 
-            let assistor_random_id = "?";
-            all_assistor_random_id.push(assistor_random_id);
+            let path_split = make_residual_multiple_paths[i].split("/");
+            let assistor_random_id = path_split[path_split.length-1].split(".")[0];
+            assistor_random_id_list.push(assistor_random_id);
             
           }
 
-          const payload1 = {
+          const send_situation_payload = {
               residual_list: all_residual_data,
               task_id: task_id,
-              assistor_random_id_list: all_assistor_random_id,
+              assistor_random_id_list: assistor_random_id_list,
             }
 
           // send initial situation
           // async
-          vm.$axios.post('/send_situation/', payload1)
+          vm.$axios.post('/send_situation/', send_situation_payload)
             .then((response) => {
             // handle success
-            console.log("3.8 sponsor sends all situations")
-            vm.$toasted.success("3.8 sponsor sends all situations", { icon: 'fingerprint' })
+            console.log("3.7 Sponsor sends all situations")
+            vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
             try {
-              fs.appendFileSync(Log_address, "3.8 sponsor sends all situations" + "\n")
+              fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
               fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
             } catch (err) {
               console.error(err)
@@ -538,15 +523,9 @@ export default {
       
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
       // fs.mkdirSync(Match_folder, { recursive: true})
-      const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
-      
-      console.log("3.3 assistor creates " + Match_folder)
-      this.$toasted.success("3.3 assistor creates " + Match_folder, { icon: 'fingerprint' })
-      try {
-        fs.appendFileSync(Log_address, "3.3 assistor creates " + Match_folder + "\n")
-      } catch (err) {
-        console.error(err)
-      }
+      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+      let vm = this;
+
       // Obtain Match_id file
       const payload = {
         task_id: task_id
@@ -556,52 +535,53 @@ export default {
       this.$axios.post(path, payload)
         .then((response) => {
 
-          console.log("3.4 assistor gets matched id file", response)
-          this.$toasted.success("3.4 assistor gets matched id file", { icon: 'fingerprint' })
+          console.log("3.3 Assistor gets matched id file", response)
+          this.$toasted.success("3.3 Assistor gets matched id file", { icon: 'fingerprint' })
           try {
-            fs.appendFileSync(Log_address, "3.4 assistor gets matched id file\n")
+            fs.appendFileSync(Log_address, "3.3 Assistor gets matched id file\n")
           } catch (err) {
             console.error(err)
           }
           
-          const cur_sponsor = response.data.sponsor_random_id;
-          // const filename = this.sharedState.user_id + '_to_' + cur_sponsor + '.csv';
-
+          const from_id = response.data.sponsor_random_id;
           let cur_match_id_file = JSON.parse(response.data.match_id_file[0]);
-          cur_match_id_file = cur_match_id_file.join('\n');
-
+          cur_match_id_file = cur_match_id_file.join("\n")
+          console.log("cur_match_id_file", cur_match_id_file)
+          
           // Store match_id file from sponsor
+          let save_match_id_file_pos = null;
           try{
-            let save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --root ./exp --self_id ' + this.sharedState.user_id 
-              + ' --task_id '+ task_id + + ' --run train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+            save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --root ' + this.root + ' --self_id ' + this.sharedState.user_id 
+              + ' --task_id '+ task_id + ' --run train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+            save_match_id_file_pos = save_match_id_file_pos.replace(/\n/g, '')
             console.log(save_match_id_file_pos)
-          }catch{
-            console.log("wrong")
+          }catch(err){
+            console.log(err)
           }
 
           // Store match_id file
           fs.writeFileSync(save_match_id_file_pos, cur_match_id_file)
-          console.log('3.5 Assistor Saved Matched id File at ' + save_match_id_file_pos);
-          this.$toasted.success('3.5 Assistor Saved Matched id File at ' + save_match_id_file_pos, { icon: 'fingerprint' })
+
+          console.log('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos);
+          this.$toasted.success('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos, { icon: 'fingerprint' })
           try {
-            fs.appendFileSync(Log_address, "3.5 Assistor Saved Matched id File at " + save_match_id_file_pos + "\n")
+            fs.appendFileSync(Log_address, "3.4 Assistor Saved Matched id File at " + save_match_id_file_pos + "\n")
           } catch (err) {
             console.error(err)
           }
 
           // match id to index from sponsor
           try{
-            let id_to_index = ex.execSync('python3 ../../../package/make_match_idx.py --root ./exp --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + + ' --run train' + ' --from_id ' + from_id , {encoding: 'utf8'})
-            console.log(id_to_index)
-          }catch{
-            console.log("wrong")
+            let make_match_idx_done = ex.execSync('python3 ../../../package/make_match_idx.py --root ' + this.root + ' --self_id ' + vm.sharedState.user_id 
+              + ' --task_id '+ task_id + ' --run train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+          }catch(err){
+            console.log(err)
           }
 
-          console.log('3.6 Assistor matches id to index');
-          this.$toasted.success('3.6 Assistor matches id to index', { icon: 'fingerprint' })
+          console.log('3.5 Assistor matches id to index');
+          this.$toasted.success('3.5 Assistor matches id to index', { icon: 'fingerprint' })
           try {
-            fs.appendFileSync(Log_address, "3.6 Assistor matches id to index\n")
+            fs.appendFileSync(Log_address, "3.5 Assistor matches id to index\n")
             fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
           } catch (err) {
             console.error(err)
@@ -624,7 +604,7 @@ export default {
 
       for (let task_id in cur_unread_situation_Taskid_dict){
         
-        const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
+        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
         try {
           fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation\n")
           fs.appendFileSync(Log_address, "4.1 Update the situation notification\n")
@@ -648,46 +628,22 @@ export default {
     unread_situation_sponsor(rounds, task_id) {
       
       console.log("4.2 Cur round is:", rounds, task_id);
-      const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
+      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+      let vm = this;
+
       try {
         fs.appendFileSync(Log_address, "4.2 Cur round is: " + rounds.toString() + "\n")
       } catch (err) {
         console.error(err)
       }
-
-      // 1. local db
-
-
-      // train the model
-      // 1. python shiyan.py --argument1 argument2
-
-      // const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
-      // command call
-
-      // get output
-      // store output
-
-      // const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
-      // const filename = 'Sponsor_Trained_Local_Model.csv';
-        
-      // // temporary data
-      // let arr =  new Array(5);   
-      // for(let i = 0;i < arr.length; i++){
-      //   arr[i] = new Array(5);    
-      // }
-      // arr[0][1] = "sponsor_trained_local_model"
-      // arr[0][2] = 5
-      // arr = arr.join('\n');
-      // fs.writeFileSync(Round_folder + filename, arr)
       
-      let data_address = './data/BostonHousing/2/123/1.0/0/train/data.csv'
+      let data_address = '../../../package/data/BostonHousing/2/123/1.0/0/train/data.csv'
       try{
-        let train_output = ex.execSync('python3 ../../../package/train.py --root ./exp --self_id ' + this.sharedState.user_id 
+        let train_output = ex.execSync('python3 ../../../package/train.py --root ' + this.root + ' --self_id ' + this.sharedState.user_id 
           + ' --task_id '+ task_id + ' --round ' + rounds + ' --data_path ' + data_address, {encoding: 'utf8'})
         
         console.log("4.3 Sponsor round " + rounds + " training done.");
         vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
-
         try {
           fs.appendFileSync(Log_address, "4.3 Sponsor round " + rounds + " training done." + "\n")
           fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
@@ -695,29 +651,15 @@ export default {
           console.error(err)
         }
         
-      }catch{
-        console.log("wrong")
+      }catch(err){
+        console.log(err)
       }
     },
 
     unread_situation_assistor(rounds, task_id) {
       
       let vm = this;
-      const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
-
-      // Create 'Local_Data/id/task_id/rounds' folder
-      // store the situation from sponsor
-      const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
-      fs.mkdirSync(Round_folder, { recursive: true})
-      
-      console.log("4.2 assistor creates " + Round_folder)
-      this.$toasted.success("4.2 assistor creates " + Round_folder, { icon: 'fingerprint' })
-
-      try {
-        fs.appendFileSync(Log_address, "4.2 assistor creates " + Round_folder + "\n")
-      } catch (err) {
-        console.error(err)
-      }
+      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
 
       const payload = {
         task_id: task_id,
@@ -730,33 +672,35 @@ export default {
           // call back
           // store the situation file
 
-          console.log("4.3 assistor gets situation file")
-          vm.$toasted.success("4.3 assistor gets situation file", { icon: 'fingerprint' })
+          console.log("4.2 assistor gets situation file")
+          vm.$toasted.success("4.2 assistor gets situation file", { icon: 'fingerprint' })
           try {
-            fs.appendFileSync(Log_address, "4.3 assistor gets situation file\n")
+            fs.appendFileSync(Log_address, "4.2 assistor gets situation file\n")
           } catch (err) {
             console.error(err)
           }
 
-          const cur_sender = response.data.sender_random_id;
+          const from_id = response.data.sender_random_id;
           let cur_situation_file = JSON.parse(response.data.situation);
-          cur_situation_file = cur_situation_file.join('\n');
+          // cur_situation_file = cur_situation_file.join('\n');
 
           // Store residual file from sponsor
+          let save_residual_file_pos = null;
           try{
-            let save_residual_file_pos = ex.execSync('python3 ../../../package/save_residual.py --root ./exp --self_id ' + this.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --from_id ' + cur_sender + ' --round ' + rounds, {encoding: 'utf8'})
+            save_residual_file_pos = ex.execSync('python3 ../../../package/save_residual.py --root ' + this.root + ' --self_id ' + this.sharedState.user_id 
+              + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
+            save_residual_file_pos = save_residual_file_pos.replace(/\n/g, '')
             console.log(save_residual_file_pos)
-          }catch{
-            console.log("wrong")
+          }catch(err){
+            console.log(err)
           }
 
           fs.writeFileSync(save_residual_file_pos, cur_situation_file)
 
-          console.log('4.4 Assistor Saved Residual File!');
-          vm.$toasted.success('4.4 Assistor Saved Residual File!', { icon: 'fingerprint' })
+          console.log('4.3 Assistor Saved Residual File!');
+          vm.$toasted.success('4.3 Assistor Saved Residual File!', { icon: 'fingerprint' })
           try {
-            fs.appendFileSync(Log_address, "4.4 Assistor Saved Residual File!\n")
+            fs.appendFileSync(Log_address, "4.3 Assistor Saved Residual File!\n")
           } catch (err) {
             console.error(err)
           }
@@ -767,58 +711,33 @@ export default {
             while (window.performance.now() - startTime < time) {}
           }
           sleep(5000); // 程序滞留15000ms
-          // get output
-
-          // store output
-
-          // const filename1 = 'assistor_Trained_Local_Model.csv';
-          
-          // // temporary data
-          // let arr =  new Array(5);   
-          // for(let i = 0;i < arr.length; i++){
-          //   arr[i] = new Array(5);    
-          // }
-          // arr[0][1] = "assistor_trained_local_model"
-          // arr[0][2] = 5
-          // arr = arr.join('\n');
-
-          // // Store match_id file
-          // fs.writeFileSync(Round_folder + filename1, arr)
-
-          // console.log("4.5 assistor saved " + filename1 + " at " + Round_folder);
-          // vm.$toasted.success("4.5 assistor saved " + filename1 + " at " + Round_folder, { icon: 'fingerprint' })
-          // try {
-          //   fs.appendFileSync(Log_address, "4.5 assistor saved " + filename1 + " at " + Round_folder + "\n")
-          // } catch (err) {
-          //   console.error(err)
-          // }
-
 
           // Assistor trains the data
-          let data_address = './data/BostonHousing/2/123/1.0/0/train/data.csv'
+          let data_address = '../../../package/data/BostonHousing/2/123/1.0/1/train/data.csv'
+          let Assistor_train_output_path = null;
           try{
-            let Assistor_train_output_path = ex.execSync('python3 ../../../package/train.py --root ./exp --self_id ' + this.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + cur_sender + ' --data_path ' + data_address, {encoding: 'utf8'})
-            
-            console.log("4.5 Assistor round " + rounds + " training done.");
-            vm.$toasted.success("4.5 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
+            Assistor_train_output_path = ex.execSync('python3 ../../../package/train.py --root ' + this.root + ' --self_id ' + this.sharedState.user_id 
+              + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + from_id + ' --data_path ' + data_address, {encoding: 'utf8'})
+            Assistor_train_output_path = Assistor_train_output_path.replace(/\n/g, '')
+            console.log(Assistor_train_output_path)
 
+            console.log("4.4 Assistor round " + rounds + " training done.");
+            vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
             try {
-              fs.appendFileSync(Log_address, "4.5 Assistor round " + rounds + " training done." + "\n")
+              fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
             } catch (err) {
               console.error(err)
             }
             
-          }catch{
-            console.log("wrong")
+          }catch(err){
+            console.log(err)
           }
 
-          const Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path, {encoding:'utf8', flag:'r'});
-          let Assistor_train_output_data_array = Assistor_train_output_data.split("\n")
+          let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path, {encoding:'utf8', flag:'r'});
 
           const Assistor_output_payload = {
             task_id: task_id,
-            output: Assistor_train_output_data_array,
+            output: Assistor_train_output_data,
           }
 
           // send output
@@ -826,10 +745,10 @@ export default {
           vm.$axios.post('/send_output/', Assistor_output_payload)
             .then((response) => {
             // handle success
-            console.log("4.6 assistor sends output", response)
-            vm.$toasted.success("4.6 assistor sends output", { icon: 'fingerprint' })
+            console.log("4.5 Assistor sends output", response)
+            vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
             try {
-              fs.appendFileSync(Log_address, "4.6 assistor sends output\n")
+              fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
               fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
             } catch (err) {
               console.error(err)
@@ -864,7 +783,7 @@ export default {
       let cur_unread_output_Rounds_dict = unread_output_notification["rounds_dict"]
 
       for (let task_id in cur_unread_output_Rounds_dict){
-        const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
+        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
         try {
           fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output\n")
           fs.appendFileSync(Log_address, "5.1 Update the output notification\n")
@@ -878,7 +797,7 @@ export default {
 
     unread_output_singleTask(rounds, task_id){
 
-      const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'train/' + 'Log.txt'
+      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
       // const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
       let vm = this
       // Obtain output from assistors
@@ -902,22 +821,24 @@ export default {
           // iterate the output file
           for(let i = 0;i < response.data.output.length; i++){
 
-            const cur_assistor = response.data.sender_random_ids_list[i];
+            const from_id = response.data.sender_random_ids_list[i];
 
             console.log("cur_output^^^^^^^^", response.data.output[i])
             let cur_output = JSON.parse(response.data.output[i]);
             console.log("cur_output^^^^^^^^1", cur_output)
-            cur_output = cur_output.join('\n');
+            // cur_output = cur_output.join('\n');
             console.log("cur_output^^^^^^^^2", cur_output)
 
             // Store the output from assistor
+            let save_output_pos = null;
             try{
-              let save_output_pos = ex.execSync('python3 ../../../package/save_output.py --root ./exp --self_id ' + this.sharedState.user_id 
-                + ' --task_id '+ task_id + + ' --run train' + ' --from_id ' + cur_assistor + ' --round ' + rounds, {encoding: 'utf8'})
+              save_output_pos = ex.execSync('python3 ../../../package/save_output.py --root ' + this.root + ' --self_id ' + this.sharedState.user_id 
+                + ' --task_id '+ task_id + ' --run train' + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
+              save_output_pos = save_output_pos.replace(/\n/g, '')
               console.log(save_output_pos)
-            }catch{
-              console.log("wrong")
-            }
+            }catch(err){
+            console.log(err)
+          }
 
             fs.writeFileSync(save_output_pos, cur_output)           
 
@@ -931,12 +852,12 @@ export default {
           }
 
 
-          let target_path = './data/BostonHousing/2/123/1.0/0/train/target.csv'
+          let target_path = '../../../package/data/BostonHousing/2/123/1.0/0/train/target.csv'
           try{
-            let make_result_done = ex.execSync('python3 ../../../package/make_result.py --root ./exp --self_id ' + this.sharedState.user_id 
+            let make_result_done = ex.execSync('python3 ../../../package/make_result.py --root ' + this.root + ' --self_id ' + this.sharedState.user_id 
               + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + target_path, {encoding: 'utf8'})
-          }catch{
-            console.log("wrong")
+          }catch(err){
+            console.log(err)
           }
 
           console.log("5.4 Sponsor makes result done.")
@@ -948,75 +869,78 @@ export default {
           }
 
           // terminate
-          // if ((rounds+1) >= this.max_round){
-          //   fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n");
-          //   continue;
-          // }
+          if ((rounds+1) >= this.max_round){
+            fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n");
+          }else{
 
-          // Update situation
+            // Update situation
 
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(5000); // 程序滞留15000ms
+            function sleep(time) {
+              let startTime = window.performance.now();
+              while (window.performance.now() - startTime < time) {}
+            }
+            sleep(5000); // 程序滞留5000ms
 
-          try{
-            let make_residual_multiple_paths = ex.execSync('python3 ../../../package/make_residual.py --root ./exp --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --round 0 ' + ' --target_path ' + target_id_address, {encoding: 'utf8'})
-            make_residual_multiple_paths = make_residual_multiple_paths.split("\n")
-            console.log(make_residual_multiple_paths)
-          }catch{
-            console.log("wrong")
-          }
-
-          console.log("5.5 Sponsor makes residual finished")
-          vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
-
-          try {
-            fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
-          } catch (err) {
-            console.error(err)
+            let target_id_address = '../../../package/data/BostonHousing/2/123/1.0/0/train/target.csv'
+            let make_residual_multiple_paths = null;
+            try{
+              make_residual_multiple_paths = ex.execSync('python3 ../../../package/make_residual.py --root ' + this.root + ' --self_id ' + vm.sharedState.user_id 
+                + ' --task_id '+ task_id + ' --round ' + (rounds+1) + ' --target_path ' + target_id_address, {encoding: 'utf8'})
+              make_residual_multiple_paths = make_residual_multiple_paths.replace(/\n/g, '')
+              make_residual_multiple_paths = make_residual_multiple_paths.split('?')
+              console.log(make_residual_multiple_paths)
+            }catch(err){
+            console.log(err)
           }
 
-          let all_residual_data = [];
-          let all_assistor_random_id = [];
+            console.log("5.5 Sponsor makes residual finished")
+            vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
 
-          for (let i = 0; i < make_residual_multiple_paths.length; i++){
-
-            const data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
-            let data_array = data.split("\n")
-            all_residual_data.push(data_array);
-
-            let assistor_random_id = "?";
-            all_assistor_random_id.push(assistor_random_id);
-            
-          }
-
-          const payload1 = {
-              residual_list: all_residual_data,
-              task_id: task_id,
-              assistor_random_id_list: all_assistor_random_id,
+            try {
+              fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
+            } catch (err) {
+              console.error(err)
             }
 
-          // send initial situation
-          // async
-          vm.$axios.post('/send_situation/', payload1)
-            .then((response) => {
-            // handle success
-            console.log("5.6 Sponsor updates situation done", response)
-              vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
-              try {
-                fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
-                fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
-              } catch (err) {
-                console.error(err)
+            let all_residual_data = [];
+            let assistor_random_id_list = [];
+
+            for (let i = 0; i < make_residual_multiple_paths.length; i++){
+
+              let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+              all_residual_data.push(data);
+
+              let path_split = make_residual_multiple_paths[i].split("/");
+              let assistor_random_id = path_split[path_split.length-1].split(".")[0];
+              assistor_random_id_list.push(assistor_random_id);
+              
+            }
+
+            const payload1 = {
+                residual_list: all_residual_data,
+                task_id: task_id,
+                assistor_random_id_list: assistor_random_id_list,
               }
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-        
+
+            // send initial situation
+            // async
+            vm.$axios.post('/send_situation/', payload1)
+              .then((response) => {
+              // handle success
+              console.log("5.6 Sponsor updates situation done", response)
+                vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
+                try {
+                  fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
+                  fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
+                } catch (err) {
+                  console.error(err)
+                }
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+
+          }
         })
         .catch((error) => {
           // handle error
@@ -1027,6 +951,7 @@ export default {
     unread_test_request(unread_test_request_notification) {
       
       // Only assistor calls this function
+      let vm = this;
       console.log("2.1 Update Test request notification response", unread_test_request_notification)
       this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
@@ -1036,7 +961,7 @@ export default {
       for (let test_id in cur_unread_test_request_Testid_dict){
         task_id = test_id_to_task_id[test_id]
 
-        const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'test/' + test_id + '/Log.txt'
+        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
         try {
           fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
           fs.appendFileSync(Log_address, "2.1 Update Test request notification\n")
@@ -1061,10 +986,10 @@ export default {
 
         let match_id_address = './data/BostonHousing/2/123/1.0/1/test/id.csv'
         try{
-          let test_hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ./exp --self_id ' + user_id + '--task_id ' + task_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+          let test_hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ./exp --self_id ' + this.sharedState.user_id + ' --task_id ' + task_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
           console.log(test_hash_id_file_address)
-        }catch{
-          console.log("wrong")
+        }catch(err){
+          console.log(err)
         }
 
         test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
@@ -1109,7 +1034,7 @@ export default {
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         task_id = test_id_to_task_id[test_id]
 
-        const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'test/' + test_id + '/Log.txt'
+        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
         try {
           fs.appendFileSync(Log_address, "-----------------------3.Unread Test Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Test: Update the Test match id notification\n")
@@ -1145,7 +1070,7 @@ export default {
 
       // Create 'Local_Data/id/task_id/Match/' folder
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + test_id + '/' + 'Match/'
-      const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'test/' + test_id + '/Log.txt'
+      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
       let vm = this;
 
       // Obtain Match_id file
@@ -1176,10 +1101,10 @@ export default {
             // Store match_id file from different assistor
             try{
               let test_save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --root ./exp --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + + ' --run train' + ' --from_id ' + from_id + ' --run test' + ' -- test_id ' + test_id, {encoding: 'utf8'})
+                + ' --task_id '+ task_id + ' --run train' + ' --from_id ' + from_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
               console.log(test_save_match_id_file_pos)
-            }catch{
-              console.log("wrong")
+            }catch(err){
+              console.log(err)
             }
 
             fs.writeFileSync(test_save_match_id_file_pos, cur_match_id_file)
@@ -1194,9 +1119,9 @@ export default {
 
             try{
               let test_make_match_idx_done = ex.execSync('python3 ../../../package/make_match_idx.py --root ./exp --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + + ' --run train' + ' --from_id ' + from_id + ' --run test' + ' -- test_id ' + test_id, {encoding: 'utf8'})
-            }catch{
-              console.log("wrong")
+                + ' --task_id '+ task_id + ' --run train' + ' --from_id ' + from_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+            }catch(err){
+              console.log(err)
             }
 
             console.log('3.6 Test: Sponsor matches id to index');
@@ -1261,7 +1186,7 @@ export default {
           let data_address = './data/BostonHousing/2/123/1.0/0/test/data.csv'
           try{
             let test_output = ex.execSync('python3 ../../../package/test.py --root ./exp --self_id ' + this.sharedState.user_id 
-              + ' --task_id '+ task_id + ' -- test_id ' + test_id + ' --round ' + max_rounds + ' --data_path ' + data_address, {encoding: 'utf8'})
+              + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --data_path ' + data_address, {encoding: 'utf8'})
             
             console.log("3.7 Test: Sponsor stores all test model results")
             vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
@@ -1273,8 +1198,8 @@ export default {
               console.error(err)
             }
             
-          }catch{
-            console.log("wrong")
+          }catch(err){
+            console.log(err)
           }
 
 
@@ -1290,16 +1215,9 @@ export default {
       let vm = this;
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Match/'
       // fs.mkdirSync(Match_folder, { recursive: true})
-      const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'test/' + test_id + '/Log.txt'
+      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
       
       
-      console.log("3.3 Test: Match Folder: Sponsor creates " + Match_folder)
-      this.$toasted.success("3.3 Test: Match Folder: Sponsor creates " + Match_folder, { icon: 'fingerprint' })
-      try {
-        fs.appendFileSync(Log_address, "3.3 Test: Match Folder: Sponsor creates " + Match_folder + "\n")
-      } catch (err) {
-        console.error(err)
-      }
       // Obtain Match_id file
       const payload = {
         test_id: test_id
@@ -1326,10 +1244,10 @@ export default {
           // Store match_id file from sponsor
           try{
             let test_save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --root ./exp --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + + ' --run train' + ' --from_id ' + from_id + ' --run test' + ' -- test_id ' + test_id, {encoding: 'utf8'})
+              + ' --task_id '+ task_id + ' --run train' + ' --from_id ' + from_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
             console.log(test_save_match_id_file_pos)
-          }catch{
-            console.log("wrong")
+          }catch(err){
+            console.log(err)
           }
 
           fs.writeFileSync(test_save_match_id_file_pos, cur_match_id_file)
@@ -1344,9 +1262,9 @@ export default {
 
           try{
             let test_save_match_id_exe_done = ex.execSync('python3 ../../../package/make_match_idx.py --root ./exp --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + + ' --run train' + ' --from_id ' + from_id + ' --run test' + ' -- test_id ' + test_id, {encoding: 'utf8'})
-          }catch{
-            console.log("wrong")
+              + ' --task_id '+ task_id + ' --run train' + ' --from_id ' + from_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+          }catch(err){
+            console.log(err)
           }
 
           console.log('3.6 Test: Assistor matches id to index');
@@ -1411,7 +1329,7 @@ export default {
           let data_address = './data/BostonHousing/2/123/1.0/0/test/data.csv'
           try{
             let test_outputs_pos = ex.execSync('python3 ../../../package/test.py --root ./exp --self_id ' + this.sharedState.user_id 
-              + ' --task_id '+ task_id + ' -- test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + cur_sponsor + ' --data_path ' + data_address, {encoding: 'utf8'})
+              + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + cur_sponsor + ' --data_path ' + data_address, {encoding: 'utf8'})
             
             console.log("3.7 Test: assistor stores all test model results")
             vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
@@ -1422,8 +1340,8 @@ export default {
               console.error(err)
             }
             
-          }catch{
-            console.log("wrong")
+          }catch(err){
+            console.log(err)
           }
 
           let all_test_output = [];
@@ -1474,7 +1392,7 @@ export default {
       for (let test_id in cur_unread_test_output_Testid_dict){
         task_id = test_id_to_task_id[test_id]
 
-        const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'test/' + test_id + '/Log.txt'
+        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
         try {
           fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output\n")
           fs.appendFileSync(Log_address, "4.1 Update Test output notification\n")
@@ -1488,7 +1406,7 @@ export default {
     unread_test_output_singleTask(task_id, test_id){
 
       // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
-      const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'test/' + test_id + '/Log.txt'
+      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
       let vm = this
       // Obtain output from assistors
 
@@ -1527,10 +1445,10 @@ export default {
               // Store test output from assistors
               try{
                 let test_save_output_pos = ex.execSync('python3 ../../../package/save_output.py --root ./exp --self_id ' + this.sharedState.user_id 
-                  + ' --task_id '+ task_id + + ' --run test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + "?", {encoding: 'utf8'})
+                  + ' --task_id '+ task_id + ' --run test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + "?", {encoding: 'utf8'})
                 console.log(test_save_output_pos)
-              }catch{
-                console.log("wrong")
+              }catch(err){
+                console.log(err)
               }
 
               // Store match_id file
@@ -1550,9 +1468,9 @@ export default {
           try{
             let target_path = './data/BostonHousing/2/123/1.0/0/test/target.csv'
             let Evaluation_Output = ex.execSync('python3 ../../../package/eval.py --root ./exp --self_id ' + this.sharedState.user_id 
-              + ' --task_id '+ task_id + + ' --test_id ' + test_id + ' --round ' + "?" + ' --target_path ' + target_path, {encoding: 'utf8'})
-          }catch{
-            console.log("wrong")
+              + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + "?" + ' --target_path ' + target_path, {encoding: 'utf8'})
+          }catch(err){
+            console.log(err)
           }
 
           console.log("4.4 Test: Sponsor evaluates output models done");

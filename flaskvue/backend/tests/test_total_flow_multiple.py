@@ -92,7 +92,7 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         task_id = json_response['task_id']
 
         list_content = [2,3]
-        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19],[]]
+        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19]]
         data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -110,7 +110,7 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         test_id_2 = json_response['test_id']
 
-        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19],[]]
+        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19]]
         data = json.dumps({'task_id': task_id, 'id_file': file, 'test_id': test_id_1})
         response = self.client.post('/find_test_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -118,7 +118,7 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         self.assertEqual(json_response['task_id'], task_id)
         self.assertEqual(json_response['test_id'], test_id_1)
 
-        file = [['a','b','c'],[8],[4],[]]
+        file = [['a','b','c'],[8],[4]]
         data = json.dumps({'task_id': task_id, 'id_file': file, 'test_id': test_id_2})
         response = self.client.post('/find_test_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -180,22 +180,22 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         # 6. assistors call: match_assistor_id() (in match_id.py) and upload file
         # assistors upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
-        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[12],[16],[17],[18],[]]
+        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[12],[16],[17],[18]]
         data = json.dumps({'test_id': test_id_1, 'file': file_content})
         response = self.client.post('/match_test_assistor_id/', headers=headers, data=data)
 
         headers = self.get_token_auth_headers('unittest3', '123')
-        file_content = [['a','b','c'],[2,1,2],[3,5,6],[4,3,6],[5],[12],[18],[]]
+        file_content = [['a','b','c'],[2,1,2],[3,5,6],[4,3,6],[5],[12],[18]]
         data = json.dumps({'test_id': test_id_1, 'file': file_content})
         response = self.client.post('/match_test_assistor_id/', headers=headers, data=data)
 
         headers = self.get_token_auth_headers('unittest2', '123')
-        file_content = [['a','b','c'],[8],[]]
+        file_content = [['a','b','c'],[8]]
         data = json.dumps({'test_id': test_id_2, 'file': file_content})
         response = self.client.post('/match_test_assistor_id/', headers=headers, data=data)
 
         headers = self.get_token_auth_headers('unittest3', '123')
-        file_content = [['a','b','c'],[4],[]]
+        file_content = [['a','b','c'],[4]]
         data = json.dumps({'test_id': test_id_2, 'file': file_content})
         response = self.client.post('/match_test_assistor_id/', headers=headers, data=data)
 

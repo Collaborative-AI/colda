@@ -40,7 +40,6 @@ def main():
         output_path_i = os.path.join(output_path_i, '{}.csv'.format(self_id))
         np.savetxt(output_path_i, output, delimiter=",")
         output_path.append(output_path_i)
-    print("test")
     print('?'.join(output_path))
     return
 

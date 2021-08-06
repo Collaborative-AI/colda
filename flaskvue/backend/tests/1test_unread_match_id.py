@@ -74,7 +74,7 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         task_id = json_response['task_id']
 
         list_content = [2]
-        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
+        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6]]
         data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
@@ -106,7 +106,7 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
 
         # 5. assistor upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
-        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
         data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_assistor_id/', headers=headers, data=data)
         query = Matched.query.filter(Matched.task_id == task_id, Matched.sponsor_id == 1, Matched.test_indicator == "train").all()
@@ -196,7 +196,7 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
         task_id = json_response['task_id']
 
         list_content = [2,3]
-        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[]]
+        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6]]
         data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -250,14 +250,14 @@ class Unread_Match_ID_APITestCase(unittest.TestCase):
 
         # 5. assistor upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
-        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[]]
+        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
         data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_assistor_id/', headers=headers, data=data)
         query = Matched.query.filter(Matched.task_id == task_id, Matched.sponsor_id == 1, Matched.test_indicator == "train").all()
         self.assertEqual(json.loads(query[0].Matched_id_file), [4])
 
         headers = self.get_token_auth_headers('unittest3', '123')
-        file_content = [['a','b','c'],[8,1,2],[4,5,6],[1,3,6],[]]
+        file_content = [['a','b','c'],[8,1,2],[4,5,6],[1,3,6]]
         data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_assistor_id/', headers=headers, data=data)
         query = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == 3, Matched.test_indicator == "train").first()

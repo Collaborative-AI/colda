@@ -1,5 +1,6 @@
 import argparse
 import os
+from utils import makedir_exist_ok
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', default=None, type=str)
@@ -21,13 +22,17 @@ def main():
     round = args['round']
     from_id = args['from_id']
     if run == 'train':
-        output_path = os.path.join(root, self_id, 'task', task_id, run, 'round', str(round), 'output',
-                                   '{}.csv'.format(from_id))
+        output_path = os.path.join(root, self_id, 'task', task_id, run, 'round', str(round), 'output')
+        makedir_exist_ok(output_path)
+        open(os.path.join(output_path, '{}.csv'.format(from_id)),"a")
     elif run == 'test' and test_id is not None:
-        output_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'round', str(round), 'output',
-                                   '{}.csv'.format(from_id))
+        output_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'round', str(round), 'output')
+        makedir_exist_ok(output_path)
+        open(os.path.join(output_path, '{}.csv'.format(from_id)),"a")
     else:
         raise ValueError('Not valid run')
+
+    output_path = os.path.join(output_path, '{}.csv'.format(from_id))
     print(output_path)
     return
 

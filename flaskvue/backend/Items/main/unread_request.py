@@ -91,10 +91,17 @@ def match_assistor_id():
     # y 有交集的id
     # python3 match_id_position.py (文件夹地址)
     # 写进去， python3 handle_match_id.py 
+  
+    # data_array_id = set()
+    # for i in range(1,len(data_array)):
+    #     data_array_id.add(data_array[i][0])
+
+    data_array = data_array.split("\n")
 
     data_array_id = set()
-    for i in range(1,len(data_array)-1):
-        data_array_id.add(data_array[i][0])
+    for i in range(len(data_array)):
+        if data_array[i]:
+            data_array_id.add(data_array[i])
 
     db_array = json.loads(record.Matched_id_file)
     same_id_keys = list(data_array_id & set(db_array))
@@ -163,9 +170,16 @@ def match_test_assistor_id():
 
     data_array = data['file']
 
+    # data_array_id = set()
+    # for i in range(1,len(data_array)):
+    #     data_array_id.add(data_array[i][0])
+
+    data_array = data_array.split("\n")
+
     data_array_id = set()
-    for i in range(1,len(data_array)-1):
-        data_array_id.add(data_array[i][0])
+    for i in range(len(data_array)):
+        if data_array[i]:
+            data_array_id.add(data_array[i])
 
     db_array = json.loads(record.Matched_id_file)
     same_id_keys = list(data_array_id & set(db_array))

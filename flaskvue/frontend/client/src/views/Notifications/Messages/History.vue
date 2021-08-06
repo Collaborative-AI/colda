@@ -165,6 +165,7 @@
 
 <script>
 const fs = window.require('fs');
+const ex = window.require("child_process");
 
 import store from '../../../store'
 // 导入 vue-markdown 组件解析 markdown 原文为　HTML
@@ -192,17 +193,17 @@ export default {
       },
       // Log_content_array: null,
       isSponsor: false,
-
+      root: '../../../package/exp',
     }
   },
   methods: {
 
     getLog(task_id) {
-      const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
-      let Log_content = fs.readFileSync(Log_address,
-          {encoding:'utf8', flag:'r'});
-
+      const train_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+      let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
       this.messages = Log_content.split("\n")
+
+      // const test_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + response.data.test_id + '/log.txt'
     },
 
     checkSponsor(task_id) {
@@ -243,28 +244,29 @@ export default {
           
           let test_id = response.data.test_id
 
-          let match_id_address = './data/BostonHousing/2/123/1.0/0/test/id.csv'
+          let match_id_address = '../../../package/data/BostonHousing/2/123/1.0/0/test/id.csv'
+          let test_hash_id_file_address = null;
           try{
-            let test_hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ./exp --self_id ' + user_id + '--task_id ' + task_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+            test_hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ' + this.root 
+                                    + ' --self_id ' + this.sharedState.user_id + ' --task_id ' + task_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+            test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
             console.log(test_hash_id_file_address)
-          }catch{
-            console.log("wrong")
+          }catch(err){
+            console.log(err)
           }
 
-          test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
-    
-          let test_hash_id_file_data_array = test_hash_id_file_data.split("\n")
-
+          let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
 
           const payload = {
             task_id: task_id,
             test_id: test_id, 
-            id_file: test_hash_id_file_data_array
+            id_file: test_hash_id_file_data
           }
           
           this.$axios.post('/find_test_assistor/', payload)
             .then((response) => {
-              const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'test/' + response.data.test_id + '/Log.txt'
+
+              const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + response.data.test_id + '/log.txt'
               // handle success
               console.log("1.1 Test: Sponsor calls for help", response)
               this.$toasted.success(`1.1 Test: Sponsor calls for help`, { icon: 'fingerprint' })

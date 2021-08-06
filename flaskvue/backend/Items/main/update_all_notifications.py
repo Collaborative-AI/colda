@@ -275,6 +275,7 @@ def update_all_notifications():
                 test_id_list = set(test_id_list)
                 check_dict = {}
                 test_id_to_task_id = {}
+  
                 lastest_time = datetime(1900, 1, 1)
                 
                 for j in test_id_list:
@@ -286,6 +287,7 @@ def update_all_notifications():
                         if record.output_timestamp > lastest_time:
                             lastest_time = record.output_timestamp
                         test_id_to_task_id[j] = record.task_id
+
 
                 # Update the Notification 
                 user = User.query.get_or_404(g.current_user.id)

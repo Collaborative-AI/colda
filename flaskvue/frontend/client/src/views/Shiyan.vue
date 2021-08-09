@@ -61,7 +61,8 @@
       </el-form-item>
     </el-form>
     </div> -->
-    
+    <button id="selectFile" @click="get_default_file_path()">选择文件</button>
+    {{ xinxi }}
 
   </div>
 </template>
@@ -76,11 +77,17 @@ const address = 'tem/' + 'b/'
 const os = window.require('os');
 // const ex = require("child_process").execFileSync;
 const ex = window.require("child_process");
-const remote = window.require('electron').remote;
+// import dialog from 'electron';
+// const dialog = window.nodeRequire('electron');
+// const dialog1 = require('electron');
+// import dialog from 'electron';
 const sqlite3 = window.require('sqlite3').verbose();
+
+
 
 // const remote = window.require('electron').remote 
 // const dialog = remote.dialog;
+const {dialog} = window.require('electron').remote
 // const dialog = window.require('electron')
 // const { require } = window
 // const fs = require('fs')
@@ -93,7 +100,9 @@ const sqlite3 = window.require('sqlite3').verbose();
 // import { Field, Form } from 'vee-validate';
 import axios from 'axios'
 import csv2arr from '@/assets/csv-arr'
-import db from '../db.js'
+// import db from '../db.js'
+const db = require('../db.js').default
+
 import store from '../store'
 // import sq3 from 'sqlite3'
 // import fse from 'fs-extra';
@@ -125,7 +134,8 @@ export default {
       profileForm: {
         default_data_path: "",
         default_id_path: "",
-      }
+      },
+      xinxi: ''
     };
   },
 
@@ -135,6 +145,49 @@ export default {
   },
 
   methods: {
+
+    get_default_file_path() {
+      console.log("aaaa")
+      let result = dialog.showOpenDialogSync({
+        // 选择文件, 隐藏文件也显示出来
+        properties: ['openFile'],
+        // 后缀为html, js, json, md其中之一
+        filters: [{
+          name: 'Text', 
+          extensions: ['html', 'js', 'json', 'md', 'csv'] 
+        }]
+      })
+      console.log("result", result)
+      if (result === undefined){
+        console.log("wu")
+      }
+      console.log("1")
+      // function(filenames) {
+      //   console.log("jieguo");
+      //   // filenames是一个数组, 每一项为选择的文件的绝对路径
+      //   let firstFile = filenames[0];
+      //   console.log(firstFile);
+      //   fileContentEle = document.getElementById('fileContent');
+
+      //   if (firstFile) {
+      //     fs.readFile(firstFile, 'utf8', function(err, data) {
+      //       if (err) {
+      //         // 如果读取错误, 弹出错误提示窗口
+      //         dialog.showErrorBox('error', `read ${firstFile} error`);
+      //         return;
+      //       }
+
+      //       // fileContentEle.innerText = data;
+      //       this.xinxi = data
+      //     });
+      //   } else {
+      //     fileContentEle.innerText = 'no file selected';
+      //   }
+      // };
+
+    },
+
+
     getUser (id) {
       let vm = this
       let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
@@ -146,10 +199,16 @@ export default {
           vm.profileForm.default_id_path = row.default_id_path
         }
 
-        if (row == null | row.default_data_path == "" | row.default_id_path == "" ){
+        if (row == null){
           console.log("get false")
           vm.sharedState.set_default = false
           vm.sharedState.receive_request = false
+        }else{
+            if (row.default_data_path == "" | row.default_id_path == ""){
+            console.log("get false")
+            vm.sharedState.set_default = false
+            vm.sharedState.receive_request = false
+          }
         }
         
       })
@@ -163,7 +222,38 @@ export default {
           // dialog.showOpenDialogSync(mainWindow, {
           //   properties: ['openFile', 'openDirectory']
           // })
-          console.log(remote.showOpenDialog({ properties: ['openFile', 'multiSelections'] }))
+          // console.log(dialog.showOpenDialog({
+          //   properties: ['openFile', 'openDirectory', 'multiSelections']
+          // }));
+          // console.log(dialog)
+          
+          console.log(ex)
+          console.log(db)
+          console.log(window)
+          console.log("fs", fs)
+          // console.log("dialog", dialog)
+          console.log(require.resolve('electron'));
+          // console.log("window electron", console.log(dialog.showOpenDialog({ properties: [ 'openFile', 'openDirectory', 'multiSelections' ]})))
+          dialog.showOpenDialog({ 
+            // 不能同时设置openFile openDirectory => 否则只能打开文件夹
+            // properties: [ 'openFile', 'openDirectory', 'multiSelections' ]
+            properties: [ 'openFile' ]
+          }).then(result => {
+            console.log("result")
+            console.log(result.canceled)
+            console.log(result.filePaths)
+          }).catch(err => {
+            console.log("error", err)
+          })
+          console.log("daole")
+          // console.log("electron", require('electron'))
+          // console.log((process && process.type === 'renderer'))
+          // console.log(require('is-electron-renderer'))
+          // console.log(window.require('is-electron-renderer'))
+
+          // const a = require('electron')
+          // console.log(a)
+          // console.log("dialog1", dialog1.showOpenDialog)
           // console.log(this.$electron.remote.dialog.showOpenDialog({properties: ['openFile', 'openDirectory', 'multiSelections']}))
           
           // let stats=fs.statSync(ipt.path);
@@ -253,7 +343,7 @@ export default {
         // fs.mkdirSync(Round_folder, { recursive: true})
           let save_match_id_file_pos = null;
           try{
-            save_match_id_file_pos = ex.execSync('python3 ../../../package/test.py --root ../../../package/exp --self_id 0 --task_id abc --test_id def --round 1 --data_path ../../../package/data/BostonHousing/2/123/1.0/0/test/data.csv', {encoding: 'utf8'})
+            save_match_id_file_pos = ex.execSync('python3 ../../../package/test.py --root ../../../package/exp --self_id 0 --task_id abc --test_id def --round 1 --data_path /home/qile/Documents/Apollo/package/data/BostonHousing/2/123/1.0/0/test/data.csv', {encoding: 'utf8'})
             console.log(save_match_id_file_pos, typeof(save_match_id_file_pos))
             
 

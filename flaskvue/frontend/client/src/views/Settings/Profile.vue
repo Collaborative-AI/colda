@@ -17,24 +17,31 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </form> -->
 
-    <form @submit.prevent="onSubmit">
-      <div class="form-group">
-        <label for="name">Default Data Path</label>
-        <input type="text" v-model="profileForm.default_data_path" class="form-control" id="name" placeholder="">
-      </div>
-      <div class="form-group">
-        <label for="location">Default Id Path</label>
-        <input type="text" v-model="profileForm.default_id_path" class="form-control" id="location" placeholder="">
-      </div>
-      <button type="submit" class="btn btn-primary">Update</button>
-    </form>
+    <!-- <form @submit.prevent="onSubmit"> -->
+    <div class="form-group">
+      <label for="name">Default Data Path</label>
+      <input type="text" v-model="profileForm.default_data_path" class="form-control" id="name" placeholder="">
+      <button @click="get_default_data_path()">Select Data File</button>
+    </div>
+    <div class="form-group">
+      <label for="location">Default Id Path</label>
+      <input type="text" v-model="profileForm.default_id_path" class="form-control" id="location" placeholder="">
+      <button @click="get_default_id_path()">Select ID File</button>
+    </div>
+
+    <button type="submit" @click="onSubmit()" class="btn btn-primary">Update</button>
+    <!-- </form> -->
 
   </div>
 </template>
 
 <script>
-import store from '../../store'
-import db from '../../db'
+const store = require('../../store').default
+const db = require('../../db').default
+const {dialog} = window.require('electron').remote
+const fs = window.require('fs');
+// import store from '../../store'
+// import db from '../../db'
 
 export default {
   name: 'Profile',  //this is the name of the component
@@ -48,7 +55,58 @@ export default {
     }
   },
   methods: {
-    getUser (id) {let vm = this
+    get_default_data_path() {
+      let result = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+        // sufix
+        filters: [{
+          name: 'Text', 
+          extensions: ['html', 'js', 'json', 'md', 'csv'] 
+        }]
+      })
+      console.log("get_default_data_path", result)
+      if (result === undefined){
+        dialog.showErrorBox('Please Select A Data File')
+      }else{
+
+        try {
+          let path = result[0]
+          fs.statSync(path);
+          this.profileForm.default_data_path = path
+        } catch (err) {
+          dialog.showErrorBox('Data Path not Correct', 'Please Select A Data File')
+          console.log('Please Select A Data File')
+        }  
+
+      }
+    },
+    get_default_id_path() {
+      let result = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+        // sufix
+        filters: [{
+          name: 'Text', 
+          extensions: ['html', 'js', 'json', 'md', 'csv'] 
+        }]
+      })
+      console.log("get_default_id_path", result)
+      if (result === undefined){
+        dialog.showErrorBox('Please Select A ID File')
+      }else{
+
+        try {
+          let path = result[0]
+          fs.statSync(path);
+          this.profileForm.default_id_path = path
+        } catch (err) {
+          dialog.showErrorBox('ID Path not Correct', 'Please Select A ID File')
+          console.log('Please Select A ID File')
+        }  
+
+      }
+    },
+    getUser (id) {
+      let vm = this
       let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
       db.get(select_sentence, function(err, row){
         console.log(row)
@@ -69,10 +127,6 @@ export default {
             vm.sharedState.receive_request = false
           }
         }
-
-        
-
-        
       })
     },
     onSubmit (e) {
@@ -82,7 +136,6 @@ export default {
       db.get(select_sentence, function(err, row){
         console.log(row)
         
-        
         if (row == null){
           // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES (1, 'love', 'consume')`)
           let insert_new_val = `INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES 
@@ -91,26 +144,57 @@ export default {
           db.run(insert_new_val)
         }else{
 
-          if (vm.profileForm.default_data_path == "" | vm.profileForm.default_id_path == "" ){
-            vm.sharedState.set_default = false
-            vm.sharedState.receive_request = false
-            console.log("false")
+          // if (vm.profileForm.default_data_path == "" | vm.profileForm.default_id_path == "" ){
+          //   vm.sharedState.set_default = false
+          //   vm.sharedState.receive_request = false
+          //   console.log("false")
+          // }
+
+          let both_path_validation = true
+          try {
+            fs.statSync(vm.profileForm.default_data_path);
+          } catch (err) {
+            dialog.showErrorBox('Data Path not Correct', 'Please Select A Data File')
+            console.log('Please Select A Data File')
+            both_path_validation = false
           }
 
-          db.serialize(function() {
-            let update_default_data_path = 'UPDATE "User_Default_Path"'
-                      +' SET "default_data_path" = "' + vm.profileForm.default_data_path
-                        + '" WHERE "user_id" = ' + vm.sharedState.user_id
-            console.log(update_default_data_path)           
-            db.run(update_default_data_path)
+          try {
+            fs.statSync(vm.profileForm.default_id_path);
+          } catch (err) {
+            dialog.showErrorBox('ID Path not Correct', 'Please Select A ID File')
+            console.log('Please Select A ID File')
+            both_path_validation = false
+          }
+          
+          // let check_default_data_path=fs.statSync( vm.profileForm.default_data_path);
+          // console.log("check_default_data_path", check_default_data_path)
+          // // if(!check_default_data_path.isFile()){
+          // //   dialog.showErrorBox('Please Select A Data File')
+          // // }
+          
+          // let check_default_id_path=fs.statSync( vm.profileForm.default_id_path);
+          // console.log("check_default_id_path", check_default_id_path)
+          // // if(!check_default_id_path.isFile()){
+          // //   dialog.showErrorBox('Please Select A ID File')
+          // // }
 
-            let update_default_id_path = 'UPDATE "User_Default_Path"'
-                      +' SET "default_id_path" = "' + vm.profileForm.default_id_path
-                        + '" WHERE "user_id" = ' + vm.sharedState.user_id
-            console.log(update_default_id_path)
-            db.run(update_default_id_path)
+          if(both_path_validation == true){
+            db.serialize(function() {
+              let update_default_data_path = 'UPDATE "User_Default_Path"'
+                        +' SET "default_data_path" = "' + vm.profileForm.default_data_path
+                          + '" WHERE "user_id" = ' + vm.sharedState.user_id
+              console.log(update_default_data_path)           
+              db.run(update_default_data_path)
 
-          });
+              let update_default_id_path = 'UPDATE "User_Default_Path"'
+                        +' SET "default_id_path" = "' + vm.profileForm.default_id_path
+                          + '" WHERE "user_id" = ' + vm.sharedState.user_id
+              console.log(update_default_id_path)
+              db.run(update_default_id_path)
+            });
+          }
+          
         }    
       })
 
@@ -135,6 +219,9 @@ export default {
       //   })
     },
     
+
+
+
   },
   created () {
     const user_id = this.sharedState.user_id

@@ -18,7 +18,7 @@ import './assets/bootstrap-markdown/css/custom.css'
 import './assets/icon-awesome/css/font-awesome.min.css'
 
 import $ from 'jquery'
-
+const dialog = window.require('electron');
 Vue.use(VueToasted, {
   // 主题样式 primary/outline/bubble
   theme: 'bubble',

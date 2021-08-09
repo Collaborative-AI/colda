@@ -479,12 +479,11 @@ export default {
 
           }
 
-          // calculate initial situation
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(5000); // 程序滞留5000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(5000); // 程序滞留5000ms
 
           // store initial situation
           // Create 'Local_Data/id/task_id/0' folder
@@ -746,12 +745,11 @@ export default {
             console.error(err)
           }
 
-          // train the model
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(5000); // 程序滞留15000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(5000); // 程序滞留15000ms
 
           // Assistor trains the data
           let data_address = '../../../package/data/BostonHousing/2/123/1.0/1/train/data.csv'
@@ -916,11 +914,11 @@ export default {
 
             // Update situation
 
-            function sleep(time) {
-              let startTime = window.performance.now();
-              while (window.performance.now() - startTime < time) {}
-            }
-            sleep(5000); // 程序滞留5000ms
+            // function sleep(time) {
+            //   let startTime = window.performance.now();
+            //   while (window.performance.now() - startTime < time) {}
+            // }
+            // sleep(5000); // 程序滞留5000ms
 
             let target_id_address = '../../../package/data/BostonHousing/2/123/1.0/0/train/target.csv'
             let make_residual_multiple_paths = null;
@@ -1186,12 +1184,11 @@ export default {
 
           }
 
-          // Test T Results
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(5000); // 程序滞留5000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(5000); // 程序滞留5000ms
 
           // function find_Train_Models(startPath) {
           // let result=[];
@@ -1326,13 +1323,11 @@ export default {
             console.error(err)
           }
 
-
-          // Test T Results
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(5000); // 程序滞留5000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(5000); // 程序滞留5000ms
 
           // function find_Train_Models(startPath) {
           // let result=[];

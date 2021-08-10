@@ -1,3 +1,0 @@
-Train Round: init, RMSE: 9.228748667112294
-Train Round: 0, RMSE: 4.941707963043136, alpha: [0.56960004]
-Train Round: 1, RMSE: 4.760662774905065, alpha: [0.96287176]

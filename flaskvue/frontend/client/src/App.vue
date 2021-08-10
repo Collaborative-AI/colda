@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Navbar from './components/Navbar'
-
+// import Navbar from './components/Navbar'
+const Navbar = require('./components/Navbar.vue').default
 export default {
   name: 'App',
   components: {

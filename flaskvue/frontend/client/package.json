@@ -79,11 +79,17 @@
     "productName": "Apollo",
     "appId": "com.apollo.app",
     "compression": "store",
-    "linux": {
-      "icon": "build/linux-unpacked/resources/app/src/assets/packaging.png",
-      "target": [
-        "AppImage"
-      ]
+    "win": {
+      "icon": "build/linux-unpacked/resources/app/icons/icon.ico"
+    },
+    "target": "NSIS",
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
     },
     "directories": {
       "output": "build"

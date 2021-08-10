@@ -1,0 +1,39 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+gunicorn = "==20.1.0"
+flask = "*"
+flask-session = "*"
+redis = "*"
+"flask.ext" = "*"
+dbutils = "*"
+wtforms = "*"
+flask-script = "*"
+eventlet = "==0.30.2"
+greenlet = "*"
+flask-wtf = "*"
+markupsafe = "*"
+jinja2 = "*"
+werkzeug = "*"
+dnspython = "*"
+six = "*"
+python-engineio = "==3.13.2"
+python-socketio = "==4.6.0"
+flask-socketio = "==4.3.1"
+pyinstaller = "*"
+flask-cors = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+flask-httpauth = "*"
+pyjwt = "==1.6.4"
+python-dotenv = "*"
+httpie = "*"
+coverage = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"

@@ -28,7 +28,9 @@
 </template>
 
 <script>
-import store from '../../store.js'
+// import store from '../../store.js'
+
+const store = require('../../store').default
 
 export default {
   name: 'Login',  //this is the name of the component

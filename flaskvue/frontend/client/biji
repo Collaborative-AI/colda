@@ -1,3 +1,9 @@
+"type": "module",
+
+dependency: 生产环境
+dev-dependency: 开发环境
+
+
 import sqlite3
 import sys
 import functools

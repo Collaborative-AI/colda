@@ -14,10 +14,15 @@
 // import './assets/bootstrap-markdown/css/custom.css'
 // import './assets/icon-awesome/css/font-awesome.min.css'
 
-// Change import to require for packaging
-const Vue = require('vue').default
+// // Change import to require for packaging
+
+const Vue = require('vue').default;
 const App = require('./App.vue').default
-const router = require('./router').default
+console.log("App",App)
+
+const router = require('./router').default;
+console.log("main_router",router)
+
 const axios = require('./http').default
 
 // import 'bootstrap/dist/css/bootstrap.css';
@@ -27,15 +32,14 @@ const store = require('./store').default
 // import VueToasted  from 'vue-toasted'
 const VueToasted = require('vue-toasted').default
 const moment = require('moment').default
-// import moment from 'moment'
 // Import Bootstrap css and js files
 
-// require('bootstrap/dist/css/bootstrap.css')
-// require('bootstrap/dist/css/bootstrap.min.css')
-// require('bootstrap') 
-// require('./assets/bootstrap-markdown/css/bootstrap-markdown.min.css')
-// require('./assets/bootstrap-markdown/css/custom.css')
-// require('./assets/icon-awesome/css/font-awesome.min.css')
+require('../node_modules/bootstrap/dist/css/bootstrap.css')
+require('../node_modules/bootstrap/dist/css/bootstrap.min.css')
+require('../node_modules/bootstrap') 
+require('./assets/bootstrap-markdown/css/bootstrap-markdown.min.css')
+require('./assets/bootstrap-markdown/css/custom.css')
+require('./assets/icon-awesome/css/font-awesome.min.css')
 
 
 Vue.use(VueToasted, {
@@ -56,7 +60,8 @@ Vue.use(VueToasted, {
   },
 });
 Vue.config.productionTip = false;
-
+// "icon": "./build/win-unpacked/resources/app/icons/icon.ico"
+// "type": "module",
 Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment
 Vue.prototype.$store = store

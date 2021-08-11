@@ -1,4 +1,4 @@
-export default {
+const store =  {
     debug: true,
     state: {
       is_authenticated: window.localStorage.getItem('Apollo-token') ? true : false,
@@ -30,3 +30,5 @@ export default {
     //   this.state.user_avatar = ''
     },
   }
+
+  exports.default = store

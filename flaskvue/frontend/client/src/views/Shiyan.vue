@@ -71,6 +71,7 @@
 <script>
 //const { require } = window
 const fs = window.require('fs');
+
 const xlsx2json = window.require("node-xlsx");
 const join = window.require('path').join;
 const address = 'tem/' + 'b/'
@@ -84,6 +85,7 @@ const ex = window.require("child_process");
 const sqlite3 = window.require('sqlite3').verbose();
 
 
+// import $ from 'jquery'
 
 // const remote = window.require('electron').remote 
 // const dialog = remote.dialog;
@@ -98,12 +100,13 @@ const {dialog} = window.require('electron').remote
 
 // Validation form
 // import { Field, Form } from 'vee-validate';
-import axios from 'axios'
-import csv2arr from '@/assets/csv-arr'
+const axios = require('axios').default
+// import axios from 'axios'
+// import csv2arr from '@/assets/csv-arr'
 // import db from '../db.js'
 const db = require('../db.js').default
-
-import store from '../store'
+const store = require('../store').default
+// import store from '../store'
 // import sq3 from 'sqlite3'
 // import fse from 'fs-extra';
 // import path from 'path';
@@ -147,21 +150,24 @@ export default {
   methods: {
 
     get_default_file_path() {
-      console.log("aaaa")
-      let result = dialog.showOpenDialogSync({
-        // 选择文件, 隐藏文件也显示出来
-        properties: ['openFile'],
-        // 后缀为html, js, json, md其中之一
-        filters: [{
-          name: 'Text', 
-          extensions: ['html', 'js', 'json', 'md', 'csv'] 
-        }]
-      })
-      console.log("result", result)
-      if (result === undefined){
-        console.log("wu")
-      }
-      console.log("1")
+      // console.log("aaaa")
+      // let result = dialog.showOpenDialogSync({
+      //   // 选择文件, 隐藏文件也显示出来
+      //   properties: ['openFile'],
+      //   // 后缀为html, js, json, md其中之一
+      //   filters: [{
+      //     name: 'Text', 
+      //     extensions: ['html', 'js', 'json', 'md', 'csv'] 
+      //   }]
+      // })
+      // console.log("result", result)
+      // if (result === undefined){
+      //   console.log("wu")
+      // }
+      // console.log("1")
+      console.log("1",$)
+      console.log("2", ceshi)
+      console.log("3", ceshi2)
       // function(filenames) {
       //   console.log("jieguo");
       //   // filenames是一个数组, 每一项为选择的文件的绝对路径
@@ -226,26 +232,25 @@ export default {
           //   properties: ['openFile', 'openDirectory', 'multiSelections']
           // }));
           // console.log(dialog)
-          
-          console.log(ex)
-          console.log(db)
-          console.log(window)
-          console.log("fs", fs)
-          // console.log("dialog", dialog)
-          console.log(require.resolve('electron'));
-          // console.log("window electron", console.log(dialog.showOpenDialog({ properties: [ 'openFile', 'openDirectory', 'multiSelections' ]})))
-          dialog.showOpenDialog({ 
-            // 不能同时设置openFile openDirectory => 否则只能打开文件夹
-            // properties: [ 'openFile', 'openDirectory', 'multiSelections' ]
-            properties: [ 'openFile' ]
-          }).then(result => {
-            console.log("result")
-            console.log(result.canceled)
-            console.log(result.filePaths)
-          }).catch(err => {
-            console.log("error", err)
-          })
-          console.log("daole")
+          console.log("1",this.sharedState.set_default)
+          // console.log(db)
+          // console.log(window)
+          // console.log("fs", fs)
+          // // console.log("dialog", dialog)
+          // console.log(require.resolve('electron'));
+          // // console.log("window electron", console.log(dialog.showOpenDialog({ properties: [ 'openFile', 'openDirectory', 'multiSelections' ]})))
+          // dialog.showOpenDialog({ 
+          //   // 不能同时设置openFile openDirectory => 否则只能打开文件夹
+          //   // properties: [ 'openFile', 'openDirectory', 'multiSelections' ]
+          //   properties: [ 'openFile' ]
+          // }).then(result => {
+          //   console.log("result")
+          //   console.log(result.canceled)
+          //   console.log(result.filePaths)
+          // }).catch(err => {
+          //   console.log("error", err)
+          // })
+          // console.log("daole")
           // console.log("electron", require('electron'))
           // console.log((process && process.type === 'renderer'))
           // console.log(require('is-electron-renderer'))

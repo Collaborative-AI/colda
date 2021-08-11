@@ -1,7 +1,16 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
 // 导入 vue-scrollto，跳转到锚点时支持平滑过渡
-import VueScrollTo from 'vue-scrollto'
+
+// import Vue from 'vue';
+// import VueRouter from 'vue-router';
+
+
+// import VueScrollTo from 'vue-scrollto'
+
+const Vue = require('vue').default
+const VueRouter = require('vue-router').default
+console.log("Vue1",Vue)
+console.log("VueRouter1", VueRouter)
+const VueScrollTo = require('vue-scrollto').default
 
 // route level code-splitting
 // this generates a separate chunk (about.[hash].js) for this route
@@ -12,6 +21,7 @@ const Register = () => import('@/views/Auth/Register.vue')
 const Login = () => import('@/views/Auth/Login.vue')
 
 const Home = () => import('../views/Home.vue')
+console.log("Home", Home)
 const Shiyan = () => import('../views/Shiyan.vue')
 
 // User Resources
@@ -32,6 +42,8 @@ const MessagesHistory = () => import('../views/Notifications/Messages/History.vu
 const Settings = () => import('../views/Settings/Settings.vue')
 const Profile = () => import('../views/Settings/Profile.vue')
 
+console.log("Vue",Vue)
+console.log("VueRouter", VueRouter)
 Vue.use(VueRouter);
 
 // scrollBehavior:
@@ -220,4 +232,7 @@ const router = new VueRouter({
 //       next() // stay in the same page
 //     }
 //   })
-export default router;
+// module.exports.router = router;
+// export default router;
+console.log("router", router)
+exports.default = router

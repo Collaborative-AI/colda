@@ -8,4 +8,5 @@
 export default {
   props: ['variant', 'message']
 }
+// exports.default = Alert
 </script>

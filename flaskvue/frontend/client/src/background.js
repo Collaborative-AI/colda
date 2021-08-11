@@ -1,6 +1,14 @@
-import { app, protocol, BrowserWindow } from 'electron';
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+// import { app, protocol, BrowserWindow } from 'electron';
+// import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
+// import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+
+const { app, protocol, BrowserWindow } = require('electron')
+const { createProtocol } = require('vue-cli-plugin-electron-builder/lib')
+const installExtension = require('electron-devtools-installer').default
+const { VUEJS_DEVTOOLS } = require('electron-devtools-installer').default
+// console.log("app---------", app)
+// console.log("protocol", protocol)
+// console.log("BrowserWindow", BrowserWindow)
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 

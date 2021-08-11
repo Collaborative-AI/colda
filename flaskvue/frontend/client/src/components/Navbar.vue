@@ -94,11 +94,15 @@
 </template>
 
 <script>
-import store from '../store'
+// import store from '../store'
+const store = require('../store').default
 // 在 JQuery 中使用 axios 的话需要重新导入，不能使用 main.js 中定义的 Vue 全局属性 this.$axios
-import axios from 'axios'
-import $ from 'jquery'
-import db from '../db'
+// import axios from 'axios'
+const axios = require('axios').default
+// import $ from 'jquery'
+const $ = require('jquery')
+// import db from '../db'
+const db = require('../db').default
 
 // use Node API
 const fs = window.require('fs');
@@ -107,9 +111,9 @@ const xlsx2json = window.require("node-xlsx");
 const sqlite3 = window.require('sqlite3').verbose();;
 const ex = window.require("child_process");
 // change csv to array
-import csv2arr from '@/assets/csv-arr'
-import Home from '../views/Home.vue'
 
+// import Home from '../views/Home.vue'
+const Home = require('../views/Home.vue').default
 export default {
   name: 'Navbar',  //this is the name of the component
   components: {
@@ -1722,4 +1726,5 @@ export default {
     })
   }
 }
+// exports.default = Navbar
 </script>

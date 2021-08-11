@@ -8,9 +8,8 @@
         sudo n stable
         PATH="$PATH"
     4. sudo snap install vue
-    5. vue add electron-builder
-    6. npm install
-    7. npm run electron:serve
+    5. npm install
+    6. npm run electron:serve
 
 
 2. launch after first time:

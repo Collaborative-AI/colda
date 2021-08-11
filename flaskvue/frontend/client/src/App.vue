@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navbar></navbar>
+    <Navbar></Navbar>
     <router-view/>
   </div>
 </template>
@@ -8,12 +8,14 @@
 <script>
 // import Navbar from './components/Navbar'
 const Navbar = require('./components/Navbar.vue').default
+console.log("Navbar", Navbar)
 export default {
   name: 'App',
   components: {
-    navbar: Navbar
+   Navbar: Navbar
   }
 }
+// exports.default = App
 </script>
 
 <style>

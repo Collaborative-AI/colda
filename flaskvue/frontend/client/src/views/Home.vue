@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <alert 
+    <Alert 
       v-for="(alert, index) in alerts" :key="index"
       v-bind:variant="alert.variant"
       v-bind:message="alert.message">
-    </alert>
+    </Alert>
 
     <!-- <ul class="content">
        <li v-for="(msg, index) in $store.state.msg" :key="index">
@@ -18,13 +18,14 @@
 </template>
 
 <script>
-import Alert from '@/components/Alert'
+// import Alert from '@/components/Alert'
+const Alert = require('../components/Alert.vue').default
 
 export default {
   name: 'Home',  // Name of the component
   // props: ['log'],
   components: {
-    alert: Alert
+    Alert: Alert
   },
   data () {
     return {
@@ -45,4 +46,5 @@ export default {
     }
   }
 }
+// exports.default = Home
 </script>

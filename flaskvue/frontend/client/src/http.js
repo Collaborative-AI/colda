@@ -4,6 +4,11 @@ const router = require('./router').default
 const store = require('./store').default
 const axios = require('axios').default
 
+// import Vue from 'vue';
+// import router from './router';
+// import store from './store';
+// import axios from 'axios'
+
 // 基础配置
 axios.defaults.timeout = 5000  // 超时时间
 axios.defaults.baseURL = 'http://localhost:5000'
@@ -68,4 +73,5 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(error)
 })
 
-export default axios
+// export default axios
+exports.default = axios

@@ -15,10 +15,17 @@
   },
   "main": "./src/main.js",
   "dependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/node": "^7.14.9",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.15.0",
+    "@vue/cli-plugin-babel": "^4.5.13",
     "aws-sdk": "^2.953.0",
     "axios": "^0.21.1",
     "babel-runtime": "^6.26.0",
     "bootstrap": "^4.6.0",
+    "cjs-loader": "^0.1.0",
     "core-js": "^3.6.5",
     "electron-build": "0.0.3",
     "is-electron-renderer": "^2.0.1",
@@ -32,7 +39,8 @@
     "qs": "^6.10.1",
     "sqlite3": "^5.0.2",
     "vee-validate": "^4.4.0",
-    "vue": "^2.6.11",
+    "vue": "^2.6.14",
+    "vue-loader": "^16.5.0",
     "vue-markdown": "^2.2.4",
     "vue-router": "^3.2.0",
     "vue-scrollto": "^2.20.0",
@@ -41,20 +49,21 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-airbnb": "^5.0.2",
     "babel-eslint": "^10.1.0",
+    "babel-polyfill": "^6.26.0",
     "electron": "^13.1.8",
     "electron-builder": "^22.11.7",
     "electron-devtools-installer": "^3.1.0",
+    "electron-packager": "^15.3.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
     "fs": "0.0.1-security",
     "node-xlsx": "^0.16.1",
     "vue-cli-plugin-electron-builder": "~2.0.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {
     "root": true,
@@ -79,9 +88,7 @@
     "productName": "Apollo",
     "appId": "com.apollo.app",
     "compression": "store",
-    "win": {
-      "icon": "build/linux-unpacked/resources/app/icons/icon.ico"
-    },
+    "win": {},
     "target": "NSIS",
     "nsis": {
       "oneClick": false,

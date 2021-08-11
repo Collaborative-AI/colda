@@ -33,7 +33,8 @@
 
 <script>
 
-import {request_withdata} from '@/network/request';
+// import {request_withdata} from '@/network/request';
+// import axios from 'axios'
 
 export default {
   name: 'Register', //this is the name of the component
@@ -91,23 +92,21 @@ export default {
         password: this.registerForm.password
       }
 
-      request_withdata({
-        url: '/users',
-        data: payload,
-      }).then((res) => {
+      this.$axios.post('/users', payload)
+      .then((res) => {
         // Go to Login Page
         this.$toasted.success('Congratulations', { icon: 'fingerprint' })
-          this.$router.push('/login')
+        this.$router.push('/login')
       }).catch((error) => {
         for (var field in error.response.data.message) {
-            if (field == 'username') {
-              this.registerForm.usernameError = error.response.data.message.username
-            } else if (field == 'email') {
-              this.registerForm.emailError = error.response.data.message.email
-            } else if (field == 'password') {
-              this.registerForm.passwordError = error.response.data.message.password
-            }
+          if (field == 'username') {
+            this.registerForm.usernameError = error.response.data.message.username
+          } else if (field == 'email') {
+            this.registerForm.emailError = error.response.data.message.email
+          } else if (field == 'password') {
+            this.registerForm.passwordError = error.response.data.message.password
           }
+        }
       });
     },
 

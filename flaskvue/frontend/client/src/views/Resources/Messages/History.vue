@@ -160,11 +160,15 @@
 </template>
 
 <script>
-import store from '../../../store'
-// 导入 vue-markdown 组件解析 markdown 原文为　HTML
-import VueMarkdown from 'vue-markdown'
-import Pagination from '../../../components/Pagination'
-import $ from 'jquery'
+
+// import store from '../../../store'
+// // 导入 vue-markdown 组件解析 markdown 原文为　HTML
+// import VueMarkdown from 'vue-markdown'
+// import Pagination from '../../../components/Pagination'
+
+const store = require('../../../store').default
+const VueMarkdown = require('vue-markdown').default
+const Pagination = require('../../../components/Pagination.vue').default
 
 export default {
   name: 'History',  //this is the name of the component

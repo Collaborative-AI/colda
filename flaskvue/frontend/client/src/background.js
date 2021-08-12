@@ -1,11 +1,11 @@
-// import { app, protocol, BrowserWindow } from 'electron';
-// import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
-// import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+import { app, protocol, BrowserWindow } from 'electron';
+import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 
-const { app, protocol, BrowserWindow } = require('electron')
-const { createProtocol } = require('vue-cli-plugin-electron-builder/lib')
-const installExtension = require('electron-devtools-installer').default
-const { VUEJS_DEVTOOLS } = require('electron-devtools-installer').default
+// const { app, protocol, BrowserWindow } = require('electron')
+// const { createProtocol } = require('vue-cli-plugin-electron-builder/lib')
+// const installExtension = require('electron-devtools-installer').default
+// const { VUEJS_DEVTOOLS } = require('electron-devtools-installer').default
 // console.log("app---------", app)
 // console.log("protocol", protocol)
 // console.log("BrowserWindow", BrowserWindow)
@@ -36,17 +36,25 @@ async function createWindow() {
       // contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION, (default is true)
     },
   });
-
+  // win.webContents.openDevTools({mode:'right'});
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     console.log("111111")
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+    console.log("process.env.WEBPACK_DEV_SERVER_URL", process.env.WEBPACK_DEV_SERVER_URL)
+    
+    console.log("22", 'file://' + __dirname + '/index.html')
+    win.webContents.openDevTools();
     if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
     console.log("2222")
     createProtocol('app');
     // Load the index.html when not in development
-    win.loadURL('app://./index.html');
+    // win.loadURL('app://./resources/app/index.html');
+    // win.loadURL('file://' + __dirname + '/index.html')
+    win.loadURL('app://./index.html')
+    // win.loadURL('https://www.google.com/?hl=zh-cn')
+    win.webContents.openDevTools();
   }
 }
 

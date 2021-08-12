@@ -40,10 +40,10 @@
 const {dialog} = window.require('electron').remote
 const fs = window.require('fs');
 
-const store = require('../../store').default
-const db = require('../../db').default
-// import store from '../../store'
-// import db from '../../db'
+// const store = require('../../store').default
+// const db = require('../../db').default
+import store from '../../store'
+import db from '../../db'
 
 export default {
   name: 'Profile',  //this is the name of the component

@@ -94,26 +94,27 @@
 </template>
 
 <script>
-// import store from '../store'
-const store = require('../store').default
-// 在 JQuery 中使用 axios 的话需要重新导入，不能使用 main.js 中定义的 Vue 全局属性 this.$axios
-// import axios from 'axios'
-const axios = require('axios').default
-// import $ from 'jquery'
-const $ = require('jquery')
-// import db from '../db'
-const db = require('../db').default
+import store from '../store'
+import axios from 'axios'
+import $ from 'jquery'
+import db from '../db'
+
+// const store = require('../store').default
+// // 在 JQuery 中使用 axios 的话需要重新导入，不能使用 main.js 中定义的 Vue 全局属性 this.$axios
+// const axios = require('axios').default
+// const $ = require('jquery')
+// const db = require('../db').default
 
 // use Node API
 const fs = window.require('fs');
 const join = window.require('path').join;
-const xlsx2json = window.require("node-xlsx");
+// const xlsx2json = window.require("node-xlsx");
 const sqlite3 = window.require('sqlite3').verbose();;
 const ex = window.require("child_process");
 // change csv to array
 
-// import Home from '../views/Home.vue'
-const Home = require('../views/Home.vue').default
+import Home from '../views/Home.vue'
+// const Home = require('../views/Home.vue').default
 export default {
   name: 'Navbar',  //this is the name of the component
   components: {

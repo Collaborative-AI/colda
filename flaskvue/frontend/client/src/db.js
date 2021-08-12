@@ -19,5 +19,5 @@ db.serialize(function() {
                                            test_target_path   text)")
 });
 
-// export default db
-exports.default = db
+export default db
+// exports.default = db

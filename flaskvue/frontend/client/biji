@@ -3,7 +3,54 @@
 dependency: 生产环境
 dev-dependency: 开发环境
 
+"asar": false
+ "main": "./src/main.js",
+  "files": [
+    "./src/main.js"
+  ],
 
+"build": {
+    "productName": "Apollo",
+    "appId": "com.apollo.app",
+    "compression": "store",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "directories": {
+      "output": "build"
+    }
+  }
+
+"eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/airbnb"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  
 import sqlite3
 import sys
 import functools

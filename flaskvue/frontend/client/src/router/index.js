@@ -1,22 +1,21 @@
 // 导入 vue-scrollto，跳转到锚点时支持平滑过渡
 
-// import Vue from 'vue';
-// import VueRouter from 'vue-router';
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import VueScrollTo from 'vue-scrollto'
 
-
-// import VueScrollTo from 'vue-scrollto'
-
-const Vue = require('vue').default
-const VueRouter = require('vue-router').default
-console.log("Vue1",Vue)
-console.log("VueRouter1", VueRouter)
-const VueScrollTo = require('vue-scrollto').default
+// const Vue = require('vue').default
+// const VueRouter = require('vue-router').default
+// console.log("Vue1",Vue)
+// console.log("VueRouter1", VueRouter)
+// const VueScrollTo = require('vue-scrollto').default
 
 // route level code-splitting
 // this generates a separate chunk (about.[hash].js) for this route
 // which is lazy-loaded when the route is visited.
 
 // Authentication
+
 const Register = () => import('@/views/Auth/Register.vue')
 const Login = () => import('@/views/Auth/Login.vue')
 
@@ -44,6 +43,7 @@ const Profile = () => import('../views/Settings/Profile.vue')
 
 console.log("Vue",Vue)
 console.log("VueRouter", VueRouter)
+
 Vue.use(VueRouter);
 
 // scrollBehavior:
@@ -210,8 +210,8 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  scrollBehavior,
-  mode: 'history',
+  // scrollBehavior,
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes,
 });
@@ -233,6 +233,6 @@ const router = new VueRouter({
 //     }
 //   })
 // module.exports.router = router;
-// export default router;
-console.log("router", router)
-exports.default = router
+export default router;
+// console.log("router", router)
+// exports.default = router

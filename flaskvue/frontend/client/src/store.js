@@ -1,4 +1,4 @@
-const store =  {
+export default {
     debug: true,
     state: {
       is_authenticated: window.localStorage.getItem('Apollo-token') ? true : false,
@@ -31,4 +31,4 @@ const store =  {
     },
   }
 
-  exports.default = store
+  // exports.default = store

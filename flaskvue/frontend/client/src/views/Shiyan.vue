@@ -72,7 +72,7 @@
 //const { require } = window
 const fs = window.require('fs');
 
-const xlsx2json = window.require("node-xlsx");
+// const xlsx2json = window.require("node-xlsx");
 const join = window.require('path').join;
 const address = 'tem/' + 'b/'
 const os = window.require('os');

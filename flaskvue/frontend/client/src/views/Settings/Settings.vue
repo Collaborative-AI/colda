@@ -72,8 +72,8 @@
 </template>
 
 <script>
-// import store from '../../store'
-const store = require('../../store').default
+import store from '../../store'
+// const store = require('../../store').default
 
 export default {
   name: 'Settings',  //this is the name of the component

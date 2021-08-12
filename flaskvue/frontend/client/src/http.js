@@ -1,6 +1,6 @@
 
 const Vue = require('vue').default
-const router = require('./router').default
+// const router = require('./router').default
 const store = require('./store').default
 const axios = require('axios').default
 
@@ -73,5 +73,5 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(error)
 })
 
-// export default axios
-exports.default = axios
+export default axios
+// exports.default = axios

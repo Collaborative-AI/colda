@@ -57,11 +57,11 @@
 </template>
 
 <script>
-// import store from '../../store'
-// import $ from 'jquery'
+import store from '../../store'
+import $ from 'jquery'
 
-const store = require('../../store').default
-const $ = require('jquery')
+// const store = require('../../store').default
+// const $ = require('jquery')
 
 export default {
   name: 'Resource',  // this is the name of the component

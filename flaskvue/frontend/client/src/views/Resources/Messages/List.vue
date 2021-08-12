@@ -81,11 +81,11 @@
 
 <script>
 
-// import store from '../../../store'
-// import Pagination from '../../../components/Pagination'
+import store from '../../../store'
+import Pagination from '../../../components/Pagination'
 
-const store = require('../../../store').default
-const Pagination = require('../../../components/Pagination.vue').default
+// const store = require('../../../store').default
+// const Pagination = require('../../../components/Pagination.vue').default
 
 export default {
   name: 'MessagesResource',  // this is the name of the component

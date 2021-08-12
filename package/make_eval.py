@@ -1,27 +1,15 @@
-import argparse
 import numpy as np
 import os
 from utils import log
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--root', default=None, type=str)
-parser.add_argument('--self_id', default=None, type=str)
-parser.add_argument('--task_id', default=None, type=str)
-parser.add_argument('--test_id', default=None, type=str)
-parser.add_argument('--round', default=None, type=int)
-parser.add_argument('--target_path', default=None, type=str)
-args = vars(parser.parse_args())
 
-root = 'exp'
-
-
-def main():
+def make_eval(args):
+    target_path = args['target_path']
     root = args['root']
     self_id = args['self_id']
     task_id = args['task_id']
     test_id = args['test_id']
     round = args['round']
-    target_path = args['target_path']
     task_path = os.path.join(root, self_id, 'task', task_id)
     result = np.genfromtxt(os.path.join(task_path, 'train', 'round', '0', 'init.csv'), delimiter=',')
     if target_path is not None:
@@ -56,7 +44,3 @@ def main():
             log(msg, root, self_id, task_id, test_id)
     print('?'.join(result_path))
     return
-
-
-if __name__ == "__main__":
-    main()

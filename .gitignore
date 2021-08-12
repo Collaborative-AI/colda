@@ -127,3 +127,8 @@ data/
 .idea/
 
 exp/
+
+#pyinstaller
+*.spec
+build/
+dist/

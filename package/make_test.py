@@ -1,30 +1,16 @@
-import argparse
 import numpy as np
 import os
 from utils import load, makedir_exist_ok
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--root', default=None, type=str)
-parser.add_argument('--self_id', default=None, type=str)
-parser.add_argument('--task_id', default=None, type=str)
-parser.add_argument('--test_id', default=None, type=str)
-parser.add_argument('--round', default=None, type=int)
-parser.add_argument('--from_id', default=None, type=str)
 
-parser.add_argument('--data_path', default=None, type=str)
-args = vars(parser.parse_args())
-
-
-def main():
+def make_test(args):
+    data_path = args['data_path']
     root = args['root']
     self_id = args['self_id']
     task_id = args['task_id']
     test_id = args['test_id']
     round = args['round']
     from_id = args['from_id']
-    data_path = args['data_path']
-    # print("1")
-    # print(os.path.dirname(__file__))
     data = np.genfromtxt(data_path, delimiter=',')
     if from_id is not None:
         self_from_idx = np.genfromtxt(
@@ -42,7 +28,3 @@ def main():
         output_path.append(output_path_i)
     print('?'.join(output_path))
     return
-
-
-if __name__ == "__main__":
-    main()

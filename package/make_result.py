@@ -1,24 +1,15 @@
-import argparse
 import numpy as np
 from scipy.optimize import minimize
 import os
-from utils import makedir_exist_ok, log
-
-parser = argparse.ArgumentParser()
-parser.add_argument('--root', default=None, type=str)
-parser.add_argument('--self_id', default=None, type=str)
-parser.add_argument('--task_id', default=None, type=str)
-parser.add_argument('--round', default=None, type=int)
-parser.add_argument('--target_path', default=None, type=str)
-args = vars(parser.parse_args())
+from utils import log
 
 
-def main():
+def make_result(args):
+    target_path = args['target_path']
     root = args['root']
     self_id = args['self_id']
     task_id = args['task_id']
     round = args['round']
-    target_path = args['target_path']
     target = np.genfromtxt(target_path, delimiter=',')
     output_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'output')
     matched_idx_path = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx')
@@ -40,7 +31,7 @@ def main():
     else:
         result = np.genfromtxt(os.path.join(round_path, str(round - 1), 'result.csv'), delimiter=',')
     alpha = np.ones(1)
-    func_ = minimize(func, alpha, (result, output, target))
+    func_ = minimize(result_func, alpha, (result, output, target))
     alpha = func_.x
     np.savetxt(os.path.join(round_path, str(round), 'alpha.csv'), alpha, delimiter=",")
     result = result + alpha * output
@@ -51,11 +42,7 @@ def main():
     return
 
 
-def func(alpha, history, output, target):
+def result_func(alpha, history, output, target):
     new_output = history + alpha * output
     loss = ((target - new_output) ** 2).mean()
     return loss
-
-
-if __name__ == "__main__":
-    main()

@@ -1,64 +1,49 @@
-import argparse
 import os
 import numpy as np
 import hashlib
 from utils import makedir_exist_ok
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--id_path', default=None, type=str)
-parser.add_argument('--root', default=None, type=str)
-parser.add_argument('--self_id', default=None, type=str)
-parser.add_argument('--task_id', default=None, type=str)
-parser.add_argument('--run', default=None, type=str)
-parser.add_argument('--test_id', default=None, type=str)
 
-args = vars(parser.parse_args())
-
-
-def main():
+def make_hash(args):
     id_path = args['id_path']
     root = args['root']
     self_id = args['self_id']
     task_id = args['task_id']
-    run = args['run']
+    mode = args['mode']
     test_id = args['test_id']
     id = np.genfromtxt(id_path, delimiter=',', dtype=np.str_)
-    hash_id = np.array(list(map(make_hash, id)))
-    if run == 'default':
-        hash_id_path = os.path.join(root, self_id, run, 'id')
+    hash_id = np.array(list(map(hash, id)))
+    if mode == 'default':
+        hash_id_path = os.path.join(root, self_id, mode, 'id')
         makedir_exist_ok(hash_id_path)
         np.savetxt(os.path.join(hash_id_path, '{}.csv'.format(self_id)), hash_id, delimiter=",", fmt='%s')
         hash_id_path = os.path.join(hash_id_path, '{}.csv'.format(self_id))
-    elif run == 'train':
-        hash_id_path = os.path.join(root, self_id, 'task', task_id, run, 'id')
+    elif mode == 'train':
+        hash_id_path = os.path.join(root, self_id, 'task', task_id, mode, 'id')
         makedir_exist_ok(hash_id_path)
         np.savetxt(os.path.join(hash_id_path, '{}.csv'.format(self_id)), hash_id, delimiter=",", fmt='%s')
         hash_id_path = os.path.join(hash_id_path, '{}.csv'.format(self_id))
-        
+
         log_path = os.path.join(root, self_id, 'task', task_id, 'train')
         makedir_exist_ok(log_path)
-        open(os.path.join(log_path, "log.txt"),"a") 
+        open(os.path.join(log_path, "log.txt"), "a")
 
-    elif run == 'test' and test_id is not None:
-        hash_id_path = os.path.join(root, self_id, 'task', task_id, run, test_id, 'id')
+    elif mode == 'test' and test_id is not None:
+        hash_id_path = os.path.join(root, self_id, 'task', task_id, mode, test_id, 'id')
         makedir_exist_ok(hash_id_path)
         np.savetxt(os.path.join(hash_id_path, '{}.csv'.format(self_id)), hash_id, delimiter=",", fmt='%s')
         hash_id_path = os.path.join(hash_id_path, '{}.csv'.format(self_id))
 
         log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id)
         makedir_exist_ok(log_path)
-        open(os.path.join(log_path, "log.txt"),"a") 
+        open(os.path.join(log_path, "log.txt"), "a")
     else:
-        raise ValueError('Not valid run')
+        raise ValueError('Not valid mode')
     print(hash_id_path)
     return
 
 
-def make_hash(input):
+def hash(input):
     output = hashlib.sha256(str(input).encode('utf-8'))
     output = output.hexdigest()
     return output
-
-
-if __name__ == "__main__":
-    main()

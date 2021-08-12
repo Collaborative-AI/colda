@@ -5,8 +5,8 @@ import shutil
 from utils import makedir_exist_ok
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--root', default='BostonHousing', type=str)
-parser.add_argument('--data_name', default='BostonHousing', type=str)
+parser.add_argument('--root', default=None, type=str)
+parser.add_argument('--data_name', default=None, type=str)
 parser.add_argument('--num_users', default=None, type=int)
 parser.add_argument('--task_id', default=None, type=int)
 parser.add_argument('--match_rate', default=None, type=float)
@@ -78,15 +78,18 @@ def split_dataset(data_name, num_users):
 
 
 def make_data(data_name):
-    from sklearn.datasets import load_boston
-    data, target = load_boston(return_X_y=True)
-    perm = np.random.permutation(len(data))
-    data, target = data[perm], target[perm].reshape(-1, 1)
-    split_idx = int(data.shape[0] * 0.8)
-    train_data, test_data = data[:split_idx].astype(np.float32), data[split_idx:].astype(np.float32)
-    train_target, test_target = target[:split_idx].astype(np.float32), target[split_idx:].astype(np.float32)
-    id = np.arange(len(data)).astype(np.int64)
-    train_id, test_id = id[:split_idx], id[split_idx:]
+    if data_name == 'BostonHousing':
+        from sklearn.datasets import load_boston
+        data, target = load_boston(return_X_y=True)
+        perm = np.random.permutation(len(data))
+        data, target = data[perm], target[perm].reshape(-1, 1)
+        split_idx = int(data.shape[0] * 0.8)
+        train_data, test_data = data[:split_idx].astype(np.float32), data[split_idx:].astype(np.float32)
+        train_target, test_target = target[:split_idx].astype(np.float32), target[split_idx:].astype(np.float32)
+        id = np.arange(len(data)).astype(np.int64)
+        train_id, test_id = id[:split_idx], id[split_idx:]
+    else:
+        raise ValueError('Not valid data name')
     return (train_id, train_data, train_target), (test_id, test_data, test_target)
 
 

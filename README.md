@@ -41,7 +41,7 @@
       4. sudo apt-get install python-flask
 
 **Clone File from Github:**
-git clone https://github.com/AI-Apollo/Apollo.git (first time)
+git clone https://github.com/AI-Apollo/Application.git (first time)
 cd Apollo/Apollo/flaskvue/backend
 
 sudo passwd (first time)

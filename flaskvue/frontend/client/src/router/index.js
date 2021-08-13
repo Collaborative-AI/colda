@@ -29,6 +29,7 @@ const MessagesIndexResource = () => import('../views/Resources/Messages/Index.vu
 const SentMessagesResource = () => import('../views/Resources/Messages/List.vue')
 const MessagesHistoryResource = () => import('../views/Resources/Messages/History.vue')
 const FindAssistorHelper = () => import('../views/Resources/find_assistor.vue')
+const FindTestAssistorHelper = () => import('../views/Resources/find_test_assistor.vue')
 
 // User Notifications
 const Notifications = () => import('../views/Notifications/Notifications.vue')
@@ -146,11 +147,22 @@ const routes = [
               ]
           }
         ],
-      path: '/find_assistor',
-      component: FindAssistorHelper,
-      meta: {
-        requiresAuth: true
-      }
+      
+  },
+  {
+    path: '/find_assistor',
+    component: FindAssistorHelper,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/find_test_assistor',
+    name: 'FindTestAssistorHelper',
+    component: FindTestAssistorHelper,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     // 用户通知

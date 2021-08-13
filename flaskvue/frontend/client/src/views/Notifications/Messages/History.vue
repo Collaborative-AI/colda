@@ -156,8 +156,12 @@
     <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
   <!-- </form> -->
   <div >
-    <button v-show="isSponsor" @click="find_test_assistor( $route.query.from )">Call for Test</button>
+    <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
+      <button v-show="isSponsor" class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Call For Test</button>
+    </router-link>
   </div>
+
+
   <!-- <div >
     <button @click="get_test_history_id( $route.query.from )">Load Test Log</button>
   </div> -->
@@ -201,6 +205,7 @@ export default {
       // Log_content_array: null,
       isSponsor: false,
       root: store.state.root,
+      task_id: '',
     }
   },
   methods: {
@@ -261,88 +266,6 @@ export default {
           console.log(error)
         })
     },
-
-    find_test_assistor(task_id) {
-      // const sponsor_data_folder = 'Test_Sponsor_Data/'
-      
-      // fs.mkdirSync(sponsor_data_folder, { recursive: true})
-
-      // const filename = 'shiyan.csv'
-      // const data = fs.readFileSync(sponsor_data_folder + filename,
-      //   {encoding:'utf8', flag:'r'});
-      
-      // let data_array = data.split("\n")
-      
-      this.$axios.get('/create_new_test_task/')
-        .then((response) => {
-          
-          let test_id = response.data.test_id
-
-          let match_id_address = '../../../package/data/BostonHousing/2/123/1.0/0/test/id.csv'
-          let test_hash_id_file_address = null;
-          try{
-            test_hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ' + this.root 
-                                    + ' --self_id ' + this.sharedState.user_id + ' --task_id ' + task_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
-            test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
-            console.log(test_hash_id_file_address)
-          }catch(err){
-            console.log(err)
-          }
-
-          let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
-
-          const payload = {
-            task_id: task_id,
-            test_id: test_id, 
-            id_file: test_hash_id_file_data
-          }
-          
-          this.$axios.post('/find_test_assistor/', payload)
-            .then((response) => {
-
-              const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + response.data.test_id + '/log.txt'
-              // handle success
-              console.log("1.1 Test: Sponsor calls for help", response)
-              this.$toasted.success(`1.1 Test: Sponsor calls for help`, { icon: 'fingerprint' })
-
-              console.log("1.2 Test: Sponsor sends id file")
-              this.$toasted.success(`1.2 Test: Sponsor sends id file`, { icon: 'fingerprint' })
-
-              // Create 'Local_Data/id/task_id/' folder
-              // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/' + response.data.test_id + '/'
-              // fs.mkdirSync(new_address, { recursive: true})
-
-              try {
-                fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
-                fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
-                fs.appendFileSync(Log_address, "---------------------- Test Stage Starts\n")
-                fs.appendFileSync(Log_address, "---------------------- 1. Test: Find Test assistor\n")
-                fs.appendFileSync(Log_address, "1.1 Test: Sponsor calls for test\n")
-                fs.appendFileSync(Log_address, "1.2 Test: Sponsor sends id file\n")
-                fs.appendFileSync(Log_address, "---------------------- 1. Test: Find Test assistor Done\n")
-              } catch (err) {
-                console.error(err)
-              }
-
-              // // Upload the matching ID file
-              // this.sponsor_request_show = true
-
-            })
-            .catch((error) => {
-              // handle error
-              console.log(error)
-              // console.log(error.response.data)
-              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-            })
-
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-      
-    }
-
-
 
 
     // getUser (id) {
@@ -424,6 +347,7 @@ export default {
     // },
   },
   created () {
+    this.task_id = this.$route.query.from;
     this.getLog(this.$route.query.from)
     this.checkSponsor(this.$route.query.from)
     // 初始化 bootstrap-markdown 插件

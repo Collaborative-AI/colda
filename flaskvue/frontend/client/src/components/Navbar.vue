@@ -50,7 +50,7 @@
 
           <!-- <li class="nav-item g-mr-20">
             <button @click="find_assistor">Call For Help</button>
-            <!-- <router-link v-bind:to="{ name: 'Shiyan' }" class="nav-link">Call For Help</router-link> -->
+            <router-link v-bind:to="{ name: 'Shiyan' }" class="nav-link">Call For Help</router-link>
           </li> -->
           
            <li class="nav-item g-mr-20">
@@ -154,7 +154,8 @@ export default {
       db.get(select_sentence, function(err, row){
         console.log(row)
 
-        if (row == null | row.default_data_path == "" | row.default_id_path == "" ){
+        if (row == null | row.default_data_path == "" | row.default_id_path == "" |
+            row.default_test_data_path == "" | row.default_test_id_path == ""){
           console.log("get false")
           vm.sharedState.set_default = false
           vm.sharedState.receive_request = false
@@ -208,16 +209,16 @@ export default {
           // const assistor_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
           // fs.mkdirSync(assistor_store_folder, { recursive: true})
           
-          let select_default_id_path = 'SELECT default_id_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
-          db.get(select_default_id_path, function(err, row){
+          let select_default_train_id_path = 'SELECT default_train_id_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          db.get(select_default_train_id_path, function(err, row){
             if (err){ 
               throw err;
             }
-            let default_id_path = row.default_id_path
-            console.log("default_id_path", default_id_path)
+            let default_train_id_path = row.default_train_id_path
+            console.log("default_train_id_path", default_train_id_path)
             let hash_id_file_address = null;
             try{
-              hash_id_file_address = ex.execSync('./dist/run/run make_hash --id_path ' + default_id_path + ' --root ' + vm.root 
+              hash_id_file_address = ex.execSync('./dist/run/run make_hash --id_path ' + default_train_id_path + ' --root ' + vm.root 
                                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode train', {encoding: 'utf8'})
               hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
               console.log("hash_id_file_address", hash_id_file_address)
@@ -368,7 +369,6 @@ export default {
             let cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
             cur_match_id_file = cur_match_id_file.join("\n")
 
-            console.log("cur_match_id_file", cur_match_id_file)
             // Store match_id file from different assistor
             let save_match_id_file_pos = null;
             try{
@@ -417,7 +417,7 @@ export default {
           // Create 'Local_Data/id/task_id/0' folder
           // const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/0/'
           // fs.mkdirSync(Round0_folder, { recursive: true})
-          let select_train_target_path = 'SELECT train_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "task_id"="' + task_id + '"';
+          let select_train_target_path = 'SELECT train_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
           db.get(select_train_target_path, function(err, row){
             if (err){ 
               throw err;
@@ -521,7 +521,6 @@ export default {
           const from_id = response.data.sponsor_random_id;
           let cur_match_id_file = JSON.parse(response.data.match_id_file[0]);
           cur_match_id_file = cur_match_id_file.join("\n")
-          console.log("cur_match_id_file", cur_match_id_file)
           
           // Store match_id file from sponsor
           let save_match_id_file_pos = null;
@@ -612,7 +611,7 @@ export default {
         console.error(err)
       }
       
-      let select_train_data_path = 'SELECT train_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "task_id"="' + task_id + '"';
+      let select_train_data_path = 'SELECT train_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
       db.get(select_train_data_path, function(err, row){
         if (err){ 
           throw err;
@@ -646,6 +645,12 @@ export default {
       
       let vm = this;
       const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+
+      function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(5000); // 程序滞留5000ms
 
       const payload = {
         task_id: task_id,
@@ -698,17 +703,17 @@ export default {
           sleep(5000); // 程序滞留5000ms
 
           // Assistor trains the data
-          let select_default_data_path = 'SELECT default_data_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
-          db.get(select_default_data_path, function(err, row){
+          let select_default_train_data_path = 'SELECT default_train_data_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          db.get(select_default_train_data_path, function(err, row){
             if (err){ 
               throw err;
             }
-            let default_data_path = row.default_data_path
-            console.log("default_data_path",default_data_path)
+            let default_train_data_path = row.default_train_data_path
+            console.log("default_train_data_path",default_train_data_path)
             let Assistor_train_output_path = null;
             try{
               Assistor_train_output_path = ex.execSync('./dist/run/run make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + from_id + ' --data_path ' + default_data_path, {encoding: 'utf8'})
+                + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + from_id + ' --data_path ' + default_train_data_path, {encoding: 'utf8'})
               Assistor_train_output_path = Assistor_train_output_path.replace(/\n/g, '')
               console.log(Assistor_train_output_path)
 
@@ -836,7 +841,7 @@ export default {
             }
           }
 
-          let select_train_target_path = 'SELECT train_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "task_id"="' + task_id + '"';
+          let select_train_target_path = 'SELECT train_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
           db.get(select_train_target_path, function(err, row){
             if (err){ 
               throw err;
@@ -944,10 +949,10 @@ export default {
     },
 
     unread_test_request(unread_test_request_notification) {
-      
+      let vm = this;
       // Only assistor calls this function
       if (this.sharedState.receive_request == true){
-        let vm = this;
+        
         console.log("2.1 Update Test request notification response", unread_test_request_notification)
         this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
@@ -956,70 +961,63 @@ export default {
 
         for (let test_id in cur_unread_test_request_Testid_dict){
           let task_id = test_id_to_task_id[test_id]
-
-          const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
           
+          let select_default_test_id_path = 'SELECT default_test_id_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          db.get(select_default_test_id_path, function(err, row){
+            if (err){ 
+              throw err;
+            }
+            let default_test_id_path = row.default_test_id_path
+            console.log("default_test_id_path", default_test_id_path)
+            let test_hash_id_file_address = null
+            try{
+              test_hash_id_file_address = ex.execSync('./dist/run/run make_hash --id_path ' + default_test_id_path + ' --root ' + vm.root 
+                                        + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+              test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
+              console.log(test_hash_id_file_address)
+            }catch(err){
+              console.log(err)
+            }
+            const Log_address = vm.root + '/' + vm.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
 
-          // const assistor_data_folder = 'Test_assistor_Data/'
-          // fs.mkdirSync(assistor_data_folder, { recursive: true})
+            try {
+              fs.appendFileSync(Log_address, "\n You are Assistor\n")
+              fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
+              fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
+              fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
+              fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
+            } catch (err) {
+              console.error(err)
+            }
 
-          // const filename = 'shiyan.csv'
-          // const data = fs.readFileSync(assistor_data_folder + filename,
-          //   {encoding:'utf8', flag:'r'});
-    
-          // let data_array = data.split("\n")
+            let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
 
-          // const payload = {
-          //   test_id: test_id,
-          //   file: data_array
-          // }
+            const match_test_assistor_id_data = {
+              file: test_hash_id_file_data,
+              test_id: test_id
+            }
+
+            vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
+              .then((response) => {
+                // handle success
+                console.log("2.2 Test: assistor uploads id file", response)
+                vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
+                try {
+                  fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
+                  fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
+                } catch (err) {
+                  console.error(err)
+                }
+              })
+              .catch((error) => {
+                // handle error
+                console.log(error)
+                // console.log(error.response.data)
+                // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+              })
+
+          });
           
-          let match_id_address = '../../../package/data/BostonHousing/2/123/1.0/1/test/id.csv'
-          let test_hash_id_file_address = null
-          try{
-            test_hash_id_file_address = ex.execSync('python3 ../../../package/hash_id.py --id_path ' + match_id_address + ' --root ' + vm.root 
-                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
-            test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
-            console.log(test_hash_id_file_address)
-          }catch(err){
-            console.log(err)
-          }
-
-          try {
-            fs.appendFileSync(Log_address, "\n You are Assistor\n")
-            fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
-            fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
-            fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
-            fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
-          } catch (err) {
-            console.error(err)
-          }
-
-          let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
-
-          const match_test_assistor_id_data = {
-            file: test_hash_id_file_data,
-            test_id: test_id
-          }
-
-          vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
-            .then((response) => {
-              // handle success
-              console.log("2.2 Test: assistor uploads id file", response)
-              vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
-              try {
-                fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
-                fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
-              } catch (err) {
-                console.error(err)
-              }
-            })
-            .catch((error) => {
-              // handle error
-              console.log(error)
-              // console.log(error.response.data)
-              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-            })
         }
       }else{
         console.log("unread request: If you want to receive, open receive")
@@ -1106,8 +1104,8 @@ export default {
             // Store match_id file from different assistor
             let test_save_match_id_file_pos = null;
             try{
-              test_save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --root ' + this.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --run test' + ' --from_id ' + from_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+              test_save_match_id_file_pos = ex.execSync('./dist/run/run save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+                + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
               test_save_match_id_file_pos = test_save_match_id_file_pos.replace(/\n/g, '')
               console.log(test_save_match_id_file_pos)
             }catch(err){
@@ -1125,8 +1123,8 @@ export default {
             }
 
             try{
-              let test_make_match_idx_done = ex.execSync('python3 ../../../package/make_match_idx.py --root ' + this.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --run test' + ' --from_id ' + from_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+              let test_make_match_idx_done = ex.execSync('./dist/run/run make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+                + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
             }catch(err){
               console.log(err)
             }
@@ -1141,11 +1139,11 @@ export default {
 
           }
 
-          // function sleep(time) {
-          //   let startTime = window.performance.now();
-          //   while (window.performance.now() - startTime < time) {}
-          // }
-          // sleep(5000); // 程序滞留5000ms
+          function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(8000); // 程序滞留8000ms
 
           // function find_Train_Models(startPath) {
           // let result=[];
@@ -1187,32 +1185,39 @@ export default {
           //   let filename = "Test_Models" + i.toString();
           //   fs.writeFileSync(Test_Output_folder + filename, files[i])
           // }
+          let select_test_data_path = 'SELECT test_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
+          db.get(select_test_data_path, function(err, row){
+            if (err){ 
+              throw err;
+            }
+            let test_data_path = row.test_data_path
+            console.log("test_data_path", test_data_path)
+            
+            try{
+              let test_done = ex.execSync('./dist/run/run make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+                + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --data_path ' + test_data_path, {encoding: 'utf8'})
+            }catch(err){
+              console.log(err)
+            }
+
+            console.log("3.7 Test: Sponsor stores all test model results")
+            vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
+
+            try {
+              fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
+              fs.appendFileSync(Log_address, "--------------------------3. Unread Test Match ID Done\n")
+            } catch (err) {
+              console.error(err)
+            }
+          });
           
+          })
+          .catch((error) => {
+            console.log(error)
+            // handle error
+          }) 
 
-          let data_address = '../../../package/data/BostonHousing/2/123/1.0/0/test/data.csv'
-          try{
-            let test_done = ex.execSync('python3 ../../../package/test.py --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --data_path ' + data_address, {encoding: 'utf8'})
-          }catch(err){
-            console.log(err)
-          }
-
-          console.log("3.7 Test: Sponsor stores all test model results")
-          vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
-
-          try {
-            fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
-            fs.appendFileSync(Log_address, "--------------------------3. Unread Test Match ID Done\n")
-          } catch (err) {
-            console.error(err)
-          }
-
-
-        })
-        .catch((error) => {
-          console.log(error)
-          // handle error
-        }) 
+         
     },
 
     unread_test_match_id_assistor(task_id, test_id, max_rounds) {
@@ -1247,8 +1252,8 @@ export default {
           // Store match_id file from sponsor
           let test_save_match_id_file_pos = null;
           try{
-            test_save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --root ' + this.root + ' --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --run test' + ' --from_id ' + from_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+            test_save_match_id_file_pos = ex.execSync('./dist/run/run save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id + ' --test_id ' + test_id, {encoding: 'utf8'})
             test_save_match_id_file_pos = test_save_match_id_file_pos.replace(/\n/g, '')
             console.log("test_save_match_id_file_pos", test_save_match_id_file_pos)
           }catch(err){
@@ -1266,8 +1271,8 @@ export default {
           }
 
           try{
-            let make_match_idx_done = ex.execSync('python3 ../../../package/make_match_idx.py --root ' + this.root + ' --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --run test' + ' --from_id ' + from_id + ' --run test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+            let make_match_idx_done = ex.execSync('./dist/run/run make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id + ' --test_id ' + test_id, {encoding: 'utf8'})
           }catch(err){
             console.log(err)
           }
@@ -1280,11 +1285,11 @@ export default {
             console.error(err)
           }
 
-          // function sleep(time) {
-          //   let startTime = window.performance.now();
-          //   while (window.performance.now() - startTime < time) {}
-          // }
-          // sleep(5000); // 程序滞留5000ms
+          function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(5000); // 程序滞留5000ms
 
           // function find_Train_Models(startPath) {
           // let result=[];
@@ -1328,57 +1333,73 @@ export default {
           //   fs.writeFileSync(Test_Output_folder + filename, files[i])
           // }
 
+          // let select_test_data_path = 'SELECT test_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_id"="' + test_id + '"';
+          // db.get(select_test_data_path, function(err, row){
+          //   if (err){ 
+          //     throw err;
+          //   }
+          //   let test_data_path = row.test_data_path
+          //   console.log("test_data_path", test_data_path)
+          // });
 
-          let data_address = '../../../package/data/BostonHousing/2/123/1.0/1/test/data.csv'
-          let test_outputs_pos = null
-          try{
-            test_outputs_pos = ex.execSync('python3 ../../../package/test.py --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id + ' --data_path ' + data_address, {encoding: 'utf8'})
-            test_outputs_pos = test_outputs_pos.replace(/\n/g, '')
-            test_outputs_pos = test_outputs_pos.split('?')
-            console.log("test_output_pos", test_outputs_pos)
-            
-          }catch(err){
-            console.log(err)
-          }
+          let select_default_test_data_path = 'SELECT default_test_data_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          db.get(select_default_test_data_path, function(err, row){
+            if (err){ 
+              throw err;
+            }
+            let default_test_data_path = row.default_test_data_path
+            console.log("default_test_data_path",default_test_data_path)
 
-          console.log("3.7 Test: assistor stores all test model results")
-          vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
+            let test_outputs_pos = null
+            try{
+              test_outputs_pos = ex.execSync('./dist/run/run make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+                + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id + ' --data_path ' + default_test_data_path, {encoding: 'utf8'})
+              test_outputs_pos = test_outputs_pos.replace(/\n/g, '')
+              test_outputs_pos = test_outputs_pos.split('?')
+              console.log("test_output_pos", test_outputs_pos)
+              
+            }catch(err){
+              console.log(err)
+            }
 
-          try {
-            fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
-          } catch (err) {
-            console.error(err)
-          }
+            console.log("3.7 Test: assistor stores all test model results")
+            vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
 
-          let all_test_output = [];
-          for (let i = 0; i < test_outputs_pos.length; i++){
-
-            const data = fs.readFileSync(test_outputs_pos[i], {encoding:'utf8', flag:'r'});
-            all_test_output.push(data);
-
-          }
-
-          const payload1 = {
-            output: all_test_output,
-            test_id: test_id,
-          }
-
-          vm.$axios.post('/send_test_output/', payload1)
-            .then((response) => {
-            // handle success
-            console.log("3.8 Test: assistor sends all test model results", response)
-            vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
             try {
-              fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
-              fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
+              fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
             } catch (err) {
               console.error(err)
             }
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+
+            let all_test_output = [];
+            for (let i = 0; i < test_outputs_pos.length; i++){
+
+              const data = fs.readFileSync(test_outputs_pos[i], {encoding:'utf8', flag:'r'});
+              all_test_output.push(data);
+
+            }
+
+            const payload1 = {
+              output: all_test_output,
+              test_id: test_id,
+            }
+
+            vm.$axios.post('/send_test_output/', payload1)
+              .then((response) => {
+              // handle success
+              console.log("3.8 Test: assistor sends all test model results", response)
+              vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
+              try {
+                fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
+                fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
+              } catch (err) {
+                console.error(err)
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+          });
 
         })
         .catch((error) => {
@@ -1444,8 +1465,8 @@ export default {
               // Store test output from assistors
               let test_save_output_pos = null
               try{
-                test_save_output_pos = ex.execSync('python3 ../../../package/save_output.py --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                  + ' --task_id '+ task_id + ' --run test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + j, {encoding: 'utf8'})
+                test_save_output_pos = ex.execSync('./dist/run/run save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+                  + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + j, {encoding: 'utf8'})
                 test_save_output_pos = test_save_output_pos.replace(/\n/g, '')
                 console.log("test_save_output_pos", test_save_output_pos)
               }catch(err){
@@ -1468,33 +1489,46 @@ export default {
 
           let max_round = JSON.parse(response.data.output[0]).length - 1;
           console.log("max_round", max_round)
-          try{
-            let target_path = '../../../package/data/BostonHousing/2/123/1.0/0/test/target.csv'
-            let eval_done = ex.execSync('python3 ../../../package/eval.py --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round + ' --target_path ' + target_path, {encoding: 'utf8'})
-          }catch(err){
-            console.log(err)
-          }
 
-          console.log("4.4 Test: Sponsor evaluates output models done");
-          vm.$toasted.success("4.4 Test: Sponsor evaluates output models done", { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
-          } catch (err) {
-            console.error(err)
-          }
+          let select_test_target_path = 'SELECT test_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
+          db.get(select_test_target_path, function(err, row){
+            if (err){ 
+              throw err;
+            }
+            let test_target_path = row.test_target_path
+            console.log("test_target_path",test_target_path)
+            try{
+              let eval_done = ex.execSync('./dist/run/run make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+                + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round + ' --target_path ' + test_target_path, {encoding: 'utf8'})
+            }catch(err){
+              console.log(err)
+            }
 
-          try {
-            fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
-            fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
-          } catch (err) {
-            console.error(err)
-          }
+            console.log("4.4 Test: Sponsor evaluates output models done");
+            vm.$toasted.success("4.4 Test: Sponsor evaluates output models done", { icon: 'fingerprint' })
+            try {
+              fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
+            } catch (err) {
+              console.error(err)
+            }
+
+            try {
+              fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
+              fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
+            } catch (err) {
+              console.error(err)
+            }
+          });
+          
+
+
         })
         .catch((error) => {
-          // handle error
+            // handle error
           console.error(error)
         }) 
+
+          
     },
 
 

@@ -138,7 +138,7 @@ export default {
     onSubmit (e) {
       let vm = this;
       if (this.task_id == ""){
-        dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
+        dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
       }else{
         
         let both_path_validation = true
@@ -182,12 +182,12 @@ export default {
           // });
           console.log("true")
           console.log(vm.PathForm.train_data_path,vm.PathForm.train_id_path,vm.PathForm.train_target_path)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
-              (`+vm.sharedState.user_id+`, "` + vm.task_id + `", "` +vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
+          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
+              (`+vm.sharedState.user_id+ `,"train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
           console.log(insert_sentence)
           db.run(insert_sentence, function(err){
             if (err){
-              throw(err);
+              console.log(err);
             }
 
             let match_id_address = vm.PathForm.train_id_path

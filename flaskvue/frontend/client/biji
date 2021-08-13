@@ -1,5 +1,19 @@
 "type": "module",
 
+
+
+      let select_train_data_path = 'SELECT train_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + " AND 'task_id'=" + task_id;
+      db.get(select_train_data_path, function(err, train_data_path){
+        if (err){ 
+          throw err;
+        }
+
+
+let select_default_id_path = 'SELECT default_id_path FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+db.get(select_default_id_path, function(err, match_id_address){
+if (err){ 
+  throw err;
+}
 dependency: 生产环境
 dev-dependency: 开发环境
 

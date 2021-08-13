@@ -39,15 +39,12 @@ async function createWindow() {
   // win.webContents.openDevTools({mode:'right'});
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    console.log("111111")
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
     console.log("process.env.WEBPACK_DEV_SERVER_URL", process.env.WEBPACK_DEV_SERVER_URL)
     
-    console.log("22", 'file://' + __dirname + '/index.html')
     win.webContents.openDevTools();
     if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
-    console.log("2222")
     createProtocol('app');
     // Load the index.html when not in development
     // win.loadURL('app://./resources/app/index.html');

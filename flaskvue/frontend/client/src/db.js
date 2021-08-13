@@ -15,8 +15,8 @@ db.serialize(function() {
                                            train_data_path    text, \
                                            train_id_path      text, \
                                            train_target_path  text, \
-                                           test_id_path       text, \
-                                           test_target_path   text)")
+                                           test_data_path     text, \
+                                           test_id_path       text)")
 });
 
 export default db

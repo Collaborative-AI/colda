@@ -1,13 +1,13 @@
 
-const Vue = require('vue').default
+// const Vue = require('vue').default
 // const router = require('./router').default
-const store = require('./store').default
-const axios = require('axios').default
+// const store = require('./store').default
+// const axios = require('axios').default
 
-// import Vue from 'vue';
-// import router from './router';
-// import store from './store';
-// import axios from 'axios'
+import Vue from 'vue';
+import router from './router';
+import store from './store';
+import axios from 'axios'
 
 // 基础配置
 axios.defaults.timeout = 5000  // 超时时间

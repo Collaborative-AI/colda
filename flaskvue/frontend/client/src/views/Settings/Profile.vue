@@ -68,7 +68,7 @@ export default {
       })
       console.log("get_default_data_path", result)
       if (result === undefined){
-        dialog.showErrorBox('Please Select A Data File')
+        dialog.showErrorBox('Data Path not Correct', 'Please Select A Data File')
       }else{
 
         try {
@@ -93,7 +93,7 @@ export default {
       })
       console.log("get_default_id_path", result)
       if (result === undefined){
-        dialog.showErrorBox('Please Select A ID File')
+        dialog.showErrorBox('ID Path not Correct', 'Please Select A ID File')
       }else{
 
         try {
@@ -111,6 +111,10 @@ export default {
       let vm = this
       let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
       db.get(select_sentence, function(err, row){
+        if (err){ 
+          throw err;
+        }
+
         console.log(row)
 
         if (row != null){
@@ -136,7 +140,10 @@ export default {
       let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
 
       db.get(select_sentence, function(err, row){
-        console.log(row)
+        if (err){ 
+          throw err;
+        }
+        console.log("row", row)
         
         if (row == null){
           // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES (1, 'love', 'consume')`)
@@ -153,6 +160,7 @@ export default {
           // }
 
           let both_path_validation = true
+          console.log("vm.profileForm.default_data_path", vm.profileForm.default_data_path)
           try {
             fs.statSync(vm.profileForm.default_data_path);
           } catch (err) {
@@ -161,6 +169,7 @@ export default {
             both_path_validation = false
           }
 
+          console.log("vm.profileForm.default_id_path", vm.profileForm.default_id_path)
           try {
             fs.statSync(vm.profileForm.default_id_path);
           } catch (err) {
@@ -169,56 +178,21 @@ export default {
             both_path_validation = false
           }
           
-          // let check_default_data_path=fs.statSync( vm.profileForm.default_data_path);
-          // console.log("check_default_data_path", check_default_data_path)
-          // // if(!check_default_data_path.isFile()){
-          // //   dialog.showErrorBox('Please Select A Data File')
-          // // }
-          
-          // let check_default_id_path=fs.statSync( vm.profileForm.default_id_path);
-          // console.log("check_default_id_path", check_default_id_path)
-          // // if(!check_default_id_path.isFile()){
-          // //   dialog.showErrorBox('Please Select A ID File')
-          // // }
-
           if(both_path_validation == true){
             db.serialize(function() {
-              let update_default_data_path = 'UPDATE "User_Default_Path"'
-                        +' SET "default_data_path" = "' + vm.profileForm.default_data_path
-                          + '" WHERE "user_id" = ' + vm.sharedState.user_id
-              console.log(update_default_data_path)           
-              db.run(update_default_data_path)
+              let update_sentence = 'UPDATE "User_Default_Path"'
+                        +'SET "default_data_path" = "' + vm.profileForm.default_data_path + '",'
+                        +'"default_id_path" = "' + vm.profileForm.default_id_path
+                        +'"WHERE "user_id" = ' + vm.sharedState.user_id
+              console.log("update_sentence", update_sentence)           
+              db.run(update_sentence)
 
-              let update_default_id_path = 'UPDATE "User_Default_Path"'
-                        +' SET "default_id_path" = "' + vm.profileForm.default_id_path
-                          + '" WHERE "user_id" = ' + vm.sharedState.user_id
-              console.log(update_default_id_path)
-              db.run(update_default_id_path)
             });
           }
           
         }    
       })
 
-
-
-      // const path = `/users/${user_id}`
-      // const payload = {
-      //   name: this.profileForm.name,
-      //   location: this.profileForm.location,
-      //   about_me: this.profileForm.about_me
-      // }
-      // this.$axios.put(path, payload)
-      //   .then((response) => {
-      //     // handle success
-      //     this.$toasted.success('Successed modify your profile.', { icon: 'fingerprint' })
-      //     this.$router.push({ path: `/user/${user_id}/overview` })
-      //   })
-      //   .catch((error) => {
-      //     // handle error
-      //     console.log(error.response.data)
-      //     this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-      //   })
     },
     
 

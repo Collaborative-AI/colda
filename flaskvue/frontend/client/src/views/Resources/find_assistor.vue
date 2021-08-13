@@ -1,66 +1,35 @@
 <template>
   <div class="container g-pt-20">
-    <div class="row">
-      <!-- 左边菜单栏 -->
-      <div class="col-lg-3 g-mb-50">
-        <aside class="g-brd-around g-brd-gray-light-v4 rounded g-px-20 g-py-30">
-          <!-- 用户头像 -->
-          <div v-if="user" class="text-center g-pos-rel g-mb-30">
-            <div class="g-width-100 g-height-100 mx-auto mb-3">
-              <!-- v-bind:src="user._links.avatar" -->
-              <img class="img-fluid rounded-circle g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="user._links.avatar"  v-bind:alt="user.name || user.username">
-            </div>
-
-            <span class="d-block g-font-weight-500">{{ user.name || user.username }}</span>
-
-            <router-link v-bind:to="{ path: `/user/${sharedState.user_id}` }">
-              <span class="u-icon-v3 u-icon-size--xs g-color-white--hover g-bg-primary--hover rounded-circle g-pos-abs g-top-0 g-right-15 g-cursor-pointer" title="Go To Your Profile"
-                    data-toggle="tooltip"
-                    data-placement="top">
-                <i class="icon-finance-067 u-line-icon-pro"></i>
-              </span>
-            </router-link>
-          </div>
-          <!-- End 用户头像 -->
-
-          <hr class="g-brd-gray-light-v4 g-my-30">
-
-          <!-- 菜单列表 -->
-          <ul class="list-unstyled mb-0">
-            <!-- <li class="g-pb-3">
-              <router-link v-bind:to="{ name: 'PostsResource' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
-                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-education-008 u-line-icon-pro"></i></span>
-                Posts
-              </router-link>
-            </li> -->
-            <li class="g-py-3">
-              <router-link v-bind:to="{ name: 'MessagesIndexResource' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
-                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-communication-154 u-line-icon-pro"></i></span>
-                History
-              </router-link>
-            </li>
-          </ul>
-          <!-- End 菜单列表 -->
-        </aside>
-      </div>
-      <!-- End 左边菜单栏 -->
-
-      <!-- 右边子路由匹配后，显示对应的组件 -->
-      <div class="col-lg-9 g-mb-50">
-
-        <router-view></router-view>
-
-      </div>
-      <!-- End 嵌套路由 -->
+     <div class="form-group">
+      <label for="name">Select Data File</label>
+      <input type="text" v-model="PathForm.train_data_path" class="form-control" id="name" placeholder="">
+      <button @click="get_train_data_path()">Select Data File</button>
     </div>
+    
+    <div class="form-group">
+      <label for="location">Select Id File</label>
+      <input type="text" v-model="PathForm.train_id_path" class="form-control" id="location" placeholder="">
+      <button @click="get_train_id_path()">Select ID File</button>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Select Target File</label>
+      <input type="text" v-model="PathForm.train_target_path" class="form-control" id="location" placeholder="">
+      <button @click="get_train_target_path()">Select Target File</button>
+    </div>
+
+    <button type="submit" @click="onSubmit()" class="btn btn-primary">Start Finding Assistors</button>
   </div>
 </template>
 
 <script>
 import store from '../../store'
-import $ from 'jquery'
+import db from '../../db'
 
-// const store = require('../../store').default
+const fs = window.require('fs');
+const {dialog} = window.require('electron').remote
+const ex = window.require("child_process");
+// const store = require('../../store').defaultv
 // const $ = require('jquery')
 
 export default {
@@ -68,96 +37,238 @@ export default {
   data () {
     return {
       sharedState: store.state,
-      user: ''
+      task_id: "",
+      PathForm: {
+        train_data_path: "",
+        train_id_path: "",
+        train_target_path: "",
+      },
+      root: store.state.root,
     }
   },
   methods: {
-    getUser (id) {
-      const path = `/users/${id}`
-      this.$axios.get(path)
+    get_train_id () {
+      console.log("$$$$$$$$$$$$$$$^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+      this.$axios.get('/create_new_train_task/')
         .then((response) => {
-          // handle success
-          this.user = response.data
+          this.task_id = response.data.task_id
+          console.log("task_id))))))))))))))00", this.task_id)
         })
         .catch((error) => {
-          // handle error
-          console.error(error)
+          console.log(error)
+
         })
     },
+    get_train_data_path() {
+      let result = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+        // sufix
+        filters: [{
+          name: 'Text', 
+          extensions: ['html', 'js', 'json', 'md', 'csv'] 
+        }]
+      })
+      console.log("get_train_data_path", result)
+      if (result === undefined){
+        dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
+      }else{
 
-    submit() {
-      try{
-        let stdout = ex.execSync('python3 ../../../algorithm/make_dataset.py --num_users 2', {encoding: 'utf8'})
-        console.log(stdout.split("\n"))
-      }catch{
-        console.log("wrong")
+        try {
+          let path = result[0]
+          fs.statSync(path);
+          this.PathForm.train_data_path = path
+        } catch (err) {
+          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
+          console.log('Please Select A Train Data File')
+        }  
+
       }
+    },
+    get_train_id_path() {
+      let result = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+        // sufix
+        filters: [{
+          name: 'Text', 
+          extensions: ['html', 'js', 'json', 'md', 'csv'] 
+        }]
+      })
+      console.log("get_train_id_path", result)
+      if (result === undefined){
+        dialog.showErrorBox('Data Path not Correct', 'Please Select A Train ID File')
+      }else{
 
-      // const sponsor_data_folder = 'Sponsor_Data/'
-      // fs.mkdirSync(sponsor_data_folder, { recursive: true})
+        try {
+          let path = result[0]
+          fs.statSync(path);
+          this.PathForm.train_id_path = path
+        } catch (err) {
+          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train ID File')
+          console.log('Please Select A Train ID File')
+        }  
 
-      // const filename = 'shiyan.csv'
-      // const data = fs.readFileSync(sponsor_data_folder + filename,
-      //   {encoding:'utf8', flag:'r'});
-      
-      // let data_array = data.split("\n")
-
-      const payload = {
-        assistor_id_list: [5],
-        id_file: data_array
       }
-      
-      this.$axios.post('/find_assistor/', payload)
-        .then((response) => {
-          const Log_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/' + 'train/' + 'Log.txt'
-          // handle success
-          console.log("1.1 Sponsor calls for help", response)
-          this.$toasted.success(`1.1 Sponsor calls for help`, { icon: 'fingerprint' })
+    },
+    get_train_target_path() {
+      let result = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+        // sufix
+        filters: [{
+          name: 'Text', 
+          extensions: ['html', 'js', 'json', 'md', 'csv'] 
+        }]
+      })
+      console.log("get_train_Target_path", result)
+      if (result === undefined){
+        dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Target File')
+      }else{
 
-          console.log("1.2 Sponsor sends id file")
-          this.$toasted.success(`1.2 Sponsor sends id file`, { icon: 'fingerprint' })
+        try {
+          let path = result[0]
+          fs.statSync(path);
+          this.PathForm.train_target_path = path
+        } catch (err) {
+          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Target File')
+          console.log('Please Select A Train Target File')
+        }  
 
-          // Create 'Local_Data/id/task_id/' folder
-          // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
-          // fs.mkdirSync(new_address, { recursive: true})
+      }
+    },
+
+    onSubmit (e) {
+      let vm = this;
+      if (this.task_id == ""){
+        dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
+      }else{
+        
+        let both_path_validation = true
+        // if (vm.PathForm.train_data_path == ""){
+        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
+        // }
+        try {
+          fs.statSync(vm.PathForm.train_data_path);
+        } catch (err) {
+          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
+          console.log('Please Select A Train Data File')
+          both_path_validation = false
+        }
+
+        try {
+          fs.statSync(vm.PathForm.train_id_path);
+        } catch (err) {
+          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train ID File')
+          console.log('Please Select A Train ID File')
+          both_path_validation = false
+        }
+
+        try {
+          fs.statSync(vm.PathForm.train_target_path);
+        } catch (err) {
+          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Target File')
+          console.log('Please Select A Train Target File')
+          both_path_validation = false
+        }
+        
+        if(both_path_validation == true){
+          // db.serialize(function() {
+          //   let update_sentence = 'UPDATE "User_Chosen_Path"'
+          //             +' SET "train_data_path" = "' + vm.PathForm.train_data_path + '",'
+          //             +'"train_id_path" = "' + vm.profileForm.default_id_path + '",'
+          //             +'"train_target_path" = "' + vm.profileForm.default_id_path + '",'
+          //             +'"WHERE "user_id" = ' + vm.sharedState.user_id
+          //   console.log(update_sentence)           
+          //   db.run(update_sentence)
+
+          // });
+          console.log("true")
+          console.log(vm.PathForm.train_data_path,vm.PathForm.train_id_path,vm.PathForm.train_target_path)
+          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
+              (`+vm.sharedState.user_id+`, "` + vm.task_id + `", "` +vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
+          console.log(insert_sentence)
+          db.run(insert_sentence, function(err){
+            if (err){
+              throw(err);
+            }
+
+            let match_id_address = vm.PathForm.train_id_path
+            let hash_id_file_address = null;
+            try{   
+              hash_id_file_address = ex.execSync('./dist/run/run make_hash --id_path ' + match_id_address + ' --root ' + vm.root 
+                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train', {encoding: 'utf8'})  
+              hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
+              console.log("hash_id_file_address", hash_id_file_address)
+            }catch(err){
+              console.log(err)
+            }
+
+            let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
+
+            const find_assistor_data = {
+              assistor_id_list: [2],
+              id_file: hash_id_file_data,
+              task_id: vm.task_id
+            }
+
+            vm.$axios.post('/find_assistor/', find_assistor_data)
+            .then((response) => {
+              let user_id = vm.sharedState.user_id
+
+              const Log_address = vm.root + '/' + user_id + '/task/' + vm.task_id + '/' + 'train/' + 'log.txt'
+              // handle success
+              console.log("1.1 Sponsor calls for help", response)
+              vm.$toasted.success(`1.1 Sponsor calls for help`, { icon: 'fingerprint' })
+
+              console.log("1.2 Sponsor sends id file")
+              vm.$toasted.success(`1.2 Sponsor sends id file`, { icon: 'fingerprint' })
+
+              // Create 'Local_Data/id/task_id/' folder
+              // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
+              // fs.mkdirSync(new_address, { recursive: true})
+
+              try {
+                fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
+                fs.appendFileSync(Log_address, "Task ID: " + vm.task_id + "\n")
+                fs.appendFileSync(Log_address, "---------------------- Train Stage Starts\n")
+                fs.appendFileSync(Log_address, "---------------------- 1. Find assistor\n")
+                fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
+                fs.appendFileSync(Log_address, "1.2 Sponsor sends id file\n")
+              } catch (err) {
+                console.error(err)
+              }
+
+              
+              // console.log("1.3 Sponsor creates " + new_address)
+              // this.$toasted.success("1.3 Sponsor creates " + new_address, { icon: 'fingerprint' })
+
+              try {
+                // fs.appendFileSync(Log_address, "1.3 Sponsor creates " + new_address + "\n")
+                fs.appendFileSync(Log_address, "---------------------- 1. Find assistor Done\n")
+              } catch (err) {
+                console.error(err)
+              }
+
+              vm.task_id = ""
+              vm.$router.push('/')
+
+            })
+            .catch((error) => {
+              // handle error
+              console.log(error)
+              // console.log(error.response.data)
+              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            })
+
+          })          
           
+        }
 
-          try {
-            fs.appendFileSync(Log_address, "---------------------- Train Stage Starts\n")
-            fs.appendFileSync(Log_address, "---------------------- 1. Find assistor\n")
-            fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
-            fs.appendFileSync(Log_address, "1.2 Sponsor sends id file\n")
-          } catch (err) {
-            console.error(err)
-          }
+      }
+            
+    },
 
-          // console.log("1.3 Sponsor creates " + new_address)
-          // this.$toasted.success("1.3 Sponsor creates " + new_address, { icon: 'fingerprint' })
-
-          try {
-            // fs.appendFileSync(Log_address, "1.3 Sponsor creates " + new_address + "\n")
-            fs.appendFileSync(Log_address, "---------------------- 1. Find assistor Done\n")
-          } catch (err) {
-            console.error(err)
-          }
-
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error)
-          // console.log(error.response.data)
-          // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-        })
-
-    }
   },
   created () {
-    const user_id = this.sharedState.user_id
-    this.getUser(user_id)
-    // tooltip
-    $(document).ready(function(){
-      $('[data-toggle="tooltip"]').tooltip(); 
-    })
+    this.get_train_id();
   }
 }
 </script>

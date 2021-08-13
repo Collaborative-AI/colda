@@ -5,8 +5,9 @@ export default {
       // 用户登录后，就算刷新页面也能再次计算出 user_id
       user_id: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id : 0,
       msg: [],
+      root: "./exp",
       set_default: false,
-      receive_request: true,
+      receive_request: false,
       // 用户登录后，就算刷新页面也能再次计算出 user_name
     //   user_name: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_name : '',
       // 用户登录后，就算刷新页面也能再次计算出 user_avatar

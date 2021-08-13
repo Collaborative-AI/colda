@@ -9,30 +9,37 @@ module.exports = {
     //     console.log("zzzz")
     //   }
     // },
-    
+
+
+    publicPath: './',
     pluginOptions: {
       electronBuilder: {
         builderOptions: {
           "productName": "Apollo",
           "appId": "com.apollo.app",
           "compression": "store",
-          "win": {
+          // "win": {
+          //   "target": [
+          //     {
+          //       "target": "nsis",
+          //       "arch": [
+          //         "x64"
+          //       ]
+          //     }
+          //   ]
+          // },
+          // "nsis": {
+          //   "oneClick": false,
+          //   "perMachine": true,
+          //   "allowElevation": true,
+          //   "allowToChangeInstallationDirectory": true,
+          //   "createDesktopShortcut": true,
+          //   "createStartMenuShortcut": true
+          // },
+          "linux": {
             "target": [
-              {
-                "target": "nsis",
-                "arch": [
-                  "x64"
-                ]
-              }
+              "AppImage"
             ]
-          },
-          "nsis": {
-            "oneClick": false,
-            "perMachine": true,
-            "allowElevation": true,
-            "allowToChangeInstallationDirectory": true,
-            "createDesktopShortcut": true,
-            "createStartMenuShortcut": true
           },
           "directories": {
             "output": "./build"

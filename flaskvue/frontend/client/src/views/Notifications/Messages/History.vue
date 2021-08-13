@@ -200,7 +200,7 @@ export default {
       },
       // Log_content_array: null,
       isSponsor: false,
-      root: '../../../package/exp',
+      root: store.state.root,
     }
   },
   methods: {

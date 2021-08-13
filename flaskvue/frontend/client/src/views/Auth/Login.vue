@@ -71,6 +71,15 @@ export default {
         return false
       }
 
+      // const payload = {
+      //   auth: {
+      //     'username': this.loginForm.username,
+      //     'password': this.loginForm.password
+      //   }
+      // }
+      // // axios 实现Basic Auth需要在config中设置 auth 这个属性即可
+      // this.$axios.post('/tokens', payload)
+
       const path = '/tokens'
       // axios 实现Basic Auth需要在config中设置 auth 这个属性即可
       this.$axios.post(path, {}, {

@@ -39,17 +39,29 @@
       2. sudo apt install python3 python3-pip tmux htop
       3. sudo pip3 install pipenv
       4. sudo apt-get install python-flask
+      5. sudo apt install python3-flask
+
 
 **Clone File from Github:**
 git clone https://github.com/AI-Apollo/Apollo.git (first time)
-cd Apollo/Apollo/flaskvue/backend
+
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1  (first time)
+
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2 (first time)
+
+sudo update-alternatives --config python (type in 2, enter; first time)
+
+cd Application/flaskvue/backend
 
 sudo passwd (first time)
 
 su (password: 1) (every time)
 
 pipenv install (every time)
+
 pipenv shell (every time)
+
+pipenv install gunicorn==19.7.1
 
 gunicorn --bind 0.0.0.0:80 manage:app ((every time for running)
 
@@ -66,7 +78,7 @@ kill kidnum
 
 sudo fuser -k 80/tcp (gunicorn connection fail)
 
-
+screen
 
 ctrl a + d (detached screen inside)
 

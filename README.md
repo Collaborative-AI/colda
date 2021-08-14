@@ -42,7 +42,11 @@
 
 **Clone File from Github:**
 git clone https://github.com/AI-Apollo/Apollo.git (first time)
-cd Apollo/Apollo/flaskvue/backend
+
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1  
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 2 
+sudo update-alternatives --config python (type in 2, enter)
+cd Application/flaskvue/backend
 
 sudo passwd (first time)
 

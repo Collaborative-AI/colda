@@ -41,6 +41,7 @@ module.exports = {
               "AppImage"
             ]
           },
+          "extraResources": ["./dist/**"],
           "directories": {
             "output": "./build"
           }

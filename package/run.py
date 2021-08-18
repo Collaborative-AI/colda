@@ -1,4 +1,6 @@
 import argparse
+from make_train_local import make_train_local
+from make_test_local import make_test_local
 from make_hash import make_hash
 from save_match_id import save_match_id
 from make_match_idx import make_match_idx
@@ -27,7 +29,11 @@ args = vars(parser.parse_args())
 
 def main():
     func = args['func']
-    if func == 'make_hash':
+    if func == 'make_train_local':
+        make_train_local(args)
+    elif func == 'make_test_local':
+        make_test_local(args)
+    elif func == 'make_hash':
         make_hash(args)
     elif func == 'save_match_id':
         save_match_id(args)

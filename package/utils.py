@@ -43,8 +43,10 @@ def load(path, mode='pickle'):
 
 def log(msg, root, self_id, task_id, test_id=None):
     if test_id is None:
+        makedir_exist_ok(os.path.join(root, self_id, 'task', task_id, 'train'))
         log_path = os.path.join(root, self_id, 'task', task_id, 'train', 'log.txt')
     else:
+        makedir_exist_ok(os.path.join(root, self_id, 'task', task_id, 'test', test_id))
         log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'log.txt')
     with open(log_path, 'a') as f:
         f.write(msg + '\n')

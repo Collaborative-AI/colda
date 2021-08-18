@@ -8,6 +8,10 @@ python baseline.py --root ./data --data_name BostonHousing --task_id 123 --num_u
 python baseline.py --root ./data --data_name BostonHousing --task_id 123 --num_users 2 --match_rate 1
 python baseline.py --root ./data --data_name BostonHousing --task_id 123 --num_users 2 --match_rate 0.5
 
+# local
+./dist/run/run.exe make_train_local --root ./exp --self_id 0 --task_id abc --data_path ./data/BostonHousing/2/123/1.0/0/train/data.csv --target_path ./data/BostonHousing/2/123/1.0/0/train/target.csv
+./dist/run/run.exe make_test_local --root ./exp --self_id 0 --task_id abc --test_id kdg --data_path ./data/BostonHousing/2/123/1.0/0/test/data.csv --target_path ./data/BostonHousing/2/123/1.0/0/test/target.csv
+
 # default
 # hash id
 ./dist/run/run.exe make_hash --id_path ./data/BostonHousing/2/123/1.0/0/all/id.csv --root ./exp --self_id 0 --mode default

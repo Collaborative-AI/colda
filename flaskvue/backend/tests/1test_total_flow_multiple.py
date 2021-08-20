@@ -94,7 +94,8 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         task_id = json_response['task_id']
 
         list_content = [2,3]
-        file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19]]
+        # file = [['a','b','c'],[8,1,2],[4,5,6],[3,3,6],[12],[16],[17,19]]
+        file = "8\n4\n3\n12\n16\n17"
         data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -160,12 +161,14 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         # 6. assistors call: match_assistor_id() (in match_id.py) and upload file
         # assistors upload ID file
         headers = self.get_token_auth_headers('unittest2', '123')
-        file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[12],[16],[17],[18]]
+        # file_content = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6],[12],[16],[17],[18]]
+        file_content = "0\n4\n\n1\n12\n16\n17\n18"
         data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_assistor_id/', headers=headers, data=data)
 
         headers = self.get_token_auth_headers('unittest3', '123')
-        file_content = [['a','b','c'],[2,1,2],[3,5,6],[4,3,6],[5],[12],[18]]
+        # file_content = [['a','b','c'],[2,1,2],[3,5,6],[4,3,6],[5],[12],[18]]
+        file_content = "2\n3\n4\n5\n12\n18"
         data = json.dumps({'task_id': task_id, 'file': file_content})
         response = self.client.post('/match_assistor_id/', headers=headers, data=data)
 
@@ -261,8 +264,9 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('assistor_random_id_pair'))
         # test match id file
         match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set([4,12,16,17]))
-        self.assertEqual(set(json.loads(match_id_file_list[1])), set([3,4,12]))
+        print("match_id_file_list", match_id_file_list)
+        self.assertEqual(set(json.loads(match_id_file_list[0])), set(["4","12","16","17"]))
+        self.assertEqual(set(json.loads(match_id_file_list[1])), set(["3","4","12"]))
 
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'task_id': task_id})
@@ -273,7 +277,7 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
         match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set([4,12,16,17]))
+        self.assertEqual(set(json.loads(match_id_file_list[0])), set(["4","12","16","17"]))
 
         headers = self.get_token_auth_headers('unittest3', '123')
         data = json.dumps({'task_id': task_id})
@@ -284,17 +288,40 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
         match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set([3,4,12]))
+        self.assertEqual(set(json.loads(match_id_file_list[0])), set(["3","4","12"]))
 
         # 10. sponsor calls send_situation() (in send_situation.py)
+        # headers = self.get_token_auth_headers('unittest', '123')
+        # residual_list = [[[1,2,3], [4,5,6], [7,8,9]], [[1,2], [3,4]]]
+        # data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
+        # response = self.client.post('/send_situation/', headers=headers, data=data)
+        # self.assertEqual(response.status_code, 200)
+        # json_response = json.loads(response.get_data(as_text=True))
+        # self.assertEqual(json_response['message'], 'send situation successfully!')
+
+        headers = self.get_token_auth_headers('unittest3', '123')
+        data = json.dumps({'task_id': task_id})
+        response = self.client.post('/assistor_write_match_index_done/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['assistor_write_match_index_done'], 'Assistors dont finish')
+
         headers = self.get_token_auth_headers('unittest', '123')
         residual_list = [[[1,2,3], [4,5,6], [7,8,9]], [[1,2], [3,4]]]
         data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
         response = self.client.post('/send_situation/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['message'], 'send situation successfully!')
+        self.assertEqual(json_response['message'], 'Add Message Done, but not add unread situation')
 
+        headers = self.get_token_auth_headers('unittest2', '123')
+        data = json.dumps({'task_id': task_id})
+        response = self.client.post('/assistor_write_match_index_done/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['assistor_write_match_index_done'], 'Send unread situation')
+
+        
         queries = Message.query.filter(Message.assistor_id != 1, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
         self.assertEqual(len(queries), len(list_content))
         for i in range(len(queries)):
@@ -400,11 +427,18 @@ class Test_total_flow_multiple_APITestCase(unittest.TestCase):
             response = self.client.post('/send_output/', headers=headers, data=data)
             self.assertEqual(response.status_code, 200)
             json_response = json.loads(response.get_data(as_text=True))
-            self.assertEqual(json_response['send_output'], "send output successfully")
+            self.assertEqual(json_response['send_output'], "Sponsor doesnt finish training")
             queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
             self.assertEqual(len(queries), 2)
             self.assertEqual(queries[-1].sender_id, 2)
             self.assertEqual(json.loads(queries[-1].output), [[3,123,6], [88,5,6], [7,99,9]])
+
+            headers = self.get_token_auth_headers('unittest', '123')
+            data = json.dumps({'task_id': task_id})
+            response = self.client.post('/Sponsor_situation_training_done/', headers=headers, data=data)
+            self.assertEqual(response.status_code, 200)
+            json_response = json.loads(response.get_data(as_text=True))
+            self.assertEqual(json_response['Sponsor_situation_training_done'], "Assistors havent upload all output")
 
             headers = self.get_token_auth_headers('unittest3', '123')
             output_content = [[6,123,6], [88,5,6], [7,87.6,9]]

@@ -185,7 +185,7 @@ export default {
           console.log(vm.PathForm.train_data_path,vm.PathForm.train_id_path,vm.PathForm.train_target_path)
           let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
               (`+vm.sharedState.user_id+ `,"train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
-          console.log(insert_sentence)
+          console.log("insert_sentence", insert_sentence)
           db.run(insert_sentence, function(err){
             if (err){
               console.log(err);
@@ -238,7 +238,7 @@ export default {
                 fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
                 fs.appendFileSync(Log_address, "1.2 Sponsor sends id file\n")
               } catch (err) {
-                console.error(err)
+                console.log(err)
               }
 
               
@@ -249,7 +249,7 @@ export default {
                 // fs.appendFileSync(Log_address, "1.3 Sponsor creates " + new_address + "\n")
                 fs.appendFileSync(Log_address, "---------------------- 1. Find assistor Done\n")
               } catch (err) {
-                console.error(err)
+                console.log(err)
               }
 
               vm.task_id = ""

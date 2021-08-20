@@ -5,8 +5,17 @@ export default {
       // 用户登录后，就算刷新页面也能再次计算出 user_id
       user_id: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id : 0,
       msg: [],
-      root: __dirname + "/../exp",
-      exe_position: __dirname + '/../dist/run/run.exe',
+
+      // development
+      root: "./exp",
+      exe_position: './dist/run/run',
+
+      // production
+      // root: __dirname + "/../exp",
+      // exe_position: __dirname + '/../dist/run/run.exe',
+
+
+
       set_default: false,
       receive_request: false,
       // 用户登录后，就算刷新页面也能再次计算出 user_name

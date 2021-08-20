@@ -88,7 +88,8 @@ class FindAPITestCase(unittest.TestCase):
         task_id = json_response['task_id']
 
         list_content = [2,3]
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
+        # file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
+        file = "1\n2\n3"
         data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -104,7 +105,8 @@ class FindAPITestCase(unittest.TestCase):
             self.assertEqual(queries[i].sponsor_id, 1) 
             self.assertEqual(queries[i].task_id, task_id)
             self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
-            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 4, 1]))
+            # self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 4, 1]))
+            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set(["1", "2", "3"]))
 
         # check the row that sponsor to sponsor
         queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == 1, Matched.test_indicator == "train").all()

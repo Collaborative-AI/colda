@@ -29,6 +29,7 @@ import db from '../../db'
 const fs = window.require('fs');
 const {dialog} = window.require('electron').remote
 const ex = window.require("child_process");
+const path = window.require('path');
 // const store = require('../../store').defaultv
 // const $ = require('jquery')
 
@@ -195,73 +196,83 @@ export default {
             let hash_id_file_address = null;
             try{   
               // + './dist/run/run make_hash --id_path '
-              let aa = vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
-                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train'
-              console.log("make_hash**********", aa, '%%', vm.exe_position, '%%%', __dirname, '###', __dirname + '/../')
+              // let aa = vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
+              //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train'
+              // console.log("make_hash**********", aa, '%%', vm.exe_position, '%%%', __dirname, '###', __dirname + '/../')
               hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
                                       + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train', {encoding: 'utf8'})  
               hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
+              hash_id_file_address = hash_id_file_address.split(path.sep).join('/')
               console.log("hash_id_file_address", hash_id_file_address)
             }catch(err){
               console.log(err)
             }
 
-            let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
-
-            const find_assistor_data = {
-              assistor_id_list: [2],
-              id_file: hash_id_file_data,
-              task_id: vm.task_id
+            
+          // let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
+          //     console.log(hash_id_file_data)
+            try{
+              let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
+              console.log(hash_id_file_data)
+            } catch (err) {
+              console.log(err)
             }
+            
 
-            vm.$axios.post('/find_assistor/', find_assistor_data)
-            .then((response) => {
-              let user_id = vm.sharedState.user_id
+            // const find_assistor_data = {
+            //   assistor_id_list: [2],
+            //   id_file: hash_id_file_data,
+            //   task_id: vm.task_id
+            // }
 
-              const Log_address = vm.root + '/' + user_id + '/task/' + vm.task_id + '/' + 'train/' + 'log.txt'
-              // handle success
-              console.log("1.1 Sponsor calls for help", response)
-              vm.$toasted.success(`1.1 Sponsor calls for help`, { icon: 'fingerprint' })
+            // vm.$axios.post('/find_assistor/', find_assistor_data)
+            // .then((response) => {
+            //   let user_id = vm.sharedState.user_id
 
-              console.log("1.2 Sponsor sends id file")
-              vm.$toasted.success(`1.2 Sponsor sends id file`, { icon: 'fingerprint' })
+            //   const Log_address = vm.root + '/' + user_id + '/task/' + vm.task_id + '/' + 'train/' + 'log.txt'
+            //   // handle success
+            //   console.log("1.1 Sponsor calls for help", response)
+            //   vm.$toasted.success(`1.1 Sponsor calls for help`, { icon: 'fingerprint' })
 
-              // Create 'Local_Data/id/task_id/' folder
-              // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
-              // fs.mkdirSync(new_address, { recursive: true})
+            //   console.log("1.2 Sponsor sends id file")
+            //   vm.$toasted.success(`1.2 Sponsor sends id file`, { icon: 'fingerprint' })
 
-              try {
-                fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
-                fs.appendFileSync(Log_address, "Task ID: " + vm.task_id + "\n")
-                fs.appendFileSync(Log_address, "---------------------- Train Stage Starts\n")
-                fs.appendFileSync(Log_address, "---------------------- 1. Find assistor\n")
-                fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
-                fs.appendFileSync(Log_address, "1.2 Sponsor sends id file\n")
-              } catch (err) {
-                console.log(err)
-              }
+            //   // Create 'Local_Data/id/task_id/' folder
+            //   // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
+            //   // fs.mkdirSync(new_address, { recursive: true})
+
+            //   try {
+            //     fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
+            //     fs.appendFileSync(Log_address, "Task ID: " + vm.task_id + "\n")
+            //     fs.appendFileSync(Log_address, "---------------------- Train Stage Starts\n")
+            //     fs.appendFileSync(Log_address, "---------------------- 1. Find assistor\n")
+            //     fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
+            //     fs.appendFileSync(Log_address, "1.2 Sponsor sends id file\n")
+            //   } catch (err) {
+            //     console.log(err)
+            //   }
 
               
-              // console.log("1.3 Sponsor creates " + new_address)
-              // this.$toasted.success("1.3 Sponsor creates " + new_address, { icon: 'fingerprint' })
+            //   // console.log("1.3 Sponsor creates " + new_address)
+            //   // this.$toasted.success("1.3 Sponsor creates " + new_address, { icon: 'fingerprint' })
 
-              try {
-                // fs.appendFileSync(Log_address, "1.3 Sponsor creates " + new_address + "\n")
-                fs.appendFileSync(Log_address, "---------------------- 1. Find assistor Done\n")
-              } catch (err) {
-                console.log(err)
-              }
+            //   try {
+            //     // fs.appendFileSync(Log_address, "1.3 Sponsor creates " + new_address + "\n")
+            //     fs.appendFileSync(Log_address, "---------------------- 1. Find assistor Done\n")
+            //   } catch (err) {
+            //     console.log(err)
+            //   }
 
-              vm.task_id = ""
-              vm.$router.push('/')
+            //   vm.task_id = ""
+            //   vm.$router.push('/')
 
-            })
-            .catch((error) => {
-              // handle error
-              console.log(error)
-              // console.log(error.response.data)
-              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-            })
+            // })
+            // .catch((error) => {
+            //   // handle error
+            //   console.log(error)
+            //   // console.log(error.response.data)
+            //   // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            // })
 
           })          
           

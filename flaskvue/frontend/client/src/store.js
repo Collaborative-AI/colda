@@ -7,12 +7,20 @@ export default {
       msg: [],
 
       // development
-      root: "./exp",
-      exe_position: './dist/run/run',
+      // // linux
+      // root: "./exp",
+      // exe_position: './dist/run/run',
+      
+      // windows
+      // root: __dirname + "/../../../../../../exp",
+      // exe_position: __dirname + "/../../../../../../dist/run/run.exe",
+      
+      // root: __dirname + "/../../../../../../exp",
+      // exe_position: __dirname + "/../../../../../../dist/run/run.exe",
 
       // production
-      // root: __dirname + "/../exp",
-      // exe_position: __dirname + '/../dist/run/run.exe',
+      root: __dirname + "/../exp",
+      exe_position: __dirname + '/../dist/run/run.exe',
 
 
 

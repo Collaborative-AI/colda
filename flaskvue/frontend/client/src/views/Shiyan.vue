@@ -64,6 +64,7 @@
     <button id="selectFile" @click="get_default_file_path()">选择文件</button>
     {{ xinxi }}
 
+    <button @click="test_path()">测试路径</button>
   </div>
 </template>
 
@@ -85,7 +86,7 @@ const ex = window.require("child_process");
 // const dialog1 = require('electron');
 // import dialog from 'electron';
 const sqlite3 = window.require('sqlite3').verbose();
-
+const path = window.require('path');
 
 // import $ from 'jquery'
 
@@ -152,7 +153,26 @@ export default {
   },
 
   methods: {
+    test_path() {
+      console.log(__dirname)
+      // let lujing ='C:/Users/Lucky/Desktop/Apolll/Application/flaskvue/frontend/client/node_modules/electron/dist/resources/electron.asar/renderer/../../../../../../exp/1/task/75925eee-9e2c-4f43-b1d5-d2d94c09512d/train/id/1.csv'
+      let lujing = __dirname + "/../"
+      console.log(typeof(lujing))
+      // lujing = lujing.split(path.sep).join('/')
+      // console.log(lujing)
 
+      // let a = fs.readFileSync(lujing, {encoding:'utf8', flag:'r'});
+      // console.log(a)
+      fs.readdir(lujing,function(err,files){
+	if(err){
+		return console.error(err);
+	}
+	files.forEach(function(file){
+		console.info(file);
+	});
+});
+    
+    },
     get_default_file_path() {
       // console.log("aaaa")
       // let result = dialog.showOpenDialogSync({

@@ -61,9 +61,13 @@ pipenv install (every time)
 
 pipenv shell (every time)
 
-pipenv install gunicorn==19.7.1
+pipenv install gunicorn==19.7.1 （every time）
+
+screen
 
 gunicorn --bind 0.0.0.0:80 manage:app ((every time for running)
+
+ctrl a + d
 
 ```py
 

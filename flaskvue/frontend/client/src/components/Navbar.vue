@@ -236,7 +236,7 @@ export default {
               fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
               fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
             let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
 
@@ -255,7 +255,7 @@ export default {
                   fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
                   fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
                 } catch (err) {
-                  console.error(err)
+                  console.log(err)
                 }
               })
               .catch((error) => {
@@ -312,7 +312,7 @@ export default {
           fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Update the match id notification\n")
         } catch (err) {
-          console.error(err)
+          console.log(err)
         }
 
         let check_sponsor = cur_unread_match_id_Taskid_dict[task_id]
@@ -322,7 +322,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.2 Unread_match_id_sponsor\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
           this.unread_match_id_sponsor(task_id)
         }  
@@ -331,7 +331,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.2 Unread_match_id_assistor\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
           this.unread_match_id_assistor(task_id)
         }
@@ -362,7 +362,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.3 Sponsor gets matched id file\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
 
           for(let i = 0;i < response.data.match_id_file.length; i++){
@@ -388,7 +388,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos + "\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
             // match_id (from different assistor) to index 
@@ -404,16 +404,16 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.5 Sponsor matches id to index\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
           }
 
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(8000); // 程序滞留5000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(8000); // 程序滞留5000ms
 
           // store initial situation
           // Create 'Local_Data/id/task_id/0' folder
@@ -442,7 +442,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
             // Read Files
@@ -468,16 +468,23 @@ export default {
 
             // send initial situation
             // async
+
+            // function sleep(time) {
+            //   let startTime = window.performance.now();
+            //   while (window.performance.now() - startTime < time) {}
+            // }
+            // sleep(5000); // 程序滞留5000ms
+
             vm.$axios.post('/send_situation/', send_situation_payload)
               .then((response) => {
               // handle success
-              console.log("3.7 Sponsor sends all situations")
+              console.log("3.7 Sponsor sends all situations", response)
               vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
               try {
                 fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
                 fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
               } catch (err) {
-                console.error(err)
+                console.log(err)
               }
             })
             .catch((error) => {
@@ -517,7 +524,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.3 Assistor gets matched id file\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
           
           const from_id = response.data.sponsor_random_id;
@@ -543,7 +550,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.4 Assistor Saved Matched id File at " + save_match_id_file_pos + "\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
 
           // match id to index from sponsor
@@ -560,13 +567,30 @@ export default {
             fs.appendFileSync(Log_address, "3.5 Assistor matches id to index\n")
             fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
+
+          const path = `/assistor_write_match_index_done/`
+
+          const assistor_write_match_index_done_data = {
+            task_id: task_id
+          } 
+          
+          vm.$axios.post(path, assistor_write_match_index_done_data)
+            .then((response) => {
+                console.log('3.6 Assistor update done');
+            })
+            .catch((error)=>{
+              console.log(error)
+            })   
+
+
+
 
         })
         .catch((error) => {
           // handle error
-          console.error(error)
+          console.log(error)
         }) 
     },
 
@@ -585,7 +609,7 @@ export default {
           fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation\n")
           fs.appendFileSync(Log_address, "4.1 Update the situation notification\n")
         } catch (err) {
-          console.error(err)
+          console.log(err)
         }
 
         let check_sponsor = cur_unread_situation_Taskid_dict[task_id];
@@ -602,15 +626,16 @@ export default {
     },
 
     unread_situation_sponsor(rounds, task_id) {
-      
-      console.log("4.2 Cur round is:", rounds, task_id);
-      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
       let vm = this;
+      console.log("4.2 Cur round is:" + rounds + task_id);
+      vm.$toasted.success("4.2 Cur round is:" + rounds +  task_id, { icon: 'fingerprint' })
+      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+      
 
       try {
         fs.appendFileSync(Log_address, "4.2 Cur round is: " + rounds.toString() + "\n")
       } catch (err) {
-        console.error(err)
+        console.log(err)
       }
       
       let select_train_data_path = 'SELECT train_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
@@ -635,8 +660,28 @@ export default {
           fs.appendFileSync(Log_address, "4.3 Sponsor round " + rounds + " training done." + "\n")
           fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
         } catch (err) {
-          console.error(err)
+          console.log(err)
         }
+
+
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(5000); // 程序滞留5000ms
+        const path = `/Sponsor_situation_training_done/`
+
+        const Sponsor_situation_training_done_data = {
+          task_id: task_id
+        } 
+        
+        vm.$axios.post(path, Sponsor_situation_training_done_data)
+          .then((response) => {
+            console.log("4.4 Sponsor update training done")
+          })
+          .catch((error)=>{
+            console.log(error)
+          })  
 
       });
 
@@ -648,11 +693,11 @@ export default {
       let vm = this;
       const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
 
-      function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(5000); // 程序滞留5000ms
+      // function sleep(time) {
+      //       let startTime = window.performance.now();
+      //       while (window.performance.now() - startTime < time) {}
+      //     }
+      //     sleep(5000); // 程序滞留5000ms
 
       const payload = {
         task_id: task_id,
@@ -670,7 +715,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "4.2 assistor gets situation file\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
 
           const from_id = response.data.sender_random_id;
@@ -695,14 +740,14 @@ export default {
           try {
             fs.appendFileSync(Log_address, "4.3 Assistor Saved Residual File!\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
 
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(5000); // 程序滞留5000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(5000); // 程序滞留5000ms
 
           // Assistor trains the data
           let select_default_train_data_path = 'SELECT default_train_data_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
@@ -724,7 +769,7 @@ export default {
               try {
                 fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
               } catch (err) {
-                console.error(err)
+                console.log(err)
               }
               
             }catch(err){
@@ -749,7 +794,7 @@ export default {
                 fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
                 fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
               } catch (err) {
-                console.error(err)
+                console.log(err)
               }
             })
             .catch((error) => {
@@ -780,7 +825,7 @@ export default {
           fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output\n")
           fs.appendFileSync(Log_address, "5.1 Update the output notification\n")
         } catch (err) {
-          console.error(err)
+          console.log(err)
         }
         let rounds = cur_unread_output_Rounds_dict[task_id];
         this.unread_output_singleTask(rounds, task_id);
@@ -808,7 +853,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "5.2 Sponsor gets output model\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
           // iterate the output file
           for(let i = 0;i < response.data.output.length; i++){
@@ -839,7 +884,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "5.3 Sponsor saves Output model\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
           }
 
@@ -862,7 +907,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
             // terminate
@@ -897,7 +942,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
             let all_residual_data = [];
@@ -931,7 +976,7 @@ export default {
                   fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
                   fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
                 } catch (err) {
-                  console.error(err)
+                  console.log(err)
                 }
               })
               .catch((error) => {
@@ -946,7 +991,7 @@ export default {
         })
         .catch((error) => {
           // handle error
-          console.error(error)
+          console.log(error)
         }) 
     },
 
@@ -989,7 +1034,7 @@ export default {
               fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
               fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
             let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
@@ -1008,7 +1053,7 @@ export default {
                   fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
                   fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
                 } catch (err) {
-                  console.error(err)
+                  console.log(err)
                 }
               })
               .catch((error) => {
@@ -1044,7 +1089,7 @@ export default {
           fs.appendFileSync(Log_address, "-----------------------3.Unread Test Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Test: Update the Test match id notification\n")
         } catch (err) {
-          console.error(err)
+          console.log(err)
         }
 
         let check_sponsor = cur_unread_test_match_id_Testid_dict[test_id]
@@ -1055,7 +1100,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.2 Test: Unread_test_match_id_sponsor\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
           this.unread_test_match_id_sponsor(task_id, test_id, cur_max_round)
         }  
@@ -1064,7 +1109,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.2 Test: Unread_test_match_id_assistor\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
           this.unread_test_match_id_assistor(task_id, test_id, cur_max_round)
         }
@@ -1094,7 +1139,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.4 Test: Sponsor gets matched id file\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
 
           for(let i = 0;i < response.data.match_id_file.length; i++){
@@ -1121,7 +1166,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.5 Test: Sponsor Saved Matched id File!\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
             try{
@@ -1136,16 +1181,16 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.6 Test: Sponsor matches id to index\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
           }
 
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(8000); // 程序滞留8000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(8000); // 程序滞留8000ms
 
           // function find_Train_Models(startPath) {
           // let result=[];
@@ -1177,7 +1222,7 @@ export default {
           // try {
           //   fs.appendFileSync(Log_address, "3.6 Test: Sponsor gets all train models\n")
           // } catch (err) {
-          //   console.error(err)
+          //   console.log(err)
           // }
           // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
           // fs.mkdirSync(Test_Output_folder, { recursive: true});
@@ -1209,7 +1254,7 @@ export default {
               fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
               fs.appendFileSync(Log_address, "--------------------------3. Unread Test Match ID Done\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
           });
           
@@ -1244,7 +1289,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.4 Test: assistor gets matched id file\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
 
           const from_id = response.data.sponsor_random_id;
@@ -1269,7 +1314,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.5 Test: Assistor Saved Matched id File!\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
 
           try{
@@ -1284,14 +1329,14 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.6 Test: Assistor matches id to index\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
 
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(5000); // 程序滞留5000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(5000); // 程序滞留5000ms
 
           // function find_Train_Models(startPath) {
           // let result=[];
@@ -1323,7 +1368,7 @@ export default {
           // try {
           //   fs.appendFileSync(Log_address, "3.6 Test: assistor gets all train models\n")
           // } catch (err) {
-          //   console.error(err)
+          //   console.log(err)
           // }
 
           // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
@@ -1370,7 +1415,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
             let all_test_output = [];
@@ -1395,7 +1440,7 @@ export default {
                 fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
                 fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
               } catch (err) {
-                console.error(err)
+                console.log(err)
               }
             })
             .catch((error) => {
@@ -1406,7 +1451,7 @@ export default {
         })
         .catch((error) => {
           // handle error
-          console.error(error)
+          console.log(error)
         }) 
     },
 
@@ -1426,7 +1471,7 @@ export default {
           fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output\n")
           fs.appendFileSync(Log_address, "4.1 Update Test output notification\n")
         } catch (err) {
-          console.error(err)
+          console.log(err)
         }
         this.unread_test_output_singleTask(task_id, test_id);
       }
@@ -1451,7 +1496,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "4.2 Test: Sponsor gets assistors' Test output model\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
           // iterate the match_id_file
           for(let i = 0;i < response.data.output.length; i++){
@@ -1486,7 +1531,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "4.3 Test: Sponsor saves assistors' Output model\n")
           } catch (err) {
-            console.error(err)
+            console.log(err)
           }
 
           let max_round = JSON.parse(response.data.output[0]).length - 1;
@@ -1511,14 +1556,14 @@ export default {
             try {
               fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
 
             try {
               fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
               fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
             } catch (err) {
-              console.error(err)
+              console.log(err)
             }
           });
           
@@ -1527,7 +1572,7 @@ export default {
         })
         .catch((error) => {
             // handle error
-          console.error(error)
+          console.log(error)
         }) 
 
           
@@ -1658,7 +1703,7 @@ export default {
               })
               .catch((error) => {
                 // handle error
-                console.error(error)
+                console.log(error)
               }) 
             }
             

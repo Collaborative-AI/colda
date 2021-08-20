@@ -1,8 +1,8 @@
-"""full_version1
+"""full version 1
 
-Revision ID: d4720db71406
+Revision ID: e250a15a1138
 Revises: 
-Create Date: 2021-08-05 23:13:59.774677
+Create Date: 2021-08-20 11:06:37.593754
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd4720db71406'
+revision = 'e250a15a1138'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,6 +27,7 @@ def upgrade():
     sa.Column('assistor_id_pair', sa.Integer(), nullable=True),
     sa.Column('Matched_id_file', sa.Text(), nullable=True),
     sa.Column('matched_done', sa.Integer(), nullable=True),
+    sa.Column('Assistor_matched_written_done', sa.String(length=120), nullable=True),
     sa.Column('sponsor_random_id', sa.String(length=120), nullable=True),
     sa.Column('assistor_random_id_pair', sa.String(length=120), nullable=True),
     sa.Column('test_indicator', sa.String(length=10), nullable=True),
@@ -73,6 +74,7 @@ def upgrade():
     sa.Column('output', sa.Text(), nullable=True),
     sa.Column('test_indicator', sa.String(length=10), nullable=True),
     sa.Column('test_id', sa.String(length=120), nullable=True),
+    sa.Column('Sponsor_situation_training_done', sa.String(length=120), nullable=True),
     sa.ForeignKeyConstraint(['assistor_id'], ['users.id'], ),
     sa.ForeignKeyConstraint(['sender_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

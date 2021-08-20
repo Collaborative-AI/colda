@@ -235,7 +235,7 @@ export default {
                 fs.appendFileSync(Log_address, "1.2 Test: Sponsor sends id file\n")
                 fs.appendFileSync(Log_address, "---------------------- 1. Test: Find Test assistor Done\n")
               } catch (err) {
-                console.error(err)
+                console.log(err)
               }
 
               // // Upload the matching ID file

@@ -88,7 +88,8 @@ class Find_Test_APITestCase(unittest.TestCase):
         task_id = json_response['task_id']
 
         list_content = [2,3]
-        file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
+        # file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
+        file = "0\n4\n1"
         data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -110,7 +111,8 @@ class Find_Test_APITestCase(unittest.TestCase):
             self.assertEqual(queries[i].sponsor_id, 1) 
             self.assertEqual(queries[i].task_id, task_id)
             self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
-            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 4, 1]))
+            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set(["0", "4", "1"]))
+            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set(["0", "4", "1"]))
 
         # create test id
         headers = self.get_token_auth_headers('unittest', '123')
@@ -119,7 +121,8 @@ class Find_Test_APITestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         test_id = json_response['test_id']
 
-        file = [['a','b','c'],[0,1,2],[5,5,6],[1,3,6]]
+        # file = [['a','b','c'],[0,1,2],[5,5,6],[1,3,6]]
+        file = "0\n5\n1"
         data = json.dumps({'task_id': task_id, 'id_file': file, 'test_id': test_id})
         response = self.client.post('/find_test_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -137,7 +140,7 @@ class Find_Test_APITestCase(unittest.TestCase):
             self.assertEqual(queries[i].task_id, task_id)
             self.assertEqual(queries[i].test_id, test_id)
             self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
-            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 5, 1]))
+            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set(["0", "5", "1"]))
 
         # check the row that sponsor to sponsor
         queries = Matched.query.filter(Matched.task_id == task_id).all()

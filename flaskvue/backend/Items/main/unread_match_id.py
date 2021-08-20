@@ -160,6 +160,55 @@ def get_user_test_match_id(id):
 
     return jsonify(data)
 
+@main.route('/assistor_write_match_index_done/', methods=['POST'])
+@token_auth.login_required
+def assistor_write_match_index_done():
+
+    data = request.get_json()
+
+    if not data:
+        return bad_request('You must post JSON data.')
+    if 'task_id' not in data or not data.get('task_id'):
+        return bad_request('task_id is required.')
+
+    task_id = data.get('task_id')
+    user = User.query.get_or_404(g.current_user.id)
+
+    # Update current done situation
+    Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == g.current_user.id, Matched.test_indicator == "train").update({"Assistor_matched_written_done": "done"})
+    db.session.commit()
+    
+    query = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
+    sponsor_id = query[0].sponsor_id
+
+    assistor_num = len(query) - 1
+
+    cur_assistor_written_done_count = 0
+    for row in query:
+        if row.Assistor_matched_written_done == "done" and row.assistor_id_pair != sponsor_id:
+            cur_assistor_written_done_count += 1
+    
+    if cur_assistor_written_done_count != assistor_num:
+        response = jsonify({"assistor_write_match_index_done": "Assistors dont finish"})
+        return response
+
+    Message_query = Message.query.filter(Message.sender_id == sponsor_id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
+    if not Message_query:
+        response = jsonify({"assistor_write_match_index_done": "Situation doesnt update"})
+        return response
+
+    if Message_query is not None and cur_assistor_written_done_count == assistor_num:
+        for row in query:
+            user = User.query.get_or_404(row.assistor_id_pair)
+            user.add_notification('unread situation', user.new_situation())
+            db.session.commit()
+
+    response = jsonify({"assistor_write_match_index_done": "Send unread situation"})
+    return response
+    
+
+
+
 
 # @main.route('/get_task_id_max_rounds/', methods=['POST'])
 # @token_auth.login_required

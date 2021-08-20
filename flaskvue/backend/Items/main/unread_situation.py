@@ -114,6 +114,50 @@ def get_user_situation(id):
 
     return jsonify(data)  
 
+@main.route('/Sponsor_situation_training_done/', methods=['POST'])
+@token_auth.login_required
+def Sponsor_situation_training_done():
+
+    data = request.get_json()
+
+    if not data:
+        return bad_request('You must post JSON data.')
+    if 'task_id' not in data or not data.get('task_id'):
+        return bad_request('task_id is required.')
+
+    task_id = data.get('task_id')
+
+    rounds = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first().rounds
+
+    return_val = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).update({"Sponsor_situation_training_done": "done"})
+    db.session.commit()
+    print("zzzzzzzzzzzzzzzzzz", return_val)
+    a = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).all()
+    for zz in a:
+        print(zz.Sponsor_situation_training_done)
+    
+    queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
+    assistor_num = len(queries) - 1
+
+    all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
+    output_upload = 0
+    for row in all_cur_round_messages:
+        print("row", row)
+        if row.output:
+            output_upload += 1
+
+        if output_upload == assistor_num:
+            user = User.query.get_or_404(queries[0].sponsor_id)
+            # send message notification to the sponsor when all assistor upload the output
+            print("-----------------sendoutput", g.current_user.id)
+            user.add_notification('unread output', user.new_output())
+            db.session.commit()
+
+            response = jsonify({"Sponsor_situation_training_done": "Send unread output"})
+            return response
+    
+    response = jsonify({"Sponsor_situation_training_done": "Assistors havent upload all output"})
+    return response
 
 @main.route('/send_output/', methods=['POST'])
 @token_auth.login_required
@@ -151,6 +195,8 @@ def send_output():
     message.output = json.dumps(output)
     message.test_indicator = "train"
 
+    # Sponsor_situation_training_done
+
     for i in range(len(queries)):
       if int(queries[i].assistor_id_pair) == g.current_user.id:
         print("----------queries[i].assistor_random_id_pair", queries[i].assistor_random_id_pair)
@@ -163,11 +209,17 @@ def send_output():
     db.session.add(message)
     db.session.commit()
 
+    check_sponsor_training_done = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.Sponsor_situation_training_done == "done").all()
+    if not check_sponsor_training_done:
+        response = jsonify({"send_output": "Sponsor doesnt finish training"})
+        return response
+
     all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
     output_upload = 0
     for row in all_cur_round_messages:
         print("row", row)
         if row.output:
+            print("row.output", row.output)
             output_upload += 1
 
         if output_upload == assistor_num:
@@ -177,9 +229,10 @@ def send_output():
             user.add_notification('unread output', user.new_output())
             db.session.commit()
 
-    dict = {"send_output": "send output successfully"}
-    response = jsonify(dict)
-    
+            response = jsonify({"send_output": "send output successfully"})
+            return response
+
+    response = jsonify({"send_output": "Assistors havent upload all outputs"})
     return response
 
     

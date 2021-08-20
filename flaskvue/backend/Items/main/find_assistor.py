@@ -64,7 +64,7 @@ def find_assistor():
             data_array_id.add(id_file[i])
     
     data_array_id = list(data_array_id)
-
+    print("data_array_id", data_array_id)
 
     # extract ID
     # data_array_id = set()

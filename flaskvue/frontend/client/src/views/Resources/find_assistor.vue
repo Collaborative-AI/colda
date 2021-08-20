@@ -44,6 +44,7 @@ export default {
         train_target_path: "",
       },
       root: store.state.root,
+      exe_position: store.state.exe_position,
     }
   },
   methods: {
@@ -193,7 +194,11 @@ export default {
             let match_id_address = vm.PathForm.train_id_path
             let hash_id_file_address = null;
             try{   
-              hash_id_file_address = ex.execSync('./dist/run/run make_hash --id_path ' + match_id_address + ' --root ' + vm.root 
+              // + './dist/run/run make_hash --id_path '
+              let aa = vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
+                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train'
+              console.log("make_hash**********", aa, '%%', vm.exe_position, '%%%', __dirname, '###', __dirname + '/../')
+              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
                                       + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train', {encoding: 'utf8'})  
               hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
               console.log("hash_id_file_address", hash_id_file_address)

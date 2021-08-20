@@ -70,6 +70,8 @@
 
 <script>
 //const { require } = window
+
+// node electron
 const fs = window.require('fs');
 
 // const xlsx2json = window.require("node-xlsx");
@@ -89,7 +91,9 @@ const sqlite3 = window.require('sqlite3').verbose();
 
 // const remote = window.require('electron').remote 
 // const dialog = remote.dialog;
+
 const {dialog} = window.require('electron').remote
+
 // const dialog = window.require('electron')
 // const { require } = window
 // const fs = require('fs')

@@ -18,27 +18,33 @@ module.exports = {
           "productName": "Apollo",
           "appId": "com.apollo.app",
           "compression": "store",
-          // "win": {
-          //   "target": [
-          //     {
-          //       "target": "nsis",
-          //       "arch": [
-          //         "x64"
-          //       ]
-          //     }
-          //   ]
-          // },
-          // "nsis": {
-          //   "oneClick": false,
-          //   "perMachine": true,
-          //   "allowElevation": true,
-          //   "allowToChangeInstallationDirectory": true,
-          //   "createDesktopShortcut": true,
-          //   "createStartMenuShortcut": true
-          // },
+          "win": {
+            "target": [
+              {
+                "target": "nsis",
+                "arch": [
+                  "x64"
+                ]
+              }
+            ]
+          },
+          "nsis": {
+            "oneClick": false,
+            "perMachine": true,
+            "allowElevation": true,
+            "allowToChangeInstallationDirectory": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true
+          },
           "linux": {
             "target": [
               "AppImage"
+            ]
+          },
+          "mac":{
+            "target":[
+              "dmg",
+              "zip"
             ]
           },
           "extraResources": ["./dist/**"],

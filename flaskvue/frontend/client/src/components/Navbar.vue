@@ -135,6 +135,8 @@ export default {
       max_round: 3,
       root: store.state.root,
       picked: "not_receive",
+      exe_position: store.state.exe_position,
+      
     }
   },
   methods: {
@@ -218,7 +220,7 @@ export default {
             console.log("default_train_id_path", default_train_id_path)
             let hash_id_file_address = null;
             try{
-              hash_id_file_address = ex.execSync('./dist/run/run make_hash --id_path ' + default_train_id_path + ' --root ' + vm.root 
+              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_train_id_path + ' --root ' + vm.root 
                                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode train', {encoding: 'utf8'})
               hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
               console.log("hash_id_file_address", hash_id_file_address)
@@ -372,7 +374,7 @@ export default {
             // Store match_id file from different assistor
             let save_match_id_file_pos = null;
             try{
-              save_match_id_file_pos = ex.execSync('./dist/run/run save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
               save_match_id_file_pos = save_match_id_file_pos.replace(/\n/g, '')  
               console.log(save_match_id_file_pos)
@@ -391,7 +393,7 @@ export default {
 
             // match_id (from different assistor) to index 
             try{
-              let make_match_idx_done = ex.execSync('./dist/run/run make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              let make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
             }catch(err){
               console.log(err)
@@ -426,7 +428,7 @@ export default {
             console.log("train_target_path", train_target_path)
             let make_residual_multiple_paths = null;
             try{
-              make_residual_multiple_paths = ex.execSync('./dist/run/run make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --round 0 ' + ' --target_path ' + train_target_path, {encoding: 'utf8'})
               make_residual_multiple_paths = make_residual_multiple_paths.replace(/\n/g, '')
               make_residual_multiple_paths = make_residual_multiple_paths.split('?')
@@ -525,7 +527,7 @@ export default {
           // Store match_id file from sponsor
           let save_match_id_file_pos = null;
           try{
-            save_match_id_file_pos = ex.execSync('./dist/run/run save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+            save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
             save_match_id_file_pos = save_match_id_file_pos.replace(/\n/g, '')
             console.log(save_match_id_file_pos)
@@ -546,7 +548,7 @@ export default {
 
           // match id to index from sponsor
           try{
-            let make_match_idx_done = ex.execSync('./dist/run/run make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+            let make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
           }catch(err){
             console.log(err)
@@ -619,7 +621,7 @@ export default {
         let train_data_path = row.train_data_path
         console.log("train_data_path", train_data_path)
         try{
-          let train_output = ex.execSync('./dist/run/run make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+          let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
             + ' --task_id '+ task_id + ' --round ' + rounds + ' --data_path ' + train_data_path, {encoding: 'utf8'})
           
           console.log("4.3 Sponsor round " + rounds + " training done.");
@@ -678,7 +680,7 @@ export default {
           // Store residual file from sponsor
           let save_residual_file_pos = null;
           try{
-            save_residual_file_pos = ex.execSync('./dist/run/run save_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+            save_residual_file_pos = ex.execSync(vm.exe_position + ' save_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
             save_residual_file_pos = save_residual_file_pos.replace(/\n/g, '')
             console.log(save_residual_file_pos)
@@ -712,7 +714,7 @@ export default {
             console.log("default_train_data_path",default_train_data_path)
             let Assistor_train_output_path = null;
             try{
-              Assistor_train_output_path = ex.execSync('./dist/run/run make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + from_id + ' --data_path ' + default_train_data_path, {encoding: 'utf8'})
               Assistor_train_output_path = Assistor_train_output_path.replace(/\n/g, '')
               console.log(Assistor_train_output_path)
@@ -822,7 +824,7 @@ export default {
             // Store the output from assistor
             let save_output_pos = null;
             try{
-              save_output_pos = ex.execSync('./dist/run/run save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
               save_output_pos = save_output_pos.replace(/\n/g, '')
               console.log(save_output_pos)
@@ -849,7 +851,7 @@ export default {
             let train_target_path = row.train_target_path
             console.log("train_target_path", train_target_path)
             try{
-              let make_result_done = ex.execSync('./dist/run/run make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              let make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + train_target_path, {encoding: 'utf8'})
             }catch(err){
               console.log(err)
@@ -880,7 +882,7 @@ export default {
 
             let make_residual_multiple_paths = null;
             try{
-              make_residual_multiple_paths = ex.execSync('./dist/run/run make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --round ' + (rounds+1) + ' --target_path ' + train_target_path, {encoding: 'utf8'})
               make_residual_multiple_paths = make_residual_multiple_paths.replace(/\n/g, '')
               make_residual_multiple_paths = make_residual_multiple_paths.split('?')
@@ -971,7 +973,7 @@ export default {
             console.log("default_test_id_path", default_test_id_path)
             let test_hash_id_file_address = null
             try{
-              test_hash_id_file_address = ex.execSync('./dist/run/run make_hash --id_path ' + default_test_id_path + ' --root ' + vm.root 
+              test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_test_id_path + ' --root ' + vm.root 
                                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
               test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
               console.log(test_hash_id_file_address)
@@ -1104,7 +1106,7 @@ export default {
             // Store match_id file from different assistor
             let test_save_match_id_file_pos = null;
             try{
-              test_save_match_id_file_pos = ex.execSync('./dist/run/run save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              test_save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
               test_save_match_id_file_pos = test_save_match_id_file_pos.replace(/\n/g, '')
               console.log(test_save_match_id_file_pos)
@@ -1123,7 +1125,7 @@ export default {
             }
 
             try{
-              let test_make_match_idx_done = ex.execSync('./dist/run/run make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              let test_make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
             }catch(err){
               console.log(err)
@@ -1194,7 +1196,7 @@ export default {
             console.log("test_data_path", test_data_path)
             
             try{
-              let test_done = ex.execSync('./dist/run/run make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --data_path ' + test_data_path, {encoding: 'utf8'})
             }catch(err){
               console.log(err)
@@ -1252,7 +1254,7 @@ export default {
           // Store match_id file from sponsor
           let test_save_match_id_file_pos = null;
           try{
-            test_save_match_id_file_pos = ex.execSync('./dist/run/run save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+            test_save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id + ' --test_id ' + test_id, {encoding: 'utf8'})
             test_save_match_id_file_pos = test_save_match_id_file_pos.replace(/\n/g, '')
             console.log("test_save_match_id_file_pos", test_save_match_id_file_pos)
@@ -1271,7 +1273,7 @@ export default {
           }
 
           try{
-            let make_match_idx_done = ex.execSync('./dist/run/run make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+            let make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id + ' --test_id ' + test_id, {encoding: 'utf8'})
           }catch(err){
             console.log(err)
@@ -1352,7 +1354,7 @@ export default {
 
             let test_outputs_pos = null
             try{
-              test_outputs_pos = ex.execSync('./dist/run/run make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id + ' --data_path ' + default_test_data_path, {encoding: 'utf8'})
               test_outputs_pos = test_outputs_pos.replace(/\n/g, '')
               test_outputs_pos = test_outputs_pos.split('?')
@@ -1465,7 +1467,7 @@ export default {
               // Store test output from assistors
               let test_save_output_pos = null
               try{
-                test_save_output_pos = ex.execSync('./dist/run/run save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+                test_save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                   + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + j, {encoding: 'utf8'})
                 test_save_output_pos = test_save_output_pos.replace(/\n/g, '')
                 console.log("test_save_output_pos", test_save_output_pos)
@@ -1498,7 +1500,7 @@ export default {
             let test_target_path = row.test_target_path
             console.log("test_target_path",test_target_path)
             try{
-              let eval_done = ex.execSync('./dist/run/run make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              let eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round + ' --target_path ' + test_target_path, {encoding: 'utf8'})
             }catch(err){
               console.log(err)

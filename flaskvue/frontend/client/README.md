@@ -17,7 +17,7 @@
     2. npm run electron:serve
 
 3. package:
-    1. npm run dist
+    1. npm run electron:build
 
 
 

@@ -45,6 +45,7 @@ export default {
         test_target_path: "",
       },
       root: store.state.root,
+      exe_position: store.state.exe_position,
     }
   },
   methods: {
@@ -194,7 +195,7 @@ export default {
           let match_id_address = vm.PathForm.test_id_path
           let test_hash_id_file_address = null;
           try{
-            test_hash_id_file_address = ex.execSync('./dist/run/run make_hash --id_path ' + match_id_address + ' --root ' + vm.root 
+            test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + match_id_address + ' --root ' + vm.root 
                                     + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode test' + ' --test_id ' + vm.test_id, {encoding: 'utf8'})
             test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
             console.log(test_hash_id_file_address)

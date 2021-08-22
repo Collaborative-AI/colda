@@ -217,7 +217,12 @@ export default {
             console.log(err)
           }
 
-          let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
+          let test_hash_id_file_data = null
+          try{
+            test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
+          } catch(err){
+            console.log(err)
+          }
 
           const payload = {
             task_id: vm.task_id,

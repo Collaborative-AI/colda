@@ -236,7 +236,6 @@ export default {
             try{
               hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_train_id_path + ' --root ' + vm.root 
                                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode train', {encoding: 'utf8'})
-              hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
               console.log("hash_id_file_address", hash_id_file_address)
             }catch(err){
                 console.log(err)
@@ -390,7 +389,6 @@ export default {
             try{
               save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
-              save_match_id_file_pos = save_match_id_file_pos.replace(/\n/g, '')  
               console.log(save_match_id_file_pos)
             }catch(err){
               console.log(err)
@@ -444,7 +442,6 @@ export default {
             try{
               make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --round 0 ' + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-              make_residual_multiple_paths = make_residual_multiple_paths.replace(/\n/g, '')
               make_residual_multiple_paths = make_residual_multiple_paths.split('?')
               console.log(make_residual_multiple_paths)
             }catch(err){
@@ -494,12 +491,14 @@ export default {
               // handle success
               console.log("3.7 Sponsor sends all situations", response)
               vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
+              
               try {
                 fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
                 fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
               } catch (err) {
                 console.log(err)
               }
+
             })
             .catch((error) => {
               console.log(error)
@@ -550,7 +549,6 @@ export default {
           try{
             save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
-            save_match_id_file_pos = save_match_id_file_pos.replace(/\n/g, '')
             console.log(save_match_id_file_pos)
           }catch(err){
             console.log(err)
@@ -741,7 +739,6 @@ export default {
           try{
             save_residual_file_pos = ex.execSync(vm.exe_position + ' save_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
-            save_residual_file_pos = save_residual_file_pos.replace(/\n/g, '')
             console.log(save_residual_file_pos)
           }catch(err){
             console.log(err)
@@ -775,7 +772,6 @@ export default {
             try{
               Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + from_id + ' --data_path ' + default_train_data_path, {encoding: 'utf8'})
-              Assistor_train_output_path = Assistor_train_output_path.replace(/\n/g, '')
               console.log(Assistor_train_output_path)
 
               console.log("4.4 Assistor round " + rounds + " training done.");
@@ -885,7 +881,6 @@ export default {
             try{
               save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
-              save_output_pos = save_output_pos.replace(/\n/g, '')
               console.log(save_output_pos)
             }catch(err){
             console.log(err)
@@ -943,7 +938,6 @@ export default {
             try{
               make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --round ' + (rounds+1) + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-              make_residual_multiple_paths = make_residual_multiple_paths.replace(/\n/g, '')
               make_residual_multiple_paths = make_residual_multiple_paths.split('?')
               console.log(make_residual_multiple_paths)
               }catch(err){
@@ -1034,7 +1028,6 @@ export default {
             try{
               test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_test_id_path + ' --root ' + vm.root 
                                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
-              test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
               console.log(test_hash_id_file_address)
             }catch(err){
               console.log(err)
@@ -1167,7 +1160,6 @@ export default {
             try{
               test_save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
-              test_save_match_id_file_pos = test_save_match_id_file_pos.replace(/\n/g, '')
               console.log(test_save_match_id_file_pos)
             }catch(err){
               console.log(err)
@@ -1315,7 +1307,6 @@ export default {
           try{
             test_save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id + ' --test_id ' + test_id, {encoding: 'utf8'})
-            test_save_match_id_file_pos = test_save_match_id_file_pos.replace(/\n/g, '')
             console.log("test_save_match_id_file_pos", test_save_match_id_file_pos)
           }catch(err){
             console.log(err)
@@ -1415,7 +1406,6 @@ export default {
             try{
               test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id + ' --data_path ' + default_test_data_path, {encoding: 'utf8'})
-              test_outputs_pos = test_outputs_pos.replace(/\n/g, '')
               test_outputs_pos = test_outputs_pos.split('?')
               console.log("test_output_pos", test_outputs_pos)
               
@@ -1528,7 +1518,6 @@ export default {
               try{
                 test_save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                   + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + j, {encoding: 'utf8'})
-                test_save_output_pos = test_save_output_pos.replace(/\n/g, '')
                 console.log("test_save_output_pos", test_save_output_pos)
               }catch(err){
                 console.log(err)

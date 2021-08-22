@@ -214,8 +214,6 @@ export default {
               // console.log("make_hash**********", aa, '%%', vm.exe_position, '%%%', __dirname, '###', __dirname + '/../')
               hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
                                       + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train', {encoding: 'utf8'})  
-              hash_id_file_address = hash_id_file_address.replace(/\n/g, '')
-              hash_id_file_address = hash_id_file_address.split(path.sep).join('/')
               console.log("hash_id_file_address", hash_id_file_address)
             }catch(err){
               console.log(err)

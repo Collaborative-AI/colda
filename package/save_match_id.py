@@ -22,5 +22,5 @@ def save_match_id(args):
         raise ValueError('Not valid mode')
 
     match_id_path = os.path.join(match_id_path, '{}.csv'.format(from_id))
-    print(match_id_path)
+    print(match_id_path, end='')
     return

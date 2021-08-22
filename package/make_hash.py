@@ -39,7 +39,7 @@ def make_hash(args):
         open(os.path.join(log_path, "log.txt"), "a")
     else:
         raise ValueError('Not valid mode')
-    print(hash_id_path)
+    print(hash_id_path, end='')
     return
 
 

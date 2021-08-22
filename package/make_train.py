@@ -26,5 +26,5 @@ def make_train(args):
     makedir_exist_ok(output_path)
     output_path = os.path.join(output_path, '{}.csv'.format(self_id))
     np.savetxt(output_path, output, delimiter=",")
-    print(output_path)
+    print(output_path, end='')
     return

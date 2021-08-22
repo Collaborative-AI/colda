@@ -36,7 +36,7 @@ def make_residual(args):
         np.savetxt(assistor_residual_path_i, residual[self_from_idx_i], delimiter=",")
         assistor_residual_path.append(assistor_residual_path_i)
     assistor_residual_path = '?'.join(assistor_residual_path)
-    print(assistor_residual_path)
+    print(assistor_residual_path, end='')
     return
 
 

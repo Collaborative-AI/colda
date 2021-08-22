@@ -63,15 +63,34 @@ export default {
         })
     },
     changeroot() {
+      
+      const isDevelopment = process.env.NODE_ENV !== 'production';
       if (os.type() == "Linux"){
-        this.root = path.resolve("./exp")
-        this.exe_position = path.resolve("./dist/run/run")
+        if (isDevelopment == true){
+          this.root = path.resolve("./exp")
+          this.exe_position = path.resolve("./dist/run/run")
+        }else{
+          this.root = path.resolve("./resources/exp")
+          this.exe_position = path.resolve("./resources/dist/run/run")
+        }
+    
       }else if (os.type() == "Darwin") {
-        this.root = path.resolve("./exp")
-        this.exe_position = path.resolve("./dist/run/run.dmg")
+        if (isDevelopment == true){
+          this.root = path.resolve("./exp")
+          this.exe_position = path.resolve("./dist/run/run.dmg")
+        }else{
+          this.root = path.resolve("./resources/exp")
+          this.exe_position = path.resolve("./resources/dist/run/run.dmg")
+        }
+
       }else if (os.type() == "Windows_NT") {
-        this.root = path.resolve("./exp")
-        this.exe_position = path.resolve("./dist/run/run.exe")
+        if (isDevelopment == true){
+          this.root = path.resolve("./exp")
+          this.exe_position = path.resolve("./dist/run/run.exe")
+        }else{
+          this.root = path.resolve("./resources/exp")
+          this.exe_position = path.resolve("./resources/dist/run/run.exe")
+        }
       }
     },
     get_train_data_path() {
@@ -233,8 +252,8 @@ export default {
 
             const find_assistor_data = {
               assistor_id_list: [2],
+              task_id: vm.task_id,
               id_file: hash_id_file_data,
-              task_id: vm.task_id
             }
 
             vm.$axios.post('/find_assistor/', find_assistor_data)

@@ -12,7 +12,7 @@ import axios from 'axios'
 // 基础配置
 axios.defaults.timeout = 5000  // 超时时间
 // axios.defaults.baseURL = 'http://localhost:5000'
-axios.defaults.baseURL = 'http://3.135.63.189'
+axios.defaults.baseURL = 'http://18.216.31.43'
 // axios.defaults.transformRequest = [ function(data) {
 //                                       console.log("laiguo")
 //                                       data = JSON.stringify(data)

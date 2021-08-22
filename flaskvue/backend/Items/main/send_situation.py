@@ -108,6 +108,6 @@ def send_situation():
     if send_unread_situation:
         response = jsonify({"message": "send situation successfully!"})
         return response
-    else:
-        response = jsonify({"message": "Add Message Done, but not add unread situation"})
-        return response
+    
+    response = jsonify({"message": "Add Message Done, but not add unread situation"})
+    return response

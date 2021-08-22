@@ -160,19 +160,40 @@ export default {
   },
   methods: {
     changeroot() {
-      console.log("$$$$$$$$$$$$$$$$$")
+      
+      const isDevelopment = process.env.NODE_ENV !== 'production';
       if (os.type() == "Linux"){
-        this.root = path.resolve("./exp")
-        this.exe_position = path.resolve("./dist/run/run")
+        if (isDevelopment == true){
+          this.root = path.resolve("./exp")
+          this.exe_position = path.resolve("./dist/run/run")
+        }else{
+          this.root = path.resolve("./resources/exp")
+          this.exe_position = path.resolve("./resources/dist/run/run")
+        }
+    
       }else if (os.type() == "Darwin") {
-        this.root = path.resolve("./exp")
-        this.exe_position = path.resolve("./dist/run/run.dmg")
+        if (isDevelopment == true){
+          this.root = path.resolve("./exp")
+          this.exe_position = path.resolve("./dist/run/run.dmg")
+        }else{
+          this.root = path.resolve("./resources/exp")
+          this.exe_position = path.resolve("./resources/dist/run/run.dmg")
+        }
+
       }else if (os.type() == "Windows_NT") {
-        this.root = path.resolve("./exp")
-        this.exe_position = path.resolve("./dist/run/run.exe")
+        if (isDevelopment == true){
+          this.root = path.resolve("./exp")
+          this.exe_position = path.resolve("./dist/run/run.exe")
+        }else{
+          this.root = path.resolve("./resources/exp")
+          this.exe_position = path.resolve("./resources/dist/run/run.exe")
+        }
       }
     },
     test_path() {
+      const isDevelopment = process.env.NODE_ENV !== 'production';
+      console.log("isDevelopment", isDevelopment)
+      console.log("))))))))))))))))))))))")
       console.log("dirname", __dirname)
       console.log("this.root", this.root)
       console.log("this.exe", this.exe_position)

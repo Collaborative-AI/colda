@@ -212,7 +212,12 @@ export default {
   },
   methods: {
     changeroot() {
-      this.root = path.resolve("./exp")
+      const isDevelopment = process.env.NODE_ENV !== 'production';
+      if (isDevelopment == true){
+        this.root = path.resolve("./exp")
+      }else{
+        this.root = path.resolve("./resources/exp")
+      }
     },
     getLog(task_id) {
       const train_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'

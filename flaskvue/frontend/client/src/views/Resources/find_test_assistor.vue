@@ -29,6 +29,8 @@ import db from '../../db'
 const fs = window.require('fs');
 const {dialog} = window.require('electron').remote
 const ex = window.require("child_process");
+const os = window.require('os');
+const path = window.require('path');
 // const store = require('../../store').defaultv
 // const $ = require('jquery')
 
@@ -44,8 +46,8 @@ export default {
         test_id_path: "",
         test_target_path: "",
       },
-      root: store.state.root,
-      exe_position: store.state.exe_position,
+      root: '',
+      exe_position: '',
     }
   },
   methods: {
@@ -60,6 +62,18 @@ export default {
           console.log(error)
 
         })
+    },
+    changeroot() {
+      if (os.type() == "Linux"){
+        this.root = path.resolve("./exp")
+        this.exe_position = path.resolve("./dist/run/run")
+      }else if (os.type() == "Darwin") {
+        this.root = path.resolve("./exp")
+        this.exe_position = path.resolve("./dist/run/run.dmg")
+      }else if (os.type() == "Windows_NT") {
+        this.root = path.resolve("./exp")
+        this.exe_position = path.resolve("./dist/run/run.exe")
+      }
     },
     get_test_data_path() {
       let result = dialog.showOpenDialogSync({
@@ -262,6 +276,7 @@ export default {
   created () {
     this.task_id = this.$route.query.from;
     this.get_test_id();
+    this.changeroot();
   }
 }
 </script>

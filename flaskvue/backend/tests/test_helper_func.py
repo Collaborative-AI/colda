@@ -62,29 +62,32 @@ class Test_Helper_Func_APITestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest', '123')
         response = self.client.get('/users/1/notifications/', headers=headers)
         self.assertEqual(response.status_code, 200)
+
+        response = self.client.get('/ceshi/device_id=88DD/6', headers=headers)
+        self.assertEqual(response.status_code, 200)
     
-    def test_delete_all_rows(self):
+    # def test_delete_all_rows(self):
 
-        u1 = User(username='unittest', email='john@163.com')
-        u1.set_password('123')
-        u2 = User(username='unittest2', email='john@163.com')
-        u2.set_password('123')
-        u3 = User(username='unittest3', email='john@163.com')
-        u3.set_password('123')
-        db.session.add(u1)
-        db.session.add(u2)
-        db.session.add(u3)
-        db.session.commit()
+    #     u1 = User(username='unittest', email='john@163.com')
+    #     u1.set_password('123')
+    #     u2 = User(username='unittest2', email='john@163.com')
+    #     u2.set_password('123')
+    #     u3 = User(username='unittest3', email='john@163.com')
+    #     u3.set_password('123')
+    #     db.session.add(u1)
+    #     db.session.add(u2)
+    #     db.session.add(u3)
+    #     db.session.commit()
 
-        headers = self.get_token_auth_headers('unittest', '123')
-        list_content = [2,3]
-        data = json.dumps({'assistor_id_list': list_content})
-        response = self.client.post('/find_assistor/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
+    #     headers = self.get_token_auth_headers('unittest', '123')
+    #     list_content = [2,3]
+    #     data = json.dumps({'assistor_id_list': list_content})
+    #     response = self.client.post('/find_assistor/', headers=headers, data=data)
+    #     self.assertEqual(response.status_code, 200)
 
-        headers = self.get_token_auth_headers('unittest2', '123')
-        response = self.client.get('/delete_all_rows/', headers=headers)
-        self.assertEqual(response.status_code, 200)
+    #     headers = self.get_token_auth_headers('unittest2', '123')
+    #     response = self.client.get('/delete_all_rows/', headers=headers)
+    #     self.assertEqual(response.status_code, 200)
 
-        queries = Matched.query.all()
-        self.assertEqual(len(queries), 0)
+    #     queries = Matched.query.all()
+    #     self.assertEqual(len(queries), 0)

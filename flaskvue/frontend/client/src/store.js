@@ -1,3 +1,4 @@
+const path = require('path');
 export default {
     debug: true,
     state: {
@@ -15,12 +16,16 @@ export default {
       // root: __dirname + "/../../../../../../exp",
       // exe_position: __dirname + "/../../../../../../dist/run/run.exe",
       
-      // root: __dirname + "/../../../../../../exp",
-      // exe_position: __dirname + "/../../../../../../dist/run/run.exe",
 
       // production
-      root: __dirname + "/../exp",
-      exe_position: __dirname + '/../dist/run/run.exe',
+      // linux
+      // root: __dirname + "../../exp",
+      // exe_position: __dirname + '../../dist/run/run',
+      // root = path.resolve("./exp"),
+      // exe_position = path.resolve("./dist/run/run"),
+      // // windows
+      // root: __dirname + "/../exp",
+      // exe_position: __dirname + '/../dist/run/run.exe',
 
 
 

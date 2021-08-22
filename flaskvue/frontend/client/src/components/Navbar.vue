@@ -116,7 +116,9 @@ const join = window.require('path').join;
 // const xlsx2json = window.require("node-xlsx");
 const sqlite3 = window.require('sqlite3').verbose();;
 const ex = window.require("child_process");
-const {dialog} = window.require('electron').remote
+const {dialog} = window.require('electron').remote;
+const os = window.require('os');
+const path = window.require('path');
 // change csv to array
 
 import Home from '../views/Home.vue'
@@ -133,13 +135,25 @@ export default {
       unread_request_show: false,
       assistor_num: 0,
       max_round: 3,
-      root: store.state.root,
       picked: "not_receive",
-      exe_position: store.state.exe_position,
+      root: '',
+      exe_position: '',
       
     }
   },
   methods: {
+    changeroot() {
+      if (os.type() == "Linux"){
+        this.root = path.resolve("./exp")
+        this.exe_position = path.resolve("./dist/run/run")
+      }else if (os.type() == "Darwin") {
+        this.root = path.resolve("./exp")
+        this.exe_position = path.resolve("./dist/run/run.dmg")
+      }else if (os.type() == "Windows_NT") {
+        this.root = path.resolve("./exp")
+        this.exe_position = path.resolve("./dist/run/run.exe")
+      }
+    },
     handlerLogout (e) {
       store.logoutAction()
       this.$toasted.show('You have been logged out.', { icon: 'fingerprint' })
@@ -1580,7 +1594,9 @@ export default {
 
 
   },
-
+  created () {
+    this.changeroot()
+  },
   mounted () {
     console.log("mounted @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2")
     // 轮询 /api/users/<int:id>/notifications/ 请求用户的新通知

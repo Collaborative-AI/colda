@@ -173,6 +173,8 @@
 <script>
 const fs = window.require('fs');
 const ex = window.require("child_process");
+const path = window.require('path');
+const os = window.require('os');
 
 import store from '../../../store'
 // 导入 vue-markdown 组件解析 markdown 原文为　HTML
@@ -204,12 +206,14 @@ export default {
       },
       // Log_content_array: null,
       isSponsor: false,
-      root: store.state.root,
+      root: '',
       task_id: '',
     }
   },
   methods: {
-
+    changeroot() {
+      this.root = path.resolve("./exp")
+    },
     getLog(task_id) {
       const train_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
       let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
@@ -348,8 +352,10 @@ export default {
   },
   created () {
     this.task_id = this.$route.query.from;
+    this.changeroot()
     this.getLog(this.$route.query.from)
     this.checkSponsor(this.$route.query.from)
+    
     // 初始化 bootstrap-markdown 插件
     // $(document).ready(function() {
     //   $("#replyMessageFormBody").markdown({

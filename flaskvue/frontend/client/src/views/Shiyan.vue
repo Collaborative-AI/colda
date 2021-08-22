@@ -143,7 +143,9 @@ export default {
         default_data_path: "",
         default_id_path: "",
       },
-      xinxi: ''
+      xinxi: '',
+      root: '',
+      exe_position: '',
     };
   },
 
@@ -151,26 +153,52 @@ export default {
     // this.$socket.connect();
     
   },
-
+  created () {
+    const user_id = this.sharedState.user_id
+    this.getUser(user_id)
+    this.changeroot()
+  },
   methods: {
+    changeroot() {
+      console.log("$$$$$$$$$$$$$$$$$")
+      if (os.type() == "Linux"){
+        this.root = path.resolve("./exp")
+        this.exe_position = path.resolve("./dist/run/run")
+      }else if (os.type() == "Darwin") {
+        this.root = path.resolve("./exp")
+        this.exe_position = path.resolve("./dist/run/run.dmg")
+      }else if (os.type() == "Windows_NT") {
+        this.root = path.resolve("./exp")
+        this.exe_position = path.resolve("./dist/run/run.exe")
+      }
+    },
     test_path() {
-      console.log(__dirname)
+      console.log("dirname", __dirname)
+      console.log("this.root", this.root)
+      console.log("this.exe", this.exe_position)
       // let lujing ='C:/Users/Lucky/Desktop/Apolll/Application/flaskvue/frontend/client/node_modules/electron/dist/resources/electron.asar/renderer/../../../../../../exp/1/task/75925eee-9e2c-4f43-b1d5-d2d94c09512d/train/id/1.csv'
-      let lujing = __dirname + "/../"
-      console.log(typeof(lujing))
+      let lujing = __dirname + "/../../../../"
+      console.log(typeof(lujing), lujing)
       // lujing = lujing.split(path.sep).join('/')
       // console.log(lujing)
 
       // let a = fs.readFileSync(lujing, {encoding:'utf8', flag:'r'});
       // console.log(a)
-      fs.readdir(lujing,function(err,files){
-	if(err){
-		return console.error(err);
-	}
-	files.forEach(function(file){
-		console.info(file);
-	});
-});
+      console.log("os", os.type())
+      let lujing1 = path.resolve("./dist")
+      console.log(lujing1)
+
+      lujing = path.resolve("./dist/run")
+      console.log("path.resolve", lujing)
+     
+//       fs.readdir(lujing,function(err,files){
+//       if(err){
+//         return console.error(err);
+//       }
+//       files.forEach(function(file){
+//         console.info(file);
+//       });
+// });
     
     },
     get_default_file_path() {
@@ -1191,10 +1219,7 @@ export default {
     // },
     
   },
-  created () {
-    const user_id = this.sharedState.user_id
-    this.getUser(user_id)
-  }
+  
 
 };
 </script>

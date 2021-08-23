@@ -49,12 +49,16 @@ def send_situation():
     if cur_assistor_written_done_count == len(check_assistor_match_written_done):
         send_unread_situation = True
 
+    print("*********send_situation", len(residual_list), len(assistor_random_id_list))
+    ceshi = query_of_task = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
+    print("ceshi", len(ceshi))
     for i in range(len(residual_list)):
 
         cur_assistor_random_id = assistor_random_id_list[i]
         cur_residual = residual_list[i]
         # Now hardcode
         # testa: id 4(sponsor), testb: id 5(assistor), testc: id 6(assistor)
+        print("g.current_user.id", g.current_user.id)
         query_of_task = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.assistor_random_id_pair == cur_assistor_random_id, Matched.test_indicator == "train").all()
         sender_random_id = query_of_task[0].sponsor_random_id
         assistor_id = query_of_task[0].assistor_id_pair

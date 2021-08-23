@@ -22,7 +22,7 @@
 Simple Test Flow:
     1. After lauching the packaged APP, Open 2 operation interfaces. 
         - Account 1(Sponsor): Username: testa password: 123
-        - Account 2(Assistor): Username: testa password: 123
+        - Account 2(Assistor): Username: testb password: 123
     2. In Account 2 operation interface, go to setting, update 4 default data paths. Then, click ResponsePicked in the top bar.
     3. In Account 1 operation interface, click call for help and start training.
 

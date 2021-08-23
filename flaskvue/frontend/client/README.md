@@ -10,8 +10,6 @@
         PATH="$PATH"
     5. sudo snap install vue
     6. yarn install
-    7. yarn run electron:serve
-
 
 2. launch after first time:
     1. cd into frontend/client, yarn install

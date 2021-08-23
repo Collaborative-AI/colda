@@ -30,7 +30,7 @@ const fs = window.require('fs');
 const {dialog} = window.require('electron').remote
 const ex = window.require("child_process");
 const os = window.require('os');
-const path = window.require('path');
+const node_path = window.require('path');
 // const store = require('../../store').defaultv
 // const $ = require('jquery')
 
@@ -68,29 +68,29 @@ export default {
       const isDevelopment = process.env.NODE_ENV !== 'production';
       if (os.type() == "Linux"){
         if (isDevelopment == true){
-          this.root = path.resolve("./exp")
-          this.exe_position = path.resolve("./dist/run/run")
+          this.root = node_path.resolve("./exp")
+          this.exe_position = node_path.resolve("./dist/run/run")
         }else{
-          this.root = path.resolve("./resources/exp")
-          this.exe_position = path.resolve("./resources/dist/run/run")
+          this.root = node_path.resolve("./resources/exp")
+          this.exe_position = node_path.resolve("./resources/dist/run/run")
         }
     
       }else if (os.type() == "Darwin") {
         if (isDevelopment == true){
-          this.root = path.resolve("./exp")
-          this.exe_position = path.resolve("./dist/run/run.dmg")
+          this.root = node_path.resolve("./exp")
+          this.exe_position = node_path.resolve("./dist/run/run.dmg")
         }else{
-          this.root = path.resolve("./resources/exp")
-          this.exe_position = path.resolve("./resources/dist/run/run.dmg")
+          this.root = node_path.resolve("./resources/exp")
+          this.exe_position = node_path.resolve("./resources/dist/run/run.dmg")
         }
 
       }else if (os.type() == "Windows_NT") {
         if (isDevelopment == true){
-          this.root = path.resolve("./exp")
-          this.exe_position = path.resolve("./dist/run/run.exe")
+          this.root = node_path.resolve("./exp")
+          this.exe_position = node_path.resolve("./dist/run/run.exe")
         }else{
-          this.root = path.resolve("./resources/exp")
-          this.exe_position = path.resolve("./resources/dist/run/run.exe")
+          this.root = node_path.resolve("./resources/exp")
+          this.exe_position = node_path.resolve("./resources/dist/run/run.exe")
         }
       }
     },

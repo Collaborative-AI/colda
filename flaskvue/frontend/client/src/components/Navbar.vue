@@ -118,7 +118,7 @@ const sqlite3 = window.require('sqlite3').verbose();;
 const ex = window.require("child_process");
 const {dialog} = window.require('electron').remote;
 const os = window.require('os');
-const path = window.require('path');
+const node_path = window.require('path');
 // change csv to array
 
 import Home from '../views/Home.vue'
@@ -147,29 +147,29 @@ export default {
       const isDevelopment = process.env.NODE_ENV !== 'production';
       if (os.type() == "Linux"){
         if (isDevelopment == true){
-          this.root = path.resolve("./exp")
-          this.exe_position = path.resolve("./dist/run/run")
+          this.root = node_path.resolve("./exp")
+          this.exe_position = node_path.resolve("./dist/run/run")
         }else{
-          this.root = path.resolve("./resources/exp")
-          this.exe_position = path.resolve("./resources/dist/run/run")
+          this.root = node_path.resolve("./resources/exp")
+          this.exe_position = node_path.resolve("./resources/dist/run/run")
         }
     
       }else if (os.type() == "Darwin") {
         if (isDevelopment == true){
-          this.root = path.resolve("./exp")
-          this.exe_position = path.resolve("./dist/run/run.dmg")
+          this.root = node_path.resolve("./exp")
+          this.exe_position = node_path.resolve("./dist/run/run.dmg")
         }else{
-          this.root = path.resolve("./resources/exp")
-          this.exe_position = path.resolve("./resources/dist/run/run.dmg")
+          this.root = node_path.resolve("./resources/exp")
+          this.exe_position = node_path.resolve("./resources/dist/run/run.dmg")
         }
 
       }else if (os.type() == "Windows_NT") {
         if (isDevelopment == true){
-          this.root = path.resolve("./exp")
-          this.exe_position = path.resolve("./dist/run/run.exe")
+          this.root = node_path.resolve("./exp")
+          this.exe_position = node_path.resolve("./dist/run/run.exe")
         }else{
-          this.root = path.resolve("./resources/exp")
-          this.exe_position = path.resolve("./resources/dist/run/run.exe")
+          this.root = node_path.resolve("./resources/exp")
+          this.exe_position = node_path.resolve("./resources/dist/run/run.exe")
         }
       }
     },
@@ -461,8 +461,10 @@ export default {
             try{
               make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --round 0 ' + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-              make_residual_multiple_paths = make_residual_multiple_paths.split('?')
-              console.log(make_residual_multiple_paths)
+              
+                make_residual_multiple_paths = make_residual_multiple_paths.split('?')
+              
+              console.log("make_residual_multiple_paths", make_residual_multiple_paths, make_residual_multiple_paths.length)
             }catch(err){
               console.log(err)
             }
@@ -481,19 +483,26 @@ export default {
 
             for (let i = 0; i < make_residual_multiple_paths.length; i++){
 
-              let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+              let data = null;
+              try{
+                data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+              }catch(err){
+                console.log(err)
+              }
               all_residual_data.push(data);
 
-              let path_split = make_residual_multiple_paths[i].split("/");
+              let cur_path = make_residual_multiple_paths[i]
+              let path_split = cur_path.split(node_path.sep);
               let assistor_random_id = path_split[path_split.length-1].split(".")[0];
               assistor_random_id_list.push(assistor_random_id);
               
             }
 
+            console.log("assistor_random_id_list", assistor_random_id_list)
             const send_situation_payload = {
-                residual_list: all_residual_data,
                 task_id: task_id,
                 assistor_random_id_list: assistor_random_id_list,
+                residual_list: all_residual_data,
               }
 
             // send initial situation
@@ -980,7 +989,7 @@ export default {
               let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
               all_residual_data.push(data);
 
-              let path_split = make_residual_multiple_paths[i].split("/");
+              let path_split = make_residual_multiple_paths[i].split(node_path.sep);
               let assistor_random_id = path_split[path_split.length-1].split(".")[0];
               assistor_random_id_list.push(assistor_random_id);
               
@@ -1412,6 +1421,12 @@ export default {
           //   let test_data_path = row.test_data_path
           //   console.log("test_data_path", test_data_path)
           // });
+
+          function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(7000); // 程序滞留7000ms
 
           let select_default_test_data_path = 'SELECT default_test_data_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
           db.get(select_default_test_data_path, function(err, row){

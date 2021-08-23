@@ -4,6 +4,7 @@
     2. sudo apt install npm 
     3. npm install --global yarn
     4. #update node
+    
         sudo npm cache clean -f
 
         sudo npm install -g n

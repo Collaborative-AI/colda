@@ -5,8 +5,11 @@
     3. npm install --global yarn
     4. #update node
         sudo npm cache clean -f
+
         sudo npm install -g n
+
         sudo n stable
+
         PATH="$PATH"
     5. sudo snap install vue
     6. yarn install

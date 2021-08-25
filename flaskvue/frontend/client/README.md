@@ -32,4 +32,34 @@ Simple Test Flow:
 
 
 
+    mac os install environment procedure:
+
+    1. first time lauch:
+
+        1. download node package and install it(this will install node and npm)
+
+        2. su
+
+           input your password
+
+        3. npm install --global yarn
+
+    2. lauch after first time
+
+        1. cd into frontend/client
+
+        2. yarn
+
+        3. yarn run electron:serve
+
+    3. package:
+
+        1. cd into frontend/client
+
+        2. yarn 
+
+        3. yarn run electron:build
+
+
+
 

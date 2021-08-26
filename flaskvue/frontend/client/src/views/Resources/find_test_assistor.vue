@@ -288,6 +288,15 @@ export default {
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
 
+            let make_test_local = null;
+            try{   
+              make_test_local = ex.execSync(vm.exe_position + ' make_test_local  --root ' + vm.root 
+                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --test_id ' + vm.test_id +' --data_path ' + vm.PathForm.test_data_path + ' --target_path ' + vm.PathForm.test_target_path, {encoding: 'utf8'})  
+              console.log("make_test_local", make_test_local)
+            }catch(err){
+              console.log(err)
+            }
+
           })          
           
         }

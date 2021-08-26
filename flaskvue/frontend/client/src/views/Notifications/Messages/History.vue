@@ -159,6 +159,8 @@
     <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
       <button v-show="isSponsor" class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Call For Test</button>
     </router-link>
+
+    <button @click="getLog()">Refresh Log</button>
   </div>
 
 
@@ -220,9 +222,10 @@ export default {
       }
     },
     getLog(task_id) {
-      const train_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+      const train_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + this.task_id + '/' + 'train/' + 'log.txt'
       let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
       Log_content = Log_content.split("\n")
+      this.messages = [];
       for (let i = 0; i < Log_content.length; i++){
         this.messages.push(Log_content[i])
       }

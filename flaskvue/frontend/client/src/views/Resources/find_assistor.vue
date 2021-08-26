@@ -238,7 +238,7 @@ export default {
               console.log(err)
             }
 
-            
+
           // let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
           //     console.log(hash_id_file_data)
             let hash_id_file_data = null
@@ -304,6 +304,15 @@ export default {
               // console.log(error.response.data)
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
+
+            let make_train_local = null;
+            try{   
+              make_train_local = ex.execSync(vm.exe_position + ' make_train_local  --root ' + vm.root 
+                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --data_path ' + vm.PathForm.train_data_path + ' --target_path ' + vm.PathForm.train_target_path, {encoding: 'utf8'})  
+              console.log("make_train_local", make_train_local)
+            }catch(err){
+              console.log(err)
+            }
 
           })          
           

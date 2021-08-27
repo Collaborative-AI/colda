@@ -11,7 +11,7 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // console.log("BrowserWindow", BrowserWindow)
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
-
+const node_path = require('path');
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } },
@@ -49,9 +49,12 @@ async function createWindow() {
     // Load the index.html when not in development
     // win.loadURL('app://./resources/app/index.html');
     // win.loadURL('file://' + __dirname + '/index.html')
+    console.log("hello")
     win.loadURL('app://./index.html')
-    // win.loadURL('https://www.google.com/?hl=zh-cn')
+    //win.loadURL(node_path.join(__dirname, '/index.html'))
+    //win.loadURL('https://www.google.com/?hl=zh-cn')
     win.webContents.openDevTools();
+    console.log("h1")
   }
 }
 

@@ -16,7 +16,7 @@ module.exports = {
       electronBuilder: {
         builderOptions: {
           "productName": "Apollo",
-          "appId": "com.apollo.app",
+          "appId": "com.apollothebest.app",
           "compression": "store",
           "win": {
             "target": [
@@ -42,15 +42,20 @@ module.exports = {
             ]
           },
           "mac":{
-            "target":[
-              "dmg",
-              "zip"
+            "target": [
+              {
+                "target": "dmg",
+                "arch": [
+                  "x64"
+                ]
+              }
             ]
           },
           "extraResources": ["./dist/**"],
           "directories": {
             "output": "./build"
-          }
+          },
+          "asar":false,
 
         }
       }

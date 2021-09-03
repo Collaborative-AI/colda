@@ -88,7 +88,7 @@ ctrl a + d (detached screen inside)
 
 ctrl a + k (kill screen inside)
 
-
+screen -D -r screenID (cant connect attached)
 
 screen -ls
 

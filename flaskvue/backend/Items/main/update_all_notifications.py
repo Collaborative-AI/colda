@@ -36,6 +36,13 @@ def update_all_notifications():
     for i in range(len(response_data)):
         sender_random_id_list = response_data[i]["sender_random_id_list"]
         task_id_list = response_data[i]["task_id_list"]
+        if response_data[i]["name"] == 'unread train stop':
+            returndict["unread train stop"]["task id"] = response_data[i]["task_id_list"][0]
+            returndict["unread train stop"]["most recent round"] = response_data[i]["sender_random_id_list"][0]
+
+        elif response_data[i]["name"] == 'unread test stop':
+            returndict["unread train stop"]["test id"] = response_data[i]["task_id_list"][0]
+            returndict["unread train stop"]["most recent round"] = response_data[i]["sender_random_id_list"][0]
 
         if int(response_data[i]["payload"]) != 0:
             if response_data[i]["name"] == "unread request":

@@ -167,8 +167,9 @@ export default {
           this.root = node_path.resolve("./exp")
           this.exe_position = node_path.resolve("./dist/run/run")
         }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run")
+          // this.root = node_path.join(__dirname, '../exp')
+          this.root = node_path.join(__dirname, '../../../apollo_exp')
+          this.exe_position = node_path.join(__dirname, '../dist/run/run')
         }
     
       }else if (os.type() == "Darwin") {
@@ -195,6 +196,8 @@ export default {
       console.log("isDevelopment", isDevelopment)
       console.log("))))))))))))))))))))))")
       console.log("dirname", __dirname)
+      let dist_path = node_path.join(__dirname, '../dist')
+      console.log("dirname2", dist_path)
       console.log("this.root", this.root)
       console.log("this.exe", this.exe_position)
       // let lujing ='C:/Users/Lucky/Desktop/Apolll/Application/flaskvue/frontend/client/node_modules/electron/dist/resources/electron.asar/renderer/../../../../../../exp/1/task/75925eee-9e2c-4f43-b1d5-d2d94c09512d/train/id/1.csv'
@@ -206,20 +209,20 @@ export default {
       // let a = fs.readFileSync(lujing, {encoding:'utf8', flag:'r'});
       // console.log(a)
       console.log("os", os.type())
-      let lujing1 = path.resolve("./dist")
+      let lujing1 = node_path.resolve("./dist")
       console.log(lujing1)
 
-      lujing = path.resolve("./dist/run")
+      lujing = node_path.resolve("./dist/run")
       console.log("path.resolve", lujing)
      
-//       fs.readdir(lujing,function(err,files){
-//       if(err){
-//         return console.error(err);
-//       }
-//       files.forEach(function(file){
-//         console.info(file);
-//       });
-// });
+      fs.readdir(dist_path,function(err,files){
+      if(err){
+        return console.error(err);
+      }
+      files.forEach(function(file){
+        console.info(file);
+      });
+});
     
     },
     get_default_file_path() {

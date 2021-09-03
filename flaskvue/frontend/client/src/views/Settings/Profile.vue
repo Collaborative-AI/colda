@@ -251,7 +251,7 @@ export default {
         if (row == null){
           // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
           let insert_new_val = `INSERT INTO "User_Default_Path" ("user_id", "default_train_data_path", "default_train_id_path", "default_test_data_path", "default_test_id_path") VALUES 
-            (`+vm.sharedState.user_id+`, "`+vm.profileForm.default_train_data_path+`", "`+vm.profileForm.default_train_id_path+`", "`
+            (`+`"`+vm.sharedState.user_id+`", "`+vm.profileForm.default_train_data_path+`", "`+vm.profileForm.default_train_id_path+`", "`
             +vm.profileForm.default_test_data_path+`", "`+vm.profileForm.default_test_id_path+`")`
           console.log("insert_new_val", insert_new_val)
           console.log("db", db)

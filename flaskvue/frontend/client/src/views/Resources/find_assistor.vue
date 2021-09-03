@@ -70,8 +70,9 @@ export default {
           this.root = node_path.resolve("./exp")
           this.exe_position = node_path.resolve("./dist/run/run")
         }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run")
+          // this.root = node_path.join(__dirname, '../exp')
+          this.root = node_path.join(__dirname, '../../../apollo_exp')
+          this.exe_position = node_path.join(__dirname, '../dist/run/run')
         }
     
       }else if (os.type() == "Darwin") {
@@ -217,7 +218,7 @@ export default {
           console.log("true")
           console.log(vm.PathForm.train_data_path,vm.PathForm.train_id_path,vm.PathForm.train_target_path)
           let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
-              (`+vm.sharedState.user_id+ `,"train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
+              (`+`"`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
           console.log("insert_sentence", insert_sentence)
           db.run(insert_sentence, function(err){
             if (err){

@@ -1,6 +1,6 @@
 const sqlite3 = window.require('sqlite3').verbose();
 
-let db = new sqlite3.Database('Apollo_Client_db');
+let db = new sqlite3.Database('Apollo_Client_db.db');
 // let db=5;
 db.serialize(function() {
   db.run("CREATE TABLE IF NOT EXISTS User_Default_Path (id                    int primary key, \

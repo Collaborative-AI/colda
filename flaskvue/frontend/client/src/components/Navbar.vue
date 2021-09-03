@@ -151,8 +151,8 @@ export default {
           this.root = node_path.resolve("./exp")
           this.exe_position = node_path.resolve("./dist/run/run")
         }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run")
+          this.root = node_path.join(__dirname, '../../../apollo_exp')
+          this.exe_position = node_path.join(__dirname, '../dist/run/run')
         }
     
       }else if (os.type() == "Darwin") {
@@ -188,6 +188,10 @@ export default {
       let vm = this
       let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
       db.get(select_sentence, function(err, row){
+        if (err){
+          console.log(err);
+        }
+
         console.log(row)
 
         if (row == null | row.default_data_path == "" | row.default_id_path == "" |

@@ -65,6 +65,8 @@ class User(PaginatedAPIMixin, db.Model):
 
     last_messages_read_time = db.Column(db.DateTime)
 
+    # last_stop_read_time = db.Column(db.DateTime)
+
     # Message User sent
     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id',
                                     backref='sender', lazy='dynamic',
@@ -157,6 +159,10 @@ class User(PaginatedAPIMixin, db.Model):
         last_read_time = self.last_messages_read_time or datetime(1900, 1, 1)
         return Message.query.filter_by(assistor=self).filter(
             Message.timestamp > last_read_time).count()
+
+    def stop_task(self, task_id, most_recent_round):
+
+        return [[task_id], [most_recent_round]]
 
     def new_request(self):
         '''用户未读的请求数'''

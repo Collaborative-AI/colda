@@ -13,7 +13,8 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "rebuild": "electron-rebuild -f -w sqlite3"
   },
   "main": "background.js",
   "dependencies": {
@@ -34,7 +35,7 @@
     "popper.js": "^1.16.1",
     "python-shell": "^3.0.0",
     "qs": "^6.10.1",
-    "sqlite3": "^5.0.2",
+    "sqlite3": "^5.0.0",
     "vee-validate": "^4.4.0",
     "vue": "^2.6.14",
     "vue-loader": "^16.5.0",
@@ -56,7 +57,7 @@
     "electron": "^13.1.9",
     "electron-builder": "^22.11.7",
     "electron-devtools-installer": "^3.2.0",
-    "electron-rebuild": "^3.2.1",
+    "electron-rebuild": "^3.2.3",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
     "vue-cli-plugin-electron-builder": "~2.1.1"

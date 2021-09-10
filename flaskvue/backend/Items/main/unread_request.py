@@ -18,50 +18,6 @@ from Items.models import User, Notification, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
-# @main.route('/update_request_notification/', methods=['POST'])
-# @token_auth.login_required
-# def update_request_notification():
-
-#     data = request.get_json()
-
-#     if not data:
-#         return bad_request('You must post JSON data.')
-#     if 'sender_random_id_list' not in data or not data.get('sender_random_id_list'):
-#         return bad_request('sender_random_id_list is required.')
-#     if 'task_id_list' not in data or not data.get('task_id_list'):
-#         return bad_request('task_id_list is required.')
-
-#     task_id_list = data.get('task_id_list')
-#     print("update update_request_notification", task_id_list, type(task_id_list), len(task_id_list), g.current_user.id)
-
-#     lastest_time = datetime(1900, 1, 1)
-
-#     for i in range(len(task_id_list)):
-
-#         record = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
-
-#         # get the latest output timestamp
-#         if record[0].match_id_timestamp > lastest_time:
-#             lastest_time = record[0].match_id_timestamp
-
-#     # Update the Notification
-#     user = User.query.get_or_404(g.current_user.id)
-#     last_requests_read_time = user.last_requests_read_time or datetime(1900, 1, 1)          
-#     if lastest_time > last_requests_read_time:
-#         user.last_requests_read_time = lastest_time
-
-#         # submit to database
-#         db.session.commit()
-        
-#         # Updata Notification
-#         user.add_notification('unread request', user.new_request()) 
-#         db.session.commit()
-
-#     data = {"update request successfully": "true"}
-#     response = jsonify(data)
-    
-#     return response
-
 @main.route('/match_assistor_id/', methods=['POST'])
 @token_auth.login_required
 def match_assistor_id():

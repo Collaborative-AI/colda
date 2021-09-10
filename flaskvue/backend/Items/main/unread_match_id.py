@@ -12,74 +12,9 @@ from Items import db
 
 # import BluePrint
 from Items.main import main
-
 from Items.models import User, Notification, Matched, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-
-# @main.route('/update_match_id_notification/', methods=['POST'])
-# @token_auth.login_required
-# def update_match_id_notification():
-
-#     data = request.get_json()
-
-#     if not data:
-#         return bad_request('You must post JSON data.')
-#     if 'sender_random_id_list' not in data or not data.get('sender_random_id_list'):
-#         return bad_request('sender_random_id_list is required.')
-#     if 'task_id_list' not in data or not data.get('task_id_list'):
-#         return bad_request('task_id_list is required.')
-
-#     task_id_list = data.get('task_id_list')
-#     print("update match_id_notification", task_id_list, type(task_id_list), len(task_id_list), g.current_user.id)
-
-#     check_dict = {}
-#     lastest_time = datetime(1900, 1, 1)
-
-#     for i in range(len(task_id_list)):
-#         # check if the current client is the sponsor
-#         isSponsor = False
-#         query = Matched.query.filter(Matched.task_id == task_id_list[i]).first()
-        
-#         if query:
-#             print("match_id_query", query)
-#             print("match_id_query.sponsor_id", query.sponsor_id, type(query.sponsor_id))
-#             print("g.current_user.id", g.current_user.id, type(g.current_user.id))
-#             if int(query.sponsor_id) == g.current_user.id:
-#                 isSponsor = True
-
-#             record = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id_list[i]).all()
-
-#             # get the latest output timestamp
-#             if record[0].match_id_timestamp > lastest_time:
-#                 lastest_time = record[0].match_id_timestamp
-            
-#             print("isSponsor", isSponsor)
-#             if isSponsor:
-#                 print("sponsor")
-#                 check_dict[task_id_list[i]] = 1
-#             else:
-#                 print("assistor")
-#                 check_dict[task_id_list[i]] = 0
-
-#      # Update the Notification
-#     user = User.query.get_or_404(g.current_user.id)
-#     last_matched_file_read_time = user.last_matched_file_read_time or datetime(1900, 1, 1)
-#     if lastest_time > last_matched_file_read_time:
-#         user.last_matched_file_read_time = lastest_time
-
-#         # submit to database
-#         db.session.commit()
-        
-#         # Updata Notification
-#         user.add_notification('unread match id', user.new_match_id()) 
-#         db.session.commit()
-#     print("check_dict", check_dict)
-#     dict = {"check_sponsor": check_dict}
-    
-#     response = jsonify(dict)
-    
-#     return response
 
 @main.route('/users/<int:id>/match_id_file/', methods=['POST'])
 @token_auth.login_required
@@ -197,6 +132,9 @@ def assistor_write_match_index_done():
         response = jsonify({"assistor_write_match_index_done": "Situation doesnt update"})
         return response
 
+
+
+
     if Message_query is not None and cur_assistor_written_done_count == assistor_num:
         for row in query:
             user = User.query.get_or_404(row.assistor_id_pair)
@@ -284,6 +222,10 @@ def send_test_output():
 
         if output_upload == assistor_num:
             user = User.query.get_or_404(queries[0].sponsor_id)
+
+            query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
+            if query_of_task.Terminate == 'true':
+                continue
             # send message notification to the sponsor when all assistor upload the output
             print("-----------------send test output", g.current_user.id)
             user.add_notification('unread test output', user.new_test_output())

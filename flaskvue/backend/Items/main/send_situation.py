@@ -63,7 +63,8 @@ def send_situation():
         # testa: id 4(sponsor), testb: id 5(assistor), testc: id 6(assistor)
         print("g.current_user.id", g.current_user.id)
         query_of_task = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.assistor_random_id_pair == cur_assistor_random_id, Matched.test_indicator == "train").all()
-        print("query_of_task", len(query_of_task))
+        if query_of_task[0].Terminate == 'true':
+            continue
         sender_random_id = query_of_task[0].sponsor_random_id
         assistor_id = query_of_task[0].assistor_id_pair
 

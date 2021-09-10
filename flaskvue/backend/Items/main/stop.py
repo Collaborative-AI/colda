@@ -13,9 +13,9 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
 
-@main.route('/stop_task/', methods=['POST'])
+@main.route('/stop_train_task/', methods=['POST'])
 @token_auth.login_required
-def stop_task():
+def stop_train_task():
 
     data = request.get_json()
 
@@ -25,9 +25,9 @@ def stop_task():
         return bad_request('task_id is required.')
 
     task_id = data.get('task_id')
-
+    print("----------1")
     most_recent_round = 0
-    query = Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
+    query = Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.output != None).order_by(Message.rounds.desc()).first()
     if query is not None:
         most_recent_round = query.rounds + 1
 
@@ -36,10 +36,14 @@ def stop_task():
     if not get_all_sponsor_assistors:
         sponsor_id = get_all_sponsor_assistors[0].sponsor_id
     
+    print("----------2")
+
     if sponsor_id == g.current_user.id:
         Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.rounds == most_recent_round).delete()
         db.session.commit()
         
+        Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").update({"Terminate": "true"})
+
         all_sponsor_assistors = set()
         for row in get_all_sponsor_assistors:
             all_sponsor_assistors.add(row.sponsor_id)
@@ -54,12 +58,19 @@ def stop_task():
         return response
 
     else:
-        Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.rounds == most_recent_round, Message.sender_id == g.current_ser.id).delete()
+        print("----------3")
+        Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.rounds == most_recent_round, Message.sender_id == g.current_user.id).delete()
         db.session.commit()
         
-        Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.rounds == most_recent_round, Message.assistor_id == g.current_ser.id).delete()
+        Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.rounds == most_recent_round, Message.assistor_id == g.current_user.id).delete()
         db.session.commit()
         
+        Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == g.current_user.id, Matched.test_indicator == "train").update({"Terminate": "true"})
+
+        user = User.query.get_or_404(g.current_user.id)
+        user.add_notification('unread train stop', user.stop_train_task(task_id, most_recent_round))
+        db.session.commit()
+        print("----------4")
         response = jsonify({"assistor delete successfully": "successfully", "check sponsor": "false", "most recent round": most_recent_round})
         return response
 

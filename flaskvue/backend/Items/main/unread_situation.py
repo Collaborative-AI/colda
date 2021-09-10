@@ -14,69 +14,6 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
 
-# @main.route('/update_situation_notification/', methods=['POST'])
-# @token_auth.login_required
-# def update_situation_notification():
-
-#     data = request.get_json()
-#     if not data:
-#         return bad_request('You must post JSON data.')
-#     if 'sender_random_id_list' not in data or not data.get('sender_random_id_list'):
-#         return bad_request('sender_random_id_list is required.')
-#     if 'task_id_list' not in data or not data.get('task_id_list'):
-#         return bad_request('task_id_list is required.')
-
-#     task_id_list = data.get('task_id_list')
-
-#     check_dict = {}
-#     rounds_dict = {}
-#     lastest_time = datetime(1900, 1, 1)
-
-#     for i in range(len(task_id_list)):
-#         # check if the current client is the sponsor
-#         isSponsor = False
-#         query = Matched.query.filter(Matched.task_id == task_id_list[i]).first()
-#         if query:
-#             if int(query.sponsor_id) == g.current_user.id:
-#                 isSponsor = True
-
-#             record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id_list[i]).order_by(Message.situation_timestamp.desc()).first()
-#             # record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id_list[i]).all()
-#             # for i in record:
-#             #     print()
-#             cur_rounds = record.rounds
-            
-#             # get the latest output timestamp
-#             if record.situation_timestamp > lastest_time:
-#                 lastest_time = record.situation_timestamp
-            
-#             if isSponsor:
-#                 check_dict[task_id_list[i]] = 1
-#             else:
-#                 check_dict[task_id_list[i]] = 0
-            
-#             rounds_dict[task_id_list[i]] = cur_rounds
-
-#     # Update the Notification
-#     user = User.query.get_or_404(g.current_user.id)
-#     last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
-#     if lastest_time > last_situation_read_time:
-#         user.last_situation_read_time = lastest_time
-
-#         # submit to database
-#         db.session.commit()
-        
-#         # Updata Notification
-#         user.add_notification('unread situation', user.new_situation()) 
-#         db.session.commit()
-
-#     dict = {"check_sponsor": check_dict, "rounds": rounds_dict}
-    
-#     response = jsonify(dict)
-    
-#     return response
-
-
 @main.route('/users/<int:id>/situation_file/', methods=['POST'])
 @token_auth.login_required
 def get_user_situation(id):
@@ -224,6 +161,11 @@ def send_output():
 
         if output_upload == assistor_num:
             user = User.query.get_or_404(queries[0].sponsor_id)
+
+            query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
+            if query_of_task.Terminate == 'true':
+                continue
+
             # send message notification to the sponsor when all assistor upload the output
             print("-----------------sendoutput", g.current_user.id)
             user.add_notification('unread output', user.new_output())

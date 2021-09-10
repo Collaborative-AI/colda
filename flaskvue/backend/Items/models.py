@@ -160,7 +160,7 @@ class User(PaginatedAPIMixin, db.Model):
         return Message.query.filter_by(assistor=self).filter(
             Message.timestamp > last_read_time).count()
 
-    def stop_task(self, task_id, most_recent_round):
+    def stop_train_task(self, task_id, most_recent_round):
 
         return [[task_id], [most_recent_round]]
 
@@ -335,7 +335,7 @@ class Message(PaginatedAPIMixin, db.Model):
     task_id = db.Column(db.String(120), index=True)
     rounds = db.Column(db.Integer)
     situation = db.Column(db.Text)
-    output = db.Column(db.Text)
+    output = db.Column(db.Text, nullable=True)
     test_indicator = db.Column(db.String(10))
     test_id = db.Column(db.String(120), index=True)
     Sponsor_situation_training_done = db.Column(db.String(120), nullable=True)
@@ -451,6 +451,9 @@ class Matched(PaginatedAPIMixin, db.Model):
     test_indicator = db.Column(db.String(10))
     test_id = db.Column(db.String(120), index=True)
     
+    Terminate = db.Column(db.String(120))
+
+
     def __repr__(self):
         return '<Match {}>'.format(self.id)
 

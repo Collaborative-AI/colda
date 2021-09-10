@@ -11,47 +11,7 @@ from Items.models import User, Notification, Matched, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
-# @main.route('/update_output_notification/', methods=['POST'])
-# @token_auth.login_required
-# def update_output_notification():
 
-#     data = request.get_json()
-    
-#     if not data:
-#         return bad_request('You must post JSON data.')
-#     if 'task_id_list' not in data or not data.get('task_id_list'):
-#         return bad_request('task_id_list is required.')
-
-#     task_id_list = data.get('task_id_list')
-#     task_id_list = set(task_id_list)
-
-#     lastest_time = datetime(1900, 1, 1)
-#     return_dict = {}
-#     for i in task_id_list:
-#         record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == i).order_by(Message.output_timestamp.desc()).first()
-#         if record:
-#             cur_rounds = record.rounds
-#             return_dict[str(i)] = cur_rounds
-
-#             if record.output_timestamp > lastest_time:
-#                 lastest_time = record.output_timestamp
-
-#     # Update the Notification 
-#     user = User.query.get_or_404(g.current_user.id)
-#     last_output_read_time = user.last_output_read_time or datetime(1900, 1, 1)
-#     if lastest_time > last_output_read_time:
-#         user.last_output_read_time = lastest_time
-
-#         # submit to database
-#         db.session.commit()
-        
-#         # Updata Notification
-#         user.add_notification('unread output', user.new_output()) 
-#         db.session.commit()
-    
-#     response = jsonify(return_dict)
-    
-#     return response
 
 @main.route('/users/<int:id>/output/', methods=['POST'])
 @token_auth.login_required

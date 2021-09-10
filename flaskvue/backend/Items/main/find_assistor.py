@@ -98,6 +98,8 @@ def find_assistor():
 
         matched.Matched_id_file = json.dumps(data_array_id)
         matched.test_indicator = "train"
+        matched.Terminate = "false"
+
         db.session.add(matched)
         db.session.commit()
         # send matched notification to the assistor
@@ -205,6 +207,8 @@ def find_test_assistor():
         matched.Matched_id_file = json.dumps(data_array_id)
         matched.test_indicator = "test"
         matched.test_id = test_id
+
+        matched.Terminate = "false"
 
         db.session.add(matched)
         db.session.commit()

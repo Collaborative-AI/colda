@@ -155,15 +155,15 @@ export default {
     };
   },
 
-  mounted() {
-    // this.$socket.connect();
+  // mounted() {
+  //   // this.$socket.connect();
     
-  },
-  created () {
-    const user_id = this.sharedState.user_id
-    this.getUser(user_id)
-    this.changeroot()
-  },
+  // },
+  // created () {
+  //   const user_id = this.sharedState.user_id
+  //   this.getUser(user_id)
+  //   this.changeroot()
+  // },
   methods: {
     nedb() {
       db.insert({

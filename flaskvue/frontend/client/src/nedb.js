@@ -1,18 +1,21 @@
 // import Datastore from 'nedb';
 // import path from 'path';
 
-const NeDB = window.require('nedb')
+import { data } from 'jquery';
+
+const NeDB = require('nedb')
 const path = window.require('path');
 // import { remote } from 'electron';
-const a=window.require('electron')
+// const a=window.require('electron')
 console.log(NeDB)
 console.log('ijisfjoej')
-
+console.log(__dirname)
+console.log(path.join(__dirname,'../../data.db'))
 var db = new NeDB({
     // filename: './user.db',
-    
+
     autoload: true,
-    filename: path.resolve("data.db"),
+    filename: path.join(__dirname,'../../data.db'),
     timestampData: true,
 })
 

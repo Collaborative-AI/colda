@@ -31,6 +31,7 @@
     "jschardet": "^3.0.0",
     "json": "^11.0.0",
     "moment": "^2.29.1",
+    "nedb": "^1.8.0",
     "papaparse": "^5.3.1",
     "popper.js": "^1.16.1",
     "python-shell": "^3.0.0",

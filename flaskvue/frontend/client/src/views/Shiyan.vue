@@ -7,6 +7,10 @@
 
     <button @click="tiqu()">tiqu</button>
 
+    <button @click="nedb()">nedb</button>
+    <button @click="nedb2()">nedb2</button>
+
+
     <button @click="test_async()">test async</button>
     <button @click="sync()">Sync</button>
     <button @click="interval()">test interval</button>
@@ -109,7 +113,9 @@ const axios = require('axios').default
 // import axios from 'axios'
 // import csv2arr from '@/assets/csv-arr'
 // import db from '../db.js'
-const db = require('../db.js').default
+// const db = require('../db.js').default
+import db from '../nedb.js'
+// const db = require('../nedb.js').default
 const store = require('../store').default
 // import store from '../store'
 // import sq3 from 'sqlite3'
@@ -159,6 +165,30 @@ export default {
     this.changeroot()
   },
   methods: {
+    nedb() {
+      db.insert({
+    name: 'Alice',
+    age: 20,
+    rank: 1,
+}, function(err, doc) {
+    console.log('inserted:', doc)
+})
+    },
+
+    nedb2(){
+db.find({
+    name: 'Alice',
+}, function(err, docs) {
+    console.log('Alice found:', docs)
+})
+
+    },
+
+
+
+
+
+
     changeroot() {
       
       const isDevelopment = process.env.NODE_ENV !== 'production';

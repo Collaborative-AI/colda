@@ -160,6 +160,7 @@
       <button v-show="isSponsor" class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Call For Test</button>
     </router-link>
 
+    <button @click="stop_train_task()">Stop Train Task</button>
     <button @click="getLog()">Refresh Log</button>
   </div>
 
@@ -213,6 +214,24 @@ export default {
     }
   },
   methods: {
+    stop_train_task() {
+      const payload = {
+        task_id: this.task_id,
+      }
+
+      this.$axios.post('/stop_train_task/', payload)
+        .then((response) => {
+
+          console.log(response.data)
+
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error)
+        })
+
+
+    },
     changeroot() {
       const isDevelopment = process.env.NODE_ENV !== 'production';
       if (isDevelopment == true){

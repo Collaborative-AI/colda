@@ -33,6 +33,7 @@ python-dotenv = "*"
 httpie = "*"
 coverage = "*"
 pymysql = "*"
+cryptography = "*"
 
 [dev-packages]
 

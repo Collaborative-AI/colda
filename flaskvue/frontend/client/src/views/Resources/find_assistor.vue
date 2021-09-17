@@ -252,7 +252,7 @@ export default {
             
 
             const find_assistor_data = {
-              assistor_id_list: [2],
+              assistor_id_list: [2,3],
               task_id: vm.task_id,
               id_file: hash_id_file_data,
             }

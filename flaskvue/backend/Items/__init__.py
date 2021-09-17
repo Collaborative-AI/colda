@@ -2,11 +2,13 @@
 from flask import Flask
 from Items.extensions import cors, db, migrate
 from Items.main import main as main_blueprint
+import pymysql
 # from flask_session import Session
 
 
 def create_app(config_class=None):
     '''Factory Pattern: Create Flask app.'''
+    pymysql.install_as_MySQLdb()
     app = Flask(__name__)
 
     # Initialization flask app
@@ -17,7 +19,7 @@ def create_app(config_class=None):
     configure_before_handlers(app)
     configure_after_handlers(app)
     configure_errorhandlers(app)
-
+    
     return app
 
 
@@ -35,6 +37,7 @@ def configure_blueprints(app):
 
 def configure_extensions(app):
     '''Configures the extensions.'''
+    
     # Enable CORS
     cors.init_app(app)
     # Init Flask-SQLAlchemy

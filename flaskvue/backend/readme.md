@@ -38,7 +38,13 @@
 
 8. unittest must start with test(filename )
 
-
+9. mysql command (mac):
+    login: mysql -u root -p
+    show databases: show databases;
+    create new database: create database NAME charset=utf8;
+    1.  mysql.server start (start server)
+    2.  mysql.server stop  (end server)
+    3.  mysql.server restart
 
 <!-- Second way:
 1. configure the make_shell_context() in manage.py (Start a python interpreter containing the context of the application)

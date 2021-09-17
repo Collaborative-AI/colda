@@ -105,11 +105,11 @@ import $ from 'jquery'
 import db from '../db'
 
 
-// // const store = require('../store').default
-// // // 在 JQuery 中使用 axios 的话需要重新导入，不能使用 main.js 中定义的 Vue 全局属性 this.$axios
-// // const axios = require('axios').default
-// // const $ = require('jquery')
-// // const db = require('../db').default
+// const store = require('../store').default
+// // 在 JQuery 中使用 axios 的话需要重新导入，不能使用 main.js 中定义的 Vue 全局属性 this.$axios
+// const axios = require('axios').default
+// const $ = require('jquery')
+// const db = require('../db').default
 
 // // use Node API
 const fs = window.require('fs');
@@ -1774,13 +1774,18 @@ export default {
               // }
               
               setTimeout(function(){
-                  console.log("polling again")
-                  polling()
-                }, 5000)
+                console.log("polling again")
+                polling()
+              }, 5000)
 
               
             })
             .catch((error) => {
+              
+              setTimeout(function(){
+                console.log("polling again")
+                polling()
+              }, 5000)
               // handle error
               console.log(error)
             })

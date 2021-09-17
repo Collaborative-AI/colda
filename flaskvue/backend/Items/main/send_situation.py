@@ -29,32 +29,29 @@ def send_situation():
     if 'assistor_random_id_list' not in data or not data.get('assistor_random_id_list'):
         return bad_request('assistor_random_id_list is required.')
 
-    # json
+    # get data from transferred message
     residual_list = data.get('residual_list')
     task_id = data.get('task_id')
     assistor_random_id_list = data.get('assistor_random_id_list')
 
+    # get recent round
     cur_round = 0
     query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
     if query is not None:
         cur_round = query.rounds + 1
 
-    check_assistor_match_written_done = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
+    # get how many assistors are still in this task
+    check_assistor_match_written_done = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train", Matched.Terminate == "false").all()
     cur_assistor_written_done_count = 0
     for row in check_assistor_match_written_done:
         if row.Assistor_matched_written_done == "done":
             cur_assistor_written_done_count += 1
 
+    # If all assistor finished writting match_id, let send_unread_situation become True
     send_unread_situation = False
     if cur_assistor_written_done_count == len(check_assistor_match_written_done):
         send_unread_situation = True
 
-    print("*********send_situation", len(residual_list), len(assistor_random_id_list))
-    ceshi = query_of_task = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
-    print("ceshi", ceshi, ceshi[0].sponsor_random_id, len(ceshi))
-
-    ceshi2 = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.assistor_random_id_pair == assistor_random_id_list[0], Matched.test_indicator == "train").all()
-    print("ceshi2", ceshi2, ceshi2[0].sponsor_random_id, len(ceshi2))
     for i in range(len(residual_list)):
 
         cur_assistor_random_id = assistor_random_id_list[i]
@@ -104,14 +101,18 @@ def send_situation():
     message.assistor_id = g.current_user.id
     message.task_id = task_id
     message.rounds = cur_round
+    message.situation = "sponsor"
     message.test_indicator = "train"
-
-    db.session.add(message)
-    db.session.commit()
-    # send message notification to the assistor
-    if send_unread_situation:
-        user.add_notification('unread situation', user.new_situation())
+    
+    # if it is not the sponsor terminate, send to sponsor the "unread situation"
+    query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
+    if query_of_task[0].Terminate == 'false':   
+        db.session.add(message)
         db.session.commit()
+    
+        if send_unread_situation:
+            user.add_notification('unread situation', user.new_situation())
+            db.session.commit()
 
     # return response
     if send_unread_situation:

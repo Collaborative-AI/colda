@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from collections import defaultdict
 
 from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
@@ -8,8 +9,8 @@ from datetime import datetime
 
 from Items import db
 # import BluePrint
-from Items.main import main
-from Items.models import User, Message, Matched, Notification
+from Items.main import main, stop
+from Items.models import User, Message, Matched, Notification, Stop
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
@@ -31,21 +32,47 @@ def update_all_notifications():
     print("response_data[0]", response_data[0])
     print("list", response_data[0]["sender_random_id_list"])
 
-    returndict = {"unread request":{}, "unread match id":{}, "unread situation":{}, "unread output":{}, "unread test request":{}, "unread test match id":{}, "unread test output":{}}
+    returndict = {"unread request":{}, "unread match id":{}, "unread situation":{}, "unread output":{}, "unread test request":{}, "unread test match id":{}, "unread test output":{}, "unread train stop":{}, "unread test stop":{}}
     user = User.query.get_or_404(g.current_user.id)
     for i in range(len(response_data)):
         sender_random_id_list = response_data[i]["sender_random_id_list"]
         task_id_list = response_data[i]["task_id_list"]
-        if response_data[i]["name"] == 'unread train stop':
-            returndict["unread train stop"]["task id"] = response_data[i]["task_id_list"][0]
-            returndict["unread train stop"]["most recent round"] = response_data[i]["sender_random_id_list"][0]
-
-        elif response_data[i]["name"] == 'unread test stop':
-            returndict["unread train stop"]["test id"] = response_data[i]["task_id_list"][0]
-            returndict["unread train stop"]["most recent round"] = response_data[i]["sender_random_id_list"][0]
-
+        
         if int(response_data[i]["payload"]) != 0:
-            if response_data[i]["name"] == "unread request":
+            if response_data[i]["name"] == "unread train stop":
+                stop_deleted_user_id_and_round_list = sender_random_id_list
+                print("unread train stop", task_id_list, stop_deleted_user_id_and_round_list)
+                
+                task_id_to_deleted_user_id = defaultdict(list)
+                most_recent_round = defaultdict(list)
+                
+                lastest_time = datetime(1900, 1, 1)
+                for j in range(len(task_id_list)):
+                    task_id_to_deleted_user_id[task_id_list[j]].append(stop_deleted_user_id_and_round_list[0][j])
+                    most_recent_round[task_id_list[j]].append(stop_deleted_user_id_and_round_list[1][j])
+
+                    record = Stop.query.filter(Stop.stop_informed_user_id == g.current_user.id, Stop.task_id == task_id_list[j], Stop.test_indicator == "train").order_by(Stop.timestamp.desc()).all()
+                    # get the latest output timestamp
+                    if record[0].timestamp > lastest_time:
+                        lastest_time = record[0].timestamp
+
+                last_unread_stop_train_task_read_time = user.last_unread_stop_train_task_read_time or datetime(1900, 1, 1)          
+                if lastest_time > last_unread_stop_train_task_read_time:
+                    user.last_unread_stop_train_task_read_time = lastest_time
+                    # submit to database
+                    db.session.commit()
+                    # Updata Notification
+                    user.add_notification('unread train stop', user.stop_train_task()) 
+                    db.session.commit()
+
+                returndict["unread train stop"]["task_id_to_deleted_user_id"] = task_id_to_deleted_user_id
+                returndict["unread train stop"]["most_recent_round"] = most_recent_round
+
+            elif response_data[i]["name"] == "unread test stop":
+                pass
+
+
+            elif response_data[i]["name"] == "unread request":
                 print("unread request", task_id_list)
                 check_dict = {}
                 lastest_time = datetime(1900, 1, 1)
@@ -118,6 +145,7 @@ def update_all_notifications():
                 rounds_dict = {}
                 lastest_time = datetime(1900, 1, 1)
 
+                stop_task = True
                 for j in range(len(task_id_list)):
                     # check if the current client is the sponsor
                     isSponsor = False
@@ -125,25 +153,32 @@ def update_all_notifications():
                     if query:
                         if int(query.sponsor_id) == g.current_user.id:
                             isSponsor = True
+                        
+                        record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id_list[j], Message.situation != None, Message.test_indicator == "train").order_by(Message.situation_timestamp.desc()).first()
+                        # print("]]]]]]]]]]]]", record, record.rounds)
+                        if record:
+                            cur_rounds = record.rounds
+                            rounds_dict[task_id_list[j]] = cur_rounds
 
-                        record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id_list[j], Message.test_indicator == "train").order_by(Message.situation_timestamp.desc()).first()
-                        cur_rounds = record.rounds
+                            if isSponsor:
+                                check_dict[task_id_list[j]] = 1
+                            else:
+                                check_dict[task_id_list[j]] = 0
+
+                            # get the latest output timestamp
+                            if record.situation_timestamp > lastest_time:
+                                lastest_time = record.situation_timestamp
+
                         
-                        # get the latest output timestamp
-                        if record.situation_timestamp > lastest_time:
-                            lastest_time = record.situation_timestamp
-                        
-                        if isSponsor:
-                            check_dict[task_id_list[j]] = 1
-                        else:
-                            check_dict[task_id_list[j]] = 0
-                        
-                        rounds_dict[task_id_list[j]] = cur_rounds
+                print("stop_task/////////////////////", stop_task)
+                            
 
                 # Update the Notification
 
                 last_situation_read_time = user.last_situation_read_time or datetime(1900, 1, 1)
                 if lastest_time > last_situation_read_time:
+                    stop_task = False
+                    print("------------", "@@@@@@@@", lastest_time, last_situation_read_time)
                     user.last_situation_read_time = lastest_time
 
                     # submit to database
@@ -153,8 +188,18 @@ def update_all_notifications():
                     user.add_notification('unread situation', user.new_situation()) 
                     db.session.commit()
 
-                returndict["unread situation"]["check_dict"] = check_dict
-                returndict["unread situation"]["rounds_dict"] = rounds_dict
+                    print("zzzzzzz")
+
+
+                if stop_task:
+                    user.add_notification('unread situation', user.new_situation()) 
+                    db.session.commit()
+
+                    returndict["unread situation"]["check_dict"] = {}
+                    returndict["unread situation"]["rounds_dict"] = {}
+                else:
+                    returndict["unread situation"]["check_dict"] = check_dict
+                    returndict["unread situation"]["rounds_dict"] = rounds_dict
 
             elif response_data[i]["name"] == "unread output":
                 print("unread output", task_id_list)
@@ -162,8 +207,10 @@ def update_all_notifications():
 
                 lastest_time = datetime(1900, 1, 1)
                 rounds_dict = {}
+
+                stop_task = True
                 for j in task_id_list:
-                    record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == j, Message.test_indicator == "train").order_by(Message.output_timestamp.desc()).first()
+                    record = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == j, Message.output != None, Message.test_indicator == "train").order_by(Message.output_timestamp.desc()).first()
                     if record:
                         cur_rounds = record.rounds
                         rounds_dict[j] = cur_rounds
@@ -171,10 +218,12 @@ def update_all_notifications():
                         if record.output_timestamp > lastest_time:
                             lastest_time = record.output_timestamp
 
+
                 # Update the Notification 
 
                 last_output_read_time = user.last_output_read_time or datetime(1900, 1, 1)
                 if lastest_time > last_output_read_time:
+                    stop_task = False
                     user.last_output_read_time = lastest_time
 
                     # submit to database
@@ -184,7 +233,12 @@ def update_all_notifications():
                     user.add_notification('unread output', user.new_output()) 
                     db.session.commit()
 
-                returndict["unread output"]["rounds_dict"] = rounds_dict
+                if stop_task:
+                    user.add_notification('unread output', user.new_output()) 
+                    db.session.commit()
+                    returndict["unread output"]["rounds_dict"] = {}
+                else:
+                    returndict["unread output"]["rounds_dict"] = rounds_dict
 
             elif response_data[i]["name"] == "unread test request":
                 test_id_list = task_id_list

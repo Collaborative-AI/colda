@@ -65,6 +65,9 @@ class User(PaginatedAPIMixin, db.Model):
 
     last_messages_read_time = db.Column(db.DateTime)
 
+    last_unread_stop_train_task_read_time = db.Column(db.DateTime)
+
+    last_unread_stop_test_task_read_time = db.Column(db.DateTime)
     # last_stop_read_time = db.Column(db.DateTime)
 
     # Message User sent
@@ -160,9 +163,28 @@ class User(PaginatedAPIMixin, db.Model):
         return Message.query.filter_by(assistor=self).filter(
             Message.timestamp > last_read_time).count()
 
-    def stop_train_task(self, task_id, most_recent_round):
+    def stop_train_task(self):
 
-        return [[task_id], [most_recent_round]]
+        last_unread_stop_train_task_read_time = self.last_unread_stop_train_task_read_time or datetime(1900, 1, 1)
+
+        # stop_informed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+        # stop_deleted_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+        query = Stop.query.filter_by(stop_informed_user_id=self.id).filter(
+            Stop.timestamp > last_unread_stop_train_task_read_time, Stop.test_indicator == "train").all()
+        
+        print("---", len(query), last_unread_stop_train_task_read_time)
+        task_id_list = []
+        # deleted_user_id / stop_round
+        stop_deleted_user_id_and_round_list = [[],[]]
+
+        for i in range(len(query)):
+            task_id_list.append(query[i].task_id)
+            stop_deleted_user_id_and_round_list[0].append(query[i].stop_deleted_user_id)
+            stop_deleted_user_id_and_round_list[1].append(query[i].stop_round)
+        print("--", task_id_list, stop_deleted_user_id_and_round_list)
+        return [task_id_list, stop_deleted_user_id_and_round_list]
+
 
     def new_request(self):
         '''用户未读的请求数'''
@@ -318,6 +340,19 @@ class User(PaginatedAPIMixin, db.Model):
                 jwt.exceptions.DecodeError) as e:
             return None
         return User.query.get(payload.get('user_id'))
+
+
+class Stop(PaginatedAPIMixin, db.Model):
+    __tablenale__ = 'stop'
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    stop_informed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    stop_deleted_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    stop_round = db.Column(db.Integer)
+    task_id = db.Column(db.String(120), index=True)
+    test_id = db.Column(db.String(120), index=True)
+    test_indicator = db.Column(db.String(10))
 
 
 class Message(PaginatedAPIMixin, db.Model):

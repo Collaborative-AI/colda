@@ -116,6 +116,7 @@ def find_assistor():
     matched.assistor_random_id_pair = sponsor_random_id
     matched.Matched_id_file = json.dumps(data_array_id)
     matched.test_indicator = "train"
+    matched.Terminate = "false"
     db.session.add(matched) 
     # print(g.current_user.id, type(g.current_user.id),"3")                       
     db.session.commit()
@@ -227,7 +228,8 @@ def find_test_assistor():
     matched.Matched_id_file = json.dumps(data_array_id)
     matched.test_indicator = "test"
     matched.test_id = test_id
-    
+    matched.Terminate = "false"
+
     db.session.add(matched) 
     # print(g.current_user.id, type(g.current_user.id),"3")                       
     db.session.commit()

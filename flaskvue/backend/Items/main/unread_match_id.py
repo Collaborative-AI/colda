@@ -133,8 +133,6 @@ def assistor_write_match_index_done():
         return response
 
 
-
-
     if Message_query is not None and cur_assistor_written_done_count == assistor_num:
         for row in query:
             user = User.query.get_or_404(row.assistor_id_pair)

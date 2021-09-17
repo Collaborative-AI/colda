@@ -32,6 +32,7 @@ pyjwt = "==1.6.4"
 python-dotenv = "*"
 httpie = "*"
 coverage = "*"
+pymysql = "*"
 
 [dev-packages]
 

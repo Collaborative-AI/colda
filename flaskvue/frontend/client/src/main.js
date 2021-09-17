@@ -13,7 +13,8 @@ import 'bootstrap'
 import './assets/bootstrap-markdown/css/bootstrap-markdown.min.css'
 import './assets/bootstrap-markdown/css/custom.css'
 import './assets/icon-awesome/css/font-awesome.min.css'
-
+import db from './nedb'
+// import VueRouter from 'vue-router';
 // // Change import to require for packaging
 
 // console.log("11111111111111111111111111")
@@ -66,6 +67,7 @@ Vue.config.productionTip = false;
 Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment
 Vue.prototype.$store = store
+Vue.prototype.$db = db
 
 new Vue({
   router,

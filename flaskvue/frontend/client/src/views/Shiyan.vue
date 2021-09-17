@@ -114,7 +114,7 @@ const axios = require('axios').default
 // import csv2arr from '@/assets/csv-arr'
 // import db from '../db.js'
 // const db = require('../db.js').default
-import db from '../nedb.js'
+// import db from '../nedb.js'
 // const db = require('../nedb.js').default
 const store = require('../store').default
 // import store from '../store'
@@ -166,7 +166,7 @@ export default {
   // },
   methods: {
     nedb() {
-      db.insert({
+      this.$db.insert({
     name: 'Alice',
     age: 20,
     rank: 1,
@@ -176,7 +176,7 @@ export default {
     },
 
     nedb2(){
-db.find({
+this.$db.find({
     name: 'Alice',
 }, function(err, docs) {
     console.log('Alice found:', docs)

@@ -8,7 +8,7 @@ from datetime import datetime
 from Items import db
 # import BluePrint
 from Items.main import main
-from Items.models import User, Message, Matched
+from Items.models import User, Message, Matched, Stop
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
@@ -27,34 +27,66 @@ def stop_train_task():
     task_id = data.get('task_id')
     print("----------1")
     most_recent_round = 0
-    query = Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.output != None).order_by(Message.rounds.desc()).first()
+    query = Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
     if query is not None:
-        most_recent_round = query.rounds + 1
+        most_recent_round = query.rounds
 
+    # get sponsor id
     get_all_sponsor_assistors = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
     sponsor_id = None
-    if not get_all_sponsor_assistors:
+    if get_all_sponsor_assistors:
         sponsor_id = get_all_sponsor_assistors[0].sponsor_id
     
-    print("----------2")
+    print("----------2", sponsor_id)
 
-    if sponsor_id == g.current_user.id:
+    if int(sponsor_id) == g.current_user.id:
         Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.rounds == most_recent_round).delete()
         db.session.commit()
         
         Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").update({"Terminate": "true"})
+        db.session.commit()
 
-        all_sponsor_assistors = set()
-        for row in get_all_sponsor_assistors:
-            all_sponsor_assistors.add(row.sponsor_id)
-            all_sponsor_assistors.add(row.assistor_id_pair)
-
-        for user_id in all_sponsor_assistors:
-            user = User.query.get_or_404(user_id)
-            user.add_notification('unread train stop', user.stop_train_task(task_id, most_recent_round))
-            db.session.commit()
         
-        response = jsonify({"sponsor delete successfully": "successfully", "check sponsor": "true"})
+        # add stop_deleted_user_id == sponsor to assistor
+        for row in get_all_sponsor_assistors:
+            if row.assistor_id_pair != sponsor_id:
+                
+                stop = Stop()
+                stop.stop_informed_user_id = row.assistor_id_pair
+                stop.stop_deleted_user_id = sponsor_id
+                stop.stop_round = most_recent_round
+                stop.task_id = task_id
+                stop.test_indicator = "train"
+
+                db.session.add(stop)
+                db.session.commit()
+                user = User.query.get_or_404(row.assistor_id_pair)
+                # send unread train stop notification to current assistor
+                user.add_notification('unread train stop', user.stop_train_task()) 
+                db.session.commit()
+
+        # add stop_deleted_user_id == assistor to sponsor
+        # Use 2 for loop because I do not want to search User DB everytime. We only need user who is sponsor
+        user = User.query.get_or_404(sponsor_id)
+        for row in get_all_sponsor_assistors:
+            if row.assistor_id_pair != sponsor_id:
+
+                stop = Stop()
+                stop.stop_informed_user_id = sponsor_id
+                stop.stop_deleted_user_id = row.assistor_id_pair
+                stop.stop_round = most_recent_round
+                stop.task_id = task_id
+                stop.test_indicator = "train"
+
+                db.session.add(stop)
+                db.session.commit()
+                print("yiyiyiyiyiyiyiyiyiy")
+                # send unread train stop notification to sponsor of current task
+        user.add_notification('unread train stop', user.stop_train_task()) 
+        db.session.commit()
+
+
+        response = jsonify({"sponsor delete successfully": "successfully", "check sponsor": "true", "most recent round": most_recent_round})
         return response
 
     else:
@@ -66,10 +98,37 @@ def stop_train_task():
         db.session.commit()
         
         Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == g.current_user.id, Matched.test_indicator == "train").update({"Terminate": "true"})
-
-        user = User.query.get_or_404(g.current_user.id)
-        user.add_notification('unread train stop', user.stop_train_task(task_id, most_recent_round))
         db.session.commit()
+
+        stop = Stop()
+        stop.stop_informed_user_id = g.current_user.id
+        stop.stop_deleted_user_id = sponsor_id
+        stop.stop_round = most_recent_round
+        stop.task_id = task_id
+        stop.test_indicator = "train"
+
+        db.session.add(stop)
+        db.session.commit()
+        # send unread train stop notification to current assistor
+        user = User.query.get_or_404(g.current_user.id)
+        user.add_notification('unread train stop', user.stop_train_task()) 
+        db.session.commit()
+
+
+        stop = Stop()
+        stop.stop_informed_user_id = sponsor_id
+        stop.stop_deleted_user_id = g.current_user.id
+        stop.stop_round = most_recent_round
+        stop.task_id = task_id
+        stop.test_indicator = "train"
+
+        db.session.add(stop)
+        db.session.commit()
+        # send unread train stop notification to sponsor of current task
+        user = User.query.get_or_404(sponsor_id)
+        user.add_notification('unread train stop', user.stop_train_task()) 
+        db.session.commit()
+
         print("----------4")
         response = jsonify({"assistor delete successfully": "successfully", "check sponsor": "false", "most recent round": most_recent_round})
         return response

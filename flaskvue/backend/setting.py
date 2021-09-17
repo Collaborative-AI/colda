@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 from redis import Redis
+import pymysql
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -27,8 +28,16 @@ class Config(object):
     # JWT secret key
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'Apollo'
 
+    # sqlite
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
+
+    # mysql
+    # username: "root"
+    # password: "123"
+    # database: "Apollo_DB"
+    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@127.0.0.1/%s' % (username, password, database)
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     MESSAGES_PER_PAGE = 10

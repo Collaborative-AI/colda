@@ -68,13 +68,13 @@ def Sponsor_situation_training_done():
 
     return_val = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).update({"Sponsor_situation_training_done": "done"})
     db.session.commit()
-    print("zzzzzzzzzzzzzzzzzz", return_val)
+
     a = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).all()
     for zz in a:
         print(zz.Sponsor_situation_training_done)
     
-    queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
-    assistor_num = len(queries) - 1
+    queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != g.current_user.id, Matched.test_indicator == "train", Matched.Terminate == "false").all()
+    assistor_num = len(queries)
 
     all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
     output_upload = 0
@@ -85,6 +85,9 @@ def Sponsor_situation_training_done():
 
         if output_upload == assistor_num:
             user = User.query.get_or_404(queries[0].sponsor_id)
+            query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
+            if query_of_task[0].Terminate == 'true':
+                continue
             # send message notification to the sponsor when all assistor upload the output
             print("-----------------sendoutput", g.current_user.id)
             user.add_notification('unread output', user.new_output())
@@ -106,51 +109,65 @@ def send_output():
         return bad_request('You must post JSON data.')
     if 'output' not in data or not data.get('output'):
         return bad_request('output is required.')
-    # if 'rounds' not in data:
-    #     return bad_request('rounds is required.')  
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
     output = data.get('output')
-    # rounds = data.get('rounds')
     task_id = data.get('task_id')
 
-    rounds = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first().rounds
+    # get sponsor id
+    query = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
+    sponsor_id = query[0].sponsor_id
 
-    # extract sponsor_id
-    queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
-    assistor_num = len(queries) - 1
+    # check how many assistors in this train task are still running, not terminate
+    queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != sponsor_id, Matched.test_indicator == "train", Matched.Terminate == "false").all()
+    assistor_num = len(queries)
 
-    message = Message()
-    message.from_dict(data)
-    message.sender_id = g.current_user.id
-    message.assistor_id = queries[0].sponsor_id
-    message.task_id = task_id
-    message.rounds = rounds
+    # check the most recent round
+    rounds = 0
+    round_query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
+    if round_query:
+        rounds = round_query.rounds
+    
 
-    # Store the output
-    message.output = json.dumps(output)
-    message.test_indicator = "train"
+    query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
+    # check if current assistor is still running. If yes => add new message, else: not add anything
+    if query_of_task.Terminate == 'false':
+        message = Message()
+        message.from_dict(data)
+        message.sender_id = g.current_user.id
+        message.assistor_id = queries[0].sponsor_id
+        message.task_id = task_id
+        message.rounds = rounds
 
-    # Sponsor_situation_training_done
+        # Store the output
+        message.output = json.dumps(output)
+        message.test_indicator = "train"
 
-    for i in range(len(queries)):
-      if int(queries[i].assistor_id_pair) == g.current_user.id:
-        print("----------queries[i].assistor_random_id_pair", queries[i].assistor_random_id_pair)
-        print("----------queries[i].assistor_id_pair", queries[i].assistor_id_pair)
-        print("----------queries[i].sponsor_id", queries[i].sponsor_id)
-        print("----------queries[i].sponsor_random_id", queries[i].sponsor_random_id)
-        # print("----------queries[i].output", queries[i].output)
-        message.sender_random_id = queries[i].assistor_random_id_pair
+        # Sponsor_situation_training_done
 
-    db.session.add(message)
-    db.session.commit()
+        for i in range(len(queries)):
+            if int(queries[i].assistor_id_pair) == g.current_user.id:
+                print("----------queries[i].assistor_random_id_pair", queries[i].assistor_random_id_pair)
+                print("----------queries[i].assistor_id_pair", queries[i].assistor_id_pair)
+                print("----------queries[i].sponsor_id", queries[i].sponsor_id)
+                print("----------queries[i].sponsor_random_id", queries[i].sponsor_random_id)
+                # print("----------queries[i].output", queries[i].output)
+                message.sender_random_id = queries[i].assistor_random_id_pair
 
+            
+        db.session.add(message)
+        db.session.commit()
+
+    # check if sponsor finish training
     check_sponsor_training_done = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.Sponsor_situation_training_done == "done").all()
     if not check_sponsor_training_done:
         response = jsonify({"send_output": "Sponsor doesnt finish training"})
         return response
 
+    # check how many message we have of current round
+    # if the number of message rows containing output reaches the assistor_num, send "unread output" to sponsor
+    # if we delete the round R, then assistor_num == 0. It will check the message R-1, which would not match the assistor_num. Even it matches, we will check the Terminate
     all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
     output_upload = 0
     for row in all_cur_round_messages:
@@ -161,7 +178,6 @@ def send_output():
 
         if output_upload == assistor_num:
             user = User.query.get_or_404(queries[0].sponsor_id)
-
             query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
             if query_of_task.Terminate == 'true':
                 continue
@@ -173,6 +189,7 @@ def send_output():
 
             response = jsonify({"send_output": "send output successfully"})
             return response
+
 
     response = jsonify({"send_output": "Assistors havent upload all outputs"})
     return response

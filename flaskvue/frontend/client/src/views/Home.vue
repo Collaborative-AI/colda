@@ -20,6 +20,7 @@
 <script>
 import Alert from '../components/Alert.vue'
 // const Alert = require('../components/Alert.vue').default
+import store from '../store'//xie
 
 export default {
   name: 'Home',  // Name of the component
@@ -44,7 +45,13 @@ export default {
         }
       ],
     }
-  }
+  },
+  beforeCreate() {
+        if (!store.state.is_authenticated) {
+            this.$router.push({ name: 'Login' })
+            // you could, of course, also use the router to actually go to a 404 page if you wanted.
+        }
+    }
 }
 // exports.default = Home
 </script>

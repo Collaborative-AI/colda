@@ -95,6 +95,81 @@
       </div>
     </nav>
   </div>
+  <!-- revise -->
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
+      <div class="navbar-brand">
+      <router-link to="/" class="g-text-underline--none--hover">
+        <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          Apollo 
+      </router-link>
+      </div>
+
+      <!-- <div class="content">
+        <Home :log="log"></Home>
+      </div> -->
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item">
+            <router-link to="/" class="nav-link">Home <span class="sr-only">(current)</span></router-link>
+          </li>
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+            <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Call For Help </router-link>
+          </li>
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+            <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> History <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+          </li>
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+            <router-link v-bind:to="{ name: 'SettingProfile' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Settings</router-link>
+          </li>
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+              <a v-on:click="handlerLogout" class="nav-link" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
+          </li>
+
+        </ul>
+
+
+        
+        
+        
+
+        
+
+        <ul v-if="sharedState.is_authenticated" class="nav navbar-nav navbar-right">
+          
+          
+           
+
+          <!-- <li class="nav-item g-mr-20">
+            <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Send to B</router-link>
+          </li> -->
+          <!-- <div v-if="sponsor_request_show">
+            <input type="file" name="csvfile" ref="csvData" />
+            <input type="button" @click="sponsor_csv()" value="JS转换"/>
+          </div> -->
+
+          <div v-if="unread_request_show">
+            <input type="file" name="csvfile" ref="csvData" />
+            <input type="button" @click="assistor_csv()" value="JS转换"/>
+          </div>
+
+          
+
+          
+        </ul>
+        <!-- <ul v-else class="nav navbar-nav navbar-right">          
+          <li class="nav-item">
+            <router-link to="/login" class="nav-link"><i class="icon-login g-pos-rel g-top-1 g-mr-5"></i> Sign in</router-link>
+          </li>
+        </ul> -->
+      </div>
+    </nav>
+  </div>
 </section>
 </template>
 

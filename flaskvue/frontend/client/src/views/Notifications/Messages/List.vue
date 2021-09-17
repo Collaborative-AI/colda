@@ -14,7 +14,7 @@
           <div class="dropdown-menu dropdown-menu-right rounded-0 g-mt-10">
             
             <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 1 }}" class="dropdown-item g-px-10">
-              <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 每页 1 条
+              <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 g-mr-5">good</i> 每页 1 条
             </router-link>
             <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 5 }}" class="dropdown-item g-px-10">
               <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 每页 5 条
@@ -121,7 +121,7 @@ export default {
     // }
     getUserHistory (id) {
       let page = 1
-      let per_page = 5
+      let per_page = 10
       if (typeof this.$route.query.page != 'undefined') {
         page = this.$route.query.page
       }

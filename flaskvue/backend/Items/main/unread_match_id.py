@@ -180,35 +180,44 @@ def send_test_output():
 
     output = data.get('output')
     test_id = data.get('test_id')
-    user = User.query.get_or_404(g.current_user.id)
+
+    
+    find_sponsor_query = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").first()
+    sponsor = find_sponsor_query.sponsor_id
+
+    
     # extract sponsor_id
-    queries = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").all()
-    assistor_num = len(queries) - 1
-    task_id = queries[0].task_id
+    queries = Matched.query.filter(Matched.assistor_id_pair != sponsor, Matched.test_id == test_id, Matched.test_indicator == "test", Matched.Terminate == "false").all()
+    assistor_num = len(queries)
 
-    message = Message()
-    message.from_dict(data)
-    message.sender_id = g.current_user.id
-    message.assistor_id = queries[0].sponsor_id
-    message.task_id = task_id
+    current_user_test_situation = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
+    if current_user_test_situation.Terminate == "false":
+        user = User.query.get_or_404(g.current_user.id)
+        task_id = queries[0].task_id
 
-    # Store the output
-    message.output = json.dumps(output)
-    message.test_indicator = "test"
-    message.test_id = test_id
+        message = Message()
+        message.from_dict(data)
+        message.sender_id = g.current_user.id
+        message.assistor_id = queries[0].sponsor_id
+        message.task_id = task_id
 
-    for i in range(len(queries)):
-      if int(queries[i].assistor_id_pair) == g.current_user.id:
-        print("----------queries[i].assistor_random_id_pair", queries[i].assistor_random_id_pair)
-        print("----------queries[i].assistor_id_pair", queries[i].assistor_id_pair)
-        print("----------queries[i].sponsor_id", queries[i].sponsor_id)
-        print("----------queries[i].sponsor_random_id", queries[i].sponsor_random_id)
-        print("----------queries[i].sponsor_random_id", queries[i].test_id, queries[i].task_id)
-        # print("----------queries[i].output", queries[i].output)
-        message.sender_random_id = queries[i].assistor_random_id_pair
+        # Store the output
+        message.output = json.dumps(output)
+        message.test_indicator = "test"
+        message.test_id = test_id
 
-    db.session.add(message)
-    db.session.commit()
+        for i in range(len(queries)):
+            if int(queries[i].assistor_id_pair) == g.current_user.id:
+                print("----------queries[i].assistor_random_id_pair", queries[i].assistor_random_id_pair)
+                print("----------queries[i].assistor_id_pair", queries[i].assistor_id_pair)
+                print("----------queries[i].sponsor_id", queries[i].sponsor_id)
+                print("----------queries[i].sponsor_random_id", queries[i].sponsor_random_id)
+                print("----------queries[i].sponsor_random_id", queries[i].test_id, queries[i].task_id)
+                # print("----------queries[i].output", queries[i].output)
+                message.sender_random_id = queries[i].assistor_random_id_pair
+
+        db.session.add(message)
+        db.session.commit()
    
     all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.test_id == test_id, Message.test_indicator == "test").all()
 
@@ -221,9 +230,9 @@ def send_test_output():
         if output_upload == assistor_num:
             user = User.query.get_or_404(queries[0].sponsor_id)
 
-            query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
-            if query_of_task.Terminate == 'true':
-                continue
+            # query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
+            # if query_of_task.Terminate == 'true':
+            #     continue
             # send message notification to the sponsor when all assistor upload the output
             print("-----------------send test output", g.current_user.id)
             user.add_notification('unread test output', user.new_test_output())

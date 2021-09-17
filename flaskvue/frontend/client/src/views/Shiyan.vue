@@ -117,6 +117,8 @@ const axios = require('axios').default
 // import db from '../nedb.js'
 // const db = require('../nedb.js').default
 const store = require('../store').default
+const {remote} = window.require('electron')
+// import { remote } from 'electron';
 // import store from '../store'
 // import sq3 from 'sqlite3'
 // import fse from 'fs-extra';
@@ -166,21 +168,24 @@ export default {
   // },
   methods: {
     nedb() {
+
+     
+      console.log("zzzz", remote)
       this.$db.insert({
-    name: 'Alice',
-    age: 20,
-    rank: 1,
-}, function(err, doc) {
-    console.log('inserted:', doc)
-})
+        name: 'Alice',
+        age: 20,
+        rank: 1,
+      }, function(err, doc) {
+        console.log('inserted:', doc)
+      })
     },
 
     nedb2(){
-this.$db.find({
-    name: 'Alice',
-}, function(err, docs) {
-    console.log('Alice found:', docs)
-})
+      this.$db.find({
+        name: 'Alice',
+      }, function(err, docs) {
+        console.log('Alice found:', docs)
+      })
 
     },
 

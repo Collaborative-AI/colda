@@ -133,10 +133,12 @@ def stop_train_task():
         response = jsonify({"assistor delete successfully": "successfully", "check sponsor": "false", "most recent round": most_recent_round})
         return response
 
-@main.route('/stop_test/', methods=['POST'])
-@token_auth.login_required
-def stop_test():
 
+
+@main.route('/stop_test_task/', methods=['POST'])
+@token_auth.login_required
+def stop_test_task():
+    
     data = request.get_json()
 
     if not data:
@@ -145,39 +147,68 @@ def stop_test():
         return bad_request('test_id is required.')
 
     test_id = data.get('test_id')
-
-    # most_recent_round = 0
+    print("----------1")
+    most_recent_round = 0
     # query = Message.query.filter(Message.test_id == test_id, Message.test_indicator == "test").order_by(Message.rounds.desc()).first()
     # if query is not None:
-    #     most_recent_round = query.rounds + 1
+    #     most_recent_round = query.rounds
 
+    # get sponsor id
     get_all_sponsor_assistors = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").all()
+    sponsor_id = None
+    if get_all_sponsor_assistors:
+        sponsor_id = get_all_sponsor_assistors[0].sponsor_id
     
-    Message.query.filter(Message.test_id == test_id, Message.test_indicator == "test").delete()
-    db.session.commit()
-    
-    all_sponsor_assistors = set()
-    for row in get_all_sponsor_assistors:
-        all_sponsor_assistors.add(row.sponsor_id)
-        all_sponsor_assistors.add(row.assistor_id_pair)
+    print("----------2", sponsor_id)
 
-    for user_id in all_sponsor_assistors:
-        user = User.query.get_or_404(user_id)
-        user.add_notification('unread test stop', user.stop_test_task(test_id, None))
+    if int(sponsor_id) == g.current_user.id:
+        Message.query.filter(Message.test_id == test_id, Message.test_indicator == "test", Message.rounds == most_recent_round).delete()
         db.session.commit()
-    
-    response = jsonify({"sponsor delete successfully": "successfully", "check sponsor": "true"})
-    return response
+        
+        Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").update({"Terminate": "true"})
+        db.session.commit()
 
-    # else:
-    #     Message.query.filter(Message.test_id == test_id, Message.test_indicator == "test", Message.rounds == most_recent_round, Message.sender_id == g.current_ser.id).delete()
-    #     db.session.commit()
         
-    #     Message.query.filter(Message.test_id == test_id, Message.test_indicator == "test", Message.rounds == most_recent_round, Message.assistor_id == g.current_ser.id).delete()
-    #     db.session.commit()
-        
-    #     response = jsonify({"assistor delete successfully": "successfully", "check sponsor": "false", "most recent round": most_recent_round})
-        # return response
+        # add stop_deleted_user_id == sponsor to assistor
+        for row in get_all_sponsor_assistors:
+            if row.assistor_id_pair != sponsor_id:
+                
+                stop = Stop()
+                stop.stop_informed_user_id = row.assistor_id_pair
+                stop.stop_deleted_user_id = sponsor_id
+                stop.stop_round = most_recent_round
+                stop.test_id = test_id
+                stop.test_indicator = "test"
+
+                db.session.add(stop)
+                db.session.commit()
+                user = User.query.get_or_404(row.assistor_id_pair)
+                # send unread train stop notification to current assistor
+                user.add_notification('unread test stop', user.stop_test_task()) 
+                db.session.commit()
+
+        # add stop_deleted_user_id == assistor to sponsor
+        # Use 2 for loop because I do not want to search User DB everytime. We only need user who is sponsor
+        user = User.query.get_or_404(sponsor_id)
+        for row in get_all_sponsor_assistors:
+            if row.assistor_id_pair != sponsor_id:
+
+                stop = Stop()
+                stop.stop_informed_user_id = sponsor_id
+                stop.stop_deleted_user_id = row.assistor_id_pair
+                stop.stop_round = most_recent_round
+                stop.test_id = test_id
+                stop.test_indicator = "test"
+
+                db.session.add(stop)
+                db.session.commit()
+                print("yiyiyiyiyiyiyiyiyiy")
+                # send unread train stop notification to sponsor of current task
+        user.add_notification('unread test stop', user.stop_test_task()) 
+        db.session.commit()
+
+        response = jsonify({"test stop successfully": "successfully"})
+        return response
 
 
     

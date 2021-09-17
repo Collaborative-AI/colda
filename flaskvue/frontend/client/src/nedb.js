@@ -13,7 +13,7 @@ import path from 'path';
 // const NeDB = require('nedb')
 // const path = window.require('path');
 // import { remote } from 'electron';
-const {remote} = require('electron')
+// const {remote} = require('electron')
 console.log("zzzz", remote)
 console.log("gggg", path.join(remote.app.getPath('userData'), '../data.db'))
 // console.log(NeDB)
@@ -27,14 +27,15 @@ console.log("gggg", path.join(remote.app.getPath('userData'), '../data.db'))
 //     filename: path.join(__dirname,'../../data.db'),
 //     timestampData: true,
 // })
-
-
-export default new Datastore({
+let db = new Datastore({
     autoload: true,
     timestampData: true,
-    filename: path.join(remote.app.getPath('userData'), '../data.db'),
+    // filename: path.join(remote.app.getPath('userData'), '../data.db'),
     // filename: path.join(path.resolve("./exp"),'/data.db')
+    filename: path.join(__dirname,'../../data.db'),
 })
+
+export default db
 
 // let db=5;
 

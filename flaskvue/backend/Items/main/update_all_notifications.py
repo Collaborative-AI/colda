@@ -69,7 +69,34 @@ def update_all_notifications():
                 returndict["unread train stop"]["most_recent_round"] = most_recent_round
 
             elif response_data[i]["name"] == "unread test stop":
-                pass
+                test_id_list = task_id_list
+                stop_deleted_user_id_and_round_list = sender_random_id_list
+                print("unread train stop", test_id_list, stop_deleted_user_id_and_round_list)
+                
+                task_id_to_deleted_user_id = defaultdict(list)
+                most_recent_round = defaultdict(list)
+                
+                lastest_time = datetime(1900, 1, 1)
+                for j in range(len(test_id_list)):
+                    task_id_to_deleted_user_id[test_id_list[j]].append(stop_deleted_user_id_and_round_list[0][j])
+                    most_recent_round[test_id_list[j]].append(stop_deleted_user_id_and_round_list[1][j])
+
+                    record = Stop.query.filter(Stop.stop_informed_user_id == g.current_user.id, Stop.test_id == test_id_list[j], Stop.test_indicator == "test").order_by(Stop.timestamp.desc()).all()
+                    # get the latest output timestamp
+                    if record[0].timestamp > lastest_time:
+                        lastest_time = record[0].timestamp
+
+                last_unread_stop_test_task_read_time = user.last_unread_stop_test_task_read_time or datetime(1900, 1, 1)          
+                if lastest_time > last_unread_stop_test_task_read_time:
+                    user.last_unread_stop_test_task_read_time = lastest_time
+                    # submit to database
+                    db.session.commit()
+                    # Updata Notification
+                    user.add_notification('unread test stop', user.stop_test_task()) 
+                    db.session.commit()
+
+                returndict["unread test stop"]["task_id_to_deleted_user_id"] = task_id_to_deleted_user_id
+                returndict["unread test stop"]["most_recent_round"] = most_recent_round
 
 
             elif response_data[i]["name"] == "unread request":
@@ -337,7 +364,7 @@ def update_all_notifications():
                 test_id_list = set(test_id_list)
                 check_dict = {}
                 test_id_to_task_id = {}
-  
+                stop_test = True
                 lastest_time = datetime(1900, 1, 1)
                 
                 for j in test_id_list:
@@ -355,6 +382,7 @@ def update_all_notifications():
 
                 last_test_output_read_time = user.last_test_output_read_time or datetime(1900, 1, 1)
                 if lastest_time > last_test_output_read_time:
+                    stop_test = False
                     user.last_test_output_read_time = lastest_time
 
                     # submit to database
@@ -364,8 +392,15 @@ def update_all_notifications():
                     user.add_notification('unread test output', user.new_test_output()) 
                     db.session.commit()
 
-                returndict["unread test output"]["check_dict"] = check_dict
-                returndict["unread test output"]["test_id_to_task_id"] = test_id_to_task_id
+                if stop_test:
+                    user.add_notification('unread test output', user.new_test_output()) 
+                    db.session.commit()
+
+                    returndict["unread test output"]["check_dict"] = {}
+                    returndict["unread test output"]["test_id_to_task_id"] = {}
+                else:
+                    returndict["unread test output"]["check_dict"] = check_dict
+                    returndict["unread test output"]["test_id_to_task_id"] = test_id_to_task_id
     # print("returndict", returndict)
 
     notifications = user.notifications.filter(

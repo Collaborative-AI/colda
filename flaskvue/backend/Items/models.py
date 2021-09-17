@@ -68,6 +68,7 @@ class User(PaginatedAPIMixin, db.Model):
     last_unread_stop_train_task_read_time = db.Column(db.DateTime)
 
     last_unread_stop_test_task_read_time = db.Column(db.DateTime)
+
     # last_stop_read_time = db.Column(db.DateTime)
 
     # Message User sent
@@ -185,6 +186,26 @@ class User(PaginatedAPIMixin, db.Model):
         print("--", task_id_list, stop_deleted_user_id_and_round_list)
         return [task_id_list, stop_deleted_user_id_and_round_list]
 
+    def stop_test_task(self):
+        last_unread_stop_test_task_read_time = self.last_unread_stop_test_task_read_time or datetime(1900, 1, 1)
+
+        # stop_informed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+        # stop_deleted_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+        query = Stop.query.filter_by(stop_informed_user_id=self.id).filter(
+            Stop.timestamp > last_unread_stop_test_task_read_time, Stop.test_indicator == "train").all()
+        
+        print("---", len(query), last_unread_stop_test_task_read_time)
+        task_id_list = []
+        # deleted_user_id / stop_round
+        stop_deleted_user_id_and_round_list = [[],[]]
+
+        for i in range(len(query)):
+            task_id_list.append(query[i].test_id)
+            stop_deleted_user_id_and_round_list[0].append(query[i].stop_deleted_user_id)
+            stop_deleted_user_id_and_round_list[1].append(query[i].stop_round)
+        print("--", task_id_list, stop_deleted_user_id_and_round_list)
+        return [task_id_list, stop_deleted_user_id_and_round_list]
 
     def new_request(self):
         '''用户未读的请求数'''

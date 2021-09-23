@@ -14,10 +14,12 @@ import './assets/bootstrap-markdown/css/bootstrap-markdown.min.css'
 import './assets/bootstrap-markdown/css/custom.css'
 import './assets/icon-awesome/css/font-awesome.min.css'
 // import db from './nedb'
+// import db from './lowdb'
+import db from './leveldb'
 
 
-import Datastore from 'nedb';
-import path from 'path';
+// import Datastore from 'nedb';
+// import path from 'path';
 
 // rendering process
 
@@ -33,7 +35,7 @@ import path from 'path';
 // import { remote } from 'electron';
 // const {remote} = require('electron')
 // console.log("zzzz", remote)
-console.log("gggg", path.join(__dirname,'../../data.db'))
+// console.log("gggg", path.join(__dirname,'../../data.db'))
 // console.log(NeDB)
 // console.log('ijisfjoej')
 // console.log(__dirname)
@@ -45,13 +47,13 @@ console.log("gggg", path.join(__dirname,'../../data.db'))
 //     filename: path.join(__dirname,'../../data.db'),
 //     timestampData: true,
 // })
-let db = new Datastore({
-    autoload: true,
-    timestampData: true,
-    // filename: path.join(remote.app.getPath('userData'), '../data.db'),
-    // filename: path.join(path.resolve("./exp"),'/data.db')
-    filename: path.join(__dirname,'../../data.db'),
-})
+// let db = new Datastore({
+//     autoload: true,
+//     timestampData: true,
+//     // filename: path.join(remote.app.getPath('userData'), '../data.db'),
+//     // filename: path.join(path.resolve("./exp"),'/data.db')
+//     filename: path.join(__dirname,'../../data.db'),
+// })
 
 
 

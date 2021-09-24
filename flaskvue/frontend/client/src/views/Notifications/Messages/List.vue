@@ -57,6 +57,10 @@
             <small class="g-font-size-12 g-color-aqua">Task ID: <small v-if="message.task_id" class="g-font-size-12 g-color-deeporange"> {{ message.task_id }} </small></small>
           </h5>
           <p class="m-0">{{ $moment(message.match_id_timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</p>
+          <!-- <p class="m-0">{{ message }}</p> -->
+          <!-- <p class="m-0">{{ taskName }}</p> -->
+          
+          <!-- <p class="m-0">{{ message }}</p> -->
         </div>
         <div class="align-self-center ml-auto">
           <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id } }">
@@ -65,6 +69,10 @@
         </div>
       </div>
       <!-- End Panel Body -->
+
+
+      
+
     </div>
   
     <!-- Pagination #04 -->
@@ -82,6 +90,7 @@
 <script>
 import store from '../../../store'
 import Pagination from '../../../components/Pagination'
+import db from '../../../db'
 
 // const store = require('../../../store').default
 // const Pagination = require('../../../components/Pagination.vue').default
@@ -93,9 +102,56 @@ export default {
   data () {
     return {
       sharedState: store.state,
-      messages: ''
+      messages: '',
+      task_name: [],
     }
   },
+
+//   computed: {
+//   taskName () {
+//     return this.messages.items.map((message) => {
+//       // do your work on this element here 
+//       let vm = this;
+      
+//       let myPromise = new Promise(function(resolve, reject) {
+//         let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
+//       db.get(select_sentence, [message.task_id], function(err, row){
+//         if (err){ 
+//           console.log(err);
+//         }
+//         else{
+//           // vm.task_name=row.task_name
+//           // vm.task_name.push(row.task_name)
+//           // console.log(row.task_name)
+//           vm.task_name=row.task_name
+//           // return this.task_name
+//           console.log(vm.task_name)
+//           // return row.task_name
+//         }
+//         // console.log(vm.task_name)
+//       })
+//       console.log(vm.task_name)
+//       resolve(vm.task_name)
+//       })
+//       // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + `task_id`;
+      
+//       // console.log(task_name)
+//       // return this.task_name[0]
+//       // console.log(vm.ta)
+//       // return vm.ta
+//       myPromise.then(
+//         function(value){
+//           console.log(value)
+//           return value}
+//       )
+
+//     })
+
+//   }
+// },
+
+  
+
   methods: {
     // getUserMessagesSenders (id) {
     //   let page = 1
@@ -121,7 +177,7 @@ export default {
     // }
     getUserHistory (id) {
       let page = 1
-      let per_page = 10
+      let per_page = 5
       if (typeof this.$route.query.page != 'undefined') {
         page = this.$route.query.page
       }
@@ -140,7 +196,30 @@ export default {
           // handle error
           console.error(error)
         })
-    }
+    },
+
+    // taskName: function(task_id) {
+    //   // console.log(task_id)
+    //   let vm = this;
+    //   // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + `task_id`;
+    //   let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
+    //   db.get(select_sentence, [task_id], function(err, row){
+    //     if (err){ 
+    //       console.log(err);
+    //     }
+    //     else{
+    //       vm.task_name=row.task_name
+    //       // console.log(vm.task_name)
+    //       // return row.task_name
+    //     }
+    //     // console.log(vm.task_name)
+        
+        
+    //   })
+      
+    //   return vm.task_name
+    //   // return row.task_name
+    // }
   },
   created () {
     // this.getUserMessagesSenders(this.sharedState.user_id)

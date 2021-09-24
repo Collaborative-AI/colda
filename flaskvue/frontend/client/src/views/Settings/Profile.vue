@@ -19,17 +19,17 @@
 
     <!-- <form @submit.prevent="onSubmit"> -->
     <div class="form-group">
-      <label for="name">Default Train Data Path</label>
+      <label for="name">Default Train/Test Data Path</label>
       <input type="text" v-model="profileForm.default_train_data_path" class="form-control" id="name" placeholder="">
-      <button @click="get_default_train_data_path()">Select Train Data File</button>
+      <button @click="get_default_train_data_path(); get_default_test_data_path()">Select Train Data File</button>
     </div>
     <div class="form-group">
-      <label for="location">Default Train ID Path</label>
+      <label for="location">Default Train/Test ID Path</label>
       <input type="text" v-model="profileForm.default_train_id_path" class="form-control" id="location" placeholder="">
-      <button @click="get_default_train_id_path()">Select Train ID File</button>
+      <button @click="get_default_train_id_path(); get_default_test_id_path()">Select Train ID File</button>
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="name">Default Test Data Path</label>
       <input type="text" v-model="profileForm.default_test_data_path" class="form-control" id="name" placeholder="">
       <button @click="get_default_test_data_path()">Select Test Data File</button>
@@ -38,7 +38,7 @@
       <label for="location">Default Test ID Path</label>
       <input type="text" v-model="profileForm.default_test_id_path" class="form-control" id="location" placeholder="">
       <button @click="get_default_test_id_path()">Select Test ID File</button>
-    </div>
+    </div> -->
 
     <button type="submit" @click="onSubmit()" class="btn btn-primary">Update</button>
     <!-- </form> -->

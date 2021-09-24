@@ -95,6 +95,7 @@
       </div>
     </nav>
   </div>
+  
   <!-- revise -->
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
@@ -130,6 +131,13 @@
           <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
               <a v-on:click="handlerLogout" class="nav-link" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
           </li>
+          <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
+          <label for="not_receive">Not Respond</label>
+          <br>
+          <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
+          <label for="receive">Respond</label>
+          <br>
+          <!-- <span>Picked: {{ picked }}</span> -->
 
         </ul>
 

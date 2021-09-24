@@ -1,6 +1,6 @@
 const sqlite3 = window.require('sqlite3').verbose();
 
-let db=5;
+
 // let db = new sqlite3.Database('Apollo_Client_db');
 
 // db.serialize(function() {
@@ -23,6 +23,6 @@ let db=5;
 //                                            test_id_path       text, \
 //                                            test_target_path   text)")
 // });
-
+let db=5;
 export default db
 // exports.default = db

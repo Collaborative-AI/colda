@@ -13,7 +13,7 @@ import path from 'path';
 // const NeDB = require('nedb')
 // const path = window.require('path');
 // import { remote } from 'electron';
-// const {remote} = require('electron')
+const {remote} = window.require('electron')
 console.log("zzzz", remote)
 console.log("gggg", path.join(remote.app.getPath('userData'), '../data.db'))
 // console.log(NeDB)

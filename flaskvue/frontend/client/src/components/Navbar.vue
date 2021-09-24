@@ -1558,6 +1558,7 @@ export default {
                 test_save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                   + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + j, {encoding: 'utf8'})
                 console.log("test_save_output_pos", test_save_output_pos)
+                    
               }catch(err){
                 console.log(err)
               }
@@ -1568,47 +1569,7 @@ export default {
             }
           }
 
-          console.log("4.3 Test: Sponsor saves assistors' Output model");
-          vm.$toasted.success("4.3 Test: Sponsor saves assistors' Output model", { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, "4.3 Test: Sponsor saves assistors' Output model\n")
-          } catch (err) {
-            console.log(err)
-          }
-
-          let max_round = JSON.parse(response.data.output[0]).length - 1;
-          console.log("max_round", max_round)
-
-          let select_test_target_path = 'SELECT test_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
-          db.get(select_test_target_path, function(err, row){
-            if (err){ 
-              throw err;
-            }
-            let test_target_path = row.test_target_path
-            console.log("test_target_path",test_target_path)
-            try{
-              let eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round + ' --target_path ' + test_target_path, {encoding: 'utf8'})
-            }catch(err){
-              console.log(err)
-            }
-
-            console.log("4.4 Test: Sponsor evaluates output models done");
-            vm.$toasted.success("4.4 Test: Sponsor evaluates output models done", { icon: 'fingerprint' })
-            try {
-              fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
-            } catch (err) {
-              console.log(err)
-            }
-
-            try {
-              fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
-              fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
-            } catch (err) {
-              console.log(err)
-            }
-          });
-          
+          vm.unread_test_output_make_eval(task_id, test_id)
 
 
         })
@@ -1620,8 +1581,63 @@ export default {
           
     },
 
+    unread_test_output_make_eval(task_id, test_id){
+      console.log("4.3 Test: Sponsor saves assistors' Output model");
+
+      vm.$toasted.success("4.3 Test: Sponsor saves assistors' Output model", { icon: 'fingerprint' })
+      try {
+        fs.appendFileSync(Log_address, "4.3 Test: Sponsor saves assistors' Output model\n")
+      } catch (err) {
+        console.log(err)
+      }
+
+      let max_round = JSON.parse(response.data.output[0]).length - 1;
+      console.log("max_round", max_round)
+
+      let select_test_target_path = 'SELECT test_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
+      db.get(select_test_target_path, function(err, row){
+        if (err){ 
+          throw err;
+        }
+        let test_target_path = row.test_target_path
+        console.log("test_target_path",test_target_path)
+        try{
+          let eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+            + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round + ' --target_path ' + test_target_path, {encoding: 'utf8'})
+          if (eval_done == "client train not ready"){
+
+            setTimeout(function(){
+              vm.unread_test_output_make_eval(task_id, test_id)
+            }, 10000);
+
+            // vm.unread_test_output_make_eval(task_id, test_id)
+
+            return
+          }
+        }catch(err){
+          console.log(err)
+        }
+
+        console.log("4.4 Test: Sponsor evaluates output models done");
+        vm.$toasted.success("4.4 Test: Sponsor evaluates output models done", { icon: 'fingerprint' })
+        try {
+          fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
+        } catch (err) {
+          console.log(err)
+        }
+
+        try {
+          fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
+          fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
+        } catch (err) {
+          console.log(err)
+        }
+      });
+
+    },
 
   },
+
   created () {
     this.changeroot()
   },

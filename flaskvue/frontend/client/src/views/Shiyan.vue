@@ -118,6 +118,7 @@ const axios = require('axios').default
 // const db = require('../nedb.js').default
 const store = require('../store').default
 const {remote} = window.require('electron')
+// import db from '../leveldb'
 // import { remote } from 'electron';
 // import store from '../store'
 // import sq3 from 'sqlite3'
@@ -566,9 +567,9 @@ export default {
         // });
 
         // db.close();
-        db.run(`INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES (1, 'love', 'consume')`)
+        this.$db.run(`INSERT INTO "User_Default_Path"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
         let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + 1;
-        db.get(select_sentence, function(err, row){
+        this.$db.get(select_sentence, function(err, row){
           console.log(row)
           if (row == null){
             console.log("no")

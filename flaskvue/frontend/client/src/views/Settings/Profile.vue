@@ -39,6 +39,12 @@
       <input type="text" v-model="profileForm.default_test_id_path" class="form-control" id="location" placeholder="">
       <button @click="get_default_test_id_path()">Select Test ID File</button>
     </div> -->
+    <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
+          <label for="not_receive">Not Respond</label>
+          <br>
+          <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
+          <label for="receive">Respond</label>
+          <br>
 
     <button type="submit" @click="onSubmit()" class="btn btn-primary">Update</button>
     <!-- </form> -->
@@ -67,9 +73,38 @@ export default {
         default_test_data_path: "",
         default_test_id_path: "",
       },
+      picked: "not_receive",
     }
   },
   methods: {
+        not_receive() {
+      this.sharedState.receive_request = false
+    },
+    receive() {
+
+      let vm = this
+      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+      db.get(select_sentence, function(err, row){
+        if (err){
+          console.log(err);
+        }
+
+        console.log(row)
+
+        if (row == null | row.default_data_path == "" | row.default_id_path == "" |
+            row.default_test_data_path == "" | row.default_test_id_path == ""){
+          console.log("get false")
+          vm.sharedState.set_default = false
+          vm.sharedState.receive_request = false
+          vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
+          vm.picked = "One";
+        }
+        else{
+          vm.sharedState.receive_request = true
+        }
+        
+      })
+    },
     get_default_train_data_path() {
       let result = dialog.showOpenDialogSync({
         properties: ['openFile'],

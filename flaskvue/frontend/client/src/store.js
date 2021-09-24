@@ -31,6 +31,7 @@ export default {
 
       set_default: false,
       receive_request: false,
+      unread:[],
       // 用户登录后，就算刷新页面也能再次计算出 user_name
     //   user_name: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_name : '',
       // 用户登录后，就算刷新页面也能再次计算出 user_avatar
@@ -53,6 +54,8 @@ export default {
     //   this.state.user_name = ''
     //   this.state.user_avatar = ''
     },
+
+    
   }
 
   // exports.default = store

@@ -1,100 +1,6 @@
 <template>
 <section>
-  <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
-      <div class="navbar-brand">
-      <router-link to="/" class="g-text-underline--none--hover">
-        <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          Apollo 
-      </router-link>
-      </div>
-
-      <!-- <div class="content">
-        <Home :log="log"></Home>
-      </div> -->
-
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">
-            <router-link to="/" class="nav-link">Home <span class="sr-only">(current)</span></router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/ping" class="nav-link">Ping</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
-          </li>
-
-        </ul>
-        
-        <form v-if="sharedState.is_authenticated" class="form-inline navbar-left mr-auto">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search">
-          <!-- 暂时先禁止提交，后续实现搜索再改回 type="submit" -->
-          <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
-        </form>
-
-        
-
-        <ul v-if="sharedState.is_authenticated" class="nav navbar-nav navbar-right">
-          <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
-          <label for="not_receive">Dont Response to Request</label>
-          <br>
-          <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
-          <label for="receive">Response</label>
-          <br>
-          <span>Picked: {{ picked }}</span>
-
-          <!-- <li class="nav-item g-mr-20">
-            <button @click="find_assistor">Call For Help</button>
-            <router-link v-bind:to="{ name: 'Shiyan' }" class="nav-link">Call For Help</router-link>
-          </li> -->
-          
-           <li class="nav-item g-mr-20">
-            <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Call For Help </router-link>
-          </li>
-
-          <!-- <li class="nav-item g-mr-20">
-            <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Send to B</router-link>
-          </li> -->
-          <!-- <div v-if="sponsor_request_show">
-            <input type="file" name="csvfile" ref="csvData" />
-            <input type="button" @click="sponsor_csv()" value="JS转换"/>
-          </div> -->
-
-          <div v-if="unread_request_show">
-            <input type="file" name="csvfile" ref="csvData" />
-            <input type="button" @click="assistor_csv()" value="JS转换"/>
-          </div>
-
-          <li class="nav-item g-mr-20">
-            <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> History <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img v-bind:src="sharedState.user_avatar" class="g-brd-around g-brd-gray-light-v3 g-pa-2 rounded-circle rounded mCS_img_loaded"> {{ sharedState.user_name }}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <!-- <router-link v-bind:to="{ path: `/user/${sharedState.user_id}` }" class="dropdown-item"><i class="icon-star g-pos-rel g-top-1 g-mr-5"></i> Your profile</router-link> -->
-              <!-- <router-link v-bind:to="{ name: 'PostsResource' }" class="dropdown-item"><i class="icon-share g-pos-rel g-top-1 g-mr-5"></i> Your resource</router-link> -->
-              <router-link v-bind:to="{ name: 'SettingProfile' }" class="dropdown-item"><i class="icon-settings g-pos-rel g-top-1 g-mr-5"></i> Settings</router-link>
-              <div class="dropdown-divider"></div>
-              <a v-on:click="handlerLogout" class="dropdown-item" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
-            </div>
-          </li>
-        </ul>
-        <ul v-else class="nav navbar-nav navbar-right">          
-          <li class="nav-item">
-            <router-link to="/login" class="nav-link"><i class="icon-login g-pos-rel g-top-1 g-mr-5"></i> Sign in</router-link>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
+  
   
   <!-- revise -->
   <div class="container">
@@ -116,11 +22,14 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link to="/" class="nav-link">Home <span class="sr-only">(current)</span></router-link>
-          </li>
+          </li> -->
           <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
             <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Call For Help </router-link>
+          </li>
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+            <router-link v-bind:to="{ path: '/plist' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Pending <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
           </li>
           <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
             <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> History <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
@@ -131,12 +40,12 @@
           <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
               <a v-on:click="handlerLogout" class="nav-link" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
           </li>
-          <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
+          <!-- <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
           <label for="not_receive">Not Respond</label>
           <br>
           <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
           <label for="receive">Respond</label>
-          <br>
+          <br> -->
           <!-- <span>Picked: {{ picked }}</span> -->
 
         </ul>
@@ -1802,6 +1711,7 @@ export default {
 
                 if (unread_request_notification["check_dict"] ){
                     unread_request(unread_request_notification)
+                    store.set(unread, unread_request_notification)
                 }
 
                 if (unread_match_id_notification["check_dict"]){

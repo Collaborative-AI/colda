@@ -31,6 +31,9 @@ const MessagesHistoryResource = () => import('../views/Resources/Messages/Histor
 const FindAssistorHelper = () => import('../views/Resources/find_assistor.vue')
 const FindTestAssistorHelper = () => import('../views/Resources/find_test_assistor.vue')
 
+
+const Plist = () => import('../views/Notifications/Pendings/Plist.vue')
+
 // User Notifications
 const Notifications = () => import('../views/Notifications/Notifications.vue')
 // const RecivedComments = () => import('../views/Notifications/RecivedComments.vue')
@@ -214,6 +217,15 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/plist',
+    name: 'Plist',
+    component: Plist,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  
   {
     path: '/shiyan',
     name: 'Shiyan',

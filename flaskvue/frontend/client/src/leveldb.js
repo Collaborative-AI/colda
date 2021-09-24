@@ -1,5 +1,7 @@
 var levelup = window.require('levelup');
 var leveldown = window.require('leveldown');
+console.log("levelup", levelup)
+import path from 'path'
 
 var db = levelup(leveldown("./mydb"))
 

@@ -40,10 +40,10 @@
       <button @click="get_default_test_id_path()">Select Test ID File</button>
     </div> -->
     <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
-          <label for="not_receive">Not Respond</label>
+          <label for="not_receive">Active</label>
           <br>
           <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
-          <label for="receive">Respond</label>
+          <label for="receive">Passive</label>
           <br>
 
     <button type="submit" @click="onSubmit()" class="btn btn-primary">Update</button>

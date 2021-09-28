@@ -30,8 +30,8 @@ export default {
 
 
       set_default: false,
-      receive_request: false,
-      unread:[],
+      receive_request: 'passive',
+      pending:[],
       // 用户登录后，就算刷新页面也能再次计算出 user_name
     //   user_name: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_name : '',
       // 用户登录后，就算刷新页面也能再次计算出 user_avatar

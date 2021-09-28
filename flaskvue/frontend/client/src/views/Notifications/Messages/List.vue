@@ -33,6 +33,7 @@
         </div>
       </div>
       <!-- End Panel Header -->
+      <!-- <p> {{messages}}</p> -->
 
       <!-- Panel Body -->
       <div class="d-flex justify-content-start g-brd-around g-brd-gray-light-v4 g-brd-left-1 g-pa-20 g-mb-10"
@@ -49,16 +50,28 @@
             <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
           </router-link> -->
         </div>
-        <div class="align-self-center g-px-10">
-          <h5 class="h5 g-color-gray-dark-v1 mb-0">
+          <div class="align-self-center g-px-10">
+          <!-- <p class="m-0">Task Name</p> -->
+          <!-- <p class="m-0">{{ message.task_name }}</p> -->
+          <p class="m-0">Task Name: {{ message.task_name }}</p>
+          <p class="m-0">Task ID:  {{ message.task_id }} </p>
+
+          
+          <!-- <h5 class="h5 g-color-gray-dark-v1 mb-0"> -->
             <!-- <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="g-text-underline--none--hover">
               <span class="g-mr-5">{{ message.sender.name || message.sender.username }}</span>
             </router-link> -->
-            <small class="g-font-size-12 g-color-aqua">Task ID: <small v-if="message.task_id" class="g-font-size-12 g-color-deeporange"> {{ message.task_id }} </small></small>
-          </h5>
-          <p class="m-0">{{ $moment(message.match_id_timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</p>
+            <!-- <small class="g-font-size-12 g-color-aqua">Task Name: <small v-if="message.task_id" class="g-font-size-12 g-color-deeporange"> {{ message.task_name }} </small></small> -->
+            <!-- <small class="g-font-size-12 g-color-aqua">Task Name: <small v-if="message.task_id" class="g-font-size-12 g-color-deeporange"> {{ message.task_name }} </small></small> -->
+            <!-- <p>Task Name: {{ message.task_name }}</p> -->
+            <!-- <small class="g-font-size-12 g-color-aqua">Task ID: <small v-if="message.task_id" class="g-font-size-12 g-color-deeporange"> {{ message.task_id }} </small></small> -->
+          <!-- </h5> -->
+          
+          <p>{{ $moment(message.match_id_timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</p>
           <!-- <p class="m-0">{{ message }}</p> -->
-          <!-- <p class="m-0">{{ taskName }}</p> -->
+          <!-- <p class="m-0">{{ message.task_name }}</p> -->
+          <!-- <p>Task Name: {{ message.task_name }}</p> -->
+
           
           <!-- <p class="m-0">{{ message }}</p> -->
         </div>
@@ -103,7 +116,7 @@ export default {
     return {
       sharedState: store.state,
       messages: '',
-      task_name: [],
+      
     }
   },
 
@@ -176,6 +189,7 @@ export default {
     //     })
     // }
     getUserHistory (id) {
+      let vm=this
       let page = 1
       let per_page = 5
       if (typeof this.$route.query.page != 'undefined') {
@@ -190,7 +204,37 @@ export default {
       this.$axios.get(path)
         .then((response) => {
           // handle success
-          this.messages = response.data
+          vm.messages = response.data
+          
+          // console.log(this.messages.items)
+          // console.log(typeof(this.messages))
+          // console.log(this.messages.items[0].task_id)
+          // console.log(this.messages.items[0])
+          for (let i=0; i<vm.messages.items.length; i++) {
+            console.log(vm.messages.items[i]);
+            
+            // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + `task_id`;
+            let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
+            db.get(select_sentence, [vm.messages.items[i].task_id], function(err, row){
+            if (err){ 
+              console.log(err);
+            }
+            else{
+              // console.log(row.task_name)
+              // vm.messages.items[i]['task_name']=row.task_name
+              vm.$set(vm.messages.items[i],'task_name',row.task_name)
+              console.log(vm.messages.items[i])
+              // console.log(row.task_name)
+              // console.log(typeof(row))
+            }
+        
+        
+        
+            })//end db.get
+            // console.log(vm.messages)
+            
+          }//end for
+          // console.log(vm.messages)
         })
         .catch((error) => {
           // handle error
@@ -221,10 +265,19 @@ export default {
     //   // return row.task_name
     // }
   },
+  // beforeCreate () {
+  //   // this.getUserMessagesSenders(this.sharedState.user_id)
+  //   this.getUserHistory(this.sharedState.user_id)
+  // },
   created () {
     // this.getUserMessagesSenders(this.sharedState.user_id)
     this.getUserHistory(this.sharedState.user_id)
   },
+
+  // beforeMount () {
+  //   // this.getUserMessagesSenders(this.sharedState.user_id)
+  //   this.getUserHistory(this.sharedState.user_id)
+  // },
   // 当路由变化后(比如变更查询参数 page 和 per_page)重新加载数据
   beforeRouteUpdate (to, from, next) {
     next()

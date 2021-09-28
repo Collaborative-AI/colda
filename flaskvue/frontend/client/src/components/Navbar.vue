@@ -40,6 +40,9 @@
           <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
               <a v-on:click="handlerLogout" class="nav-link" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
           </li>
+          <li class="nav-item">
+            <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
+          </li>
           <!-- <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
           <label for="not_receive">Not Respond</label>
           <br>
@@ -128,7 +131,7 @@ export default {
       unread_request_show: false,
       assistor_num: 0,
       max_round: 3,
-      picked: "not_receive",
+      picked: "receive",
       root: '',
       exe_position: '',
       
@@ -174,6 +177,8 @@ export default {
 
     not_receive() {
       this.sharedState.receive_request = false
+      // this.sharedState.pending.a='apple'
+      // console.log(this.sharedState.pending)
     },
     receive() {
 
@@ -231,7 +236,7 @@ export default {
       let vm = this
 
       console.log("this.sharedState.receive_request", this.sharedState.receive_request)
-      if (this.sharedState.receive_request == true){
+      if (this.sharedState.receive_request == 'passive' || this.sharedState.receive_request== 'active'){
         console.log("2.1 Update request notification response", unread_request_notification)
         this.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
 
@@ -300,6 +305,7 @@ export default {
       }else{
         console.log("unread request: If you want to receive, open receive")
         dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
+
       }
     },
 
@@ -1031,7 +1037,7 @@ export default {
     unread_test_request(unread_test_request_notification) {
       let vm = this;
       // Only assistor calls this function
-      if (this.sharedState.receive_request == true){
+      if (this.sharedState.receive_request == 'passive' || this.sharedState.receive_request == 'active'){
         
         console.log("2.1 Update Test request notification response", unread_test_request_notification)
         this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
@@ -1711,7 +1717,6 @@ export default {
 
                 if (unread_request_notification["check_dict"] ){
                     unread_request(unread_request_notification)
-                    store.set(unread, unread_request_notification)
                 }
 
                 if (unread_match_id_notification["check_dict"]){

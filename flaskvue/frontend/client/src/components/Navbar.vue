@@ -658,19 +658,19 @@ export default {
             console.log(err)
           }
 
-          const path = `/assistor_write_match_index_done/`
+          // const path = `/assistor_write_match_index_done/`
 
-          const assistor_write_match_index_done_data = {
-            task_id: task_id
-          } 
+          // const assistor_write_match_index_done_data = {
+          //   task_id: task_id
+          // } 
           
-          vm.$axios.post(path, assistor_write_match_index_done_data)
-            .then((response) => {
-                console.log('3.6 Assistor update done');
-            })
-            .catch((error)=>{
-              console.log(error)
-            })   
+          // vm.$axios.post(path, assistor_write_match_index_done_data)
+          //   .then((response) => {
+          //       console.log('3.6 Assistor update done');
+          //   })
+          //   .catch((error)=>{
+          //     console.log(error)
+          //   })   
 
 
 
@@ -757,25 +757,84 @@ export default {
           //   while (window.performance.now() - startTime < time) {}
           // }
           // sleep(5000); // 程序滞留5000ms
-        const path = `/Sponsor_situation_training_done/`
 
-        const Sponsor_situation_training_done_data = {
-          task_id: task_id
-        } 
+        // const path = `/Sponsor_situation_training_done/`
+
+        // const Sponsor_situation_training_done_data = {
+        //   task_id: task_id
+        // } 
         
-        vm.$axios.post(path, Sponsor_situation_training_done_data)
-          .then((response) => {
-            console.log("4.4 Sponsor update training done")
-          })
-          .catch((error)=>{
-            console.log(error)
-          })  
+        // vm.$axios.post(path, Sponsor_situation_training_done_data)
+        //   .then((response) => {
+        //     console.log("4.4 Sponsor update training done")
+        //   })
+        //   .catch((error)=>{
+        //     console.log(error)
+        //   })  
 
       });
 
       
     },
 
+    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path){
+
+      let Assistor_train_output_path = null;
+
+      // get response from make_train.py. 
+      try{
+        Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+          + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + from_id + ' --data_path ' + default_train_data_path, {encoding: 'utf8'})
+      }catch(err){
+        console.log(Assistor_train_output_path)
+        console.log(err)
+      }
+
+      // if make_train.py prints "cannot fine match idx file", we call the function again, else, we move on.
+      if (Assistor_train_output_path == "assistor cannot find match idx file"){
+        setTimeout(function(){
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path)
+        }, 5000);
+      }else{
+
+        console.log("4.4 Assistor round " + rounds + " training done.");
+        vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
+        try {
+          fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
+        } catch (err) {
+          console.log(err)
+        }
+
+        let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path, {encoding:'utf8', flag:'r'});
+
+        const Assistor_output_payload = {
+          task_id: task_id,
+          output: Assistor_train_output_data,
+        }
+
+        // send output
+        // async
+        vm.$axios.post('/send_output/', Assistor_output_payload)
+          .then((response) => {
+          // handle success
+          console.log("4.5 Assistor sends output", response)
+          vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
+          try {
+            fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
+            fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
+          } catch (err) {
+            console.log(err)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      }
+
+
+
+    },
     unread_situation_assistor(rounds, task_id) {
       
       let vm = this;
@@ -837,6 +896,7 @@ export default {
           // sleep(5000); // 程序滞留5000ms
 
           // Assistor trains the data
+          
           let select_default_train_data_path = 'SELECT default_train_data_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
           db.get(select_default_train_data_path, function(err, row){
             if (err){ 
@@ -844,48 +904,9 @@ export default {
             }
             let default_train_data_path = row.default_train_data_path
             console.log("default_train_data_path",default_train_data_path)
-            let Assistor_train_output_path = null;
-            try{
-              Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + from_id + ' --data_path ' + default_train_data_path, {encoding: 'utf8'})
-              console.log(Assistor_train_output_path)
 
-              console.log("4.4 Assistor round " + rounds + " training done.");
-              vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
-              try {
-                fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
-              } catch (err) {
-                console.log(err)
-              }
-              
-            }catch(err){
-              console.log(err)
-            }
+            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path)
 
-            let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path, {encoding:'utf8', flag:'r'});
-
-            const Assistor_output_payload = {
-              task_id: task_id,
-              output: Assistor_train_output_data,
-            }
-
-            // send output
-            // async
-            vm.$axios.post('/send_output/', Assistor_output_payload)
-              .then((response) => {
-              // handle success
-              console.log("4.5 Assistor sends output", response)
-              vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
-              try {
-                fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
-                fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
-              } catch (err) {
-                console.log(err)
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-            })
           });
           
         })
@@ -915,6 +936,95 @@ export default {
         }
         let rounds = cur_unread_output_Rounds_dict[task_id];
         this.unread_output_singleTask(rounds, task_id);
+      }
+    },
+
+    unread_output_make_result_helper(task_id, rounds, train_target_path){
+
+      let make_result_done = null;
+      try{
+        let make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+          + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+        console.log("make_result_done", make_result_done)
+      }catch(err){
+        console.log(err)
+      }
+
+      if(make_result_done == "sponsor cannot find train output file"){
+        setTimeout(function(){
+          vm.unread_output_make_result_helper(task_id, rounds, train_target_path)
+        }, 5000);
+      }else{
+        console.log("5.4 Sponsor makes result done.")
+        vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
+        try {
+          fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
+        } catch (err) {
+          console.log(err)
+        }
+
+        // terminate
+        if ((rounds+1) >= vm.max_round){
+          fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n");
+        }else{        
+
+        let make_residual_multiple_paths = null;
+        try{
+          make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+            + ' --task_id '+ task_id + ' --round ' + (rounds+1) + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+          make_residual_multiple_paths = make_residual_multiple_paths.split('?')
+          console.log(make_residual_multiple_paths)
+          }catch(err){
+          console.log(err)
+        }
+
+        console.log("5.5 Sponsor makes residual finished")
+        vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
+
+        try {
+          fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
+        } catch (err) {
+          console.log(err)
+        }
+
+        let all_residual_data = [];
+        let assistor_random_id_list = [];
+
+        for (let i = 0; i < make_residual_multiple_paths.length; i++){
+
+          let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+          all_residual_data.push(data);
+
+          let path_split = make_residual_multiple_paths[i].split(node_path.sep);
+          let assistor_random_id = path_split[path_split.length-1].split(".")[0];
+          assistor_random_id_list.push(assistor_random_id);
+          
+        }
+
+        const payload1 = {
+          residual_list: all_residual_data,
+          task_id: task_id,
+          assistor_random_id_list: assistor_random_id_list,
+        }
+
+        // send initial situation
+        // async
+        vm.$axios.post('/send_situation/', payload1)
+          .then((response) => {
+          // handle success
+          console.log("5.6 Sponsor updates situation done", response)
+            vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
+            try {
+              fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
+              fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
+            } catch (err) {
+              console.log(err)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        }
       }
     },
 
@@ -980,95 +1090,8 @@ export default {
             }
             let train_target_path = row.train_target_path
             console.log("train_target_path", train_target_path)
-            try{
-              let make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-            }catch(err){
-              console.log(err)
-            }
 
-            console.log("5.4 Sponsor makes result done.")
-            vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
-            try {
-              fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
-            } catch (err) {
-              console.log(err)
-            }
-
-            // terminate
-            if ((rounds+1) >= vm.max_round){
-              fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n");
-            }else{
-
-              // Update situation
-
-              // function sleep(time) {
-              //   let startTime = window.performance.now();
-              //   while (window.performance.now() - startTime < time) {}
-              // }
-              // sleep(5000); // 程序滞留5000ms
-
-            
-
-            let make_residual_multiple_paths = null;
-            try{
-              make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --round ' + (rounds+1) + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-              make_residual_multiple_paths = make_residual_multiple_paths.split('?')
-              console.log(make_residual_multiple_paths)
-              }catch(err){
-              console.log(err)
-            }
-
-            console.log("5.5 Sponsor makes residual finished")
-            vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
-
-            try {
-              fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
-            } catch (err) {
-              console.log(err)
-            }
-
-            let all_residual_data = [];
-            let assistor_random_id_list = [];
-
-            for (let i = 0; i < make_residual_multiple_paths.length; i++){
-
-              let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
-              all_residual_data.push(data);
-
-              let path_split = make_residual_multiple_paths[i].split(node_path.sep);
-              let assistor_random_id = path_split[path_split.length-1].split(".")[0];
-              assistor_random_id_list.push(assistor_random_id);
-              
-            }
-
-            const payload1 = {
-              residual_list: all_residual_data,
-              task_id: task_id,
-              assistor_random_id_list: assistor_random_id_list,
-            }
-
-            // send initial situation
-            // async
-            vm.$axios.post('/send_situation/', payload1)
-              .then((response) => {
-              // handle success
-              console.log("5.6 Sponsor updates situation done", response)
-                vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
-                try {
-                  fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
-                  fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
-                } catch (err) {
-                  console.log(err)
-                }
-              })
-              .catch((error) => {
-                console.log(error)
-              })
-
-
-            }
+            vm.unread_output_make_result_helper(task_id, rounds, train_target_path)
 
           });
           

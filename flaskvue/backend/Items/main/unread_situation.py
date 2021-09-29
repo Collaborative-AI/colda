@@ -160,10 +160,10 @@ def send_output():
         db.session.commit()
 
     # check if sponsor finish training
-    check_sponsor_training_done = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.Sponsor_situation_training_done == "done").all()
-    if not check_sponsor_training_done:
-        response = jsonify({"send_output": "Sponsor doesnt finish training"})
-        return response
+    # check_sponsor_training_done = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.Sponsor_situation_training_done == "done").all()
+    # if not check_sponsor_training_done:
+    #     response = jsonify({"send_output": "Sponsor doesnt finish training"})
+    #     return response
 
     # check how many message we have of current round
     # if the number of message rows containing output reaches the assistor_num, send "unread output" to sponsor
@@ -187,11 +187,11 @@ def send_output():
             user.add_notification('unread output', user.new_output())
             db.session.commit()
 
-            response = jsonify({"send_output": "send output successfully"})
-            return response
-
-
-    response = jsonify({"send_output": "Assistors havent upload all outputs"})
+    response = jsonify({"send_output": "send output successfully"})
     return response
+
+
+    # response = jsonify({"send_output": "Assistors havent upload all outputs"})
+    # return response
 
     

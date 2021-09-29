@@ -40,17 +40,17 @@ def send_situation():
     if query is not None:
         cur_round = query.rounds + 1
 
-    # get how many assistors are still in this task
-    check_assistor_match_written_done = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train", Matched.Terminate == "false").all()
-    cur_assistor_written_done_count = 0
-    for row in check_assistor_match_written_done:
-        if row.Assistor_matched_written_done == "done":
-            cur_assistor_written_done_count += 1
+    # # get how many assistors are still in this task
+    # check_assistor_match_written_done = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train", Matched.Terminate == "false").all()
+    # cur_assistor_written_done_count = 0
+    # for row in check_assistor_match_written_done:
+    #     if row.Assistor_matched_written_done == "done":
+    #         cur_assistor_written_done_count += 1
 
-    # If all assistor finished writting match_id, let send_unread_situation become True
-    send_unread_situation = False
-    if cur_assistor_written_done_count == len(check_assistor_match_written_done):
-        send_unread_situation = True
+    # # If all assistor finished writting match_id, let send_unread_situation become True
+    # send_unread_situation = False
+    # if cur_assistor_written_done_count == len(check_assistor_match_written_done):
+    #     send_unread_situation = True
 
     for i in range(len(residual_list)):
 
@@ -90,9 +90,10 @@ def send_situation():
         db.session.add(message)
         db.session.commit()
         # send message notification to the assistor
-        if send_unread_situation:
-            user.add_notification('unread situation', user.new_situation())
-            db.session.commit()
+
+        # if send_unread_situation:
+        user.add_notification('unread situation', user.new_situation())
+        db.session.commit()
 
     user = User.query.get_or_404(g.current_user.id)
     message = Message()
@@ -110,14 +111,15 @@ def send_situation():
         db.session.add(message)
         db.session.commit()
     
-        if send_unread_situation:
-            user.add_notification('unread situation', user.new_situation())
-            db.session.commit()
+        # if send_unread_situation:
+        user.add_notification('unread situation', user.new_situation())
+        db.session.commit()
 
     # return response
-    if send_unread_situation:
-        response = jsonify({"message": "send situation successfully!"})
-        return response
-    
-    response = jsonify({"message": "Add Message Done, but not add unread situation"})
+
+    # if send_unread_situation:
+    response = jsonify({"message": "send situation successfully!"})
     return response
+    
+    # response = jsonify({"message": "Add Message Done, but not add unread situation"})
+    # return response

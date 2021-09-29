@@ -115,7 +115,7 @@ export default {
   data () {
     return {
       sharedState: store.state,
-      messages: '',
+      messages: null,
       
     }
   },
@@ -205,29 +205,31 @@ export default {
         .then((response) => {
           // handle success
           vm.messages = response.data
-          
+          console.log("vm.messages", vm.messages)
           // console.log(this.messages.items)
           // console.log(typeof(this.messages))
           // console.log(this.messages.items[0].task_id)
           // console.log(this.messages.items[0])
           for (let i=0; i<vm.messages.items.length; i++) {
-            console.log(vm.messages.items[i]);
+            console.log("get_user_history_message", vm.messages.items[i]);
             
             // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + `task_id`;
             let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
             db.get(select_sentence, [vm.messages.items[i].task_id], function(err, row){
-            if (err){ 
-              console.log(err);
-            }
-            else{
-              // console.log(row.task_name)
-              // vm.messages.items[i]['task_name']=row.task_name
-              console.log(row)
-              vm.$set(vm.messages.items[i],'task_name',row.task_name)
-              console.log(vm.messages.items[i])
-              // console.log(row.task_name)
-              // console.log(typeof(row))
-            }
+              if (err){ 
+                console.log("get_name_from_frontend_db", err);
+              }
+              else{
+                // console.log(row.task_name)
+                // vm.messages.items[i]['task_name']=row.task_name
+                console.log("name_db", row)
+                if (row){
+                  vm.$set(vm.messages.items[i],'task_name',row.task_name)
+                }
+                console.log("vm.messages.items[i]", vm.messages.items[i])
+                // console.log(row.task_name)
+                // console.log(typeof(row))
+              }
         
         
         

@@ -501,7 +501,7 @@ export default {
           let select_train_target_path = 'SELECT train_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
           db.get(select_train_target_path, function(err, row){
             if (err){ 
-              throw err;
+              console.log(err);
             }
             let train_target_path = row.train_target_path
             console.log("train_target_path", train_target_path)
@@ -777,7 +777,7 @@ export default {
       
     },
 
-    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path){
+    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path, vm, Log_address){
 
       let Assistor_train_output_path = null;
 
@@ -785,15 +785,16 @@ export default {
       try{
         Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
           + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + from_id + ' --data_path ' + default_train_data_path, {encoding: 'utf8'})
+         console.log("Assistor_train_output_path", Assistor_train_output_path)
       }catch(err){
-        console.log(Assistor_train_output_path)
+       
         console.log(err)
       }
 
       // if make_train.py prints "cannot fine match idx file", we call the function again, else, we move on.
       if (Assistor_train_output_path == "assistor cannot find match idx file"){
         setTimeout(function(){
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path, vm, Log_address)
         }, 5000);
       }else{
 
@@ -905,7 +906,7 @@ export default {
             let default_train_data_path = row.default_train_data_path
             console.log("default_train_data_path",default_train_data_path)
 
-            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path)
+            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path, vm, Log_address)
 
           });
           
@@ -939,22 +940,28 @@ export default {
       }
     },
 
-    unread_output_make_result_helper(task_id, rounds, train_target_path){
-
+    unread_output_make_result_helper(task_id, rounds, train_target_path, vm, Log_address){
+      console.log("unread_output_make_result_helper_rounds", rounds)
       let make_result_done = null;
       try{
-        let make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+        make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
           + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + train_target_path, {encoding: 'utf8'})
         console.log("make_result_done", make_result_done)
       }catch(err){
         console.log(err)
       }
 
+      let a = (make_result_done == "sponsor cannot find train output file")
+      console.log("a",a)
       if(make_result_done == "sponsor cannot find train output file"){
+        console.log("-------meijinlai")
+        make_result_done = null;
         setTimeout(function(){
-          vm.unread_output_make_result_helper(task_id, rounds, train_target_path)
+          vm.unread_output_make_result_helper(task_id, rounds, train_target_path, vm, Log_address)
         }, 5000);
+
       }else{
+        console.log("jinlaile")
         console.log("5.4 Sponsor makes result done.")
         vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
         try {
@@ -1091,7 +1098,7 @@ export default {
             let train_target_path = row.train_target_path
             console.log("train_target_path", train_target_path)
 
-            vm.unread_output_make_result_helper(task_id, rounds, train_target_path)
+            vm.unread_output_make_result_helper(task_id, rounds, train_target_path, vm, Log_address)
 
           });
           
@@ -1635,7 +1642,7 @@ export default {
             }
           }
 
-          vm.unread_test_output_make_eval(task_id, test_id)
+          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address)
 
 
         })
@@ -1647,7 +1654,7 @@ export default {
           
     },
 
-    unread_test_output_make_eval(task_id, test_id){
+    unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address){
       console.log("4.3 Test: Sponsor saves assistors' Output model");
 
       vm.$toasted.success("4.3 Test: Sponsor saves assistors' Output model", { icon: 'fingerprint' })
@@ -1673,8 +1680,8 @@ export default {
           if (eval_done == "client train not ready"){
 
             setTimeout(function(){
-              vm.unread_test_output_make_eval(task_id, test_id)
-            }, 10000);
+              vm.unread_test_output_make_eval(task_id, test_id, vm, Log_address)
+            }, 5000);
 
             // vm.unread_test_output_make_eval(task_id, test_id)
 

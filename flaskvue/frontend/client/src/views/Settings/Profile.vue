@@ -45,13 +45,13 @@
           <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
           <label for="receive">Passive</label>
           <br> -->
-    <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
+    <input type="radio" id="not_receive" value="not_receive" v-model="picked">
     <label for="not_receive">Not respond</label>
     <br>
-    <input type="radio" id="passive" value="passive" v-model="picked" v-on:change="passive()">
+    <input type="radio" id="passive" value="passive" v-model="picked">
     <label for="receive">Passive</label>
     <br>
-    <input type="radio" id="active" value="active" v-model="picked" v-on:change="active()">
+    <input type="radio" id="active" value="active" v-model="picked">
     <label for="active">Active</label>
     <br>
 
@@ -98,56 +98,56 @@ export default {
     //   this.sharedState.pending.splice(0, 1);
     //   console.log(this.sharedState.pending)
     },
-    passive() {
+    // passive() {
 
-      let vm = this
-      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
-      db.get(select_sentence, function(err, row){
-        if (err){
-          console.log(err);
-        }
+    //   let vm = this
+    //   let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+    //   db.get(select_sentence, function(err, row){
+    //     if (err){
+    //       console.log(err);
+    //     }
 
-        console.log(row)
+    //     console.log(row)
 
-        if (row == null | row.default_data_path == "" | row.default_id_path == "" |
-            row.default_test_data_path == "" | row.default_test_id_path == ""){
-          console.log("get false")
-          vm.sharedState.set_default = false
-          vm.sharedState.receive_request = 'not_respond'
-          vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
-          vm.picked = "One";
-        }
-        else{
-          vm.sharedState.receive_request = 'passive'
-        }
+    //     if (row == null | row.default_data_path == "" | row.default_id_path == "" |
+    //         row.default_test_data_path == "" | row.default_test_id_path == ""){
+    //       console.log("get false")
+    //       vm.sharedState.set_default = false
+    //       vm.sharedState.receive_request = 'not_respond'
+    //       vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
+    //       vm.picked = "One";
+    //     }
+    //     else{
+    //       vm.sharedState.receive_request = 'passive'
+    //     }
         
-      })
-    },
-    active() {
+    //   })
+    // },
+    // active() {
 
-      let vm = this
-      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
-      db.get(select_sentence, function(err, row){
-        if (err){
-          console.log(err);
-        }
+    //   let vm = this
+    //   let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+    //   db.get(select_sentence, function(err, row){
+    //     if (err){
+    //       console.log(err);
+    //     }
 
-        console.log(row)
+    //     console.log(row)
 
-        if (row == null | row.default_data_path == "" | row.default_id_path == "" |
-            row.default_test_data_path == "" | row.default_test_id_path == ""){
-          console.log("get false")
-          vm.sharedState.set_default = false
-          vm.sharedState.receive_request = 'not_respond'
-          vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
-          vm.picked = "One";
-        }
-        else{
-          vm.sharedState.receive_request = 'active'
-        }
+    //     if (row == null | row.default_data_path == "" | row.default_id_path == "" |
+    //         row.default_test_data_path == "" | row.default_test_id_path == ""){
+    //       console.log("get false")
+    //       vm.sharedState.set_default = false
+    //       vm.sharedState.receive_request = 'not_respond'
+    //       vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
+    //       vm.picked = "One";
+    //     }
+    //     else{
+    //       vm.sharedState.receive_request = 'active'
+    //     }
         
-      })
-    },
+    //   })
+    // },
     get_default_train_data_path() {
       let result = dialog.showOpenDialogSync({
         properties: ['openFile'],
@@ -354,7 +354,9 @@ export default {
               db.run(update_sentence)
             });
           }
-        }    
+        }  
+        console.log("vm.picked", vm.picked)
+        vm.sharedState.receive_request = vm.picked;  
       })
 
     },

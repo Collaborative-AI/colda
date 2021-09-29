@@ -18,7 +18,7 @@ def make_train(args):
     if from_id is not None:
         match_idx_file_location = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx', '{}.csv'.format(from_id))
         if not os.path.exists(match_idx_file_location):
-            print("assistor cannot find match idx file")
+            print('assistor cannot find match idx file', end='')
             return 
         self_from_idx = np.genfromtxt(
             os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx', '{}.csv'.format(from_id)),

@@ -222,6 +222,7 @@ export default {
             else{
               // console.log(row.task_name)
               // vm.messages.items[i]['task_name']=row.task_name
+              console.log(row)
               vm.$set(vm.messages.items[i],'task_name',row.task_name)
               console.log(vm.messages.items[i])
               // console.log(row.task_name)

@@ -245,7 +245,8 @@ export default {
           
           // const assistor_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
           // fs.mkdirSync(assistor_store_folder, { recursive: true})
-          
+          if (this.sharedState.receive_request=='passive'){
+
           let select_default_train_id_path = 'SELECT default_train_id_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
           db.get(select_default_train_id_path, function(err, row){
             if (err){ 
@@ -300,9 +301,53 @@ export default {
               })
 
           })  
+        }  //end if
+        //else if active
+        else {
+          console.log(task_id)
+          // let select_task_info = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + task_id;
+          // db.get(select_task_info, function(err, row){
+          //   if (err){ 
+          //     throw err;
+          //   }
+          //   vm.sharedState.pending.push({task_name: row.task_name, task_id: row.task_id})
+          //   console.log(vm.sharedState.pending)
+          // })  
+          // let db_task_id
+          // let db_task_name
+          // let db_task_description
+          let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
+            db.get(select_sentence, [task_id], function(err, row){
+            if (err){ 
+              console.log(err);
+            }
+            else{
+              // vm.sharedState.pending.push({task_name: row.task_name, task_id: task_id})
+              // console.log(vm.sharedState.pending)
+              let db_task_id
+              let db_task_name
+              let db_task_description
+              db_task_id=row.task_id
+              db_task_name=row.task_name
+              db_task_description=row.task_description
+              let insert_sentence = `INSERT INTO "User_Pending_Page"("task_name", "task_description", "user_id", "task_id") VALUES 
+              (`+`"`+db_task_name +`", "`+db_task_description+`", "`+vm.sharedState.user_id+ `", "` + db_task_id + `")`
+          console.log("insert_sentence", insert_sentence)
+          db.run(insert_sentence, function(err){
+            if (err){
+              console.log(err);
+            }
+          })
+            }
+        
+            })//end db.get
+          // vm.sharedState.pending.push({task_id: task_id})
+          // console.log(vm.sharedState.pending)
           
-        }
-      }else{
+        }//end else
+        }//end for
+      }
+      else{
         console.log("unread request: If you want to receive, open receive")
         dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
 

@@ -1,3 +1,4 @@
+from typing import Match
 import numpy as np
 import os
 from sklearn.linear_model import LinearRegression
@@ -15,6 +16,10 @@ def make_train(args):
     target = np.genfromtxt(os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'residual',
                                         '{}.csv'.format(self_id)), delimiter=',')
     if from_id is not None:
+        match_idx_file_location = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx', '{}.csv'.format(from_id))
+        if not os.path.exists(match_idx_file_location):
+            print("assistor cannot find match idx file")
+            return 
         self_from_idx = np.genfromtxt(
             os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx', '{}.csv'.format(from_id)),
             delimiter=',').astype(np.int64)

@@ -21,6 +21,9 @@ def make_result(args):
         from_id_i = os.path.splitext(output_files[i])[0]
         if from_id_i != self_id:
             output_i = np.genfromtxt(os.path.join(output_path, output_files[i]), delimiter=',')
+            if not os.path.exists(output_i):
+                print("sponsor cannot find train output file")
+                return 
             self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, '{}.csv'.format(from_id_i)),
                                             delimiter=',').astype(np.int64)
             output[self_from_idx_i] = output[self_from_idx_i] + output_i

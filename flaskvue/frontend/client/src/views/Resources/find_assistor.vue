@@ -1,5 +1,15 @@
 <template>
   <div class="container g-pt-20">
+    <div class="form-group">
+      <label for="name">Input Task Name</label>
+      <input type="text" v-model="task_name" class="form-control" id="name" placeholder="">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Input Task Description</label>
+      <input type="text" v-model="task_description" class="form-control" id="name" placeholder="">
+    </div>
+
      <div class="form-group">
       <label for="name">Select Data File</label>
       <input type="text" v-model="PathForm.train_data_path" class="form-control" id="name" placeholder="">
@@ -40,6 +50,8 @@ export default {
     return {
       sharedState: store.state,
       task_id: "",
+      task_name: "",
+      task_description: "",
       PathForm: {
         train_data_path: "",
         train_id_path: "",
@@ -217,8 +229,8 @@ export default {
           // });
           console.log("true")
           console.log(vm.PathForm.train_data_path,vm.PathForm.train_id_path,vm.PathForm.train_target_path)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
-              (`+`"`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
+          let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
+              (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
           console.log("insert_sentence", insert_sentence)
           db.run(insert_sentence, function(err){
             if (err){

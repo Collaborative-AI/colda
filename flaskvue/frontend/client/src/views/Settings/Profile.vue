@@ -19,17 +19,17 @@
 
     <!-- <form @submit.prevent="onSubmit"> -->
     <div class="form-group">
-      <label for="name">Default Train Data Path</label>
+      <label for="name">Default Train/Test Data Path</label>
       <input type="text" v-model="profileForm.default_train_data_path" class="form-control" id="name" placeholder="">
       <button @click="get_default_train_data_path()">Select Train Data File</button>
     </div>
     <div class="form-group">
-      <label for="location">Default Train ID Path</label>
+      <label for="location">Default Train/Test ID Path</label>
       <input type="text" v-model="profileForm.default_train_id_path" class="form-control" id="location" placeholder="">
       <button @click="get_default_train_id_path()">Select Train ID File</button>
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="name">Default Test Data Path</label>
       <input type="text" v-model="profileForm.default_test_data_path" class="form-control" id="name" placeholder="">
       <button @click="get_default_test_data_path()">Select Test Data File</button>
@@ -38,7 +38,23 @@
       <label for="location">Default Test ID Path</label>
       <input type="text" v-model="profileForm.default_test_id_path" class="form-control" id="location" placeholder="">
       <button @click="get_default_test_id_path()">Select Test ID File</button>
-    </div>
+    </div> -->
+    <!-- <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
+          <label for="not_receive">Active</label>
+          <br>
+          <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
+          <label for="receive">Passive</label>
+          <br> -->
+    <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
+    <label for="not_receive">Not respond</label>
+    <br>
+    <input type="radio" id="passive" value="passive" v-model="picked" v-on:change="passive()">
+    <label for="receive">Passive</label>
+    <br>
+    <input type="radio" id="active" value="active" v-model="picked" v-on:change="active()">
+    <label for="active">Active</label>
+    <br>
+
 
     <button type="submit" @click="onSubmit()" class="btn btn-primary">Update</button>
     <!-- </form> -->
@@ -67,9 +83,71 @@ export default {
         default_test_data_path: "",
         default_test_id_path: "",
       },
+      picked: "",
     }
   },
   methods: {
+    not_receive() {
+      this.sharedState.receive_request = 'not_receive'
+      // this.sharedState.pending.a='apple'
+      // this.sharedState.pending.b='big'
+    //   this.sharedState.pending.push({
+    //     a: 'add',
+    //     b: 'bust'
+    // })
+    //   this.sharedState.pending.splice(0, 1);
+    //   console.log(this.sharedState.pending)
+    },
+    passive() {
+
+      let vm = this
+      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+      db.get(select_sentence, function(err, row){
+        if (err){
+          console.log(err);
+        }
+
+        console.log(row)
+
+        if (row == null | row.default_data_path == "" | row.default_id_path == "" |
+            row.default_test_data_path == "" | row.default_test_id_path == ""){
+          console.log("get false")
+          vm.sharedState.set_default = false
+          vm.sharedState.receive_request = 'not_respond'
+          vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
+          vm.picked = "One";
+        }
+        else{
+          vm.sharedState.receive_request = 'passive'
+        }
+        
+      })
+    },
+    active() {
+
+      let vm = this
+      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+      db.get(select_sentence, function(err, row){
+        if (err){
+          console.log(err);
+        }
+
+        console.log(row)
+
+        if (row == null | row.default_data_path == "" | row.default_id_path == "" |
+            row.default_test_data_path == "" | row.default_test_id_path == ""){
+          console.log("get false")
+          vm.sharedState.set_default = false
+          vm.sharedState.receive_request = 'not_respond'
+          vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
+          vm.picked = "One";
+        }
+        else{
+          vm.sharedState.receive_request = 'active'
+        }
+        
+      })
+    },
     get_default_train_data_path() {
       let result = dialog.showOpenDialogSync({
         properties: ['openFile'],
@@ -88,6 +166,7 @@ export default {
           let path = result[0]
           fs.statSync(path);
           this.profileForm.default_train_data_path = path
+          this.profileForm.default_test_data_path = path
         } catch (err) {
           dialog.showErrorBox('Train Data Path not Correct', 'Please Select A Train Data File')
           console.log('Please Select A Train Data File')
@@ -113,6 +192,7 @@ export default {
           let path = result[0]
           fs.statSync(path);
           this.profileForm.default_train_id_path = path
+          this.profileForm.default_test_id_path = path
         } catch (err) {
           dialog.showErrorBox('Train ID Path not Correct', 'Please Select A Train ID File')
           console.log('Please Select A Train ID File')
@@ -120,56 +200,56 @@ export default {
 
       }
     },
-    get_default_test_data_path() {
-      let result = dialog.showOpenDialogSync({
-        properties: ['openFile'],
-        // sufix
-        filters: [{
-          name: 'Text', 
-          extensions: ['html', 'js', 'json', 'md', 'csv'] 
-        }]
-      })
-      console.log("get_default_test_data_path", result)
-      if (result === undefined){
-        dialog.showErrorBox('Test Data Path not Correct', 'Please Select A Test Data File')
-      }else{
+    // get_default_test_data_path() {
+    //   let result = dialog.showOpenDialogSync({
+    //     properties: ['openFile'],
+    //     // sufix
+    //     filters: [{
+    //       name: 'Text', 
+    //       extensions: ['html', 'js', 'json', 'md', 'csv'] 
+    //     }]
+    //   })
+    //   console.log("get_default_test_data_path", result)
+    //   if (result === undefined){
+    //     dialog.showErrorBox('Test Data Path not Correct', 'Please Select A Test Data File')
+    //   }else{
 
-        try {
-          let path = result[0]
-          fs.statSync(path);
-          this.profileForm.default_test_data_path = path
-        } catch (err) {
-          dialog.showErrorBox('Test Data Path not Correct', 'Please Select A Test Data File')
-          console.log('Please Select A Test Data File')
-        }  
+    //     try {
+    //       let path = result[0]
+    //       fs.statSync(path);
+    //       this.profileForm.default_test_data_path = path
+    //     } catch (err) {
+    //       dialog.showErrorBox('Test Data Path not Correct', 'Please Select A Test Data File')
+    //       console.log('Please Select A Test Data File')
+    //     }  
 
-      }
-    },
-    get_default_test_id_path() {
-      let result = dialog.showOpenDialogSync({
-        properties: ['openFile'],
-        // sufix
-        filters: [{
-          name: 'Text', 
-          extensions: ['html', 'js', 'json', 'md', 'csv'] 
-        }]
-      })
-      console.log("get_default_test_id_path", result)
-      if (result === undefined){
-        dialog.showErrorBox('Test ID Path not Correct', 'Please Select A Test ID File')
-      }else{
+    //   }
+    // },
+    // get_default_test_id_path() {
+    //   let result = dialog.showOpenDialogSync({
+    //     properties: ['openFile'],
+    //     // sufix
+    //     filters: [{
+    //       name: 'Text', 
+    //       extensions: ['html', 'js', 'json', 'md', 'csv'] 
+    //     }]
+    //   })
+    //   console.log("get_default_test_id_path", result)
+    //   if (result === undefined){
+    //     dialog.showErrorBox('Test ID Path not Correct', 'Please Select A Test ID File')
+    //   }else{
 
-        try {
-          let path = result[0]
-          fs.statSync(path);
-          this.profileForm.default_test_id_path = path
-        } catch (err) {
-          dialog.showErrorBox('Test ID Path not Correct', 'Please Select A Test ID File')
-          console.log('Please Select A Test ID File')
-        }  
+    //     try {
+    //       let path = result[0]
+    //       fs.statSync(path);
+    //       this.profileForm.default_test_id_path = path
+    //     } catch (err) {
+    //       dialog.showErrorBox('Test ID Path not Correct', 'Please Select A Test ID File')
+    //       console.log('Please Select A Test ID File')
+    //     }  
 
-      }
-    },
+    //   }
+    // },
     getUser (id) {
       let vm = this
       let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
@@ -286,6 +366,17 @@ export default {
   created () {
     const user_id = this.sharedState.user_id
     this.getUser(user_id)
+    if (this.sharedState.receive_request=='passive')
+    {
+      this.picked='passive'
+    }
+    else if(this.sharedState.receive_request=='active')
+    {
+      this.picked='active'
+    }
+    else{
+      this.picked='not_receive'
+    }
   }
 }
 </script>

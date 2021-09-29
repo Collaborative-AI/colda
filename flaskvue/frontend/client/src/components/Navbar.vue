@@ -1,5 +1,8 @@
 <template>
 <section>
+  
+  
+  <!-- revise -->
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
       <div class="navbar-brand">
@@ -19,43 +22,48 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">
+          <!-- <li class="nav-item">
             <router-link to="/" class="nav-link">Home <span class="sr-only">(current)</span></router-link>
+          </li> -->
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+            <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Call For Help </router-link>
           </li>
-          <li class="nav-item">
-            <router-link to="/ping" class="nav-link">Ping</router-link>
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+            <router-link v-bind:to="{ path: '/plist' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Pending <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+          </li>
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+            <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> History <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+          </li>
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+            <router-link v-bind:to="{ name: 'SettingProfile' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Settings</router-link>
+          </li>
+          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+              <a v-on:click="handlerLogout" class="nav-link" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
           </li>
           <li class="nav-item">
             <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
           </li>
+          <!-- <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
+          <label for="not_receive">Not Respond</label>
+          <br>
+          <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
+          <label for="receive">Respond</label>
+          <br> -->
+          <!-- <span>Picked: {{ picked }}</span> -->
 
         </ul>
+
+
         
-        <form v-if="sharedState.is_authenticated" class="form-inline navbar-left mr-auto">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search">
-          <!-- 暂时先禁止提交，后续实现搜索再改回 type="submit" -->
-          <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
-        </form>
+        
+        
 
         
 
         <ul v-if="sharedState.is_authenticated" class="nav navbar-nav navbar-right">
-          <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
-          <label for="not_receive">Dont Response to Request</label>
-          <br>
-          <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
-          <label for="receive">Response</label>
-          <br>
-          <span>Picked: {{ picked }}</span>
-
-          <!-- <li class="nav-item g-mr-20">
-            <button @click="find_assistor">Call For Help</button>
-            <router-link v-bind:to="{ name: 'Shiyan' }" class="nav-link">Call For Help</router-link>
-          </li> -->
           
-           <li class="nav-item g-mr-20">
-            <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Call For Help </router-link>
-          </li>
+          
+           
 
           <!-- <li class="nav-item g-mr-20">
             <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Send to B</router-link>
@@ -70,28 +78,15 @@
             <input type="button" @click="assistor_csv()" value="JS转换"/>
           </div>
 
-          <li class="nav-item g-mr-20">
-            <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> History <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
-          </li>
+          
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img v-bind:src="sharedState.user_avatar" class="g-brd-around g-brd-gray-light-v3 g-pa-2 rounded-circle rounded mCS_img_loaded"> {{ sharedState.user_name }}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <!-- <router-link v-bind:to="{ path: `/user/${sharedState.user_id}` }" class="dropdown-item"><i class="icon-star g-pos-rel g-top-1 g-mr-5"></i> Your profile</router-link> -->
-              <!-- <router-link v-bind:to="{ name: 'PostsResource' }" class="dropdown-item"><i class="icon-share g-pos-rel g-top-1 g-mr-5"></i> Your resource</router-link> -->
-              <router-link v-bind:to="{ name: 'SettingProfile' }" class="dropdown-item"><i class="icon-settings g-pos-rel g-top-1 g-mr-5"></i> Settings</router-link>
-              <div class="dropdown-divider"></div>
-              <a v-on:click="handlerLogout" class="dropdown-item" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
-            </div>
-          </li>
+          
         </ul>
-        <ul v-else class="nav navbar-nav navbar-right">          
+        <!-- <ul v-else class="nav navbar-nav navbar-right">          
           <li class="nav-item">
             <router-link to="/login" class="nav-link"><i class="icon-login g-pos-rel g-top-1 g-mr-5"></i> Sign in</router-link>
           </li>
-        </ul>
+        </ul> -->
       </div>
     </nav>
   </div>
@@ -136,7 +131,7 @@ export default {
       unread_request_show: false,
       assistor_num: 0,
       max_round: 3,
-      picked: "not_receive",
+      picked: "receive",
       root: '',
       exe_position: '',
       
@@ -182,6 +177,8 @@ export default {
 
     not_receive() {
       this.sharedState.receive_request = false
+      // this.sharedState.pending.a='apple'
+      // console.log(this.sharedState.pending)
     },
     receive() {
 
@@ -239,7 +236,7 @@ export default {
       let vm = this
 
       console.log("this.sharedState.receive_request", this.sharedState.receive_request)
-      if (this.sharedState.receive_request == true){
+      if (this.sharedState.receive_request == 'passive' || this.sharedState.receive_request== 'active'){
         console.log("2.1 Update request notification response", unread_request_notification)
         this.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
 
@@ -248,7 +245,8 @@ export default {
           
           // const assistor_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
           // fs.mkdirSync(assistor_store_folder, { recursive: true})
-          
+          if (this.sharedState.receive_request=='passive'){
+
           let select_default_train_id_path = 'SELECT default_train_id_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
           db.get(select_default_train_id_path, function(err, row){
             if (err){ 
@@ -303,11 +301,56 @@ export default {
               })
 
           })  
+        }  //end if
+        //else if active
+        else {
+          console.log(task_id)
+          // let select_task_info = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + task_id;
+          // db.get(select_task_info, function(err, row){
+          //   if (err){ 
+          //     throw err;
+          //   }
+          //   vm.sharedState.pending.push({task_name: row.task_name, task_id: row.task_id})
+          //   console.log(vm.sharedState.pending)
+          // })  
+          // let db_task_id
+          // let db_task_name
+          // let db_task_description
+          let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
+            db.get(select_sentence, [task_id], function(err, row){
+            if (err){ 
+              console.log(err);
+            }
+            else{
+              // vm.sharedState.pending.push({task_name: row.task_name, task_id: task_id})
+              // console.log(vm.sharedState.pending)
+              let db_task_id
+              let db_task_name
+              let db_task_description
+              db_task_id=row.task_id
+              db_task_name=row.task_name
+              db_task_description=row.task_description
+              let insert_sentence = `INSERT INTO "User_Pending_Page"("task_name", "task_description", "user_id", "task_id") VALUES 
+              (`+`"`+db_task_name +`", "`+db_task_description+`", "`+vm.sharedState.user_id+ `", "` + db_task_id + `")`
+          console.log("insert_sentence", insert_sentence)
+          db.run(insert_sentence, function(err){
+            if (err){
+              console.log(err);
+            }
+          })
+            }
+        
+            })//end db.get
+          // vm.sharedState.pending.push({task_id: task_id})
+          // console.log(vm.sharedState.pending)
           
-        }
-      }else{
+        }//end else
+        }//end for
+      }
+      else{
         console.log("unread request: If you want to receive, open receive")
         dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
+
       }
     },
 
@@ -1039,7 +1082,7 @@ export default {
     unread_test_request(unread_test_request_notification) {
       let vm = this;
       // Only assistor calls this function
-      if (this.sharedState.receive_request == true){
+      if (this.sharedState.receive_request == 'passive' || this.sharedState.receive_request == 'active'){
         
         console.log("2.1 Update Test request notification response", unread_test_request_notification)
         this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })

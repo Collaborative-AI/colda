@@ -3,10 +3,10 @@
   <!-- 历史私信列表 -->
   <div class="card border-0 g-mb-15">
     <!-- Panel Header -->
-    <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
-      <!-- <h3 class="h6 mb-0">
+    <!-- <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
+      <h3 class="h6 mb-0">
         <i class="icon-bubbles g-pos-rel g-top-1 g-mr-5"></i> 与 <router-link v-bind:to="{ path: `/user/${user.id}` }" class="g-text-underline--none--hover">{{ user.name || user.username }}</router-link> 的对话 <small v-if="messages">(共 {{ messages._meta.total_items }} 条, {{ messages._meta.total_pages }} 页)</small>
-      </h3> -->
+      </h3>
       <div class="dropdown g-mb-10 g-mb-0--md">
         <span class="d-block g-color-primary--hover g-cursor-pointer g-mr-minus-5 g-pa-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="icon-options-vertical g-pos-rel g-top-1"></i>
@@ -34,8 +34,23 @@
           
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- End Panel Header -->
+    <div class="form-group">
+      <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
+      <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button>
+    </router-link>
+                
+    </div>
+
+
+    <!-- <div >
+    <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
+      <button v-show="isSponsor">Call For Test</button>
+    </router-link>
+
+    <button @click="getLog()">Refresh Log</button>
+  </div> -->
 
     <!-- Panel Body -->
     <div class="card-block g-pa-0" >
@@ -155,14 +170,16 @@
     <!-- <button type="reset" class="btn btn-secondary">Cancel</button> -->
     <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
   <!-- </form> -->
-  <div >
+
+
+  <!-- <div >
     <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
       <button v-show="isSponsor" class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Call For Test</button>
     </router-link>
 
     <button @click="stop_train_task()">Stop Train Task</button>
     <button @click="getLog()">Refresh Log</button>
-  </div>
+  </div> -->
 
 
   <!-- <div >

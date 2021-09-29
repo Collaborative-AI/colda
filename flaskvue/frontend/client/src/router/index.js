@@ -31,6 +31,11 @@ const MessagesHistoryResource = () => import('../views/Resources/Messages/Histor
 const FindAssistorHelper = () => import('../views/Resources/find_assistor.vue')
 const FindTestAssistorHelper = () => import('../views/Resources/find_test_assistor.vue')
 
+
+const Plist = () => import('../views/Notifications/Pendings/Plist.vue')
+const PendItem = () => import('../views/Notifications/Pendings/PendItem.vue')
+
+
 // User Notifications
 const Notifications = () => import('../views/Notifications/Notifications.vue')
 // const RecivedComments = () => import('../views/Notifications/RecivedComments.vue')
@@ -214,6 +219,24 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/plist',
+    name: 'Plist',
+    component: Plist,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/plist/:task_id',
+    name: 'PendItem',
+    component: PendItem,
+    props:  route => ({ task_id: route.params.task_id }),
+    meta: { // connects with the function later in this file.
+      requiresAuth: true
+    }
+  },
+  
   {
     path: '/shiyan',
     name: 'Shiyan',

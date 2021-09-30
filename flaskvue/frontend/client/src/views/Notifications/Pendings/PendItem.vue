@@ -14,6 +14,8 @@ import db from '../../../db'
 // import penditem from "../Penditem.vue"
 const fs = window.require('fs');
 const ex = window.require("child_process");
+const node_path = window.require('path');
+const os = window.require('os');
 
 export default {
   name: 'PendItem',  // Name of the component
@@ -24,7 +26,7 @@ export default {
     return {
         sharedState: store.state,
         pending:{},
-
+        exe_position: '',
       
     }
   },
@@ -93,11 +95,40 @@ export default {
               })
 
           })  
-        
+ 
+    },//end method
+    changeroot() {
       
-         
-      
+      const isDevelopment = process.env.NODE_ENV !== 'production';
+      if (os.type() == "Linux"){
+        if (isDevelopment == true){
+          this.root = node_path.resolve("./exp")
+          this.exe_position = node_path.resolve("./dist/run/run")
+        }else{
+          this.root = node_path.join(__dirname, '../../../apollo_exp')
+          this.exe_position = node_path.join(__dirname, '../dist/run/run')
+        }
+    
+      }else if (os.type() == "Darwin") {
+        if (isDevelopment == true){
+          this.root = node_path.resolve("./exp")
+          this.exe_position = node_path.resolve("./dist/run/run")
+        }else{
+          this.root = node_path.resolve("./resources/exp")
+          this.exe_position = node_path.resolve("./resources/dist/run/run")
+        }
+
+      }else if (os.type() == "Windows_NT") {
+        if (isDevelopment == true){
+          this.root = node_path.resolve("./exp")
+          this.exe_position = node_path.resolve("./dist/run/run.exe")
+        }else{
+          this.root = node_path.resolve("./resources/exp")
+          this.exe_position = node_path.resolve("./resources/dist/run/run.exe")
+        }
+      }
     },
+    
     
     },
 
@@ -117,6 +148,7 @@ export default {
             }
         
             })//end db.get
+    this.changeroot()
   },//end created
 
   

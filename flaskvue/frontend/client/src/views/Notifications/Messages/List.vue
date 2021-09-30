@@ -115,7 +115,7 @@ export default {
   data () {
     return {
       sharedState: store.state,
-      messages: null,
+      messages: "",
       
     }
   },

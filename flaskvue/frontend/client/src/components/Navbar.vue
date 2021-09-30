@@ -130,7 +130,7 @@ export default {
       sharedState: store.state,
       unread_request_show: false,
       assistor_num: 0,
-      max_round: 3,
+      max_round: 2,
       picked: "receive",
       root: '',
       exe_position: '',
@@ -790,7 +790,7 @@ export default {
        
         console.log(err)
       }
-
+      console.log("Assistor_train_output_path", Assistor_train_output_path)
       // if make_train.py prints "cannot fine match idx file", we call the function again, else, we move on.
       if (Assistor_train_output_path == "assistor cannot find match idx file"){
         setTimeout(function(){
@@ -1500,11 +1500,11 @@ export default {
           //   console.log("test_data_path", test_data_path)
           // });
 
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(7000); // 程序滞留7000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(7000); // 程序滞留7000ms
 
           let select_default_test_data_path = 'SELECT default_test_data_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
           db.get(select_default_test_data_path, function(err, row){
@@ -1641,8 +1641,15 @@ export default {
 
             }
           }
+          console.log("4.3 Test: Sponsor saves assistors' Output model");
 
-          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address)
+          vm.$toasted.success("4.3 Test: Sponsor saves assistors' Output model", { icon: 'fingerprint' })
+          try {
+            fs.appendFileSync(Log_address, "4.3 Test: Sponsor saves assistors' Output model\n")
+          } catch (err) {
+            console.log(err)
+          }
+          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response)
 
 
         })
@@ -1654,15 +1661,8 @@ export default {
           
     },
 
-    unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address){
-      console.log("4.3 Test: Sponsor saves assistors' Output model");
-
-      vm.$toasted.success("4.3 Test: Sponsor saves assistors' Output model", { icon: 'fingerprint' })
-      try {
-        fs.appendFileSync(Log_address, "4.3 Test: Sponsor saves assistors' Output model\n")
-      } catch (err) {
-        console.log(err)
-      }
+    unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response){
+      
 
       let max_round = JSON.parse(response.data.output[0]).length - 1;
       console.log("max_round", max_round)
@@ -1674,37 +1674,42 @@ export default {
         }
         let test_target_path = row.test_target_path
         console.log("test_target_path",test_target_path)
+        let eval_done = null;
         try{
-          let eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+          eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
             + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round + ' --target_path ' + test_target_path, {encoding: 'utf8'})
-          if (eval_done == "client train not ready"){
-
-            setTimeout(function(){
-              vm.unread_test_output_make_eval(task_id, test_id, vm, Log_address)
-            }, 5000);
-
-            // vm.unread_test_output_make_eval(task_id, test_id)
-
-            return
-          }
+          
         }catch(err){
           console.log(err)
         }
+        console.log("eval_done", eval_done)
+        if (eval_done == "sponsor test not ready"){
+          setTimeout(function(){
+            vm.unread_test_output_make_eval(task_id, test_id, vm, Log_address, response)
+          }, 5000);
 
-        console.log("4.4 Test: Sponsor evaluates output models done");
-        vm.$toasted.success("4.4 Test: Sponsor evaluates output models done", { icon: 'fingerprint' })
-        try {
-          fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
-        } catch (err) {
-          console.log(err)
+        }else{
+          console.log("4.4 Test: Sponsor evaluates output models done");
+          vm.$toasted.success("4.4 Test: Sponsor evaluates output models done", { icon: 'fingerprint' })
+          try {
+            fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
+          } catch (err) {
+            console.log(err)
+          }
+
+          try {
+            fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
+            fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
+          } catch (err) {
+            console.log(err)
+          }
+
+
+
+
         }
 
-        try {
-          fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
-          fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
-        } catch (err) {
-          console.log(err)
-        }
+       
       });
 
     },

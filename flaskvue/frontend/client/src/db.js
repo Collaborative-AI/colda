@@ -1,7 +1,30 @@
 const sqlite3 = window.require('sqlite3').verbose();
+import path from 'path'
+const fs = window.require("fs")
+console.log("fs", fs)
 
+function createDatabase(file){
+  console.log("file_position", file)
+  if(!fs.existsSync(file)){
+    
+    console.log("creating database file");
+    fs.openSync(file, "w");
+    console.log("file created");
+  }
 
-let db = new sqlite3.Database('Apollo_Client_db');
+  var db = new sqlite3.Database(
+    file, 
+    sqlite3.OPEN_READWRITE, 
+    function (err) {
+        if (err) {
+            return console.log(err.message)
+        }
+        console.log('connect database successfully')
+    }
+  )
+  return db
+}
+let db = createDatabase(path.join(__dirname,'../../Apollo_Client_data.db'))
 
 db.serialize(function() {
   db.run("CREATE TABLE IF NOT EXISTS User_Default_Path (id                    int primary key, \

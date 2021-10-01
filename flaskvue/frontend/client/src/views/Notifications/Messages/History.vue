@@ -276,8 +276,8 @@ export default {
           this.root = node_path.resolve("./exp")
           this.exe_position = node_path.resolve("./dist/run/run.exe")
         }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run.exe")
+          this.root = node_path.join(__dirname, '../../../apollo_exp')
+          this.exe_position = node_path.join(__dirname, '../dist/run/run.exe')
         }
       }
     },

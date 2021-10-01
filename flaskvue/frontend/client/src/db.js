@@ -1,4 +1,9 @@
 const sqlite3 = window.require('sqlite3').verbose();
+const node_path = window.require('path');
+
+console.log(" this.exe_position",  node_path.resolve("./resources/dist/run/run.exe"))
+console.log("dir",__dirname)
+console.log(node_path.join(__dirname, '../dist/run/run.exe'))
 import path from 'path'
 const fs = window.require("fs")
 console.log("fs", fs)

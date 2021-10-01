@@ -13,6 +13,11 @@ import 'bootstrap'
 import './assets/bootstrap-markdown/css/bootstrap-markdown.min.css'
 import './assets/bootstrap-markdown/css/custom.css'
 import './assets/icon-awesome/css/font-awesome.min.css'
+const node_path = window.require('path');
+
+console.log(" this.exe_position",  node_path.resolve("./resources/dist/run/run.exe"))
+console.log("dir",__dirname)
+console.log(node_path.join(__dirname, '../dist/run/run.exe'))
 import db from './db'
 
 const fs = window.require("fs")

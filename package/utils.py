@@ -51,3 +51,20 @@ def log(msg, root, self_id, task_id, test_id=None):
     with open(log_path, 'a') as f:
         f.write(msg + '\n')
     return
+
+
+def parse_idx(idx):
+    parsed_idx = []
+    idx_list_comma = idx.split(',')
+    for i in range(len(idx_list_comma)):
+        idx_comma_i = idx_list_comma[i]
+        idx_comma_list_i = idx_comma_i.split('-')
+        if len(idx_comma_list_i) == 1:
+            idx_i = [int(idx_comma_list_i[0]) - 1]
+        elif len(idx_comma_list_i) == 2:
+            start, end = idx_comma_list_i
+            idx_i = list(range(int(start) - 1, int(end)))
+        else:
+            print('300?parse_idx?not valid idx')
+        parsed_idx.extend(idx_i)
+    return parsed_idx

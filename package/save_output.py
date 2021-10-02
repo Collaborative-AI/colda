@@ -22,5 +22,5 @@ def save_output(args):
         print('300?save_output?not valid mode', end='')
         return
     output_path = os.path.join(output_path, '{}.csv'.format(from_id))
-    print('200?save_output?{}'.join(output_path), end='')
+    print('200?save_output?{}'.format(output_path), end='')
     return

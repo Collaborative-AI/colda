@@ -1,17 +1,20 @@
 import numpy as np
 import os
-from utils import makedir_exist_ok, log
+from utils import makedir_exist_ok, log, parse_idx
 
 
 def make_residual(args):
-    target_path = args['target_path']
     root = args['root']
     self_id = args['self_id']
     task_id = args['task_id']
     round = args['round']
-    target = np.genfromtxt(target_path, delimiter=',')
+    dataset_path = args['dataset_path']
+    target_idx = args['target_idx']
+    dataset = np.genfromtxt(dataset_path, delimiter=',')
+    target_idx = parse_idx(target_idx)
+    target = dataset[:, target_idx]
     if round == 0:
-        init = make_init(target).reshape(-1)
+        init = make_init(target)
         round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round))
         makedir_exist_ok(round_path)
         np.savetxt(os.path.join(round_path, 'init.csv'), init, delimiter=",")
@@ -19,10 +22,10 @@ def make_residual(args):
         loss = np.sqrt(((target - init) ** 2).mean())
         msg = 'Train Round: init, RMSE: {}'.format(loss)
         log(msg, root, self_id, task_id)
-        print('200?make_residual?complete', end='')
     else:
         round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
         result = np.genfromtxt(os.path.join(round_path, 'result.csv'), delimiter=',')
+        result = result.reshape(result.shape[0], -1)
         residual = compute_residual(result, target)
     residual_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'residual')
     makedir_exist_ok(residual_path)
@@ -34,7 +37,7 @@ def make_residual(args):
         self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, str(self_from_idx_files[i])),
                                         delimiter=',').astype(np.int64)
         assistor_residual_path_i = os.path.join(residual_path, str(self_from_idx_files[i]))
-        np.savetxt(assistor_residual_path_i, residual[self_from_idx_i], delimiter=",")
+        np.savetxt(assistor_residual_path_i, residual[self_from_idx_i,], delimiter=",")
         assistor_residual_path.append(assistor_residual_path_i)
     assistor_residual_path = '?'.join(assistor_residual_path)
     print('200?make_residual?{}'.format(assistor_residual_path), end='')
@@ -42,9 +45,10 @@ def make_residual(args):
 
 
 def make_init(target):
-    init = np.mean(target)
+    init = np.mean(target, axis=0)
     return init
 
 
 def compute_residual(output, target):
-    return 2 * (target - output)
+    residual = 2 * (target - output)
+    return residual

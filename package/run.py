@@ -14,9 +14,6 @@ from make_eval import make_eval
 
 parser = argparse.ArgumentParser()
 parser.add_argument('func', type=str)
-parser.add_argument('--id_path', default=None, type=str)
-parser.add_argument('--data_path', default=None, type=str)
-parser.add_argument('--target_path', default=None, type=str)
 parser.add_argument('--root', default=None, type=str)
 parser.add_argument('--self_id', default=None, type=str)
 parser.add_argument('--task_id', default=None, type=str)
@@ -24,6 +21,10 @@ parser.add_argument('--mode', default=None, type=str)
 parser.add_argument('--round', default=None, type=int)
 parser.add_argument('--test_id', default=None, type=str)
 parser.add_argument('--from_id', default=None, type=str)
+parser.add_argument('--dataset_path', default=None, type=str)
+parser.add_argument('--id_idx', default=None, type=str)
+parser.add_argument('--data_idx', default=None, type=str)
+parser.add_argument('--target_idx', default=None, type=str)
 args = vars(parser.parse_args())
 
 

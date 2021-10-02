@@ -1,17 +1,20 @@
 import os
 import numpy as np
 import hashlib
-from utils import makedir_exist_ok
+from utils import makedir_exist_ok, parse_idx
 
 
 def make_hash(args):
-    id_path = args['id_path']
     root = args['root']
     self_id = args['self_id']
     task_id = args['task_id']
     mode = args['mode']
     test_id = args['test_id']
-    id = np.genfromtxt(id_path, delimiter=',', dtype=np.str_)
+    dataset_path = args['dataset_path']
+    id_idx = args['id_idx']
+    dataset = np.genfromtxt(dataset_path, delimiter=',', dtype=np.str_)
+    id_idx = parse_idx(id_idx)
+    id = dataset[:, id_idx]
     hash_id = np.array(list(map(hash, id)))
     if mode == 'default':
         hash_id_path = os.path.join(root, self_id, mode, 'id')

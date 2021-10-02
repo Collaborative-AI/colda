@@ -1,17 +1,20 @@
 import numpy as np
 import os
-from utils import load, makedir_exist_ok
+from utils import load, makedir_exist_ok, parse_idx
 
 
 def make_test(args):
-    data_path = args['data_path']
     root = args['root']
     self_id = args['self_id']
     task_id = args['task_id']
     test_id = args['test_id']
     round = args['round']
     from_id = args['from_id']
-    data = np.genfromtxt(data_path, delimiter=',')
+    dataset_path = args['dataset_path']
+    data_idx = args['data_idx']
+    dataset = np.genfromtxt(dataset_path, delimiter=',')
+    data_idx = parse_idx(data_idx)
+    data = dataset[:, data_idx]
     if from_id is not None:
         self_from_idx = np.genfromtxt(
             os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'matched_idx', '{}.csv'.format(from_id)),

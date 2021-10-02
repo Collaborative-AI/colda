@@ -21,5 +21,5 @@ def save_match_id(args):
         print('300?save_match_id?not valid mode', end='')
         return
     match_id_path = os.path.join(match_id_path, '{}.csv'.format(from_id))
-    print('200?save_match_id?{}'.join(match_id_path), end='')
+    print('200?save_match_id?{}'.format(match_id_path), end='')
     return

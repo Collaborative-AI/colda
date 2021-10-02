@@ -19,6 +19,7 @@ def make_residual(args):
         loss = np.sqrt(((target - init) ** 2).mean())
         msg = 'Train Round: init, RMSE: {}'.format(loss)
         log(msg, root, self_id, task_id)
+        print('200?make_residual?complete', end='')
     else:
         round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
         result = np.genfromtxt(os.path.join(round_path, 'result.csv'), delimiter=',')
@@ -36,7 +37,7 @@ def make_residual(args):
         np.savetxt(assistor_residual_path_i, residual[self_from_idx_i], delimiter=",")
         assistor_residual_path.append(assistor_residual_path_i)
     assistor_residual_path = '?'.join(assistor_residual_path)
-    print(assistor_residual_path, end='')
+    print('200?make_residual?{}'.format(assistor_residual_path), end='')
     return
 
 

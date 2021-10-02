@@ -27,7 +27,6 @@ def make_hash(args):
         log_path = os.path.join(root, self_id, 'task', task_id, 'train')
         makedir_exist_ok(log_path)
         open(os.path.join(log_path, "log.txt"), "a")
-
     elif mode == 'test' and test_id is not None:
         hash_id_path = os.path.join(root, self_id, 'task', task_id, mode, test_id, 'id')
         makedir_exist_ok(hash_id_path)
@@ -38,8 +37,9 @@ def make_hash(args):
         makedir_exist_ok(log_path)
         open(os.path.join(log_path, "log.txt"), "a")
     else:
-        raise ValueError('Not valid mode')
-    print(hash_id_path, end='')
+        print('300?make_hash?not valid mode', end='')
+        return
+    print('200?make_hash?{}'.format(hash_id_path), end='')
     return
 
 

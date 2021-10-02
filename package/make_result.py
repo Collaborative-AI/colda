@@ -21,9 +21,6 @@ def make_result(args):
         from_id_i = os.path.splitext(output_files[i])[0]
         if from_id_i != self_id:
             output_i = np.genfromtxt(os.path.join(output_path, output_files[i]), delimiter=',')
-            if not os.path.exists(output_i):
-                print("sponsor cannot find train output file")
-                return 
             self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, '{}.csv'.format(from_id_i)),
                                             delimiter=',').astype(np.int64)
             output[self_from_idx_i] = output[self_from_idx_i] + output_i
@@ -42,6 +39,7 @@ def make_result(args):
     loss = np.sqrt(((target - result) ** 2).mean())
     msg = 'Train Round: {}, RMSE: {}, alpha: {}'.format(round, loss, alpha)
     log(msg, root, self_id, task_id)
+    print('200?make_result?complete', end='')
     return
 
 

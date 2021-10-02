@@ -11,5 +11,5 @@ def save_residual(args):
     makedir_exist_ok(residual_path)
     open(os.path.join(residual_path, '{}.csv'.format(self_id)), "a")
     residual_path = os.path.join(residual_path, '{}.csv'.format(self_id))
-    print(residual_path, end='')
+    print('200?residual_path?{}'.format(residual_path), end='')
     return

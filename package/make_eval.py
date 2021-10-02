@@ -42,5 +42,6 @@ def make_eval(args):
             loss = np.sqrt(((target - result) ** 2).mean())
             msg = 'Test Round: {}, RMSE: {}'.format(i, loss)
             log(msg, root, self_id, task_id, test_id)
-    print('?'.join(result_path), end='')
+    result_path = '?'.join(result_path)
+    print('200?make_eval?{}'.format(result_path), end='')
     return

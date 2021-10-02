@@ -18,4 +18,5 @@ def make_train_local(args):
     loss = np.sqrt(((target - output) ** 2).mean())
     msg = 'Train Client: {}, RMSE: {}'.format(self_id, loss)
     log(msg, root, self_id, task_id)
+    print('200?make_train_local?complete', end='')
     return

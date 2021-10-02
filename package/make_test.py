@@ -26,5 +26,6 @@ def make_test(args):
         output_path_i = os.path.join(output_path_i, '{}.csv'.format(self_id))
         np.savetxt(output_path_i, output, delimiter=",")
         output_path.append(output_path_i)
-    print('?'.join(output_path), end='')
+    output_path = '?'.join(output_path)
+    print('200?make_test?{}'.format(output_path), end='')
     return

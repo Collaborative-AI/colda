@@ -126,3 +126,5 @@ data/
 exp/
 
 package/
+
+.DS_Store

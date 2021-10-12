@@ -10,7 +10,28 @@
       <input type="text" v-model="task_description" class="form-control" id="name" placeholder="">
     </div>
 
-     <div class="form-group">
+    <div class="form-group">
+      <label for="name">Select File</label>
+      <input type="text" v-model="train_file_path" class="form-control" id="name" placeholder="">
+      <button @click="get_train_file_path()">Select File</button>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Input ID column</label>
+      <input type="text" v-model="train_id_colomn" class="form-control" id="name" placeholder="">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Input data colomn</label>
+      <input type="text" v-model="train_data_colomn" class="form-control" id="name" placeholder="">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Input target colomn</label>
+      <input type="text" v-model="train_target_colomn" class="form-control" id="name" placeholder="">
+    </div>
+
+     <!-- <div class="form-group">
       <label for="name">Select Data File</label>
       <input type="text" v-model="PathForm.train_data_path" class="form-control" id="name" placeholder="">
       <button @click="get_train_data_path()">Select Data File</button>
@@ -26,7 +47,7 @@
       <label for="location">Select Target File</label>
       <input type="text" v-model="PathForm.train_target_path" class="form-control" id="location" placeholder="">
       <button @click="get_train_target_path()">Select Target File</button>
-    </div>
+    </div> -->
 
     <button type="submit" @click="onSubmit()" class="btn btn-primary">Start Finding Assistors</button>
   </div>
@@ -52,6 +73,10 @@ export default {
       task_id: "",
       task_name: "",
       task_description: "",
+      train_file_path: "",
+      train_id_colomn: "",
+      train_data_colomn: "",
+      train_target_colomn:"",
       PathForm: {
         train_data_path: "",
         train_id_path: "",
@@ -104,6 +129,32 @@ export default {
           this.root = node_path.resolve("./resources/exp")
           this.exe_position = node_path.resolve("./resources/dist/run/run.exe")
         }
+      }
+    },
+
+    get_train_file_path() {
+      let result = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+        // sufix
+        filters: [{
+          name: 'Text', 
+          extensions: ['html', 'js', 'json', 'md', 'csv'] 
+        }]
+      })
+      console.log("get_train_file_path", result)
+      if (result === undefined){
+        dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
+      }else{
+
+        try {
+          let path = result[0]
+          fs.statSync(path);
+          this.train_file_path = path
+        } catch (err) {
+          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
+          console.log('Please Select A Train Data File')
+        }  
+
       }
     },
     get_train_data_path() {
@@ -193,28 +244,28 @@ export default {
         //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
         // }
         try {
-          fs.statSync(vm.PathForm.train_data_path);
+          fs.statSync(vm.train_file_path);
         } catch (err) {
           dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
           console.log('Please Select A Train Data File')
           both_path_validation = false
         }
 
-        try {
-          fs.statSync(vm.PathForm.train_id_path);
-        } catch (err) {
-          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train ID File')
-          console.log('Please Select A Train ID File')
-          both_path_validation = false
-        }
+        // try {
+        //   fs.statSync(vm.PathForm.train_id_path);
+        // } catch (err) {
+        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Train ID File')
+        //   console.log('Please Select A Train ID File')
+        //   both_path_validation = false
+        // }
 
-        try {
-          fs.statSync(vm.PathForm.train_target_path);
-        } catch (err) {
-          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Target File')
-          console.log('Please Select A Train Target File')
-          both_path_validation = false
-        }
+        // try {
+        //   fs.statSync(vm.PathForm.train_target_path);
+        // } catch (err) {
+        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Target File')
+        //   console.log('Please Select A Train Target File')
+        //   both_path_validation = false
+        // }
         
         if(both_path_validation == true){
           // db.serialize(function() {
@@ -228,25 +279,35 @@ export default {
 
           // });
           console.log("true")
-          console.log(vm.PathForm.train_data_path,vm.PathForm.train_id_path,vm.PathForm.train_target_path)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
-              (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
+          // console.log(vm.PathForm.train_data_path,vm.PathForm.train_id_path,vm.PathForm.train_target_path)
+          // let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
+          //     (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
+          // console.log("insert_sentence", insert_sentence)
+          console.log(vm.train_file_path)
+          let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path") VALUES 
+              (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.train_file_path+`")`
           console.log("insert_sentence", insert_sentence)
           db.run(insert_sentence, function(err){
             if (err){
               console.log(err);
             }
 
-            let match_id_address = vm.PathForm.train_id_path
+            // let match_id_address = vm.PathForm.train_id_path
             let hash_id_file_address = null;
             try{   
               // + './dist/run/run make_hash --id_path '
               // let aa = vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
               //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train'
               // console.log("make_hash**********", aa, '%%', vm.exe_position, '%%%', __dirname, '###', __dirname + '/../')
-              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
-                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train', {encoding: 'utf8'})  
+
+              // hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
+              //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train', {encoding: 'utf8'})  
+              // console.log("hash_id_file_address", hash_id_file_address)
+              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                                      + ' --task_id ' + vm.task_id + ' --mode train' + ' --dataset_path ' + vm.train_file_path 
+                                      + ' --id_idx ' + vm.train_id_colomn, {encoding: 'utf8'})
               console.log("hash_id_file_address", hash_id_file_address)
+
             }catch(err){
               console.log(err)
             }
@@ -320,8 +381,13 @@ export default {
 
             let make_train_local = null;
             try{   
-              make_train_local = ex.execSync(vm.exe_position + ' make_train_local  --root ' + vm.root 
-                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --data_path ' + vm.PathForm.train_data_path + ' --target_path ' + vm.PathForm.train_target_path, {encoding: 'utf8'})  
+              // make_train_local = ex.execSync(vm.exe_position + ' make_train_local  --root ' + vm.root 
+              //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --data_path ' + vm.PathForm.train_data_path + ' --target_path ' + vm.PathForm.train_target_path, {encoding: 'utf8'})  
+              // console.log("make_train_local", make_train_local)
+              make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
+                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
+                                      + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_colomn 
+                                      + ' --target_idx ' + vm.train_target_colomn,{encoding: 'utf8'})
               console.log("make_train_local", make_train_local)
             }catch(err){
               console.log(err)

@@ -18,6 +18,7 @@ db.serialize(function() {
                                            test_indicator     text, \
                                            task_id            text, \
                                            test_id            text, \
+                                           train_file_path    text, \
                                            train_data_path    text, \
                                            train_id_path      text, \
                                            train_target_path  text, \

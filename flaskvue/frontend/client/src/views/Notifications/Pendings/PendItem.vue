@@ -4,7 +4,7 @@
     <div>Task Id:{{pending.task_id}}</div>
     <div>Task Description: {{pending.task_description}}</div>
     <button @click="unread_request()" class="btn btn-primary">Accept</button>
-    <button class="btn btn-primary">Reject</button>
+    <button class="btn btn-primary" @click="delete_record">Reject</button>
   </div>
 </template>
 
@@ -95,7 +95,12 @@ export default {
               })
 
           })  
- 
+    let select_sentence = 'DELETE FROM User_Pending_Page WHERE task_id=?';
+      db.run(select_sentence, [vm.task_id], function(err){
+      if (err){ 
+        console.log(err);
+      }
+      })
     },//end method
     changeroot() {
       
@@ -127,10 +132,24 @@ export default {
           this.exe_position = node_path.resolve("./resources/dist/run/run.exe")
         }
       }
+    },//end method
+
+    delete_record() {
+      console.log('delete')
+      let vm = this;
+      let select_sentence = 'DELETE FROM User_Pending_Page WHERE task_id=?';
+      db.run(select_sentence, [vm.task_id], function(err){
+      if (err){ 
+        console.log(err);
+      }
+      
+    
+    })
+    this.$router.push({ name: 'Plist' })
     },
     
-    
-    },
+
+    },//method(){}
 
 
   created () {

@@ -45,8 +45,8 @@
           <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
           <label for="receive">Passive</label>
           <br> -->
-    <input type="radio" id="not_receive" value="not_receive" v-model="picked">
-    <label for="not_receive">Not respond</label>
+    <!-- <input type="radio" id="not_receive" value="not_receive" v-model="picked">
+    <label for="not_receive">Not respond</label> -->
     <br>
     <input type="radio" id="passive" value="passive" v-model="picked">
     <label for="receive">Passive</label>

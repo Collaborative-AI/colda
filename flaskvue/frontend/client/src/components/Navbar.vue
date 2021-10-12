@@ -241,20 +241,33 @@ export default {
           // fs.mkdirSync(assistor_store_folder, { recursive: true})
           if (this.sharedState.receive_request=='passive'){
 
-          let select_default_train_id_path = 'SELECT default_train_id_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
-          db.get(select_default_train_id_path, function(err, row){
+          let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          db.get(select_default_train_file_path, function(err, row){
             if (err){ 
               throw err;
             }
-            let default_train_id_path = row.default_train_id_path
-            console.log("default_train_id_path", default_train_id_path)
+            let default_train_file_path = row.default_train_file_path
+            console.log("default_train_id_path", default_train_file_path)
+            let default_train_id_colomn = row.default_train_id_colomn
+
+          
+
             let hash_id_file_address = null;
-            try{
-              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_train_id_path + ' --root ' + vm.root 
-                                        + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode train', {encoding: 'utf8'})
+            // try{
+            //   hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_train_id_path + ' --root ' + vm.root 
+            //                             + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode train', {encoding: 'utf8'})
+            //   console.log("hash_id_file_address", hash_id_file_address)
+            // }catch(err){
+            //     console.log(err)
+            // }
+            try{   
+              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                                      + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
+                                      + ' --id_idx ' + default_train_id_colomn, {encoding: 'utf8'})
               console.log("hash_id_file_address", hash_id_file_address)
+
             }catch(err){
-                console.log(err)
+              console.log(err)
             }
             
             const Log_address = vm.handle_train_log_address(task_id)
@@ -500,19 +513,27 @@ export default {
           // Create 'Local_Data/id/task_id/0' folder
           // const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/0/'
           // fs.mkdirSync(Round0_folder, { recursive: true})
-          let select_train_target_path = 'SELECT train_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
-          db.get(select_train_target_path, function(err, row){
+          let select_train_target_colomn = 'SELECT train_file_path, train_target_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
+          db.get(select_train_target_colomn, function(err, row){
             if (err){ 
               console.log(err);
             }
-            let train_target_path = row.train_target_path
-            console.log("train_target_path", train_target_path)
+            let train_file_path = row.train_file_path
+            console.log("train_file_path", train_file_path)
+            let train_target_colomn = row.train_target_colomn
+            console.log("train_target_colomn", train_target_colomn)
             let make_residual_multiple_paths = null;
             try{
-              make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --round 0 ' + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+              // make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
+              //   + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 0 ' 
+              //   + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+
+              make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
+                + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 0 ' 
+                + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
+
               
-                make_residual_multiple_paths = make_residual_multiple_paths.split('?')
+                // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
               
               console.log("make_residual_multiple_paths", make_residual_multiple_paths, make_residual_multiple_paths.length)
             }catch(err){
@@ -531,22 +552,24 @@ export default {
             let all_residual_data = [];
             let assistor_random_id_list = [];
 
-            for (let i = 0; i < make_residual_multiple_paths.length; i++){
+            // for (let i = 0; i < make_residual_multiple_paths.length; i++){
 
               let data = null;
               try{
-                data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+                // data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+                data = fs.readFileSync(make_residual_multiple_paths, {encoding:'utf8', flag:'r'});
               }catch(err){
                 console.log(err)
               }
               all_residual_data.push(data);
 
-              let cur_path = make_residual_multiple_paths[i]
+              // let cur_path = make_residual_multiple_paths[i]
+              let cur_path = make_residual_multiple_paths
               let path_split = cur_path.split(node_path.sep);
               let assistor_random_id = path_split[path_split.length-1].split(".")[0];
               assistor_random_id_list.push(assistor_random_id);
               
-            }
+            // }
 
             console.log("assistor_random_id_list", assistor_random_id_list)
             const send_situation_payload = {
@@ -736,16 +759,24 @@ export default {
         console.log(err)
       }
       
-      let select_train_data_path = 'SELECT train_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+      let select_train_data_path = 'SELECT train_file_path, train_data_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
       db.get(select_train_data_path, function(err, row){
         if (err){ 
           throw err;
         }
-        let train_data_path = row.train_data_path
-        console.log("train_data_path", train_data_path)
+        let train_file_path = row.train_file_path
+        console.log("train_file_path", train_file_path)
+        let train_data_colomn = row.train_data_colomn
+        console.log("train_data_colomn", train_data_colomn)
         try{
-          let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-            + ' --task_id '+ task_id + ' --round ' + rounds + ' --data_path ' + train_data_path, {encoding: 'utf8'})
+          // let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' 
+          //   + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --data_path ' 
+          //   + train_data_path, {encoding: 'utf8'})
+
+          let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
+            + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path '
+            + train_file_path + ' --data_idx ' +train_data_colomn, {encoding: 'utf8'})
+
           
           console.log("4.3 Sponsor round " + rounds + " training done.");
           vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
@@ -787,16 +818,22 @@ export default {
       
     },
 
-    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path, vm, Log_address){
+    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_colomn, vm, Log_address){
 
       let Assistor_train_output_path = null;
 
       // get response from make_train.py. 
       try{
-        Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-          + ' --task_id '+ task_id + ' --round ' + rounds + ' --from_id ' + from_id + ' --data_path ' + default_train_data_path, {encoding: 'utf8'})
-         console.log("Assistor_train_output_path", Assistor_train_output_path)
-      }catch(err){
+        // Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' 
+        //   + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
+        //   + from_id + ' --data_path ' + default_train_data_path, {encoding: 'utf8'})
+        //  console.log("Assistor_train_output_path", Assistor_train_output_path)
+
+        Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
+          + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
+          + from_id + ' --dataset_path ' + default_train_file_path + ' --data_idx ' + default_train_data_colomn,{encoding: 'utf8'})
+      }
+      catch(err){
        
         console.log(err)
       }
@@ -804,7 +841,7 @@ export default {
       // if make_train.py prints "cannot fine match idx file", we call the function again, else, we move on.
       if (Assistor_train_output_path == "assistor cannot find match idx file"){
         setTimeout(function(){
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path, vm, Log_address)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_colomn, vm, Log_address)
         }, 5000);
       }else{
 
@@ -909,15 +946,17 @@ export default {
 
           // Assistor trains the data
           
-          let select_default_train_data_path = 'SELECT default_train_data_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          let select_default_train_data_path = 'SELECT default_train_file_path, default_train_data_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
           db.get(select_default_train_data_path, function(err, row){
             if (err){ 
               throw err;
             }
-            let default_train_data_path = row.default_train_data_path
-            console.log("default_train_data_path",default_train_data_path)
+            let default_train_file_path = row.default_train_file_path
+            console.log("default_train_file_path",default_train_file_path)
+            let default_train_data_colomn = row.default_train_data_colomn
+            console.log("default_train_data_colomn",default_train_data_colomn)
 
-            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_data_path, vm, Log_address)
+            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_colomn, vm, Log_address)
 
           });
           
@@ -952,12 +991,16 @@ export default {
       }
     },
 
-    unread_output_make_result_helper(task_id, rounds, train_target_path, vm, Log_address){
+    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address){
       console.log("unread_output_make_result_helper_rounds", rounds)
       let make_result_done = null;
       try{
-        make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-          + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+        // make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+        //   + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+        // console.log("make_result_done", make_result_done)
+        make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+          + ' --task_id '+ task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path 
+          + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
         console.log("make_result_done", make_result_done)
       }catch(err){
         console.log(err)
@@ -969,7 +1012,7 @@ export default {
         console.log("-------meijinlai")
         make_result_done = null;
         setTimeout(function(){
-          vm.unread_output_make_result_helper(task_id, rounds, train_target_path, vm, Log_address)
+          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address)
         }, 5000);
 
       }else{
@@ -989,10 +1032,17 @@ export default {
 
         let make_residual_multiple_paths = null;
         try{
-          make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-            + ' --task_id '+ task_id + ' --round ' + (rounds+1) + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+          // make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
+          //   + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1) 
+          //   + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+          // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
+          // console.log(make_residual_multiple_paths)
+          make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
+            + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
+            + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
           make_residual_multiple_paths = make_residual_multiple_paths.split('?')
           console.log(make_residual_multiple_paths)
+
           }catch(err){
           console.log(err)
         }
@@ -1103,15 +1153,17 @@ export default {
             }
           }
 
-          let select_train_target_path = 'SELECT train_target_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+          let select_train_target_path = 'SELECT train_file_path, train_target_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
           db.get(select_train_target_path, function(err, row){
             if (err){ 
               throw err;
             }
-            let train_target_path = row.train_target_path
-            console.log("train_target_path", train_target_path)
+            let train_file_path = row.train_file_path
+            console.log("train_file_path", train_file_path)
+            let train_target_colomn = row.train_target_colomn
+            console.log("train_target_colomn", train_target_colomn)
 
-            vm.unread_output_make_result_helper(task_id, rounds, train_target_path, vm, Log_address)
+            vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address)
 
           });
           

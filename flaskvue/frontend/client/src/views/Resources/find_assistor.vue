@@ -254,9 +254,9 @@ export default {
           //     (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
           // console.log("insert_sentence", insert_sentence)
           console.log(vm.train_file_path)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path") VALUES 
-              (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.train_file_path+`")`
-          console.log("insert_sentence", insert_sentence)
+          let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_colomn", "train_data_colomn" , "train_target_colomn") VALUES 
+              (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_colomn+`", "`+vm.train_data_colomn+`", "`+vm.train_target_colomn+`")`
+          console.log("insert_sentence", insert_sentence) 
           db.run(insert_sentence, function(err){
             if (err){
               console.log(err);

@@ -19,15 +19,24 @@
 
     <!-- <form @submit.prevent="onSubmit"> -->
     <div class="form-group">
-      <label for="name">Default Train/Test Data Path</label>
-      <input type="text" v-model="profileForm.default_train_data_path" class="form-control" id="name" placeholder="">
-      <button @click="get_default_train_data_path()">Select Train Data File</button>
+      <label for="name">Default Train File Path</label>
+      <input type="text" v-model="default_train_file_path" class="form-control" id="name" placeholder="">
+      <button @click="get_default_train_file_path()">Select File</button>
     </div>
     <div class="form-group">
+      <label for="name">Input id colomn</label>
+      <input type="text" v-model="default_train_id_colomn" class="form-control" id="name" placeholder="">
+    </div>
+    <div class="form-group">
+      <label for="name">Input data colomn</label>
+      <input type="text" v-model="default_train_data_colomn" class="form-control" id="name" placeholder="">
+    </div>
+
+    <!-- <div class="form-group">
       <label for="location">Default Train/Test ID Path</label>
       <input type="text" v-model="profileForm.default_train_id_path" class="form-control" id="location" placeholder="">
       <button @click="get_default_train_id_path()">Select Train ID File</button>
-    </div>
+    </div> -->
 
     <!-- <div class="form-group">
       <label for="name">Default Test Data Path</label>
@@ -77,6 +86,9 @@ export default {
   data () {
     return {
       sharedState: store.state,
+      default_train_file_path: "",
+      default_train_id_colomn: "",
+      default_train_data_colomn: "",
       profileForm: {
         default_train_data_path: "",
         default_train_id_path: "",
@@ -148,7 +160,7 @@ export default {
         
     //   })
     // },
-    get_default_train_data_path() {
+    get_default_train_file_path() {
       let result = dialog.showOpenDialogSync({
         properties: ['openFile'],
         // sufix
@@ -157,7 +169,7 @@ export default {
           extensions: ['html', 'js', 'json', 'md', 'csv'] 
         }]
       })
-      console.log("get_default_train_data_path", result)
+      console.log("get_default_train_file_path", result)
       if (result === undefined){
         dialog.showErrorBox('Train Data Path not Correct', 'Please Select A Train Data File')
       }else{
@@ -165,8 +177,9 @@ export default {
         try {
           let path = result[0]
           fs.statSync(path);
-          this.profileForm.default_train_data_path = path
-          this.profileForm.default_test_data_path = path
+          // this.profileForm.default_train_data_path = path
+          // this.profileForm.default_test_data_path = path
+          this.default_train_file_path = path
         } catch (err) {
           dialog.showErrorBox('Train Data Path not Correct', 'Please Select A Train Data File')
           console.log('Please Select A Train Data File')
@@ -174,32 +187,32 @@ export default {
 
       }
     },
-    get_default_train_id_path() {
-      let result = dialog.showOpenDialogSync({
-        properties: ['openFile'],
-        // sufix
-        filters: [{
-          name: 'Text', 
-          extensions: ['html', 'js', 'json', 'md', 'csv'] 
-        }]
-      })
-      console.log("get_default_train_id_path", result)
-      if (result === undefined){
-        dialog.showErrorBox('Train ID Path not Correct', 'Please Select A Train ID File')
-      }else{
+    // get_default_train_id_path() {
+    //   let result = dialog.showOpenDialogSync({
+    //     properties: ['openFile'],
+    //     // sufix
+    //     filters: [{
+    //       name: 'Text', 
+    //       extensions: ['html', 'js', 'json', 'md', 'csv'] 
+    //     }]
+    //   })
+    //   console.log("get_default_train_id_path", result)
+    //   if (result === undefined){
+    //     dialog.showErrorBox('Train ID Path not Correct', 'Please Select A Train ID File')
+    //   }else{
 
-        try {
-          let path = result[0]
-          fs.statSync(path);
-          this.profileForm.default_train_id_path = path
-          this.profileForm.default_test_id_path = path
-        } catch (err) {
-          dialog.showErrorBox('Train ID Path not Correct', 'Please Select A Train ID File')
-          console.log('Please Select A Train ID File')
-        }  
+    //     try {
+    //       let path = result[0]
+    //       fs.statSync(path);
+    //       this.profileForm.default_train_id_path = path
+    //       this.profileForm.default_test_id_path = path
+    //     } catch (err) {
+    //       dialog.showErrorBox('Train ID Path not Correct', 'Please Select A Train ID File')
+    //       console.log('Please Select A Train ID File')
+    //     }  
 
-      }
-    },
+    //   }
+    // },
     // get_default_test_data_path() {
     //   let result = dialog.showOpenDialogSync({
     //     properties: ['openFile'],
@@ -261,10 +274,13 @@ export default {
         console.log(row)
 
         if (row != null){
-          vm.profileForm.default_train_data_path = row.default_train_data_path
-          vm.profileForm.default_train_id_path = row.default_train_id_path
-          vm.profileForm.default_test_data_path = row.default_test_data_path
-          vm.profileForm.default_test_id_path = row.default_test_id_path
+          // vm.profileForm.default_train_data_path = row.default_train_data_path
+          // vm.profileForm.default_train_id_path = row.default_train_id_path
+          // vm.profileForm.default_test_data_path = row.default_test_data_path
+          // vm.profileForm.default_test_id_path = row.default_test_id_path
+          vm.default_train_file_path=row.default_train_file_path
+          vm.default_train_id_colomn=row.default_train_id_colomn
+          vm.default_train_data_colomn=row.default_train_data_colomn
         }
 
         if (row == null){
@@ -272,8 +288,8 @@ export default {
           vm.sharedState.set_default = false
           vm.sharedState.receive_request = false
         }else{
-            if (row.default_train_data_path == "" | row.default_train_id_path == "" | 
-              row.default_test_data_path == "" | row.default_test_id_path == ""){
+            if (row.default_train_file_path == "" | row.default_train_id_colomn == "" | 
+              row.default_train_data_colomn == ""){
             console.log("get false")
             vm.sharedState.set_default = false
             vm.sharedState.receive_request = false
@@ -285,41 +301,42 @@ export default {
       let vm = this;
       
       let both_path_validation = true
-      console.log("vm.profileForm.default_train_data_path", vm.profileForm.default_train_data_path)
+      console.log("vm.default_train_file_path", vm.profileForm.default_train_file_path)
       try {
-        fs.statSync(vm.profileForm.default_train_data_path);
+        fs.statSync(vm.default_train_file_path);
       } catch (err) {
         dialog.showErrorBox('Train Data Path not Correct', 'Please Select A Train Data File')
         console.log('Please Select A Train Data File')
         both_path_validation = false
       }
 
-      console.log("vm.profileForm.default_train_id_path", vm.profileForm.default_train_id_path)
-      try {
-        fs.statSync(vm.profileForm.default_train_id_path);
-      } catch (err) {
-        dialog.showErrorBox('Train ID Path not Correct', 'Please Select A Train ID File')
-        console.log('Please Select A Train ID File')
-        both_path_validation = false
-      }
+      console.log("vm.default_train_id_colomn", vm.default_train_id_colomn)
+      console.log("vm.default_train_data_colomn", vm.default_train_data_colomn)
+      // try {
+      //   fs.statSync(vm.profileForm.default_train_id_path);
+      // } catch (err) {
+      //   dialog.showErrorBox('Train ID Path not Correct', 'Please Select A Train ID File')
+      //   console.log('Please Select A Train ID File')
+      //   both_path_validation = false
+      // }
 
-      console.log("vm.profileForm.default_test_data_path", vm.profileForm.default_test_data_path)
-      try {
-        fs.statSync(vm.profileForm.default_test_data_path);
-      } catch (err) {
-        dialog.showErrorBox('Test Data Path not Correct', 'Please Select A Test Data File')
-        console.log('Please Select A Test Data File')
-        both_path_validation = false
-      }
+      // console.log("vm.profileForm.default_test_data_path", vm.profileForm.default_test_data_path)
+      // try {
+      //   fs.statSync(vm.profileForm.default_test_data_path);
+      // } catch (err) {
+      //   dialog.showErrorBox('Test Data Path not Correct', 'Please Select A Test Data File')
+      //   console.log('Please Select A Test Data File')
+      //   both_path_validation = false
+      // }
 
-      console.log("vm.profileForm.default_test_id_path", vm.profileForm.default_test_id_path)
-      try {
-        fs.statSync(vm.profileForm.default_test_id_path);
-      } catch (err) {
-        dialog.showErrorBox('Test ID Path not Correct', 'Please Select A Test ID File')
-        console.log('Please Select A Test ID File')
-        both_path_validation = false
-      }
+      // console.log("vm.profileForm.default_test_id_path", vm.profileForm.default_test_id_path)
+      // try {
+      //   fs.statSync(vm.profileForm.default_test_id_path);
+      // } catch (err) {
+      //   dialog.showErrorBox('Test ID Path not Correct', 'Please Select A Test ID File')
+      //   console.log('Please Select A Test ID File')
+      //   both_path_validation = false
+      // }
 
       let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
       db.get(select_sentence, function(err, row){
@@ -330,9 +347,9 @@ export default {
         
         if (row == null){
           // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
-          let insert_new_val = `INSERT INTO "User_Default_Path" ("user_id", "default_train_data_path", "default_train_id_path", "default_test_data_path", "default_test_id_path") VALUES 
-            (`+`"`+vm.sharedState.user_id+`", "`+vm.profileForm.default_train_data_path+`", "`+vm.profileForm.default_train_id_path+`", "`
-            +vm.profileForm.default_test_data_path+`", "`+vm.profileForm.default_test_id_path+`")`
+          let insert_new_val = `INSERT INTO "User_Default_Path" ("user_id", "default_train_file_path", "default_train_id_colomn", "default_train_data_colomn") VALUES 
+            (`+`"`+vm.sharedState.user_id+`", "`+vm.default_train_file_path+`", "`+vm.default_train_id_colomn+`", "`
+            +vm.default_train_data_colomn+`")`
           console.log("insert_new_val", insert_new_val)
           console.log("db", db)
           db.run(insert_new_val, function(err){
@@ -345,10 +362,9 @@ export default {
           if(both_path_validation == true){
             db.serialize(function() {
               let update_sentence = 'UPDATE "User_Default_Path"'
-                        +'SET "default_train_data_path" = "' + vm.profileForm.default_train_data_path + '",'
-                        +'"default_train_id_path" = "' + vm.profileForm.default_train_id_path + '",'
-                        +'"default_test_data_path" = "' + vm.profileForm.default_test_data_path + '",'
-                        +'"default_test_id_path" = "' + vm.profileForm.default_test_id_path
+                        +'SET "default_train_file_path" = "' + vm.default_train_file_path + '",'
+                        +'"default_train_id_colomn" = "' + vm.default_train_id_colomn + '",'
+                        +'"default_train_data_colomn" = "' + vm.default_train_data_colomn                    
                         +'"WHERE "user_id" = ' + vm.sharedState.user_id
               console.log("update_sentence", update_sentence)           
               db.run(update_sentence)

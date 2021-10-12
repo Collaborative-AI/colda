@@ -249,14 +249,7 @@ export default {
 
 
     },
-    changeroot() {
-      const isDevelopment = process.env.NODE_ENV !== 'production';
-      if (isDevelopment == true){
-        this.root = path.resolve("./exp")
-      }else{
-        this.root = path.resolve("./resources/exp")
-      }
-    },
+    
     getLog(task_id) {
       const train_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + this.task_id + '/' + 'train/' + 'log.txt'
       let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
@@ -396,7 +389,9 @@ export default {
   },
   created () {
     this.task_id = this.$route.query.from;
-    this.changeroot()
+    let new_root = store.changeroot()
+    this.root = new_root.root;
+    this.exe_position = new_root.exe_position
     this.getLog(this.$route.query.from)
     this.checkSponsor(this.$route.query.from)
     

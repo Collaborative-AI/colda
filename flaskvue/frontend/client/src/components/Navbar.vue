@@ -138,37 +138,7 @@ export default {
     }
   },
   methods: {
-    changeroot() {
-      
-      const isDevelopment = process.env.NODE_ENV !== 'production';
-      if (os.type() == "Linux"){
-        if (isDevelopment == true){
-          this.root = node_path.resolve("./exp")
-          this.exe_position = node_path.resolve("./dist/run/run")
-        }else{
-          this.root = node_path.join(__dirname, '../../../apollo_exp')
-          this.exe_position = node_path.join(__dirname, '../dist/run/run')
-        }
     
-      }else if (os.type() == "Darwin") {
-        if (isDevelopment == true){
-          this.root = node_path.resolve("./exp")
-          this.exe_position = node_path.resolve("./dist/run/run")
-        }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run")
-        }
-
-      }else if (os.type() == "Windows_NT") {
-        if (isDevelopment == true){
-          this.root = node_path.resolve("./exp")
-          this.exe_position = node_path.resolve("./dist/run/run.exe")
-        }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run.exe")
-        }
-      }
-    },
     handlerLogout (e) {
       store.logoutAction()
       this.$toasted.show('You have been logged out.', { icon: 'fingerprint' })
@@ -204,6 +174,30 @@ export default {
         }
         
       })
+    },
+
+    handle_train_log_address(task_id) {
+      const Log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
+      console.log("train_node_path_log", Log_address)
+      if(!fs.existsSync(Log_address)){
+        console.log("creating log.txt");
+        fs.openSync(file, "w");
+        console.log("log.txt created");
+      }
+      return Log_address
+
+    },
+    handle_test_log_address(task_id, test_id) {
+      const Log_address = node_path.join(vm.root.toString(), vm.sharedState.user_id.toString(), "task", task_id.toString(), "test", test_id.toString(), "log.txt")
+      console.log("test_node_path_log", Log_address)
+      if(!fs.existsSync(Log_address)){
+        console.log("creating log.txt");
+        fs.openSync(file, "w");
+        console.log("log.txt created");
+      }
+      
+      return Log_address
+
     },
     // sponsor find assistor
     
@@ -263,7 +257,7 @@ export default {
                 console.log(err)
             }
             
-            const Log_address = vm.root + '/' + vm.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+            const Log_address = vm.handle_train_log_address(task_id)
 
             try {
               fs.appendFileSync(Log_address, "\n You are Assistor\n")
@@ -387,7 +381,8 @@ export default {
 
       for (let task_id in cur_unread_match_id_Taskid_dict){
         
-        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+        const Log_address = this.handle_train_log_address(task_id)
+
         try {
           fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Update the match id notification\n")
@@ -422,8 +417,9 @@ export default {
       
       // Create 'Local_Data/id/task_id/Match/' folder
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
-      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
       let vm = this;
+      const Log_address = vm.handle_train_log_address(task_id)
+      
 
       // Obtain Match_id file
       // async
@@ -477,6 +473,12 @@ export default {
             }catch(err){
               console.log(err)
             }
+
+            function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(2000); // 程序滞留2000ms
 
             console.log('3.5 Sponsor matches id to index');
             vm.$toasted.success('3.5 Sponsor matches id to index', { icon: 'fingerprint' })
@@ -596,8 +598,9 @@ export default {
       
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
       // fs.mkdirSync(Match_folder, { recursive: true})
-      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
       let vm = this;
+      const Log_address = vm.handle_train_log_address(task_id)
+      
 
       // Obtain Match_id file
       const payload = {
@@ -649,6 +652,12 @@ export default {
             console.log(err)
           }
 
+          function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(2000); // 程序滞留2000ms
+
           console.log('3.5 Assistor matches id to index');
           vm.$toasted.success('3.5 Assistor matches id to index', { icon: 'fingerprint' })
           try {
@@ -692,7 +701,7 @@ export default {
 
       for (let task_id in cur_unread_situation_Taskid_dict){
         
-        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+        const Log_address = this.handle_train_log_address(task_id)
         try {
           fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation\n")
           fs.appendFileSync(Log_address, "4.1 Update the situation notification\n")
@@ -717,7 +726,8 @@ export default {
       let vm = this;
       console.log("4.2 Cur round is:" + rounds + task_id);
       vm.$toasted.success("4.2 Cur round is:" + rounds +  task_id, { icon: 'fingerprint' })
-      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+    
+      const Log_address = vm.handle_train_log_address(task_id)
       
 
       try {
@@ -839,7 +849,8 @@ export default {
     unread_situation_assistor(rounds, task_id) {
       
       let vm = this;
-      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+
+      const Log_address = vm.handle_train_log_address(task_id)
 
       // function sleep(time) {
       //       let startTime = window.performance.now();
@@ -928,7 +939,8 @@ export default {
       let cur_unread_output_Rounds_dict = unread_output_notification["rounds_dict"]
 
       for (let task_id in cur_unread_output_Rounds_dict){
-        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+
+        const Log_address = this.handle_train_log_address(task_id)
         try {
           fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output\n")
           fs.appendFileSync(Log_address, "5.1 Update the output notification\n")
@@ -1036,10 +1048,11 @@ export default {
     },
 
     unread_output_singleTask(rounds, task_id){
-
-      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
-      // const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
+      
       let vm = this
+      const Log_address = vm.handle_train_log_address(task_id)
+      // const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
+      
       // Obtain output from assistors
 
       const payload = {
@@ -1138,7 +1151,8 @@ export default {
             }catch(err){
               console.log(err)
             }
-            const Log_address = vm.root + '/' + vm.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
+
+            const Log_address = vm.handle_test_log_address(task_id, test_id)
 
             try {
               fs.appendFileSync(Log_address, "\n You are Assistor\n")
@@ -1197,7 +1211,8 @@ export default {
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
-        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
+        const Log_address = this.handle_test_log_address(task_id, test_id)
+
         try {
           fs.appendFileSync(Log_address, "-----------------------3.Unread Test Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Test: Update the Test match id notification\n")
@@ -1233,8 +1248,9 @@ export default {
 
       // Create 'Local_Data/id/task_id/Match/' folder
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + test_id + '/' + 'Match/'
-      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
       let vm = this;
+      const Log_address = vm.handle_test_log_address(task_id, test_id)
+      
 
       // Obtain Match_id file
       // async
@@ -1287,6 +1303,12 @@ export default {
             }catch(err){
               console.log(err)
             }
+
+            function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(2000); // 程序滞留2000ms
 
             console.log('3.6 Test: Sponsor matches id to index');
             vm.$toasted.success('3.6 Test: Sponsor matches id to index', { icon: 'fingerprint' })
@@ -1384,7 +1406,8 @@ export default {
       let vm = this;
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Match/'
       // fs.mkdirSync(Match_folder, { recursive: true})
-      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
+
+      const Log_address = vm.handle_test_log_address(task_id, test_id)
       
       
       // Obtain Match_id file
@@ -1418,6 +1441,12 @@ export default {
             console.log(err)
           }
 
+          function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(2000); // 程序滞留2000ms
+
           fs.writeFileSync(test_save_match_id_file_pos, cur_match_id_file)
           
           console.log('3.5 Test: Assistor Saved Matched id File!');
@@ -1435,6 +1464,12 @@ export default {
             console.log(err)
           }
 
+          function sleep(time) {
+            let startTime = window.performance.now();
+            while (window.performance.now() - startTime < time) {}
+          }
+          sleep(2000); // 程序滞留2000ms
+          
           console.log('3.6 Test: Assistor matches id to index');
           vm.$toasted.success('3.6 Test: Assistor matches id to index', { icon: 'fingerprint' })
           try {
@@ -1582,7 +1617,8 @@ export default {
       for (let test_id in cur_unread_test_output_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
-        const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
+        const Log_address = this.handle_test_log_address(task_id, test_id)
+
         try {
           fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output\n")
           fs.appendFileSync(Log_address, "4.1 Update Test output notification\n")
@@ -1596,7 +1632,9 @@ export default {
     unread_test_output_singleTask(task_id, test_id){
 
       // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
-      const Log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id + '/log.txt'
+
+      const Log_address = this.handle_test_log_address(task_id, test_id)
+
       let vm = this
       // Obtain output from assistors
 
@@ -1705,8 +1743,6 @@ export default {
           }
 
 
-
-
         }
 
        
@@ -1717,7 +1753,9 @@ export default {
   },
 
   created () {
-    this.changeroot()
+    let new_root = store.changeroot()
+    this.root = new_root.root;
+    this.exe_position = new_root.exe_position
   },
   mounted () {
     console.log("mounted @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2")

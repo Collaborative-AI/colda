@@ -1,4 +1,6 @@
 const path = require('path');
+const os = window.require('os');
+const node_path = window.require('path');
 export default {
     debug: true,
     state: {
@@ -54,7 +56,47 @@ export default {
     //   this.state.user_name = ''
     //   this.state.user_avatar = ''
     },
+    changeroot() {
+      
+      let root = ""
+      let exe_position = ""
+      const isDevelopment = process.env.NODE_ENV !== 'production';
+      if (os.type() == "Linux"){
+        if (isDevelopment == true){
+          root = node_path.resolve("./exp")
+          exe_position = node_path.resolve("./dist/run/run")
+        }else{
+          // this.root = node_path.join(__dirname, '../exp')
+          root = node_path.join(__dirname, '../../../apollo_exp')
+          exe_position = node_path.join(__dirname, '../dist/run/run')
+        }
+    
+      }else if (os.type() == "Darwin") {
+        if (isDevelopment == true){
+          root = node_path.resolve("./exp")
+          exe_position = node_path.resolve("./dist/run/run")
+        }else{
+          root = node_path.join(__dirname, '../../../apollo_exp')
+          exe_position = node_path.join(__dirname, '../dist/run/run')
+        }
 
+      }else if (os.type() == "Windows_NT") {
+        if (isDevelopment == true){
+          root = node_path.resolve("./exp")
+          exe_position = node_path.resolve("./dist/run/run.exe")
+        }else{
+          root = node_path.join(__dirname, '../../../apollo_exp')
+          exe_position = node_path.join(__dirname, '../dist/run/run.exe')
+        }
+      }
+
+      return {root, exe_position}
+    },
+
+
+
+
+    
     
   }
 

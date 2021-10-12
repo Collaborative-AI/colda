@@ -13,15 +13,20 @@ import 'bootstrap'
 import './assets/bootstrap-markdown/css/bootstrap-markdown.min.css'
 import './assets/bootstrap-markdown/css/custom.css'
 import './assets/icon-awesome/css/font-awesome.min.css'
-// import db from './nedb'
+const node_path = window.require('path');
+
+console.log(" this.exe_position",  node_path.resolve("./resources/dist/run/run.exe"))
+console.log("dir",__dirname)
+console.log(node_path.join(__dirname, '../dist/run/run.exe'))
+import db from './db'
 
 const fs = window.require("fs")
 console.log("fs", fs)
-import path from 'path'
-var leveldown = window.require('leveldown');
-console.log("....", leveldown)
-var levelup = require('levelup');
-console.log("levelup", levelup)
+// import path from 'path'
+// var leveldown = window.require('leveldown');
+// console.log("....", leveldown)
+// var levelup = require('levelup');
+// console.log("levelup", levelup)
 // var levelup2 = window.require('levelup');
 // console.log("levelup2", levelup2)
 
@@ -42,28 +47,7 @@ console.log("sqlite3", sqlite3)
 
 //   return db;
 // }
-function createDatabase(file){
-  console.log("file_position", file)
-  if(!fs.existsSync(file)){
-    
-    console.log("creating database file");
-    fs.openSync(file, "w");
-    console.log("file created");
-  }
 
-  var db = new sqlite3.Database(
-    file, 
-    sqlite3.OPEN_READWRITE, 
-    function (err) {
-        if (err) {
-            return console.log(err.message)
-        }
-        console.log('connect database successfully')
-    }
-  )
-  return db
-}
-let db = createDatabase(path.join(__dirname,'../../data.db'))
 // const sqlite3 = window.require('sqlite3').verbose();
 // console.log("sqlite3", sqlite3)
 
@@ -76,27 +60,6 @@ let db = createDatabase(path.join(__dirname,'../../data.db'))
 
 // let db = new sqlite3.Database('Apollo_Client_db');
 
-db.serialize(function() {
-  console.log("gg")
-  db.run("CREATE TABLE IF NOT EXISTS User_Default_Path (id                    int primary key, \
-                                                   user_id                    int, \
-                                                   default_train_data_path    text, \
-                                                   default_train_id_path      text, \
-                                                   default_test_data_path     text, \
-                                                   default_test_id_path       text)");
-
-  db.run("CREATE TABLE IF NOT EXISTS User_Chosen_Path (id     int primary key, \
-                                           user_id            int, \
-                                           test_indicator     text, \
-                                           task_id            text, \
-                                           test_id            text, \
-                                           train_data_path    text, \
-                                           train_id_path      text, \
-                                           train_target_path  text, \
-                                           test_data_path     text, \
-                                           test_id_path       text, \
-                                           test_target_path   text)")
-});
 
 // import db from './lowdb'
 // import db from './leveldb'

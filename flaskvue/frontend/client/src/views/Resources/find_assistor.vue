@@ -99,38 +99,7 @@ export default {
 
         })
     },
-    changeroot() {
-      
-      const isDevelopment = process.env.NODE_ENV !== 'production';
-      if (os.type() == "Linux"){
-        if (isDevelopment == true){
-          this.root = node_path.resolve("./exp")
-          this.exe_position = node_path.resolve("./dist/run/run")
-        }else{
-          // this.root = node_path.join(__dirname, '../exp')
-          this.root = node_path.join(__dirname, '../../../apollo_exp')
-          this.exe_position = node_path.join(__dirname, '../dist/run/run')
-        }
     
-      }else if (os.type() == "Darwin") {
-        if (isDevelopment == true){
-          this.root = node_path.resolve("./exp")
-          this.exe_position = node_path.resolve("./dist/run/run")
-        }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run")
-        }
-
-      }else if (os.type() == "Windows_NT") {
-        if (isDevelopment == true){
-          this.root = node_path.resolve("./exp")
-          this.exe_position = node_path.resolve("./dist/run/run.exe")
-        }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run.exe")
-        }
-      }
-    },
 
     get_train_file_path() {
       let result = dialog.showOpenDialogSync({
@@ -234,6 +203,7 @@ export default {
     },
 
     onSubmit (e) {
+      console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
       if (this.task_id == ""){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
@@ -318,7 +288,7 @@ export default {
             let hash_id_file_data = null
             try{
               hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
-              console.log("hash_id_file_data", hash_id_file_data)
+              // console.log("hash_id_file_data", hash_id_file_data)
             } catch (err) {
               console.log(err)
             }
@@ -334,7 +304,15 @@ export default {
             .then((response) => {
               let user_id = vm.sharedState.user_id
 
-              const Log_address = vm.root + '/' + user_id + '/task/' + vm.task_id + '/' + 'train/' + 'log.txt'
+              const Log_address = node_path.join(vm.root.toString(), user_id.toString(), "task", vm.task_id.toString(), "train", "log.txt")
+              console.log("node_path_log", Log_address)
+              if(!fs.existsSync(Log_address)){
+                console.log("creating log.txt");
+                fs.openSync(file, "w");
+                console.log("log.txt created");
+              }
+              // const Log_address1 = vm.root + '/' + user_id + '/task/' + vm.task_id + '/' + 'train/' + 'log.txt'
+              // console.log("pin", Log_address1)
               // handle success
               console.log("1.1 Sponsor calls for help", response)
               vm.$toasted.success(`1.1 Sponsor calls for help`, { icon: 'fingerprint' })
@@ -404,7 +382,9 @@ export default {
   },
   created () {
     this.get_train_id();
-    this.changeroot();
+    let new_root = store.changeroot()
+    this.root = new_root.root;
+    this.exe_position = new_root.exe_position
   }
 }
 </script>

@@ -63,38 +63,7 @@ export default {
 
         })
     },
-    changeroot() {
-      
-      const isDevelopment = process.env.NODE_ENV !== 'production';
-      if (os.type() == "Linux"){
-        if (isDevelopment == true){
-          this.root = node_path.resolve("./exp")
-          this.exe_position = node_path.resolve("./dist/run/run")
-        }else{
-          // this.root = node_path.join(__dirname, '../exp')
-          this.root = node_path.join(__dirname, '../../../apollo_exp')
-          this.exe_position = node_path.join(__dirname, '../dist/run/run')
-        }
     
-      }else if (os.type() == "Darwin") {
-        if (isDevelopment == true){
-          this.root = node_path.resolve("./exp")
-          this.exe_position = node_path.resolve("./dist/run/run")
-        }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run")
-        }
-
-      }else if (os.type() == "Windows_NT") {
-        if (isDevelopment == true){
-          this.root = node_path.resolve("./exp")
-          this.exe_position = node_path.resolve("./dist/run/run.exe")
-        }else{
-          this.root = node_path.resolve("./resources/exp")
-          this.exe_position = node_path.resolve("./resources/dist/run/run.exe")
-        }
-      }
-    },
     get_test_data_path() {
       let result = dialog.showOpenDialogSync({
         properties: ['openFile'],
@@ -252,9 +221,17 @@ export default {
           
           vm.$axios.post('/find_test_assistor/', payload)
             .then((response) => {
-
-              const Log_address = vm.root + '/' + vm.sharedState.user_id + '/task/' + vm.task_id + '/' + 'test/' + vm.test_id + '/log.txt'
-              // handle success
+             
+              const Log_address = node_path.join(vm.root.toString(), vm.sharedState.user_id.toString(), "task", vm.task_id.toString(), "test", vm.test_id.toString(), "log.txt")
+              console.log("node_path_log", Log_address)
+              if(!fs.existsSync(Log_address)){
+                console.log("creating log.txt");
+                fs.openSync(file, "w");
+                console.log("log.txt created");
+              }
+             
+             
+             // handle success
               console.log("1.1 Test: Sponsor calls for help", response)
               vm.$toasted.success(`1.1 Test: Sponsor calls for help`, { icon: 'fingerprint' })
 
@@ -310,7 +287,10 @@ export default {
   created () {
     this.task_id = this.$route.query.from;
     this.get_test_id();
-    this.changeroot();
+
+    let new_root = store.changeroot()
+    this.root = new_root.root;
+    this.exe_position = new_root.exe_position
   }
 }
 </script>

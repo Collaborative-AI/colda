@@ -48,9 +48,7 @@ Simple Test Flow:
 
         2. npm install
 
-        3. ./node_modules/.bin/electron-rebuild 
-npm i -g node-gyp
-        4. npm run electron:serve
+        3. npm run electron:serve
 
     3. package:
 
@@ -58,9 +56,7 @@ npm i -g node-gyp
 
         2. npm install
 
-        3. ./node_modules/.bin/electron-rebuild 
-
-        4. npm run electron:build
+        3. npm run electron:build
 
 
 

@@ -250,8 +250,6 @@ export default {
             console.log("default_train_id_path", default_train_file_path)
             let default_train_id_colomn = row.default_train_id_colomn
 
-          
-
             let hash_id_file_address = null;
             // try{
             //   hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_train_id_path + ' --root ' + vm.root 
@@ -463,7 +461,7 @@ export default {
             // Store match_id file from different assistor
             let save_match_id_file_pos = null;
             try{
-              save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              save_match_id_file_pos = ex.execSync('run.py' + vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
               console.log(save_match_id_file_pos)
             }catch(err){

@@ -22,7 +22,7 @@
     </div>
 
     <div class="form-group">
-      <label for="name">Input data colomn</label>
+      <label for="name">Input data colomn"</label>
       <input type="text" v-model="train_data_colomn" class="form-control" id="name" placeholder="">
     </div>
 
@@ -265,29 +265,33 @@ export default {
             // let match_id_address = vm.PathForm.train_id_path
             let hash_id_file_address = null;
             try{   
-              // + './dist/run/run make_hash --id_path '
-              // let aa = vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
-              //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train'
-              // console.log("make_hash**********", aa, '%%', vm.exe_position, '%%%', __dirname, '###', __dirname + '/../')
-
-              // hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path '  + match_id_address + ' --root ' + vm.root 
-              //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode train', {encoding: 'utf8'})  
-              // console.log("hash_id_file_address", hash_id_file_address)
-              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+              
+              // call make_hash to convert id to sha-256 id
+              hash_id_file_address = ex.execSync(vm.exe_position + ' run.py make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                                       + ' --task_id ' + vm.task_id + ' --mode train' + ' --dataset_path ' + vm.train_file_path 
                                       + ' --id_idx ' + vm.train_id_colomn, {encoding: 'utf8'})
               console.log("hash_id_file_address", hash_id_file_address)
-
+              hash_id_file_address = hash_id_file_address.split("?")
+              console.log("hash_id_file_address_2", hash_id_file_address)
+              if (hash_id_file_address[0] == "300" && hash_id_file_address[1] == "make_hash" && hash_id_file_address[2] == "not valid mode"){
+                vm.$toasted.success(`not valid mode, please select again`, { icon: 'fingerprint' })
+                return
+              }
+              if (hash_id_file_address[0] != "200" || hash_id_file_address[1] != "make_hash"){
+                vm.$toasted.success(`find assistor went wrong, please try again`, { icon: 'fingerprint' })
+                console.log("make hash wrong")
+                return 
+              }
             }catch(err){
               console.log(err)
             }
 
-
+            console.log("-----------------dddd")
           // let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
           //     console.log(hash_id_file_data)
             let hash_id_file_data = null
             try{
-              hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
+              hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
               // console.log("hash_id_file_data", hash_id_file_data)
             } catch (err) {
               console.log(err)
@@ -357,19 +361,19 @@ export default {
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
 
-            let make_train_local = null;
-            try{   
-              // make_train_local = ex.execSync(vm.exe_position + ' make_train_local  --root ' + vm.root 
-              //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --data_path ' + vm.PathForm.train_data_path + ' --target_path ' + vm.PathForm.train_target_path, {encoding: 'utf8'})  
-              // console.log("make_train_local", make_train_local)
-              make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
-                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
-                                      + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_colomn 
-                                      + ' --target_idx ' + vm.train_target_colomn,{encoding: 'utf8'})
-              console.log("make_train_local", make_train_local)
-            }catch(err){
-              console.log(err)
-            }
+            // let make_train_local = null;
+            // try{   
+            //   // make_train_local = ex.execSync(vm.exe_position + ' make_train_local  --root ' + vm.root 
+            //   //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --data_path ' + vm.PathForm.train_data_path + ' --target_path ' + vm.PathForm.train_target_path, {encoding: 'utf8'})  
+            //   // console.log("make_train_local", make_train_local)
+            //   make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
+            //                           + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
+            //                           + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_colomn 
+            //                           + ' --target_idx ' + vm.train_target_colomn,{encoding: 'utf8'})
+            //   console.log("make_train_local", make_train_local)
+            // }catch(err){
+            //   console.log(err)
+            // }
 
           })          
           

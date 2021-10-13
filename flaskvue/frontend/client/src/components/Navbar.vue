@@ -55,8 +55,6 @@
 
 
         
-        
-        
 
         
 
@@ -263,7 +261,17 @@ export default {
                                       + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
                                       + ' --id_idx ' + default_train_id_colomn, {encoding: 'utf8'})
               console.log("hash_id_file_address", hash_id_file_address)
-
+              hash_id_file_address = hash_id_file_address.split("?")
+              console.log("hash_id_file_address_2", hash_id_file_address)
+              if (hash_id_file_address[0] == "300" && hash_id_file_address[1] == "make_hash" && hash_id_file_address[2] == "not valid mode"){
+                vm.$toasted.success(`not valid mode, please select again`, { icon: 'fingerprint' })
+                return
+              }
+              if (hash_id_file_address[0] != "200" || hash_id_file_address[1] != "make_hash"){
+                vm.$toasted.success(`find assistor went wrong, please try again`, { icon: 'fingerprint' })
+                console.log("make hash wrong")
+                return 
+              }
             }catch(err){
               console.log(err)
             }
@@ -461,18 +469,25 @@ export default {
             // Store match_id file from different assistor
             let save_match_id_file_pos = null;
             try{
-              save_match_id_file_pos = ex.execSync('run.py' + vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
               console.log(save_match_id_file_pos)
+              save_match_id_file_pos = save_match_id_file_pos.split("?")
+              console.log("save_match_id_file_pos", save_match_id_file_pos)
+              if (save_match_id_file_pos[0] != "200" || save_match_id_file_pos[1] != "save_match_id"){
+                vm.$toasted.success(`save match id wrong`, { icon: 'fingerprint' })
+                console.log("save match id wrong")
+                return 
+              }
             }catch(err){
               console.log(err)
             }
 
-            fs.writeFileSync(save_match_id_file_pos, cur_match_id_file)
-            console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos);
-            vm.$toasted.success('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos, { icon: 'fingerprint' })
+            fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
+            console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2]);
+            vm.$toasted.success('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2], { icon: 'fingerprint' })
             try {
-              fs.appendFileSync(Log_address, "3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos + "\n")
+              fs.appendFileSync(Log_address, "3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
             } catch (err) {
               console.log(err)
             }
@@ -481,6 +496,13 @@ export default {
             try{
               let make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+              make_match_idx_done = make_match_idx_done.split("?")
+              console.log("make_match_idx_done", make_match_idx_done)
+              if (make_match_idx_done[0] != "200" || make_match_idx_done[1] != "make_match_idx" || make_match_idx_done[2] != "complete"){
+                vm.$toasted.success(`make_match_idx wrong`, { icon: 'fingerprint' })
+                console.log("make_match_idx wrong")
+                return 
+              }
             }catch(err){
               console.log(err)
             }
@@ -530,7 +552,13 @@ export default {
                 + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 0 ' 
                 + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
 
-              
+              make_residual_multiple_paths = make_residual_multiple_paths.split("?")
+              console.log("make_residual_multiple_paths", make_residual_multiple_paths)
+              if (make_residual_multiple_paths[0] != "200" || make_residual_multiple_paths[1] != "make_residual"){
+                vm.$toasted.success(`make_residual wrong`, { icon: 'fingerprint' })
+                console.log("make_residual wrong")
+                return 
+              }
                 // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
               
               console.log("make_residual_multiple_paths", make_residual_multiple_paths, make_residual_multiple_paths.length)
@@ -555,14 +583,14 @@ export default {
               let data = null;
               try{
                 // data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
-                data = fs.readFileSync(make_residual_multiple_paths, {encoding:'utf8', flag:'r'});
+                data = fs.readFileSync(make_residual_multiple_paths[2], {encoding:'utf8', flag:'r'});
               }catch(err){
                 console.log(err)
               }
               all_residual_data.push(data);
 
               // let cur_path = make_residual_multiple_paths[i]
-              let cur_path = make_residual_multiple_paths
+              let cur_path = make_residual_multiple_paths[2]
               let path_split = cur_path.split(node_path.sep);
               let assistor_random_id = path_split[path_split.length-1].split(".")[0];
               assistor_random_id_list.push(assistor_random_id);
@@ -650,17 +678,25 @@ export default {
             save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
             console.log(save_match_id_file_pos)
+            // console.log(save_match_id_file_pos)
+            save_match_id_file_pos = save_match_id_file_pos.split("?")
+            console.log("save_match_id_file_pos", save_match_id_file_pos)
+            if (save_match_id_file_pos[0] != "200" || save_match_id_file_pos[1] != "save_match_id"){
+              vm.$toasted.success(`save match id wrong`, { icon: 'fingerprint' })
+              console.log("save match id wrong")
+              return 
+            }
           }catch(err){
             console.log(err)
           }
 
           // Store match_id file
-          fs.writeFileSync(save_match_id_file_pos, cur_match_id_file)
+          fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
 
-          console.log('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos);
-          vm.$toasted.success('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos, { icon: 'fingerprint' })
+          console.log('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos[2]);
+          vm.$toasted.success('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos[2], { icon: 'fingerprint' })
           try {
-            fs.appendFileSync(Log_address, "3.4 Assistor Saved Matched id File at " + save_match_id_file_pos + "\n")
+            fs.appendFileSync(Log_address, "3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
           } catch (err) {
             console.log(err)
           }
@@ -669,15 +705,22 @@ export default {
           try{
             let make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+            make_match_idx_done = make_match_idx_done.split("?")
+            console.log("make_match_idx_done", make_match_idx_done)
+            if (make_match_idx_done[0] != "200" || make_match_idx_done[1] != "make_match_idx" || make_match_idx_done[2] != "complete"){
+              vm.$toasted.success(`make_match_idx wrong`, { icon: 'fingerprint' })
+              console.log("make_match_idx wrong")
+              return 
+            }
           }catch(err){
             console.log(err)
           }
 
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(2000); // 程序滞留2000ms
+          // function sleep(time) {
+          //   let startTime = window.performance.now();
+          //   while (window.performance.now() - startTime < time) {}
+          // }
+          // sleep(2000); // 程序滞留2000ms
 
           console.log('3.5 Assistor matches id to index');
           vm.$toasted.success('3.5 Assistor matches id to index', { icon: 'fingerprint' })
@@ -772,9 +815,15 @@ export default {
           //   + train_data_path, {encoding: 'utf8'})
 
           let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
-            + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path '
-            + train_file_path + ' --data_idx ' +train_data_colomn, {encoding: 'utf8'})
-
+            + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_colomn, {encoding: 'utf8'})
+          
+          train_output = train_output.split("?")
+          console.log("train_output", train_output)
+          if (train_output[0] != "200" || train_output[1] != "make_train"){
+            vm.$toasted.success(`make_train wrong`, { icon: 'fingerprint' })
+            console.log("make_train wrong")
+            return 
+          }
           
           console.log("4.3 Sponsor round " + rounds + " training done.");
           vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
@@ -830,53 +879,54 @@ export default {
         Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
           + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
           + from_id + ' --dataset_path ' + default_train_file_path + ' --data_idx ' + default_train_data_colomn,{encoding: 'utf8'})
+        
+        Assistor_train_output_path = Assistor_train_output_path.split("?")
+        console.log("Assistor_train_output_path", Assistor_train_output_path)
+        if (Assistor_train_output_path[0] != "200" || Assistor_train_output_path[1] != "make_train"){
+          vm.$toasted.success(`make_train wrong`, { icon: 'fingerprint' })
+          console.log("make_train wrong")
+          return 
+        }
       }
       catch(err){
-       
         console.log(err)
       }
-      console.log("Assistor_train_output_path", Assistor_train_output_path)
-      // if make_train.py prints "cannot fine match idx file", we call the function again, else, we move on.
-      if (Assistor_train_output_path == "assistor cannot find match idx file"){
-        setTimeout(function(){
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_colomn, vm, Log_address)
-        }, 5000);
-      }else{
+      
 
-        console.log("4.4 Assistor round " + rounds + " training done.");
-        vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
+      console.log("4.4 Assistor round " + rounds + " training done.");
+      vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
+      try {
+        fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
+      } catch (err) {
+        console.log(err)
+      }
+
+      let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path[2], {encoding:'utf8', flag:'r'});
+
+      const Assistor_output_payload = {
+        task_id: task_id,
+        output: Assistor_train_output_data,
+      }
+
+      // send output
+      // async
+      vm.$axios.post('/send_output/', Assistor_output_payload)
+        .then((response) => {
+        // handle success
+        console.log("4.5 Assistor sends output", response)
+        vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
         try {
-          fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
+          fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
+          fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
         } catch (err) {
           console.log(err)
         }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
 
-        let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path, {encoding:'utf8', flag:'r'});
 
-        const Assistor_output_payload = {
-          task_id: task_id,
-          output: Assistor_train_output_data,
-        }
-
-        // send output
-        // async
-        vm.$axios.post('/send_output/', Assistor_output_payload)
-          .then((response) => {
-          // handle success
-          console.log("4.5 Assistor sends output", response)
-          vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
-            fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
-          } catch (err) {
-            console.log(err)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-
-      }
 
 
 
@@ -922,11 +972,18 @@ export default {
             save_residual_file_pos = ex.execSync(vm.exe_position + ' save_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
             console.log(save_residual_file_pos)
+            save_residual_file_pos = save_residual_file_pos.split("?")
+            console.log("save_residual_file_pos", save_residual_file_pos)
+            if (save_residual_file_pos[0] != "200" || save_residual_file_pos[1] != "save_residual"){
+              vm.$toasted.success(`save_residual wrong`, { icon: 'fingerprint' })
+              console.log("save_residual wrong")
+              return 
+            }
           }catch(err){
             console.log(err)
           }
 
-          fs.writeFileSync(save_residual_file_pos, cur_situation_file)
+          fs.writeFileSync(save_residual_file_pos[2], cur_situation_file)
 
           console.log('4.3 Assistor Saved Residual File!');
           vm.$toasted.success('4.3 Assistor Saved Residual File!', { icon: 'fingerprint' })
@@ -999,7 +1056,15 @@ export default {
         make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
           + ' --task_id '+ task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path 
           + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
+          
         console.log("make_result_done", make_result_done)
+        make_result_done = make_result_done.split("?")
+        console.log("make_result_done", make_result_done)
+        if (make_result_done[0] != "200" || make_result_done[1] != "make_result"){
+          vm.$toasted.success(`make_result wrong`, { icon: 'fingerprint' })
+          console.log("make_result wrong")
+          return 
+        }
       }catch(err){
         console.log(err)
       }
@@ -1038,9 +1103,16 @@ export default {
           make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
             + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
             + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
-          make_residual_multiple_paths = make_residual_multiple_paths.split('?')
+          // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
+          
+          make_residual_multiple_paths = make_residual_multiple_paths.split("?")
           console.log(make_residual_multiple_paths)
-
+          console.log("make_residual_multiple_paths", make_residual_multiple_paths)
+          if (make_residual_multiple_paths[0] != "200" || make_residual_multiple_paths[1] != "make_residual"){
+            vm.$toasted.success(`make_residual wrong`, { icon: 'fingerprint' })
+            console.log("make_residual wrong")
+            return 
+          }
           }catch(err){
           console.log(err)
         }
@@ -1057,7 +1129,7 @@ export default {
         let all_residual_data = [];
         let assistor_random_id_list = [];
 
-        for (let i = 0; i < make_residual_multiple_paths.length; i++){
+        for (let i = 2; i < make_residual_multiple_paths.length; i++){
 
           let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
           all_residual_data.push(data);
@@ -1136,6 +1208,13 @@ export default {
               save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
               console.log(save_output_pos)
+              save_output_pos = save_output_pos.split("?")
+              console.log("save_output_pos", save_output_pos)
+              if (save_output_pos[0] != "200" || save_output_pos[1] != "save_output"){
+                vm.$toasted.success(`save_output wrong`, { icon: 'fingerprint' })
+                console.log("save_output wrong")
+                return 
+              }
             }catch(err){
             console.log(err)
           }
@@ -1195,7 +1274,7 @@ export default {
             console.log("default_test_id_path", default_test_id_path)
             let test_hash_id_file_address = null
             try{
-              test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_test_id_path + ' --root ' + vm.root 
+              test_hash_id_file_address = ex.execSync(vm.exe_position + ' --root ' + vm.root 
                                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
               console.log(test_hash_id_file_address)
             }catch(err){

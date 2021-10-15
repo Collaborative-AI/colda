@@ -3,10 +3,25 @@
      <div class="form-group">
       <label for="name">Select Data File</label>
       <input type="text" v-model="PathForm.test_data_path" class="form-control" id="name" placeholder="">
-      <button @click="get_test_data_path()">Select Data File</button>
+      <button @click="get_test_data_path()">Select File</button>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Input ID colomn </label>
+      <input type="text" v-model="test_id_colomn" class="form-control" id="name" placeholder="">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Input data colomn (eg. 3-6)</label>
+      <input type="text" v-model="test_data_colomn" class="form-control" id="name" placeholder="">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Input target colomn</label>
+      <input type="text" v-model="test_target_colomn" class="form-control" id="name" placeholder="">
     </div>
     
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="location">Select Id File</label>
       <input type="text" v-model="PathForm.test_id_path" class="form-control" id="location" placeholder="">
       <button @click="get_test_id_path()">Select ID File</button>
@@ -16,7 +31,7 @@
       <label for="location">Select Target File</label>
       <input type="text" v-model="PathForm.test_target_path" class="form-control" id="location" placeholder="">
       <button @click="get_test_target_path()">Select Target File</button>
-    </div>
+    </div> -->
 
     <button type="submit" @click="onSubmit()" class="btn btn-primary">Start Finding Assistors</button>
   </div>
@@ -41,6 +56,10 @@ export default {
       sharedState: store.state,
       task_id: "",
       test_id: "",
+      test_file_path: "",
+      test_id_colomn: "",
+      test_data_colomn: "",
+      test_target_colomn: "",
       PathForm: {
         test_data_path: "",
         test_id_path: "",
@@ -81,7 +100,7 @@ export default {
         try {
           let path = result[0]
           fs.statSync(path);
-          this.PathForm.test_data_path = path
+          this.test_file_path = path
         } catch (err) {
           dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Data File')
           console.log('Please Select A Test Data File')
@@ -89,56 +108,56 @@ export default {
 
       }
     },
-    get_test_id_path() {
-      let result = dialog.showOpenDialogSync({
-        properties: ['openFile'],
-        // sufix
-        filters: [{
-          name: 'Text', 
-          extensions: ['html', 'js', 'json', 'md', 'csv'] 
-        }]
-      })
-      console.log("get_test_id_path", result)
-      if (result === undefined){
-        dialog.showErrorBox('Data Path not Correct', 'Please Select A Test ID File')
-      }else{
+    // get_test_id_path() {
+    //   let result = dialog.showOpenDialogSync({
+    //     properties: ['openFile'],
+    //     // sufix
+    //     filters: [{
+    //       name: 'Text', 
+    //       extensions: ['html', 'js', 'json', 'md', 'csv'] 
+    //     }]
+    //   })
+    //   console.log("get_test_id_path", result)
+    //   if (result === undefined){
+    //     dialog.showErrorBox('Data Path not Correct', 'Please Select A Test ID File')
+    //   }else{
 
-        try {
-          let path = result[0]
-          fs.statSync(path);
-          this.PathForm.test_id_path = path
-        } catch (err) {
-          dialog.showErrorBox('Data Path not Correct', 'Please Select A Test ID File')
-          console.log('Please Select A Test ID File')
-        }  
+    //     try {
+    //       let path = result[0]
+    //       fs.statSync(path);
+    //       this.PathForm.test_id_path = path
+    //     } catch (err) {
+    //       dialog.showErrorBox('Data Path not Correct', 'Please Select A Test ID File')
+    //       console.log('Please Select A Test ID File')
+    //     }  
 
-      }
-    },
-    get_test_target_path() {
-      let result = dialog.showOpenDialogSync({
-        properties: ['openFile'],
-        // sufix
-        filters: [{
-          name: 'Text', 
-          extensions: ['html', 'js', 'json', 'md', 'csv'] 
-        }]
-      })
-      console.log("get_test_target_path", result)
-      if (result === undefined){
-        dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Target File')
-      }else{
+    //   }
+    // },
+    // get_test_target_path() {
+    //   let result = dialog.showOpenDialogSync({
+    //     properties: ['openFile'],
+    //     // sufix
+    //     filters: [{
+    //       name: 'Text', 
+    //       extensions: ['html', 'js', 'json', 'md', 'csv'] 
+    //     }]
+    //   })
+    //   console.log("get_test_target_path", result)
+    //   if (result === undefined){
+    //     dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Target File')
+    //   }else{
 
-        try {
-          let path = result[0]
-          fs.statSync(path);
-          this.PathForm.test_target_path = path
-        } catch (err) {
-          dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Target File')
-          console.log('Please Select A Test Target File')
-        }  
+    //     try {
+    //       let path = result[0]
+    //       fs.statSync(path);
+    //       this.PathForm.test_target_path = path
+    //     } catch (err) {
+    //       dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Target File')
+    //       console.log('Please Select A Test Target File')
+    //     }  
 
-      }
-    },
+    //   }
+    // },
 
     onSubmit (e) {
       let vm = this;
@@ -186,16 +205,16 @@ export default {
 
           // });
           console.log("true")
-          console.log(vm.PathForm.test_data_path,vm.PathForm.test_id_path,vm.PathForm.test_target_path)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "test_id", "test_data_path", "test_id_path","test_target_path") VALUES 
-              (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.test_id+ `", "` +vm.PathForm.test_data_path+ `", "` +vm.PathForm.test_id_path+`", "` +vm.PathForm.test_target_path+ `")`
+          console.log(vm.test_file_path,vm.test_id_colomn,vm.test_target_colomn)
+          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "test_id", "test_file_path", "test_id_colomn","test_target_colomn","test_data_colomn") VALUES 
+              (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.test_id+ `", "` +vm.test_file_path+ `", "` +vm.test_id_colomn+`", "` +vm.test_target_colomn+`", "` +vm.test_data_colomn `")`
           console.log(insert_sentence)
           db.run(insert_sentence, function(err){
             if (err){
               console.log(err);
             }
 
-          let match_id_address = vm.PathForm.test_id_path
+          let match_id_address = vm.test_id_colomn
           let test_hash_id_file_address = null;
           try{
             test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + match_id_address + ' --root ' + vm.root 

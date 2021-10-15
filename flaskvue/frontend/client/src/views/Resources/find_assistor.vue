@@ -22,7 +22,7 @@
     </div>
 
     <div class="form-group">
-      <label for="name">Input data colomn"</label>
+      <label for="name">Input data colomn (eg. 3-6)</label>
       <input type="text" v-model="train_data_colomn" class="form-control" id="name" placeholder="">
     </div>
 

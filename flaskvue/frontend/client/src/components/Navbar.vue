@@ -286,7 +286,7 @@ export default {
             } catch (err) {
               console.log(err)
             }
-            let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
+            let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
             const match_assistor_id_data = {
               task_id: task_id,
@@ -1069,7 +1069,7 @@ export default {
         console.log(err)
       }
 
-      let a = (make_result_done == "sponsor cannot find train output file")
+      let a = (make_result_done[2] == "sponsor cannot find train output file")
       console.log("a",a)
       if(make_result_done == "sponsor cannot find train output file"){
         console.log("-------meijinlai")

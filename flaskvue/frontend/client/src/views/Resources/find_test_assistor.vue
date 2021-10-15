@@ -202,13 +202,24 @@ export default {
                                     + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode test' + ' --test_id ' + vm.test_id, {encoding: 'utf8'})
             test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
             console.log(test_hash_id_file_address)
+            test_hash_id_file_address = test_hash_id_file_address.split("?")
+            console.log("test_hash_id_file_address", test_hash_id_file_address)
+            if (test_hash_id_file_address[0] == "300" && test_hash_id_file_address[1] == "make_hash" && test_hash_id_file_address[2] == "not valid mode"){
+              vm.$toasted.success(`not valid mode, please select again`, { icon: 'fingerprint' })
+              return
+            }
+            if (test_hash_id_file_address[0] != "200" || test_hash_id_file_address[1] != "make_hash"){
+              vm.$toasted.success(`find assistor went wrong, please try again`, { icon: 'fingerprint' })
+              console.log("make hash wrong")
+              return 
+            }
           }catch(err){
             console.log(err)
           }
 
           let test_hash_id_file_data = null
           try{
-            test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address, {encoding:'utf8', flag:'r'});
+            test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
           } catch(err){
             console.log(err)
           }

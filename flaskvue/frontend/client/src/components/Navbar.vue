@@ -1495,17 +1495,19 @@ export default {
           //   let filename = "Test_Models" + i.toString();
           //   fs.writeFileSync(Test_Output_folder + filename, files[i])
           // }
-          let select_test_data_path = 'SELECT test_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
+          let select_test_data_path = 'SELECT test_file_path, test_data_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
           db.get(select_test_data_path, function(err, row){
             if (err){ 
               throw err;
             }
-            let test_data_path = row.test_data_path
+            let test_file_path = row.test_data_path
+            let test_data_colomn = row.test_data_colomn
             console.log("test_data_path", test_data_path)
             
             try{
-              let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --data_path ' + test_data_path, {encoding: 'utf8'})
+              let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_colomn, {encoding: 'utf8'})
+
             }catch(err){
               console.log(err)
             }

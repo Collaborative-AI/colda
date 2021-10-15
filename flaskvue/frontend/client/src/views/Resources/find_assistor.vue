@@ -267,6 +267,7 @@ export default {
             try{   
               
               // call make_hash to convert id to sha-256 id
+              console.log("vm.exe_position", vm.exe_position)
               hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                                       + ' --task_id ' + vm.task_id + ' --mode train' + ' --dataset_path ' + vm.train_file_path 
                                       + ' --id_idx ' + vm.train_id_colomn, {encoding: 'utf8'})

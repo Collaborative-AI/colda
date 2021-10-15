@@ -471,7 +471,7 @@ export default {
             try{
               save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
-              console.log(save_match_id_file_pos)
+
               save_match_id_file_pos = save_match_id_file_pos.split("?")
               console.log("save_match_id_file_pos", save_match_id_file_pos)
               if (save_match_id_file_pos[0] != "200" || save_match_id_file_pos[1] != "save_match_id"){
@@ -507,12 +507,6 @@ export default {
               console.log(err)
             }
 
-            function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(2000); // 程序滞留2000ms
-
             console.log('3.5 Sponsor matches id to index');
             vm.$toasted.success('3.5 Sponsor matches id to index', { icon: 'fingerprint' })
             try {
@@ -523,16 +517,7 @@ export default {
 
           }
 
-          // function sleep(time) {
-          //   let startTime = window.performance.now();
-          //   while (window.performance.now() - startTime < time) {}
-          // }
-          // sleep(8000); // 程序滞留5000ms
 
-          // store initial situation
-          // Create 'Local_Data/id/task_id/0' folder
-          // const Round0_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/0/'
-          // fs.mkdirSync(Round0_folder, { recursive: true})
           let select_train_target_colomn = 'SELECT train_file_path, train_target_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
           db.get(select_train_target_colomn, function(err, row){
             if (err){ 
@@ -840,12 +825,6 @@ export default {
         }
 
 
-          // function sleep(time) {
-          //   let startTime = window.performance.now();
-          //   while (window.performance.now() - startTime < time) {}
-          // }
-          // sleep(5000); // 程序滞留5000ms
-
         // const path = `/Sponsor_situation_training_done/`
 
         // const Sponsor_situation_training_done_data = {
@@ -925,10 +904,6 @@ export default {
       .catch((error) => {
         console.log(error)
       })
-
-
-
-
 
     },
     unread_situation_assistor(rounds, task_id) {
@@ -1251,6 +1226,118 @@ export default {
         }) 
     },
 
+
+    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address){
+      console.log("unread_output_make_result_helper_rounds", rounds)
+      let make_result_done = null;
+      try{
+        // make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+        //   + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+        // console.log("make_result_done", make_result_done)
+        make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+          + ' --task_id '+ task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path 
+          + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
+          
+        console.log("make_result_done", make_result_done)
+        make_result_done = make_result_done.split("?")
+        console.log("make_result_done", make_result_done)
+        if (make_result_done[0] != "200" || make_result_done[1] != "make_result"){
+          vm.$toasted.success(`make_result wrong`, { icon: 'fingerprint' })
+          console.log("make_result wrong")
+          return 
+        }
+      }catch(err){
+        console.log(err)
+      }
+
+      console.log("jinlaile")
+      console.log("5.4 Sponsor makes result done.")
+      vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
+      try {
+        fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
+      } catch (err) {
+        console.log(err)
+      }
+
+      // terminate
+      if ((rounds+1) >= vm.max_round){
+        fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n");
+      }else{        
+
+      let make_residual_multiple_paths = null;
+      try{
+        // make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
+        //   + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1) 
+        //   + ' --target_path ' + train_target_path, {encoding: 'utf8'})
+        // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
+        // console.log(make_residual_multiple_paths)
+        make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
+          + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
+          + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
+        // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
+        
+        make_residual_multiple_paths = make_residual_multiple_paths.split("?")
+        console.log(make_residual_multiple_paths)
+        console.log("make_residual_multiple_paths", make_residual_multiple_paths)
+        if (make_residual_multiple_paths[0] != "200" || make_residual_multiple_paths[1] != "make_residual"){
+          vm.$toasted.success(`make_residual wrong`, { icon: 'fingerprint' })
+          console.log("make_residual wrong")
+          return 
+        }
+        }catch(err){
+        console.log(err)
+      }
+
+      console.log("5.5 Sponsor makes residual finished")
+      vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
+
+      try {
+        fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
+      } catch (err) {
+        console.log(err)
+      }
+
+      let all_residual_data = [];
+      let assistor_random_id_list = [];
+
+      for (let i = 2; i < make_residual_multiple_paths.length; i++){
+
+        let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+        all_residual_data.push(data);
+
+        let path_split = make_residual_multiple_paths[i].split(node_path.sep);
+        let assistor_random_id = path_split[path_split.length-1].split(".")[0];
+        assistor_random_id_list.push(assistor_random_id);
+        
+      }
+
+      const payload1 = {
+        residual_list: all_residual_data,
+        task_id: task_id,
+        assistor_random_id_list: assistor_random_id_list,
+      }
+
+      // send initial situation
+      // async
+      vm.$axios.post('/send_situation/', payload1)
+        .then((response) => {
+        // handle success
+        console.log("5.6 Sponsor updates situation done", response)
+          vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
+          try {
+            fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
+            fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
+          } catch (err) {
+            console.log(err)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      }
+    },
+
+    
     unread_test_request(unread_test_request_notification) {
       let vm = this;
       // Only assistor calls this function
@@ -1271,10 +1358,11 @@ export default {
               throw err;
             }
             let default_test_id_path = row.default_test_id_path
+            let default_test_data_path = row.default_test_data_path
             console.log("default_test_id_path", default_test_id_path)
             let test_hash_id_file_address = null
             try{
-              test_hash_id_file_address = ex.execSync(vm.exe_position + ' --root ' + vm.root 
+              test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
                                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
               console.log(test_hash_id_file_address)
             }catch(err){

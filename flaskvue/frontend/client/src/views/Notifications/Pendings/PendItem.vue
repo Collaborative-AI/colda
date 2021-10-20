@@ -32,6 +32,18 @@ export default {
   },
 
   methods: {
+    handle_train_log_address(task_id) {
+      const Log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
+      console.log("train_node_path_log", Log_address)
+      if(!fs.existsSync(Log_address)){
+        console.log("creating log.txt");
+        fs.openSync(file, "w");
+        console.log("log.txt created");
+      }
+      return Log_address
+
+    },
+
     unread_request() {
         let vm = this
 
@@ -41,23 +53,29 @@ export default {
           // const assistor_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
           // fs.mkdirSync(assistor_store_folder, { recursive: true})
 
-          let select_default_train_id_path = 'SELECT default_train_id_path FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          let select_default_train_id_path = 'SELECT default_train_file_path, default_train_id_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
           db.get(select_default_train_id_path, function(err, row){
             if (err){ 
               throw err;
             }
-            let default_train_id_path = row.default_train_id_path
-            console.log("default_train_id_path", default_train_id_path)
+            let default_train_file_path = row.default_train_file_path
+            let default_train_id_colomn = row.default_train_id_colomn
+            // console.log("default_train_id_path", default_train_id_path)
             let hash_id_file_address = null;
             try{
-              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_train_id_path + ' --root ' + vm.root 
-                                        + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode train', {encoding: 'utf8'})
+              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                                      + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
+                                      + ' --id_idx ' + default_train_id_colomn, {encoding: 'utf8'})
+    
+
+              hash_id_file_address = hash_id_file_address.split("?")
               console.log("hash_id_file_address", hash_id_file_address)
             }catch(err){
                 console.log(err)
             }
             
-            const Log_address = vm.root + '/' + vm.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+            // const Log_address = vm.root + '/' + vm.sharedState.user_id + '/task/' + task_id + '/' + 'train/' + 'log.txt'
+            const Log_address = vm.handle_train_log_address(task_id)
 
             try {
               fs.appendFileSync(Log_address, "\n You are Assistor\n")
@@ -67,7 +85,7 @@ export default {
             } catch (err) {
               console.log(err)
             }
-            let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
+            let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
             const match_assistor_id_data = {
               task_id: task_id,

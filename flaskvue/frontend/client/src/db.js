@@ -58,6 +58,7 @@ db.serialize(function() {
                                            train_target_colomn text, \
                                            test_file_path     text, \
                                            test_id_colomn     text, \
+                                           test_data_colomn   text, \
                                            test_target_colomn text, \
                                            train_data_path    text, \
                                            train_id_path      text, \

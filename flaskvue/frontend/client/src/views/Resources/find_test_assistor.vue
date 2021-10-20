@@ -2,7 +2,7 @@
   <div class="container g-pt-20">
      <div class="form-group">
       <label for="name">Select Data File</label>
-      <input type="text" v-model="PathForm.test_data_path" class="form-control" id="name" placeholder="">
+      <input type="text" v-model="test_file_path" class="form-control" id="name" placeholder="">
       <button @click="get_test_data_path()">Select File</button>
     </div>
 
@@ -170,28 +170,28 @@ export default {
         //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Data File')
         // }
         try {
-          fs.statSync(vm.PathForm.test_data_path);
+          fs.statSync(vm.test_file_path);
         } catch (err) {
           dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Data File')
           console.log('Please Select A Test Data File')
           both_path_validation = false
         }
 
-        try {
-          fs.statSync(vm.PathForm.test_id_path);
-        } catch (err) {
-          dialog.showErrorBox('Data Path not Correct', 'Please Select A Test ID File')
-          console.log('Please Select A Test ID File')
-          both_path_validation = false
-        }
+        // try {
+        //   fs.statSync(vm.test_id_path);
+        // } catch (err) {
+        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Test ID File')
+        //   console.log('Please Select A Test ID File')
+        //   both_path_validation = false
+        // }
 
-        try {
-          fs.statSync(vm.PathForm.test_target_path);
-        } catch (err) {
-          dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Target File')
-          console.log('Please Select A Test Target File')
-          both_path_validation = false
-        }
+        // try {
+        //   fs.statSync(vm.PathForm.test_target_path);
+        // } catch (err) {
+        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Target File')
+        //   console.log('Please Select A Test Target File')
+        //   both_path_validation = false
+        // }
         
         if(both_path_validation == true){
           // db.serialize(function() {
@@ -206,8 +206,8 @@ export default {
           // });
           console.log("true")
           console.log(vm.test_file_path,vm.test_id_colomn,vm.test_target_colomn)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "test_id", "test_file_path", "test_id_colomn","test_target_colomn","test_data_colomn") VALUES 
-              (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.test_id+ `", "` +vm.test_file_path+ `", "` +vm.test_id_colomn+`", "` +vm.test_target_colomn+`", "` +vm.test_data_colomn `")`
+          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "test_id", "test_file_path", "test_id_colomn","test_data_colomn","test_target_colomn") VALUES 
+              (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.test_id+ `", "` +vm.test_file_path+ `", "` +vm.test_id_colomn+`", "`+vm.test_data_colomn+`", "`+vm.test_target_colomn+`")`
           console.log(insert_sentence)
           db.run(insert_sentence, function(err){
             if (err){
@@ -218,11 +218,17 @@ export default {
           let test_hash_id_file_address = null;
 
           try{
-            test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + match_id_address + ' --root ' + vm.root 
-                                    + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --mode test' + ' --test_id ' + vm.test_id
-                                    + ' --dataset_path ' + "1" + ' --id_idx ' + "1", {encoding: 'utf8'})
+            // test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + match_id_address + ' --root ' + vm.root 
+            //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
+            //                         + ' --mode test' + ' --test_id ' + vm.test_id
+            //                         + ' --dataset_path ' + "1" + ' --id_idx ' + "1", {encoding: 'utf8'})
 
-            test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
+            test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
+                                    + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id
+                                    + ' --mode test' + ' --test_id ' + vm.test_id
+                                    + ' --dataset_path ' + vm.test_file_path + ' --id_idx ' + vm.test_id_colomn, {encoding: 'utf8'})
+
+            // test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
             console.log(test_hash_id_file_address)
             test_hash_id_file_address = test_hash_id_file_address.split("?")
             console.log("test_hash_id_file_address", test_hash_id_file_address)

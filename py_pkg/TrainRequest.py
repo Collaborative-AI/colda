@@ -1,10 +1,31 @@
+import numpy as np
 import requests
 import json
+import argparse
+import subprocess
 
 from Network import Network
 from PersonalInformation import PersonalInformation
 
-from Algorithm import *
+# from Algorithm import *
+from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('func', type=str)
+parser.add_argument('--root', default=None, type=str)
+parser.add_argument('--self_id', default=None, type=str)
+parser.add_argument('--task_id', default=None, type=str)
+parser.add_argument('--mode', default=None, type=str)
+parser.add_argument('--round', default=None, type=int)
+parser.add_argument('--test_id', default=None, type=str)
+parser.add_argument('--from_id', default=None, type=str)
+parser.add_argument('--dataset_path', default=None, type=str)
+parser.add_argument('--id_idx', default=None, type=str)
+parser.add_argument('--data_idx', default=None, type=str)
+parser.add_argument('--target_idx', default=None, type=str)
+args = vars(parser.parse_args())
+
 
 class TrainRequest():
 
@@ -12,14 +33,20 @@ class TrainRequest():
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         self.base_url = self.Network_instance.get_base_url()
+        self.exe_position = self.PersonalInformation_instance.get_exe_position()
+        self.root = self.PersonalInformation_instance.get_root()
 
-
-    def handleTrainRequest(self, maxRound: int, assistors: list, training_data_path: str):
+    def handleTrainRequest(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_name: str=None, task_description: str=None):
         """
         Parameters:
          maxRound - Integer. Maximum training round
          username - List. The List of assistors
-         training_data_path - String. Input path address of training data path
+         train_file_path - String. Input path address of training data path
+         train_id_column - String. ID column of Input File
+         train_data_column - String. Data column of Input File
+         train_target_column - String. Target column of Input File
+         task_name - String. Default is None
+         task_description - String. Default is None
 
         Returns:
          None
@@ -28,7 +55,7 @@ class TrainRequest():
          KeyError - raises an exception
         """
 
-        self.__find_assistor(maxRound, assistors, training_data_path)
+        self.__find_assistor(maxRound, assistors, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description)
         return
 
     def __get_train_id(self):
@@ -47,22 +74,30 @@ class TrainRequest():
         url = self.base_url + "/create_new_train_task/"
         token = self.Network_instance.get_token()
         get_train_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
-        print("get_train_id_response", get_train_id_response)
-
         get_train_id_response_text = json.loads(get_train_id_response.text)
+        print("get_train_id_response", get_train_id_response_text)
+
         new_task_id = get_train_id_response_text["task_id"]
         print("new_task_id", new_task_id)
 
         return new_task_id
 
-    def __find_assistor(self, maxRound: int, assistors: list, training_data_path: str):
+
+
+
+    def __find_assistor(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_name: str=None, task_description: str=None):
         """
         start task with all assistors
 
         Parameters:
          maxRound - Integer. Maximum training round
          username - List. The List of assistors
-         training_data_path - String. Input path address of training data path
+         train_file_path - String. Input path address of training data path
+         train_id_column - String. ID column of Input File
+         train_data_column - String. Data column of Input File
+         train_target_column - String. Target column of Input File
+         task_name - String. Default is None
+         task_description - String. Default is None
 
         Returns:
          None
@@ -71,12 +106,29 @@ class TrainRequest():
          KeyError - raises an exception
         """
 
-        # check parameters
+        user_id = self.PersonalInformation_instance.get_user_id()
+        task_id = self.__get_train_id()
+
+        # store id_column, data_column, target_column into database
+        session = Session()
+        user_chosen_path = User_Chosen_Path()
+        user_chosen_path = assign_value_to_user_chosen_path_instance(user_chosen_path, user_id, "train", task_id, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description)
+        session.add(user_chosen_path)
+        session.commit()
+
+        # call make_hash in Algorithm module
+        command = (self.exe_position + ' make_hash --root ' + self.root + ' --self_id ' + user_id + ' --task_id ' +
+                  task_id + ' --mode train' + ' --dataset_path ' + train_file_path + ' --id_idx ' + train_id_column)
+        res = subprocess.check_output(command)
+        print("!!res", res)
+        res = res.split("?")
 
         url = self.base_url + "/find_assistor/"
         token = self.Network_instance.get_token()
-        task_id = self.__get_train_id()
+
         hash_id_file_data = "1\n2\n3"
+        hash_id_file_data = np.genfromtxt(res[2], delimiter=',')
+
         data = {
             "assistor_id_list": assistors,
             "task_id": task_id,
@@ -101,9 +153,15 @@ class TrainRequest():
         Raises:
          KeyError - raises an exception
         """
+        session = Session()
+        aa = User_Default_Path()
+        aa.id = 5
+        aa.user_id = "aa"
+        session.add(aa)
+        session.commit()
 
         default_mode = self.PersonalInformation_instance.get_default_mode()
-        ceshi()
+        Algorithm.ceshi()
         if default_mode == "active":
             # Insert to DB
             pass

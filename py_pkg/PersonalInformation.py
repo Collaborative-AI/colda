@@ -1,3 +1,4 @@
+import os
 
 class PersonalInformation:
     __PersonalInformation_instance = None
@@ -5,6 +6,10 @@ class PersonalInformation:
     def __init__(self):
         self.__default_mode = None
         self.__user_id = None
+        self.__root = os.path.abspath(os.path.dirname(__file__))
+        print(self.__root)
+        self.__exe_position = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'dist', 'run', 'run')
+        print(self.__exe_position)
 
     @classmethod
     def get_PersonalInformation_instance(cls):
@@ -82,3 +87,56 @@ class PersonalInformation:
 
         self.__default_mode = mode
         return
+
+    def get_root(self):
+        """
+        Get the root path of intermediate data storage
+
+        Parameters:
+         None
+
+        Returns:
+         The root path of intermediate data storage.
+
+        Raises:
+         KeyError - raises an exception
+        """
+
+        return self.__root
+
+
+    def set_root(self, root: str):
+        """
+        Set the root path of intermediate data storage to new root
+
+        Parameters:
+         root - String. Must be valid
+
+        Returns:
+         None
+
+        Raises:
+         KeyError - raises an exception
+        """
+
+        self.__root = root
+        return
+
+    def get_exe_position(self):
+        """
+        Get the path of the Algorithm entry point
+
+        Parameters:
+         None
+
+        Returns:
+         None
+
+        Raises:
+         KeyError - raises an exception
+        """
+
+        return self.__exe_position
+
+
+# c = PersonalInformation.get_PersonalInformation_instance()

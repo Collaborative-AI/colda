@@ -11,19 +11,24 @@ to be used as a cookie-cutter for developing new Python packages.
 # import sys
 # sys.path.append(basedir)
 
+import numpy as np
+from Authorization import Authorization
+from TrainRequest import TrainRequest
+from TestRequest import TestRequest
 
-from global_class import global_class
 # import jwt
-_default_apollo_system = global_class()
+_default_authorization = Authorization.get_Authorization_instance()
+_default_trainRequest = TrainRequest.get_TrainRequest_instance()
+_default_testRequest = TestRequest.get_TestRequest_instance()
 
 def callForTrain(maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_name: str=None, task_description: str=None):
-    trainRequest_instance = _default_apollo_system.get_TrainRequest_instance()
+    trainRequest_instance = _default_trainRequest.get_TrainRequest_instance()
     trainRequest_instance.handleTrainRequest(maxRound, assistors, train_file_path, train_id_column, train_data_column, train_target_column)
 
     return
 
 def callForTest(task_id: str, testing_data_path: str):
-    testRequest_instance = _default_apollo_system.get_TestRequest_instance()
+    testRequest_instance = _default_testRequest.get_TestRequest_instance()
     testRequest_instance.handleTestRequest(task_id, testing_data_path)
 
     return
@@ -35,19 +40,19 @@ def callForTest(task_id: str, testing_data_path: str):
 
 # Call Authorization
 def userRegister(username: str, password: str):
-    authorization_instance = _default_apollo_system.get_Authorization_instance()
+    authorization_instance = _default_authorization.get_Authorization_instance()
     authorization_instance.userRegister(username, password)
 
     return
 
 def userLogin(username: str, password: str):
-    authorization_instance = _default_apollo_system.get_Authorization_instance()
+    authorization_instance = _default_authorization.get_Authorization_instance()
     authorization_instance.userLogin(username, password)
 
     return
 
 def userLogout():
-    authorization_instance = _default_apollo_system.get_Authorization_instance()
+    authorization_instance = _default_authorization.get_Authorization_instance()
     authorization_instance.userLogout()
 
     return
@@ -66,6 +71,11 @@ def get_all_testing_tasks():
 
 def get_pending_requests():
     pass
-
+#
 userLogin("testa", "123")
 callForTrain(3,[2], '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv',"1","2","3")
+address = '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv'
+a = np.genfromtxt(address, delimiter=',')
+print(a, type(a))
+
+

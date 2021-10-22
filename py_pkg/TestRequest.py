@@ -5,11 +5,20 @@ from Network import Network
 from PersonalInformation import PersonalInformation
 
 class TestRequest:
+    __TestRequest_instance = None
 
     def __init__(self):
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         self.base_url = self.Network_instance.get_base_url()
+
+    @classmethod
+    def get_TestRequest_instance(cls):
+        if cls.__TestRequest_instance == None:
+            cls.__TestRequest_instance = TestRequest()
+
+        return cls.__TestRequest_instance
+
 
     def handleTestRequest(self, task_id: str, testing_data_path: str):
         """

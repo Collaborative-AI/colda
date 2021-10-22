@@ -23,18 +23,10 @@ class global_class:
         self.__TestRequest_instance = None
         self.__Authorization_instance = None
 
-    def get_Authorization_instance(self):
-        if self.__Authorization_instance == None:
-            self.__Authorization_instance = Authorization()
-
-        return self.__Authorization_instance
 
 
-    def get_TrainRequest_instance(self):
-        if self.__TrainRequest_instance == None:
-            self.__TrainRequest_instance = TrainRequest()
 
-        return self.__TrainRequest_instance
+
 
     def get_TestRequest_instance(self):
         if self.__TestRequest_instance == None:

@@ -4,15 +4,25 @@ import base64
 # import jwt
 from Network import Network
 from PersonalInformation import PersonalInformation
+# from Get_Notification import
+
 # from urllib.request import quote, unquote
 # import atob
 
 class Authorization():
+    __Authorization_instance = None
 
     def __init__(self):
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         self.base_url = self.Network_instance.get_base_url()
+
+    @classmethod
+    def get_Authorization_instance(cls):
+        if cls.__Authorization_instance == None:
+            cls.__Authorization_instance = Authorization()
+
+        return cls.__Authorization_instance
 
     def userRegister(self, username: str, password: str):
         pass

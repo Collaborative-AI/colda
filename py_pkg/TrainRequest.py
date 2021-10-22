@@ -12,6 +12,7 @@ from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_
 
 
 class TrainRequest():
+    __TrainRequest_instance = None
 
     def __init__(self):
         self.Network_instance = Network.get_Network_instance()
@@ -19,6 +20,13 @@ class TrainRequest():
         self.base_url = self.Network_instance.get_base_url()
         self.exe_position = self.PersonalInformation_instance.get_exe_position()
         self.root = self.PersonalInformation_instance.get_root()
+
+    @classmethod
+    def get_TrainRequest_instance(cls):
+        if cls.__TrainRequest_instance == None:
+            cls.__TrainRequest_instance = TrainRequest()
+
+        return cls.__TrainRequest_instance
 
     def handleTrainRequest(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_name: str=None, task_description: str=None):
         """
@@ -110,6 +118,7 @@ class TrainRequest():
         url = self.base_url + "/find_assistor/"
         token = self.Network_instance.get_token()
 
+        # read file
         hash_id_file_data = "1\n2\n3"
         hash_id_file_data = np.genfromtxt(res[2], delimiter=',')
 
@@ -118,7 +127,7 @@ class TrainRequest():
             "task_id": task_id,
             "id_file": hash_id_file_data,
         }
-        print(data)
+
         find_assistor_res = requests.post(url, data = data, headers = {'Authorization': 'Bearer ' + token})
         print("find_assistor_res", find_assistor_res)
 
@@ -153,6 +162,7 @@ class TrainRequest():
                 url = self.base_url + "/match_assistor_id/"
                 token = self.Network_instance.get_token()
                 task_id = task_id
+                hash_id_file_data = None
                 file = hash_id_file_data
                 data = {
                     "task_id": task_id,
@@ -213,9 +223,9 @@ class TrainRequest():
             "task_id": task_id,
         }
         sponsor_get_match_id_file_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
-        print("sponsor_get_match_id_file_res", sponsor_get_match_id_file_res)
-        match_id_file_list = json.loads(get_match_id_file_res.text)["match_id_file"]
-        assistor_random_id_pair_list = json.loads(get_match_id_file_res.text)["assistor_random_id_pair"]
+        print("sponsor_get_match_id_file_res", json.loads(sponsor_get_match_id_file_res.text))
+        match_id_file_list = json.loads(sponsor_get_match_id_file_res.text)["match_id_file"]
+        assistor_random_id_pair_list = json.loads(sponsor_get_match_id_file_res.text)["assistor_random_id_pair"]
 
         for i in range(len(match_id_file_list)):
             from_id = assistor_random_id_pair_list[i]
@@ -223,13 +233,37 @@ class TrainRequest():
             cur_match_id_file = "\n".join(cur_match_id_file)
 
             # call save_match_id
-            save_match_id_file_pos
+            command = (self.exe_position + ' save_match_id --root ' + self.root + ' --self_id ' + user_id
+                + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id)
+            res = subprocess.check_output(command, shell=True)
+            res = res.split("?")
+
+            # write file
+
+
 
             # call make_match_idx
+            command = (self.exe_position + ' make_match_idx --root ' + self.root + ' --self_id ' + user_id
+                + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id)
+            res = subprocess.check_output(command, shell=True)
+            res = res.split("?")
 
         # get train target column
+        session = Session()
+        query = session.query(User_Chosen_Path).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
+        train_file_path = query.train_file_path
+        train_target_colomn = query.train_target_colomn
 
-        # make residual
+        # call make residual
+        command = (self.exe_position + ' make_residual --root ' + self.root
+                + ' --self_id ' + user_id + ' --task_id ' + task_id + ' --round 0 '
+                + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn)
+        res = subprocess.check_output(command, shell=True)
+        res = res.split("?")
+
+        assistor_random_id_list = []
+        residual_list = []
+
         url = self.base_url + "/send_situation"
         data = {
             "task_id": task_id,
@@ -262,12 +296,12 @@ class TrainRequest():
         }
         assistor_get_match_id_file_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
         print("assistor_get_match_id_file_res", assistor_get_match_id_file_res)
-        cur_match_id_file = json.loads(get_match_id_file_res.text)["match_id_file"][0]
+        cur_match_id_file = json.loads(assistor_get_match_id_file_res.text)["match_id_file"][0]
         cur_match_id_file = "\n".join(cur_match_id_file)
-        from_id = json.loads(get_match_id_file_res.text)["sponsor_random_id"]
+        from_id = json.loads(assistor_get_match_id_file_res.text)["sponsor_random_id"]
 
         # call save_match_id
-        save_match_id_file_pos
+        # save_match_id_file_pos
 
         # call make_match_idx
 
@@ -318,14 +352,21 @@ class TrainRequest():
          KeyError - raises an exception
         """
 
-        # get train_data_path from db
-        # make train
         user_id = self.PersonalInformation_instance.get_user_id()
-        url = self.base_url + "/users/" + user_id + "/match_id_file"
-        token = self.Network_instance.get_token()
-        data = {
-            "task_id": task_id,
-        }
+
+        # get train_data_path from db
+        session = Session()
+        query = session.query(User_Chosen_Path).filter_by(user_id=user_id, test_indicator="train",
+                                                          task_id=task_id).first()
+        train_file_path = query.train_file_path
+        train_data_colomn = query.train_data_column
+
+        # call make train
+        command = (self.exe_position + ' make_train --root ' + self.root + ' --self_id '
+                    + user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path '
+                    + train_file_path + ' --data_idx ' + train_data_colomn)
+        res = subprocess.check_output(command, shell=True)
+        res = res.split("?")
 
 
         return
@@ -389,7 +430,7 @@ class TrainRequest():
         }
         assistor_get_situation_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
         print("assistor_get_situation_res", assistor_get_situation_res)
-        cur_situation_file = json.loads(get_match_id_file_res.text)["situation"]
+        cur_situation_file = json.loads(assistor_get_situation_res.text)["situation"]
         from_id = json.loads(assistor_get_situation_res.text)["sender_random_id"]
 
         # call save_residual
@@ -456,10 +497,20 @@ class TrainRequest():
             from_id = sender_random_ids_list[i]
 
             # call save_output
+            command = (self.exe_position + ' save_output --root ' + self.root + ' --self_id ' + user_id
+                + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id + ' --round ' + rounds)
+            res = subprocess.check_output(command, shell=True)
+            res = res.split("?")
 
-            train_target_path = None
-            train_file_path = None
-            train_target_column = None
+            # write file
+
+
+            # get train_file_path, train_target_column from db
+            session = Session()
+            query = session.query(User_Chosen_Path).filter_by(user_id=user_id, test_indicator="train",
+                                                              task_id=task_id).first()
+            train_file_path = query.train_file_path
+            train_target_column = query.train_target_colomn
 
             self.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column)
 
@@ -482,13 +533,25 @@ class TrainRequest():
          KeyError - raises an exception
         """
 
+        user_id = self.PersonalInformation_instance.get_user_id()
+
         # call make_result
+        command = (self.exe_position + ' make_result --root ' + self.root + ' --self_id ' + user_id
+          + ' --task_id '+ task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path
+          + ' --target_idx ' + train_target_column)
+        res = subprocess.check_output(command, shell=True)
+        res = res.split("?")
 
         # call make_residual
+        command = (self.exe_position + ' make_residual --root ' + self.root
+          + ' --self_id ' + user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
+          + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column)
+        res = subprocess.check_output(command, shell=True)
+        res = res.split("?")
+
         all_residual_data = []
         assistor_random_id_list = []
 
-        user_id = self.PersonalInformation_instance.get_user_id()
         url = self.base_url + "/send_situation/"
         token = self.Network_instance.get_token()
         data = {
@@ -514,8 +577,6 @@ class TrainRequest():
         Raises:
          KeyError - raises an exception
         """
-
-
 
         return
 

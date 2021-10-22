@@ -23,7 +23,7 @@ from sqlalchemy.orm import sessionmaker
 # engine是2.2中创建的连接
 Session = sessionmaker(bind=engine)
 
-def assign_value_to_user_default_path_instance(instance, user_id, test_indicator, task_id, training_file_path, id_column, data_column, target_column, task_name, task_description):
+def assign_value_to_user_chosen_path_instance(instance, user_id, test_indicator, task_id, training_file_path, id_column, data_column, target_column, task_name, task_description):
 
     if test_indicator == "train":
         instance.user_id = user_id
@@ -37,13 +37,12 @@ def assign_value_to_user_default_path_instance(instance, user_id, test_indicator
         instance.task_description = task_description
 
     elif test_indicator == "test":
-
+        pass
 
     return instance
 
 
-def assign_value_to_user_chosen_path_instance():
-
+def assign_value_to_user_default_path_instance():
     return
 
 

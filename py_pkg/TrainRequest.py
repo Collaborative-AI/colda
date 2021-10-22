@@ -11,22 +11,6 @@ from PersonalInformation import PersonalInformation
 from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('func', type=str)
-parser.add_argument('--root', default=None, type=str)
-parser.add_argument('--self_id', default=None, type=str)
-parser.add_argument('--task_id', default=None, type=str)
-parser.add_argument('--mode', default=None, type=str)
-parser.add_argument('--round', default=None, type=int)
-parser.add_argument('--test_id', default=None, type=str)
-parser.add_argument('--from_id', default=None, type=str)
-parser.add_argument('--dataset_path', default=None, type=str)
-parser.add_argument('--id_idx', default=None, type=str)
-parser.add_argument('--data_idx', default=None, type=str)
-parser.add_argument('--target_idx', default=None, type=str)
-args = vars(parser.parse_args())
-
-
 class TrainRequest():
 
     def __init__(self):
@@ -119,7 +103,7 @@ class TrainRequest():
         # call make_hash in Algorithm module
         command = (self.exe_position + ' make_hash --root ' + self.root + ' --self_id ' + user_id + ' --task_id ' +
                   task_id + ' --mode train' + ' --dataset_path ' + train_file_path + ' --id_idx ' + train_id_column)
-        res = subprocess.check_output(command)
+        res = subprocess.check_output(command, shell=True)
         print("!!res", res)
         res = res.split("?")
 
@@ -153,15 +137,8 @@ class TrainRequest():
         Raises:
          KeyError - raises an exception
         """
-        session = Session()
-        aa = User_Default_Path()
-        aa.id = 5
-        aa.user_id = "aa"
-        session.add(aa)
-        session.commit()
 
         default_mode = self.PersonalInformation_instance.get_default_mode()
-        Algorithm.ceshi()
         if default_mode == "active":
             # Insert to DB
             pass

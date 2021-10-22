@@ -28,9 +28,9 @@ def callForTest(task_id: str, testing_data_path: str):
 
     return
 
-def ceshi(aa):
-    trainRequest_instance = _default_apollo_system.get_TrainRequest_instance()
-    trainRequest_instance.unread_request(aa)
+# def ceshi(aa):
+#     trainRequest_instance = _default_apollo_system.get_TrainRequest_instance()
+#     trainRequest_instance.unread_request(aa)
 
 
 # Call Authorization
@@ -67,5 +67,5 @@ def get_all_testing_tasks():
 def get_pending_requests():
     pass
 
-# userLogin("testa", "123")
-ceshi({"a": "a"})
+userLogin("testa", "123")
+callForTrain(3,[2], '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv',"1","2","3")

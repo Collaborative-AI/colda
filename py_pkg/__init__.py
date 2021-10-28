@@ -72,10 +72,11 @@ def get_all_testing_tasks():
 def get_pending_requests():
     pass
 #
+
 userLogin("testa", "123")
 callForTrain(3,[2], '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv',"1","2","3")
-address = '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv'
-a = np.genfromtxt(address, delimiter=',')
-print(a, type(a))
+# address = '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv'
+# a = np.genfromtxt(address, delimiter=',')
+# print(a, type(a))
 
 

@@ -4,6 +4,7 @@ import json
 import argparse
 import subprocess
 
+
 from Network import Network
 from PersonalInformation import PersonalInformation
 
@@ -111,16 +112,19 @@ class TrainRequest():
         # call make_hash in Algorithm module
         command = (self.exe_position + ' make_hash --root ' + self.root + ' --self_id ' + user_id + ' --task_id ' +
                   task_id + ' --mode train' + ' --dataset_path ' + train_file_path + ' --id_idx ' + train_id_column)
-        res = subprocess.check_output(command, shell=True)
+        res = subprocess.run(command, shell=True)
         print("!!res", res)
         res = res.split("?")
 
-        url = self.base_url + "/find_assistor/"
-        token = self.Network_instance.get_token()
 
         # read file
         hash_id_file_data = "1\n2\n3"
         hash_id_file_data = np.genfromtxt(res[2], delimiter=',')
+
+
+        # call find_assistor in server
+        url = self.base_url + "/find_assistor/"
+        token = self.Network_instance.get_token()
 
         data = {
             "assistor_id_list": assistors,

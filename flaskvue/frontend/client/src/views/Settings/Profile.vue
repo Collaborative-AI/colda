@@ -21,7 +21,7 @@
     <div class="form-group">
       <label for="name">Default Train File Path</label>
       <input type="text" v-model="default_train_file_path" class="form-control" id="name" placeholder="">
-      <button @click="get_default_train_file_path()">Select File</button>
+      <button @click="get_default_train_file_path()" class="btn btn-success">Select File</button>
     </div>
     <div class="form-group">
       <label for="name">Input id colomn</label>
@@ -58,14 +58,14 @@
     <label for="not_receive">Not respond</label> -->
     <br>
     <input type="radio" id="passive" value="passive" v-model="picked">
-    <label for="receive">Passive</label>
+    <label for="receive">Auto</label>
     <br>
     <input type="radio" id="active" value="active" v-model="picked">
-    <label for="active">Active</label>
+    <label for="active">Manual</label>
     <br>
 
 
-    <button type="submit" @click="onSubmit()" class="btn btn-primary">Update</button>
+    <button type="submit" @click="onSubmit()" class="btn btn-success">Update</button>
     <!-- </form> -->
 
   </div>

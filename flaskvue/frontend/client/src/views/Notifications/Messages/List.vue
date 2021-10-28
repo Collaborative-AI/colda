@@ -1,32 +1,32 @@
 <template>
-  <div>
+  <div class="container justify-content-center align-self-center ">
     <!-- 用户收到的私信列表 -->
-    <div class="card border-0 g-mb-15">
+    <div class="card border-0 g-mb-15 my-5 justify-content-center align-self-center ">
       <!-- Panel Header -->
-      <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
+      <div class="card-header d-flex align-items-center justify-content-center g-bg-gray-light-v5 border-0 g-mb-15">
         <h3 class="h6 mb-0">
-          <i class="icon-bubbles g-pos-rel g-top-1 g-mr-5"></i> Participated Tasks <small v-if="messages">(Total: {{ messages._meta.total_items }} tasks, {{ messages._meta.total_pages }} pages)</small>
+          <i class="icon-bubbles g-pos-rel g-top-1 "></i> Participated Tasks <small v-if="messages">(Total: {{ messages._meta.total_items }} tasks, {{ messages._meta.total_pages }} pages)</small>
         </h3>
         <div class="dropdown g-mb-10 g-mb-0--md">
-          <span class="d-block g-color-primary--hover g-cursor-pointer g-mr-minus-5 g-pa-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="d-block g-color-primary--hover g-cursor-pointer  g-pa-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="icon-options-vertical g-pos-rel g-top-1"></i>
           </span>
           <div class="dropdown-menu dropdown-menu-right rounded-0 g-mt-10">
             
-            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 1 }}" class="dropdown-item g-px-10">
-              <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 g-mr-5">good</i> 每页 1 条
+            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 1 }}" class="dropdown-item ">
+              <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 ">good</i> 每页 1 条
             </router-link>
-            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 5 }}" class="dropdown-item g-px-10">
-              <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 每页 5 条
+            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 5 }}" class="dropdown-item ">
+              <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 "></i> 每页 5 条
             </router-link>
-            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 10 }}" class="dropdown-item g-px-10">
-              <i class="icon-wallet g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 每页 10 条
+            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 10 }}" class="dropdown-item ">
+              <i class="icon-wallet g-font-size-12 g-color-gray-dark-v5 "></i> 每页 10 条
             </router-link>
             
             <div class="dropdown-divider"></div>
             
-            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 20 }}" class="dropdown-item g-px-10">
-              <i class="icon-fire g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 每页 20 条
+            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 20 }}" class="dropdown-item">
+              <i class="icon-fire g-font-size-12 g-color-gray-dark-v5 "></i> 每页 20 条
             </router-link>
             
           </div>
@@ -36,7 +36,7 @@
       <!-- <p> {{messages}}</p> -->
 
       <!-- Panel Body -->
-      <div class="d-flex justify-content-start g-brd-around g-brd-gray-light-v4 g-brd-left-1 g-pa-20 g-mb-10"
+      <div class="d-flex justify-content-center "
         v-for="(message, index) in messages.items" v-bind:key="index">
         <div class="g-mt-2">
           <!-- <router-link v-bind:to="{ path: `/user/${message.sender.id}` }">
@@ -50,7 +50,7 @@
             <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
           </router-link> -->
         </div>
-          <div class="align-self-center g-px-10">
+          <div class="align-self-center">
           <!-- <p class="m-0">Task Name</p> -->
           <!-- <p class="m-0">{{ message.task_name }}</p> -->
           <p class="m-0">Task Name: {{ message.task_name }}</p>
@@ -77,7 +77,7 @@
         </div>
         <div class="align-self-center ml-auto">
           <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id } }">
-            <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Details</button>
+            <button class="btn btn-block u-btn-outline-primary g-rounded-20 ">Details</button>
           </router-link>
         </div>
       </div>

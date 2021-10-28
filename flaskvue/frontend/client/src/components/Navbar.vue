@@ -1,93 +1,60 @@
 <template>
 <section>
-  
-  
-  <!-- revise -->
+  <template>
   <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
-      <div class="navbar-brand">
-      <router-link to="/" class="g-text-underline--none--hover">
-        <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          Apollo 
-      </router-link>
-      </div>
+    <div class="row ">
+        <!-- <div class="col-3 order-0" id="sticky-sidebar"> -->
+          <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
+            <div class="sticky-top">
+                <div class="nav flex-column">
+                    <div class="navbar-brand">
+                      <router-link to="/" class="g-text-underline--none--hover">
+                        <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                          Apollo 
+                      </router-link>
+                    </div>
+                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+                      <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link" ><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Request Help </router-link>
+                    </li>
+                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+                      <router-link v-bind:to="{ path: '/plist' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Pending <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+                    </li>
+                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+                      <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> History <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+                    </li>
+                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+                      <router-link v-bind:to="{ name: 'SettingProfile' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Settings</router-link>
+                    </li>
+                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+                        <a v-on:click="handlerLogout" class="nav-link" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
+                    </li>
 
-      <!-- <div class="content">
-        <Home :log="log"></Home>
-      </div> -->
-
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <!-- <li class="nav-item">
-            <router-link to="/" class="nav-link">Home <span class="sr-only">(current)</span></router-link>
-          </li> -->
-          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-            <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Call For Help </router-link>
-          </li>
-          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-            <router-link v-bind:to="{ path: '/plist' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Pending <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
-          </li>
-          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-            <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> History <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
-          </li>
-          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-            <router-link v-bind:to="{ name: 'SettingProfile' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Settings</router-link>
-          </li>
-          <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-              <a v-on:click="handlerLogout" class="nav-link" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
-          </li>
-          <li class="nav-item">
-            <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
-          </li>
-          <!-- <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
-          <label for="not_receive">Not Respond</label>
-          <br>
-          <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
-          <label for="receive">Respond</label>
-          <br> -->
-          <!-- <span>Picked: {{ picked }}</span> -->
-
-        </ul>
+                    
+                    <li v-else class="nav-item">
+                      <router-link to="/login" class="nav-link"><i class="icon-login g-pos-rel g-top-1 g-mr-5"></i> Sign in</router-link>
+                    </li>
+                  
 
 
-        
+                    <li class="nav-item">
+                      <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
+                    </li>                    
+                    <!-- <a href="#_" class="nav-link">Link</a> -->
+                </div>
+            </div>
+          </nav>
+        <!-- </div> -->
+        <!-- <div class="col" id="main">
+            <h1>Main Area</h1>
+            <p>Chambray sustainable roof party. Shoreditch vegan artisan Helvetica. Tattooed Codeply <br/> Echo Park Godard kogi, next level irony ennui twee squid fap selvage. Meggings flannel Brooklyn literally small batch, mumblecore PBR try-hard kale chips. Brooklyn vinyl lumbersexual bicycle rights, viral fap cronut leggings squid chillwave pickled gentrify mustache. 3 wolf moon hashtag church-key Odd Future. Austin messenger bag normcore, Helvetica Williamsburg sartorial tote bag distillery Portland before they sold out gastropub taxidermy Vice.</p>
+            <p>3 wolf moon retro jean shorts chambray sustainable roof party. Shoreditch <br/>vegan artisan Helvetica. Tattooed Codeply Echo Park Godard kogi, next level irony ennui twee squid fap selvage. Meggings flannel<br/> Brooklyn literally small batch, mumblecore PBR try-hard kale chips. Brooklyn vinyl lumbersexual bicycle rights, viral fap cronut leggings squid chillwave pickled gentrify mustache. 3 wolf moon hashtag church-key Odd Future. Austin messenger bag normcore, Helvetica Williamsburg sartorial tote bag distillery Portland before they sold out gastropub taxidermy Vice.</p>
+        </div> -->
+    </div>
+</div>
+</template>
+  
+  
 
-        
-
-        <ul v-if="sharedState.is_authenticated" class="nav navbar-nav navbar-right">
-          
-          
-           
-
-          <!-- <li class="nav-item g-mr-20">
-            <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Send to B</router-link>
-          </li> -->
-          <!-- <div v-if="sponsor_request_show">
-            <input type="file" name="csvfile" ref="csvData" />
-            <input type="button" @click="sponsor_csv()" value="JS转换"/>
-          </div> -->
-
-          <div v-if="unread_request_show">
-            <input type="file" name="csvfile" ref="csvData" />
-            <input type="button" @click="assistor_csv()" value="JS转换"/>
-          </div>
-
-          
-
-          
-        </ul>
-        <!-- <ul v-else class="nav navbar-nav navbar-right">          
-          <li class="nav-item">
-            <router-link to="/login" class="nav-link"><i class="icon-login g-pos-rel g-top-1 g-mr-5"></i> Sign in</router-link>
-          </li>
-        </ul> -->
-      </div>
-    </nav>
-  </div>
 </section>
 </template>
 
@@ -1525,6 +1492,8 @@ export default {
             try{
               let test_make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
+
+                
             }catch(err){
               console.log(err)
             }
@@ -2186,3 +2155,19 @@ export default {
  }
 // exports.default = Navbar
 </script>
+
+<style scoped>
+  /* .container {
+    height: 750px;
+  }
+  .icon-div {
+    width: 49%;
+    display: inline-block;
+  }
+  .icon-div .fa {
+    cursor: pointer;
+  } */
+  a{
+    color: rgb(118, 122, 118) !important
+  }
+</style>

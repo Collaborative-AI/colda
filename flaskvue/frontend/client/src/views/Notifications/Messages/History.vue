@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 历史私信列表 -->
-  <div class="card border-0 g-mb-15">
+  <div class="card border-0 g-mb-15 my-5">
     <!-- Panel Header -->
     <!-- <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
       <h3 class="h6 mb-0">

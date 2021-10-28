@@ -46,7 +46,7 @@
       <!-- End 左边菜单栏 -->
 
       <!-- 右边子路由匹配后，显示对应的组件 -->
-      <div class="col-lg-9 g-mb-50">
+      <div class="col-lg-9">
 
         <router-view></router-view>
 

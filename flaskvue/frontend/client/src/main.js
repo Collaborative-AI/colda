@@ -13,6 +13,27 @@ import 'bootstrap'
 import './assets/bootstrap-markdown/css/bootstrap-markdown.min.css'
 import './assets/bootstrap-markdown/css/custom.css'
 import './assets/icon-awesome/css/font-awesome.min.css'
+
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+Vue.use(BootstrapVue)
+
+// import mdbvue from 'mdbvue'
+// Vue.use(mdbvue)
+
+
+import VueDashboard from 'vue-dashboard-vd'
+// import 'vue-dashboard-vd/dist/vue-dashboard-vd.css'
+Vue.use(VueDashboard);
+import HeaderItems from './components/HeaderItems.vue'
+import SidebarHeader from './components/SidebarHeader.vue'
+import SidebarItems from './components/SidebarItems.vue'
+
+Vue.component('header-items', HeaderItems)
+Vue.component('sidebar-items', SidebarItems)
+Vue.component('sidebar-header', SidebarHeader)
+
 const node_path = window.require('path');
 
 console.log(" this.exe_position",  node_path.resolve("./resources/dist/run/run.exe"))

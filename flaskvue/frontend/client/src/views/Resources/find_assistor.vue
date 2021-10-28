@@ -1,3 +1,6 @@
+
+
+
 <template>
   <div class="container g-pt-20">
     <div class="form-group">
@@ -13,7 +16,7 @@
     <div class="form-group">
       <label for="name">Select File</label>
       <input type="text" v-model="train_file_path" class="form-control" id="name" placeholder="">
-      <button @click="get_train_file_path()">Select File</button>
+      <button class="btn btn-success" @click="get_train_file_path()">Select File</button>
     </div>
 
     <div class="form-group">
@@ -49,7 +52,8 @@
       <button @click="get_train_target_path()">Select Target File</button>
     </div> -->
 
-    <button type="submit" @click="onSubmit()" class="btn btn-primary">Start Finding Assistors</button>
+    <button type="submit" @click="onSubmit()" class="btn btn-success">Start Finding Assistors</button>
+    <!-- <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button> -->
   </div>
 </template>
 

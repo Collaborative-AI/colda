@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="card border-0 g-mb-15">
+  <div class="container my-5">
+    <div class="card border-0 g-mb-15 my-5" >
       <div class="d-flex justify-content-start g-brd-around g-brd-gray-light-v4 g-brd-left-1 g-pa-20 g-mb-10"
         v-for="(pend, index) in pending" v-bind:key="index">
         <div class="align-self-center g-px-10">
@@ -78,3 +78,4 @@ created () {
 }
 // exports.default = Home
 </script>
+

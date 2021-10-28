@@ -1,3 +1,280 @@
+<template>
+  <div class="container">
+    <alert 
+      v-for="(alert, index) in alerts" :key="index"
+      v-bind:variant="alert.variant"
+      v-bind:message="alert.message">
+    </alert>
+
+    <!-- <ul class="content">
+       <li v-for="(msg, index) in $store.state.msg" :key="index">
+         {{ msg }}
+       </li>
+    </ul> -->
+
+
+    <button type="button" class="btn btn-success">HomePage</button>
+  </div>
+</template>
+
+<script>
+import Alert from '../components/Alert.vue'
+// const Alert = require('../components/Alert.vue').default
+import store from '../store'//xie
+
+export default {
+  name: 'Home',  // Name of the component
+  // props: ['log'],
+  components: {
+    alert: Alert
+  },
+  data () {
+    return {
+      alerts: [
+        {
+          variant: 'info',
+          message: 'Hi'
+        },
+        {
+          variant: 'danger',
+          message: 'Oops..'
+        },
+        {
+          variant: 'success',
+          message: 'OK'
+        }
+      ],
+    }
+  },
+  beforeCreate() {
+        if (!store.state.is_authenticated) {
+            this.$router.push({ name: 'Login' })
+            // you could, of course, also use the router to actually go to a 404 page if you wanted.
+        }
+    }
+}
+// exports.default = Home
+</script>
+
+!!!!!!!!!!
+<template>
+  <b-container fluid>
+    <b-row class="my-1" v-for="type in types" :key="type">
+      <b-col sm="3">
+        <label :for="`type-${type}`">Type <code>{{ type }}</code>:</label>
+      </b-col>
+      <b-col sm="9">
+        <b-form-input :id="`type-${type}`" :type="type"></b-form-input>
+      </b-col>
+    </b-row>
+  </b-container>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        types: [
+          'text',
+          'number',
+          'email',
+          'password',
+          'search',
+          'url',
+          'tel',
+          'date',
+          'time',
+          'range',
+          'color'
+        ]
+      }
+    }
+  }
+</script>
+!!!!!!!!!!
+
+<!-- revise -->
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
+    <div class="navbar-brand">
+    <router-link to="/" class="g-text-underline--none--hover">
+      <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        Apollo 
+    </router-link>
+    </div>
+
+    <!-- <div class="content">
+      <Home :log="log"></Home>
+    </div> -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <!-- <li class="nav-item">
+          <router-link to="/" class="nav-link">Home <span class="sr-only">(current)</span></router-link>
+        </li> -->
+        <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+          <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Call For Help </router-link>
+        </li>
+        <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+          <router-link v-bind:to="{ path: '/plist' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Pending <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+        </li>
+        <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+          <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> History <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+        </li>
+        <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+          <router-link v-bind:to="{ name: 'SettingProfile' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Settings</router-link>
+        </li>
+        <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
+            <a v-on:click="handlerLogout" class="nav-link" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
+        </li>
+        <li class="nav-item">
+          <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
+        </li>
+        <!-- <input type="radio" id="not_receive" value="not_receive" v-model="picked" v-on:change="not_receive()">
+        <label for="not_receive">Not Respond</label>
+        <br>
+        <input type="radio" id="receive" value="receive" v-model="picked" v-on:change="receive()">
+        <label for="receive">Respond</label>
+        <br> -->
+        <!-- <span>Picked: {{ picked }}</span> -->
+
+      </ul>
+
+
+      
+
+      
+
+      <ul v-if="sharedState.is_authenticated" class="nav navbar-nav navbar-right">
+        
+        
+         
+
+        <!-- <li class="nav-item g-mr-20">
+          <router-link v-bind:to="{ name: 'MessagesHistoryResource', query: { from: 5 } }" class="nav-link">Send to B</router-link>
+        </li> -->
+        <!-- <div v-if="sponsor_request_show">
+          <input type="file" name="csvfile" ref="csvData" />
+          <input type="button" @click="sponsor_csv()" value="JS转换"/>
+        </div> -->
+
+        <div v-if="unread_request_show">
+          <input type="file" name="csvfile" ref="csvData" />
+          <input type="button" @click="assistor_csv()" value="JS转换"/>
+        </div>
+
+        
+
+        
+      </ul>
+      <!-- <ul v-else class="nav navbar-nav navbar-right">          
+        <li class="nav-item">
+          <router-link to="/login" class="nav-link"><i class="icon-login g-pos-rel g-top-1 g-mr-5"></i> Sign in</router-link>
+        </li>
+      </ul> -->
+    </div>
+  </nav>
+</div>
+
+
+
+
+
+
+!!!!!!!!!!!!!!!!
+<template>
+  <div class="container">
+    <div class="card border-0 g-mb-15">
+      <div class="d-flex justify-content-start g-brd-around g-brd-gray-light-v4 g-brd-left-1 g-pa-20 g-mb-10"
+        v-for="(pend, index) in pending" v-bind:key="index">
+        <div class="align-self-center g-px-10">
+          <p class="m-0">Task Name: {{ pend.task_name }}</p>
+          <p class="m-0">Task ID:  {{ pend.task_id }} </p>
+          <br>
+        </div>
+        <div class="align-self-center ml-auto">
+          <router-link v-bind:to="{ name: 'PendItem', params: { task_id: pend.task_id } }">
+            <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Details</button>
+          </router-link>
+        </div>
+        
+      </div>
+
+    <!-- {{pending}} -->
+    <!-- {{sharedState.pending}} -->
+    <!-- <button type="submit" @click="shan()" class="btn btn-primary">delete</button> -->
+    </div>
+  </div>
+</template>
+
+<script>
+import store from '../../../store.js'
+import db from '../../../db'
+// import penditem from "../Penditem.vue"
+
+export default {
+  name: 'Plist',  // Name of the component
+  // props: ['log'],
+  
+  data () {
+    return {
+      sharedState: store.state,
+      pending: "",
+    }
+  },
+
+  methods: {
+    shan() {
+      this.sharedState.receive_request = 'not_receive'
+      // this.sharedState.pending.a='apple'
+      // this.sharedState.pending.b='big'
+    //   this.sharedState.pending.push({
+    //     a: 'add',
+    //     b: 'bust'
+    // })
+      // this.sharedState.pending.splice(0, 1);
+      this.sharedState.pending.pop()
+    //   console.log(this.sharedState.pending)
+    },
+  },
+
+created () {
+    
+    // this.getUserMessagesSenders(this.sharedState.user_id)
+    let select_sentence = 'SELECT * FROM User_Pending_Page WHERE user_id=?';
+    let vm=this;
+            db.all(select_sentence, [this.sharedState.user_id], function(err, row){
+            if (err){ 
+              console.log(err);
+            }
+            else{
+              console.log(row)
+              vm.pending=row
+              console.log(vm.pending)
+            }
+        
+            })//end db.get
+  },
+  
+
+
+  
+}
+// exports.default = Home
+</script>
+
+
+
+
+
+
+
+
+!!!!!!!
 "devDependencies": {
     "@vue/cli": "^4.5.13",
     "@vue/cli-plugin-router": "~4.5.0",

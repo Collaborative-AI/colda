@@ -3,8 +3,10 @@
     <div>Task Name: {{pending.task_name}}</div>
     <div>Task Id:{{pending.task_id}}</div>
     <div>Task Description: {{pending.task_description}}</div>
-    <button @click="unread_request()" class="btn btn-primary">Accept</button>
-    <button class="btn btn-primary" @click="delete_record">Reject</button>
+    <br>
+    <button @click="unread_request()" class="btn btn-success">Accept</button>
+    &nbsp;&nbsp;&nbsp;
+    <button class="btn btn-success" @click="delete_record">Reject</button>
   </div>
 </template>
 

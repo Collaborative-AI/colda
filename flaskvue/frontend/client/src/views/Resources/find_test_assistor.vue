@@ -3,7 +3,7 @@
      <div class="form-group">
       <label for="name">Select Data File</label>
       <input type="text" v-model="test_file_path" class="form-control" id="name" placeholder="">
-      <button @click="get_test_data_path()">Select File</button>
+      <button @click="get_test_data_path()" class="btn btn-success">Select File</button>
     </div>
 
     <div class="form-group">

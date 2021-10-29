@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Public profile</h1>
+    <!-- <h1>Setting</h1> -->
     <!-- <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="name">Real Name</label>

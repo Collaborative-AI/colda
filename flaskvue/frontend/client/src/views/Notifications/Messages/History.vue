@@ -2,55 +2,16 @@
 <div>
   <!-- 历史私信列表 -->
   <div class="card border-0 g-mb-15 my-5">
-    <!-- Panel Header -->
-    <!-- <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
-      <h3 class="h6 mb-0">
-        <i class="icon-bubbles g-pos-rel g-top-1 g-mr-5"></i> 与 <router-link v-bind:to="{ path: `/user/${user.id}` }" class="g-text-underline--none--hover">{{ user.name || user.username }}</router-link> 的对话 <small v-if="messages">(共 {{ messages._meta.total_items }} 条, {{ messages._meta.total_pages }} 页)</small>
-      </h3>
-      <div class="dropdown g-mb-10 g-mb-0--md">
-        <span class="d-block g-color-primary--hover g-cursor-pointer g-mr-minus-5 g-pa-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="icon-options-vertical g-pos-rel g-top-1"></i>
-        </span>
-        <div class="dropdown-menu dropdown-menu-right rounded-0 g-mt-10">
-          
-          <router-link v-bind:to="{ name: 'MessagesIndex' }" class="dropdown-item g-px-10">
-            <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 返回私信列表
-          </router-link>
-
-          <div class="dropdown-divider"></div>
-
-          <router-link v-bind:to="{ path: $route.fullPath, query: { page: 1, per_page: 1 }}" class="dropdown-item g-px-10">
-            <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 每页 1 条
-          </router-link>
-          <router-link v-bind:to="{ path: $route.fullPath, query: { page: 1, per_page: 5 }}" class="dropdown-item g-px-10">
-            <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 每页 5 条
-          </router-link>
-          <router-link v-bind:to="{ path: $route.fullPath, query: { page: 1, per_page: 10 }}" class="dropdown-item g-px-10">
-            <i class="icon-wallet g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 每页 10 条
-          </router-link>          
-          <router-link v-bind:to="{ path: $route.fullPath, query: { page: 1, per_page: 20 }}" class="dropdown-item g-px-10">
-            <i class="icon-fire g-font-size-12 g-color-gray-dark-v5 g-mr-5"></i> 每页 20 条
-          </router-link>
-          
-        </div>
-      </div>
-    </div> -->
+    
     <!-- End Panel Header -->
     <div class="form-group">
       <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
-      <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button>
-    </router-link>
+        <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button>
+      </router-link>
                 
     </div>
 
 
-    <!-- <div >
-    <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
-      <button v-show="isSponsor">Call For Test</button>
-    </router-link>
-
-    <button @click="getLog()">Refresh Log</button>
-  </div> -->
 
     <!-- Panel Body -->
     <div class="card-block g-pa-0" >
@@ -60,88 +21,19 @@
           <!-- Chat. Message Area. Message (From). -->
           <section class="g-mb-30">
             <div class="media g-mb-12">
-              <!-- Chat. Message Area. Message. Avatar. -->
-              <!-- <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="d-flex align-self-end g-mr-12">
-                <span v-if="message.is_new" class="d-inline-block g-pos-rel">
-                  <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span>
-                  <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
-                  <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
-                </span>
-                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
-                <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username">
-              </router-link> -->
-              <!-- End Chat. Message Area. Message. Avatar. -->
-
-              <!-- Chat. Message Area. Message. Body. -->
+              
               <div class="media-body">
                 <div class="d-inline-block g-width-300 g-width-auto--sm g-bg-gray-light-v8 g-font-size-12 g-font-size-default--lg g-color-gray-dark-v6 g-rounded-10 g-pa-10-15">
                   <p class="mb-0">
                     {{ message }}
-                    <!-- vue-markdown 开始解析markdown，它是子组件，通过 props 给它传值即可
-                    v-highlight 是自定义指令，用 highlight.js 语法高亮 -->
-                    <!-- <vue-markdown
-                      :source="message.body"
-                      class="markdown-body"
-                      v-highlight>
-                    </vue-markdown> -->
                   </p>
                 </div>
               </div>
               <!-- End Chat. Message Area. Message. Body. -->
             </div>
 
-            <!-- Chat. Message Area. Message Time -->
-            <!-- <em class="d-flex align-self-center align-items-center g-font-style-normal g-color-gray-light-v1 g-ml-50">
-              <i class="hs-admin-time icon-clock g-mr-5"></i>
-              <small>{{ $moment(message.timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</small>
-              <i v-if="!message.is_new" class="icon-check g-font-size-10 g-color-lightblue-v3 g-ml-12"></i>
-            </em> -->
-            <!-- End Chat. Message Area. Message Time -->
           </section>
-          <!-- End Chat. Message Area. Message (From). -->
 
-          <!-- Chat. Message Area. Message (To). -->
-          <!-- <section v-else class="g-mb-30"> -->
-            <!-- <div class="media g-mb-12"> -->
-              <!-- Chat. Message Area. Message. Body. -->
-              <!-- <div class="ml-auto"> -->
-                <!-- <div class="d-inline-block g-width-300 g-width-auto--sm g-bg-lightblue-v6 g-font-size-12 g-font-size-default--lg g-color-gray-dark-v6 g-rounded-10 g-pa-10-15"> -->
-                  <!-- <p class="mb-0"> -->
-                    <!-- {{ message.body }} -->
-                    <!-- vue-markdown 开始解析markdown，它是子组件，通过 props 给它传值即可
-                    v-highlight 是自定义指令，用 highlight.js 语法高亮 -->
-                    <!-- <vue-markdown
-                      :source="message.body"
-                      class="markdown-body"
-                      v-highlight>
-                    </vue-markdown> -->
-                  <!-- </p> -->
-                <!-- </div> -->
-              <!-- </div> -->
-              <!-- End Chat. Message Area. Message. Body. -->
-
-              <!-- Chat. Message Area. Message. Avatar. -->
-              <!-- <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="d-flex align-self-end g-ml-12"> -->
-                <!-- <span v-if="message.is_new" class="d-inline-block g-pos-rel"> -->
-                  <!-- <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span> -->
-                  <!-- <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username"> -->
-                  <!-- <img class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username"> -->
-                <!-- </span> -->
-                <!-- <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username"> -->
-                <!-- <img v-else class="rounded-circle g-width-36 g-height-36 g-brd-around g-brd-gray-light-v4 g-pa-2" src="../../../assets/logo.png" v-bind:alt="message.sender.name || message.sender.username"> -->
-              <!-- </router-link> -->
-              <!-- End Chat. Message Area. Message. Avatar. -->
-            <!-- </div> -->
-
-            <!-- Chat. Message Area. Message Time -->
-            <!-- <em class="d-flex align-self-center align-items-center justify-content-end g-font-style-normal g-color-gray-light-v1"> -->
-              <!-- <i class="hs-admin-time icon-clock g-mr-5"></i> -->
-              <!-- <small>{{ $moment(message.timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</small> -->
-              <!-- <i v-if="!message.is_new" class="icon-check g-font-size-10 g-color-lightblue-v3 g-ml-12"></i> -->
-            <!-- </em> -->
-            <!-- End Chat. Message Area. Message Time -->
-          <!-- </section> -->
-          <!-- End Chat. Message Area. Message (To). -->
         </div>
         
       </div>
@@ -150,43 +42,6 @@
     <!-- End Panel Body -->
   </div>
 
-  <!-- Pagination #04 -->
-  <!-- <div v-if="messages">
-    <pagination
-      v-bind:cur-page="messages._meta.page"
-      v-bind:per-page="messages._meta.per_page"
-      v-bind:total-pages="messages._meta.total_pages">
-    </pagination>
-  </div> -->
-  <!-- End Pagination #04 -->
-
-  <!-- Reply Message Form -->
-  <!-- <form v-if="showOnce" id="replyMessageForm" @submit.prevent="onSubmitReply" @reset.prevent="onResetReply" class="g-mb-40"> -->
-    <!-- <div class="form-group"> -->
-      <!-- <input type="text" v-model="typein_message" placeholder="Type in message"> -->
-      <!-- <textarea v-model="replyMessageForm.body" class="form-control" id="replyMessageFormBody" rows="5" placeholder=" 悄悄话..."></textarea>
-      <small class="form-control-feedback" v-show="replyMessageForm.bodyError">{{ replyMessageForm.bodyError }}</small> -->
-    <!-- </div> -->
-    <!-- <button type="reset" class="btn btn-secondary">Cancel</button> -->
-    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-  <!-- </form> -->
-
-
-  <!-- <div >
-    <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
-      <button v-show="isSponsor" class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Call For Test</button>
-    </router-link>
-
-    <button @click="stop_train_task()">Stop Train Task</button>
-    <button @click="getLog()">Refresh Log</button>
-  </div> -->
-
-
-  <!-- <div >
-    <button @click="get_test_history_id( $route.query.from )">Load Test Log</button>
-  </div> -->
-  
-  <!-- End Reply Message Form -->
 </div>
 </template>
 
@@ -413,3 +268,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .card-block {
+    overflow: auto;
+}
+</style>

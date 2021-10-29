@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <div class="container">
+    <navbar> </navbar>
+    <!-- <router-view /> -->
+    <!-- <div class="container">
       <div class="row my-4">
         <navbar class="col-3 order-0 bg-light mr-1" ></navbar> 
         <router-view class="col-8" :style="{ backgroundImage: createBackgroundString }" />
       </div>
-    </div>
+    </div> -->
     <!-- <h1>hello</h1> -->
   </div>
 </template>
 
 <script>
 import Navbar from './components/Navbar'
+// import Navbar from './components/Navbar.vue';
 // const Navbar = require('./components/Navbar.vue').default
 // console.log("Navbar", Navbar)
 
@@ -19,6 +22,7 @@ export default {
   name: 'App',
   components: {
    navbar: Navbar
+    // Navbar
   },
   data() {
       return {

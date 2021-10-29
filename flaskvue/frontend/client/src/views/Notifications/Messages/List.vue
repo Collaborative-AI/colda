@@ -1,94 +1,64 @@
 <template>
+
   <div class="container justify-content-center align-self-center ">
-    <!-- 用户收到的私信列表 -->
-    <div class="card border-0 g-mb-15 my-5 justify-content-center align-self-center ">
-      <!-- Panel Header -->
-      <div class="card-header d-flex align-items-center justify-content-center g-bg-gray-light-v5 border-0 g-mb-15">
-        <h3 class="h6 mb-0">
-          <i class="icon-bubbles g-pos-rel g-top-1 "></i> Participated Tasks <small v-if="messages">(Total: {{ messages._meta.total_items }} tasks, {{ messages._meta.total_pages }} pages)</small>
-        </h3>
-        <div class="dropdown g-mb-10 g-mb-0--md">
-          <span class="d-block g-color-primary--hover g-cursor-pointer  g-pa-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="icon-options-vertical g-pos-rel g-top-1"></i>
-          </span>
-          <div class="dropdown-menu dropdown-menu-right rounded-0 g-mt-10">
-            
-            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 1 }}" class="dropdown-item ">
-              <i class="icon-plus g-font-size-12 g-color-gray-dark-v5 ">good</i> 每页 1 条
-            </router-link>
-            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 5 }}" class="dropdown-item ">
-              <i class="icon-layers g-font-size-12 g-color-gray-dark-v5 "></i> 每页 5 条
-            </router-link>
-            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 10 }}" class="dropdown-item ">
-              <i class="icon-wallet g-font-size-12 g-color-gray-dark-v5 "></i> 每页 10 条
-            </router-link>
-            
-            <div class="dropdown-divider"></div>
-            
-            <router-link v-bind:to="{ path: $route.path, query: { page: 1, per_page: 20 }}" class="dropdown-item">
-              <i class="icon-fire g-font-size-12 g-color-gray-dark-v5 "></i> 每页 20 条
-            </router-link>
-            
-          </div>
+
+<div class="container">
+    <div class="row">
+       
+        <div class="col-lg-9 right">
+         
+            <div class="box shadow-sm rounded bg-white mb-3">
+                <div class="box-title border-bottom p-3">
+                    <h6 class="m-0">Paticipated Tasks <small v-if="messages">(Total: {{ messages._meta.total_items }} tasks, {{ messages._meta.total_pages }} pages)</small></h6>
+                </div>
+                <div class="box-body p-0" v-for="(message, index) in messages.items" v-bind:key="index">
+                    
+                    <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
+                        <!-- <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div> -->
+                        <div class="font-weight-bold mr-3">
+                            <div class="text-truncate">Task Name: {{ message.task_name }}</div>
+                            <div class="small">Task ID:  {{ message.task_id }}</div>
+                            <div class="small">{{ $moment(message.match_id_timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</div>
+
+                            
+                        </div>
+                        <span class="ml-auto mb-auto">
+                            <!-- <div class="btn-group">
+                                <button type="button" class="btn btn-light btn-sm rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="mdi mdi-dots-vertical"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <button class="dropdown-item" type="button"><i class="mdi mdi-delete"></i> Delete</button>
+                                    <button class="dropdown-item" type="button"><i class="mdi mdi-close"></i> Turn Off</button>
+                                </div>
+                            </div> -->
+                            <br />
+                            <div class="text-right text-muted pt-1">
+                              <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id } }">
+                                <button class="btn btn-block u-btn-outline-primary g-rounded-20 ">Details</button>
+                              </router-link>
+                            </div>
+                        </span>
+                    </div>
+                 
+               
+                   
+                    
+                    
+                    
+                </div>
+            </div>
         </div>
-      </div>
-      <!-- End Panel Header -->
-      <!-- <p> {{messages}}</p> -->
-
-      <!-- Panel Body -->
-      <div class="d-flex justify-content-center "
-        v-for="(message, index) in messages.items" v-bind:key="index">
-        <div class="g-mt-2">
-          <!-- <router-link v-bind:to="{ path: `/user/${message.sender.id}` }">
-            <span v-if="message.is_new" class="d-inline-block g-pos-rel">
-              <span class="u-badge-v2--xs u-badge--top-left g-bg-red g-mt-7 g-ml-7"></span>
-              
-              <img class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
-              
-            </span>
-            
-            <img v-else class="g-brd-around g-brd-gray-light-v4 g-pa-2 g-width-50 g-height-50 rounded-circle" v-bind:src="message.sender._links.avatar" v-bind:alt="message.sender.name || message.sender.username">
-          </router-link> -->
-        </div>
-          <div class="align-self-center">
-          <!-- <p class="m-0">Task Name</p> -->
-          <!-- <p class="m-0">{{ message.task_name }}</p> -->
-          <p class="m-0">Task Name: {{ message.task_name }}</p>
-          <p class="m-0">Task ID:  {{ message.task_id }} </p>
-
-          
-          <!-- <h5 class="h5 g-color-gray-dark-v1 mb-0"> -->
-            <!-- <router-link v-bind:to="{ path: `/user/${message.sender.id}` }" class="g-text-underline--none--hover">
-              <span class="g-mr-5">{{ message.sender.name || message.sender.username }}</span>
-            </router-link> -->
-            <!-- <small class="g-font-size-12 g-color-aqua">Task Name: <small v-if="message.task_id" class="g-font-size-12 g-color-deeporange"> {{ message.task_name }} </small></small> -->
-            <!-- <small class="g-font-size-12 g-color-aqua">Task Name: <small v-if="message.task_id" class="g-font-size-12 g-color-deeporange"> {{ message.task_name }} </small></small> -->
-            <!-- <p>Task Name: {{ message.task_name }}</p> -->
-            <!-- <small class="g-font-size-12 g-color-aqua">Task ID: <small v-if="message.task_id" class="g-font-size-12 g-color-deeporange"> {{ message.task_id }} </small></small> -->
-          <!-- </h5> -->
-          
-          <p>{{ $moment(message.match_id_timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</p>
-          <!-- <p class="m-0">{{ message }}</p> -->
-          <!-- <p class="m-0">{{ message.task_name }}</p> -->
-          <!-- <p>Task Name: {{ message.task_name }}</p> -->
-
-          
-          <!-- <p class="m-0">{{ message }}</p> -->
-        </div>
-        <div class="align-self-center ml-auto">
-          <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id } }">
-            <button class="btn btn-block u-btn-outline-primary g-rounded-20 ">Details</button>
-          </router-link>
-        </div>
-      </div>
-      <!-- End Panel Body -->
-
-
-      
-
     </div>
+</div>
+
+
+
+
+
   
     <!-- Pagination #04 -->
+
     <div v-if="messages">
       <pagination
         v-bind:cur-page="messages._meta.page"
@@ -96,6 +66,7 @@
         v-bind:total-pages="messages._meta.total_pages">
       </pagination>
     </div>
+
     <!-- End Pagination #04 -->
   </div>
 </template>

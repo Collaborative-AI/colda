@@ -25,7 +25,7 @@
           <hr class="g-brd-gray-light-v4 g-my-30">
 
           <!-- Profile Settings List -->
-          <ul class="list-unstyled mb-0">
+          <!-- <ul class="list-unstyled mb-0">
             <li class="g-pb-3">
               <router-link v-bind:to="{ name: 'SettingProfile' }" v-bind:active-class="'active g-color-primary--active g-bg-gray-light-v5--active'" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3">
                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i class="icon-media-112 u-line-icon-pro"></i></span>
@@ -50,7 +50,7 @@
                 Notification
               </router-link>
             </li>
-          </ul>
+          </ul> -->
           <!-- End Profile Settings List -->
         </aside>
       </div>

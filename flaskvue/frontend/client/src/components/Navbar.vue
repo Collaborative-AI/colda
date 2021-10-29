@@ -1,61 +1,76 @@
 <template>
-<section>
-  <template>
-  <div class="container">
-    <div class="row ">
-        <!-- <div class="col-3 order-0" id="sticky-sidebar"> -->
-          <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
-            <div class="sticky-top">
-                <div class="nav flex-column">
-                    <div class="navbar-brand">
-                      <router-link to="/" class="g-text-underline--none--hover">
-                        <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                          Apollo 
-                      </router-link>
-                    </div>
-                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-                      <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link" ><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Request Help </router-link>
-                    </li>
-                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-                      <router-link v-bind:to="{ path: '/plist' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Pending <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
-                    </li>
-                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-                      <router-link v-bind:to="{ path: '/notifications' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> History <span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
-                    </li>
-                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-                      <router-link v-bind:to="{ name: 'SettingProfile' }" class="nav-link"><i class="icon-education-033 u-line-icon-pro g-color-red g-font-size-16 g-pos-rel g-top-2 g-mr-3"></i> Settings</router-link>
-                    </li>
-                    <li v-if="sharedState.is_authenticated" class="nav-item g-mr-20">
-                        <a v-on:click="handlerLogout" class="nav-link" href="#"><i class="icon-logout g-pos-rel g-top-1 g-mr-5"></i> Sign out</a>
-                    </li>
+  <div class="container-fluid">
+    <div class="row min-vh-100 flex-column flex-md-row">
+        <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1">
+            <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2">
+                <div class="collapse navbar-collapse ">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
 
-                    
-                    <li v-else class="nav-item">
-                      <router-link to="/login" class="nav-link"><i class="icon-login g-pos-rel g-top-1 g-mr-5"></i> Sign in</router-link>
-                    </li>
-                  
+                        <router-link to="/" class="g-text-underline--none--hover">
+                          <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                            
+                        </router-link>
+                        <li v-if="sharedState.is_authenticated" class="nav-item">
+                          <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link" >Request</router-link>
+                        </li>
+                        <li v-if="sharedState.is_authenticated" class="nav-item">
+                          <router-link v-bind:to="{ path: '/plist' }" class="nav-link">Pend<span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+                        </li>
+                        <li v-if="sharedState.is_authenticated" class="nav-item">
+                          <router-link v-bind:to="{ path: '/notifications' }" class="nav-link">History<span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+                        </li>
+                        <li v-if="sharedState.is_authenticated" class="nav-item">
+                          <router-link v-bind:to="{ name: 'SettingProfile' }" class="nav-link">Setting</router-link>
+                        </li>
+                        <li v-if="sharedState.is_authenticated" class="nav-item">
+                            <a v-on:click="handlerLogout" class="nav-link" href="#">Logout</a>
+                        </li>
 
-
-                    <li class="nav-item">
-                      <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
-                    </li>                    
-                    <!-- <a href="#_" class="nav-link">Link</a> -->
+                        <li v-else class="nav-item">
+                          <router-link to="/login" class="nav-link">Login</router-link>
+                        </li>
+                      
+                        <li class="nav-item">
+                          <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
+                        </li>                    
+                        <!-- <li class="nav-item">
+                            <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Brand</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="#"><i class="fa fa-book fa-fw"></i> <span class="d-none d-md-inline">Link</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="#"><i class="fa fa-cog fa-fw"></i> <span class="d-none d-md-inline">Link</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="#"><i class="fa fa-heart codeply fa-fw"></i> <span class="d-none d-md-inline">Codeply</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="#"><i class="fa fa-star codeply fa-fw"></i> <span class="d-none d-md-inline">Link</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="#"><i class="fa fa-star fa-fw"></i> <span class="d-none d-md-inline">Link</span></a>
+                        </li> -->
+                    </ul>
                 </div>
-            </div>
-          </nav>
-        <!-- </div> -->
-        <!-- <div class="col" id="main">
-            <h1>Main Area</h1>
-            <p>Chambray sustainable roof party. Shoreditch vegan artisan Helvetica. Tattooed Codeply <br/> Echo Park Godard kogi, next level irony ennui twee squid fap selvage. Meggings flannel Brooklyn literally small batch, mumblecore PBR try-hard kale chips. Brooklyn vinyl lumbersexual bicycle rights, viral fap cronut leggings squid chillwave pickled gentrify mustache. 3 wolf moon hashtag church-key Odd Future. Austin messenger bag normcore, Helvetica Williamsburg sartorial tote bag distillery Portland before they sold out gastropub taxidermy Vice.</p>
-            <p>3 wolf moon retro jean shorts chambray sustainable roof party. Shoreditch <br/>vegan artisan Helvetica. Tattooed Codeply Echo Park Godard kogi, next level irony ennui twee squid fap selvage. Meggings flannel<br/> Brooklyn literally small batch, mumblecore PBR try-hard kale chips. Brooklyn vinyl lumbersexual bicycle rights, viral fap cronut leggings squid chillwave pickled gentrify mustache. 3 wolf moon hashtag church-key Odd Future. Austin messenger bag normcore, Helvetica Williamsburg sartorial tote bag distillery Portland before they sold out gastropub taxidermy Vice.</p>
-        </div> -->
+            </nav>
+        </aside>
+        <main class="col bg-faded py-3 flex-grow-1">
+            <!-- <h2>Example</h2>
+            <p>
+                This is a Bootstrap 4 example layout that includes a Sidebar menu. On larger screen widths, the Sidebar is on the 
+                left side and consumes the entire page height. It's vertically positioned down the screen. On smaller screen widths (like mobile phones and tablets), the Sidebar
+                moves to the top of the page, and becomes horizontally positioned across the page like a Navbar. Only icons are shown
+                on mobile to limit use of screen real estate.
+            </p> 
+            <p>
+                This Sidebar works using only Bootstrap CSS classes and doesn't require JavaScript. It utilizes the responsive Navbar classes
+                to auto-magically switch the Sidebar orientation.
+            </p>  -->
+            <router-view />
+        </main>
     </div>
 </div>
-</template>
-  
-  
-
-</section>
 </template>
 
 <script>

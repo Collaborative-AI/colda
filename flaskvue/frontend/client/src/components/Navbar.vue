@@ -545,25 +545,25 @@ export default {
             // Read Files
             let all_residual_data = [];
             let assistor_random_id_list = [];
-
-            // for (let i = 0; i < make_residual_multiple_paths.length; i++){
+            residual_paths = make_residual_multiple_paths[2].split("?")
+            for (let i = 0; i < residual_paths.length; i++){
 
               let data = null;
               try{
                 // data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
-                data = fs.readFileSync(make_residual_multiple_paths[2], {encoding:'utf8', flag:'r'});
+                data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
               }catch(err){
                 console.log(err)
               }
               all_residual_data.push(data);
 
               // let cur_path = make_residual_multiple_paths[i]
-              let cur_path = make_residual_multiple_paths[2]
+              let cur_path = residual_paths[i]
               let path_split = cur_path.split(node_path.sep);
               let assistor_random_id = path_split[path_split.length-1].split(".")[0];
               assistor_random_id_list.push(assistor_random_id);
               
-            // }
+            }
 
             console.log("assistor_random_id_list", assistor_random_id_list)
             const send_situation_payload = {

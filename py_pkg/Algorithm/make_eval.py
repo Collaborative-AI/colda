@@ -1,16 +1,16 @@
 import numpy as np
 import os
-from utils import log, parse_idx
+from algo_utils import log, parse_idx
 
 
-def make_eval(args):
-    root = args['root']
-    self_id = args['self_id']
-    task_id = args['task_id']
-    test_id = args['test_id']
-    round = args['round']
-    dataset_path = args['dataset_path']
-    target_idx = args['target_idx']
+def make_eval(root, self_id, task_id, test_id, round, dataset_path, target_idx):
+    # root = args['root']
+    # self_id = args['self_id']
+    # task_id = args['task_id']
+    # test_id = args['test_id']
+    # round = args['round']
+    # dataset_path = args['dataset_path']
+    # target_idx = args['target_idx']
     task_path = os.path.join(root, self_id, 'task', task_id)
     result = np.genfromtxt(os.path.join(task_path, 'train', 'round', '0', 'init.csv'), delimiter=',')
     result = result.reshape(-1)
@@ -49,5 +49,4 @@ def make_eval(args):
             msg = 'Test Round: {}, RMSE: {}'.format(i, loss)
             log(msg, root, self_id, task_id, test_id)
     result_path = '?'.join(result_path)
-    print('200?make_eval?{}'.format(result_path), end='')
-    return
+    return '200?make_eval?{}'.format(result_path)

@@ -1,17 +1,17 @@
 import numpy as np
 import os
 from sklearn.linear_model import LinearRegression
-from utils import save, makedir_exist_ok, parse_idx
+from algo_utils import save, makedir_exist_ok, parse_idx
 
 
-def make_train(args):
-    root = args['root']
-    self_id = args['self_id']
-    task_id = args['task_id']
-    from_id = args['from_id']
-    round = args['round']
-    dataset_path = args['dataset_path']
-    data_idx = args['data_idx']
+def make_train(root, self_id, task_id, from_id, round, dataset_path, data_idx):
+    # root = args['root']
+    # self_id = args['self_id']
+    # task_id = args['task_id']
+    # from_id = args['from_id']
+    # round = args['round']
+    # dataset_path = args['dataset_path']
+    # data_idx = args['data_idx']
     dataset = np.genfromtxt(dataset_path, delimiter=',')
     data_idx = parse_idx(data_idx)
     data = dataset[:, data_idx]
@@ -31,5 +31,4 @@ def make_train(args):
     makedir_exist_ok(output_path)
     output_path = os.path.join(output_path, '{}.csv'.format(self_id))
     np.savetxt(output_path, output, delimiter=",")
-    print('200?make_train?{}'.format(output_path), end='')
-    return
+    return '200?make_train?{}'.format(output_path)

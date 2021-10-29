@@ -4,13 +4,12 @@ import json
 import argparse
 import subprocess
 
-
 from Network import Network
 from PersonalInformation import PersonalInformation
 
-# from Algorithm import *
+from Algorithm import make_hash, save_match_id, make_match_idx, make_residual
 from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
-
+from Error import check_Algorithm_return_value
 
 class TrainRequest():
     __TrainRequest_instance = None
@@ -19,8 +18,8 @@ class TrainRequest():
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         self.base_url = self.Network_instance.get_base_url()
-        self.exe_position = self.PersonalInformation_instance.get_exe_position()
-        self.root = self.PersonalInformation_instance.get_root()
+        # self.exe_position = self.PersonalInformation_instance.get_exe_position()
+        # self.root = self.PersonalInformation_instance.get_root()
 
     @classmethod
     def get_TrainRequest_instance(cls):
@@ -99,8 +98,10 @@ class TrainRequest():
          KeyError - raises an exception
         """
 
+        # obtain some important information
         user_id = self.PersonalInformation_instance.get_user_id()
         task_id = self.__get_train_id()
+        root = self.PersonalInformation_instance.get_root()
 
         # store id_column, data_column, target_column into database
         session = Session()
@@ -110,17 +111,18 @@ class TrainRequest():
         session.commit()
 
         # call make_hash in Algorithm module
-        command = (self.exe_position + ' make_hash --root ' + self.root + ' --self_id ' + user_id + ' --task_id ' +
-                  task_id + ' --mode train' + ' --dataset_path ' + train_file_path + ' --id_idx ' + train_id_column)
-        res = subprocess.run(command, shell=True)
-        print("!!res", res)
-        res = res.split("?")
+        hash_id_file_address = make_hash(root, user_id, task_id, "train", None, train_file_path, train_id_column)
+        hash_id_file_address = hash_id_file_address.split("?")
+        print("hash_id_file_address", hash_id_file_address)
+        # check if hash_id_file_address obey the correct return value
+        if not check_Algorithm_return_value(hash_id_file_address, "200", "make_hash"):
+            raise RuntimeError('testError')
 
-
-        # read file
-        hash_id_file_data = "1\n2\n3"
-        hash_id_file_data = np.genfromtxt(res[2], delimiter=',')
-
+        # read file => array data type from np.genfromtxt
+        # we need string type with \n between ids.
+        hash_id_file_data = np.genfromtxt(hash_id_file_address[2], delimiter=',', dtype=np.str_)
+        hash_id_file_data = "\n".join(hash_id_file_data)
+        print("hash_id_file_data", hash_id_file_data, type(hash_id_file_data))
 
         # call find_assistor in server
         url = self.base_url + "/find_assistor/"
@@ -132,9 +134,8 @@ class TrainRequest():
             "id_file": hash_id_file_data,
         }
 
-        find_assistor_res = requests.post(url, data = data, headers = {'Authorization': 'Bearer ' + token})
-        print("find_assistor_res", find_assistor_res)
-
+        find_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        print("find_assistor_res", find_assistor_res, json.loads(find_assistor_res.text))
         return
 
     def unread_request(self, unread_request_notification: dict):
@@ -223,10 +224,12 @@ class TrainRequest():
         user_id = self.PersonalInformation_instance.get_user_id()
         url = self.base_url + "/users/" + user_id + "/match_id_file"
         token = self.Network_instance.get_token()
+        root = self.PersonalInformation_instance.get_root()
+
         data = {
             "task_id": task_id,
         }
-        sponsor_get_match_id_file_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
+        sponsor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
         print("sponsor_get_match_id_file_res", json.loads(sponsor_get_match_id_file_res.text))
         match_id_file_list = json.loads(sponsor_get_match_id_file_res.text)["match_id_file"]
         assistor_random_id_pair_list = json.loads(sponsor_get_match_id_file_res.text)["assistor_random_id_pair"]
@@ -237,20 +240,25 @@ class TrainRequest():
             cur_match_id_file = "\n".join(cur_match_id_file)
 
             # call save_match_id
-            command = (self.exe_position + ' save_match_id --root ' + self.root + ' --self_id ' + user_id
-                + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id)
-            res = subprocess.check_output(command, shell=True)
-            res = res.split("?")
+            save_match_id_file_pos = save_match_id(root, user_id, task_id, "train", None, from_id)
+            save_match_id_file_pos = save_match_id_file_pos.split("?")
+            print("save_match_id_file_pos", save_match_id_file_pos)
+            # check if hash_id_file_address obey the correct return value
+            if not check_Algorithm_return_value(save_match_id_file_pos, "200", "save_match_id"):
+                raise RuntimeError('testError')
 
             # write file
 
 
 
             # call make_match_idx
-            command = (self.exe_position + ' make_match_idx --root ' + self.root + ' --self_id ' + user_id
-                + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id)
-            res = subprocess.check_output(command, shell=True)
-            res = res.split("?")
+            make_match_idx_done = make_match_idx(root, user_id, task_id, "train", None, from_id)
+            make_match_idx_done = make_match_idx_done.split("?")
+            print("make_match_idx_done", make_match_idx_done)
+            # check if hash_id_file_address obey the correct return value
+            if not check_Algorithm_return_value(make_match_idx_done, "200", "make_match_idx"):
+                raise RuntimeError('testError')
+
 
         # get train target column
         session = Session()
@@ -259,11 +267,12 @@ class TrainRequest():
         train_target_colomn = query.train_target_colomn
 
         # call make residual
-        command = (self.exe_position + ' make_residual --root ' + self.root
-                + ' --self_id ' + user_id + ' --task_id ' + task_id + ' --round 0 '
-                + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn)
-        res = subprocess.check_output(command, shell=True)
-        res = res.split("?")
+        make_residual_multiple_paths = make_residual(root, user_id, task_id, 0, train_file_path, train_target_colomn)
+        make_residual_multiple_paths = make_residual_multiple_paths.split("?")
+        print("make_residual_multiple_paths", make_residual_multiple_paths)
+        # check if hash_id_file_address obey the correct return value
+        if not check_Algorithm_return_value(make_residual_multiple_paths, "200", "make_residual"):
+            raise RuntimeError('testError')
 
         assistor_random_id_list = []
         residual_list = []

@@ -1,16 +1,16 @@
 import numpy as np
 from scipy.optimize import minimize
 import os
-from utils import log, parse_idx
+from algo_utils import log, parse_idx
 
 
-def make_result(args):
-    root = args['root']
-    self_id = args['self_id']
-    task_id = args['task_id']
-    round = args['round']
-    dataset_path = args['dataset_path']
-    target_idx = args['target_idx']
+def make_result(root, self_id, task_id, round, dataset_path, target_idx):
+    # root = args['root']
+    # self_id = args['self_id']
+    # task_id = args['task_id']
+    # round = args['round']
+    # dataset_path = args['dataset_path']
+    # target_idx = args['target_idx']
     dataset = np.genfromtxt(dataset_path, delimiter=',')
     target_idx = parse_idx(target_idx)
     target = dataset[:, target_idx]
@@ -46,8 +46,7 @@ def make_result(args):
     loss = np.sqrt(((target - result) ** 2).mean())
     msg = 'Train Round: {}, RMSE: {}, alpha: {}'.format(round, loss, alpha)
     log(msg, root, self_id, task_id)
-    print('200?make_result?complete', end='')
-    return
+    return '200?make_result?complete'
 
 
 def result_func(alpha, history, output, target):

@@ -1,18 +1,12 @@
 import os
 import numpy as np
 import hashlib
-from utils import makedir_exist_ok, parse_idx
+from algo_utils import makedir_exist_ok, parse_idx
 
 
-def make_hash(args):
-    root = args['root']
-    self_id = args['self_id']
-    task_id = args['task_id']
-    mode = args['mode']
-    test_id = args['test_id']
-    dataset_path = args['dataset_path']
-    id_idx = args['id_idx']
+def make_hash(root, self_id, task_id, mode, test_id, dataset_path, id_idx):
     dataset = np.genfromtxt(dataset_path, delimiter=',', dtype=np.str_)
+    print("dataset", dataset)
     id_idx = parse_idx(id_idx)
     id = dataset[:, id_idx]
     hash_id = np.array(list(map(hash, id)))
@@ -40,10 +34,8 @@ def make_hash(args):
         makedir_exist_ok(log_path)
         open(os.path.join(log_path, "log.txt"), "a")
     else:
-        print('300?make_hash?not valid mode', end='')
-        return
-    print('200?make_hash?{}'.format(hash_id_path), end='')
-    return
+        return '300?make_hash?not valid mode'
+    return '200?make_hash?{}'.format(hash_id_path)
 
 
 def hash(input):

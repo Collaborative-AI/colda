@@ -2,7 +2,7 @@ import argparse
 import numpy as np
 import os
 import shutil
-from utils import makedir_exist_ok, save
+from algo_utils import makedir_exist_ok, save
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', default=None, type=str)

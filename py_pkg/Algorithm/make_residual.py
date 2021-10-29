@@ -1,15 +1,15 @@
 import numpy as np
 import os
-from utils import makedir_exist_ok, log, parse_idx
+from algo_utils import makedir_exist_ok, log, parse_idx
 
 
-def make_residual(args):
-    root = args['root']
-    self_id = args['self_id']
-    task_id = args['task_id']
-    round = args['round']
-    dataset_path = args['dataset_path']
-    target_idx = args['target_idx']
+def make_residual(root, self_id, task_id, round, dataset_path, target_idx):
+    # root = args['root']
+    # self_id = args['self_id']
+    # task_id = args['task_id']
+    # round = args['round']
+    # dataset_path = args['dataset_path']
+    # target_idx = args['target_idx']
     dataset = np.genfromtxt(dataset_path, delimiter=',')
     target_idx = parse_idx(target_idx)
     target = dataset[:, target_idx]
@@ -40,8 +40,7 @@ def make_residual(args):
         np.savetxt(assistor_residual_path_i, residual[self_from_idx_i,], delimiter=",")
         assistor_residual_path.append(assistor_residual_path_i)
     assistor_residual_path = '?'.join(assistor_residual_path)
-    print('200?make_residual?{}'.format(assistor_residual_path), end='')
-    return
+    return '200?make_residual?{}'.format(assistor_residual_path)
 
 
 def make_init(target):

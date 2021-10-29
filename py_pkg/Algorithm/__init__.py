@@ -15,4 +15,4 @@ from save_output import save_output
 from make_result import make_result
 from make_test import make_test
 from make_eval import make_eval
-from utils import makedir_exist_ok, save, load, log, parse_idx
+from algo_utils import makedir_exist_ok, save, load, log, parse_idx

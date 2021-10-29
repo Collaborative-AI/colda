@@ -15,11 +15,15 @@ import numpy as np
 from Authorization import Authorization
 from TrainRequest import TrainRequest
 from TestRequest import TestRequest
+from Get_Notification import Get_Notification
+
+import threading
 
 # import jwt
 _default_authorization = Authorization.get_Authorization_instance()
 _default_trainRequest = TrainRequest.get_TrainRequest_instance()
 _default_testRequest = TestRequest.get_TestRequest_instance()
+_default_get_notification = Get_Notification.get_Get_notification_instance()
 
 def callForTrain(maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_name: str=None, task_description: str=None):
     trainRequest_instance = _default_trainRequest.get_TrainRequest_instance()
@@ -40,14 +44,15 @@ def callForTest(task_id: str, testing_data_path: str):
 
 # Call Authorization
 def userRegister(username: str, password: str):
-    authorization_instance = _default_authorization.get_Authorization_instance()
-    authorization_instance.userRegister(username, password)
+    _default_authorization.userRegister(username, password)
 
     return
 
 def userLogin(username: str, password: str):
-    authorization_instance = _default_authorization.get_Authorization_instance()
-    authorization_instance.userLogin(username, password)
+    _default_authorization.userLogin(username, password)
+    # _default_get_notification.getNotification()
+    # timer = threading.Timer(2, _default_get_notification.getNotification())
+    # timer.start()
 
     return
 
@@ -74,7 +79,8 @@ def get_pending_requests():
 #
 
 userLogin("testa", "123")
-callForTrain(3,[2], '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv',"1","2","3")
+callForTrain(1, [2], "/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv", "1", "2", "3")
+# callForTrain(3,[2], '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv',"1","2","3")
 # address = '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv'
 # a = np.genfromtxt(address, delimiter=',')
 # print(a, type(a))

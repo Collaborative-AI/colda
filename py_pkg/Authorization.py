@@ -51,7 +51,10 @@ class Authorization():
         token = token_response_text["token"]
         # print("token", token)
         self.Network_instance.set_token(token)
+
+        # hard code temporarily
         self.PersonalInformation_instance.set_user_id("1")
+
         # # a = jwt.decode(token, options={"verify_signature": False})
         # # print("a", a)
         # a = jwt.decode(token, options={"verify_signature": False})

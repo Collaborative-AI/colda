@@ -1,15 +1,15 @@
 import os
-from utils import makedir_exist_ok
+from algo_utils import makedir_exist_ok
 
 
-def save_output(args):
-    root = args['root']
-    self_id = args['self_id']
-    task_id = args['task_id']
-    mode = args['mode']
-    test_id = args['test_id']
-    round = args['round']
-    from_id = args['from_id']
+def save_output(root, self_id, task_id, mode, test_id, round, from_id):
+    # root = args['root']
+    # self_id = args['self_id']
+    # task_id = args['task_id']
+    # mode = args['mode']
+    # test_id = args['test_id']
+    # round = args['round']
+    # from_id = args['from_id']
     if mode == 'train':
         output_path = os.path.join(root, self_id, 'task', task_id, mode, 'round', str(round), 'output')
         makedir_exist_ok(output_path)
@@ -22,5 +22,4 @@ def save_output(args):
         print('300?save_output?not valid mode', end='')
         return
     output_path = os.path.join(output_path, '{}.csv'.format(from_id))
-    print('200?save_output?{}'.format(output_path), end='')
-    return
+    return '200?save_output?{}'.format(output_path)

@@ -1,6 +1,6 @@
 import argparse
 import numpy as np
-from utils import parse_idx
+from algo_utils import parse_idx
 
 # parser = argparse.ArgumentParser()
 # parser.add_argument('--root', default=None, type=str)

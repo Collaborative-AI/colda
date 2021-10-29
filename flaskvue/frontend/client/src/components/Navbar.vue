@@ -274,6 +274,7 @@ export default {
               task_id: task_id,
               file: hash_id_file_data,
             }
+            console.log('hash_id_file_data', hash_id_file_data)
             
             vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
               .then((response) => {
@@ -2038,76 +2039,82 @@ export default {
             .then((response) => {
               // handle success
             console.log("response.data", response.data, response.data.length)
-            if (response.data.length >= 1){
-              console.log("++++++++++++++++++++++++=", response.data)
+            for (let item of response.data){
+              console.log('item', item, item.payload)
+              if (item.payload >= 1){
 
-              const all_notifications = {
-                response_data: response.data
-              } 
+      
+                console.log("++++++++++++++++++++++++=", response.data)
 
-              axios.post('/update_all_notifications/', all_notifications)
-              .then((response) => {
-                // train stage
-                let unread_request_notification = response.data["unread request"]
-                let unread_match_id_notification = response.data["unread match id"]
-                let unread_situation_notification = response.data["unread situation"]
-                let unread_output_notification = response.data["unread output"]
+                const all_notifications = {
+                  response_data: response.data
+                } 
 
-                // test stage
-                let unread_test_request_notification = response.data["unread test request"]
-                let unread_test_match_id_notification = response.data["unread test match id"]
-                let unread_test_output_notification = response.data["unread test output"]
+                axios.post('/update_all_notifications/', all_notifications)
+                .then((response) => {
+                  // train stage
+                  let unread_request_notification = response.data["unread request"]
+                  let unread_match_id_notification = response.data["unread match id"]
+                  let unread_situation_notification = response.data["unread situation"]
+                  let unread_output_notification = response.data["unread output"]
 
-
-                console.log("unread_request_notification",unread_request_notification,
-                  unread_request_notification["check_dict"])
-                console.log("unread_match_id_notification",unread_match_id_notification,
-                  unread_match_id_notification["check_dict"])
-                console.log("unread_situation_notification",unread_situation_notification,
-                  unread_situation_notification["check_dict"])
-                console.log("unread_output_notification",unread_output_notification,
-                  unread_output_notification["check_dict"])
-
-                console.log("unread_test_request_notification",unread_test_request_notification,
-                  unread_test_request_notification["check_dict"])
-                console.log("unread_test_match_id_notification",unread_test_match_id_notification,
-                  unread_test_match_id_notification["check_dict"])
-                console.log("unread_test_output_notification",unread_test_output_notification,
-                  unread_test_output_notification["check_dict"])
+                  // test stage
+                  let unread_test_request_notification = response.data["unread test request"]
+                  let unread_test_match_id_notification = response.data["unread test match id"]
+                  let unread_test_output_notification = response.data["unread test output"]
 
 
-                if (unread_request_notification["check_dict"] ){
-                    unread_request(unread_request_notification)
-                }
+                  console.log("unread_request_notification",unread_request_notification,
+                    unread_request_notification["check_dict"])
+                  console.log("unread_match_id_notification",unread_match_id_notification,
+                    unread_match_id_notification["check_dict"])
+                  console.log("unread_situation_notification",unread_situation_notification,
+                    unread_situation_notification["check_dict"])
+                  console.log("unread_output_notification",unread_output_notification,
+                    unread_output_notification["check_dict"])
 
-                if (unread_match_id_notification["check_dict"]){
-                    unread_match_id(unread_match_id_notification)
-                }
+                  console.log("unread_test_request_notification",unread_test_request_notification,
+                    unread_test_request_notification["check_dict"])
+                  console.log("unread_test_match_id_notification",unread_test_match_id_notification,
+                    unread_test_match_id_notification["check_dict"])
+                  console.log("unread_test_output_notification",unread_test_output_notification,
+                    unread_test_output_notification["check_dict"])
 
-                if (unread_situation_notification["check_dict"]){
-                    unread_situation(unread_situation_notification)
-                }
 
-                if (unread_output_notification["rounds_dict"]){
-                    unread_output(unread_output_notification)
-                }
+                  if (unread_request_notification["check_dict"] ){
+                      unread_request(unread_request_notification)
+                  }
 
-                if (unread_test_request_notification["check_dict"]){
-                    unread_test_request(unread_test_request_notification)
-                }
+                  if (unread_match_id_notification["check_dict"]){
+                      unread_match_id(unread_match_id_notification)
+                  }
 
-                if (unread_test_match_id_notification["check_dict"]){
-                    unread_test_match_id(unread_test_match_id_notification)
-                }
+                  if (unread_situation_notification["check_dict"]){
+                      unread_situation(unread_situation_notification)
+                  }
 
-                if (unread_test_output_notification["check_dict"]){
-                    unread_test_output(unread_test_output_notification)
-                }
-              })
-              .catch((error) => {
-                // handle error
-                console.log(error)
-              }) 
+                  if (unread_output_notification["rounds_dict"]){
+                      unread_output(unread_output_notification)
+                  }
+
+                  if (unread_test_request_notification["check_dict"]){
+                      unread_test_request(unread_test_request_notification)
+                  }
+
+                  if (unread_test_match_id_notification["check_dict"]){
+                      unread_test_match_id(unread_test_match_id_notification)
+                  }
+
+                  if (unread_test_output_notification["check_dict"]){
+                      unread_test_output(unread_test_output_notification)
+                  }
+                })
+                .catch((error) => {
+                  // handle error
+                  console.log(error)
+                }) 
+                break
+              }
             }
             
 

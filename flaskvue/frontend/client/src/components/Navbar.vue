@@ -1282,7 +1282,7 @@ export default {
 
       let all_residual_data = [];
       let assistor_random_id_list = [];
-      residual_paths = make_residual_multiple_paths[2].split("?")
+      let residual_paths = make_residual_multiple_paths[2].split("?")
       for (let i = 0; i < residual_paths.length; i++){
 
         let data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
@@ -2041,7 +2041,7 @@ export default {
               // handle success
             console.log("response.data", response.data, response.data.length)
             for (let item of response.data){
-              console.log('item', item, item.payload)
+              // console.log('item', item, item.payload)
               if (item.payload >= 1){
 
       

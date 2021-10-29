@@ -50,6 +50,7 @@ const fs = window.require('fs');
 const ex = window.require("child_process");
 const path = window.require('path');
 const os = window.require('os');
+const node_path = window.require('path');
 
 import store from '../../../store'
 // 导入 vue-markdown 组件解析 markdown 原文为　HTML
@@ -106,7 +107,7 @@ export default {
     },
     
     getLog(task_id) {
-      const train_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + this.task_id + '/' + 'train/' + 'log.txt'
+      const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
       let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
       Log_content = Log_content.split("\n")
       this.messages = [];

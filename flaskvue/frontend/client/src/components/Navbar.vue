@@ -1282,13 +1282,14 @@ export default {
 
       let all_residual_data = [];
       let assistor_random_id_list = [];
+      residual_paths = make_residual_multiple_paths[2].split("?")
+      for (let i = 0; i < residual_paths.length; i++){
 
-      for (let i = 2; i < make_residual_multiple_paths.length; i++){
-
-        let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+        let data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
         all_residual_data.push(data);
 
-        let path_split = make_residual_multiple_paths[i].split(node_path.sep);
+        let cur_path = residual_paths[i]
+        let path_split = cur_path.split(node_path.sep);
         let assistor_random_id = path_split[path_split.length-1].split(".")[0];
         assistor_random_id_list.push(assistor_random_id);
         

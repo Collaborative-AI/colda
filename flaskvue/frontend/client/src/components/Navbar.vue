@@ -545,7 +545,7 @@ export default {
             // Read Files
             let all_residual_data = [];
             let assistor_random_id_list = [];
-            residual_paths = make_residual_multiple_paths[2].split("?")
+            let residual_paths = make_residual_multiple_paths[2].split("?")
             for (let i = 0; i < residual_paths.length; i++){
 
               let data = null;

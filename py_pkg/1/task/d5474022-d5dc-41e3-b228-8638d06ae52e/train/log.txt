@@ -1,0 +1,25 @@
+
+ You are SPONSOR
+
+Task ID: d5474022-d5dc-41e3-b228-8638d06ae52e
+
+---------------------- Train Stage Starts
+
+---------------------- 1. Find assistor
+
+1.1 Sponsor calls for help
+
+1.2 Sponsor sends id file
+
+-------------------------- 3. Unread Match ID
+
+3.1 Update the match id notification
+
+3.2 Unread_match_id_sponsor
+
+3.3 Sponsor gets matched id file
+
+3.4 Sponsor Saved Matched id File at /Users/qile/Documents/Apollo_Package/Package/py_pkg/1/task/d5474022-d5dc-41e3-b228-8638d06ae52e/train/id/3b7e0dde-b30f-4434-b932-076d031f63bd.csv
+
+3.5 Sponsor matches id to index
+

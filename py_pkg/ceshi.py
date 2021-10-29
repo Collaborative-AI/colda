@@ -13,7 +13,6 @@
 # a.set(5)
 # print(a.get())
 
-from Algorithm import *
-
-make_hash()
+a = ["5"]
+print("?".join(a))
 

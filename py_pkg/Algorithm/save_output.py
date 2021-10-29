@@ -19,7 +19,8 @@ def save_output(root, self_id, task_id, mode, test_id, round, from_id):
         makedir_exist_ok(output_path)
         open(os.path.join(output_path, '{}.csv'.format(from_id)), "a")
     else:
-        print('300?save_output?not valid mode', end='')
-        return
+        return '300?save_output?not valid mode'
+
     output_path = os.path.join(output_path, '{}.csv'.format(from_id))
     return '200?save_output?{}'.format(output_path)
+

@@ -13,10 +13,9 @@ to be used as a cookie-cutter for developing new Python packages.
 
 import numpy as np
 from Authorization import Authorization
-from TrainRequest import TrainRequest
+from TrainRequest import TrainRequest, PersonalInformation
 from TestRequest import TestRequest
 from Get_Notification import Get_Notification
-
 import threading
 
 # import jwt
@@ -34,7 +33,6 @@ def callForTrain(maxRound: int, assistors: list, train_file_path: str, train_id_
 def callForTest(task_id: str, testing_data_path: str):
     testRequest_instance = _default_testRequest.get_TestRequest_instance()
     testRequest_instance.handleTestRequest(task_id, testing_data_path)
-
     return
 
 # def ceshi(aa):
@@ -50,7 +48,7 @@ def userRegister(username: str, password: str):
 
 def userLogin(username: str, password: str):
     _default_authorization.userLogin(username, password)
-    # _default_get_notification.getNotification()
+    _default_get_notification.getNotification()
     # timer = threading.Timer(2, _default_get_notification.getNotification())
     # timer.start()
 
@@ -61,6 +59,11 @@ def userLogout():
     authorization_instance.userLogout()
 
     return
+
+def set_default_data_path(default_train_file_path: str, default_train_id_column: str, default_train_data_column: str):
+    PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
+    PersonalInformation_instance.set_Default_Path()
+
 
 def get_online_user(username: list):
     pass
@@ -79,10 +82,8 @@ def get_pending_requests():
 #
 
 userLogin("testa", "123")
-callForTrain(1, [2], "/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv", "1", "2", "3")
-# callForTrain(3,[2], '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv',"1","2","3")
-# address = '/Users/qile/Documents/data/BostonHousing/1/123/1.0/0/train/data.csv'
-# a = np.genfromtxt(address, delimiter=',')
-# print(a, type(a))
+# set_default_data_path("/Users/qile/Documents/data/BostonHousing/2/123/0.5/0/train/data.csv", "1", "2")
+callForTrain(2, [2], "/Users/qile/Documents/data/combine.csv", "1", "2-7", "8")
+
 
 

@@ -82,9 +82,6 @@ class Get_Notification():
 
         return
 
-    def getNotification_timer(self):
-        pass
-
 
     def getNotification(self):
 

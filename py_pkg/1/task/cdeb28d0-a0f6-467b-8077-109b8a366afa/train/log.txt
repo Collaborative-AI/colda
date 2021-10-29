@@ -1,0 +1,21 @@
+
+ You are SPONSOR
+
+Task ID: cdeb28d0-a0f6-467b-8077-109b8a366afa
+
+---------------------- Train Stage Starts
+
+---------------------- 1. Find assistor
+
+1.1 Sponsor calls for help
+
+1.2 Sponsor sends id file
+
+-------------------------- 3. Unread Match ID
+
+3.1 Update the match id notification
+
+3.2 Unread_match_id_sponsor
+
+3.3 Sponsor gets matched id file
+

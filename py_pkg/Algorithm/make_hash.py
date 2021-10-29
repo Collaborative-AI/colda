@@ -9,6 +9,7 @@ def make_hash(root, self_id, task_id, mode, test_id, dataset_path, id_idx):
     print("dataset", dataset)
     id_idx = parse_idx(id_idx)
     id = dataset[:, id_idx]
+    print("id", id, id[0], type(id[0]))
     hash_id = np.array(list(map(hash, id)))
     if mode == 'default':
         hash_id_path = os.path.join(root, self_id, mode, 'id')

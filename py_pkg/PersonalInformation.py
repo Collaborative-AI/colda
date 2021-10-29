@@ -1,5 +1,5 @@
 import os
-
+from Database import Session, User_Default_Path, assign_value_to_user_default_path_instance
 class PersonalInformation:
     __PersonalInformation_instance = None
 
@@ -17,6 +17,51 @@ class PersonalInformation:
             cls.__PersonalInformation_instance = PersonalInformation()
 
         return cls.__PersonalInformation_instance
+
+    def get_default_path(self):
+        """
+        get the user id of current user. The user id is set to None at first.
+
+        Parameters:
+         None
+
+        Returns:
+         The user id of current user.
+
+        Raises:
+         KeyError - raises an exception
+        """
+        user_id = self.get_user_id()
+        session = Session()
+        query = session.query(User_Default_Path).filter_by(user_id=user_id).first()
+        default_train_file_path = query.default_train_file_path
+        default_train_id_column = query.default_train_id_column
+        default_train_data_column = query.default_train_data_column
+
+        return default_train_file_path, default_train_id_column, default_train_data_column
+
+    def set_default_path(self, default_train_file_path: str, default_train_id_column: str, default_train_data_column: str):
+        """
+        Change the default_path.
+
+        Parameters:
+         None
+
+        Returns:
+         None
+
+        Raises:
+         KeyError - raises an exception
+        """
+
+        user_id = self.get_user_id()
+        session = Session()
+        user_default_path = User_Default_Path()
+        user_default_path = assign_value_to_user_default_path_instance(user_default_path, user_id, default_train_file_path,
+                                                                      default_train_id_column, default_train_data_column)
+        session.add(user_default_path)
+        session.commit()
+        return
 
     def get_user_id(self):
         """

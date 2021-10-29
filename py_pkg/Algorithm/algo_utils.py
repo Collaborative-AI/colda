@@ -2,7 +2,7 @@ import errno
 import numpy as np
 import os
 import pickle
-
+import torch
 
 def makedir_exist_ok(path):
     try:

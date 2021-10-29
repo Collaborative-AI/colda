@@ -1,0 +1,77 @@
+
+ You are SPONSOR
+
+Task ID: f54c64a4-d416-4f79-859a-89fd0df92746
+
+---------------------- Train Stage Starts
+
+---------------------- 1. Find assistor
+
+1.1 Sponsor calls for help
+
+1.2 Sponsor sends id file
+
+-------------------------- 3. Unread Match ID
+
+3.1 Update the match id notification
+
+3.2 Unread_match_id_sponsor
+
+3.3 Sponsor gets matched id file
+
+3.4 Sponsor Saved Matched id File at /Users/qile/Documents/Apollo_Package/Package/py_pkg/1/task/f54c64a4-d416-4f79-859a-89fd0df92746/train/id/4a10324e-c01a-4757-8d5b-bb0a2dc6892d.csv
+
+3.5 Sponsor matches id to index
+
+Train Round: init, RMSE: 0.11521900561047559
+3.6 Sponsor makes residual finished
+
+3.7 Sponsor sends all situations
+
+-------------------------- 3. Unread Match ID Done
+
+-------------------------- 4. Unread Situation
+
+4.1 Update the situation notification
+
+4.2 Cur round is: 0
+
+4.3 Sponsor round 0 training done.
+
+-------------------------- 4. Unread Situation Done
+
+-------------------------- 5. Unread Output
+
+5.1 Update the output notification
+
+5.2 Sponsor gets output model
+
+5.3 Sponsor saves Output model
+
+Train Round: 0, RMSE: 0.11151578696156488, alpha: [0.64195521]
+5.4 Sponsor makes result done.
+
+5.5 Sponsor makes residual finished
+
+5.6 Sponsor updates situation done
+
+-------------------------- 5. Unread Output Done
+
+-------------------------- 4. Unread Situation
+
+4.1 Update the situation notification
+
+4.2 Cur round is: 1
+
+4.3 Sponsor round 1 training done.
+
+-------------------------- 4. Unread Situation Done
+
+-------------------------- 5. Unread Output
+
+5.1 Update the output notification
+
+5.2 Sponsor gets output model
+
+5.3 Sponsor saves Output model
+

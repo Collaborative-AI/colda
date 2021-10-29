@@ -13,6 +13,7 @@ def make_residual(root, self_id, task_id, round, dataset_path, target_idx):
     dataset = np.genfromtxt(dataset_path, delimiter=',')
     target_idx = parse_idx(target_idx)
     target = dataset[:, target_idx]
+    # print("target", target, target[0], type(target[0]))
     if round == 0:
         init = make_init(target)
         round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round))

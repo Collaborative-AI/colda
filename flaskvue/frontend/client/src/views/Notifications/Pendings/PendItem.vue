@@ -3,6 +3,19 @@
     <div>Task Name: {{pending.task_name}}</div>
     <div>Task Id:{{pending.task_id}}</div>
     <div>Task Description: {{pending.task_description}}</div>
+    <div class="form-group">
+      <label for="name">Select Train File Path</label>
+      <input type="text" v-model="manual_train_file_path" class="form-control" id="name" placeholder="">
+      <button @click="get_manual_train_file_path()" class="btn btn-success">Select File</button>
+    </div>
+    <div class="form-group">
+      <label for="name">Input id column</label>
+      <input type="text" v-model="manual_train_id_column" class="form-control" id="name" placeholder="">
+    </div>
+    <div class="form-group">
+      <label for="name">Input data column</label>
+      <input type="text" v-model="manual_train_data_column" class="form-control" id="name" placeholder="">
+    </div>
     <br>
     <button @click="unread_request()" class="btn btn-success">Accept</button>
     &nbsp;&nbsp;&nbsp;
@@ -18,6 +31,7 @@ const fs = window.require('fs');
 const ex = window.require("child_process");
 const node_path = window.require('path');
 const os = window.require('os');
+const {dialog} = window.require('electron').remote
 
 export default {
   name: 'PendItem',  // Name of the component
@@ -29,11 +43,43 @@ export default {
         sharedState: store.state,
         pending:{},
         exe_position: '',
-      
+        manual_train_file_path: '',
+        manual_train_id_column: '',
+        manual_train_data_column: '',
     }
   },
 
   methods: {
+       get_manual_train_file_path() {
+      let result = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+        // sufix
+        filters: [{
+          name: 'Text', 
+          extensions: ['html', 'js', 'json', 'md', 'csv'] 
+        }]
+      })
+      console.log("get_manual_train_file_path", result)
+      if (result === undefined){
+        dialog.showErrorBox('Train Data Path not Correct', 'Please Select A Train Data File')
+      }else{
+
+        try {
+          let path = result[0]
+          fs.statSync(path);
+          this.manual_train_file_path = path
+        } catch (err) {
+          dialog.showErrorBox('Train Data Path not Correct', 'Please Select A Train Data File')
+          console.log('Please Select A Train Data File')
+        }  
+
+      }
+    },
+
+
+
+
+
     handle_train_log_address(task_id) {
       const Log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
       console.log("train_node_path_log", Log_address)
@@ -66,8 +112,8 @@ export default {
             let hash_id_file_address = null;
             try{
               hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                                      + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
-                                      + ' --id_idx ' + default_train_id_colomn, {encoding: 'utf8'})
+                                      + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + vm.manual_train_file_path 
+                                      + ' --id_idx ' + vm.manual_train_id_column, {encoding: 'utf8'})
     
 
               hash_id_file_address = hash_id_file_address.split("?")

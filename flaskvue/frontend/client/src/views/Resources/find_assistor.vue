@@ -14,6 +14,11 @@
     </div>
 
     <div class="form-group">
+      <label for="name">Input Assistor ID List (eg. 2,3)</label>
+      <input type="text" v-model="assistor_id" class="form-control" id="name" placeholder="">
+    </div>
+
+    <div class="form-group">
       <label for="name">Select File</label>
       <input type="text" v-model="train_file_path" class="form-control" id="name" placeholder="">
       <button class="btn btn-success" @click="get_train_file_path()">Select File</button>
@@ -81,6 +86,7 @@ export default {
       train_id_colomn: "",
       train_data_colomn: "",
       train_target_colomn:"",
+      assistor_id:"",
       PathForm: {
         train_data_path: "",
         train_id_path: "",
@@ -302,9 +308,10 @@ export default {
               console.log(err)
             }
             
-
+            let id_list=vm.assistor_id.split(",")
             const find_assistor_data = {
-              assistor_id_list: [2],
+              // assistor_id_list: [2],
+              assistor_id_list: id_list,
               task_id: vm.task_id,
               id_file: hash_id_file_data,
             }
@@ -356,7 +363,7 @@ export default {
               }
 
               vm.task_id = ""
-              vm.$router.push('/')
+              vm.$router.push('/notifications')
 
             })
             .catch((error) => {

@@ -281,6 +281,7 @@ export default {
           vm.default_train_file_path=row.default_train_file_path
           vm.default_train_id_colomn=row.default_train_id_colomn
           vm.default_train_data_colomn=row.default_train_data_colomn
+          vm.picked=row.mode
         }
 
         if (row == null){
@@ -347,9 +348,9 @@ export default {
         
         if (row == null){
           // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
-          let insert_new_val = `INSERT INTO "User_Default_Path" ("user_id", "default_train_file_path", "default_train_id_colomn", "default_train_data_colomn") VALUES 
+          let insert_new_val = `INSERT INTO "User_Default_Path" ("user_id", "default_train_file_path", "default_train_id_colomn", "default_train_data_colomn", "mode") VALUES 
             (`+`"`+vm.sharedState.user_id+`", "`+vm.default_train_file_path+`", "`+vm.default_train_id_colomn+`", "`
-            +vm.default_train_data_colomn+`")`
+            +vm.default_train_data_colomn+`", "`+vm.picked+`")`
           console.log("insert_new_val", insert_new_val)
           console.log("db", db)
           db.run(insert_new_val, function(err){
@@ -364,7 +365,8 @@ export default {
               let update_sentence = 'UPDATE "User_Default_Path"'
                         +'SET "default_train_file_path" = "' + vm.default_train_file_path + '",'
                         +'"default_train_id_colomn" = "' + vm.default_train_id_colomn + '",'
-                        +'"default_train_data_colomn" = "' + vm.default_train_data_colomn                    
+                        +'"default_train_data_colomn" = "' + vm.default_train_data_colomn + '",'   
+                        +'"mode" = "' + vm.picked                  
                         +'"WHERE "user_id" = ' + vm.sharedState.user_id
               console.log("update_sentence", update_sentence)           
               db.run(update_sentence)
@@ -374,6 +376,7 @@ export default {
         console.log("vm.picked", vm.picked)
         vm.sharedState.receive_request = vm.picked;  
       })
+      vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
 
     },
     

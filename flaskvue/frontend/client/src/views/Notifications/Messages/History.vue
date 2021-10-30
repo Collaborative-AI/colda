@@ -8,6 +8,7 @@
       <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
         <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button>
       </router-link>
+      
                 
     </div>
 
@@ -37,6 +38,7 @@
         </div>
         
       </div>
+      <button @click="getLog($route.query.from)" class="btn btn-success float-right">Refresh</button>
       <!-- End Chat. Message Area. Messages. -->
     </div>
     <!-- End Panel Body -->

@@ -24,9 +24,11 @@
 
     <button @click="duqu()">duqu</button>
 
-    <!-- <button @click="make_hash()">make_hash</button>
+    <button @click="make_hash()">make_hash</button>
     <button @click="make_hash2()">make_hash2</button>
-    <button @click="make_hash3()">make_hash3</button> -->
+    <button @click="make_hash3()">make_hash3</button>
+    <button @click="make_hash4()">make_hash4</button>
+
 
 
 
@@ -175,36 +177,42 @@ export default {
     this.exe_position = new_root.exe_position
   },
   methods: {
-    // make_hash(){
-    //   let vm=this
-    //   let hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + '1'
-    //                                   + ' --task_id ' + 'aaa' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
-    //                                   + ' --id_idx ' + '2-7', {encoding: 'utf8'})
-    //   console.log('make_hash', hash_id_file_address)
-    // },
+    make_hash(){
+      let vm=this
+      let hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + '1'
+                                      + ' --task_id ' + 'aaa' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
+                                      + ' --id_idx ' + '2-7', {encoding: 'utf8'})
+      console.log('make_hash', hash_id_file_address)
+    },
 
-    // make_hash2(){
-    //   let vm=this
-    //   let hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash2 --root ' + vm.root + ' --self_id ' + '2'
-    //                                   + ' --task_id ' + 'bbb' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
-    //                                   + ' --id_idx ' + '2-7', {encoding: 'utf8'})
-    //   console.log('make_hash2', hash_id_file_address)
-    // },
+    make_hash2(){
+      let vm=this
+      let hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash2 --root ' + vm.root + ' --self_id ' + '2'
+                                      + ' --task_id ' + 'bbb' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
+                                      + ' --id_idx ' + '2-7', {encoding: 'utf8'})
+      console.log('make_hash2', hash_id_file_address)
+    },
 
-    // make_hash3(){
-    //   let vm=this
-    //   let hash_id_file_address2 = ex.execSync(vm.exe_position + ' make_hash2 --root ' + vm.root + ' --self_id ' + '2'
-    //                                   + ' --task_id ' + 'bbb' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
-    //                                   + ' --id_idx ' + '2-7', {encoding: 'utf8'})
-    //   console.log('make_hash2', hash_id_file_address2)
+    make_hash3(){
+      let vm=this
+      let hash_id_file_address2 = ex.execSync(vm.exe_position + ' make_hash2 --root ' + vm.root + ' --self_id ' + '2'
+                                      + ' --task_id ' + 'bbb' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
+                                      + ' --id_idx ' + '2-7', {encoding: 'utf8'})
+      console.log('make_hash2', hash_id_file_address2)
 
-    //   let hash_id_file_address1 = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + '1'
-    //                                   + ' --task_id ' + 'aaa' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
-    //                                   + ' --id_idx ' + '2-7', {encoding: 'utf8'})
-    //   console.log('make_hash', hash_id_file_address1)
+      let hash_id_file_address1 = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + '1'
+                                      + ' --task_id ' + 'aaa' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
+                                      + ' --id_idx ' + '2-7', {encoding: 'utf8'})
+      console.log('make_hash', hash_id_file_address1)
 
       
-    // },
+    },
+    make_hash4(){
+      console.log('sjifjeijf')
+      let vm=this
+      let hash_id_file_address2 = ex.execSync(vm.exe_position + ' ceshi ' , {encoding: 'utf8'})
+      console.log('make_hash4', hash_id_file_address2)
+    },
 
 
     nedb() {

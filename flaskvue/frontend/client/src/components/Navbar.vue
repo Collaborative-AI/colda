@@ -151,8 +151,7 @@ export default {
         }
         else{
           vm.sharedState.receive_request = true
-        }
-        
+        }  
       })
     },
 
@@ -165,8 +164,8 @@ export default {
         console.log("log.txt created");
       }
       return Log_address
-
     },
+
     handle_test_log_address(task_id, test_id) {
       const Log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "test", test_id.toString(), "log.txt")
       console.log("test_node_path_log", Log_address)
@@ -175,36 +174,26 @@ export default {
         fs.openSync(Log_address, "w");
         console.log("log.txt created");
       }
-      
       return Log_address
-
     },
-    // sponsor find assistor
-    
 
-    // sponsor_csv() {
-    //   csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
-    //     this.sponsor_request_show = false
+    // Helper Function for checking algorithm return value
+    handle_Algorithm_return_value(name, return_val, first_val, second_val) {
+      console.log(name, return_val)
+      // check if return_val obeys the correct return value
+      if (first_val != null){
+        if (return_val[0] != first_val){
+          return false
+        }
+      }
+      if (second_val != null){
+         if (return_val[1] != second_val){
+           return false
+         }
+      }  
+      return true
+    },
 
-    //     console.log('sponsor数据', res)
-    //     const payload = {
-    //       task_id: this.task_id,
-    //       file: res,
-    //     }
-
-    //   this.$axios.post('/match_sponsor_id/', payload)
-    //     .then((response) => {
-    //     // handle success
-    //     console.log(`Sponsor sends the csv file.`, response)
-    //     this.$toasted.success(`Sponsor sends the csv file.`, { icon: 'fingerprint' })
-    //   })
-    //   .catch((error) => {
-    //   // handle error
-    //     console.log(error)
-    //   // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-    //   })
-    // })      
-    // },
 
     unread_request(unread_request_notification) {
       let vm = this
@@ -222,43 +211,37 @@ export default {
           if (this.sharedState.receive_request=='passive'){
 
           let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          console.log("select_default_train_file_path", select_default_train_file_path)
           db.get(select_default_train_file_path, function(err, row){
             if (err){ 
-              throw err;
+              console.log(err);
             }
+            
             let default_train_file_path = row.default_train_file_path
             console.log("default_train_id_path", default_train_file_path)
             let default_train_id_colomn = row.default_train_id_colomn
 
             let hash_id_file_address = null;
-            // try{
-            //   hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + default_train_id_path + ' --root ' + vm.root 
-            //                             + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode train', {encoding: 'utf8'})
-            //   console.log("hash_id_file_address", hash_id_file_address)
-            // }catch(err){
-            //     console.log(err)
-            // }
+            let Log_address = null;
             try{   
               hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                                       + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
                                       + ' --id_idx ' + default_train_id_colomn, {encoding: 'utf8'})
-              console.log("hash_id_file_address", hash_id_file_address)
+              
               hash_id_file_address = hash_id_file_address.split("?")
-              console.log("hash_id_file_address_2", hash_id_file_address)
-              if (hash_id_file_address[0] == "300" && hash_id_file_address[1] == "make_hash" && hash_id_file_address[2] == "not valid mode"){
-                vm.$toasted.success(`not valid mode, please select again`, { icon: 'fingerprint' })
-                return
-              }
-              if (hash_id_file_address[0] != "200" || hash_id_file_address[1] != "make_hash"){
-                vm.$toasted.success(`find assistor went wrong, please try again`, { icon: 'fingerprint' })
-                console.log("make hash wrong")
+              let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
+              Log_address = vm.handle_train_log_address(task_id)
+              if (indicator == false){
+                console.log("hash_id_file_address wrong")
+                fs.appendFileSync(Log_address, "hash_id_file_address wrong")
                 return 
               }
+              
             }catch(err){
               console.log(err)
             }
-            
-            const Log_address = vm.handle_train_log_address(task_id)
+
+            console.log("Log_address------------", Log_address)
 
             try {
               fs.appendFileSync(Log_address, "\n You are Assistor\n")
@@ -301,17 +284,7 @@ export default {
         //else if active
         else {
           console.log(task_id)
-          // let select_task_info = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + task_id;
-          // db.get(select_task_info, function(err, row){
-          //   if (err){ 
-          //     throw err;
-          //   }
-          //   vm.sharedState.pending.push({task_name: row.task_name, task_id: row.task_id})
-          //   console.log(vm.sharedState.pending)
-          // })  
-          // let db_task_id
-          // let db_task_name
-          // let db_task_description
+
           let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
             db.get(select_sentence, [task_id], function(err, row){
             if (err){ 
@@ -320,12 +293,9 @@ export default {
             else{
               // vm.sharedState.pending.push({task_name: row.task_name, task_id: task_id})
               // console.log(vm.sharedState.pending)
-              let db_task_id
-              let db_task_name
-              let db_task_description
-              db_task_id=row.task_id
-              db_task_name=row.task_name
-              db_task_description=row.task_description
+              let db_task_id=row.task_id
+              let db_task_name=row.task_name
+              let db_task_description=row.task_description
               let insert_sentence = `INSERT INTO "User_Pending_Page"("task_name", "task_description", "user_id", "task_id") VALUES 
               (`+`"`+db_task_name +`", "`+db_task_description+`", "`+vm.sharedState.user_id+ `", "` + db_task_id + `")`
           console.log("insert_sentence", insert_sentence)
@@ -456,12 +426,13 @@ export default {
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
 
               save_match_id_file_pos = save_match_id_file_pos.split("?")
-              console.log("save_match_id_file_pos", save_match_id_file_pos)
-              if (save_match_id_file_pos[0] != "200" || save_match_id_file_pos[1] != "save_match_id"){
-                vm.$toasted.success(`save match id wrong`, { icon: 'fingerprint' })
-                console.log("save match id wrong")
+              let indicator = vm.handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos, "200", "save_match_id")
+              if (indicator == false){
+                console.log("save_match_id_file_pos wrong")
+                fs.appendFileSync(Log_address, "save_match_id_file_pos wrong")
                 return 
               }
+
             }catch(err){
               console.log(err)
             }
@@ -479,13 +450,15 @@ export default {
             try{
               let make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+
               make_match_idx_done = make_match_idx_done.split("?")
-              console.log("make_match_idx_done", make_match_idx_done)
-              if (make_match_idx_done[0] != "200" || make_match_idx_done[1] != "make_match_idx" || make_match_idx_done[2] != "complete"){
-                vm.$toasted.success(`make_match_idx wrong`, { icon: 'fingerprint' })
-                console.log("make_match_idx wrong")
+              let indicator = vm.handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
+              if (indicator == false){
+                console.log("make_match_idx_done wrong")
+                fs.appendFileSync(Log_address, "make_match_idx_done wrong")
                 return 
               }
+
             }catch(err){
               console.log(err)
             }
@@ -500,36 +473,31 @@ export default {
 
           }
 
-
           let select_train_target_colomn = 'SELECT train_file_path, train_target_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
+          console.log("select_train_target_colomn", select_train_target_colomn)
           db.get(select_train_target_colomn, function(err, row){
             if (err){ 
               console.log(err);
             }
+            console.log("match row",row)
             let train_file_path = row.train_file_path
             console.log("train_file_path", train_file_path)
             let train_target_colomn = row.train_target_colomn
             console.log("train_target_colomn", train_target_colomn)
             let make_residual_multiple_paths = null;
             try{
-              // make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
-              //   + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 0 ' 
-              //   + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-
               make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
                 + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 0 ' 
                 + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
 
               make_residual_multiple_paths = make_residual_multiple_paths.split("?")
-              console.log("make_residual_multiple_paths", make_residual_multiple_paths)
-              if (make_residual_multiple_paths[0] != "200" || make_residual_multiple_paths[1] != "make_residual"){
-                vm.$toasted.success(`make_residual wrong`, { icon: 'fingerprint' })
-                console.log("make_residual wrong")
+              let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
+              if (indicator == false){
+                console.log("make_residual_multiple_paths wrong")
+                fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
                 return 
               }
-                // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
-              
-              console.log("make_residual_multiple_paths", make_residual_multiple_paths, make_residual_multiple_paths.length)
+
             }catch(err){
               console.log(err)
             }
@@ -545,7 +513,7 @@ export default {
             // Read Files
             let all_residual_data = [];
             let assistor_random_id_list = [];
-            let residual_paths = make_residual_multiple_paths[2].split("?")
+            let residual_paths = make_residual_multiple_paths.slice(2, make_residual_multiple_paths.length)
             for (let i = 0; i < residual_paths.length; i++){
 
               let data = null;
@@ -574,13 +542,6 @@ export default {
 
             // send initial situation
             // async
-
-            // function sleep(time) {
-            //   let startTime = window.performance.now();
-            //   while (window.performance.now() - startTime < time) {}
-            // }
-            // sleep(5000); // 程序滞留5000ms
-
             vm.$axios.post('/send_situation/', send_situation_payload)
               .then((response) => {
               // handle success
@@ -601,7 +562,6 @@ export default {
 
           });
           
-
         })
         .catch((error) => {
           console.log(error)
@@ -611,14 +571,9 @@ export default {
 
     unread_match_id_assistor(task_id) {
 
-      // Create 'Local_Data/id/task_id/Match/' folder
-      
-      // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
-      // fs.mkdirSync(Match_folder, { recursive: true})
       let vm = this;
       const Log_address = vm.handle_train_log_address(task_id)
       
-
       // Obtain Match_id file
       const payload = {
         task_id: task_id
@@ -645,15 +600,15 @@ export default {
           try{
             save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
-            console.log(save_match_id_file_pos)
-            // console.log(save_match_id_file_pos)
+            
             save_match_id_file_pos = save_match_id_file_pos.split("?")
-            console.log("save_match_id_file_pos", save_match_id_file_pos)
-            if (save_match_id_file_pos[0] != "200" || save_match_id_file_pos[1] != "save_match_id"){
-              vm.$toasted.success(`save match id wrong`, { icon: 'fingerprint' })
-              console.log("save match id wrong")
+            let indicator = vm.handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos, "200", "save_match_id")
+            if (indicator == false){
+              console.log("save_match_id_file_pos wrong")
+              fs.appendFileSync(Log_address, "save_match_id_file_pos wrong")
               return 
             }
+
           }catch(err){
             console.log(err)
           }
@@ -673,22 +628,18 @@ export default {
           try{
             let make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
+      
             make_match_idx_done = make_match_idx_done.split("?")
-            console.log("make_match_idx_done", make_match_idx_done)
-            if (make_match_idx_done[0] != "200" || make_match_idx_done[1] != "make_match_idx" || make_match_idx_done[2] != "complete"){
-              vm.$toasted.success(`make_match_idx wrong`, { icon: 'fingerprint' })
-              console.log("make_match_idx wrong")
+            let indicator = vm.handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
+            if (indicator == false){
+              console.log("make_match_idx_done wrong")
+              fs.appendFileSync(Log_address, "make_match_idx_done wrong")
               return 
             }
+
           }catch(err){
             console.log(err)
           }
-
-          // function sleep(time) {
-          //   let startTime = window.performance.now();
-          //   while (window.performance.now() - startTime < time) {}
-          // }
-          // sleep(2000); // 程序滞留2000ms
 
           console.log('3.5 Assistor matches id to index');
           vm.$toasted.success('3.5 Assistor matches id to index', { icon: 'fingerprint' })
@@ -713,9 +664,6 @@ export default {
           //     console.log(error)
           //   })   
 
-
-
-
         })
         .catch((error) => {
           // handle error
@@ -724,13 +672,11 @@ export default {
     },
 
     unread_situation(unread_situation_notification) {
-      
       console.log("4.1 Update the situation notification", unread_situation_notification)
       this.$toasted.success("4.1 Update the situation notification", { icon: 'fingerprint' })
 
       let cur_unread_situation_Taskid_dict = unread_situation_notification["check_dict"]
       let cur_unread_situation_Rounds_dict = unread_situation_notification["rounds_dict"]
-
       for (let task_id in cur_unread_situation_Taskid_dict){
         
         const Log_address = this.handle_train_log_address(task_id)
@@ -761,7 +707,6 @@ export default {
     
       const Log_address = vm.handle_train_log_address(task_id)
       
-
       try {
         fs.appendFileSync(Log_address, "4.2 Cur round is: " + rounds.toString() + "\n")
       } catch (err) {
@@ -778,21 +723,19 @@ export default {
         let train_data_colomn = row.train_data_colomn
         console.log("train_data_colomn", train_data_colomn)
         try{
-          // let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' 
-          //   + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --data_path ' 
-          //   + train_data_path, {encoding: 'utf8'})
-
+          
+          // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
           let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
             + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_colomn, {encoding: 'utf8'})
           
           train_output = train_output.split("?")
-          console.log("train_output", train_output)
-          if (train_output[0] != "200" || train_output[1] != "make_train"){
-            vm.$toasted.success(`make_train wrong`, { icon: 'fingerprint' })
-            console.log("make_train wrong")
+          let indicator = vm.handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
+          if (indicator == false){
+            console.log("train_output wrong")
+            fs.appendFileSync(Log_address, "train_output wrong")
             return 
           }
-          
+
           console.log("4.3 Sponsor round " + rounds + " training done.");
           vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
         
@@ -807,7 +750,6 @@ export default {
           console.log(err)
         }
 
-
         // const path = `/Sponsor_situation_training_done/`
 
         // const Sponsor_situation_training_done_data = {
@@ -821,10 +763,7 @@ export default {
         //   .catch((error)=>{
         //     console.log(error)
         //   })  
-
       });
-
-      
     },
 
     unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_colomn, vm, Log_address){
@@ -832,74 +771,68 @@ export default {
       let Assistor_train_output_path = null;
 
       // get response from make_train.py. 
+      let indicator = null;
       try{
-        // Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id ' 
-        //   + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
-        //   + from_id + ' --data_path ' + default_train_data_path, {encoding: 'utf8'})
-        //  console.log("Assistor_train_output_path", Assistor_train_output_path)
-
         Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
           + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
           + from_id + ' --dataset_path ' + default_train_file_path + ' --data_idx ' + default_train_data_colomn,{encoding: 'utf8'})
         
         Assistor_train_output_path = Assistor_train_output_path.split("?")
-        console.log("Assistor_train_output_path", Assistor_train_output_path)
-        if (Assistor_train_output_path[0] != "200" || Assistor_train_output_path[1] != "make_train"){
-          vm.$toasted.success(`make_train wrong`, { icon: 'fingerprint' })
-          console.log("make_train wrong")
-          return 
-        }
+        indicator = vm.handle_Algorithm_return_value("Assistor_train_output_path", Assistor_train_output_path, "200", "make_train")
       }
       catch(err){
         console.log(err)
       }
-      
 
-      console.log("4.4 Assistor round " + rounds + " training done.");
-      vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
-      try {
-        fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
-      } catch (err) {
-        console.log(err)
-      }
+      // There some situations that the sponsor sends unread_situation faster than the assistor writes and translate the match id file.
+      // We need to recall the function if the file is not prepared
+      if (indicator == false){
+        console.log("recall unread_situation_assistor_train_part")
+        setTimeout(function(){
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_colomn, vm, Log_address)
+        }, 7000);
+      }else{
 
-      let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path[2], {encoding:'utf8', flag:'r'});
-
-      const Assistor_output_payload = {
-        task_id: task_id,
-        output: Assistor_train_output_data,
-      }
-
-      // send output
-      // async
-      vm.$axios.post('/send_output/', Assistor_output_payload)
-        .then((response) => {
-        // handle success
-        console.log("4.5 Assistor sends output", response)
-        vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
+        console.log("4.4 Assistor round " + rounds + " training done.");
+        vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
         try {
-          fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
-          fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
+          fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
         } catch (err) {
           console.log(err)
         }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
 
+        let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path[2], {encoding:'utf8', flag:'r'});
+
+        const Assistor_output_payload = {
+          task_id: task_id,
+          output: Assistor_train_output_data,
+        }
+
+        // send output
+        // async
+        vm.$axios.post('/send_output/', Assistor_output_payload)
+          .then((response) => {
+          // handle success
+          console.log("4.5 Assistor sends output", response)
+          vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
+          try {
+            fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
+            fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
+          } catch (err) {
+            console.log(err)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      }
     },
     unread_situation_assistor(rounds, task_id) {
       
       let vm = this;
 
       const Log_address = vm.handle_train_log_address(task_id)
-
-      // function sleep(time) {
-      //       let startTime = window.performance.now();
-      //       while (window.performance.now() - startTime < time) {}
-      //     }
-      //     sleep(5000); // 程序滞留5000ms
 
       const payload = {
         task_id: task_id,
@@ -922,21 +855,21 @@ export default {
 
           const from_id = response.data.sender_random_id;
           let cur_situation_file = JSON.parse(response.data.situation);
-          // cur_situation_file = cur_situation_file.join('\n');
 
           // Store residual file from sponsor
           let save_residual_file_pos = null;
           try{
             save_residual_file_pos = ex.execSync(vm.exe_position + ' save_residual --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
-            console.log(save_residual_file_pos)
+            
             save_residual_file_pos = save_residual_file_pos.split("?")
-            console.log("save_residual_file_pos", save_residual_file_pos)
-            if (save_residual_file_pos[0] != "200" || save_residual_file_pos[1] != "save_residual"){
-              vm.$toasted.success(`save_residual wrong`, { icon: 'fingerprint' })
-              console.log("save_residual wrong")
+            let indicator = vm.handle_Algorithm_return_value("save_residual_file_pos", save_residual_file_pos, "200", "save_residual")
+            if (indicator == false){
+              console.log("save_residual_file_pos wrong")
+              fs.appendFileSync(Log_address, "save_residual_file_pos wrong")
               return 
             }
+
           }catch(err){
             console.log(err)
           }
@@ -950,12 +883,6 @@ export default {
           } catch (err) {
             console.log(err)
           }
-
-          // function sleep(time) {
-          //   let startTime = window.performance.now();
-          //   while (window.performance.now() - startTime < time) {}
-          // }
-          // sleep(5000); // 程序滞留5000ms
 
           // Assistor trains the data
           
@@ -984,7 +911,7 @@ export default {
     
     unread_output(unread_output_notification) {
 
-
+      // Only sponsor would receive unread_output
       console.log("5.1 Update the output notification", unread_output_notification)
       this.$toasted.success("5.1 Update the output notification", { icon: 'fingerprint' })
 
@@ -1001,127 +928,6 @@ export default {
         }
         let rounds = cur_unread_output_Rounds_dict[task_id];
         this.unread_output_singleTask(rounds, task_id);
-      }
-    },
-
-    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address){
-      console.log("unread_output_make_result_helper_rounds", rounds)
-      let make_result_done = null;
-      try{
-        // make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-        //   + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-        // console.log("make_result_done", make_result_done)
-        make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-          + ' --task_id '+ task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path 
-          + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
-          
-        console.log("make_result_done", make_result_done)
-        make_result_done = make_result_done.split("?")
-        console.log("make_result_done", make_result_done)
-        if (make_result_done[0] != "200" || make_result_done[1] != "make_result"){
-          vm.$toasted.success(`make_result wrong`, { icon: 'fingerprint' })
-          console.log("make_result wrong")
-          return 
-        }
-      }catch(err){
-        console.log(err)
-      }
-
-      let a = (make_result_done[2] == "sponsor cannot find train output file")
-      console.log("a",a)
-      if(make_result_done == "sponsor cannot find train output file"){
-        console.log("-------meijinlai")
-        make_result_done = null;
-        setTimeout(function(){
-          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address)
-        }, 5000);
-
-      }else{
-        console.log("jinlaile")
-        console.log("5.4 Sponsor makes result done.")
-        vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
-        try {
-          fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
-        } catch (err) {
-          console.log(err)
-        }
-
-        // terminate
-        if ((rounds+1) >= vm.max_round){
-          fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n");
-        }else{        
-
-        let make_residual_multiple_paths = null;
-        try{
-          // make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
-          //   + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1) 
-          //   + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-          // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
-          // console.log(make_residual_multiple_paths)
-          make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
-            + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
-            + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
-          // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
-          
-          make_residual_multiple_paths = make_residual_multiple_paths.split("?")
-          console.log(make_residual_multiple_paths)
-          console.log("make_residual_multiple_paths", make_residual_multiple_paths)
-          if (make_residual_multiple_paths[0] != "200" || make_residual_multiple_paths[1] != "make_residual"){
-            vm.$toasted.success(`make_residual wrong`, { icon: 'fingerprint' })
-            console.log("make_residual wrong")
-            return 
-          }
-          }catch(err){
-          console.log(err)
-        }
-
-        console.log("5.5 Sponsor makes residual finished")
-        vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
-
-        try {
-          fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
-        } catch (err) {
-          console.log(err)
-        }
-
-        let all_residual_data = [];
-        let assistor_random_id_list = [];
-
-        for (let i = 2; i < make_residual_multiple_paths.length; i++){
-
-          let data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
-          all_residual_data.push(data);
-
-          let path_split = make_residual_multiple_paths[i].split(node_path.sep);
-          let assistor_random_id = path_split[path_split.length-1].split(".")[0];
-          assistor_random_id_list.push(assistor_random_id);
-          
-        }
-
-        const payload1 = {
-          residual_list: all_residual_data,
-          task_id: task_id,
-          assistor_random_id_list: assistor_random_id_list,
-        }
-
-        // send initial situation
-        // async
-        vm.$axios.post('/send_situation/', payload1)
-          .then((response) => {
-          // handle success
-          console.log("5.6 Sponsor updates situation done", response)
-            vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
-            try {
-              fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
-              fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
-            } catch (err) {
-              console.log(err)
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-        }
       }
     },
 
@@ -1157,22 +963,21 @@ export default {
             console.log("cur_output^^^^^^^^", response.data.output[i])
             let cur_output = JSON.parse(response.data.output[i]);
             console.log("cur_output^^^^^^^^1", cur_output)
-            // cur_output = cur_output.join('\n');
-            console.log("cur_output^^^^^^^^2", cur_output)
 
             // Store the output from assistor
             let save_output_pos = null;
             try{
               save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
-              console.log(save_output_pos)
+
               save_output_pos = save_output_pos.split("?")
-              console.log("save_output_pos", save_output_pos)
-              if (save_output_pos[0] != "200" || save_output_pos[1] != "save_output"){
-                vm.$toasted.success(`save_output wrong`, { icon: 'fingerprint' })
-                console.log("save_output wrong")
+              let indicator = vm.handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
+              if (indicator == false){
+                console.log("save_output_pos wrong")
+                fs.appendFileSync(Log_address, "save_output_pos wrong")
                 return 
               }
+
             }catch(err){
             console.log(err)
           }
@@ -1209,118 +1014,114 @@ export default {
         }) 
     },
 
-
     unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address){
       console.log("unread_output_make_result_helper_rounds", rounds)
       let make_result_done = null;
+      let indicator = null;
       try{
-        // make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-        //   + ' --task_id '+ task_id + ' --round ' + rounds + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-        // console.log("make_result_done", make_result_done)
+
         make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
           + ' --task_id '+ task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path 
           + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
-          
-        console.log("make_result_done", make_result_done)
+
         make_result_done = make_result_done.split("?")
-        console.log("make_result_done", make_result_done)
-        if (make_result_done[0] != "200" || make_result_done[1] != "make_result"){
-          vm.$toasted.success(`make_result wrong`, { icon: 'fingerprint' })
-          console.log("make_result wrong")
-          return 
-        }
+        indicator = vm.handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
+
       }catch(err){
         console.log(err)
       }
 
-      console.log("jinlaile")
-      console.log("5.4 Sponsor makes result done.")
-      vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
-      try {
-        fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
-      } catch (err) {
-        console.log(err)
-      }
+      // When assistors train faster than sponsor and send their results, make_result might not find the sponsor's train results.
+      // We need to recall the function
+      if(indicator == false){
+        console.log("recall unread_output_make_result_helper")
+        setTimeout(function(){
+          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address)
+        }, 7000);
 
-      // terminate
-      if ((rounds+1) >= vm.max_round){
-        fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n");
-      }else{        
-
-      let make_residual_multiple_paths = null;
-      try{
-        // make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
-        //   + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1) 
-        //   + ' --target_path ' + train_target_path, {encoding: 'utf8'})
-        // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
-        // console.log(make_residual_multiple_paths)
-        make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
-          + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
-          + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
-        // make_residual_multiple_paths = make_residual_multiple_paths.split('?')
-        
-        make_residual_multiple_paths = make_residual_multiple_paths.split("?")
-        console.log(make_residual_multiple_paths)
-        console.log("make_residual_multiple_paths", make_residual_multiple_paths)
-        if (make_residual_multiple_paths[0] != "200" || make_residual_multiple_paths[1] != "make_residual"){
-          vm.$toasted.success(`make_residual wrong`, { icon: 'fingerprint' })
-          console.log("make_residual wrong")
-          return 
+      }else{
+        console.log("jinlaile")
+        console.log("5.4 Sponsor makes result done.")
+        vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
+        try {
+          fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
+        } catch (err) {
+          console.log(err)
         }
-        }catch(err){
-        console.log(err)
-      }
 
-      console.log("5.5 Sponsor makes residual finished")
-      vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
+        // terminate
+        if ((rounds+1) >= vm.max_round){
+          fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n");
+        }else{        
 
-      try {
-        fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
-      } catch (err) {
-        console.log(err)
-      }
+        let make_residual_multiple_paths = null;
+        try{
 
-      let all_residual_data = [];
-      let assistor_random_id_list = [];
-      let residual_paths = make_residual_multiple_paths[2].split("?")
-      for (let i = 0; i < residual_paths.length; i++){
+          make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
+            + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
+            + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
 
-        let data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
-        all_residual_data.push(data);
-
-        let cur_path = residual_paths[i]
-        let path_split = cur_path.split(node_path.sep);
-        let assistor_random_id = path_split[path_split.length-1].split(".")[0];
-        assistor_random_id_list.push(assistor_random_id);
-        
-      }
-
-      const payload1 = {
-        residual_list: all_residual_data,
-        task_id: task_id,
-        assistor_random_id_list: assistor_random_id_list,
-      }
-
-      // send initial situation
-      // async
-      vm.$axios.post('/send_situation/', payload1)
-        .then((response) => {
-        // handle success
-        console.log("5.6 Sponsor updates situation done", response)
-          vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
-            fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
-          } catch (err) {
-            console.log(err)
+          make_residual_multiple_paths = make_residual_multiple_paths.split("?")
+          let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
+          if (indicator == false){
+            console.log("make_residual_multiple_paths wrong")
+            fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
+            return 
           }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+
+          }catch(err){
+          console.log(err)
+        }
+
+        console.log("5.5 Sponsor makes residual finished")
+        vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
+
+        try {
+          fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
+        } catch (err) {
+          console.log(err)
+        }
+
+        let all_residual_data = [];
+        let assistor_random_id_list = [];
+        let residual_paths = make_residual_multiple_paths.slice(2, make_residual_multiple_paths.length)
+        for (let i = 0; i < residual_paths.length; i++){
+          let data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
+          all_residual_data.push(data);
+
+          let path_split = residual_paths[i].split(node_path.sep);
+          let assistor_random_id = path_split[path_split.length-1].split(".")[0];
+          assistor_random_id_list.push(assistor_random_id);
+          
+        }
+
+        const payload1 = {
+          residual_list: all_residual_data,
+          task_id: task_id,
+          assistor_random_id_list: assistor_random_id_list,
+        }
+
+        // send initial situation
+        // async
+        vm.$axios.post('/send_situation/', payload1)
+          .then((response) => {
+          // handle success
+          console.log("5.6 Sponsor updates situation done", response)
+            vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
+            try {
+              fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
+              fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
+            } catch (err) {
+              console.log(err)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        }
       }
     },
-
+    
     
     unread_test_request(unread_test_request_notification) {
       let vm = this;
@@ -1345,21 +1146,26 @@ export default {
             let default_train_file_path = row.default_train_file_path
             console.log("default_train_id_colomn", default_train_id_colomn)
             let test_hash_id_file_address = null
+            let Log_address = null
             try{
-              // test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
-              //                           + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
 
               test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
                                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id
                                         + ' --mode test' + ' --test_id ' + test_id
                                         + ' --dataset_path ' + default_train_file_path + ' --id_idx ' + default_train_id_colomn, {encoding: 'utf8'})
+
               test_hash_id_file_address = test_hash_id_file_address.split("?")
-              console.log(test_hash_id_file_address)
+              let indicator = vm.handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
+              Log_address = vm.handle_test_log_address(task_id, test_id)
+              if (indicator == false){
+                console.log("test_hash_id_file_address wrong")
+                fs.appendFileSync(Log_address, "test_hash_id_file_address wrong")
+                return 
+              }
+
             }catch(err){
               console.log(err)
             }
-
-            const Log_address = vm.handle_test_log_address(task_id, test_id)
 
             try {
               fs.appendFileSync(Log_address, "\n You are Assistor\n")
@@ -1406,7 +1212,6 @@ export default {
       }
     },
 
-
     unread_test_match_id(unread_test_match_id_notification) {
       console.log("3.1 Update Test match id notification response", unread_test_match_id_notification)
       this.$toasted.success("3.1 Update the Test match id notification", { icon: 'fingerprint' })
@@ -1414,6 +1219,7 @@ export default {
       let cur_unread_test_match_id_Testid_dict = unread_test_match_id_notification["check_dict"]
       let test_id_to_task_id = unread_test_match_id_notification["test_id_to_task_id"]
       let max_rounds_dict = unread_test_match_id_notification["max_rounds"]
+      console.log("max_rounds_dict", max_rounds_dict)
 
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
@@ -1429,6 +1235,7 @@ export default {
 
         let check_sponsor = cur_unread_test_match_id_Testid_dict[test_id]
         let cur_max_round = max_rounds_dict[test_id]
+        console.log("test_id, max_round", test_id, cur_max_round)
 
         if (check_sponsor == 1){
           console.log("3.2 Unread_test_match_id_sponsor")
@@ -1489,9 +1296,15 @@ export default {
             try{
               test_save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
-                
+              
               test_save_match_id_file_pos = test_save_match_id_file_pos.split("?")
-              console.log(test_save_match_id_file_pos)
+              let indicator = vm.handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos, "200", "save_match_id")
+              if (indicator == false){
+                console.log("test_save_match_id_file_pos wrong")
+                fs.appendFileSync(Log_address, "test_save_match_id_file_pos wrong")
+                return 
+              }
+
             }catch(err){
               console.log(err)
             }
@@ -1510,16 +1323,17 @@ export default {
               let test_make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
 
-                
+              test_make_match_idx_done = test_make_match_idx_done.split("?")
+              let indicator = vm.handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
+              if (indicator == false){
+                console.log("test_make_match_idx_done wrong")
+                fs.appendFileSync(Log_address, "test_make_match_idx_done wrong")
+                return 
+              }
+              
             }catch(err){
               console.log(err)
             }
-
-            function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(2000); // 程序滞留2000ms
 
             console.log('3.6 Test: Sponsor matches id to index');
             vm.$toasted.success('3.6 Test: Sponsor matches id to index', { icon: 'fingerprint' })
@@ -1531,52 +1345,6 @@ export default {
 
           }
 
-          // function sleep(time) {
-          //   let startTime = window.performance.now();
-          //   while (window.performance.now() - startTime < time) {}
-          // }
-          // sleep(8000); // 程序滞留8000ms
-
-          // function find_Train_Models(startPath) {
-          // let result=[];
-          // function finder(path) {
-          //     let files=fs.readdirSync(path);
-          //     files.forEach((val,index) => {
-          //         let fPath=join(path,val);
-          //         let stats=fs.statSync(fPath);
-          //         // console.log("val", val)
-          //         // console.log("stats", fPath, stats)
-          //         if(stats.isDirectory()) finder(fPath);
-          //         if(stats.isFile()&&val=="Sponsor_Trained_Local_Model.csv") {
-          //           // result.push(fPath);
-          //           let data = fs.readFileSync(fPath,
-          //             {encoding:'utf8', flag:'r'});
-          //           result.push(data);
-          //         }
-          //     });
-          //   }
-          //   finder(startPath);
-          //   return result;
-          // }
-
-          // let train_path = 'Local_Data/' + this.sharedState.user_id + '/' + task_id;
-          // let files = find_Train_Models(train_path);
-          
-          // console.log("3.6 Test: Sponsor gets all train models")
-          // vm.$toasted.success("3.6 Test: Sponsor gets all train models", { icon: 'fingerprint' })
-          // try {
-          //   fs.appendFileSync(Log_address, "3.6 Test: Sponsor gets all train models\n")
-          // } catch (err) {
-          //   console.log(err)
-          // }
-          // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
-          // fs.mkdirSync(Test_Output_folder, { recursive: true});
-
-          // for (let i = 0;i < files.length; i++){
-          //   console.log(files[i]);
-          //   let filename = "Test_Models" + i.toString();
-          //   fs.writeFileSync(Test_Output_folder + filename, files[i])
-          // }
           let select_test_data_path = 'SELECT test_file_path, test_data_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
           db.get(select_test_data_path, function(err, row){
             if (err){ 
@@ -1589,6 +1357,14 @@ export default {
             try{
               let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                 + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_colomn, {encoding: 'utf8'})
+
+              test_done = test_done.split("?")
+              let indicator = vm.handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
+              if (indicator == false){
+                console.log("test_done wrong")
+                fs.appendFileSync(Log_address, "test_done wrong")
+                return 
+              }
 
             }catch(err){
               console.log(err)
@@ -1615,13 +1391,9 @@ export default {
     },
 
     unread_test_match_id_assistor(task_id, test_id, max_rounds) {
-      // Create 'Local_Data/id/task_id/Match/' folder
-      let vm = this;
-      // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Match/'
-      // fs.mkdirSync(Match_folder, { recursive: true})
 
+      let vm = this;
       const Log_address = vm.handle_test_log_address(task_id, test_id)
-      
       
       // Obtain Match_id file
       const payload = {
@@ -1649,17 +1421,18 @@ export default {
           try{
             test_save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id + ' --test_id ' + test_id, {encoding: 'utf8'})
+
             test_save_match_id_file_pos = test_save_match_id_file_pos.split("?")
-            console.log("test_save_match_id_file_pos", test_save_match_id_file_pos)
+            let indicator = vm.handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos, "200", "save_match_id")
+            if (indicator == false){
+              console.log("test_save_match_id_file_pos wrong")
+              fs.appendFileSync(Log_address, "test_save_match_id_file_pos wrong")
+              return 
+            }
+
           }catch(err){
             console.log(err)
           }
-
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(2000); // 程序滞留2000ms
 
           fs.writeFileSync(test_save_match_id_file_pos[2], cur_match_id_file)
           
@@ -1672,18 +1445,21 @@ export default {
           }
 
           try{
-            let make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+            let test_make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
               + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id + ' --test_id ' + test_id, {encoding: 'utf8'})
+
+            test_make_match_idx_done = test_make_match_idx_done.split("?")
+            let indicator = vm.handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
+            if (indicator == false){
+              console.log("test_make_match_idx_done wrong")
+              fs.appendFileSync(Log_address, "test_make_match_idx_done wrong")
+              return 
+            }
+
           }catch(err){
             console.log(err)
           }
 
-          function sleep(time) {
-            let startTime = window.performance.now();
-            while (window.performance.now() - startTime < time) {}
-          }
-          sleep(2000); // 程序滞留2000ms
-          
           console.log('3.6 Test: Assistor matches id to index');
           vm.$toasted.success('3.6 Test: Assistor matches id to index', { icon: 'fingerprint' })
           try {
@@ -1691,69 +1467,6 @@ export default {
           } catch (err) {
             console.log(err)
           }
-
-          // function sleep(time) {
-          //   let startTime = window.performance.now();
-          //   while (window.performance.now() - startTime < time) {}
-          // }
-          // sleep(5000); // 程序滞留5000ms
-
-          // function find_Train_Models(startPath) {
-          // let result=[];
-          // function finder(path) {
-          //     let files=fs.readdirSync(path);
-          //     files.forEach((val,index) => {
-          //         let fPath=join(path,val);
-          //         let stats=fs.statSync(fPath);
-          //         // console.log("val", val)
-          //         // console.log("stats", fPath, stats)
-          //         if(stats.isDirectory()) finder(fPath);
-          //         if(stats.isFile()&&val=="assistor_Trained_Local_Model.csv") {
-          //           // result.push(fPath);
-          //           let data = fs.readFileSync(fPath,
-          //             {encoding:'utf8', flag:'r'});
-          //           result.push(data);
-          //         }
-          //     });
-          //   }
-          //   finder(startPath);
-          //   return result;
-          // }
-
-          // let train_path = 'Local_Data/' + this.sharedState.user_id + '/' + task_id;
-          // let files = find_Train_Models(train_path);
-          
-          // console.log("3.6 Test: assistor gets all train models")
-          // vm.$toasted.success("3.6 Test: assistor gets all train models", { icon: 'fingerprint' })
-          // try {
-          //   fs.appendFileSync(Log_address, "3.6 Test: assistor gets all train models\n")
-          // } catch (err) {
-          //   console.log(err)
-          // }
-
-          // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
-          // fs.mkdirSync(Test_Output_folder, { recursive: true});
-
-          // for (let i = 0;i < files.length; i++){
-          //   console.log(files[i]);
-          //   let filename = "Test_Models" + i.toString();
-          //   fs.writeFileSync(Test_Output_folder + filename, files[i])
-          // }
-
-          // let select_test_data_path = 'SELECT test_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_id"="' + test_id + '"';
-          // db.get(select_test_data_path, function(err, row){
-          //   if (err){ 
-          //     throw err;
-          //   }
-          //   let test_data_path = row.test_data_path
-          //   console.log("test_data_path", test_data_path)
-          // });
-
-          // function sleep(time) {
-          //   let startTime = window.performance.now();
-          //   while (window.performance.now() - startTime < time) {}
-          // }
-          // sleep(7000); // 程序滞留7000ms
 
           let select_default_test_data_path = 'SELECT default_train_file_path, default_train_data_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
           db.get(select_default_test_data_path, function(err, row){
@@ -1766,16 +1479,18 @@ export default {
 
             let test_outputs_pos = null
             try{
-              // test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-              //   + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
-              //   + ' --data_path ' + default_test_data_path, {encoding: 'utf8'})
-              
+
               test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                 + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
                 + ' --dataset_path ' +  default_train_file_path + ' --data_idx ' + default_train_data_colomn, {encoding: 'utf8'})
 
-              test_outputs_pos = test_outputs_pos.split('?')
-              console.log("test_output_pos", test_outputs_pos)
+              test_outputs_pos = test_outputs_pos.split("?")
+              let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
+              if (indicator == false){
+                console.log("test_outputs_pos wrong")
+                fs.appendFileSync(Log_address, "test_outputs_pos wrong")
+                return 
+              }
               
             }catch(err){
               console.log(err)
@@ -1791,12 +1506,13 @@ export default {
             }
 
             let all_test_output = [];
-            // for (let i = 0; i < test_outputs_pos.length; i++){
-
-              const data = fs.readFileSync(test_outputs_pos[2], {encoding:'utf8', flag:'r'});
+            let make_test_lists = test_outputs_pos.slice(2, test_outputs_pos.length)
+            console.log("make_test_lists", make_test_lists)
+            for (let i = 0; i < make_test_lists.length; i++){
+              let data = fs.readFileSync(make_test_lists[i], {encoding:'utf8', flag:'r'});
               all_test_output.push(data);
-
-            // }
+            }
+            console.log("all_test_output", all_test_output)
 
             const payload1 = {
               output: all_test_output,
@@ -1874,6 +1590,7 @@ export default {
             console.log(err)
           }
           // iterate the match_id_file
+          // List[List[List]] structure: [[[data from one assistor],[data from one assistor]],[[data from another assistor],[data from another assistor]]]
           for(let i = 0;i < response.data.output.length; i++){
 
             const from_id = response.data.sender_random_ids_list[i];
@@ -1889,17 +1606,24 @@ export default {
               try{
                 test_save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                   + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + j, {encoding: 'utf8'})
+
                 test_save_output_pos = test_save_output_pos.split("?")
-                console.log("test_save_output_pos", test_save_output_pos)
-                    
+                let indicator = vm.handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
+                if (indicator == false){
+                  console.log("test_save_output_pos wrong")
+                  fs.appendFileSync(Log_address, "test_save_output_pos wrong")
+                  return 
+                }
+
               }catch(err){
                 console.log(err)
               }
 
               // Store match_id file
               fs.writeFileSync(test_save_output_pos[2], cur_output)
-
             }
+
+
           }
           console.log("4.3 Test: Sponsor saves assistors' Output model");
 
@@ -1925,6 +1649,7 @@ export default {
       
 
       let max_round = JSON.parse(response.data.output[0]).length - 1;
+      console.log("unread_test_output_max_round", JSON.parse(response.data.output[0]))
       console.log("max_round", max_round)
 
       let select_test_target_path = 'SELECT test_file_path, test_target_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
@@ -1936,25 +1661,24 @@ export default {
         let test_target_colomn= row.test_target_colomn
         // console.log("test_target_path",test_target_path)
         let eval_done = null;
+        let indicator = null;
         try{
-          // eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-          //   + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round 
-          //   + ' --target_path ' + test_target_path, {encoding: 'utf8'})
 
           eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
             + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round 
             + ' --dataset_path ' + test_file_path + ' --target_idx ' + test_target_colomn, {encoding: 'utf8'})
 
-          
+          eval_done = eval_done.split("?")
+          indicator = vm.handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
         }catch(err){
           console.log(err)
         }
-        console.log("eval_done", eval_done)
-        if (eval_done == "sponsor test not ready"){
-          setTimeout(function(){
-            vm.unread_test_output_make_eval(task_id, test_id, vm, Log_address, response)
-          }, 5000);
 
+        if (indicator == false){
+          console.log("recall unread_test_output_make_eval_helper")
+          setTimeout(function(){
+            vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response)
+          }, 7000);
         }else{
           console.log("4.4 Test: Sponsor evaluates output models done");
           vm.$toasted.success("4.4 Test: Sponsor evaluates output models done", { icon: 'fingerprint' })
@@ -1970,15 +1694,10 @@ export default {
           } catch (err) {
             console.log(err)
           }
-
-
         }
-
        
       });
-
     },
-
   },
 
   created () {

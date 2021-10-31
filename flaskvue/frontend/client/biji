@@ -1,5 +1,11 @@
 History page
 
+// function sleep(time) {
+  //   let startTime = window.performance.now();
+  //   while (window.performance.now() - startTime < time) {}
+  // }
+  // sleep(5000); // 程序滞留5000ms
+  
 <template>
   <div>
     <!-- 历史私信列表 -->

@@ -265,7 +265,7 @@ export default {
               console.log("node_path_log", Log_address)
               if(!fs.existsSync(Log_address)){
                 console.log("creating log.txt");
-                fs.openSync(file, "w");
+                fs.openSync(Log_address, "w");
                 console.log("log.txt created");
               }
              

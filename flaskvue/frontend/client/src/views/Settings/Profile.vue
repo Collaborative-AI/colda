@@ -366,10 +366,16 @@ export default {
                         +'SET "default_train_file_path" = "' + vm.default_train_file_path + '",'
                         +'"default_train_id_colomn" = "' + vm.default_train_id_colomn + '",'
                         +'"default_train_data_colomn" = "' + vm.default_train_data_colomn + '",'   
-                        +'"mode" = "' + vm.picked                  
-                        +'"WHERE "user_id" = ' + vm.sharedState.user_id
-              console.log("update_sentence", update_sentence)           
-              db.run(update_sentence)
+                        +'"mode" = "' + vm.picked + '"'                  
+                        +'WHERE "user_id" = ' + vm.sharedState.user_id
+              console.log("update_sentence", update_sentence) 
+
+              db.run(update_sentence, function(err, rows) {
+                if (err){
+                  console.log(err)
+                }
+              });
+
             });
           }
         }  
@@ -377,11 +383,7 @@ export default {
         vm.sharedState.receive_request = vm.picked;  
       })
       vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
-
     },
-    
-
-
 
   },
   created () {

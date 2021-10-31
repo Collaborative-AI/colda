@@ -38,7 +38,7 @@
         </div>
         
       </div>
-      <button @click="getLog($route.query.from)" class="btn btn-success float-right">Refresh</button>
+      <button @click="getLog($route.query.from); checkSponsor($route.query.from)" class="btn btn-success float-right">Refresh</button>
       <!-- End Chat. Message Area. Messages. -->
     </div>
     <!-- End Panel Body -->

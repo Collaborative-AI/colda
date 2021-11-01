@@ -6,6 +6,22 @@
       <button @click="get_test_data_path()" class="btn btn-success">Select File</button>
     </div>
 
+<table class="table" v-if="select_data">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(pdata,idx) in pdatas" :key="pdata.index">
+      <th scope="row">{{idx+1}}</th>
+      <td v-for="pd in pdata" :key="pd.index">{{pd}}</td>
+    </tr>
+    
+  </tbody>
+</table>
+
     <div class="form-group">
       <label for="name">Input ID colomn </label>
       <input type="text" v-model="test_id_colomn" class="form-control" id="name" placeholder="">
@@ -60,6 +76,8 @@ export default {
       test_id_colomn: "",
       test_data_colomn: "",
       test_target_colomn: "",
+      pdatas:"",
+      select_data:false,
       PathForm: {
         test_data_path: "",
         test_id_path: "",
@@ -84,6 +102,7 @@ export default {
     },
     
     get_test_data_path() {
+      let vm=this
       let result = dialog.showOpenDialogSync({
         properties: ['openFile'],
         // sufix
@@ -101,6 +120,24 @@ export default {
           let path = result[0]
           fs.statSync(path);
           this.test_file_path = path
+          fs.readFile(path, 'utf8' , (err, data) => {
+            if (err) {
+              console.error(err)
+              return
+            }
+            
+            // data = data.split("\r\n")
+            // for (let i of data) { data[i] = data[i].split(",") }
+            // vm.pdatas=data
+            // console.log('preview',vm.pdatas[0][0])
+            
+            vm.pdatas = data.split("\r\n")
+            for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
+            vm.pdatas=vm.pdatas.slice(0,3)
+            vm.select_data=true
+            console.log('preview',vm.pdatas[0][0])
+          })
+
         } catch (err) {
           dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Data File')
           console.log('Please Select A Test Data File')
@@ -297,6 +334,7 @@ export default {
               // this.sponsor_request_show = true
               vm.test_id = ""
               vm.$router.push('/notifications')
+              vm.select_file=false
             })
             .catch((error) => {
               // handle error

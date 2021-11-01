@@ -24,7 +24,7 @@
       <button class="btn btn-success" @click="get_train_file_path()">Select File</button>
     </div>
 
-    <table class="table">
+    <table class="table" v-if="select_data">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -105,6 +105,7 @@ export default {
       train_target_colomn:"",
       assistor_id:"",
       pdatas:"",
+      select_data:false,
       PathForm: {
         train_data_path: "",
         train_id_path: "",
@@ -162,6 +163,7 @@ export default {
             vm.pdatas = data.split("\r\n")
             for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
             vm.pdatas=vm.pdatas.slice(0,3)
+            vm.select_data=true
             console.log('preview',vm.pdatas[0][0])
           })
         } catch (err) {
@@ -399,6 +401,7 @@ export default {
 
               vm.task_id = ""
               vm.$router.push('/notifications')
+              vm.select_data=false
 
             })
             .catch((error) => {

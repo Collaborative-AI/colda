@@ -160,11 +160,11 @@ export default {
             // vm.pdatas=data
             // console.log('preview',vm.pdatas[0][0])
             
-            vm.pdatas = data.split("\r\n")
+            vm.pdatas = data.split("\n")
             for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
             vm.pdatas=vm.pdatas.slice(0,3)
             vm.select_data=true
-            console.log('preview',vm.pdatas[0][0])
+            console.log('preview',vm.pdatas[0])
           })
         } catch (err) {
           dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')

@@ -55,7 +55,7 @@
                 </div>
             </nav>
         </aside>
-        <main class="col bg-faded py-3 flex-grow-1">
+        <main class="col-12 col-md-10 bg-faded py-3 flex-grow-1">
             <!-- <h2>Example</h2>
             <p>
                 This is a Bootstrap 4 example layout that includes a Sidebar menu. On larger screen widths, the Sidebar is on the 

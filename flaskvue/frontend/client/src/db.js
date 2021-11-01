@@ -8,6 +8,7 @@
 const sqlite3 = window.require('sqlite3').verbose();
 const node_path = window.require('path');
 const fs = window.require("fs")
+console.log('dbadress', __dirname)
 
 function createDatabase(file){
   console.log("file_position", file)

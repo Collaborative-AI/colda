@@ -177,6 +177,28 @@ export default {
     this.exe_position = new_root.exe_position
   },
   methods: {
+    handle_Algorithm_return_value(name, return_val, first_val, second_val) {
+      return_val = return_val.split("?")
+      console.log(name, return_val)
+
+      let indicator = false
+      // check if return_val obeys the correct return value
+      if (first_val != null){
+        if (return_val[0] != first_val){
+          return (indicator, return_val)
+        }
+      }
+        
+      if (second_val != null){
+         if (check_list[1] != second_val){
+           return (indicator, return_val)
+         }
+      }
+         
+      return {indicator, return_val}
+
+    },
+    
     make_hash(){
       let vm=this
       let hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + '1'

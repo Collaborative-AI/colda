@@ -2,7 +2,7 @@
 
 
 <template>
-  <div class="container g-pt-20">
+  <div class="container g-pt-20" style="overflow:auto">
     <div class="form-group">
       <label for="name">Input Task Name</label>
       <input type="text" v-model="task_name" class="form-control" id="name" placeholder="">
@@ -23,6 +23,23 @@
       <input type="text" v-model="train_file_path" class="form-control" id="name" placeholder="">
       <button class="btn btn-success" @click="get_train_file_path()">Select File</button>
     </div>
+
+    <table class="table" v-if="select_data">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(pdata,idx) in pdatas" :key="pdata.index">
+      <th scope="row">{{idx+1}}</th>
+      <td v-for="pd in pdata" :key="pd.index">{{pd}}</td>
+    </tr>
+    
+  </tbody>
+</table>
+    <!-- <div>{{pdatas[0]}}</div> -->
 
     <div class="form-group">
       <label for="name">Input ID column</label>
@@ -87,6 +104,9 @@ export default {
       train_data_colomn: "",
       train_target_colomn:"",
       assistor_username_list:"",
+      assistor_id:"",
+      pdatas:"",
+      select_data:false,
       PathForm: {
         train_data_path: "",
         train_id_path: "",
@@ -112,6 +132,7 @@ export default {
     
 
     get_train_file_path() {
+      let vm=this
       let result = dialog.showOpenDialogSync({
         properties: ['openFile'],
         // sufix
@@ -129,6 +150,23 @@ export default {
           let path = result[0]
           fs.statSync(path);
           this.train_file_path = path
+          fs.readFile(path, 'utf8' , (err, data) => {
+            if (err) {
+              console.error(err)
+              return
+            }
+            
+            // data = data.split("\r\n")
+            // for (let i of data) { data[i] = data[i].split(",") }
+            // vm.pdatas=data
+            // console.log('preview',vm.pdatas[0][0])
+            
+            vm.pdatas = data.split("\r\n")
+            for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
+            vm.pdatas=vm.pdatas.slice(0,3)
+            vm.select_data=true
+            console.log('preview',vm.pdatas[0][0])
+          })
         } catch (err) {
           dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
           console.log('Please Select A Train Data File')
@@ -366,6 +404,7 @@ export default {
 
               vm.task_id = ""
               vm.$router.push('/notifications')
+              vm.select_data=false
 
             })
             .catch((error) => {
@@ -403,6 +442,7 @@ export default {
     let new_root = store.changeroot()
     this.root = new_root.root;
     this.exe_position = new_root.exe_position
+    console.log('dbadress',__dirname)
   }
 }
 </script>

@@ -18,6 +18,7 @@
                         <div class="font-weight-bold mr-3">
                             <div class="text-truncate">Task Name: {{ message.task_name }}</div>
                             <div class="small">Task ID:  {{ message.task_id }}</div>
+                            <div class="small">Task Description:  {{ message.task_description }}</div>
                             <div class="small">{{ $moment(message.match_id_timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</div>
 
                             
@@ -181,33 +182,33 @@ export default {
           // console.log(typeof(this.messages))
           // console.log(this.messages.items[0].task_id)
           // console.log(this.messages.items[0])
-          for (let i=0; i<vm.messages.items.length; i++) {
-            console.log("get_user_history_message", vm.messages.items[i]);
+          // for (let i=0; i<vm.messages.items.length; i++) {
+          //   console.log("get_user_history_message", vm.messages.items[i]);
             
             // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + `task_id`;
-            let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
-            db.get(select_sentence, [vm.messages.items[i].task_id], function(err, row){
-              if (err){ 
-                console.log("get_name_from_frontend_db", err);
-              }
-              else{
-                // console.log(row.task_name)
-                // vm.messages.items[i]['task_name']=row.task_name
-                console.log("name_db", row)
-                if (row){
-                  vm.$set(vm.messages.items[i],'task_name',row.task_name)
-                }
-                console.log("vm.messages.items[i]", vm.messages.items[i])
-                // console.log(row.task_name)
-                // console.log(typeof(row))
-              }
+            // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
+            // db.get(select_sentence, [vm.messages.items[i].task_id], function(err, row){
+            //   if (err){ 
+            //     console.log("get_name_from_frontend_db", err);
+            //   }
+            //   else{
+            //     // console.log(row.task_name)
+            //     // vm.messages.items[i]['task_name']=row.task_name
+            //     console.log("name_db", row)
+            //     if (row){
+            //       vm.$set(vm.messages.items[i],'task_name',row.task_name)
+            //     }
+            //     console.log("vm.messages.items[i]", vm.messages.items[i])
+            //     // console.log(row.task_name)
+            //     // console.log(typeof(row))
+            //   }
         
         
         
-            })//end db.get
-            // console.log(vm.messages)
+            // })//end db.get
+            // // console.log(vm.messages)
             
-          }//end for
+          // }//end for
           // console.log(vm.messages)
         })
         .catch((error) => {

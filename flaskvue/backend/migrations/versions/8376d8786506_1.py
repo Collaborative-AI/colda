@@ -1,8 +1,8 @@
-"""full version1
+"""1
 
-Revision ID: 9ff22dcff001
+Revision ID: 8376d8786506
 Revises: 
-Create Date: 2021-09-17 13:32:13.416172
+Create Date: 2021-10-31 21:39:59.569638
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9ff22dcff001'
+revision = '8376d8786506'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,6 +21,8 @@ def upgrade():
     op.create_table('matched',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('task_id', sa.String(length=120), nullable=True),
+    sa.Column('task_name', sa.String(length=120), nullable=True),
+    sa.Column('task_description', sa.String(length=500), nullable=True),
     sa.Column('request_timestamp', sa.DateTime(), nullable=True),
     sa.Column('match_id_timestamp', sa.DateTime(), nullable=True),
     sa.Column('sponsor_id', sa.Integer(), nullable=True),

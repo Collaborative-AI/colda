@@ -1,5 +1,9 @@
 History page
 
+// Create 'Local_Data/id/task_id/' folder
+// const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
+// fs.mkdirSync(new_address, { recursive: true})
+
 // function sleep(time) {
   //   let startTime = window.performance.now();
   //   while (window.performance.now() - startTime < time) {}

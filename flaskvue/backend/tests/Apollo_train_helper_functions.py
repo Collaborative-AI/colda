@@ -71,10 +71,20 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         task_id = json_response['task_id']
         self.task_id = task_id
 
-        list_content = [2,3]
+        list_content = ['unittest2', 'unittest4']
         # file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
         file = "8\n4\n3\n12\n16\n17"
-        data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
+        data = json.dumps({'assistor_username_list': list_content, 'id_file': file, 'task_id': task_id, 'task_name': "", 'task_description': ""})
+        response = self.client.post('/find_assistor/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response, "wrong username")
+
+        headers = self.get_token_auth_headers('unittest', '123')
+        list_content = ['unittest2', 'unittest3']
+        # file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
+        file = "8\n4\n3\n12\n16\n17"
+        data = json.dumps({'assistor_username_list': list_content, 'id_file': file, 'task_id': task_id, 'task_name': "", 'task_description': ""})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -86,6 +96,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(queries), assistor_num+1)
         sponsor_random_id = queries[0].sponsor_random_id
         for i in range(len(queries)):
+            print("query", queries[i].sponsor_id)
             self.assertEqual(queries[i].sponsor_id, 1) 
             self.assertEqual(queries[i].task_id, task_id)
             self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)

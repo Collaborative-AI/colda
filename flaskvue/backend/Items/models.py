@@ -488,7 +488,9 @@ class Matched(PaginatedAPIMixin, db.Model):
     __tablename__ = 'matched'
     id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.String(120), index=True)
-    
+    task_name = db.Column(db.String(120))
+    task_description = db.Column(db.String(500))
+
     request_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     match_id_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
@@ -524,6 +526,8 @@ class Matched(PaginatedAPIMixin, db.Model):
             'match_id_timestamp': self.match_id_timestamp,
             'sponsor_random_id': self.sponsor_random_id,
             'assistor_random_id_pair': self.assistor_random_id_pair,
+            'task_name':self.task_name,
+            'task_description': self.task_description,
             # '_links': {
             #     'self': url_for('main.get_notification', id=self.id),
             #     'user_url': url_for('main.get_user', id=self.user_id)

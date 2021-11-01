@@ -86,40 +86,30 @@ export default {
   },
 
   methods: {
-    shan() {
-      this.sharedState.receive_request = 'not_receive'
-      // this.sharedState.pending.a='apple'
-      // this.sharedState.pending.b='big'
-    //   this.sharedState.pending.push({
-    //     a: 'add',
-    //     b: 'bust'
-    // })
-      // this.sharedState.pending.splice(0, 1);
-      this.sharedState.pending.pop()
-    //   console.log(this.sharedState.pending)
-    },
   },
 
 created () {
     
-    // this.getUserMessagesSenders(this.sharedState.user_id)
-    let select_sentence = 'SELECT * FROM User_Pending_Page WHERE user_id=?';
-    let vm=this;
-            db.all(select_sentence, [this.sharedState.user_id], function(err, row){
-            if (err){ 
-              console.log(err);
-            }
-            else{
-              console.log(row)
-              vm.pending=row
-              console.log(vm.pending)
-            }
-        
-            })//end db.get
-  },
+    const get_all_pending = {
+      task_id: task_id,
+    }
   
+    vm.$axios.post('/add_train_pending/', add_train_pending)
+      .then((response) => {
+        // handle success
+        console.log("add_train_pending response", response.data)
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error)
+        // console.log(error.response.data)
+        // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+      })
 
 
+    this.pending = row
+
+  },
   
 }
 // exports.default = Home

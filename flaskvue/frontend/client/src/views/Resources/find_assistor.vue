@@ -253,7 +253,9 @@ export default {
     onSubmit (e) {
       console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
-      if (this.task_id == ""){
+      if (this.assistor_username_list == ""){
+        dialog.showErrorBox('Please Type in the Assistor Username', 'Thank you very much')
+      }else if (this.task_id == ""){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
       }else{
         
@@ -346,7 +348,7 @@ export default {
               console.log(err)
             }
             
-            assistor_username_list = vm.assistor_username_list.split(",")
+            let assistor_username_list = vm.assistor_username_list.split(",")
             const find_assistor_data = {
               assistor_username_list: assistor_username_list,
               task_id: vm.task_id,
@@ -355,6 +357,7 @@ export default {
               id_file: hash_id_file_data,
             }
 
+            let user_id = vm.sharedState.user_id
             const Log_address = node_path.join(vm.root.toString(), user_id.toString(), "task", vm.task_id.toString(), "train", "log.txt")
 
             vm.$axios.post('/find_assistor/', find_assistor_data)
@@ -365,8 +368,7 @@ export default {
                 fs.appendFileSync(Log_address, "Username Wrong. Please start a new task")
                 return
               }
-              let user_id = vm.sharedState.user_id
-
+              
               console.log("node_path_log", Log_address)
               if(!fs.existsSync(Log_address)){
                 console.log("creating log.txt");

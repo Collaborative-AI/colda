@@ -75,8 +75,7 @@ def find_assistor():
     # print(user.id)
 
     # If the user dont type in the task name, we give it a basic name
-    if task_name == "":
-        task_name = "Cooperate with" + ",".join(assistor_username_list)
+    
 
     id_file = id_file.split("\n")
     data_array_id = set()
@@ -112,6 +111,10 @@ def find_assistor():
         print("g.current_user.id", g.current_user.id)
         matched.assistor_id_pair = user.id
         matched.task_id = task_id
+        if task_name == "":
+            temp_task_name = "Cooperate with " + g.current_user.username
+        matched.task_name = temp_task_name
+        matched.task_description = task_description
 
         matched.sponsor_random_id = sponsor_random_id
 
@@ -131,7 +134,9 @@ def find_assistor():
     # A A
     user = User.query.get_or_404(g.current_user.id)
     matched = Matched()
-    matched.task_name = task_name
+    if task_name == "":
+        temp_task_name = "Cooperate with " + ",".join(assistor_username_list)
+    matched.task_name = temp_task_name
     matched.task_description = task_description
     matched.sponsor_id = g.current_user.id
     matched.assistor_id_pair = g.current_user.id
@@ -181,10 +186,16 @@ def find_test_assistor():
         return bad_request('id_file is required.')
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
+    if 'test_name' not in data:
+        return bad_request('test_name is required.')
+    if 'test_description' not in data:
+        return bad_request('test_description is required.')
 
     task_id = data['task_id']
     id_file = data['id_file']
     test_id = data['test_id']
+    test_name = data['task_name']
+    test_description = data['task_description']
 
     assistor_id_list = []
     assistor_id_queries = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.assistor_id_pair != g.current_user.id,Matched.task_id == task_id, Matched.test_indicator == "train").all()
@@ -223,6 +234,10 @@ def find_test_assistor():
         matched.sponsor_id = g.current_user.id
         matched.assistor_id_pair = user.id
         matched.task_id = task_id
+        if test_name == "":
+            temp_test_name = "Test of " + task_id
+        matched.test_name = temp_test_name
+        matched.test_description = test_description
 
         matched.sponsor_random_id = sponsor_random_id
 
@@ -247,6 +262,10 @@ def find_test_assistor():
     matched.sponsor_id = g.current_user.id
     matched.assistor_id_pair = g.current_user.id
     matched.task_id = task_id
+    if test_name == "":
+        temp_test_name = "Test of " + task_id
+    matched.test_name = temp_test_name
+    matched.test_description = test_description
     matched.sponsor_random_id = sponsor_random_id
     matched.assistor_random_id_pair = sponsor_random_id
     matched.Matched_id_file = json.dumps(data_array_id)

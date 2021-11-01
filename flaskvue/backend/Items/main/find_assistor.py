@@ -46,16 +46,37 @@ def find_assistor():
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'assistor_id_list' not in data or not data.get('assistor_id_list'):
-        return bad_request('assistor_id_list is required.')
+    if 'assistor_username_list' not in data or not data.get('assistor_username_list'):
+        return bad_request('assistor_username_list is required.')
     if 'id_file' not in data or not data.get('id_file'):
         return bad_request('id_file is required.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
+    if 'task_name' not in data:
+        return bad_request('task_name is required.')
+    if 'task_description' not in data:
+        return bad_request('task_description is required.')
 
-    assistor_id_list = data['assistor_id_list']
+    assistor_username_list = data['assistor_username_list']
     id_file = data['id_file']
     task_id = data['task_id']
+    task_name = data['task_name']
+    task_description = data['task_description']
+    
+    assistor_id_list = []
+    for username in assistor_username_list:
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            return jsonify("wrong username")
+        print("user.id", username, user.id)
+        assistor_id_list.append(user.id)
+
+    # user = User.query.filter_by(username="unittest").first()
+    # print(user.id)
+
+    # If the user dont type in the task name, we give it a basic name
+    if task_name == "":
+        task_name = "Cooperate with" + ",".join(assistor_username_list)
 
     id_file = id_file.split("\n")
     data_array_id = set()
@@ -88,6 +109,7 @@ def find_assistor():
       
         matched = Matched()
         matched.sponsor_id = g.current_user.id
+        print("g.current_user.id", g.current_user.id)
         matched.assistor_id_pair = user.id
         matched.task_id = task_id
 
@@ -109,6 +131,8 @@ def find_assistor():
     # A A
     user = User.query.get_or_404(g.current_user.id)
     matched = Matched()
+    matched.task_name = task_name
+    matched.task_description = task_description
     matched.sponsor_id = g.current_user.id
     matched.assistor_id_pair = g.current_user.id
     matched.task_id = task_id

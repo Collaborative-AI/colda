@@ -14,8 +14,8 @@
     </div>
 
     <div class="form-group">
-      <label for="name">Input Assistor ID List (eg. 2,3)</label>
-      <input type="text" v-model="assistor_id" class="form-control" id="name" placeholder="">
+      <label for="name">Input Assistor username (eg. testa, testb)</label>
+      <input type="text" v-model="assistor_username_list" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
@@ -86,7 +86,7 @@ export default {
       train_id_colomn: "",
       train_data_colomn: "",
       train_target_colomn:"",
-      assistor_id:"",
+      assistor_username_list:"",
       PathForm: {
         train_data_path: "",
         train_id_path: "",
@@ -308,37 +308,39 @@ export default {
               console.log(err)
             }
             
-            let id_list=vm.assistor_id.split(",")
+            assistor_username_list = vm.assistor_username_list.split(",")
             const find_assistor_data = {
-              // assistor_id_list: [2],
-              assistor_id_list: id_list,
+              assistor_username_list: assistor_username_list,
               task_id: vm.task_id,
+              task_name: vm.task_name,
+              task_description: vm.task_description,
               id_file: hash_id_file_data,
             }
 
+            const Log_address = node_path.join(vm.root.toString(), user_id.toString(), "task", vm.task_id.toString(), "train", "log.txt")
+
             vm.$axios.post('/find_assistor/', find_assistor_data)
             .then((response) => {
+              if (response.data == "wrong username"){
+                console.log("Username Wrong", response)
+                vm.$toasted.success(`Username Wrong. Please start a new task"`, { icon: 'fingerprint' })
+                fs.appendFileSync(Log_address, "Username Wrong. Please start a new task")
+                return
+              }
               let user_id = vm.sharedState.user_id
 
-              const Log_address = node_path.join(vm.root.toString(), user_id.toString(), "task", vm.task_id.toString(), "train", "log.txt")
               console.log("node_path_log", Log_address)
               if(!fs.existsSync(Log_address)){
                 console.log("creating log.txt");
                 fs.openSync(Log_address, "w");
                 console.log("log.txt created");
               }
-              // const Log_address1 = vm.root + '/' + user_id + '/task/' + vm.task_id + '/' + 'train/' + 'log.txt'
-              // console.log("pin", Log_address1)
               // handle success
               console.log("1.1 Sponsor calls for help", response)
               vm.$toasted.success(`1.1 Sponsor calls for help`, { icon: 'fingerprint' })
 
               console.log("1.2 Sponsor sends id file")
               vm.$toasted.success(`1.2 Sponsor sends id file`, { icon: 'fingerprint' })
-
-              // Create 'Local_Data/id/task_id/' folder
-              // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/'
-              // fs.mkdirSync(new_address, { recursive: true})
 
               try {
                 fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
@@ -373,19 +375,19 @@ export default {
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
 
-            // let make_train_local = null;
-            // try{   
-            //   // make_train_local = ex.execSync(vm.exe_position + ' make_train_local  --root ' + vm.root 
-            //   //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --data_path ' + vm.PathForm.train_data_path + ' --target_path ' + vm.PathForm.train_target_path, {encoding: 'utf8'})  
-            //   // console.log("make_train_local", make_train_local)
-            //   make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
-            //                           + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
-            //                           + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_colomn 
-            //                           + ' --target_idx ' + vm.train_target_colomn,{encoding: 'utf8'})
-            //   console.log("make_train_local", make_train_local)
-            // }catch(err){
-            //   console.log(err)
-            // }
+            let make_train_local = null;
+            try{   
+              // make_train_local = ex.execSync(vm.exe_position + ' make_train_local  --root ' + vm.root 
+              //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --data_path ' + vm.PathForm.train_data_path + ' --target_path ' + vm.PathForm.train_target_path, {encoding: 'utf8'})  
+              // console.log("make_train_local", make_train_local)
+              make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
+                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
+                                      + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_colomn 
+                                      + ' --target_idx ' + vm.train_target_colomn,{encoding: 'utf8'})
+              console.log("make_train_local", make_train_local)
+            }catch(err){
+              console.log(err)
+            }
 
           })          
           

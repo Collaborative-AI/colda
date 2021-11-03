@@ -1,6 +1,8 @@
 const path = require('path');
 const os = window.require('os');
 const node_path = window.require('path');
+import db from './db'
+
 export default {
     debug: true,
     state: {
@@ -28,12 +30,8 @@ export default {
       // // windows
       // root: __dirname + "/../exp",
       // exe_position: __dirname + '/../dist/run/run.exe',
-
-
-
-      set_default: false,
-      receive_request: 'passive',
-      pending:[],
+      mode: "Manual",
+      // pending:[],
       // 用户登录后，就算刷新页面也能再次计算出 user_name
     //   user_name: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_name : '',
       // 用户登录后，就算刷新页面也能再次计算出 user_avatar
@@ -93,10 +91,24 @@ export default {
       return {root, exe_position}
     },
 
+    retrieve_setting_mode(user_id) {
 
+      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + user_id;
+      db.get(select_sentence, function(err, row){
+        if (err){
+          console.log(err);
+        }
 
+        console.log("retrieve_setting_mode_row", row)
 
-    
+        if (row == null){
+          mode = "Manual";
+        }
+        else{
+          mode = row.mode;
+        }  
+      })
+    },
     
   }
 

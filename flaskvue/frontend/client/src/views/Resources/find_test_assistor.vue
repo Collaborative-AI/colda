@@ -1,5 +1,16 @@
 <template>
   <div class="container g-pt-20">
+
+    <div class="form-group">
+      <label for="name">Input Test Name</label>
+      <input type="text" v-model="test_name" class="form-control" id="name" placeholder="">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Input Test Description</label>
+      <input type="text" v-model="test_description" class="form-control" id="name" placeholder="">
+    </div>
+
      <div class="form-group">
       <label for="name">Select Data File</label>
       <input type="text" v-model="test_file_path" class="form-control" id="name" placeholder="">
@@ -72,6 +83,8 @@ export default {
       sharedState: store.state,
       task_id: "",
       test_id: "",
+      test_name: "",
+      test_description: "",
       test_file_path: "",
       test_id_colomn: "",
       test_data_colomn: "",
@@ -292,6 +305,8 @@ export default {
           const payload = {
             task_id: vm.task_id,
             test_id: vm.test_id, 
+            test_name: vm.test_name,
+            test_description: vm.test_description,
             id_file: test_hash_id_file_data
           }
           

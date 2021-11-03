@@ -57,11 +57,11 @@
     <!-- <input type="radio" id="not_receive" value="not_receive" v-model="picked">
     <label for="not_receive">Not respond</label> -->
     <br>
-    <input type="radio" id="passive" value="passive" v-model="picked">
-    <label for="receive">Auto</label>
+    <input type="radio" id="Auto" value="Auto" v-model="sharedState.mode">
+    <label for="Auto">Auto</label>
     <br>
-    <input type="radio" id="active" value="active" v-model="picked">
-    <label for="active">Manual</label>
+    <input type="radio" id="Manual" value="Manual" v-model="sharedState.mode">
+    <label for="Manual">Manual</label>
     <br>
 
 
@@ -89,18 +89,17 @@ export default {
       default_train_file_path: "",
       default_train_id_colomn: "",
       default_train_data_colomn: "",
-      profileForm: {
-        default_train_data_path: "",
-        default_train_id_path: "",
-        default_test_data_path: "",
-        default_test_id_path: "",
-      },
-      picked: "",
+      // profileForm: {
+      //   default_train_data_path: "",
+      //   default_train_id_path: "",
+      //   default_test_data_path: "",
+      //   default_test_id_path: "",
+      // },
     }
   },
   methods: {
-    not_receive() {
-      this.sharedState.receive_request = 'not_receive'
+    // not_receive() {
+      // this.sharedState.receive_request = 'not_receive'
       // this.sharedState.pending.a='apple'
       // this.sharedState.pending.b='big'
     //   this.sharedState.pending.push({
@@ -109,7 +108,7 @@ export default {
     // })
     //   this.sharedState.pending.splice(0, 1);
     //   console.log(this.sharedState.pending)
-    },
+    // },
     // passive() {
 
     //   let vm = this
@@ -278,24 +277,24 @@ export default {
           // vm.profileForm.default_train_id_path = row.default_train_id_path
           // vm.profileForm.default_test_data_path = row.default_test_data_path
           // vm.profileForm.default_test_id_path = row.default_test_id_path
-          vm.default_train_file_path=row.default_train_file_path
-          vm.default_train_id_colomn=row.default_train_id_colomn
-          vm.default_train_data_colomn=row.default_train_data_colomn
-          vm.picked=row.mode
+          vm.default_train_file_path = row.default_train_file_path
+          vm.default_train_id_colomn = row.default_train_id_colomn
+          vm.default_train_data_colomn = row.default_train_data_colomn
+          vm.sharedState.mode = row.mode
         }
 
-        if (row == null){
-          console.log("get false")
-          vm.sharedState.set_default = false
-          vm.sharedState.receive_request = false
-        }else{
-            if (row.default_train_file_path == "" | row.default_train_id_colomn == "" | 
-              row.default_train_data_colomn == ""){
-            console.log("get false")
-            vm.sharedState.set_default = false
-            vm.sharedState.receive_request = false
-          }
-        }
+        // if (row == null){
+        //   console.log("get false")
+        //   vm.
+        // }else{
+        //     if (row.default_train_file_path == "" | row.default_train_id_colomn == "" | 
+        //       row.default_train_data_colomn == ""){
+        //     console.log("get false")
+        //     vm.sharedState.set_default = false
+        //     vm.sharedState.receive_request = false
+        //   }
+        // }
+
       })
     },
     onSubmit (e) {
@@ -350,7 +349,7 @@ export default {
           // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
           let insert_new_val = `INSERT INTO "User_Default_Path" ("user_id", "default_train_file_path", "default_train_id_colomn", "default_train_data_colomn", "mode") VALUES 
             (`+`"`+vm.sharedState.user_id+`", "`+vm.default_train_file_path+`", "`+vm.default_train_id_colomn+`", "`
-            +vm.default_train_data_colomn+`", "`+vm.picked+`")`
+            +vm.default_train_data_colomn+`", "`+vm.sharedState.mode+`")`
           console.log("insert_new_val", insert_new_val)
           console.log("db", db)
           db.run(insert_new_val, function(err){
@@ -366,7 +365,7 @@ export default {
                         +'SET "default_train_file_path" = "' + vm.default_train_file_path + '",'
                         +'"default_train_id_colomn" = "' + vm.default_train_id_colomn + '",'
                         +'"default_train_data_colomn" = "' + vm.default_train_data_colomn + '",'   
-                        +'"mode" = "' + vm.picked + '" '                  
+                        +'"mode" = "' + vm.sharedState.mode + '" '                  
                         +'WHERE "user_id" = ' + vm.sharedState.user_id
               console.log("update_sentence", update_sentence) 
               
@@ -380,8 +379,8 @@ export default {
             });
           }
         }  
-        console.log("vm.picked", vm.picked)
-        vm.sharedState.receive_request = vm.picked;  
+        
+        console.log("vm.sharedState.mode", vm.sharedState.mode)
       })
       vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
     },
@@ -390,17 +389,6 @@ export default {
   created () {
     const user_id = this.sharedState.user_id
     this.getUser(user_id)
-    if (this.sharedState.receive_request=='passive')
-    {
-      this.picked='passive'
-    }
-    else if(this.sharedState.receive_request=='active')
-    {
-      this.picked='active'
-    }
-    else{
-      this.picked='not_receive'
-    }
   }
 }
 </script>

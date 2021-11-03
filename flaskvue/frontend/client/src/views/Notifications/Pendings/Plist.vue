@@ -14,8 +14,9 @@
                         <!-- <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div> -->
                         <div class="font-weight-bold mr-3">
                             <div class="text-truncate">Task Name: {{ pend.task_name }}</div>
-                            <div class="small">Task ID:  {{ pend.task_id }}</div>
-                            
+                            <div v-if="pend.test_indicator == 'train'" class="small">Task ID:  {{ pend.task_id }}</div>
+                            <div v-else class='small'>Test ID: {{ pend.test_id }}</div>
+                            <div class="small">Task Description:  {{ pend.task_description }}</div>
                         </div>
                         <span class="ml-auto mb-auto">
                             <!-- <div class="btn-group">
@@ -29,7 +30,7 @@
                             </div> -->
                             <br />
                             <div class="text-right text-muted pt-1">
-                              <router-link v-bind:to="{ name: 'PendItem', params: { task_id: pend.task_id } }">
+                              <router-link v-bind:to="{ name: 'PendItem', params: { task_id: pend.task_id, test_id: pend.test_id, test_description: pend.test_description, test_indicator: pend.test_indicator } }">
                                 <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Details</button>
                               </router-link>
                             </div>
@@ -86,40 +87,21 @@ export default {
   },
 
   methods: {
-    shan() {
-      this.sharedState.receive_request = 'not_receive'
-      // this.sharedState.pending.a='apple'
-      // this.sharedState.pending.b='big'
-    //   this.sharedState.pending.push({
-    //     a: 'add',
-    //     b: 'bust'
-    // })
-      // this.sharedState.pending.splice(0, 1);
-      this.sharedState.pending.pop()
-    //   console.log(this.sharedState.pending)
-    },
   },
 
 created () {
-    
-    // this.getUserMessagesSenders(this.sharedState.user_id)
-    let select_sentence = 'SELECT * FROM User_Pending_Page WHERE user_id=?';
-    let vm=this;
-            db.all(select_sentence, [this.sharedState.user_id], function(err, row){
-            if (err){ 
-              console.log(err);
-            }
-            else{
-              console.log(row)
-              vm.pending=row
-              console.log(vm.pending)
-            }
-        
-            })//end db.get
-  },
   
+    this.$axios.get('/get_all_pending/')
+      .then((response) => {
+        // handle success
+        console.log("get_all_pending response", response.data)
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error)
+      })
 
-
+  },
   
 }
 // exports.default = Home

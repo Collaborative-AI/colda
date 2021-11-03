@@ -110,8 +110,7 @@ export default {
       sharedState: store.state,
       unread_request_show: false,
       assistor_num: 0,
-      max_round: 2,
-      picked: "receive",
+      max_round: 3,
       root: '',
       exe_position: '',
       
@@ -125,35 +124,7 @@ export default {
       this.$router.push('/login')
     },
 
-    not_receive() {
-      this.sharedState.receive_request = false
-      // this.sharedState.pending.a='apple'
-      // console.log(this.sharedState.pending)
-    },
-    receive() {
-
-      let vm = this
-      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
-      db.get(select_sentence, function(err, row){
-        if (err){
-          console.log(err);
-        }
-
-        console.log(row)
-
-        if (row == null | row.default_data_path == "" | row.default_id_path == "" |
-            row.default_test_data_path == "" | row.default_test_id_path == ""){
-          console.log("get false")
-          vm.sharedState.set_default = false
-          vm.sharedState.receive_request = false
-          vm.$toasted.success('Please Fill the Default Setting', { icon: 'fingerprint' })
-          vm.picked = "One";
-        }
-        else{
-          vm.sharedState.receive_request = true
-        }  
-      })
-    },
+    
 
     handle_train_log_address(task_id) {
       const Log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
@@ -199,15 +170,13 @@ export default {
       let vm = this
 
       console.log("this.sharedState.receive_request", this.sharedState.receive_request)
-      if (this.sharedState.receive_request == 'passive' || this.sharedState.receive_request== 'active'){
+      if ( true ){
         console.log("2.1 Update request notification response", unread_request_notification)
         this.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
 
         let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
         for (let task_id in cur_unread_request_Taskid_dict){
-          
-          // const assistor_store_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/'
-          // fs.mkdirSync(assistor_store_folder, { recursive: true})
+
           if (this.sharedState.receive_request=='passive'){
 
           let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
@@ -281,36 +250,29 @@ export default {
 
           })  
         }  //end if
-        //else if active
-        else {
+
+        //else if Manual
+        else if (this.sharedState.receive_request == 'Manual'){
           console.log(task_id)
 
-          let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
-            db.get(select_sentence, [task_id], function(err, row){
-            if (err){ 
-              console.log(err);
+          const add_train_pending = {
+              task_id: task_id,
             }
-            else{
-              // vm.sharedState.pending.push({task_name: row.task_name, task_id: task_id})
-              // console.log(vm.sharedState.pending)
-              let db_task_id=row.task_id
-              let db_task_name=row.task_name
-              let db_task_description=row.task_description
-              let insert_sentence = `INSERT INTO "User_Pending_Page"("task_name", "task_description", "user_id", "task_id") VALUES 
-              (`+`"`+db_task_name +`", "`+db_task_description+`", "`+vm.sharedState.user_id+ `", "` + db_task_id + `")`
-          console.log("insert_sentence", insert_sentence)
-          db.run(insert_sentence, function(err){
-            if (err){
-              console.log(err);
-            }
-          })
-            }
-        
-            })//end db.get
-          // vm.sharedState.pending.push({task_id: task_id})
-          // console.log(vm.sharedState.pending)
           
-        }//end else
+          vm.$axios.post('/add_train_pending/', add_train_pending)
+            .then((response) => {
+              // handle success
+              console.log("add_train_pending response", response.data)
+            })
+            .catch((error) => {
+              // handle error
+              console.log(error)
+              // console.log(error.response.data)
+              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            })
+          
+          }//end else
+
         }//end for
       }
       else{
@@ -320,28 +282,6 @@ export default {
       }
     },
 
-    // assistor_csv() {
-      
-    //   csv2arr.csv(this.$refs.csvData.files[0]).then((res)=>{
-    //   this.unread_request_show  = false
-
-    //   console.log('assistor数据', res)
-    //   const payload = {
-    //     task_id: this.task_id,
-    //     file: res,
-    //   }
-
-    //   this.$axios.post('/match_assistor_id/', payload)
-    //     .then((response) => {
-    //     // handle success
-    //     console.log(`assistor sends the csv file.`, response)
-    //     this.$toasted.success(`assistor sends the csv file.`, { icon: 'fingerprint' })
-    //     })
-    //     .catch((error) => {
-    //       console.log(error)
-    //     })
-    //   }) 
-    // },
 
     unread_match_id(unread_match_id_notification) {
       
@@ -1126,7 +1066,7 @@ export default {
     unread_test_request(unread_test_request_notification) {
       let vm = this;
       // Only assistor calls this function
-      if (this.sharedState.receive_request == 'passive' || this.sharedState.receive_request == 'active'){
+      if (this.sharedState.receive_request == 'Auto'){
         
         console.log("2.1 Update Test request notification response", unread_test_request_notification)
         this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
@@ -1202,10 +1142,12 @@ export default {
                 // console.log(error.response.data)
                 // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
               })
-
           });
-          
         }
+      }else if (this.sharedState.receive_request == 'Manual'){
+
+
+
       }else{
         console.log("unread request: If you want to receive, open receive")
         dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")

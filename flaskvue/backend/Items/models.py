@@ -375,6 +375,28 @@ class Stop(PaginatedAPIMixin, db.Model):
     test_id = db.Column(db.String(120), index=True)
     test_indicator = db.Column(db.String(10))
 
+class Pending(PaginatedAPIMixin, db.Model):
+    __tablenale__ = 'pending'
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    pending_assistor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    pending_task_id = db.Column(db.String(120), index=True)
+    pending_test_id = db.Column(db.String(120), index=True)
+    pending_task_name = db.Column(db.String(120))
+    pending_task_description = db.Column(db.String(500))
+    test_indicator = db.Column(db.String(10))
+
+    def to_dict(self):
+        data = {
+            'pending_task_id': self.pending_task_id,
+            'pending_test_id': self.pending_test_id,
+            'pending_task_name': self.pending_task_name,
+            'pending_task_description': self.pending_task_description,
+            'test_indicator': self.test_indicator,
+        } 
+        return data
+
 
 class Message(PaginatedAPIMixin, db.Model):
     __tablename__ = 'messages'
@@ -490,6 +512,8 @@ class Matched(PaginatedAPIMixin, db.Model):
     task_id = db.Column(db.String(120), index=True)
     task_name = db.Column(db.String(120))
     task_description = db.Column(db.String(500))
+    test_name = db.Column(db.String(120))
+    test_description = db.Column(db.String(500))
 
     request_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     match_id_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
@@ -539,3 +563,4 @@ class Matched(PaginatedAPIMixin, db.Model):
         for key in ['file_to_match', 'timestamp']:
             if key in data:
                 setattr(self, key, data[key])
+

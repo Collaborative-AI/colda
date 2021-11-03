@@ -194,8 +194,8 @@ def find_test_assistor():
     task_id = data['task_id']
     id_file = data['id_file']
     test_id = data['test_id']
-    test_name = data['task_name']
-    test_description = data['task_description']
+    test_name = data['test_name']
+    test_description = data['test_description']
 
     assistor_id_list = []
     assistor_id_queries = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.assistor_id_pair != g.current_user.id,Matched.task_id == task_id, Matched.test_indicator == "train").all()

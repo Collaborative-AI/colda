@@ -48,9 +48,6 @@ db.serialize(function() {
                                                    default_test_data_path     text, \
                                                    default_test_id_path       text)");
 
-  
- 
-
   db.run("CREATE TABLE IF NOT EXISTS User_Chosen_Path (id     int primary key, \
                                            task_name          text,\
                                            task_description   text,\

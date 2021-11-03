@@ -90,9 +90,38 @@ def get_all_pending():
     '''
 
     # Retrieve sponsor id of thie unique test_id
-    queries = Pending.query.filter(Pending.pending_assistor_id == g.current_user.id).all()
+    all_pending_items = Pending.query.filter(Pending.pending_assistor_id == g.current_user.id).all()
+    res = [item.to_dict() for item in all_pending_items]
+
+    data = {"all_pending_items": res}
     
-    res = []
-    
-    
-    return jsonify("add test pending successfully")
+    return jsonify(data)
+
+@main.route('/delete_pending', methods=['POST'])
+@token_auth.login_required
+def dalete_pending():
+    '''
+     Delete the specific task_id or test_id in pending
+    '''
+    data = request.get_json()
+    if not data:
+        return bad_request('You must post JSON data.')
+    if 'task_id' not in data:
+        return bad_request('task_id is required.')
+    if 'test_id' not in data:
+        return bad_request('test_id is required.')
+    if 'test_indicator' not in data or not data.get('test_indicator'):
+        return bad_request('test_indicator is required.')
+
+    task_id = data['task_id']
+    test_id = data['test_id']
+    test_indicator = data['test_indicator']
+
+    if test_indicator == "train":
+        Pending.query.filter(Pending.pending_assistor_id == g.current_user.id, Pending.test_indicator == test_indicator, Pending.pending_task_id == task_id).delete()
+        db.session.commit()
+    else:
+        Pending.query.filter(Pending.pending_assistor_id == g.current_user.id, Pending.test_indicator == test_indicator, Pending.pending_test_id == test_id).delete()
+        db.session.commit()
+
+    return jsonify("Sucessfully delete")

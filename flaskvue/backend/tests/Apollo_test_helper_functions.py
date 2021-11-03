@@ -45,7 +45,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
             'Content-Type': 'application/json'
         }
 
-    def test_find_test_assistor_no_data_helper(self):
+    def find_test_assistor_no_data_helper(self):
 
         # check find_assistor function with no data uploaded
         u1 = User(username='unittest', email='john@163.com')
@@ -64,7 +64,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
     
     
-    def test_find_test_assistor_two_assistors_helper(self):
+    def find_test_assistor_two_assistors_helper(self):
 
         # Check 1 sponsor with 2 assistors
         # Construct 2 new Matched rows
@@ -88,10 +88,10 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
 
-        list_content = [2,3]
+        list_content = ['unittest2', 'unittest3']
         # file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
         file = "0\n4\n1"
-        data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
+        data = json.dumps({'assistor_username_list': list_content, 'id_file': file, 'task_id': task_id, 'task_name': "", 'task_description': ""})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -124,7 +124,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
 
         # file = [['a','b','c'],[0,1,2],[5,5,6],[1,3,6]]
         file = "8\n4\n3"
-        data = json.dumps({'task_id': task_id, 'id_file': file, 'test_id': test_id})
+        data = json.dumps({'task_id': task_id, 'id_file': file, 'test_id': test_id, 'test_name': "", 'test_description': ""})
         response = self.client.post('/find_test_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -154,7 +154,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(queries), 3)
         self.assertEqual(queries[0].sponsor_id, 1)
         
-        return test_id, list_content
+        return task_id, test_id, list_content
 
     def unread_test_request_two_users_helper(self, test_id, list_content):
 

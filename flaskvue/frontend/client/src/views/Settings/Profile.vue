@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow:auto">
     <!-- <h1>Setting</h1> -->
     <!-- <form @submit.prevent="onSubmit">
       <div class="form-group">
@@ -23,6 +23,21 @@
       <input type="text" v-model="default_train_file_path" class="form-control" id="name" placeholder="">
       <button @click="get_default_train_file_path()" class="btn btn-success">Select File</button>
     </div>
+    <table class="table" v-if="select_data">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(pdata,idx) in pdatas" :key="pdata.index">
+          <th scope="row">{{idx+1}}</th>
+          <td v-for="pd in pdata" :key="pd.index">{{pd}}</td>
+        </tr>
+        
+      </tbody>
+    </table>
     <div class="form-group">
       <label for="name">Input id column</label>
       <input type="text" v-model="default_train_id_column" class="form-control" id="name" placeholder="">
@@ -89,6 +104,8 @@ export default {
       default_train_file_path: "",
       default_train_id_column: "",
       default_train_data_column: "",
+      pdatas:"",
+      select_data:false,
       // profileForm: {
       //   default_train_data_path: "",
       //   default_train_id_path: "",
@@ -160,6 +177,7 @@ export default {
     //   })
     // },
     get_default_train_file_path() {
+      let vm = this
       let result = dialog.showOpenDialogSync({
         properties: ['openFile'],
         // sufix
@@ -179,6 +197,24 @@ export default {
           // this.profileForm.default_train_data_path = path
           // this.profileForm.default_test_data_path = path
           this.default_train_file_path = path
+
+          fs.readFile(path, 'utf8' , (err, data) => {
+            if (err) {
+              console.error(err)
+              return
+            }
+            
+            // data = data.split("\r\n")
+            // for (let i of data) { data[i] = data[i].split(",") }
+            // vm.pdatas=data
+            // console.log('preview',vm.pdatas[0][0])
+            
+            vm.pdatas = data.split("\n")
+            for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
+            vm.pdatas=vm.pdatas.slice(0,3)
+            vm.select_data=true
+            console.log('preview',vm.pdatas[0])
+          })
         } catch (err) {
           dialog.showErrorBox('Train Data Path not Correct', 'Please Select A Train Data File')
           console.log('Please Select A Train Data File')

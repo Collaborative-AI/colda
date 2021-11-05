@@ -1,5 +1,5 @@
 <template>
-  <div class="container g-pt-20">
+  <div class="container g-pt-20" style="overflow:auto">
 
     <div class="form-group">
       <label for="name">Input Test Name</label>
@@ -17,21 +17,21 @@
       <button @click="get_test_data_path()" class="btn btn-success">Select File</button>
     </div>
 
-<table class="table" v-if="select_data">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="(pdata,idx) in pdatas" :key="pdata.index">
-      <th scope="row">{{idx+1}}</th>
-      <td v-for="pd in pdata" :key="pd.index">{{pd}}</td>
-    </tr>
-    
-  </tbody>
-</table>
+    <table class="table" v-if="select_data">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(pdata,idx) in pdatas" :key="pdata.index">
+          <th scope="row">{{idx+1}}</th>
+          <td v-for="pd in pdata" :key="pd.index">{{pd}}</td>
+        </tr>
+        
+      </tbody>
+    </table>
 
     <div class="form-group">
       <label for="name">Input ID column </label>
@@ -144,7 +144,7 @@ export default {
             // vm.pdatas=data
             // console.log('preview',vm.pdatas[0][0])
             
-            vm.pdatas = data.split("\r\n")
+            vm.pdatas = data.split("\n")
             for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
             vm.pdatas=vm.pdatas.slice(0,3)
             vm.select_data=true

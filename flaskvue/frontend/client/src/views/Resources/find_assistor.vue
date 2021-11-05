@@ -25,20 +25,20 @@
     </div>
 
     <table class="table" v-if="select_data">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="(pdata,idx) in pdatas" :key="pdata.index">
-      <th scope="row">{{idx+1}}</th>
-      <td v-for="pd in pdata" :key="pd.index">{{pd}}</td>
-    </tr>
-    
-  </tbody>
-</table>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(pdata,idx) in pdatas" :key="pdata.index">
+          <th scope="row">{{idx+1}}</th>
+          <td v-for="pd in pdata" :key="pd.index">{{pd}}</td>
+        </tr>
+        
+      </tbody>
+    </table>
     <!-- <div>{{pdatas[0]}}</div> -->
 
     <div class="form-group">

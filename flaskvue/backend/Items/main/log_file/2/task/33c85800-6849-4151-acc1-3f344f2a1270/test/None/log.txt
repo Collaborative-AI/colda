@@ -1,0 +1,8 @@
+Assistor training stage
+-------------------- unread request begins
+2.1: assistor match_assistor_id begins
+2.3: assistor matching_done number of assistor: 1
+2.4: Server sends unread match id to all participants of this task
+2.5: assistor match_assistor_id done
+------------------------------ unread request done
+

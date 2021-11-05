@@ -16,9 +16,15 @@
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
                         <!-- <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div> -->
                         <div class="font-weight-bold mr-3">
-                            <div class="text-truncate">Task Name: {{ message.task_name }}</div>
+                            <div v-if="message.test_indicator == 'test' " class="text-truncate">Test Name: {{ message.test_name }}</div>
+                            <div v-if="message.test_indicator == 'train' " class="text-truncate">Task Name: {{ message.task_name }}</div>
                             <div class="small">Task ID:  {{ message.task_id }}</div>
-                            <div class="small">Task Description:  {{ message.task_description }}</div>
+                            <div v-if="message.test_indicator == 'train' " class="small">Task Description:  {{ message.task_description }}</div>
+                            <div v-if="message.test_indicator == 'test' " class="small">Test ID:  {{ message.test_id }}</div>
+                            
+                            <div v-if="message.test_indicator == 'test' " class="small">Test Description:  {{ message.test_description }}</div>
+
+
                             <div class="small">{{ $moment(message.match_id_timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</div>
 
                             

@@ -33,7 +33,7 @@ def get_user_history():
     print("c")
     
     participated_task = Matched.to_collection_dict(
-        Matched.query.filter(Matched.assistor_id_pair == g.current_user.id).group_by(Matched.task_id).order_by(Matched.match_id_timestamp.desc()), page, per_page, 
+        Matched.query.filter(Matched.assistor_id_pair == g.current_user.id).order_by(Matched.match_id_timestamp.desc()), page, per_page, 
           'None', id=g.current_user.id)
 
     sorted_items = sorted(participated_task['items'], key=itemgetter('match_id_timestamp'), reverse=True)

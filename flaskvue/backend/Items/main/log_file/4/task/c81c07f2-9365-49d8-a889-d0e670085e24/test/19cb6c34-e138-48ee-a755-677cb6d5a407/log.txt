@@ -1,0 +1,8 @@
+-------------------- unread test match id begins
+Test 3.1: get_user_test_match_id begins
+Test 3.2: get_user_test_match_id done
+Test 3.3:" assistor send_test_output start
+Test 3.4:" assistor uploads all test output
+Test 3.5:" assistor send_test_output done
+----------------------- unread_test_match_id done
+

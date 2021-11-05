@@ -546,6 +546,10 @@ class Matched(PaginatedAPIMixin, db.Model):
         data = {
             'id': self.id,
             'task_id': self.task_id,
+            'test_id': self.test_id,
+            'test_name': self.test_name,
+            'test_description': self.test_description,
+            'test_indicator': self.test_indicator,
             'request_timestamp': self.request_timestamp,
             'match_id_timestamp': self.match_id_timestamp,
             'sponsor_random_id': self.sponsor_random_id,

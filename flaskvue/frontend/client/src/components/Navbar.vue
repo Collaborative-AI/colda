@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
-        <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1">
+        <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1" style="overflow:auto">
             <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2">
                 <div class="collapse navbar-collapse ">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
@@ -30,7 +30,7 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                       
-                        <li class="nav-item">
+                        <li v-if="sharedState.user_id==1 || sharedState.user_id==2" class="nav-item">
                           <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
                         </li>                    
                         <!-- <li class="nav-item">
@@ -55,7 +55,7 @@
                 </div>
             </nav>
         </aside>
-        <main class="col-12 col-md-10 bg-faded py-3 flex-grow-1">
+        <main class="col-12 col-md-10 bg-faded py-3 flex-grow-1" >
             <!-- <h2>Example</h2>
             <p>
                 This is a Bootstrap 4 example layout that includes a Sidebar menu. On larger screen widths, the Sidebar is on the 

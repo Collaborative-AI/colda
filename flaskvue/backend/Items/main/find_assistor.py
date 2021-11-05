@@ -38,9 +38,10 @@ def create_new_test_task():
     
     return response
 
-@main.route('/find_assistor', methods=['POST'])
+@main.route('/find_assistor', methods=['POST','GET'])
 @token_auth.login_required
 def find_assistor():
+    print('sdkek')
 
     # find assistor algorithm, return all_assistor_id
     data = request.get_json()
@@ -111,9 +112,12 @@ def find_assistor():
         print("g.current_user.id", g.current_user.id)
         matched.assistor_id_pair = user.id
         matched.task_id = task_id
+        
         if task_name == "":
             temp_task_name = "Cooperate with " + g.current_user.username
-        matched.task_name = temp_task_name
+            matched.task_name = temp_task_name
+        else:
+            matched.task_name = task_name
         matched.task_description = task_description
 
         matched.sponsor_random_id = sponsor_random_id
@@ -136,7 +140,10 @@ def find_assistor():
     matched = Matched()
     if task_name == "":
         temp_task_name = "Cooperate with " + ",".join(assistor_username_list)
-    matched.task_name = temp_task_name
+        matched.task_name = temp_task_name
+    else:
+        matched.task_name = task_name
+    
     matched.task_description = task_description
     matched.sponsor_id = g.current_user.id
     matched.assistor_id_pair = g.current_user.id
@@ -236,7 +243,10 @@ def find_test_assistor():
         matched.task_id = task_id
         if test_name == "":
             temp_test_name = "Test of " + task_id
-        matched.test_name = temp_test_name
+            matched.test_name = temp_test_name
+        else:
+            matched.test_name = test_name
+        
         matched.test_description = test_description
 
         matched.sponsor_random_id = sponsor_random_id
@@ -262,9 +272,12 @@ def find_test_assistor():
     matched.sponsor_id = g.current_user.id
     matched.assistor_id_pair = g.current_user.id
     matched.task_id = task_id
+    
     if test_name == "":
         temp_test_name = "Test of " + task_id
-    matched.test_name = temp_test_name
+        matched.test_name = temp_test_name
+    else:
+        matched.test_name = test_name
     matched.test_description = test_description
     matched.sponsor_random_id = sponsor_random_id
     matched.assistor_random_id_pair = sponsor_random_id

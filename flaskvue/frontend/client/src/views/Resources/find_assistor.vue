@@ -43,17 +43,17 @@
 
     <div class="form-group">
       <label for="name">Input ID column</label>
-      <input type="text" v-model="train_id_colomn" class="form-control" id="name" placeholder="">
+      <input type="text" v-model="train_id_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input data colomn (eg. 3-6)</label>
-      <input type="text" v-model="train_data_colomn" class="form-control" id="name" placeholder="">
+      <label for="name">Input data column (eg. 3-6)</label>
+      <input type="text" v-model="train_data_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input target colomn</label>
-      <input type="text" v-model="train_target_colomn" class="form-control" id="name" placeholder="">
+      <label for="name">Input target column</label>
+      <input type="text" v-model="train_target_column" class="form-control" id="name" placeholder="">
     </div>
 
      <!-- <div class="form-group">
@@ -100,9 +100,9 @@ export default {
       task_name: "",
       task_description: "",
       train_file_path: "",
-      train_id_colomn: "",
-      train_data_colomn: "",
-      train_target_colomn:"",
+      train_id_column: "",
+      train_data_column: "",
+      train_target_column:"",
       assistor_username_list:"",
       assistor_id:"",
       pdatas:"",
@@ -304,8 +304,8 @@ export default {
           //     (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
           // console.log("insert_sentence", insert_sentence)
           console.log(vm.train_file_path)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_colomn", "train_data_colomn" , "train_target_colomn") VALUES 
-              (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_colomn+`", "`+vm.train_data_colomn+`", "`+vm.train_target_colomn+`")`
+          let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_column", "train_data_column" , "train_target_column") VALUES 
+              (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`")`
           console.log("insert_sentence", insert_sentence) 
           db.run(insert_sentence, function(err){
             if (err){
@@ -320,7 +320,7 @@ export default {
               console.log("vm.exe_position", vm.exe_position)
               hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                                       + ' --task_id ' + vm.task_id + ' --mode train' + ' --dataset_path ' + vm.train_file_path 
-                                      + ' --id_idx ' + vm.train_id_colomn, {encoding: 'utf8'})
+                                      + ' --id_idx ' + vm.train_id_column, {encoding: 'utf8'})
               console.log("hash_id_file_address", hash_id_file_address)
               hash_id_file_address = hash_id_file_address.split("?")
               console.log("hash_id_file_address_2", hash_id_file_address)
@@ -348,19 +348,22 @@ export default {
               console.log(err)
             }
             
-            let assistor_username_list = vm.assistor_username_list.split(",")
-            const find_assistor_data = {
-              assistor_username_list: assistor_username_list,
-              task_id: vm.task_id,
-              task_name: vm.task_name,
-              task_description: vm.task_description,
-              id_file: hash_id_file_data,
-            }
-
+            
             let user_id = vm.sharedState.user_id
             const Log_address = node_path.join(vm.root.toString(), user_id.toString(), "task", vm.task_id.toString(), "train", "log.txt")
 
-            vm.$axios.post('/find_assistor/', find_assistor_data)
+            let assistor_username_list = vm.assistor_username_list.split(",")
+            const find_assistor_data = {
+              assistor_username_list: assistor_username_list,
+              id_file: hash_id_file_data,
+              task_id: vm.task_id,
+              task_name: vm.task_name,
+              task_description: vm.task_description,
+          
+            }
+            console.log('fins_assistor_data', find_assistor_data)
+
+            vm.$axios.post('/find_assistor', find_assistor_data)
             .then((response) => {
               if (response.data == "wrong username"){
                 console.log("Username Wrong", response)
@@ -368,6 +371,7 @@ export default {
                 fs.appendFileSync(Log_address, "Username Wrong. Please start a new task")
                 return
               }
+
               
               console.log("node_path_log", Log_address)
               if(!fs.existsSync(Log_address)){
@@ -423,8 +427,8 @@ export default {
               // console.log("make_train_local", make_train_local)
               make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
                                       + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
-                                      + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_colomn 
-                                      + ' --target_idx ' + vm.train_target_colomn,{encoding: 'utf8'})
+                                      + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_column 
+                                      + ' --target_idx ' + vm.train_target_column,{encoding: 'utf8'})
               console.log("make_train_local", make_train_local)
             }catch(err){
               console.log(err)

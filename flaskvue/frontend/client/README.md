@@ -59,5 +59,13 @@ Simple Test Flow:
         3. npm run electron:build
 
 
+test procedure:
+
+format:
+    目标，当前块在测试什么？期望的结果是什么？
+    可能的错误，可能的错误有哪些？
+    执行步骤：list
+
+
 
 

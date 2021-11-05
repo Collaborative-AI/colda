@@ -60,16 +60,20 @@ def add_test_pending():
         return bad_request('You must post JSON data.')
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
+    
 
     test_id = data['test_id']
+    
 
     # Retrieve task name and task description of thie unique task_id
     query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
     test_name = query.test_name
     test_description = query.test_description
+    task_id = query.task_id
 
     pending = Pending()
     pending.pending_assistor_id = g.current_user.id
+    pending.pending_task_id = task_id
     pending.pending_test_id = test_id
     pending.pending_task_name = test_name
     pending.pending_task_description = test_description

@@ -34,18 +34,18 @@
 </table>
 
     <div class="form-group">
-      <label for="name">Input ID colomn </label>
-      <input type="text" v-model="test_id_colomn" class="form-control" id="name" placeholder="">
+      <label for="name">Input ID column </label>
+      <input type="text" v-model="test_id_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input data colomn (eg. 3-6)</label>
-      <input type="text" v-model="test_data_colomn" class="form-control" id="name" placeholder="">
+      <label for="name">Input data column (eg. 3-6)</label>
+      <input type="text" v-model="test_data_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input target colomn</label>
-      <input type="text" v-model="test_target_colomn" class="form-control" id="name" placeholder="">
+      <label for="name">Input target column</label>
+      <input type="text" v-model="test_target_column" class="form-control" id="name" placeholder="">
     </div>
     
     <!-- <div class="form-group">
@@ -86,9 +86,9 @@ export default {
       test_name: "",
       test_description: "",
       test_file_path: "",
-      test_id_colomn: "",
-      test_data_colomn: "",
-      test_target_colomn: "",
+      test_id_column: "",
+      test_data_column: "",
+      test_target_column: "",
       pdatas:"",
       select_data:false,
       PathForm: {
@@ -255,16 +255,16 @@ export default {
 
           // });
           console.log("true")
-          console.log(vm.test_file_path,vm.test_id_colomn,vm.test_target_colomn)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "test_id", "test_file_path", "test_id_colomn","test_data_colomn","test_target_colomn") VALUES 
-              (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.test_id+ `", "` +vm.test_file_path+ `", "` +vm.test_id_colomn+`", "`+vm.test_data_colomn+`", "`+vm.test_target_colomn+`")`
+          console.log(vm.test_file_path,vm.test_id_column,vm.test_target_column)
+          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "test_id", "test_file_path", "test_id_column","test_data_column","test_target_column") VALUES 
+              (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.test_id+ `", "` +vm.test_file_path+ `", "` +vm.test_id_column+`", "`+vm.test_data_column+`", "`+vm.test_target_column+`")`
           console.log(insert_sentence)
           db.run(insert_sentence, function(err){
             if (err){
               console.log(err);
             }
 
-          let match_id_address = vm.test_id_colomn
+          let match_id_address = vm.test_id_column
           let test_hash_id_file_address = null;
 
           try{
@@ -276,7 +276,7 @@ export default {
             test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
                                     + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id
                                     + ' --mode test' + ' --test_id ' + vm.test_id
-                                    + ' --dataset_path ' + vm.test_file_path + ' --id_idx ' + vm.test_id_colomn, {encoding: 'utf8'})
+                                    + ' --dataset_path ' + vm.test_file_path + ' --id_idx ' + vm.test_id_column, {encoding: 'utf8'})
 
             // test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
             console.log(test_hash_id_file_address)

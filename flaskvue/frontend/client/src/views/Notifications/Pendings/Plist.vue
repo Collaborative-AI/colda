@@ -13,10 +13,10 @@
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
                         <!-- <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div> -->
                         <div class="font-weight-bold mr-3">
-                            <div class="text-truncate">Task Name: {{ pend.task_name }}</div>
-                            <div v-if="pend.test_indicator == 'train'" class="small">Task ID:  {{ pend.task_id }}</div>
-                            <div v-else class='small'>Test ID: {{ pend.test_id }}</div>
-                            <div class="small">Task Description:  {{ pend.task_description }}</div>
+                            <div class="text-truncate">Task Name: {{ pend.pending_task_name }}</div>
+                            <div class="small">Task ID:  {{ pend.pending_task_id }}</div>
+                            <div class='small'>Test ID: {{ pend.pending_test_id }}</div>
+                            <div class="small">Task Description:  {{ pend.pending_task_description }}</div>
                         </div>
                         <span class="ml-auto mb-auto">
                             <!-- <div class="btn-group">
@@ -30,7 +30,7 @@
                             </div> -->
                             <br />
                             <div class="text-right text-muted pt-1">
-                              <router-link v-bind:to="{ name: 'PendItem', params: { task_id: pend.task_id, test_id: pend.test_id, test_description: pend.test_description, test_indicator: pend.test_indicator } }">
+                              <router-link v-bind:to="{ name: 'PendItem', params: { task_description: pend.pending_task_description, task_id: pend.pending_task_id, task_name: pend.pending_task_name, test_id: pend.pending_test_id,  test_indicator: pend.test_indicator } }">
                                 <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Details</button>
                               </router-link>
                             </div>
@@ -90,11 +90,14 @@ export default {
   },
 
 created () {
+
+    let vm = this
   
     this.$axios.get('/get_all_pending/')
       .then((response) => {
         // handle success
         console.log("get_all_pending response", response.data)
+        vm.pending =  response.data.all_pending_items
       })
       .catch((error) => {
         // handle error

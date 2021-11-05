@@ -8,7 +8,7 @@ from Items import db
 # import BluePrint
 from Items.main import main
 
-from Items.models import User, Message, Matched, Notification
+from Items.models import User, Message, Matched, Notification, Stop, Pending
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
@@ -99,6 +99,16 @@ def delete_test_rows():
 
   Notifications = Notification.query.all()
   for row in Notifications:
+      db.session.delete(row)
+      db.session.commit()
+
+  Stops = Stop.query.all()
+  for row in Stops:
+      db.session.delete(row)
+      db.session.commit()
+
+  Pendings = Pending.query.all()
+  for row in Pendings:
       db.session.delete(row)
       db.session.commit()
 

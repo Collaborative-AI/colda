@@ -24,12 +24,12 @@
       <button @click="get_default_train_file_path()" class="btn btn-success">Select File</button>
     </div>
     <div class="form-group">
-      <label for="name">Input id colomn</label>
-      <input type="text" v-model="default_train_id_colomn" class="form-control" id="name" placeholder="">
+      <label for="name">Input id column</label>
+      <input type="text" v-model="default_train_id_column" class="form-control" id="name" placeholder="">
     </div>
     <div class="form-group">
-      <label for="name">Input data colomn</label>
-      <input type="text" v-model="default_train_data_colomn" class="form-control" id="name" placeholder="">
+      <label for="name">Input data column</label>
+      <input type="text" v-model="default_train_data_column" class="form-control" id="name" placeholder="">
     </div>
 
     <!-- <div class="form-group">
@@ -87,8 +87,8 @@ export default {
     return {
       sharedState: store.state,
       default_train_file_path: "",
-      default_train_id_colomn: "",
-      default_train_data_colomn: "",
+      default_train_id_column: "",
+      default_train_data_column: "",
       // profileForm: {
       //   default_train_data_path: "",
       //   default_train_id_path: "",
@@ -278,17 +278,19 @@ export default {
           // vm.profileForm.default_test_data_path = row.default_test_data_path
           // vm.profileForm.default_test_id_path = row.default_test_id_path
           vm.default_train_file_path = row.default_train_file_path
-          vm.default_train_id_colomn = row.default_train_id_colomn
-          vm.default_train_data_colomn = row.default_train_data_colomn
+          vm.default_train_id_column = row.default_train_id_column
+          vm.default_train_data_column = row.default_train_data_column
           vm.sharedState.mode = row.mode
+          console.log('mode', vm.sharedState.mode)
         }
+        
 
         // if (row == null){
         //   console.log("get false")
         //   vm.
         // }else{
-        //     if (row.default_train_file_path == "" | row.default_train_id_colomn == "" | 
-        //       row.default_train_data_colomn == ""){
+        //     if (row.default_train_file_path == "" | row.default_train_id_column == "" | 
+        //       row.default_train_data_column == ""){
         //     console.log("get false")
         //     vm.sharedState.set_default = false
         //     vm.sharedState.receive_request = false
@@ -301,7 +303,7 @@ export default {
       let vm = this;
       
       let both_path_validation = true
-      console.log("vm.default_train_file_path", vm.profileForm.default_train_file_path)
+      console.log("vm.default_train_file_path", vm.default_train_file_path)
       try {
         fs.statSync(vm.default_train_file_path);
       } catch (err) {
@@ -310,8 +312,8 @@ export default {
         both_path_validation = false
       }
 
-      console.log("vm.default_train_id_colomn", vm.default_train_id_colomn)
-      console.log("vm.default_train_data_colomn", vm.default_train_data_colomn)
+      console.log("vm.default_train_id_column", vm.default_train_id_column)
+      console.log("vm.default_train_data_column", vm.default_train_data_column)
       // try {
       //   fs.statSync(vm.profileForm.default_train_id_path);
       // } catch (err) {
@@ -347,9 +349,9 @@ export default {
         
         if (row == null){
           // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
-          let insert_new_val = `INSERT INTO "User_Default_Path" ("user_id", "default_train_file_path", "default_train_id_colomn", "default_train_data_colomn", "mode") VALUES 
-            (`+`"`+vm.sharedState.user_id+`", "`+vm.default_train_file_path+`", "`+vm.default_train_id_colomn+`", "`
-            +vm.default_train_data_colomn+`", "`+vm.sharedState.mode+`")`
+          let insert_new_val = `INSERT INTO "User_Default_Path" ("user_id", "default_train_file_path", "default_train_id_column", "default_train_data_column", "mode") VALUES 
+            (`+`"`+vm.sharedState.user_id+`", "`+vm.default_train_file_path+`", "`+vm.default_train_id_column+`", "`
+            +vm.default_train_data_column+`", "`+vm.sharedState.mode+`")`
           console.log("insert_new_val", insert_new_val)
           console.log("db", db)
           db.run(insert_new_val, function(err){
@@ -363,8 +365,8 @@ export default {
             db.serialize(function() {
               let update_sentence = 'UPDATE "User_Default_Path"'
                         +'SET "default_train_file_path" = "' + vm.default_train_file_path + '",'
-                        +'"default_train_id_colomn" = "' + vm.default_train_id_colomn + '",'
-                        +'"default_train_data_colomn" = "' + vm.default_train_data_colomn + '",'   
+                        +'"default_train_id_column" = "' + vm.default_train_id_column + '",'
+                        +'"default_train_data_column" = "' + vm.default_train_data_column + '",'   
                         +'"mode" = "' + vm.sharedState.mode + '" '                  
                         +'WHERE "user_id" = ' + vm.sharedState.user_id
               console.log("update_sentence", update_sentence) 

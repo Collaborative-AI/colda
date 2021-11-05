@@ -39,14 +39,10 @@ db.serialize(function() {
   db.run("CREATE TABLE IF NOT EXISTS User_Default_Path (id                    int primary key, \
                                                    user_id                    int, \
                                                    default_train_file_path    text, \
-                                                   default_train_id_colomn          text, \
-                                                   default_train_data_colomn        text, \
-                                                   default_train_target_colomn      text, \
-                                                   mode                       text,\
-                                                   default_train_data_path    text, \
-                                                   default_train_id_path      text, \
-                                                   default_test_data_path     text, \
-                                                   default_test_id_path       text)");
+                                                   default_train_id_column          text, \
+                                                   default_train_data_column        text, \
+                                                   default_train_target_column      text, \
+                                                   mode                       text)");
 
   db.run("CREATE TABLE IF NOT EXISTS User_Chosen_Path (id     int primary key, \
                                            task_name          text,\
@@ -56,29 +52,28 @@ db.serialize(function() {
                                            task_id            text, \
                                            test_id            text, \
                                            train_file_path    text, \
-                                           train_id_colomn    text, \
-                                           train_data_colomn  text, \
-                                           train_target_colomn text, \
+                                           train_id_column    text, \
+                                           train_data_column  text, \
+                                           train_target_column text, \
                                            test_file_path     text, \
-                                           test_id_colomn     text, \
-                                           test_data_colomn   text, \
-                                           test_target_colomn text, \
-                                           train_data_path    text, \
-                                           train_id_path      text, \
-                                           train_target_path  text, \
-                                           test_data_path     text, \
-                                           test_id_path       text, \
-                                           test_target_path   text)");
+                                           test_id_column     text, \
+                                           test_data_column   text, \
+                                           test_target_column text)");
 
     db.run("CREATE TABLE IF NOT EXISTS User_Pending_Page (id                  int primary key, \
                                                    task_name                  text,\
                                                    task_description           text,\
                                                    user_id                    int, \
-                                                   task_id                    int,\
-                                                   default_train_data_path    text, \
-                                                   default_train_id_path      text, \
-                                                   default_test_data_path     text, \
-                                                   default_test_id_path       text)");
+                                                   task_id                    text,\
+                                                   test_id                    text,\
+                                                   pending_train_file_path    text, \
+                                                   pending_train_id_column          text, \
+                                                   pending_train_data_column        text, \
+                                                   pending_train_target_column      text, \
+                                                   pending_test_file_path    text, \
+                                                   pending_test_id_column          text, \
+                                                   pending_test_data_column        text, \
+                                                   pending_test_target_column      text)");
                                                    
                                          
                                            

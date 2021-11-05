@@ -117,6 +117,22 @@ export default {
     }
   },
   methods: {
+
+    // which_mode(task_id){
+    //   let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE "task_id" = ' + '"'+ task_id + '"';
+    //   // console.log("select_pending_record", select_pending_record)
+    //   db.get(select_pending_record, function(err, row){
+    //     if (err){ 
+    //       console.log(err);
+    //     }
+    //   if (row == null){
+    //     return 'Auto'
+    //   }else{
+    //     return 'Manual'
+    //   } 
+    //   }) //end db
+      
+    // },
     
     handlerLogout (e) {
       store.logoutAction()
@@ -169,17 +185,33 @@ export default {
     unread_request(unread_request_notification) {
       let vm = this
 
-      console.log("this.sharedState.receive_request", this.sharedState.receive_request)
-      if ( true ){
-        console.log("2.1 Update request notification response", unread_request_notification)
-        this.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
+      console.log("this.sharedState.receive_request", vm.sharedState.mode)
+      
+      console.log("2.1 Update request notification response", unread_request_notification)
+      this.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
 
-        let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
+      let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
+      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+      db.get(select_sentence, function(err, row){
+        if (err){
+          console.log(err);
+        }
+
+        console.log("retrieve_setting_mode_row", row)
+
+        if (row == null){
+          vm.sharedState.mode = "Manual";
+        }
+        else{
+          vm.sharedState.mode = row.mode;
+        }  
+    
         for (let task_id in cur_unread_request_Taskid_dict){
+          console.log('navbar unread request mode', vm.sharedState.mode )
 
-          if (this.sharedState.receive_request=='passive'){
+          if (vm.sharedState.mode == 'Auto'){
 
-          let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
           console.log("select_default_train_file_path", select_default_train_file_path)
           db.get(select_default_train_file_path, function(err, row){
             if (err){ 
@@ -188,14 +220,14 @@ export default {
             
             let default_train_file_path = row.default_train_file_path
             console.log("default_train_id_path", default_train_file_path)
-            let default_train_id_colomn = row.default_train_id_colomn
+            let default_train_id_column = row.default_train_id_column
 
             let hash_id_file_address = null;
             let Log_address = null;
             try{   
               hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                                       + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
-                                      + ' --id_idx ' + default_train_id_colomn, {encoding: 'utf8'})
+                                      + ' --id_idx ' + default_train_id_column, {encoding: 'utf8'})
               
               hash_id_file_address = hash_id_file_address.split("?")
               let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
@@ -249,10 +281,7 @@ export default {
               })
 
           })  
-        }  //end if
-
-        //else if Manual
-        else if (this.sharedState.receive_request == 'Manual'){
+        } else if (vm.sharedState.mode == 'Manual'){
           console.log(task_id)
 
           const add_train_pending = {
@@ -271,15 +300,15 @@ export default {
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
           
-          }//end else
+        } else{
+          console.log("unread request: mode run")
+          dialog.showErrorBox('mode:run')
+        }
 
-        }//end for
-      }
-      else{
-        console.log("unread request: If you want to receive, open receive")
-        dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
-
-      }
+      }//end for
+    })
+    
+    
     },
 
 
@@ -413,22 +442,22 @@ export default {
 
           }
 
-          let select_train_target_colomn = 'SELECT train_file_path, train_target_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
-          console.log("select_train_target_colomn", select_train_target_colomn)
-          db.get(select_train_target_colomn, function(err, row){
+          let select_train_target_column = 'SELECT train_file_path, train_target_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
+          console.log("select_train_target_column", select_train_target_column)
+          db.get(select_train_target_column, function(err, row){
             if (err){ 
               console.log(err);
             }
             console.log("match row",row)
             let train_file_path = row.train_file_path
             console.log("train_file_path", train_file_path)
-            let train_target_colomn = row.train_target_colomn
-            console.log("train_target_colomn", train_target_colomn)
+            let train_target_column = row.train_target_column
+            console.log("train_target_column", train_target_column)
             let make_residual_multiple_paths = null;
             try{
               make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
                 + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 0 ' 
-                + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
+                + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column, {encoding: 'utf8'})
 
               make_residual_multiple_paths = make_residual_multiple_paths.split("?")
               let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
@@ -518,7 +547,7 @@ export default {
       const payload = {
         task_id: task_id
       }
-      const path = `/users/${this.sharedState.user_id}/match_id_file/`
+      const path = `/users/${vm.sharedState.user_id}/match_id_file/`
       // async
       this.$axios.post(path, payload)
         .then((response) => {
@@ -653,22 +682,23 @@ export default {
         console.log(err)
       }
       
-      let select_train_data_path = 'SELECT train_file_path, train_data_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+      let select_train_data_path = 'SELECT train_file_path, train_data_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
       db.get(select_train_data_path, function(err, row){
         if (err){ 
           throw err;
         }
         let train_file_path = row.train_file_path
         console.log("train_file_path", train_file_path)
-        let train_data_colomn = row.train_data_colomn
-        console.log("train_data_colomn", train_data_colomn)
+        let train_data_column = row.train_data_column
+        console.log("train_data_column", train_data_column)
         try{
           
           // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
           let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
-            + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_colomn, {encoding: 'utf8'})
+            + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_column, {encoding: 'utf8'})
           
           train_output = train_output.split("?")
+          console.log('train_output1', train_output)
           let indicator = vm.handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
           if (indicator == false){
             console.log("train_output wrong")
@@ -706,7 +736,7 @@ export default {
       });
     },
 
-    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_colomn, vm, Log_address){
+    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address){
 
       let Assistor_train_output_path = null;
 
@@ -715,7 +745,7 @@ export default {
       try{
         Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
           + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
-          + from_id + ' --dataset_path ' + default_train_file_path + ' --data_idx ' + default_train_data_colomn,{encoding: 'utf8'})
+          + from_id + ' --dataset_path ' + default_train_file_path + ' --data_idx ' + default_train_data_column,{encoding: 'utf8'})
         
         Assistor_train_output_path = Assistor_train_output_path.split("?")
         indicator = vm.handle_Algorithm_return_value("Assistor_train_output_path", Assistor_train_output_path, "200", "make_train")
@@ -729,7 +759,7 @@ export default {
       if (indicator == false){
         console.log("recall unread_situation_assistor_train_part")
         setTimeout(function(){
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_colomn, vm, Log_address)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address)
         }, 7000);
       }else{
 
@@ -825,26 +855,59 @@ export default {
           }
 
           // Assistor trains the data
-          
-          let select_default_train_data_path = 'SELECT default_train_file_path, default_train_data_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
-          db.get(select_default_train_data_path, function(err, row){
-            if (err){ 
-              throw err;
-            }
-            let default_train_file_path = row.default_train_file_path
-            console.log("default_train_file_path",default_train_file_path)
-            let default_train_data_colomn = row.default_train_data_colomn
-            console.log("default_train_data_colomn",default_train_data_colomn)
+        let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE "task_id" = ' + '"'+ task_id + '"';
+        // console.log("select_pending_record", select_pending_record)
+        db.get(select_pending_record, function(err, row){
+          if (err){ 
+            console.log(err);
+          }
+          let which_mode = null
+          if (row == null){
+            which_mode = 'Auto'
+          }else{
+            which_mode = 'Manual'
+          }
+          if (which_mode == "Auto"){
+            let select_default_train_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+            db.get(select_default_train_data_path, function(err, row){
+              if (err){ 
+                throw err;
+              }
+              let default_train_file_path = row.default_train_file_path
+              console.log("default_train_file_path",default_train_file_path)
+              let default_train_data_column = row.default_train_data_column
+              console.log("default_train_data_column",default_train_data_column)
 
-            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_colomn, vm, Log_address)
+              vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address)
 
-          });
-          
-        })
+            }); //end db
+          } else if (which_mode == "Manual") {
+            let select_pending_train_data_path = 'SELECT pending_train_file_path, pending_train_data_column FROM User_Pending_Page WHERE user_id=' + vm.sharedState.user_id;
+            db.get(select_pending_train_data_path, function(err, row){
+              if (err){ 
+                throw err;
+              }
+              let pending_train_file_path = row.pending_train_file_path
+              console.log("pending_train_file_path",pending_train_file_path)
+              let pending_train_data_column = row.pending_train_data_column
+              console.log("pending_train_data_column",pending_train_data_column)
+
+              vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address)
+
+            }); //end db
+
+          }else{
+            console.log('unread situation assistor 3rd case')
+          }  
+        })  
+
+        }) //end axios
+
+
         .catch((error) => {
           console.log(error)
           // handle error
-        }) 
+        })
 
 
     },
@@ -883,7 +946,7 @@ export default {
         task_id: task_id,
         rounds: rounds
       }
-      const url = `/users/${this.sharedState.user_id}/output/`
+      const url = `/users/${vm.sharedState.user_id}/output/`
 
       this.$axios.post(url, payload)
         .then((response) => {
@@ -933,17 +996,17 @@ export default {
             }
           }
 
-          let select_train_target_path = 'SELECT train_file_path, train_target_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+          let select_train_target_path = 'SELECT train_file_path, train_target_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
           db.get(select_train_target_path, function(err, row){
             if (err){ 
               throw err;
             }
             let train_file_path = row.train_file_path
             console.log("train_file_path", train_file_path)
-            let train_target_colomn = row.train_target_colomn
-            console.log("train_target_colomn", train_target_colomn)
+            let train_target_column = row.train_target_column
+            console.log("train_target_column", train_target_column)
 
-            vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address)
+            vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address)
 
           });
           
@@ -954,7 +1017,7 @@ export default {
         }) 
     },
 
-    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address){
+    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address){
       console.log("unread_output_make_result_helper_rounds", rounds)
       let make_result_done = null;
       let indicator = null;
@@ -962,7 +1025,7 @@ export default {
 
         make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
           + ' --task_id '+ task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path 
-          + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
+          + ' --target_idx ' + train_target_column, {encoding: 'utf8'})
 
         make_result_done = make_result_done.split("?")
         indicator = vm.handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
@@ -976,7 +1039,7 @@ export default {
       if(indicator == false){
         console.log("recall unread_output_make_result_helper")
         setTimeout(function(){
-          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_colomn, vm, Log_address)
+          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address)
         }, 7000);
 
       }else{
@@ -999,7 +1062,7 @@ export default {
 
           make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
             + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
-            + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_colomn, {encoding: 'utf8'})
+            + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column, {encoding: 'utf8'})
 
           make_residual_multiple_paths = make_residual_multiple_paths.split("?")
           let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
@@ -1065,76 +1128,118 @@ export default {
     
     unread_test_request(unread_test_request_notification) {
       let vm = this;
+      
       // Only assistor calls this function
-      if (this.sharedState.receive_request == 'Auto'){
-        
-        console.log("2.1 Update Test request notification response", unread_test_request_notification)
-        this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
+      
+        // console.log('navbar unread test request mode', vm.sharedState.mode )
 
-        let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
-        let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
+        
+      console.log("2.1 Update Test request notification response", unread_test_request_notification)
+      this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
+
+      let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
+      let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
+
+      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+      db.get(select_sentence, function(err, row){
+        if (err){
+          console.log(err);
+        }
+
+        console.log("retrieve_setting_mode_row", row)
+
+        if (row == null){
+          vm.sharedState.mode = "Manual";
+        }
+        else{
+          vm.sharedState.mode = row.mode;
+        }  
+      
 
         for (let test_id in cur_unread_test_request_Testid_dict){
           let task_id = test_id_to_task_id[test_id]
           
-          let select_default_test_id_path = 'SELECT default_train_file_path, default_train_id_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
-          db.get(select_default_test_id_path, function(err, row){
-            if (err){ 
-              throw err;
-            }
-            let default_train_id_colomn = row.default_train_id_colomn
-            let default_train_file_path = row.default_train_file_path
-            console.log("default_train_id_colomn", default_train_id_colomn)
-            let test_hash_id_file_address = null
-            let Log_address = null
-            try{
+          console.log('unread test request mode', vm.sharedState.mode)
+          if (vm.sharedState.mode == 'Auto'){
+            
+            
+            let select_default_test_id_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+            db.get(select_default_test_id_path, function(err, row){
+              if (err){ 
+                throw err;
+              }
+              let default_train_id_column = row.default_train_id_column
+              let default_train_file_path = row.default_train_file_path
+              console.log("default_train_id_column", default_train_id_column)
+              let test_hash_id_file_address = null
+              let Log_address = null
+              try{
 
-              test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
-                                        + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id
-                                        + ' --mode test' + ' --test_id ' + test_id
-                                        + ' --dataset_path ' + default_train_file_path + ' --id_idx ' + default_train_id_colomn, {encoding: 'utf8'})
+                test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
+                                          + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id
+                                          + ' --mode test' + ' --test_id ' + test_id
+                                          + ' --dataset_path ' + default_train_file_path + ' --id_idx ' + default_train_id_column, {encoding: 'utf8'})
 
-              test_hash_id_file_address = test_hash_id_file_address.split("?")
-              let indicator = vm.handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
-              Log_address = vm.handle_test_log_address(task_id, test_id)
-              if (indicator == false){
-                console.log("test_hash_id_file_address wrong")
-                fs.appendFileSync(Log_address, "test_hash_id_file_address wrong")
-                return 
+                test_hash_id_file_address = test_hash_id_file_address.split("?")
+                let indicator = vm.handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
+                Log_address = vm.handle_test_log_address(task_id, test_id)
+                if (indicator == false){
+                  console.log("test_hash_id_file_address wrong")
+                  fs.appendFileSync(Log_address, "test_hash_id_file_address wrong")
+                  return 
+                }
+
+              }catch(err){
+                console.log(err)
               }
 
-            }catch(err){
-              console.log(err)
-            }
+              try {
+                fs.appendFileSync(Log_address, "\n You are Assistor\n")
+                fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
+                fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
+                fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
+                fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
+              } catch (err) {
+                console.log(err)
+              }
 
-            try {
-              fs.appendFileSync(Log_address, "\n You are Assistor\n")
-              fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
-              fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
-              fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
-              fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
-            } catch (err) {
-              console.log(err)
-            }
+              let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
-            let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+              const match_test_assistor_id_data = {
+                file: test_hash_id_file_data,
+                test_id: test_id
+              }
 
-            const match_test_assistor_id_data = {
-              file: test_hash_id_file_data,
-              test_id: test_id
-            }
+              vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
+                .then((response) => {
+                  // handle success
+                  console.log("2.2 Test: assistor uploads id file", response)
+                  vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
+                  try {
+                    fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
+                    fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
+                  } catch (err) {
+                    console.log(err)
+                  }
+                })
+                .catch((error) => {
+                  // handle error
+                  console.log(error)
+                  // console.log(error.response.data)
+                  // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+                })
+            });
+          }else if (vm.sharedState.mode == 'Manual'){
+            // console.log(task_id)
 
-            vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
+            const add_test_pending = {
+                test_id: test_id,
+              }
+            
+            vm.$axios.post('/add_test_pending/', add_test_pending)
               .then((response) => {
                 // handle success
-                console.log("2.2 Test: assistor uploads id file", response)
-                vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
-                try {
-                  fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
-                  fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
-                } catch (err) {
-                  console.log(err)
-                }
+                console.log("add_test_pending response", response.data)
               })
               .catch((error) => {
                 // handle error
@@ -1142,16 +1247,13 @@ export default {
                 // console.log(error.response.data)
                 // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
               })
-          });
+          }else{
+            console.log("unread request: If you want to receive, open receive")
+            dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
+          }
         }
-      }else if (this.sharedState.receive_request == 'Manual'){
-
-
-
-      }else{
-        console.log("unread request: If you want to receive, open receive")
-        dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
-      }
+      })
+      
     },
 
     unread_test_match_id(unread_test_match_id_notification) {
@@ -1287,18 +1389,18 @@ export default {
 
           }
 
-          let select_test_data_path = 'SELECT test_file_path, test_data_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
+          let select_test_data_path = 'SELECT test_file_path, test_data_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
           db.get(select_test_data_path, function(err, row){
             if (err){ 
               throw err;
             }
             let test_file_path = row.test_file_path
-            let test_data_colomn = row.test_data_colomn
+            let test_data_column = row.test_data_column
             console.log("test_file_path", test_file_path)
             
             try{
               let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_colomn, {encoding: 'utf8'})
+                + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
 
               test_done = test_done.split("?")
               let indicator = vm.handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
@@ -1341,7 +1443,7 @@ export default {
       const payload = {
         test_id: test_id
       }
-      const path = `/users/${this.sharedState.user_id}/test_match_id_file/`
+      const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
       // async
       this.$axios.post(path, payload)
         .then((response) => {
@@ -1410,73 +1512,160 @@ export default {
             console.log(err)
           }
 
-          let select_default_test_data_path = 'SELECT default_train_file_path, default_train_data_colomn FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
-          db.get(select_default_test_data_path, function(err, row){
+          let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE "task_id" = ' + '"'+ task_id + '"';
+          // console.log("select_pending_record", select_pending_record)
+          db.get(select_pending_record, function(err, row){
             if (err){ 
-              throw err;
+              console.log(err);
             }
-            let default_train_file_path = row.default_train_file_path
-            let default_train_data_colomn = row.default_train_data_colomn
-            console.log("default_train_file_path",default_train_file_path)
+            let which_mode = null
+            if (row == null){
+              which_mode = 'Auto'
+            }else{
+              which_mode = 'Manual'
+            } 
 
-            let test_outputs_pos = null
-            try{
-
-              test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
-                + ' --dataset_path ' +  default_train_file_path + ' --data_idx ' + default_train_data_colomn, {encoding: 'utf8'})
-
-              test_outputs_pos = test_outputs_pos.split("?")
-              let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
-              if (indicator == false){
-                console.log("test_outputs_pos wrong")
-                fs.appendFileSync(Log_address, "test_outputs_pos wrong")
-                return 
+            if(which_mode == "Auto"){
+            let select_default_test_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+            db.get(select_default_test_data_path, function(err, row){
+              if (err){ 
+                throw err;
               }
-              
-            }catch(err){
-              console.log(err)
-            }
+              let default_train_file_path = row.default_train_file_path
+              let default_train_data_column = row.default_train_data_column
+              console.log("default_train_file_path",default_train_file_path)
 
-            console.log("3.7 Test: assistor stores all test model results")
-            vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
+              let test_outputs_pos = null
+              try{
 
-            try {
-              fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
-            } catch (err) {
-              console.log(err)
-            }
+                test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                  + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
+                  + ' --dataset_path ' +  default_train_file_path + ' --data_idx ' + default_train_data_column, {encoding: 'utf8'})
 
-            let all_test_output = [];
-            let make_test_lists = test_outputs_pos.slice(2, test_outputs_pos.length)
-            console.log("make_test_lists", make_test_lists)
-            for (let i = 0; i < make_test_lists.length; i++){
-              let data = fs.readFileSync(make_test_lists[i], {encoding:'utf8', flag:'r'});
-              all_test_output.push(data);
-            }
-            console.log("all_test_output", all_test_output)
+                test_outputs_pos = test_outputs_pos.split("?")
+                let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
+                if (indicator == false){
+                  console.log("test_outputs_pos wrong")
+                  fs.appendFileSync(Log_address, "test_outputs_pos wrong")
+                  return 
+                }
+                
+              }catch(err){
+                console.log(err)
+              }
 
-            const payload1 = {
-              output: all_test_output,
-              test_id: test_id,
-            }
+              console.log("3.7 Test: assistor stores all test model results")
+              vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
 
-            vm.$axios.post('/send_test_output/', payload1)
-              .then((response) => {
-              // handle success
-              console.log("3.8 Test: assistor sends all test model results", response)
-              vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
               try {
-                fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
-                fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
+                fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
               } catch (err) {
                 console.log(err)
               }
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-          });
+
+              let all_test_output = [];
+              let make_test_lists = test_outputs_pos.slice(2, test_outputs_pos.length)
+              console.log("make_test_lists", make_test_lists)
+              for (let i = 0; i < make_test_lists.length; i++){
+                let data = fs.readFileSync(make_test_lists[i], {encoding:'utf8', flag:'r'});
+                all_test_output.push(data);
+              }
+              console.log("all_test_output", all_test_output)
+
+              const payload1 = {
+                output: all_test_output,
+                test_id: test_id,
+              }
+
+              vm.$axios.post('/send_test_output/', payload1)
+                .then((response) => {
+                // handle success
+                console.log("3.8 Test: assistor sends all test model results", response)
+                vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
+                try {
+                  fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
+                  fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
+                } catch (err) {
+                  console.log(err)
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+            });
+            }else if(which_mode == "Manual"){
+              let select_default_test_data_path = 'SELECT pending_train_file_path, pending_train_data_column FROM User_Pending_Page WHERE user_id=' + vm.sharedState.user_id;
+            db.get(select_default_test_data_path, function(err, row){
+              if (err){ 
+                throw err;
+              }
+              let default_train_file_path = row.pending_train_file_path
+              let default_train_data_column = row.pending_train_data_column
+              console.log("default_train_file_path",default_train_file_path)
+
+              let test_outputs_pos = null
+              try{
+
+                test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                  + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
+                  + ' --dataset_path ' +  default_train_file_path + ' --data_idx ' + default_train_data_column, {encoding: 'utf8'})
+
+                test_outputs_pos = test_outputs_pos.split("?")
+                let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
+                if (indicator == false){
+                  console.log("test_outputs_pos wrong")
+                  fs.appendFileSync(Log_address, "test_outputs_pos wrong")
+                  return 
+                }
+                
+              }catch(err){
+                console.log(err)
+              }
+
+              console.log("3.7 Test: assistor stores all test model results")
+              vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
+
+              try {
+                fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
+              } catch (err) {
+                console.log(err)
+              }
+
+              let all_test_output = [];
+              let make_test_lists = test_outputs_pos.slice(2, test_outputs_pos.length)
+              console.log("make_test_lists", make_test_lists)
+              for (let i = 0; i < make_test_lists.length; i++){
+                let data = fs.readFileSync(make_test_lists[i], {encoding:'utf8', flag:'r'});
+                all_test_output.push(data);
+              }
+              console.log("all_test_output", all_test_output)
+
+              const payload1 = {
+                output: all_test_output,
+                test_id: test_id,
+              }
+
+              vm.$axios.post('/send_test_output/', payload1)
+                .then((response) => {
+                // handle success
+                console.log("3.8 Test: assistor sends all test model results", response)
+                vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
+                try {
+                  fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
+                  fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
+                } catch (err) {
+                  console.log(err)
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+            });
+
+            }else{
+              console.log('unread_test_match_id_assistor error')
+            }
+          })
 
         })
         .catch((error) => {
@@ -1594,13 +1783,13 @@ export default {
       console.log("unread_test_output_max_round", JSON.parse(response.data.output[0]))
       console.log("max_round", max_round)
 
-      let select_test_target_path = 'SELECT test_file_path, test_target_colomn FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
+      let select_test_target_path = 'SELECT test_file_path, test_target_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
       db.get(select_test_target_path, function(err, row){
         if (err){ 
           throw err;
         }
         let test_file_path = row.test_file_path
-        let test_target_colomn= row.test_target_colomn
+        let test_target_column= row.test_target_column
         // console.log("test_target_path",test_target_path)
         let eval_done = null;
         let indicator = null;
@@ -1608,7 +1797,7 @@ export default {
 
           eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
             + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round 
-            + ' --dataset_path ' + test_file_path + ' --target_idx ' + test_target_colomn, {encoding: 'utf8'})
+            + ' --dataset_path ' + test_file_path + ' --target_idx ' + test_target_column, {encoding: 'utf8'})
 
           eval_done = eval_done.split("?")
           indicator = vm.handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")

@@ -1207,6 +1207,7 @@ export default {
 
               const match_test_assistor_id_data = {
                 file: test_hash_id_file_data,
+                task_id: task_id,
                 test_id: test_id
               }
 
@@ -1313,6 +1314,7 @@ export default {
       // Obtain Match_id file
       // async
       const payload = {
+        task_id: task_id,
         test_id: test_id
       }
       
@@ -1441,6 +1443,7 @@ export default {
       
       // Obtain Match_id file
       const payload = {
+        task_id: task_id,
         test_id: test_id
       }
       const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
@@ -1575,6 +1578,7 @@ export default {
               const payload1 = {
                 output: all_test_output,
                 test_id: test_id,
+                task_id: task_id,
               }
 
               vm.$axios.post('/send_test_output/', payload1)
@@ -1643,6 +1647,7 @@ export default {
               const payload1 = {
                 output: all_test_output,
                 test_id: test_id,
+                task_id: task_id,
               }
 
               vm.$axios.post('/send_test_output/', payload1)
@@ -1707,6 +1712,7 @@ export default {
       // Obtain output from assistors
 
       const payload = {
+        task_id: task_id, 
         test_id: test_id,
       }
 

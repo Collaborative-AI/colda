@@ -13,7 +13,7 @@ from Items.main import main
 from Items.models import User, Message, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-
+from Items.main.apollo_utils import log, generate_msg
 
 @main.route('/get_user_history/', methods=['GET'])
 @token_auth.login_required

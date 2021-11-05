@@ -15,35 +15,74 @@ from Items.main import main
 from Items.models import User, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
+from Items.main.apollo_utils import log, generate_msg
 
 @main.route('/create_new_train_task', methods=['GET'])
 @token_auth.login_required
 def create_new_train_task():
-    task_id = str(uuid.uuid4())
 
+    """
+    Generate a new train task id from unique uuid4
+
+    Parameters:
+        None
+
+    Returns:
+        task_id - String. String task_id
+
+    Raises:
+        KeyError - raises an exception
+    """
+
+    task_id = str(uuid.uuid4())
     data = {"task_id": task_id}
     
-    response = jsonify(data)
-    
-    return response
+    return jsonify(data)
 
 @main.route('/create_new_test_task', methods=['GET'])
 @token_auth.login_required
 def create_new_test_task():
-    test_id = str(uuid.uuid4())
 
+    """
+    Generate a new test task id from unique uuid4
+
+    Parameters:
+        None
+
+    Returns:
+        test_id - String. String test_id
+
+    Raises:
+        KeyError - raises an exception
+    """
+
+    test_id = str(uuid.uuid4())
     data = {"test_id": test_id}
     
-    response = jsonify(data)
-    
-    return response
+    return jsonify(data)
 
-@main.route('/find_assistor', methods=['POST','GET'])
+@main.route('/find_assistor', methods=['POST'])
 @token_auth.login_required
 def find_assistor():
-    print('sdkek')
 
-    # find assistor algorithm, return all_assistor_id
+    """
+    Add information of current task to matched database.
+
+    Parameters:
+        assistor_username_list - List[String]. The username of assistors for this task. 
+        id_file - String. The matching id file sent by sponsor
+        task_id - String. The id of task
+        task_name - String. The name of task, which could be None.
+        task_description - String. The description of task, which could be None.
+
+    Returns:
+        data - Dict. { task_id - String: The id of task, assistor_num - Integer: The number of assistors in this task }
+
+    Raises:
+        KeyError - raises an exception
+    """
+
+    # check the data sent by the sponsor
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
@@ -72,12 +111,11 @@ def find_assistor():
         print("user.id", username, user.id)
         assistor_id_list.append(user.id)
 
-    # user = User.query.filter_by(username="unittest").first()
-    # print(user.id)
+    log(generate_msg('Sponsor training stage'), g.current_user.id, task_id)
+    log(generate_msg('-------------------- find_assistor begins'), g.current_user.id, task_id)
+    log(generate_msg('1.1', 'sponsor find_assistor'), g.current_user.id, task_id)
 
     # If the user dont type in the task name, we give it a basic name
-    
-
     id_file = id_file.split("\n")
     data_array_id = set()
     for i in range(len(id_file)):
@@ -85,7 +123,8 @@ def find_assistor():
             data_array_id.add(id_file[i])
     
     data_array_id = list(data_array_id)
-    print("data_array_id", data_array_id)
+
+    log(generate_msg('1.2:', 'sponsor handles id data done'), g.current_user.id, task_id)
 
     # extract ID
     # data_array_id = set()
@@ -94,13 +133,7 @@ def find_assistor():
     
     # data_array_id = list(data_array_id)
 
-    print("assistor_id_list", assistor_id_list)
-
-    # Now hardcode
-    # testa: id 4(sponsor), testb: id 5(assistor), testc: id 6(assistor)
-
-    # Unique in each task
-    
+    # sponsor_random_id is unique in each task    
     sponsor_random_id = str(uuid.uuid4())
 
     # print(g.current_user.id, type(g.current_user.id),"1")
@@ -134,6 +167,8 @@ def find_assistor():
         # send matched notification to the assistor
         user.add_notification('unread request', user.new_request()) 
         db.session.commit()
+    
+    log(generate_msg('1.3:', 'sponsor adds all unread request to assistors'), g.current_user.id, task_id)
     # print(g.current_user.id, type(g.current_user.id),"2")
     # A A
     user = User.query.get_or_404(g.current_user.id)
@@ -157,31 +192,35 @@ def find_assistor():
     # print(g.current_user.id, type(g.current_user.id),"3")                       
     db.session.commit()
 
-    # print(g.current_user.id, type(g.current_user.id),"4")
-
-    # query = Matched.query.filter(Matched.task_id == task_id).all()
-    # for row in query:
-    #     print("all_find_assistor_query", row.sponsor_id, type(row.sponsor_id), row.assistor_id_pair, type(row.assistor_id_pair))
-
-    # record1 = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.assistor_id_pair == 2, Matched.task_id == task_id).first()
-    # print("1111111", json.loads(record1.Matched_id_file))
-
-    # record2 = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.assistor_id_pair == str(2), Matched.task_id == task_id).first()
-    # print("22222", json.loads(record2.Matched_id_file))
-    
-    # query = Matched.query.filter(Matched.task_id == task_id).first()
-    # print("find_assistor_query", query.sponsor_id, type(query.sponsor_id))
-
     data = {"task_id": task_id, 'assistor_num': len(assistor_id_list)}
     
-    response = jsonify(data)
-    
-    return response
+    log(generate_msg('1.4:', 'sponsor adds unread request to itself'), g.current_user.id, task_id)
+    log(generate_msg('--------------------sponsor find assistor done \n'), g.current_user.id, task_id)
+
+    return jsonify(data)
 
 
 @main.route('/find_test_assistor', methods=['POST'])
 @token_auth.login_required
 def find_test_assistor():
+
+    """
+    Add information of current task to matched database.
+
+    Parameters:
+        assistor_username_list - List[String]. The username of assistors for this task. 
+        id_file - String. The matching id file sent by sponsor
+        task_id - String. The id of task
+        test_id - String. The id of test
+        test_name - String. The name of test, which could be None.
+        test_description - String. The description of test, which could be None.
+
+    Returns:
+        data - Dict. { task_id - String: The id of task, assistor_num - Integer: The number of assistors in this task, test_id - String: The id of test }
+
+    Raises:
+        KeyError - raises an exception
+    """
 
     # find assistor algorithm, return all_assistor_id
     data = request.get_json()
@@ -209,6 +248,10 @@ def find_test_assistor():
     for row in assistor_id_queries:
         assistor_id_list.append(row.assistor_id_pair)
 
+    log(generate_msg('Sponsor testing stage'), g.current_user.id, task_id)
+    log(generate_msg('------------------------- find_test_assistor begins'), g.current_user.id, task_id, test_id)
+    log(generate_msg('Test 1.1', 'sponsor find_assistor'), g.current_user.id, task_id, test_id)
+
     id_file = id_file.split("\n")
     data_array_id = set()
     for i in range(len(id_file)):
@@ -217,6 +260,7 @@ def find_test_assistor():
     
     data_array_id = list(data_array_id)
 
+    log(generate_msg('Test 1.2', 'sponsor handles id data done'), g.current_user.id, task_id, test_id)
     # # extract ID
     # data_array_id = set()
     # for i in range(1,len(id_file)):
@@ -266,7 +310,8 @@ def find_test_assistor():
         user.add_notification('unread test request', user.new_test_request()) 
         db.session.commit()
     # print(g.current_user.id, type(g.current_user.id),"2")
-    # A A
+    log(generate_msg('Test 1.3', 'sponsor adds all unread request to assistors'), g.current_user.id, task_id, test_id)
+
     user = User.query.get_or_404(g.current_user.id)
     matched = Matched()
     matched.sponsor_id = g.current_user.id
@@ -286,30 +331,15 @@ def find_test_assistor():
     matched.test_id = test_id
     matched.Terminate = "false"
 
-    db.session.add(matched) 
-    # print(g.current_user.id, type(g.current_user.id),"3")                       
+    db.session.add(matched)                      
     db.session.commit()
-
-    # print(g.current_user.id, type(g.current_user.id),"4")
-
-    # query = Matched.query.filter(Matched.task_id == task_id).all()
-    # for row in query:
-    #     print("all_find_assistor_query", row.sponsor_id, type(row.sponsor_id), row.assistor_id_pair, type(row.assistor_id_pair))
-
-    # record1 = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.assistor_id_pair == 2, Matched.task_id == task_id).first()
-    # print("1111111", json.loads(record1.Matched_id_file))
-
-    # record2 = Matched.query.filter(Matched.sponsor_id == g.current_user.id, Matched.assistor_id_pair == str(2), Matched.task_id == task_id).first()
-    # print("22222", json.loads(record2.Matched_id_file))
-    
-    # query = Matched.query.filter(Matched.task_id == task_id).first()
-    # print("find_assistor_query", query.sponsor_id, type(query.sponsor_id))
 
     data = {"task_id": task_id, 'assistor_num': len(assistor_id_list), 'test_id': test_id}
     
-    response = jsonify(data)
-    
-    return response
+    log(generate_msg('Test 1.4', 'sponsor adds unread request to itself'), g.current_user.id, task_id, test_id)
+    log(generate_msg('------------------------- sponsor find_test_assistor done\n'), g.current_user.id, task_id, test_id)
+
+    return jsonify(data)
 
 @main.route('/get_test_history_id', methods=['POST'])
 @token_auth.login_required

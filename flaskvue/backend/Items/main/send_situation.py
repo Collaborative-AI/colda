@@ -5,6 +5,7 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
+from Items.main.apollo_utils import log, generate_msg
 
 from Items import db
 # import BluePrint
@@ -34,11 +35,18 @@ def send_situation():
     task_id = data.get('task_id')
     assistor_random_id_list = data.get('assistor_random_id_list')
 
+    
+
     # get recent round
     cur_round = 0
     query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
     if query is not None:
         cur_round = query.rounds + 1
+    
+    if cur_round == 0:
+        log(generate_msg('3.3:', 'sponsor send_situation begins'), g.current_user.id, task_id)
+    else:
+        log(generate_msg('5.3:', 'sponsor send_situation begins'), g.current_user.id, task_id)
 
     # # get how many assistors are still in this task
     # check_assistor_match_written_done = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train", Matched.Terminate == "false").all()
@@ -58,7 +66,6 @@ def send_situation():
         cur_residual = residual_list[i]
         # Now hardcode
         # testa: id 4(sponsor), testb: id 5(assistor), testc: id 6(assistor)
-        print("g.current_user.id", g.current_user.id)
         query_of_task = Matched.query.filter(Matched.assistor_id_pair != g.current_user.id, Matched.task_id == task_id, Matched.assistor_random_id_pair == cur_assistor_random_id, Matched.test_indicator == "train").all()
         if query_of_task[0].Terminate == 'true':
             continue
@@ -95,6 +102,11 @@ def send_situation():
         user.add_notification('unread situation', user.new_situation())
         db.session.commit()
 
+    if cur_round == 0:
+        log(generate_msg('3.4:"', 'sponsor adds unread situation to assistors done'), g.current_user.id, task_id)
+    else:
+        log(generate_msg('5.4:"', 'sponsor adds unread situation to assistors done'), g.current_user.id, task_id)
+
     user = User.query.get_or_404(g.current_user.id)
     message = Message()
     message.from_dict(data)
@@ -115,11 +127,14 @@ def send_situation():
         user.add_notification('unread situation', user.new_situation())
         db.session.commit()
 
-    # return response
+    if cur_round == 0:
+        log(generate_msg('3.5:"', 'sponsor add unread situation to sponsor done'), g.current_user.id, task_id)
+        log(generate_msg('------------------------ unread situation done\n'), g.current_user.id, task_id)
+    else:
+        log(generate_msg('5.5:"', 'sponsor add unread situation to sponsor done'), g.current_user.id, task_id)
+        log(generate_msg('------------------------ unread output done\n'), g.current_user.id, task_id)
 
-    # if send_unread_situation:
-    response = jsonify({"message": "send situation successfully!"})
-    return response
+    return jsonify({"message": "send situation successfully!"})
     
     # response = jsonify({"message": "Add Message Done, but not add unread situation"})
     # return response

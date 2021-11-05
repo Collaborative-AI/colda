@@ -5,6 +5,7 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
+from Items.main.apollo_utils import log, generate_msg
 
 from Items import db
 # import BluePrint
@@ -34,6 +35,9 @@ def get_user_situation(id):
     if g.current_user != user:
         return error_response(403)
 
+    log(generate_msg('-------------------- unread sitaution begins'), g.current_user.id, task_id)
+    log(generate_msg('4.1:', 'assistor get_user_situation from sponsor'), g.current_user.id, task_id)
+
     data = {}
     query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").order_by(Message.rounds.desc()).all()
 
@@ -49,55 +53,57 @@ def get_user_situation(id):
         'sender_random_id': sender_random_id
     }
 
+    log(generate_msg('4.2:', 'assistor get_user_situation done'), g.current_user.id, task_id)
+
     return jsonify(data)  
 
-@main.route('/Sponsor_situation_training_done/', methods=['POST'])
-@token_auth.login_required
-def Sponsor_situation_training_done():
+# @main.route('/Sponsor_situation_training_done/', methods=['POST'])
+# @token_auth.login_required
+# def Sponsor_situation_training_done():
 
-    data = request.get_json()
+#     data = request.get_json()
 
-    if not data:
-        return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+#     if not data:
+#         return bad_request('You must post JSON data.')
+#     if 'task_id' not in data or not data.get('task_id'):
+#         return bad_request('task_id is required.')
 
-    task_id = data.get('task_id')
+#     task_id = data.get('task_id')
 
-    rounds = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first().rounds
+#     rounds = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first().rounds
 
-    return_val = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).update({"Sponsor_situation_training_done": "done"})
-    db.session.commit()
+#     return_val = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).update({"Sponsor_situation_training_done": "done"})
+#     db.session.commit()
 
-    a = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).all()
-    for zz in a:
-        print(zz.Sponsor_situation_training_done)
+#     a = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).all()
+#     for zz in a:
+#         print(zz.Sponsor_situation_training_done)
     
-    queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != g.current_user.id, Matched.test_indicator == "train", Matched.Terminate == "false").all()
-    assistor_num = len(queries)
+#     queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != g.current_user.id, Matched.test_indicator == "train", Matched.Terminate == "false").all()
+#     assistor_num = len(queries)
 
-    all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
-    output_upload = 0
-    for row in all_cur_round_messages:
-        print("row", row)
-        if row.output:
-            output_upload += 1
+#     all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
+#     output_upload = 0
+#     for row in all_cur_round_messages:
+#         print("row", row)
+#         if row.output:
+#             output_upload += 1
 
-        if output_upload == assistor_num:
-            user = User.query.get_or_404(queries[0].sponsor_id)
-            query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
-            if query_of_task[0].Terminate == 'true':
-                continue
-            # send message notification to the sponsor when all assistor upload the output
-            print("-----------------sendoutput", g.current_user.id)
-            user.add_notification('unread output', user.new_output())
-            db.session.commit()
+#         if output_upload == assistor_num:
+#             user = User.query.get_or_404(queries[0].sponsor_id)
+#             query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
+#             if query_of_task[0].Terminate == 'true':
+#                 continue
+#             # send message notification to the sponsor when all assistor upload the output
+#             print("-----------------sendoutput", g.current_user.id)
+#             user.add_notification('unread output', user.new_output())
+#             db.session.commit()
 
-            response = jsonify({"Sponsor_situation_training_done": "Send unread output"})
-            return response
+#             response = jsonify({"Sponsor_situation_training_done": "Send unread output"})
+#             return response
     
-    response = jsonify({"Sponsor_situation_training_done": "Assistors havent upload all output"})
-    return response
+#     response = jsonify({"Sponsor_situation_training_done": "Assistors havent upload all output"})
+#     return response
 
 @main.route('/send_output/', methods=['POST'])
 @token_auth.login_required
@@ -112,8 +118,11 @@ def send_output():
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
+
     output = data.get('output')
     task_id = data.get('task_id')
+
+    log(generate_msg('4.3:"', 'assistor send_output start'), g.current_user.id, task_id)
 
     # get sponsor id
     query = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
@@ -155,7 +164,6 @@ def send_output():
                 # print("----------queries[i].output", queries[i].output)
                 message.sender_random_id = queries[i].assistor_random_id_pair
 
-            
         db.session.add(message)
         db.session.commit()
 
@@ -171,12 +179,11 @@ def send_output():
     all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
     output_upload = 0
     for row in all_cur_round_messages:
-        print("row", row)
         if row.output:
-            print("row.output", row.output)
             output_upload += 1
 
         if output_upload == assistor_num:
+            log(generate_msg('4.4:"', 'assistor uploads all output'), g.current_user.id, task_id)
             user = User.query.get_or_404(queries[0].sponsor_id)
             query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
             if query_of_task.Terminate == 'true':
@@ -187,8 +194,10 @@ def send_output():
             user.add_notification('unread output', user.new_output())
             db.session.commit()
 
-    response = jsonify({"send_output": "send output successfully"})
-    return response
+    log(generate_msg('4.5:"', 'assistor send_output done'), g.current_user.id, task_id)
+    log(generate_msg('----------------------- unread situation done\n'), g.current_user.id, task_id)
+
+    return jsonify({"send_output": "send output successfully"})
 
 
     # response = jsonify({"send_output": "Assistors havent upload all outputs"})

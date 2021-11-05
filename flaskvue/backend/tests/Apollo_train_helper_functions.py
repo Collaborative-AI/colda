@@ -114,6 +114,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(queries), 1)
         self.assertEqual(queries[0].sponsor_id, 1)
         
+        list_content = [2,3]
         return task_id, list_content, assistor_random_id_list
     
     def unread_request_two_users_helper(self, task_id, list_content, assistor_random_id_list):
@@ -545,6 +546,15 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         # self.assertEqual(response.status_code, 200)
         # json_response = json.loads(response.get_data(as_text=True))
         # self.assertEqual(json_response['Sponsor_situation_training_done'], "Assistors havent upload all output")
+        headers = self.get_token_auth_headers('unittest2', '123')
+        data = json.dumps({'task_id': task_id, 'rounds': test_round})
+        response = self.client.post('/users/2/situation_file/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+
+        headers = self.get_token_auth_headers('unittest3', '123')
+        data = json.dumps({'task_id': task_id, 'rounds': test_round})
+        response = self.client.post('/users/3/situation_file/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
 
         if not user2_stop and not user3_stop:
             headers = self.get_token_auth_headers('unittest2', '123')

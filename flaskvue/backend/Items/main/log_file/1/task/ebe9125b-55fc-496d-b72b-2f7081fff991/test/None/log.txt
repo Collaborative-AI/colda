@@ -1,0 +1,9 @@
+Sponsor training stage
+-------------------- find_assistor begins
+1.1 sponsor find_assistor
+1.2: sponsor handles id data done
+1.3: sponsor adds all unread request to assistors
+1.4: sponsor adds unread request to itself
+--------------------sponsor find assistor done 
+
+Sponsor testing stage

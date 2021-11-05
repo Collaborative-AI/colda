@@ -7,6 +7,7 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
+from Items.main.apollo_utils import log, generate_msg
 
 from Items import db
 
@@ -20,16 +21,20 @@ from Items.main.auth import token_auth
 @token_auth.login_required
 def get_user_match_id(id):
 
-    data = request.get_json()
-    # print(data)
     user = User.query.get_or_404(id)
     if g.current_user != user:
         return error_response(403)
 
-    # task_id = request.args.get('task_id', 0, type=int)
-    # print("task_id-----------------------", task_id)
-    
+    data = request.get_json()
+    if not data:
+        return bad_request('You must post JSON data.')
+    if 'task_id' not in data or not data.get('task_id'):
+        return bad_request('task_id is required.')
+
     task_id = data.get('task_id')
+
+    log(generate_msg('-------------------- unread match id begins'), g.current_user.id, task_id)
+    log(generate_msg('3.1:', 'get_user_match_id begins'), g.current_user.id, task_id)
 
     # check if the current client is the sponsor
     isSponsor = False
@@ -45,6 +50,8 @@ def get_user_match_id(id):
             'match_id_file': [item.Matched_id_file for item in query],
             'assistor_random_id_pair': [item.assistor_random_id_pair for item in query]
         }
+        log(generate_msg('3.2:', 'get_user_match_id done'), g.current_user.id, task_id)
+
     else:
         query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
 
@@ -53,6 +60,9 @@ def get_user_match_id(id):
             'sponsor_random_id': [item.sponsor_random_id for item in query]
         }
 
+        log(generate_msg('3.2:', 'get_user_match_id done'), g.current_user.id, task_id)
+        log(generate_msg('-------------------- unread match id done\n'), g.current_user.id, task_id)
+    
     return jsonify(data)
 
 
@@ -60,15 +70,23 @@ def get_user_match_id(id):
 @token_auth.login_required
 def get_user_test_match_id(id):
 
-    data = request.get_json()
-    # print(data)
     user = User.query.get_or_404(id)
     if g.current_user != user:
         return error_response(403)
 
-    # task_id = request.args.get('task_id', 0, type=int)
-    # print("task_id-----------------------", task_id)
+    data = request.get_json()
+    if not data:
+        return bad_request('You must post JSON data.')
+    if 'task_id' not in data or not data.get('task_id'):
+        return bad_request('task_id is required.')
+    if 'test_id' not in data or not data.get('test_id'):
+        return bad_request('test_id is required.')
+
+    task_id = data.get('task_id')
     test_id = data.get('test_id')
+
+    log(generate_msg('-------------------- unread test match id begins'), g.current_user.id, task_id, test_id)
+    log(generate_msg('Test 3.1:', 'get_user_test_match_id begins'), g.current_user.id, task_id, test_id)
 
     user = User.query.get_or_404(g.current_user.id)
     # check if the current client is the sponsor
@@ -85,6 +103,9 @@ def get_user_test_match_id(id):
             'match_id_file': [item.Matched_id_file for item in query],
             'assistor_random_id_pair': [item.assistor_random_id_pair for item in query]
         }
+
+        log(generate_msg('Test 3.2:', 'get_user_test_match_id done'), g.current_user.id, task_id, test_id)
+        log(generate_msg('-------------------- unread test match id done\n'), g.current_user.id, task_id, test_id)
     else:
         query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").all()
 
@@ -92,6 +113,8 @@ def get_user_test_match_id(id):
             'match_id_file': [item.Matched_id_file for item in query],
             'sponsor_random_id': [item.sponsor_random_id for item in query]
         }
+
+        log(generate_msg('Test 3.2:', 'get_user_test_match_id done'), g.current_user.id, task_id, test_id)
 
     return jsonify(data)
 
@@ -175,13 +198,17 @@ def send_test_output():
         return bad_request('You must post JSON data.')
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
+    if 'task_id' not in data or not data.get('task_id'):
+        return bad_request('task_id is required.')
     if 'output' not in data or not data.get('output'):
         return bad_request('output is required.')
 
     output = data.get('output')
     test_id = data.get('test_id')
+    task_id = data.get('task_id')
 
-    
+    log(generate_msg('Test 3.3:"', 'assistor send_test_output start'), g.current_user.id, task_id, test_id)
+
     find_sponsor_query = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").first()
     sponsor = find_sponsor_query.sponsor_id
 
@@ -228,6 +255,7 @@ def send_test_output():
             output_upload += 1
 
         if output_upload == assistor_num:
+            log(generate_msg('Test 3.4:"', 'assistor uploads all test output'), g.current_user.id, task_id, test_id)
             user = User.query.get_or_404(queries[0].sponsor_id)
 
             # query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
@@ -239,8 +267,9 @@ def send_test_output():
             db.session.commit()
 
     dict = {"send_test_output": "send test output successfully"}
-    response = jsonify(dict)
+    log(generate_msg('Test 3.5:"', 'assistor send_test_output done'), g.current_user.id, task_id, test_id)
+    log(generate_msg('----------------------- unread_test_match_id done\n'), g.current_user.id, task_id, test_id)
     
-    return response
+    return jsonify(dict)
 
     

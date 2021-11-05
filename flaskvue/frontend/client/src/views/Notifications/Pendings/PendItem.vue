@@ -187,15 +187,7 @@ export default {
           .then((response) => {
             // handle success
             console.log("delete_pending response", response.data)
-
-          })
-          .catch((error) => {
-            // handle error
-            console.log(error)
-
-          })
-        
-        let task_id = vm.task_id
+            let task_id = vm.task_id
         let hash_id_file_address = null;
         let Log_address = null;
         try{
@@ -248,6 +240,15 @@ export default {
             // console.log(error.response.data)
             // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
           })
+
+          })
+          .catch((error) => {
+            // handle error
+            console.log(error)
+
+          })
+        
+        
       })
           
 
@@ -278,15 +279,7 @@ export default {
           .then((response) => {
             // handle success
             console.log("delete_pending response", response.data)
-
-          })
-          .catch((error) => {
-            // handle error
-            console.log(error)
-
-          })
-
-        let task_id = vm.task_id
+            let task_id = vm.task_id
         let test_id = vm.test_id
         let test_hash_id_file_address = null
         let Log_address = null
@@ -347,6 +340,15 @@ export default {
             // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
           })
 
+
+          })
+          .catch((error) => {
+            // handle error
+            console.log(error)
+
+          })
+
+        
           })
         
 

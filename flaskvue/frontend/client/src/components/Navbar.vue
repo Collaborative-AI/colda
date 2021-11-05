@@ -855,7 +855,7 @@ export default {
           }
 
           // Assistor trains the data
-        let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE "task_id" = ' + '"'+ task_id + '"';
+        let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE task_id = ' + '"'+ task_id + '"';
         // console.log("select_pending_record", select_pending_record)
         db.get(select_pending_record, function(err, row){
           if (err){ 
@@ -882,7 +882,7 @@ export default {
 
             }); //end db
           } else if (which_mode == "Manual") {
-            let select_pending_train_data_path = 'SELECT pending_train_file_path, pending_train_data_column FROM User_Pending_Page WHERE user_id=' + vm.sharedState.user_id;
+            let select_pending_train_data_path = 'SELECT pending_train_file_path, pending_train_data_column FROM User_Pending_Page WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
             db.get(select_pending_train_data_path, function(err, row){
               if (err){ 
                 throw err;
@@ -1515,7 +1515,7 @@ export default {
             console.log(err)
           }
 
-          let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE "task_id" = ' + '"'+ task_id + '"';
+          let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id = ' + '"'+ test_id + '"';
           // console.log("select_pending_record", select_pending_record)
           db.get(select_pending_record, function(err, row){
             if (err){ 
@@ -1598,14 +1598,14 @@ export default {
               })
             });
             }else if(which_mode == "Manual"){
-              let select_default_test_data_path = 'SELECT pending_train_file_path, pending_train_data_column FROM User_Pending_Page WHERE user_id=' + vm.sharedState.user_id;
+              let select_default_test_data_path = 'SELECT pending_test_file_path, pending_test_data_column FROM User_Pending_Page WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id=' + '"' + test_id + '"';
             db.get(select_default_test_data_path, function(err, row){
               if (err){ 
                 throw err;
               }
-              let default_train_file_path = row.pending_train_file_path
-              let default_train_data_column = row.pending_train_data_column
-              console.log("default_train_file_path",default_train_file_path)
+              let default_train_file_path = row.pending_test_file_path
+              let default_train_data_column = row.pending_test_data_column
+              console.log("default_test_file_path",default_train_file_path)
 
               let test_outputs_pos = null
               try{

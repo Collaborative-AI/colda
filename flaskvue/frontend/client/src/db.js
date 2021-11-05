@@ -34,16 +34,16 @@ function createDatabase(file){
 let db = createDatabase(node_path.join(__dirname,'../../Apollo_Client_data.db'))
 
 // let db = new sqlite3.Database('Apollo_Client_db');
-
+//user default
 db.serialize(function() {
-  db.run("CREATE TABLE IF NOT EXISTS User_Default_Path (id                    int primary key, \
-                                                   user_id                    int, \
-                                                   default_train_file_path    text, \
-                                                   default_train_id_column          text, \
-                                                   default_train_data_column        text, \
-                                                   default_train_target_column      text, \
-                                                   mode                       text)");
-
+  // db.run("CREATE TABLE IF NOT EXISTS User_Default_Path (id                    int primary key, \
+  //                                                  user_id                    int, \
+  //                                                  default_train_file_path    text, \
+  //                                                  default_train_id_column          text, \
+  //                                                  default_train_data_column        text, \
+  //                                                  default_train_target_column      text, \
+  //                                                  mode                       text)");
+//user sponsor
   db.run("CREATE TABLE IF NOT EXISTS User_Chosen_Path (id     int primary key, \
                                            task_name          text,\
                                            task_description   text,\
@@ -59,7 +59,7 @@ db.serialize(function() {
                                            test_id_column     text, \
                                            test_data_column   text, \
                                            test_target_column text)");
-
+// user manual
     db.run("CREATE TABLE IF NOT EXISTS User_Pending_Page (id                  int primary key, \
                                                    task_name                  text,\
                                                    task_description           text,\

@@ -329,12 +329,7 @@ export default {
       }else{
         vm.test_unread_request()
       }
-
- 
-
-
-
-
+      vm.$router.push('/notifications')
     },
 
     
@@ -361,9 +356,7 @@ export default {
           console.log(error)
 
         })
-      
-
-      vm.$router.push({ name: 'Plist' })
+      vm.$router.push('/notifications')
     },
     
 

@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow:auto">
+  <div >
     <!-- <h1>Setting</h1> -->
     <!-- <form @submit.prevent="onSubmit">
       <div class="form-group">
@@ -23,7 +23,8 @@
       <input type="text" v-model="default_train_file_path" class="form-control" id="name" placeholder="">
       <button @click="get_default_train_file_path()" class="btn btn-success">Select File</button>
     </div>
-    <table class="table" v-if="select_data">
+    <div style="overflow:auto">
+    <table class="table" v-if="select_data" >
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -38,6 +39,7 @@
         
       </tbody>
     </table>
+    </div>
     <div class="form-group">
       <label for="name">Input id column</label>
       <input type="text" v-model="default_train_id_column" class="form-control" id="name" placeholder="">

@@ -2,7 +2,7 @@
 
 
 <template>
-  <div class="container g-pt-20" style="overflow:auto">
+  <div class="container g-pt-20">
     <div class="form-group">
       <label for="name">Input Task Name</label>
       <input type="text" v-model="task_name" class="form-control" id="name" placeholder="">
@@ -23,7 +23,7 @@
       <input type="text" v-model="train_file_path" class="form-control" id="name" placeholder="">
       <button class="btn btn-success" @click="get_train_file_path()">Select File</button>
     </div>
-
+    <div style="overflow:auto">
     <table class="table" v-if="select_data">
       <thead>
         <tr>
@@ -39,6 +39,7 @@
         
       </tbody>
     </table>
+    </div>
     <!-- <div>{{pdatas[0]}}</div> -->
 
     <div class="form-group">

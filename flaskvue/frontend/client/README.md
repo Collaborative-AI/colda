@@ -66,6 +66,40 @@ format:
     可能的错误，可能的错误有哪些？
     执行步骤：list
 
+Auto train procedure: expect history page complete log, no crash during training and testing process
+step: 1. assistor sets setting page, set mode auto, update setting
+      2. sponsor starts a task on request page
+      3. sponsor and assistor check history page for log info
+
+Auto test procedure: expect history page complete log, no crash during training and testing process
+step: 1. sponsor press test on history record page, go to test request page
+      2. sponsor starts a test request
+      3. sponsor and assistor check history page for log info
+
+Manual train procedure: expect history page complete log, no crash during training and testing process
+step: 1. assistor sets setting page, set mode manual, update setting
+      2. sponsor starts a task on request page
+      3. assistor goes to pending page, choose pending record, go to pending record page
+      4. 
+        4.1 assistor fill in path info, accept
+        4.2 assistor reject
+      5. sponsor and assistor check history page for log info
+
+Manual test procedure: expect history page complete log, no crash during training and testing process
+step: 1. sponsor press test on history record page, go to test request page
+      2. sponsor starts a test request
+      3. assistor goes to pending page, choose pending record, go to pending record page
+      4. 
+        4.1 assistor fill in path info, accept
+        4.2 assistor reject
+      5. sponsor and assistor check history page for log info
+
+sponsor and assistor swap roles
+multiple assistor test
+
+
+    
+
 
 
 

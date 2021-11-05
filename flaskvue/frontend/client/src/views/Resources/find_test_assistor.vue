@@ -1,5 +1,5 @@
 <template>
-  <div class="container g-pt-20" style="overflow:auto">
+  <div class="container g-pt-20">
 
     <div class="form-group">
       <label for="name">Input Test Name</label>
@@ -16,7 +16,7 @@
       <input type="text" v-model="test_file_path" class="form-control" id="name" placeholder="">
       <button @click="get_test_data_path()" class="btn btn-success">Select File</button>
     </div>
-
+    <div style="overflow:auto">
     <table class="table" v-if="select_data">
       <thead>
         <tr>
@@ -32,7 +32,7 @@
         
       </tbody>
     </table>
-
+    </div>
     <div class="form-group">
       <label for="name">Input ID column </label>
       <input type="text" v-model="test_id_column" class="form-control" id="name" placeholder="">

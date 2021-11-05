@@ -2041,6 +2041,6 @@ export default {
     cursor: pointer;
   } */
   a{
-    color: rgb(118, 122, 118) !important
+    color: rgb(201, 206, 201) !important
   }
 </style>

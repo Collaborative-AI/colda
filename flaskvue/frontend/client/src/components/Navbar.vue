@@ -1613,16 +1613,16 @@ export default {
               if (err){ 
                 throw err;
               }
-              let default_train_file_path = row.pending_test_file_path
-              let default_train_data_column = row.pending_test_data_column
-              console.log("default_test_file_path",default_train_file_path)
+              let pending_test_file_path = row.pending_test_file_path
+              let pending_test_data_column = row.pending_test_data_column
+              console.log("pending_test_file_path",pending_test_file_path)
 
               let test_outputs_pos = null
               try{
 
                 test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                   + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
-                  + ' --dataset_path ' +  default_train_file_path + ' --data_idx ' + default_train_data_column, {encoding: 'utf8'})
+                  + ' --dataset_path ' +  pending_test_file_path + ' --data_idx ' + pending_test_data_column, {encoding: 'utf8'})
 
                 test_outputs_pos = test_outputs_pos.split("?")
                 let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")

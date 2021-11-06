@@ -1,0 +1,12 @@
+Assistor testing stage
+-------------------- unread test request begins
+Test 2.1: assistor match_test_assistor_id begins
+Test 2.2: assistor matching 4
+Test 2.3: match_done number of assistor: 1
+Test 2.4: Server sends unread match id to all participants of this test
+Test 2.5: assistor match_test_assistor_id done
+----------------------------- unread test request done
+
+-------------------- unread test match id begins
+Test 3.1: get_user_test_match_id begins
+Test 3.2: get_user_test_match_id done

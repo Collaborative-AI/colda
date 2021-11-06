@@ -11,16 +11,16 @@
                             
                         </router-link>
                         <li v-if="sharedState.is_authenticated" class="nav-item">
-                          <router-link v-bind:to="{ path: '/find_assistor' }" class="nav-link" >Request</router-link>
+                          <router-link  v-bind:to="{ path: '/find_assistor' }" class="nav-link" @click.native="refreshView">Request</router-link>
                         </li>
                         <li v-if="sharedState.is_authenticated" class="nav-item">
-                          <router-link v-bind:to="{ path: '/plist' }" class="nav-link">Pend<span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+                          <router-link  v-bind:to="{ path: '/plist' }" class="nav-link" @click.native="refreshView">Pending<span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
                         </li>
                         <li v-if="sharedState.is_authenticated" class="nav-item">
-                          <router-link v-bind:to="{ path: '/notifications' }" class="nav-link">History<span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
+                          <router-link  v-bind:to="{ path: '/notifications' }" class="nav-link" @click.native="refreshView">History<span id="new_notifications_count" style="visibility: hidden;" class="u-label g-font-size-11 g-bg-aqua g-rounded-20 g-px-10">0</span></router-link>
                         </li>
                         <li v-if="sharedState.is_authenticated" class="nav-item">
-                          <router-link v-bind:to="{ name: 'SettingProfile' }" class="nav-link">Setting</router-link>
+                          <router-link  v-bind:to="{ name: 'SettingProfile' }" class="nav-link" @click.native="refreshView">Setting</router-link>
                         </li>
                         <li v-if="sharedState.is_authenticated" class="nav-item">
                             <a v-on:click="handlerLogout" class="nav-link" href="#">Logout</a>
@@ -31,7 +31,7 @@
                         </li>
                       
                         <li v-if="sharedState.user_id==1 || sharedState.user_id==2" class="nav-item">
-                          <router-link to="/shiyan" class="nav-link">Ceshi</router-link>
+                          <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
                         </li>                    
                         <!-- <li class="nav-item">
                             <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Brand</span></a>
@@ -67,7 +67,7 @@
                 This Sidebar works using only Bootstrap CSS classes and doesn't require JavaScript. It utilizes the responsive Navbar classes
                 to auto-magically switch the Sidebar orientation.
             </p>  -->
-            <router-view />
+            <router-view v-if="showView"/>
         </main>
     </div>
 </div>
@@ -113,13 +113,14 @@ export default {
       max_round: 3,
       root: '',
       exe_position: '',
+      showView: true,
       
     }
   },
   methods: {
 
     // which_mode(task_id){
-    //   let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE "task_id" = ' + '"'+ task_id + '"';
+    //   let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE "task_id" = ' + '"'+ task_id + '"';
     //   // console.log("select_pending_record", select_pending_record)
     //   db.get(select_pending_record, function(err, row){
     //     if (err){ 
@@ -133,6 +134,13 @@ export default {
     //   }) //end db
       
     // },
+
+    refreshView () {
+      this.showView = false // 通过v-if移除router-view节点
+      this.$nextTick(() => {
+        this.showView = true // DOM更新后再通过v-if添加router-view节点
+      })
+    },
     
     handlerLogout (e) {
       store.logoutAction()
@@ -191,7 +199,7 @@ export default {
       this.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
 
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
-      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
       db.get(select_sentence, function(err, row){
         if (err){
           console.log(err);
@@ -211,7 +219,7 @@ export default {
 
           if (vm.sharedState.mode == 'Auto'){
 
-          let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+          let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
           console.log("select_default_train_file_path", select_default_train_file_path)
           db.get(select_default_train_file_path, function(err, row){
             if (err){ 
@@ -442,7 +450,7 @@ export default {
 
           }
 
-          let select_train_target_column = 'SELECT train_file_path, train_target_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
+          let select_train_target_column = 'SELECT train_file_path, train_target_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
           console.log("select_train_target_column", select_train_target_column)
           db.get(select_train_target_column, function(err, row){
             if (err){ 
@@ -682,7 +690,7 @@ export default {
         console.log(err)
       }
       
-      let select_train_data_path = 'SELECT train_file_path, train_data_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+      let select_train_data_path = 'SELECT train_file_path, train_data_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
       db.get(select_train_data_path, function(err, row){
         if (err){ 
           throw err;
@@ -788,6 +796,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
             fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
+            fs.appendFileSync(Log_address, "-------------------------- Train stage done\n")
           } catch (err) {
             console.log(err)
           }
@@ -855,7 +864,7 @@ export default {
           }
 
           // Assistor trains the data
-        let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE task_id = ' + '"'+ task_id + '"';
+        let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE task_id = ' + '"'+ task_id + '"';
         // console.log("select_pending_record", select_pending_record)
         db.get(select_pending_record, function(err, row){
           if (err){ 
@@ -868,7 +877,7 @@ export default {
             which_mode = 'Manual'
           }
           if (which_mode == "Auto"){
-            let select_default_train_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+            let select_default_train_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
             db.get(select_default_train_data_path, function(err, row){
               if (err){ 
                 throw err;
@@ -882,7 +891,7 @@ export default {
 
             }); //end db
           } else if (which_mode == "Manual") {
-            let select_pending_train_data_path = 'SELECT pending_train_file_path, pending_train_data_column FROM User_Pending_Page WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
+            let select_pending_train_data_path = 'SELECT pending_train_file_path, pending_train_data_column FROM User_Manual_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
             db.get(select_pending_train_data_path, function(err, row){
               if (err){ 
                 throw err;
@@ -996,7 +1005,7 @@ export default {
             }
           }
 
-          let select_train_target_path = 'SELECT train_file_path, train_target_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+          let select_train_target_path = 'SELECT train_file_path, train_target_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
           db.get(select_train_target_path, function(err, row){
             if (err){ 
               throw err;
@@ -1140,7 +1149,7 @@ export default {
       let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
       let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
 
-      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
       db.get(select_sentence, function(err, row){
         if (err){
           console.log(err);
@@ -1163,7 +1172,7 @@ export default {
           if (vm.sharedState.mode == 'Auto'){
             
             
-            let select_default_test_id_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+            let select_default_test_id_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
             db.get(select_default_test_id_path, function(err, row){
               if (err){ 
                 throw err;
@@ -1391,7 +1400,7 @@ export default {
 
           }
 
-          let select_test_data_path = 'SELECT test_file_path, test_data_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
+          let select_test_data_path = 'SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
           db.get(select_test_data_path, function(err, row){
             if (err){ 
               throw err;
@@ -1515,7 +1524,7 @@ export default {
             console.log(err)
           }
 
-          let select_pending_record = 'SELECT * FROM User_Pending_Page WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id = ' + '"'+ test_id + '"';
+          let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id = ' + '"'+ test_id + '"';
           // console.log("select_pending_record", select_pending_record)
           db.get(select_pending_record, function(err, row){
             if (err){ 
@@ -1529,7 +1538,7 @@ export default {
             } 
 
             if(which_mode == "Auto"){
-            let select_default_test_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Path WHERE user_id=' + vm.sharedState.user_id;
+            let select_default_test_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
             db.get(select_default_test_data_path, function(err, row){
               if (err){ 
                 throw err;
@@ -1589,6 +1598,7 @@ export default {
                 try {
                   fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
                   fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
+                  fs.appendFileSync(Log_address, "-------------------------- Test stage done\n")
                 } catch (err) {
                   console.log(err)
                 }
@@ -1598,7 +1608,7 @@ export default {
               })
             });
             }else if(which_mode == "Manual"){
-              let select_default_test_data_path = 'SELECT pending_test_file_path, pending_test_data_column FROM User_Pending_Page WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id=' + '"' + test_id + '"';
+              let select_default_test_data_path = 'SELECT pending_test_file_path, pending_test_data_column FROM User_Manual_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id=' + '"' + test_id + '"';
             db.get(select_default_test_data_path, function(err, row){
               if (err){ 
                 throw err;
@@ -1658,6 +1668,7 @@ export default {
                 try {
                   fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
                   fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
+                  fs.appendFileSync(Log_address, "-------------------------- Test stage done\n")
                 } catch (err) {
                   console.log(err)
                 }
@@ -1789,7 +1800,7 @@ export default {
       console.log("unread_test_output_max_round", JSON.parse(response.data.output[0]))
       console.log("max_round", max_round)
 
-      let select_test_target_path = 'SELECT test_file_path, test_target_column FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
+      let select_test_target_path = 'SELECT test_file_path, test_target_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
       db.get(select_test_target_path, function(err, row){
         if (err){ 
           throw err;
@@ -2047,6 +2058,12 @@ export default {
     cursor: pointer;
   } */
   a{
-    color: rgb(201, 206, 201) !important
+    color: rgb(128, 131, 128) !important
+  }
+  
+  .router-link-exact-active{
+    color:rgb(249, 249, 250) !important;
+    /* background:green; */
+    /* text-decoration: underline !important; */
   }
 </style>

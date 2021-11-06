@@ -5,7 +5,7 @@
     
     <!-- End Panel Header -->
     <div class="form-group">
-      <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id } }">
+      <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id, from_task_name: task_name } }">
         <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button>
       </router-link>
       
@@ -86,6 +86,7 @@ export default {
       isSponsor: false,
       root: '',
       task_id: '',
+      task_name: '',
     }
   },
   methods: {
@@ -244,6 +245,7 @@ export default {
   },
   created () {
     this.task_id = this.$route.query.from;
+    this.task_name = this.$route.query.from_task_name
     let new_root = store.changeroot()
     this.root = new_root.root;
     this.exe_position = new_root.exe_position

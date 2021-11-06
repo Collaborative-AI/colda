@@ -581,7 +581,7 @@ export default {
 created () {
     
     // this.getUserMessagesSenders(this.sharedState.user_id)
-    let select_sentence = 'SELECT * FROM User_Pending_Page WHERE user_id=?';
+    let select_sentence = 'SELECT * FROM User_Manual_Table WHERE user_id=?';
     let vm=this;
             db.all(select_sentence, [this.sharedState.user_id], function(err, row){
             if (err){ 
@@ -633,14 +633,14 @@ created () {
 
 
 
-      let select_train_data_path = 'SELECT train_data_path FROM User_Chosen_Path WHERE "user_id"=' + vm.sharedState.user_id + " AND 'task_id'=" + task_id;
+      let select_train_data_path = 'SELECT train_data_path FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + " AND 'task_id'=" + task_id;
       db.get(select_train_data_path, function(err, train_data_path){
         if (err){ 
           throw err;
         }
 
 
-let select_default_id_path = 'SELECT default_id_path FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+let select_default_id_path = 'SELECT default_id_path FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
 db.get(select_default_id_path, function(err, match_id_address){
 if (err){ 
   throw err;

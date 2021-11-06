@@ -82,6 +82,7 @@ export default {
     return {
       sharedState: store.state,
       task_id: "",
+      task_name: "",
       test_id: "",
       test_name: "",
       test_description: "",
@@ -245,7 +246,7 @@ export default {
         
         if(both_path_validation == true){
           // db.serialize(function() {
-          //   let update_sentence = 'UPDATE "User_Chosen_Path"'
+          //   let update_sentence = 'UPDATE "User_Sponsor_Table"'
           //             +' SET "test_data_path" = "' + vm.PathForm.test_data_path + '",'
           //             +'"test_id_path" = "' + vm.profileForm.default_id_path + '",'
           //             +'"test_target_path" = "' + vm.profileForm.default_id_path + '",'
@@ -256,8 +257,8 @@ export default {
           // });
           console.log("true")
           console.log(vm.test_file_path,vm.test_id_column,vm.test_target_column)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("user_id", "test_indicator", "task_id", "test_id", "test_file_path", "test_id_column","test_data_column","test_target_column") VALUES 
-              (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.test_id+ `", "` +vm.test_file_path+ `", "` +vm.test_id_column+`", "`+vm.test_data_column+`", "`+vm.test_target_column+`")`
+          let insert_sentence = `INSERT INTO "User_Sponsor_Table"("user_id", "test_indicator", "task_id", "task_name", "test_id", "test_file_path", "test_id_column","test_data_column","test_target_column") VALUES 
+              (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.task_name + `", "` +vm.test_id + `", "` +vm.test_file_path+ `", "` +vm.test_id_column+`", "`+vm.test_data_column+`", "`+vm.test_target_column+`")`
           console.log(insert_sentence)
           db.run(insert_sentence, function(err){
             if (err){
@@ -304,6 +305,7 @@ export default {
 
           const payload = {
             task_id: vm.task_id,
+            task_name: vm.task_name,
             test_id: vm.test_id, 
             test_name: vm.test_name,
             test_description: vm.test_description,
@@ -378,6 +380,7 @@ export default {
   },
   created () {
     this.task_id = this.$route.query.from;
+    this.task_name = this.$route.query.from_task_name
     this.get_test_id();
 
     let new_root = store.changeroot()

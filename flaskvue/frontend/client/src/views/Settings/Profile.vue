@@ -131,7 +131,7 @@ export default {
     // passive() {
 
     //   let vm = this
-    //   let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+    //   let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
     //   db.get(select_sentence, function(err, row){
     //     if (err){
     //       console.log(err);
@@ -156,7 +156,7 @@ export default {
     // active() {
 
     //   let vm = this
-    //   let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+    //   let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
     //   db.get(select_sentence, function(err, row){
     //     if (err){
     //       console.log(err);
@@ -302,7 +302,7 @@ export default {
     // },
     getUser (id) {
       let vm = this
-      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
       db.get(select_sentence, function(err, row){
         if (err){ 
           console.log(err);
@@ -378,7 +378,7 @@ export default {
       //   both_path_validation = false
       // }
 
-      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
       db.get(select_sentence, function(err, row){
         if (err){ 
           console.log(err);
@@ -386,8 +386,8 @@ export default {
         console.log("row", row)
         
         if (row == null){
-          // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
-          let insert_new_val = `INSERT INTO "User_Default_Path" ("user_id", "default_train_file_path", "default_train_id_column", "default_train_data_column", "mode") VALUES 
+          // db.run(`INSERT INTO "User_Default_Table"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
+          let insert_new_val = `INSERT INTO "User_Default_Table" ("user_id", "default_train_file_path", "default_train_id_column", "default_train_data_column", "mode") VALUES 
             (`+`"`+vm.sharedState.user_id+`", "`+vm.default_train_file_path+`", "`+vm.default_train_id_column+`", "`
             +vm.default_train_data_column+`", "`+vm.sharedState.mode+`")`
           console.log("insert_new_val", insert_new_val)
@@ -401,7 +401,7 @@ export default {
           
           if(both_path_validation == true){
             db.serialize(function() {
-              let update_sentence = 'UPDATE "User_Default_Path"'
+              let update_sentence = 'UPDATE "User_Default_Table"'
                         +'SET "default_train_file_path" = "' + vm.default_train_file_path + '",'
                         +'"default_train_id_column" = "' + vm.default_train_id_column + '",'
                         +'"default_train_data_column" = "' + vm.default_train_data_column + '",'   

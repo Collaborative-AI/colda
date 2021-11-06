@@ -167,7 +167,7 @@ export default {
       let vm = this;
 
       let task_id = vm.task_id
-      let insert_sentence = `INSERT INTO "User_Pending_Page"("pending_train_file_path", "pending_train_id_column", "pending_train_data_column", "pending_train_target_column","user_id", "task_id") VALUES 
+      let insert_sentence = `INSERT INTO "User_Manual_Table"("pending_train_file_path", "pending_train_id_column", "pending_train_data_column", "pending_train_target_column","user_id", "task_id") VALUES 
               (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + task_id + `")`
       console.log("insert_sentence", insert_sentence)
       db.run(insert_sentence, function(err){
@@ -257,7 +257,7 @@ export default {
     test_unread_request(){
       let vm = this
 
-      let insert_sentence = `INSERT INTO "User_Pending_Page"("pending_test_file_path", "pending_test_id_column", "pending_test_data_column", "pending_test_target_column","user_id", "test_id") VALUES 
+      let insert_sentence = `INSERT INTO "User_Manual_Table"("pending_test_file_path", "pending_test_id_column", "pending_test_data_column", "pending_test_target_column","user_id", "test_id") VALUES 
               (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + vm.test_id + `")`
       console.log("insert_sentence", insert_sentence)
       db.run(insert_sentence, function(err){
@@ -369,6 +369,7 @@ export default {
       }else{
         vm.test_unread_request()
       }
+      vm.$router.push('/notifications')
       
     },
 

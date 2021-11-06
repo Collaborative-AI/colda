@@ -93,7 +93,7 @@ export default {
 
     retrieve_setting_mode(user_id) {
 
-      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + user_id;
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + user_id;
       db.get(select_sentence, function(err, row){
         if (err){
           console.log(err);

@@ -350,7 +350,7 @@ export default {
 
     getUser (id) {
       let vm = this
-      let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
       db.get(select_sentence, function(err, row){
         console.log(row)
 
@@ -436,7 +436,7 @@ export default {
           console.log("ainiaini")
         }
         let vm = this
-        let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+        let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
         db.get(select_sentence, function(err, row){
           console.log(row)
 
@@ -457,15 +457,15 @@ export default {
       onSubmit (e) {
 
         let vm = this;
-        let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + this.sharedState.user_id;
+        let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
 
         db.get(select_sentence, function(err, row){
           console.log(row)
           
           
           if (row == null){
-            // db.run(`INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES (1, 'love', 'consume')`)
-            let insert_new_val = `INSERT INTO "User_Default_Path"("user_id", "default_data_path", "default_id_path") VALUES 
+            // db.run(`INSERT INTO "User_Default_Table"("user_id", "default_data_path", "default_id_path") VALUES (1, 'love', 'consume')`)
+            let insert_new_val = `INSERT INTO "User_Default_Table"("user_id", "default_data_path", "default_id_path") VALUES 
               (`+vm.sharedState.user_id+`, "`+vm.profileForm.default_data_path+`", "`+vm.profileForm.default_id_path+`")`
             console.log(insert_new_val)
             db.run(insert_new_val)
@@ -478,13 +478,13 @@ export default {
             }
 
             db.serialize(function() {
-            let update_default_data_path = 'UPDATE "User_Default_Path"'
+            let update_default_data_path = 'UPDATE "User_Default_Table"'
                       +' SET "default_data_path" = "' + vm.profileForm.default_data_path
                        + '" WHERE "user_id" = ' + vm.sharedState.user_id
             console.log(update_default_data_path)           
             db.run(update_default_data_path)
 
-            let update_default_id_path = 'UPDATE "User_Default_Path"'
+            let update_default_id_path = 'UPDATE "User_Default_Table"'
                       +' SET "default_id_path" = "' + vm.profileForm.default_id_path
                        + '" WHERE "user_id" = ' + vm.sharedState.user_id
             console.log(update_default_id_path)
@@ -609,8 +609,8 @@ export default {
         // });
 
         // db.close();
-        this.$db.run(`INSERT INTO "User_Default_Path"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
-        let select_sentence = 'SELECT * FROM User_Default_Path WHERE user_id=' + 1;
+        this.$db.run(`INSERT INTO "User_Default_Table"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
+        let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + 1;
         this.$db.get(select_sentence, function(err, row){
           console.log(row)
           if (row == null){

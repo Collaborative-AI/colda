@@ -16,12 +16,11 @@
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
                         <!-- <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div> -->
                         <div class="font-weight-bold mr-3">
-                            <div v-if="message.test_indicator == 'test' " class="text-truncate">Test Name: {{ message.test_name }}</div>
                             <div v-if="message.test_indicator == 'train' " class="text-truncate">Task Name: {{ message.task_name }}</div>
+                            <div v-if="message.test_indicator == 'test' " class="text-truncate">Test Name: {{ message.test_name }}</div> 
                             <div class="small">Task ID:  {{ message.task_id }}</div>
                             <div v-if="message.test_indicator == 'train' " class="small">Task Description:  {{ message.task_description }}</div>
                             <div v-if="message.test_indicator == 'test' " class="small">Test ID:  {{ message.test_id }}</div>
-                            
                             <div v-if="message.test_indicator == 'test' " class="small">Test Description:  {{ message.test_description }}</div>
 
 
@@ -41,7 +40,7 @@
                             </div> -->
                             <br />
                             <div class="text-right text-muted pt-1">
-                              <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id } }">
+                              <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id, from_task_name: message.task_name } }">
                                 <button class="btn btn-block u-btn-outline-primary g-rounded-20 ">Details</button>
                               </router-link>
                             </div>
@@ -105,7 +104,7 @@ export default {
 //       let vm = this;
       
 //       let myPromise = new Promise(function(resolve, reject) {
-//         let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
+//         let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE task_id=?';
 //       db.get(select_sentence, [message.task_id], function(err, row){
 //         if (err){ 
 //           console.log(err);
@@ -124,7 +123,7 @@ export default {
 //       console.log(vm.task_name)
 //       resolve(vm.task_name)
 //       })
-//       // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + `task_id`;
+//       // let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE task_id=' + `task_id`;
       
 //       // console.log(task_name)
 //       // return this.task_name[0]
@@ -191,8 +190,8 @@ export default {
           // for (let i=0; i<vm.messages.items.length; i++) {
           //   console.log("get_user_history_message", vm.messages.items[i]);
             
-            // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + `task_id`;
-            // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
+            // let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE task_id=' + `task_id`;
+            // let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE task_id=?';
             // db.get(select_sentence, [vm.messages.items[i].task_id], function(err, row){
             //   if (err){ 
             //     console.log("get_name_from_frontend_db", err);
@@ -226,8 +225,8 @@ export default {
     // taskName: function(task_id) {
     //   // console.log(task_id)
     //   let vm = this;
-    //   // let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=' + `task_id`;
-    //   let select_sentence = 'SELECT * FROM User_Chosen_Path WHERE task_id=?';
+    //   // let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE task_id=' + `task_id`;
+    //   let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE task_id=?';
     //   db.get(select_sentence, [task_id], function(err, row){
     //     if (err){ 
     //       console.log(err);

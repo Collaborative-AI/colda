@@ -1,0 +1,27 @@
+Assistor training stage
+-------------------- unread request begins
+2.1: assistor match_assistor_id begins
+2.2: assistor matching 2
+2.3: assistor matching_done number of assistor: 1
+2.4: Server sends unread match id to all participants of this task
+2.5: assistor match_assistor_id done
+------------------------------ unread request done
+
+-------------------- unread match id begins
+-------------------- unread match id begins
+3.1: get_user_match_id begins
+3.1: get_user_match_id begins
+3.2: get_user_match_id done
+3.2: get_user_match_id done
+-------------------- unread match id done
+
+-------------------- unread match id done
+
+-------------------- unread sitaution begins
+4.1: assistor get_user_situation from sponsor
+4.2: assistor get_user_situation done
+4.3:" assistor send_output start
+4.4:" assistor uploads all output
+4.5:" assistor send_output done
+----------------------- unread situation done
+

@@ -75,7 +75,7 @@
       <button @click="get_train_target_path()">Select Target File</button>
     </div> -->
 
-    <button type="submit" @click="onSubmit()" class="btn btn-success">Start Finding Assistors</button>
+    <button type="submit" @click="onSubmit()" class="btn btn-success">Initiate task</button>
     <!-- <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button> -->
   </div>
 </template>
@@ -290,7 +290,7 @@ export default {
         
         if(both_path_validation == true){
           // db.serialize(function() {
-          //   let update_sentence = 'UPDATE "User_Chosen_Path"'
+          //   let update_sentence = 'UPDATE "User_Sponsor_Table"'
           //             +' SET "train_data_path" = "' + vm.PathForm.train_data_path + '",'
           //             +'"train_id_path" = "' + vm.profileForm.default_id_path + '",'
           //             +'"train_target_path" = "' + vm.profileForm.default_id_path + '",'
@@ -301,11 +301,11 @@ export default {
           // });
           console.log("true")
           // console.log(vm.PathForm.train_data_path,vm.PathForm.train_id_path,vm.PathForm.train_target_path)
-          // let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
+          // let insert_sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_data_path", "train_id_path", "train_target_path") VALUES 
           //     (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
           // console.log("insert_sentence", insert_sentence)
           console.log(vm.train_file_path)
-          let insert_sentence = `INSERT INTO "User_Chosen_Path"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_column", "train_data_column" , "train_target_column") VALUES 
+          let insert_sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_column", "train_data_column" , "train_target_column") VALUES 
               (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`")`
           console.log("insert_sentence", insert_sentence) 
           db.run(insert_sentence, function(err){

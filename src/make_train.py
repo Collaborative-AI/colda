@@ -20,10 +20,11 @@ def make_train(args):
                                         '{}.csv'.format(self_id)), delimiter=',')
     target = target.reshape(target.shape[0], -1)
     if from_id is not None:
-        match_idx_file_location = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx', '{}.csv'.format(from_id))
+        match_idx_file_location = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx',
+                                               '{}.csv'.format(from_id))
         if not os.path.exists(match_idx_file_location):
             print("300?make_train assistor cannot find match idx file")
-            return 
+            return
         self_from_idx = np.genfromtxt(
             os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx', '{}.csv'.format(from_id)),
             delimiter=',').astype(np.int64)

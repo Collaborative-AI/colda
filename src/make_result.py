@@ -35,8 +35,8 @@ def make_result(args):
             output[self_from_idx_i,] = output[self_from_idx_i,] + output_i
             count[self_from_idx_i,] = count[self_from_idx_i,] + 1
     output = output / count
-    if round == 0:
-        result = np.genfromtxt(os.path.join(round_path, str(round), 'init.csv'), delimiter=',')
+    if round == 1:
+        result = np.genfromtxt(os.path.join(round_path, str(round - 1), 'result.csv'), delimiter=',')
         result = result.reshape(-1)
     else:
         result = np.genfromtxt(os.path.join(round_path, str(round - 1), 'result.csv'), delimiter=',')
@@ -48,7 +48,7 @@ def make_result(args):
     result = result + alpha * output
     np.savetxt(os.path.join(round_path, str(round), 'result.csv'), result, delimiter=",")
     loss = np.sqrt(((target - result) ** 2).mean())
-    msg = 'Train Round: {}, RMSE: {}, alpha: {}'.format(round, loss, alpha)
+    msg = 'Train Round: {}, RMSE: {}, alpha: {}'.format(round, loss, alpha.item())
     log(msg, root, self_id, task_id)
     print('200?make_result?complete', end='')
     return

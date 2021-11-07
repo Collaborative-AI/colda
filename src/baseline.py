@@ -37,7 +37,7 @@ def main():
         model = LinearRegression().fit(train_data, train_target)
         test_output = model.predict(test_data)
         loss = np.sqrt(((test_target - test_output) ** 2).mean())
-        print('Test Client: {}, RMSE: {}'.format(i, loss))
+        print('Test Baseline Client: {}, RMSE: {}'.format(i, loss))
     return
 
 

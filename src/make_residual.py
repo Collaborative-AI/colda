@@ -13,14 +13,14 @@ def make_residual(args):
     dataset = np.genfromtxt(dataset_path, delimiter=',')
     target_idx = parse_idx(target_idx)
     target = dataset[:, target_idx]
-    if round == 0:
+    if round == 1:
         init = make_init(target)
-        round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round))
+        round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
         makedir_exist_ok(round_path)
-        np.savetxt(os.path.join(round_path, 'init.csv'), init, delimiter=",")
+        np.savetxt(os.path.join(round_path, 'result.csv'), init, delimiter=",")
         residual = compute_residual(init, target)
         loss = np.sqrt(((target - init) ** 2).mean())
-        msg = 'Train Round: init, RMSE: {}'.format(loss)
+        msg = 'Train Round: 0, RMSE: {}'.format(loss)
         log(msg, root, self_id, task_id)
     else:
         round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))

@@ -19,7 +19,7 @@ def make_test_local(args):
     model = load(os.path.join(root, self_id, 'task', task_id, 'train', 'local', 'model.pkl'))
     output = model.predict(data)
     loss = np.sqrt(((target - output) ** 2).mean())
-    msg = 'Test Client: {}, RMSE: {}'.format(self_id, loss)
+    msg = 'Test Local Client: {}, RMSE: {}'.format(self_id, loss)
     log(msg, root, self_id, task_id, test_id)
     print('200?make_test_local?complete', end='')
     return

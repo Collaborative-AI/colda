@@ -21,7 +21,7 @@ def make_test(args):
             delimiter=',').astype(np.int64)
         data = data[self_from_idx]
     output_path = []
-    for i in range(round + 1):
+    for i in range(1, round + 1):
         model = load(os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(i), 'model.pkl'))
         output = model.predict(data)
         output_path_i = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'round', str(i), 'output')

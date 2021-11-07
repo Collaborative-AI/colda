@@ -10,7 +10,7 @@ python baseline.py --root ./data --data_name BostonHousing --task_id 123 --num_u
 
 # local
 python run.py make_train_local --root ./exp --self_id 0 --task_id abc --dataset_path ./data/BostonHousing_2_123_1.0/0/train/dataset.csv --data_idx 2-8 --target_idx 9
-python run.py make_test_local --root ./exp --self_id 0 --task_id abc --test_id kdg --dataset_path ./data/BostonHousing_2_123_1.0/0/test/dataset.csv --data_idx 2-8 --target_idx 9
+python run.py make_test_local --root ./exp --self_id 0 --task_id abc --test_id def --dataset_path ./data/BostonHousing_2_123_1.0/0/test/dataset.csv --data_idx 2-8 --target_idx 9
 
 # default
 # hash id
@@ -29,21 +29,6 @@ python save_match_id_exe.py --root ./exp --self_id 0 --task_id abc --mode train 
 python run.py make_match_idx --root ./exp --self_id 0 --task_id abc --mode train --from_id 1
 python run.py make_match_idx --root ./exp --self_id 1 --task_id abc --mode train --from_id 0
 
-# round 0
-# make residual
-python run.py make_residual --root ./exp --self_id 0 --task_id abc --round 0 --dataset_path ./data/BostonHousing_2_123_1.0/0/train/dataset.csv --target_idx 9
-python run.py save_residual --root ./exp --self_id 1 --task_id abc --round 0
-python save_residual_exe.py --root ./exp --self_id 1 --task_id abc --from_id 0 --round 0
-
-# train
-python run.py make_train --root ./exp --self_id 0 --task_id abc --round 0 --dataset_path ./data/BostonHousing_2_123_1.0/0/train/dataset.csv --data_idx 2-8
-python run.py make_train --root ./exp --self_id 1 --task_id abc --round 0 --from_id 0 --dataset_path ./data/BostonHousing_2_123_1.0/1/train/dataset.csv --data_idx 2-7
-
-# output
-python run.py save_output --root ./exp --self_id 0 --task_id abc --mode train --from_id 1 --round 0
-python save_output_exe.py --root ./exp --self_id 0 --task_id abc --mode train --from_id 1 --round 0
-python run.py make_result --root ./exp --self_id 0 --task_id abc --round 0 --dataset_path ./data/BostonHousing_2_123_1.0/0/train/dataset.csv --target_idx 9
-
 # round 1
 # make residual
 python run.py make_residual --root ./exp --self_id 0 --task_id abc --round 1 --dataset_path ./data/BostonHousing_2_123_1.0/0/train/dataset.csv --target_idx 9
@@ -59,6 +44,21 @@ python run.py save_output --root ./exp --self_id 0 --task_id abc --mode train --
 python save_output_exe.py --root ./exp --self_id 0 --task_id abc --mode train --from_id 1 --round 1
 python run.py make_result --root ./exp --self_id 0 --task_id abc --round 1 --dataset_path ./data/BostonHousing_2_123_1.0/0/train/dataset.csv --target_idx 9
 
+# round 2
+# make residual
+python run.py make_residual --root ./exp --self_id 0 --task_id abc --round 2 --dataset_path ./data/BostonHousing_2_123_1.0/0/train/dataset.csv --target_idx 9
+python run.py save_residual --root ./exp --self_id 1 --task_id abc --round 2
+python save_residual_exe.py --root ./exp --self_id 1 --task_id abc --from_id 0 --round 2
+
+# train
+python run.py make_train --root ./exp --self_id 0 --task_id abc --round 2 --dataset_path ./data/BostonHousing_2_123_1.0/0/train/dataset.csv --data_idx 2-8
+python run.py make_train --root ./exp --self_id 1 --task_id abc --round 2 --from_id 0 --dataset_path ./data/BostonHousing_2_123_1.0/1/train/dataset.csv --data_idx 2-7
+
+# output
+python run.py save_output --root ./exp --self_id 0 --task_id abc --mode train --from_id 1 --round 2
+python save_output_exe.py --root ./exp --self_id 0 --task_id abc --mode train --from_id 1 --round 2
+python run.py make_result --root ./exp --self_id 0 --task_id abc --round 2 --dataset_path ./data/BostonHousing_2_123_1.0/0/train/dataset.csv --target_idx 9
+
 # Test
 # hash id
 python run.py make_hash --root ./exp --self_id 0 --task_id abc --mode test --test_id def --dataset_path ./data/BostonHousing_2_123_1.0/0/test/dataset.csv --id_idx 1
@@ -72,17 +72,17 @@ python run.py make_match_idx --root ./exp --self_id 0 --task_id abc --from_id 1 
 python run.py make_match_idx --root ./exp --self_id 1 --task_id abc --from_id 0 --mode test --test_id def
 
 # test
-python run.py make_test --root ./exp --self_id 0 --task_id abc --test_id def --round 1 --dataset_path ./data/BostonHousing_2_123_1.0/0/test/dataset.csv --data_idx 2-8
-python run.py make_test --root ./exp --self_id 1 --task_id abc --test_id def --round 1 --from_id 0 --dataset_path ./data/BostonHousing_2_123_1.0/1/test/dataset.csv --data_idx 2-7
+python run.py make_test --root ./exp --self_id 0 --task_id abc --test_id def --round 2 --dataset_path ./data/BostonHousing_2_123_1.0/0/test/dataset.csv --data_idx 2-8
+python run.py make_test --root ./exp --self_id 1 --task_id abc --test_id def --round 2 --from_id 0 --dataset_path ./data/BostonHousing_2_123_1.0/1/test/dataset.csv --data_idx 2-7
 
 # output
-python run.py save_output --root ./exp --self_id 0 --task_id abc --mode test --test_id def --from_id 1 --round 0
 python run.py save_output --root ./exp --self_id 0 --task_id abc --mode test --test_id def --from_id 1 --round 1
-python save_output_exe.py --root ./exp --self_id 0 --task_id abc --mode test --test_id def --from_id 1 --round 0
+python run.py save_output --root ./exp --self_id 0 --task_id abc --mode test --test_id def --from_id 1 --round 2
 python save_output_exe.py --root ./exp --self_id 0 --task_id abc --mode test --test_id def --from_id 1 --round 1
+python save_output_exe.py --root ./exp --self_id 0 --task_id abc --mode test --test_id def --from_id 1 --round 2
 
 # eval
-python run.py make_eval --root ./exp --self_id 0 --task_id abc --test_id def --round 1 --dataset_path ./data/BostonHousing_2_123_1.0/0/test/dataset.csv --target_idx 9
+python run.py make_eval --root ./exp --self_id 0 --task_id abc --test_id def --round 2 --dataset_path ./data/BostonHousing_2_123_1.0/0/test/dataset.csv --target_idx 9
 
 echo "$(cat ./exp/0/task/abc/train/log.txt)"
 echo "$(cat ./exp/0/task/abc/test/def/log.txt)"

@@ -1,4 +1,0 @@
-1. Create One Public VPC (Area: us-east-2c) (VPC: Virtual Private Cloud)
-2. Create EC2 instance (Network: VPC above, Auto-assign Public IP: Enable)
-3. Create Internet Gateway for the VPC
-4. Add route to router: Destination: 0.0.0.0/0, Target: Gateway above

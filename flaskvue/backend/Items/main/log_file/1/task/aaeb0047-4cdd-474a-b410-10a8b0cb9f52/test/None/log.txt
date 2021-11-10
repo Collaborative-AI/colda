@@ -1,0 +1,44 @@
+Sponsor training stage
+-------------------- find_assistor begins
+1.1 sponsor find_assistor
+1.2: sponsor handles id data done
+1.3: sponsor adds all unread request to assistors
+1.4: sponsor adds unread request to itself
+--------------------sponsor find assistor done 
+
+-------------------- unread match id begins
+3.1: get_user_match_id begins
+3.2: get_user_match_id done
+3.3: sponsor send_situation begins
+3.4:" sponsor adds unread situation to assistors done
+3.5:" sponsor add unread situation to sponsor done
+------------------------ unread situation done
+
+--------------------unread situation begins
+--------------------unread situation done (no function pass server)
+
+--------------------unread output begins
+5.1:" sponsor get_user_output start
+5.2:" sponsor get_user_output done
+5.3: sponsor send_situation begins
+5.4:" sponsor adds unread situation to assistors done
+5.5:" sponsor add unread situation to sponsor done
+------------------------ unread output done
+
+--------------------unread situation begins
+--------------------unread situation done (no function pass server)
+
+--------------------unread output begins
+5.1:" sponsor get_user_output start
+5.2:" sponsor get_user_output done
+5.3: sponsor send_situation begins
+5.4:" sponsor adds unread situation to assistors done
+5.5:" sponsor add unread situation to sponsor done
+------------------------ unread output done
+
+--------------------unread situation begins
+--------------------unread situation done (no function pass server)
+
+--------------------unread output begins
+5.1:" sponsor get_user_output start
+5.2:" sponsor get_user_output done

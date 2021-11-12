@@ -47,6 +47,8 @@ class User(PaginatedAPIMixin, db.Model):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
+    authority = db.Column(db.String(30))
+
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
     last_requests_read_time = db.Column(db.DateTime)
@@ -341,6 +343,7 @@ class User(PaginatedAPIMixin, db.Model):
         payload = {
             'user_id': self.id,
             'user_name': self.name if self.name else self.username,
+            'authority': self.authority if self.authority else 'user',
             'exp': now + timedelta(seconds=expires_in),
             'iat': now
         }

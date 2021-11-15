@@ -7,7 +7,7 @@
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
 
                         <router-link to="/" class="g-text-underline--none--hover">
-                          <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                          <img src="../assets/a-logo2.png" width="30" height="30" class="d-inline-block align-top" alt="">
                             
                         </router-link>
                         <li v-if="sharedState.is_authenticated" class="nav-item">
@@ -74,10 +74,10 @@
 </template>
 
 <script>
-import store from '../store'
+import store from '../store.js'
 import axios from 'axios'
 import $ from 'jquery'
-import db from '../db'
+import db from '../db.js'
 
 
 // const store = require('../store').default
@@ -134,6 +134,10 @@ export default {
     //   }) //end db
       
     // },
+
+    sum(a, b) {
+    return a + b;
+  },
 
     refreshView () {
       this.showView = false // 通过v-if移除router-view节点

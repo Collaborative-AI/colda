@@ -58,12 +58,23 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div v-if="page=='chart'" class="container my-5">
 <div class="row">
-  <div class="col-md-6">
+  <div v-if="test_num == '2'" class="col-md-6">
     <div class="box box-aqua" id="chart-parent">
       <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
         <mdb-line-chart id="chart"
           :data="lineChartData"
           :options="lineChartOptions"
+        ></mdb-line-chart>
+      </mdb-container>
+    </div>
+  </div> 
+
+  <div v-if="test_num == '1'" class="col-md-6">
+    <div class="box box-aqua" id="chart-parent">
+      <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
+        <mdb-line-chart id="chart"
+          :data="lineChartData2"
+          :options="lineChartOptions2"
         ></mdb-line-chart>
       </mdb-container>
     </div>
@@ -82,16 +93,7 @@
   </div>    
 </div>
 <div class="row">
-  <div v-if="test_num == '1'" class="col-md-6">
-    <div class="box box-aqua" id="chart-parent">
-      <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
-        <mdb-line-chart id="chart"
-          :data="lineChartData2"
-          :options="lineChartOptions2"
-        ></mdb-line-chart>
-      </mdb-container>
-    </div>
-  </div> 
+  
   
  
   
@@ -193,7 +195,8 @@ export default {
               borderColor: "rgba(151,187,205,1)",
               borderWidth: 0.8,
               data: training_rmse
-            }
+            },
+            
           ]
         },
         
@@ -208,7 +211,7 @@ export default {
           // },
           title: {
                 display: true,
-                text: 'RMSE versus Round'
+                text: 'RMSE vs. Round'
             },
           scales: {
             xAxes: [
@@ -271,7 +274,7 @@ export default {
           // },
           title: {
                 display: true,
-                text: 'Asisted Learning Rate versus Round'
+                text: 'Asisted Learning Rate vs. Round'
             },
           scales: {
             xAxes: [
@@ -343,7 +346,7 @@ export default {
           // },
           title: {
                 display: true,
-                text: 'RMSE versus Round'
+                text: 'RMSE vs. Round'
             },
           scales: {
             xAxes: [

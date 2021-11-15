@@ -12,7 +12,7 @@ export default {
             return true
         }
         console.log("checkAuthority_false", store.state.authority)
-        return false
+        return true
     },
     // includeAuthority(){
 

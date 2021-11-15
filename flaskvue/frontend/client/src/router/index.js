@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueScrollTo from 'vue-scrollto'
+import authority from '../authority'
 
 // const Vue = require('vue').default
 // const VueRouter = require('vue-router').default
@@ -90,7 +91,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     }
   },  
   {
@@ -121,13 +122,18 @@ const routes = [
     // name: 'SettingProfile', 
     // component: Profile,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      authority: ['user', 'admin'],
     }
   },
   {
     // User Resources
     path: '/resource',
     component: Resource,
+    meta: {
+      requiresAuth: true,
+      authority: ['user', 'admin'],
+    },
     children: [
         { 
             path: '', 
@@ -158,7 +164,8 @@ const routes = [
     path: '/find_assistor',
     component: FindAssistorHelper,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      authority: ['user', 'admin'],
     }
   },
   {
@@ -166,7 +173,8 @@ const routes = [
     name: 'FindTestAssistorHelper',
     component: FindTestAssistorHelper,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      authority: ['user', 'admin'],
     }
   },
   {
@@ -216,7 +224,8 @@ const routes = [
         // },
     ],
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      authority: ['user', 'admin'],
     }
   },
   {
@@ -224,7 +233,8 @@ const routes = [
     name: 'Plist',
     component: Plist,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      authority: ['user', 'admin'],
     }
   },
   {
@@ -233,7 +243,8 @@ const routes = [
     component: PendItem,
     props:  route => ({ task_id: route.params.task_id }),
     meta: { // connects with the function later in this file.
-      requiresAuth: true
+      requiresAuth: true,
+      authority: ['user', 'admin'],
     }
   },
   
@@ -241,6 +252,10 @@ const routes = [
     path: '/shiyan',
     name: 'Shiyan',
     component: Shiyan,
+    meta: { // connects with the function later in this file.
+      requiresAuth: true,
+      authority: ['admin'],
+    }
   },
 ];
 
@@ -251,22 +266,32 @@ const router = new VueRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//     const token = window.localStorage.getItem('token')
-//     if (to.matched.some(record => record.meta.requiresAuth) && (!token || token === null)) {
-//       next({
-//         path: '/login',
-//         query: { redirect: to.fullPath }
-//       })
-//     } else if (token && to.name == 'Login') {
-//       // cant go back to login page when after logining in
-//       next({
-//         path: from.fullPath
-//       })
-//     } else {
-//       next() // stay in the same page
-//     }
-//   })
+router.beforeEach((to, from, next) => {
+    const token = window.localStorage.getItem('Apollo-token')
+
+    if (to.meta.authority) {
+      const hasauthority = authority.checkAuthority(to.meta.authority)
+      console.log("hasauthority", hasauthority)
+      if (!hasauthority) next({ name: 'Home' })
+    }
+
+    if (to.matched.some(record => record.meta.requiresAuth) && (!token || token === null)) {
+      console.log("zzzz");
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else if (token && to.name == 'Login') {
+      // cant go back to login page when after logining in
+      next({
+        path: from.fullPath
+      })
+    } else {
+      next() // stay in the same page
+    }
+  });
+
+  
 // module.exports.router = router;
 export default router;
 // console.log("router", router)

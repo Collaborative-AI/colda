@@ -30,7 +30,7 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                       
-                        <li v-if="sharedState.user_id==1 || sharedState.user_id==2" class="nav-item">
+                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin'])"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
                         </li>                    
                         <!-- <li class="nav-item">
@@ -77,8 +77,8 @@
 import store from '../store.js'
 import axios from 'axios'
 import $ from 'jquery'
-import db from '../db.js'
-
+import db from '../db'
+import authority from '../authority'
 
 // const store = require('../store').default
 // // 在 JQuery 中使用 axios 的话需要重新导入，不能使用 main.js 中定义的 Vue 全局属性 this.$axios
@@ -107,6 +107,7 @@ export default {
   data () {
     return {
       log: ["a","b"],
+      checkAuthority: authority.checkAuthority,
       sharedState: store.state,
       unread_request_show: false,
       assistor_num: 0,

@@ -14,6 +14,11 @@
             <input type="password" v-model="loginForm.password" class="form-control" v-bind:class="{'is-invalid': loginForm.passwordError}" id="password" placeholder="">
             <div v-show="loginForm.passwordError" class="invalid-feedback">{{ loginForm.passwordError }}</div>
           </div>
+
+          <div>
+            <hua-kuai @verify='verify' @refresh='refresh'></hua-kuai>
+          </div>
+
           <button type="submit" class="btn btn-primary">Sign In</button>
         </form>
       </div>
@@ -44,10 +49,22 @@ export default {
         errors: 0,  // 表单是否在前端验证通过，0 表示没有错误，验证通过
         usernameError: null,
         passwordError: null
-      }
+      },
+      verifivation_res: false,
     }
   },
   methods: {
+    verify(result){
+      console.log(result) // result为true表示验证通过，false表示验证三次都失败了哦
+      if (result == true){
+        this.verifivation_res = true;
+      }
+    },
+
+    refresh(){
+      console.log('用户点击了初始化')
+    },
+
     onSubmit (e) {
       this.loginForm.submitted = true  // 先更新状态
       this.loginForm.errors = 0
@@ -66,6 +83,12 @@ export default {
         this.loginForm.passwordError = null
       }
 
+      if (this.verifivation_res == false){
+        console.log("ggggggg")
+        this.registerForm.errors++
+        this.$toasted.success("Please move into the right place", { icon: 'fingerprint' })
+      }
+      
       if (this.loginForm.errors > 0) {
         // 表单验证没通过时，不继续往下执行，即不会通过 axios 调用后端API
         return false

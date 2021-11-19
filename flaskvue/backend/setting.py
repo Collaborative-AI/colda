@@ -29,15 +29,15 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'Apollo'
 
     # sqlite
-    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-    #     'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'app.db')
 
     # mysql
-    username = "apollo"
-    password = "apolloapollo"
-    database = "apollo"
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@apollo.cb9jianlqhw8.us-east-2.rds.amazonaws.com:3306/%s' % (username, password, database)
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # username = "apollo"
+    # password = "apolloapollo"
+    # database = "apollo"
+    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@apollo.cb9jianlqhw8.us-east-2.rds.amazonaws.com:3306/%s' % (username, password, database)
+    # SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     MESSAGES_PER_PAGE = 10
 

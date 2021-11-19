@@ -3,12 +3,12 @@
     2. pip install pipenv
     3. pipenv install
     4. pipenv shell
-    5. flask run
+    5. flask run --with-threads
 
 2. launch after first time
     1. pipenv install
     2. pipenv shell
-    3. flask run
+    3. flask run --with-threads
 
 
 4. Install Package: pipenv install + package name
@@ -55,7 +55,8 @@
             2. Do 1-2 steps in another terminal, then command. Example: 
             http POST http://localhost:5000/users username=test1 password=123 -->
 
-
+1: testa Aa1234567!
+2: testb Aa1234567!
 
 .env: 系统环境变量
 

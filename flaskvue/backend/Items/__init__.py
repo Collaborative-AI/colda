@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
-from Items.extensions import cors, db, migrate
+from Items.extensions import cors, db, migrate, mail
 from Items.main import main as main_blueprint
 import pymysql
 # from flask_session import Session
@@ -44,6 +44,8 @@ def configure_extensions(app):
     db.init_app(app)
     # Init Flask-Migrate
     migrate.init_app(app, db)
+    # Init email service
+    mail.init_app(app)
 
 
 def configure_before_handlers(app):

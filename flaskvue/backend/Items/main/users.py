@@ -15,12 +15,13 @@ from datetime import datetime
 from Items.models import User, Notification, Message
 from Items.main.errors import bad_request, error_response
 from Items.main.auth import token_auth
-from Items.main.apollo_utils import log, generate_msg
+from Items.main.apollo_utils import log, generate_msg, validate_password
 
 @main.route('/users', methods=['POST'])
 def create_user():
-
+    print("zzzz")
     data = request.get_json()
+    print(data)
     if not data:
       return bad_request('No data. Please import JSON data')
 
@@ -32,13 +33,21 @@ def create_user():
         message['email'] = 'Please provide a valid email address.'
     if 'password' not in data or not data.get('password', None):
         message['password'] = 'Please provide a valid password.'
-
+    print("2")
     if User.query.filter_by(username=data.get('username', None)).first():
         message['username'] = 'Please use a different username.'
+    print("3")
     if User.query.filter_by(email=data.get('email', None)).first():
         message['email'] = 'Please use a different email address.'
+    
+    print("dddd")
+    validate_password_indicator, return_message = validate_password(data['password'])
+    print('register', validate_password_indicator, return_message)
+    if not validate_password_indicator:
+        message['password'] = return_message
     if message:
         return bad_request(message)
+    
 
     user = User()
     user.from_dict(data, new_user=True)

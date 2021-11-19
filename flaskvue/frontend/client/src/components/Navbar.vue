@@ -30,7 +30,7 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                       
-                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin']) && (sharedState.user_id ==3 ||sharedState.user_id==4)"  class="nav-item">
+                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user'])"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
                         </li>                    
                         <!-- <li class="nav-item">
@@ -295,6 +295,8 @@ export default {
 
           })  
         } else if (vm.sharedState.mode == 'Manual'){
+          vm.sharedState.pending_num++;
+
           console.log(task_id)
 
           const add_train_pending = {
@@ -1246,7 +1248,7 @@ export default {
             });
           }else if (vm.sharedState.mode == 'Manual'){
             // console.log(task_id)
-
+            vm.sharedState.pending_num++;
             const add_test_pending = {
                 test_id: test_id,
               }

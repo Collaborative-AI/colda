@@ -30,7 +30,7 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                       
-                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin'])"  class="nav-item">
+                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin']) && (sharedState.user_id ==3 ||sharedState.user_id==4)"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
                         </li>                    
                         <!-- <li class="nav-item">

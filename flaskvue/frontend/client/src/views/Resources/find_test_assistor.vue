@@ -60,7 +60,7 @@
       <button @click="get_test_target_path()">Select Target File</button>
     </div> -->
 
-    <button type="submit" @click="onSubmit()" class="btn btn-success">Start Finding Assistors</button>
+    <button type="submit" @click="onSubmit()" class="btn btn-success">Initiate a test</button>
   </div>
 </template>
 

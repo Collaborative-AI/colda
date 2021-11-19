@@ -1,5 +1,5 @@
 module.exports = {
-    preset: 'ts-jest',
+    preset: '@vue/cli-plugin-unit-jest/presets/no-babel',
     "moduleFileExtensions": [
         "js",
         "json",
@@ -13,8 +13,8 @@ module.exports = {
     // "globals": {
     //     "window": {}
     //   }
-    runner: '@jest-runner/electron',
-    testEnvironment: '@jest-runner/electron/environment',
+    // runner: '@jest-runner/electron',
+    // testEnvironment: '@jest-runner/electron/environment',
     // testRunner: "jest-circus/runner"
     // testEnvironment: "jsdom"
   };

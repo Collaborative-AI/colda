@@ -13,7 +13,7 @@
 
 4. Install Package: pipenv install + package name
 
-5. Migrate the database: 
+5. Migrate the database: (create table in database e.g.sqlite3 mysql)
      0. migration .env add (render_as_batch=True,)
      (with connectable.connect() as connection:
         context.configure(
@@ -57,6 +57,14 @@
 
 1: testa Aa1234567!
 2: testb Aa1234567!
+
+
+10. AWS RDB information:
+    end point: apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com
+    port: 3306
+    master username: apollo
+    password: Aa1234567!
+
 
 .env: 系统环境变量
 

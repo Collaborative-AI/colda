@@ -30,23 +30,25 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'Apollo'
 
     # sqlite
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'app.db')
+    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    #     'sqlite:///' + os.path.join(basedir, 'app.db')
 
     # mysql
-    # username = "apollo"
-    # password = "apolloapollo"
-    # database = "apollo"
-    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@apollo.cb9jianlqhw8.us-east-2.rds.amazonaws.com:3306/%s' % (username, password, database)
-    # SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # master username
+    master_username = 'apollo'
+    password = 'Aa1234567!'
+    end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'
+    # database name (created by create schema in mysql workbench)
+    database_name = 'apollo_aws_mysql'
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     MESSAGES_PER_PAGE = 10
 
-    # gmail
+    # gmail for email validation
     # gmail account: apolloumn.email@gmail.com
     # gmail password: apolloumn
     # app password: wvduhthxrmktdxjb
-    
     MAIL_SERVER ='smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USERNAME = 'apolloumn.email@gmail.com'

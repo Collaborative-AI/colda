@@ -34,7 +34,7 @@ class Model():
         if self.task_mode == 'regression':
             output = self.model.predict(data)
         elif self.task_mode == 'classification':
-            output = self.model.predict_proba(data)
+            output = self.model.predict_log_proba(data)
         else:
             raise ValueError('Not valid task name')
         return output

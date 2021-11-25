@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, f1_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, accuracy_score, f1_score
 
 
 class Metric():
@@ -9,7 +9,8 @@ class Metric():
         self.metric = self.make_metric(self.task_mode, self.metric_name) if metric is None else metric
 
     def make_metric(self, task_mode, metric_name):
-        metric_dict = {'regression': {'RMSE': RMSE, 'R2': R2}, 'classification': {'Accuracy': Accuracy, 'F1': F1}}
+        metric_dict = {'regression': {'MAD': MAD, 'RMSE': RMSE, 'R2': R2},
+                       'classification': {'Accuracy': Accuracy, 'F1': F1}}
         metric = []
         for i in range(len(metric_name)):
             if task_mode in metric_dict:
@@ -36,6 +37,11 @@ class Metric():
         return evaluation
 
 
+def MAD(output, target):
+    mad = mean_absolute_error(output, target).item()
+    return mad
+
+
 def RMSE(output, target):
     rmse = np.sqrt(mean_squared_error(output, target)).item()
     return rmse
@@ -52,5 +58,5 @@ def Accuracy(output, target):
 
 
 def F1(output, target):
-    f1 = f1_score(output, target).item()
+    f1 = f1_score(output, target, average='macro').item()
     return f1

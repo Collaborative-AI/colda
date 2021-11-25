@@ -111,7 +111,7 @@ def make_data(data_name):
         from sklearn.datasets import load_iris
         loaded_dataset = load_iris()
         dataset = pd.DataFrame(loaded_dataset.data, columns=loaded_dataset.feature_names)
-        dataset['class'] = loaded_dataset.target
+        dataset['class'] = loaded_dataset.target.astype(np.int64)
         perm = np.random.permutation(len(dataset))
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
@@ -122,7 +122,7 @@ def make_data(data_name):
         from sklearn.datasets import load_diabetes
         loaded_dataset = load_diabetes()
         dataset = pd.DataFrame(loaded_dataset.data, columns=loaded_dataset.feature_names)
-        dataset['y'] = loaded_dataset.target
+        dataset['y'] = loaded_dataset.target.astype(np.float32)
         perm = np.random.permutation(len(dataset))
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
@@ -133,7 +133,7 @@ def make_data(data_name):
         from sklearn.datasets import load_boston
         loaded_dataset = load_boston()
         dataset = pd.DataFrame(loaded_dataset.data, columns=loaded_dataset.feature_names)
-        dataset['MEDV'] = loaded_dataset.target
+        dataset['MEDV'] = loaded_dataset.target.astype(np.float32)
         perm = np.random.permutation(len(dataset))
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
@@ -144,7 +144,7 @@ def make_data(data_name):
         from sklearn.datasets import load_wine
         loaded_dataset = load_wine()
         dataset = pd.DataFrame(loaded_dataset.data, columns=loaded_dataset.feature_names)
-        dataset['class'] = loaded_dataset.target
+        dataset['class'] = loaded_dataset.target.astype(np.int64)
         perm = np.random.permutation(len(dataset))
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
@@ -153,7 +153,7 @@ def make_data(data_name):
         test_dataset.insert(0, 'ID', test_dataset.index)
     elif data_name == 'BreastCancer':
         from sklearn.datasets import load_breast_cancer
-        loaded_dataset = load_breast_cancer()
+        loaded_dataset = load_breast_cancer().astype(np.int64)
         dataset = pd.DataFrame(loaded_dataset.data, columns=loaded_dataset.feature_names)
         dataset['class'] = loaded_dataset.target
         perm = np.random.permutation(len(dataset))

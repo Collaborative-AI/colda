@@ -10,6 +10,7 @@ parser.add_argument('--data_name', default='BostonHousing', type=str)
 parser.add_argument('--num_users', default=None, type=int)
 parser.add_argument('--task_id', default=None, type=int)
 parser.add_argument('--match_rate', default=None, type=float)
+parser.add_argument('--skip_header', default=1, type=int)
 args = vars(parser.parse_args())
 
 
@@ -20,6 +21,7 @@ def main():
     num_users = args['num_users']
     task_id = args['task_id']
     match_rate = args['match_rate']
+    skip_header = args['skip_header']
     control = '_'.join([data_name, str(num_users), str(task_id), str(match_rate)])
     path = os.path.join(root, control)
     for i in range(num_users):
@@ -27,11 +29,11 @@ def main():
         data_i_idx = parse_idx(data_i_idx)
         target_i_idx = parse_idx(target_i_idx)
         train_path = os.path.join(path, str(i), 'train')
-        train_dataset = np.genfromtxt(os.path.join(train_path, 'dataset.csv'), delimiter=',')
+        train_dataset = np.genfromtxt(os.path.join(train_path, 'dataset.csv'), delimiter=',', skip_header=skip_header)
         train_data = train_dataset[:, data_i_idx]
         train_target = train_dataset[:, target_i_idx]
         test_path = os.path.join(path, str(i), 'test')
-        test_dataset = np.genfromtxt(os.path.join(test_path, 'dataset.csv'), delimiter=',')
+        test_dataset = np.genfromtxt(os.path.join(test_path, 'dataset.csv'), delimiter=',', skip_header=skip_header)
         test_data = test_dataset[:, data_i_idx]
         test_target = test_dataset[:, target_i_idx]
         model = LinearRegression().fit(train_data, train_target)

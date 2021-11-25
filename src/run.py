@@ -25,6 +25,7 @@ parser.add_argument('--dataset_path', default=None, type=str)
 parser.add_argument('--id_idx', default=None, type=str)
 parser.add_argument('--data_idx', default=None, type=str)
 parser.add_argument('--target_idx', default=None, type=str)
+parser.add_argument('--skip_header', default=1, type=int)
 args = vars(parser.parse_args())
 
 

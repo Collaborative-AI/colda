@@ -11,7 +11,8 @@ def make_train_local(args):
     dataset_path = args['dataset_path']
     data_idx = args['data_idx']
     target_idx = args['target_idx']
-    dataset = np.genfromtxt(dataset_path, delimiter=',')
+    skip_header = args['skip_header']
+    dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     data_idx = parse_idx(data_idx)
     target_idx = parse_idx(target_idx)
     data = dataset[:, data_idx]

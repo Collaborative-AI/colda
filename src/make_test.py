@@ -12,7 +12,8 @@ def make_test(args):
     from_id = args['from_id']
     dataset_path = args['dataset_path']
     data_idx = args['data_idx']
-    dataset = np.genfromtxt(dataset_path, delimiter=',')
+    skip_header = args['skip_header']
+    dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     data_idx = parse_idx(data_idx)
     data = dataset[:, data_idx]
     if from_id is not None:

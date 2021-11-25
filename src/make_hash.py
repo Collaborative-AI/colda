@@ -12,7 +12,8 @@ def make_hash(args):
     test_id = args['test_id']
     dataset_path = args['dataset_path']
     id_idx = args['id_idx']
-    dataset = np.genfromtxt(dataset_path, delimiter=',', dtype=np.str_)
+    skip_header = args['skip_header']
+    dataset = np.genfromtxt(dataset_path, delimiter=',', dtype=np.str_, skip_header=skip_header)
     id_idx = parse_idx(id_idx)
     id = dataset[:, id_idx]
     hash_id = np.array(list(map(hash, id)))

@@ -12,7 +12,8 @@ def make_train(args):
     round = args['round']
     dataset_path = args['dataset_path']
     data_idx = args['data_idx']
-    dataset = np.genfromtxt(dataset_path, delimiter=',')
+    skip_header = args['skip_header']
+    dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     data_idx = parse_idx(data_idx)
     data = dataset[:, data_idx]
     data = data.reshape(data.shape[0], -1)

@@ -11,11 +11,12 @@ def make_eval(args):
     round = args['round']
     dataset_path = args['dataset_path']
     target_idx = args['target_idx']
+    skip_header = args['skip_header']
     task_path = os.path.join(root, self_id, 'task', task_id)
     result = np.genfromtxt(os.path.join(task_path, 'train', 'round', '0', 'result.csv'), delimiter=',')
     result = result.reshape(-1)
     if dataset_path is not None and target_idx is not None:
-        dataset = np.genfromtxt(dataset_path, delimiter=',')
+        dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
         target_idx = parse_idx(target_idx)
         target = dataset[:, target_idx]
         loss = np.sqrt(((target - result) ** 2).mean())

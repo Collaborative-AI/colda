@@ -11,7 +11,8 @@ def make_result(args):
     round = args['round']
     dataset_path = args['dataset_path']
     target_idx = args['target_idx']
-    dataset = np.genfromtxt(dataset_path, delimiter=',')
+    skip_header = args['skip_header']
+    dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     target_idx = parse_idx(target_idx)
     target = dataset[:, target_idx]
     output_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'output')

@@ -1,6 +1,7 @@
 import numpy as np
 import os
 from utils import makedir_exist_ok, log, parse_idx
+from metrics import Metric
 
 
 def make_residual(args):
@@ -11,17 +12,21 @@ def make_residual(args):
     dataset_path = args['dataset_path']
     target_idx = args['target_idx']
     skip_header = args['skip_header']
+    task_mode = args['task_mode']
+    metric_name = args['metric_name']
     dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     target_idx = parse_idx(target_idx)
     target = dataset[:, target_idx]
     if round == 1:
-        init = make_init(target)
+        output = make_init(target)
         round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
         makedir_exist_ok(round_path)
-        np.savetxt(os.path.join(round_path, 'result.csv'), init, delimiter=",")
-        residual = compute_residual(init, target)
-        loss = np.sqrt(((target - init) ** 2).mean())
-        msg = 'Train Round: 0, RMSE: {}'.format(loss)
+        np.savetxt(os.path.join(round_path, 'result.csv'), output, delimiter=",")
+        residual = compute_residual(output, target)
+        metric = Metric(task_mode, metric_name)
+        output = output.repeat(target.shape[0], axis=0)
+        eval = metric.eval(output, target)
+        msg = 'Train Round: 0, {}'.format(eval)
         log(msg, root, self_id, task_id)
     else:
         round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
@@ -46,7 +51,7 @@ def make_residual(args):
 
 
 def make_init(target):
-    init = np.mean(target, axis=0)
+    init = np.mean(target, axis=0, keepdims=True)
     return init
 
 

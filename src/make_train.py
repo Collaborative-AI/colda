@@ -1,8 +1,7 @@
 import numpy as np
 import os
-from sklearn.linear_model import LinearRegression
 from utils import save, makedir_exist_ok, parse_idx
-
+from models import Model
 
 def make_train(args):
     root = args['root']
@@ -13,6 +12,8 @@ def make_train(args):
     dataset_path = args['dataset_path']
     data_idx = args['data_idx']
     skip_header = args['skip_header']
+    task_mode = args['task_mode']
+    model_name = args['model_name']
     dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     data_idx = parse_idx(data_idx)
     data = dataset[:, data_idx]
@@ -30,7 +31,8 @@ def make_train(args):
             os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx', '{}.csv'.format(from_id)),
             delimiter=',').astype(np.int64)
         data = data[self_from_idx]
-    model = LinearRegression().fit(data, target)
+    model = Model(task_mode, model_name)
+    model.fit(data, target)
     save(model, os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'model.pkl'))
     output = model.predict(data)
     output_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'output')

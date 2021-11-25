@@ -1,8 +1,8 @@
 import numpy as np
 import os
-from sklearn.linear_model import LinearRegression
 from utils import save, log, parse_idx
-
+from models import Model
+from metrics import Metric
 
 def make_train_local(args):
     root = args['root']
@@ -12,16 +12,21 @@ def make_train_local(args):
     data_idx = args['data_idx']
     target_idx = args['target_idx']
     skip_header = args['skip_header']
+    task_mode = args['task_mode']
+    model_name = args['model_name']
+    metric_name = args['metric_name']
     dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     data_idx = parse_idx(data_idx)
     target_idx = parse_idx(target_idx)
     data = dataset[:, data_idx]
     target = dataset[:, target_idx]
-    model = LinearRegression().fit(data, target)
+    model = Model(task_mode, model_name)
+    model.fit(data, target)
     save(model, os.path.join(root, self_id, 'task', task_id, 'train', 'local', 'model.pkl'))
     output = model.predict(data)
-    loss = np.sqrt(((target - output) ** 2).mean())
-    msg = 'Train Local Client: {}, RMSE: {}'.format(self_id, loss)
+    metric = Metric(task_mode, metric_name)
+    eval = metric.eval(output, target)
+    msg = 'Train Local Client: {}, {}'.format(self_id, eval)
     log(msg, root, self_id, task_id)
     print('200?make_train_local?complete', end='')
     return

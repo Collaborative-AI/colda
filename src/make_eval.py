@@ -1,7 +1,7 @@
 import numpy as np
 import os
 from utils import log, parse_idx
-
+from metrics import Metric
 
 def make_eval(args):
     root = args['root']
@@ -12,15 +12,22 @@ def make_eval(args):
     dataset_path = args['dataset_path']
     target_idx = args['target_idx']
     skip_header = args['skip_header']
+    task_mode = args['task_mode']
+    metric_name = args['metric_name']
     task_path = os.path.join(root, self_id, 'task', task_id)
     result = np.genfromtxt(os.path.join(task_path, 'train', 'round', '0', 'result.csv'), delimiter=',')
-    result = result.reshape(-1)
+    if len(result.shape) == 0:
+        result = result.reshape(-1)
+    if len(result.shape) == 1:
+        result = result.reshape(1, -1)
     if dataset_path is not None and target_idx is not None:
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
         target_idx = parse_idx(target_idx)
         target = dataset[:, target_idx]
-        loss = np.sqrt(((target - result) ** 2).mean())
-        msg = 'Test Round: 0, RMSE: {}'.format(loss)
+        metric = Metric(task_mode, metric_name)
+        result = result.repeat(target.shape[0], axis=0)
+        eval = metric.eval(result, target)
+        msg = 'Test Round: 0, {}'.format(eval)
         log(msg, root, self_id, task_id, test_id)
     result_path = []
     for i in range(1, round + 1):
@@ -52,8 +59,9 @@ def make_eval(args):
         result_path.append(result_path_i)
         np.savetxt(result_path_i, result, delimiter=",")
         if dataset_path is not None and target_idx is not None:
-            loss = np.sqrt(((target - result) ** 2).mean())
-            msg = 'Test Round: {}, RMSE: {}'.format(i, loss)
+            metric = Metric(task_mode, metric_name)
+            eval = metric.eval(result, target)
+            msg = 'Test Round: {}, {}'.format(i, eval)
             log(msg, root, self_id, task_id, test_id)
     result_path = '?'.join(result_path)
     print('200?make_eval?{}'.format(result_path), end='')

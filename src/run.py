@@ -26,6 +26,9 @@ parser.add_argument('--id_idx', default=None, type=str)
 parser.add_argument('--data_idx', default=None, type=str)
 parser.add_argument('--target_idx', default=None, type=str)
 parser.add_argument('--skip_header', default=1, type=int)
+parser.add_argument('--task_mode', default=None, type=str)
+parser.add_argument('--model_name', default=None, type=str)
+parser.add_argument('--metric_name', default=None, type=str)
 args = vars(parser.parse_args())
 
 

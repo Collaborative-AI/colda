@@ -2,7 +2,7 @@ import numpy as np
 from scipy.optimize import minimize
 import os
 from utils import log, parse_idx
-
+from metrics import Metric
 
 def make_result(args):
     root = args['root']
@@ -12,6 +12,8 @@ def make_result(args):
     dataset_path = args['dataset_path']
     target_idx = args['target_idx']
     skip_header = args['skip_header']
+    task_mode = args['task_mode']
+    metric_name = args['metric_name']
     dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     target_idx = parse_idx(target_idx)
     target = dataset[:, target_idx]
@@ -36,20 +38,22 @@ def make_result(args):
             output[self_from_idx_i,] = output[self_from_idx_i,] + output_i
             count[self_from_idx_i,] = count[self_from_idx_i,] + 1
     output = output / count
+    result = np.genfromtxt(os.path.join(round_path, str(round - 1), 'result.csv'), delimiter=',')
     if round == 1:
-        result = np.genfromtxt(os.path.join(round_path, str(round - 1), 'result.csv'), delimiter=',')
-        result = result.reshape(-1)
-    else:
-        result = np.genfromtxt(os.path.join(round_path, str(round - 1), 'result.csv'), delimiter=',')
-        result = result.reshape(result.shape[0], -1)
+        if len(result.shape) == 0:
+            result = result.reshape(-1)
+        if len(result.shape) == 1:
+            result = result.reshape(1, -1)
+    result = result.reshape(result.shape[0], -1)
     alpha = np.ones(1)
     func_ = minimize(result_func, alpha, (result, output, target))
     alpha = func_.x
     np.savetxt(os.path.join(round_path, str(round), 'alpha.csv'), alpha, delimiter=",")
     result = result + alpha * output
     np.savetxt(os.path.join(round_path, str(round), 'result.csv'), result, delimiter=",")
-    loss = np.sqrt(((target - result) ** 2).mean())
-    msg = 'Train Round: {}, RMSE: {}, alpha: {}'.format(round, loss, alpha.item())
+    metric = Metric(task_mode, metric_name)
+    eval = metric.eval(result, target)
+    msg = 'Train Round: {}, {}, Alpha: {}'.format(round, eval, alpha.item())
     log(msg, root, self_id, task_id)
     print('200?make_result?complete', end='')
     return

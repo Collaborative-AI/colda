@@ -65,16 +65,16 @@ if __name__ == '__main__':
     # de = - one_hot_target / softmax_output
     # print(de)
 
-    output = torch.randn(10, 5)
-    output.requires_grad = True
-    target = torch.randint(0, 5, (10,))
-    softmax_output = torch.softmax(output, dim=-1)
-    # softmax_output.requires_grad = True
-    logsoftmax_output = torch.log(softmax_output)
-    # logsoftmax_output.requires_grad = True
-    nll_c = torch.nn.NLLLoss(reduction='sum')(logsoftmax_output, target)
-    nll_c.backward()
-    print(output.grad)
-    one_hot_target = torch.eye(5)[target]
-    de = softmax_output - one_hot_target
-    print(de)
+    # output = torch.randn(10, 5)
+    # output.requires_grad = True
+    # target = torch.randint(0, 5, (10,))
+    # softmax_output = torch.softmax(output, dim=-1)
+    # # softmax_output.requires_grad = True
+    # logsoftmax_output = torch.log(softmax_output)
+    # # logsoftmax_output.requires_grad = True
+    # nll_c = torch.nn.NLLLoss(reduction='sum')(logsoftmax_output, target)
+    # nll_c.backward()
+    # print(output.grad)
+    # one_hot_target = torch.eye(5)[target]
+    # de = softmax_output - one_hot_target
+    # print(de)

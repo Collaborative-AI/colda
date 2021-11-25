@@ -77,6 +77,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
     "jest": "^26.6.3",
+    "jest-electron": "^0.1.12",
     "regenerator-runtime": "^0.13.9",
     "vue-cli-plugin-electron-builder": "~2.1.1"
   },

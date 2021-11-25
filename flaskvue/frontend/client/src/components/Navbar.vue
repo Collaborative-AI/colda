@@ -92,7 +92,7 @@ const fs = window.require('fs');
 //// const xlsx2json = window.require("node-xlsx");
 const sqlite3 = window.require('sqlite3').verbose();;
 const ex = window.require("child_process");
-const {dialog} = window.require('electron').remote;
+const dialog = window.require('electron').remote;
 const os = window.require('os');
 const node_path = window.require('path');
 // change csv to array
@@ -136,7 +136,7 @@ export default {
       
     // },
 
-    sum(a, b) {
+    plus(a, b) {
     return a + b;
   },
 
@@ -320,7 +320,7 @@ export default {
 
       }//end for
     })
-    
+    return 100
     
     },
 

@@ -48,6 +48,7 @@ class User(PaginatedAPIMixin, db.Model):
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     authority = db.Column(db.String(30))
+    confirmed = db.Column(db.String(10))
 
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
@@ -124,7 +125,8 @@ class User(PaginatedAPIMixin, db.Model):
             '_links': {
                 'self': url_for('main.get_user', id=self.id),
                 'avatar': self.avatar(128),
-            }
+            },
+            'token': None,
         }
         
         if include_email:

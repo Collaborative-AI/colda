@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 from operator import itemgetter
-from flask import Flask, session, request, g, current_app
+from flask import Flask, session, request, g, current_app, render_template
 from flask.helpers import url_for
 from flask.json import jsonify
 
@@ -14,9 +14,10 @@ from datetime import datetime
 
 from Items.models import User, Notification, Message
 from Items.main.errors import bad_request, error_response
-from Items.main.auth import token_auth
-from Items.main.apollo_utils import log, generate_msg, validate_password
+from Items.main.auth import token_auth, basic_auth
+from Items.main.apollo_utils import log, generate_msg, validate_password, send_email, generate_confirmation_token, confirm_token
 
+# register
 @main.route('/users', methods=['POST'])
 def create_user():
     print("zzzz")
@@ -48,22 +49,67 @@ def create_user():
     if message:
         return bad_request(message)
     
-
     user = User()
     user.from_dict(data, new_user=True)
+    user.confirmed = 'false'
     # print("user",user)
     # Add to database
     db.session.add(user)
     db.session.commit()
 
+    email = data.get('email')
+
+    token = generate_confirmation_token(email)
+    confirm_url = url_for('main.confirm_email', token=token, _external=True)
+    print("confirm_url", confirm_url)
+    html = render_template('activate.html', confirm_url=confirm_url)
+    subject = "Please confirm your email"
+    send_email(email, subject, html)
+
     print("aaa",user.to_dict())
-    response = jsonify(user.to_dict())
+    user_to_dict = user.to_dict()
+    user_to_dict['token'] = token
+    response = jsonify(user_to_dict)
     print('------------',response)
 
     response.status_code = 201
     response.headers['Location'] = url_for('main.get_user', id=user.id)  
-
     return response
+
+@main.route('/confirm_email/<token>', methods=['GET'])
+def confirm_email(token):
+    if g.current_user.confirmed == 'false':
+
+        email = confirm_token(token)
+        user = User.query.filter_by(email=g.current_user.email).first_or_404()
+        if user.email == email:
+            user.confirmed = 'true'
+            db.session.commit()
+
+            response = 'confirmed successfully'
+            return jsonify(response)
+
+        response = 'The confirmation link is invalid or has expired.'
+        return jsonify(response)
+    
+    response = 'You have confirmed your account. Thanks!'
+    return jsonify(response)
+
+
+@main.route('/resend/')
+@basic_auth.login_required
+def resend():
+    email = g.current_user.email
+    token = generate_confirmation_token(email)
+    confirm_url = url_for('main.confirm_email', token=token, _external=True)
+    print("confirm_url", confirm_url)
+    html = render_template('activate.html', confirm_url=confirm_url)
+    subject = "Please confirm your email"
+    send_email(email, subject, html)
+
+    return jsonify('Resend successfully!')
+
+
 
 @main.route('/users', methods=['GET'])
 @token_auth.login_required

@@ -5,7 +5,7 @@ import json
 import re
 import unittest
 from Items import create_app, db
-from Items.models import User
+from Items.models import User, Matched
 from tests import TestConfig
 
 
@@ -149,31 +149,31 @@ class APITestCase(unittest.TestCase):
 
         # check length verification
         headers = self.get_api_headers()
-        data = json.dumps({'username': 'david', 'email': 'david@163.com', 'password': '123'})
+        data = json.dumps({'username': 'david', 'email': 'apolloumn.email@gmail.com', 'password': '123'})
         response = self.client.post('/users/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message']['password'], 'please create password between 8 chars and 40 chars')
 
         # check number verification
-        data = json.dumps({'username': 'david', 'email': 'david@163.com', 'password': 'aaaaaaaaa'})
+        data = json.dumps({'username': 'david', 'email': 'apolloumn.email@gmail.com', 'password': 'aaaaaaaaa'})
         response = self.client.post('/users/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message']['password'], 'Need at least 1 number')
         
         # check uppercase letter verification
-        data = json.dumps({'username': 'david', 'email': 'david@163.com', 'password': 'aaaaaaaaa1'})
+        data = json.dumps({'username': 'david', 'email': 'apolloumn.email@gmail.com', 'password': 'aaaaaaaaa1'})
         response = self.client.post('/users/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message']['password'], 'Need at least 1 uppercase letter')
 
         # check lowercase letter verification
-        data = json.dumps({'username': 'david', 'email': 'david@163.com', 'password': 'AAAAAAAAA1'})
+        data = json.dumps({'username': 'david', 'email': 'apolloumn.email@gmail.com', 'password': 'AAAAAAAAA1'})
         response = self.client.post('/users/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message']['password'], 'Need at least 1 lowercase letter')
 
         # check symbol verification
-        data = json.dumps({'username': 'david', 'email': 'david@163.com', 'password': 'AAAAAAAAAa1'})
+        data = json.dumps({'username': 'david', 'email': 'apolloumn.email@gmail.com', 'password': 'AAAAAAAAAa1'})
         response = self.client.post('/users/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message']['password'], 'Need at least 1 symbol')
@@ -184,12 +184,27 @@ class APITestCase(unittest.TestCase):
         # json_response = json.loads(response.get_data(as_text=True))
         # self.assertEqual(json_response['message']['password'], 'please fit in A-Za-z0-9[~!@#\$%\^&\*\(\)\+=\|\\\}\]\{\[:;<,>\?\/""]+ range')
 
-        data = json.dumps({'username': 'david', 'email': 'david@163.com', 'password': 'Aa1234567!'})
+        data = json.dumps({'username': 'david', 'email': 'apolloumn.email@gmail.com', 'password': 'Aa1234567!'})
         response = self.client.post('/users/', headers=headers, data=data)
         json_response = json.loads(response.get_data(as_text=True))
-        print(json_response)
+        print("22222", json_response)
         self.assertEqual(response.status_code, 201)
-       
+        
+        queries = User.query.filter(User.email == 'apolloumn.email@gmail.com').all()
+        self.assertEqual(len(queries), 1)
+        self.assertEqual(queries[0].confirmed, 'false')
+
+        token = json_response['token']
+        headers = self.get_token_auth_headers('david', 'Aa1234567!')
+        response = self.client.get('/confirm_email/'+token)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        print("33333", json_response)
+        
+        if json_response == 'confirmed successfully':
+            queries = User.query.filter(User.email == 'apolloumn.email@gmail.com').all()
+            self.assertEqual(len(queries), 1)
+            self.assertEqual(queries[0].confirmed, 'true')
         
         # self.assertEqual(json_response['message']['password'], 'please fit in A-Za-z0-9[~!@#\$%\^&\*\(\)\+=\|\\\}\]\{\[:;<,>\?\/""]+ range')
 

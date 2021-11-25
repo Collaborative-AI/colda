@@ -125,8 +125,8 @@ export default {
       this.$axios.post('/users', payload)
       .then((res) => {
         // Go to Login Page
-        this.$toasted.success('Congratulations', { icon: 'fingerprint' })
-        this.$router.push('/login')
+        this.$toasted.success('Please verify your email.', { icon: 'fingerprint' })
+        // this.$router.push('/login')
       }).catch((error) => {
         for (var field in error.response.data.message) {
           if (field == 'username') {

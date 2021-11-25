@@ -30,11 +30,12 @@ def verify_token(token):
     '''
 
     g.current_user = User.verify_jwt(token) if token else None
+
     if g.current_user:
         # update the last_seen time after visiting any url
         g.current_user.update_jwt()
         db.session.commit()
-
+    print("我1111")
     return g.current_user is not None
 
 

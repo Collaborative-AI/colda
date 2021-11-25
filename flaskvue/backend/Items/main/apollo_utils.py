@@ -1,6 +1,47 @@
 import errno
 import os
 import re
+from flask_mail import Message
+from Items import mail
+from Items.extensions import mail
+from setting import Config
+
+from flask import current_app
+from itsdangerous import URLSafeTimedSerializer
+
+
+def generate_confirmation_token(email):
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+    return serializer.dumps(email, salt=current_app.config['SECURITY_PASSWORD_SALT'])
+
+def confirm_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+    try:
+        email = serializer.loads(
+            token,
+            salt=current_app.config['SECURITY_PASSWORD_SALT'],
+            max_age=expiration
+        )
+    except:
+        return False
+    return email
+
+# mail = Mail(app)
+def send_email(to, subject, template):
+    msg = Message(
+        subject,
+        recipients=[to],
+        # sender=app.config['MAIL_DEFAULT_SENDER']
+        html=template,
+        sender=current_app.config['MAIL_DEFAULT_SENDER']
+    )
+    # debug([
+    # 	app.config['MAIL_DEFAULT_SENDER'],
+    # 	app.config['MAIL_USERNAME'],
+    # 	app.config['MAIL_PASSWORD']], 'email')
+    
+    a = mail.send(msg)
+    return 
 
 # make directory exist
 def makedir_exist_ok(path):
@@ -100,3 +141,4 @@ def validate_password(password):
     #     return False, 'please fit in A-Za-z0-9[~!@#\$%\^&\*\(\)\+=\|\\\}\]\{\[:;<,>\?\/""]+ range'
 
     return True, ''
+

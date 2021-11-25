@@ -471,7 +471,7 @@ export default {
             let make_residual_multiple_paths = null;
             try{
               make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
-                + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 0 ' 
+                + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 1 ' 
                 + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column, {encoding: 'utf8'})
 
               make_residual_multiple_paths = make_residual_multiple_paths.split("?")

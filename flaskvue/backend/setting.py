@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'), encoding='utf-8')
 
+
 class Config(object):
     
     DEBUG = True
@@ -40,6 +41,20 @@ class Config(object):
     # SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     MESSAGES_PER_PAGE = 10
+
+    # gmail
+    # gmail account: apolloumn.email@gmail.com
+    # gmail password: apolloumn
+    # app password: wvduhthxrmktdxjb
+    
+    MAIL_SERVER ='smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USERNAME = 'apolloumn.email@gmail.com'
+    MAIL_PASSWORD = 'wvduhthxrmktdxjb'
+    MAIL_USE_SSL = True
+    MAIL_DEFAULT_SENDER = 'apolloumn.email@gmail.com'
+    SECURITY_PASSWORD_SALT = 'zxsdfasdvasdafwe'
+
 
 class ProductionConfig(Config):
 

@@ -112,6 +112,12 @@ export default {
         }
       }).then((response) => {
           // handle success
+          if (response.data == 'not verify email yet'){
+            this.$router.push()
+
+
+
+          } 
           window.localStorage.setItem('Apollo-token', response.data.token)
           store.loginAction()
 

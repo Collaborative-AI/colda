@@ -14,16 +14,21 @@
 // import axios from 'axios'
 
 export default {
-  name: 'Register', //this is the name of the component
+  name: 'Resend', //this is the name of the component
   data () {
     return {
+      username: '',
     }
   },
 
   methods: {
     resend() {
     
-      vm.$axios.get('/resend/')
+      const resend_data = {
+        username: this.username,
+      }
+
+      this.$axios.post('/resend/', resend_data)
         .then((response) => {
           // handle success
           console.log("resend successfully", response.data)
@@ -39,7 +44,7 @@ export default {
     }
   },
   created () {
-    // this.username = this.$route.params.task_description
+    this.username = this.$route.query.username
     // this.username = this.$route.params.task_id
     // this.username = this.$route.params.task_name
 

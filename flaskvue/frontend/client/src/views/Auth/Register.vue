@@ -126,7 +126,8 @@ export default {
       .then((res) => {
         // Go to Login Page
         this.$toasted.success('Please verify your email.', { icon: 'fingerprint' })
-        // this.$router.push('/login')
+        this.$router.push({path: '/resend', query: {'username': this.loginForm.username}})
+        
       }).catch((error) => {
         for (var field in error.response.data.message) {
           if (field == 'username') {

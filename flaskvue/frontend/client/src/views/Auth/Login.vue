@@ -19,6 +19,8 @@
             <hua-kuai @verify='verify' @refresh='refresh'></hua-kuai>
           </div>
 
+          <br />
+          
           <button type="submit" class="btn btn-primary">Sign In</button>
         </form>
       </div>
@@ -27,7 +29,7 @@
     <p>New User? <router-link to="/register">Click to Register!</router-link></p>
     <p>
         Forgot Your Password?
-        <a href="#">Click to Reset It</a>
+        <router-link to="/reset">Click to Reset It</router-link>
     </p>
   </div>
 </template>
@@ -85,8 +87,8 @@ export default {
 
       if (this.verifivation_res == false){
         console.log("ggggggg")
-        this.registerForm.errors++
-        this.$toasted.success("Please move into the right place", { icon: 'fingerprint' })
+        this.loginForm.errors++
+        this.$toasted.success("Please move slider into the right place", { icon: 'fingerprint' })
       }
       
       if (this.loginForm.errors > 0) {
@@ -113,22 +115,25 @@ export default {
       }).then((response) => {
           // handle success
           if (response.data == 'not verify email yet'){
-            this.$router.push()
+            this.$router.push({path: '/resend', query: {'username': this.loginForm.username}})
+            this.$toasted.success(`Please verify your email`, { icon: 'fingerprint' })
+
+          } else{
+            window.localStorage.setItem('Apollo-token', response.data.token)
+            store.loginAction()
+
+            const name = JSON.parse(atob(response.data.token.split('.')[1])).name
+            this.$toasted.success(`Welcome ${name}!`, { icon: 'fingerprint' })
+
+            if (typeof this.$route.query.redirect == 'undefined') {
+              this.$router.push('/')
+            } else {
+              this.$router.push(this.$route.query.redirect)
+            }
 
 
-
-          } 
-          window.localStorage.setItem('Apollo-token', response.data.token)
-          store.loginAction()
-
-          const name = JSON.parse(atob(response.data.token.split('.')[1])).name
-          this.$toasted.success(`Welcome ${name}!`, { icon: 'fingerprint' })
-
-          if (typeof this.$route.query.redirect == 'undefined') {
-            this.$router.push('/')
-          } else {
-            this.$router.push(this.$route.query.redirect)
           }
+          
         })
         .catch((error) => {
           // handle error

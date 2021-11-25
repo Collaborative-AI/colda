@@ -55,7 +55,7 @@
             2. Do 1-2 steps in another terminal, then command. Example: 
             http POST http://localhost:5000/users username=test1 password=123 -->
 
-1: testa Aa1234567!
+1: testa apolloumn.email@gmail.com Aa1234567!
 2: testb Aa1234567!
 
 

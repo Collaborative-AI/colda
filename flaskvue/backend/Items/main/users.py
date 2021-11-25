@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 from operator import itemgetter
-from flask import Flask, session, request, g, current_app, render_template
+from flask import Flask, session, request, g, current_app, render_template, flash
 from flask.helpers import url_for
 from flask.json import jsonify
 
@@ -11,6 +11,7 @@ from flask_cors import CORS, cross_origin
 # import BluePrint
 from Items.main import main
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from Items.models import User, Notification, Message
 from Items.main.errors import bad_request, error_response
@@ -78,28 +79,36 @@ def create_user():
 
 @main.route('/confirm_email/<token>', methods=['GET'])
 def confirm_email(token):
-    if g.current_user.confirmed == 'false':
-
-        email = confirm_token(token)
-        user = User.query.filter_by(email=g.current_user.email).first_or_404()
-        if user.email == email:
-            user.confirmed = 'true'
-            db.session.commit()
-
-            response = 'confirmed successfully'
-            return jsonify(response)
-
-        response = 'The confirmation link is invalid or has expired.'
-        return jsonify(response)
-    
-    response = 'You have confirmed your account. Thanks!'
-    return jsonify(response)
 
 
-@main.route('/resend/')
-@basic_auth.login_required
+    email = confirm_token(token)
+    user = User.query.filter_by(email=email).first_or_404()
+    msg = ''
+    if user:
+        if user.confirmed == 'false':
+            if user.email == email:
+                user.confirmed = 'true'
+                db.session.commit()
+
+                msg = 'You have confirmed your account. Thanks!'
+
+            msg = 'The confirmation link is invalid or has expired.'
+
+        msg = 'Account already confirmed. Please login.'
+    else:
+        msg = 'The confirmation link is invalid or has expired.'
+
+    return render_template('confirm.html', msg=msg)
+
+@main.route('/resend/', methods=['POST'])
 def resend():
-    email = g.current_user.email
+    
+    data = request.get_json()
+    username = data['username']
+
+    query = User.query.filter_by(username=username).first_or_404()
+    email = query.email
+
     token = generate_confirmation_token(email)
     confirm_url = url_for('main.confirm_email', token=token, _external=True)
     print("confirm_url", confirm_url)
@@ -109,6 +118,63 @@ def resend():
 
     return jsonify('Resend successfully!')
 
+@main.route('/forgot', methods=['POST'])
+def forgot():
+    
+    data = request.get_json()
+    message = {}
+    if 'username' not in data or not data.get('username', None):
+        message['username'] = 'Please provide a valid username.'
+    pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+    if 'email' not in data or not re.match(pattern, data.get('email', None)):
+        message['email'] = 'Please provide a valid email address.'
+    
+    username = data['username']
+    email = data['email']
+
+    if not User.query.filter_by(username=username).first():
+        message['username'] = 'Please type in the correct username.'
+    if User.query.filter_by(username=username).first().email != email:
+        message['email'] = 'Please type in the correct username and email'
+        message['username'] = 'Please type in the correct username and email'
+
+    if message:
+        return bad_request(message)
+
+    token = generate_confirmation_token(email)
+
+    reset_url = url_for('main.forgot_new', token=token, _external=True)
+    html = render_template('reset.html',
+                            username=username,
+                            reset_url=reset_url)
+    subject = "Reset your password"
+    send_email(email, subject, html)
+
+    return jsonify('A password reset email has been sent via email.')
+
+
+@main.route('/forgot/new/<token>', methods=['get'])
+def forgot_new(token):
+
+    email = confirm_token(token)
+    # debug(email, 'email')
+    user = User.query.filter_by(email=email).first_or_404()
+
+    # form = ChangePasswordForm()
+    # if form.validate_on_submit():
+    user = User.query.filter_by(email=email).first()
+    if user:
+        password = request.form['newPassword']
+        user.password_hash = generate_password_hash(password)
+        db.session.commit()
+
+        return 'Password successfully changed.'
+
+    else:
+        flash('Password change was unsuccessful.', 'danger')
+        return 'Password change was unsuccessful.'
+    # else:
+    #     return render_template('forgot_new.html', form=form)
 
 
 @main.route('/users', methods=['GET'])

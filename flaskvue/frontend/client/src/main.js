@@ -128,6 +128,7 @@ console.log("sqlite3", sqlite3)
 
 
 // import VueRouter from 'vue-router';
+// Vue.use(VueRouter);
 // // Change import to require for packaging
 
 // console.log("11111111111111111111111111")

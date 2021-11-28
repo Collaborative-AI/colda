@@ -13,6 +13,7 @@ module.exports = {
     // "globals": {
     //     "window": {}
     //   }
+    "verbose": false,
     "runner": "jest-electron/runner",
     "testEnvironment": "jest-electron/environment"
     // runner: '@jest-runner/electron',

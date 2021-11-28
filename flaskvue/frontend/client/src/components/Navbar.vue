@@ -115,6 +115,7 @@ export default {
       root: '',
       exe_position: '',
       showView: true,
+      test_response: {},
       
     }
   },
@@ -139,6 +140,15 @@ export default {
     plus(a, b) {
     return a + b;
   },
+
+    test_axios(callback) {
+      this.$axios.get('/url')
+            .then((response) => {
+              // handle success
+            console.log("response123", response)
+            callback()
+            })
+    },
 
     refreshView () {
       this.showView = false // 通过v-if移除router-view节点
@@ -201,16 +211,19 @@ export default {
       console.log("this.sharedState.receive_request", vm.sharedState.mode)
       
       console.log("2.1 Update request notification response", unread_request_notification)
-      this.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
+      vm.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
 
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
+      console.log('select_sentence', select_sentence)
+      console.log('db',db)
       db.get(select_sentence, function(err, row){
         if (err){
           console.log(err);
         }
 
         console.log("retrieve_setting_mode_row", row)
+        // return row
 
         if (row == null){
           vm.sharedState.mode = "Manual";
@@ -277,6 +290,9 @@ export default {
               .then((response) => {
                 // handle success
                 console.log("2.2 assistor uploads id file", response)
+                vm.test_response = response
+                // return response
+                
                 vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
 
                 try {
@@ -320,7 +336,8 @@ export default {
 
       }//end for
     })
-    return 100
+    // return vm.test_response
+    return 'done'
     
     },
 
@@ -365,6 +382,7 @@ export default {
           this.unread_match_id_assistor(task_id)
         }
       }
+      return 'done'
     },
 
     unread_match_id_sponsor(task_id) {

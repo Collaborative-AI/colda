@@ -79,5 +79,6 @@ db.serialize(function() {
                                            
 });
 // let db=5;
+console.log('db1',db)
 export default db
 // exports.default = db

@@ -19,6 +19,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 
+import huakuai from 'huakuai-vue'
+Vue.use(huakuai)
 // import mdbvue from 'mdbvue'
 // Vue.use(mdbvue)
 

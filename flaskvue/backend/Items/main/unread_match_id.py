@@ -40,7 +40,7 @@ def get_user_match_id(id):
     isSponsor = False
     query = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").first()
     if int(query.sponsor_id) == g.current_user.id:
-        isSponsor = True
+        isSponsor = True 
 
     data = {}
     if isSponsor:

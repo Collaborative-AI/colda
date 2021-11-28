@@ -14,6 +14,13 @@
             <input type="password" v-model="loginForm.password" class="form-control" v-bind:class="{'is-invalid': loginForm.passwordError}" id="password" placeholder="">
             <div v-show="loginForm.passwordError" class="invalid-feedback">{{ loginForm.passwordError }}</div>
           </div>
+
+          <div>
+            <hua-kuai @verify='verify' @refresh='refresh'></hua-kuai>
+          </div>
+
+          <br />
+          
           <button type="submit" class="btn btn-primary">Sign In</button>
         </form>
       </div>
@@ -22,7 +29,7 @@
     <p>New User? <router-link to="/register">Click to Register!</router-link></p>
     <p>
         Forgot Your Password?
-        <a href="#">Click to Reset It</a>
+        <router-link to="/reset">Click to Reset It</router-link>
     </p>
   </div>
 </template>
@@ -44,10 +51,22 @@ export default {
         errors: 0,  // 表单是否在前端验证通过，0 表示没有错误，验证通过
         usernameError: null,
         passwordError: null
-      }
+      },
+      verifivation_res: false,
     }
   },
   methods: {
+    verify(result){
+      console.log(result) // result为true表示验证通过，false表示验证三次都失败了哦
+      if (result == true){
+        this.verifivation_res = true;
+      }
+    },
+
+    refresh(){
+      console.log('用户点击了初始化')
+    },
+
     onSubmit (e) {
       this.loginForm.submitted = true  // 先更新状态
       this.loginForm.errors = 0
@@ -66,6 +85,12 @@ export default {
         this.loginForm.passwordError = null
       }
 
+      if (this.verifivation_res == false){
+        console.log("ggggggg")
+        this.loginForm.errors++
+        this.$toasted.success("Please move slider into the right place", { icon: 'fingerprint' })
+      }
+      
       if (this.loginForm.errors > 0) {
         // 表单验证没通过时，不继续往下执行，即不会通过 axios 调用后端API
         return false
@@ -89,17 +114,26 @@ export default {
         }
       }).then((response) => {
           // handle success
-          window.localStorage.setItem('Apollo-token', response.data.token)
-          store.loginAction()
+          if (response.data == 'not verify email yet'){
+            this.$router.push({path: '/resend', query: {'username': this.loginForm.username}})
+            this.$toasted.success(`Please verify your email`, { icon: 'fingerprint' })
 
-          const name = JSON.parse(atob(response.data.token.split('.')[1])).name
-          this.$toasted.success(`Welcome ${name}!`, { icon: 'fingerprint' })
+          } else{
+            window.localStorage.setItem('Apollo-token', response.data.token)
+            store.loginAction()
 
-          if (typeof this.$route.query.redirect == 'undefined') {
-            this.$router.push('/')
-          } else {
-            this.$router.push(this.$route.query.redirect)
+            const name = JSON.parse(atob(response.data.token.split('.')[1])).name
+            this.$toasted.success(`Welcome ${name}!`, { icon: 'fingerprint' })
+
+            if (typeof this.$route.query.redirect == 'undefined') {
+              this.$router.push('/')
+            } else {
+              this.$router.push(this.$route.query.redirect)
+            }
+
+
           }
+          
         })
         .catch((error) => {
           // handle error

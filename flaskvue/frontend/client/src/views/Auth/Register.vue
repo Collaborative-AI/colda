@@ -21,8 +21,19 @@
           <div class="form-group">
             <label for="password">Password</label>
             <input type="password" v-model="registerForm.password" class="form-control" v-bind:class="{'is-invalid': registerForm.passwordError}" id="password" placeholder="">
+            <small v-if="!registerForm.passwordError" id="passwordHelp1" class="form-text text-muted">At least 8 characters. At most 25 characters</small>
+            <small v-if="!registerForm.passwordError" id="passwordHelp2" class="form-text text-muted">A mixture of both uppercase and lowercase letters</small>
+            <small v-if="!registerForm.passwordError" id="passwordHelp3" class="form-text text-muted">A mixture of letters and numbers</small>
+            <small v-if="!registerForm.passwordError" id="passwordHelp4" class="form-text text-muted">Inclusion of at least one special character, e.g., ! @ # ? ]</small>
+
             <div v-show="registerForm.passwordError" class="invalid-feedback">{{ registerForm.passwordError }}</div>
           </div>
+
+          <div>
+            <hua-kuai @verify='verify' @refresh='refresh'></hua-kuai>
+          </div>
+          
+          <br />
 
           <button type="submit" class="btn btn-primary">Register</button>
         </form>
@@ -32,7 +43,6 @@
 </template>
 
 <script>
-
 // import {request_withdata} from '@/network/request';
 // import axios from 'axios'
 
@@ -49,10 +59,24 @@ export default {
         usernameError: null,
         emailError: null,
         passwordError: null
-      }
+      },
+      verifivation_res: false,
     }
   },
+
   methods: {
+
+    verify(result){
+      console.log(result) // result为true表示验证通过，false表示验证三次都失败了哦
+      if (result == true){
+        this.verifivation_res = true;
+      }
+    },
+
+    refresh(){
+      console.log('用户点击了初始化')
+    },
+
     onSubmit (e) {
       this.registerForm.submitted = true  // 先更新状态
       this.registerForm.errors = 0
@@ -81,6 +105,12 @@ export default {
         this.registerForm.passwordError = null
       }
 
+      if (this.verifivation_res == false){
+        console.log("ggggggg")
+        this.registerForm.errors++
+        this.$toasted.success("Please move into the right place", { icon: 'fingerprint' })
+      }
+
       if (this.registerForm.errors > 0) {
         // Stop when the form has error
         return false
@@ -95,8 +125,9 @@ export default {
       this.$axios.post('/users', payload)
       .then((res) => {
         // Go to Login Page
-        this.$toasted.success('Congratulations', { icon: 'fingerprint' })
-        this.$router.push('/login')
+        this.$toasted.success('Please verify your email.', { icon: 'fingerprint' })
+        this.$router.push({path: '/resend', query: {'username': this.loginForm.username}})
+        
       }).catch((error) => {
         for (var field in error.response.data.message) {
           if (field == 'username') {

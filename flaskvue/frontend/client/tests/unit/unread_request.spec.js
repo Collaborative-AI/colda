@@ -146,7 +146,7 @@ describe('Navbar', () => {
     // 现在挂载组件，你便得到了这个包裹器
     // const wrapper = mount(Navbar)
 
-
+  
     jest.mock("axios", () => ({
       get: () => Promise.resolve({ data: [{ val: 1 }] })
   })); 

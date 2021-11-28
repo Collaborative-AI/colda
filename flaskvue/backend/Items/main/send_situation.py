@@ -38,7 +38,7 @@ def send_situation():
     
 
     # get recent round
-    cur_round = 0
+    cur_round = 1
     query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
     if query is not None:
         cur_round = query.rounds + 1

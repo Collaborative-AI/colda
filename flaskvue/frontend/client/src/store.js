@@ -11,7 +11,7 @@ export default {
       user_id: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id : 0,
       authority: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).authority : 'user',
       msg: [],
-
+      pending_num: 0,
       // development
       // // linux
       // root: "./exp",

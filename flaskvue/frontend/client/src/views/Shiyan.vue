@@ -64,6 +64,7 @@
       <button type="submit" class="btn btn-primary">Update</button>
     </form>
 
+    <button @click="callitself()">callitself</button>
     <!-- <div>
       <el-form ref="form" :model="form" label-width="120px" style="width: 50%">
       <el-form-item label="保存至文件夹">
@@ -177,6 +178,16 @@ export default {
     this.exe_position = new_root.exe_position
   },
   methods: {
+    callitself(){
+      let vm = this
+      console.log("wowowowowowowowo")
+      setTimeout(function(){
+        vm.callitself()
+      }, 3000)
+    },
+
+
+
     handle_Algorithm_return_value(name, return_val, first_val, second_val) {
       return_val = return_val.split("?")
       console.log(name, return_val)

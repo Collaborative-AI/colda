@@ -1,8 +1,8 @@
-"""hello
+"""version1
 
-Revision ID: df530a02c6f2
+Revision ID: 482428aeb477
 Revises: 
-Create Date: 2021-11-03 21:31:46.053260
+Create Date: 2021-11-25 11:36:32.902502
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'df530a02c6f2'
+revision = '482428aeb477'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -51,6 +51,8 @@ def upgrade():
     sa.Column('name', sa.String(length=64), nullable=True),
     sa.Column('location', sa.String(length=64), nullable=True),
     sa.Column('about_me', sa.Text(), nullable=True),
+    sa.Column('authority', sa.String(length=30), nullable=True),
+    sa.Column('confirmed', sa.String(length=10), nullable=True),
     sa.Column('last_seen', sa.DateTime(), nullable=True),
     sa.Column('last_requests_read_time', sa.DateTime(), nullable=True),
     sa.Column('last_matched_file_read_time', sa.DateTime(), nullable=True),

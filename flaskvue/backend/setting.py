@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'), encoding='utf-8')
 
+
 class Config(object):
     
     DEBUG = True
@@ -33,13 +34,29 @@ class Config(object):
     #     'sqlite:///' + os.path.join(basedir, 'app.db')
 
     # mysql
-    username = "apollo"
-    password = "apolloapollo"
-    database = "apollo"
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@apollo.cb9jianlqhw8.us-east-2.rds.amazonaws.com:3306/%s' % (username, password, database)
+    # master username
+    master_username = 'apollo'
+    password = 'Aa1234567!'
+    end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'
+    # database name (created by create schema in mysql workbench)
+    database_name = 'apollo_aws_mysql'
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     MESSAGES_PER_PAGE = 10
+
+    # gmail for email validation
+    # gmail account: apolloumn.email@gmail.com
+    # gmail password: apolloumn
+    # app password: wvduhthxrmktdxjb
+    MAIL_SERVER ='smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USERNAME = 'apolloumn.email@gmail.com'
+    MAIL_PASSWORD = 'wvduhthxrmktdxjb'
+    MAIL_USE_SSL = True
+    MAIL_DEFAULT_SENDER = 'apolloumn.email@gmail.com'
+    SECURITY_PASSWORD_SALT = 'zxsdfasdvasdafwe'
+
 
 class ProductionConfig(Config):
 

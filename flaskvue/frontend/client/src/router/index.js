@@ -19,6 +19,8 @@ import authority from '../authority'
 
 const Register = () => import('@/views/Auth/Register.vue')
 const Login = () => import('@/views/Auth/Login.vue')
+const Resend = () => import('@/views/Auth/Resend.vue')
+const Reset = () => import('@/views/Auth/Reset.vue')
 
 const Home = () => import('../views/Home.vue')
 console.log("Home", Home)
@@ -103,6 +105,16 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/resend',
+    name: 'Resend',
+    component: Resend,
+  },
+  {
+    path: '/reset',
+    name: 'Reset',
+    component: Reset,
   },
   {
     // Modify personal information

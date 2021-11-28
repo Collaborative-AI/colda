@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
-from Items.extensions import cors, db, migrate
+from Items.extensions import cors, db, migrate, mail
+from flask_mail import Mail
 from Items.main import main as main_blueprint
 import pymysql
 # from flask_session import Session
 
+# mail = None
 
 def create_app(config_class=None):
     '''Factory Pattern: Create Flask app.'''
@@ -25,6 +27,7 @@ def create_app(config_class=None):
 
 def configure_app(app, config_class):
     app.config.from_object(config_class)
+    
     # 不检查路由中最后是否有斜杠/
     app.url_map.strict_slashes = False
 
@@ -32,18 +35,23 @@ def configure_app(app, config_class):
 def configure_blueprints(app):
     # 注册 blueprint
     # from .main import main as main_blueprint
+    print("main_blueprint", main_blueprint)
     app.register_blueprint(main_blueprint)
 
 
 def configure_extensions(app):
     '''Configures the extensions.'''
-    
+    # global mail
     # Enable CORS
     cors.init_app(app)
     # Init Flask-SQLAlchemy
     db.init_app(app)
     # Init Flask-Migrate
     migrate.init_app(app, db)
+    # Init email service
+    # mail = Mail(app)\
+    mail.init_app(app)
+    print("]]]]]]]", mail, dir(mail), mail.app)
 
 
 def configure_before_handlers(app):

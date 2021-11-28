@@ -73,6 +73,7 @@
 <script>
 import store from '../../../store.js'
 import db from '../../../db'
+// import { set } from 'vue/types/umd'
 // import penditem from "../Penditem.vue"
 
 export default {
@@ -83,27 +84,47 @@ export default {
     return {
       sharedState: store.state,
       pending: "",
+      cur_pending_num: -10000,
     }
   },
 
   methods: {
+
+    check_if_new_pending(){
+      let vm = this;
+      console.log("-------wowowowwo")
+      // when the cur_pending_num in Plist page is not equals to the pending_num in store.js, it means we have new pending_page.
+      // cal get_all_pending one more time
+      if (vm.cur_pending_num != vm.sharedState.pending_num){
+        vm.cur_pending_num = vm.sharedState.pending_num;
+
+        vm.$axios.get('/get_all_pending/')
+        .then((response) => {
+          // handle success
+          console.log("get_all_pending response", response.data)
+          vm.pending =  response.data.all_pending_items
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error)
+        })
+      }
+
+      // recall check_if_new_pending function every 5 seconds
+      const timer = setTimeout(() => {
+        vm.check_if_new_pending()
+      }, 5000)
+      
+      // destroy the setTimeout function when leave this page
+      vm.$once('hook:beforeDestroy', function () {
+			    clearTimeout(timer)
+			})
+
+    },
   },
 
 created () {
-
-    let vm = this
-  
-    this.$axios.get('/get_all_pending/')
-      .then((response) => {
-        // handle success
-        console.log("get_all_pending response", response.data)
-        vm.pending =  response.data.all_pending_items
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error)
-      })
-
+    this.check_if_new_pending()
   },
   
 }

@@ -90,7 +90,11 @@ import authority from '../authority'
 const fs = window.require('fs');
 // const join = window.require('path').join;
 //// const xlsx2json = window.require("node-xlsx");
-const sqlite3 = window.require('sqlite3').verbose();;
+// const zz = require('sqlite3')
+// console.log('zz', zz)
+// const sqlite3 = window.require('sqlite3').verbose();
+// console.log('sqlite3', sqlite3)
+
 const ex = window.require("child_process");
 const {dialog} = window.require('electron').remote;
 const os = window.require('os');

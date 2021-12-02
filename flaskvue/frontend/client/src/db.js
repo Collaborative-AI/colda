@@ -32,6 +32,7 @@ function createDatabase(file){
   return db
 }
 let db = createDatabase(node_path.join(__dirname,'../../Apollo_Client_data.db'))
+console.log('position', __dirname)
 
 // let db = new sqlite3.Database('Apollo_Client_db');
 
@@ -58,7 +59,10 @@ db.serialize(function() {
                                            test_file_path     text, \
                                            test_id_column     text, \
                                            test_data_column   text, \
-                                           test_target_column text)");
+                                           test_target_column text, \
+                                           task_mode          text, \
+                                           model_name         text, \
+                                           metric_name        text)");
 // user manual
     db.run("CREATE TABLE IF NOT EXISTS User_Manual_Table (id                  int primary key, \
                                                    task_name                  text,\

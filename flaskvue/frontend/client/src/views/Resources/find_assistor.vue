@@ -1,7 +1,6 @@
 
-
-
 <template>
+
   <div class="container g-pt-20">
     <div class="form-group">
       <label for="name">Input Task Name</label>
@@ -57,28 +56,37 @@
       <input type="text" v-model="train_target_column" class="form-control" id="name" placeholder="">
     </div>
 
-     <!-- <div class="form-group">
-      <label for="name">Select Data File</label>
-      <input type="text" v-model="PathForm.train_data_path" class="form-control" id="name" placeholder="">
-      <button @click="get_train_data_path()">Select Data File</button>
-    </div>
-    
     <div class="form-group">
-      <label for="location">Select Id File</label>
-      <input type="text" v-model="PathForm.train_id_path" class="form-control" id="location" placeholder="">
-      <button @click="get_train_id_path()">Select ID File</button>
-    </div>
+        
+    <select v-model='task_mode' @change='get_model_name'>
+      <option v-for="item in task_mode_list" :key="item.index" :value="item.name">{{item.name}}</option>
+    </select>
+    <!-- &nbsp; -->
+    <select v-model="model_name" @change='get_metric_name'>
+      <option v-for="item in model_name_list" :key="item.index" :value="item.name">{{item.name}}</option>
+    </select>
+    <!-- &nbsp; -->
+    <select v-model="metric_name">
+      <option v-for="item in metric_name_list"  :key="item.index" :value="item.name">{{item.name}}</option>
+    </select>
 
-    <div class="form-group">
-      <label for="location">Select Target File</label>
-      <input type="text" v-model="PathForm.train_target_path" class="form-control" id="location" placeholder="">
-      <button @click="get_train_target_path()">Select Target File</button>
-    </div> -->
+
+    </div>
+    <!-- <script type="application/javascript" defer src="http://code.jquery.com/jquery.min.js"></script>
+    <script type="application/javascript" defer src="selectFilter.min.js"></script>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="selectFilter.min.js"></script> -->
+
+    
+    
+
 
     <button type="submit" @click="onSubmit()" class="btn btn-success">Initiate task</button>
     <!-- <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button> -->
   </div>
 </template>
+
+
 
 <script>
 import store from '../../store'
@@ -115,9 +123,54 @@ export default {
       },
       root: '',
       exe_position: '',
+      task_mode: '',
+      model_name: '',
+      metric_name: '',
+      task_mode_list: [
+        {
+            name: "classification",
+            sub: 
+            [
+              {
+                  name: "linear",
+                  sub: [{ name: "Accuracy_F1" }],
+              },
+            ],   
+        },
+        {
+            name: "regression",
+            sub: 
+            [
+              {
+                  name: "linear",
+                  sub: [{ name: "MAD_RMSE_R2" }],
+              },
+            ],   
+        },
+      ],
+      model_name_list:[],
+      metric_name_list:[],
     }
   },
   methods: {
+    get_model_name() {
+          for (var i = 0; i < this.task_mode_list.length; i++) {
+            var obj = this.task_mode_list[i]
+            if (this.task_mode == obj.name ) {
+              this.model_name_list = obj.sub
+            }
+          }
+          this.model_name=''
+          this.metric_name=''
+        },
+        get_metric_name() {
+          for (var i = 0; i < this.model_name_list.length; i++) {
+            var obj = this.model_name_list[i]
+            if (this.model_name == obj.name ) {
+              this.metric_name_list = obj.sub
+            }
+          }
+        },
     get_train_id () {
       console.log("$$$$$$$$$$$$$$$^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
       this.$axios.get('/create_new_train_task/')
@@ -305,8 +358,8 @@ export default {
           //     (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","` + vm.task_id + `", "`+vm.PathForm.train_data_path+ `", "` +vm.PathForm.train_id_path+`", "`+vm.PathForm.train_target_path+`")`
           // console.log("insert_sentence", insert_sentence)
           console.log(vm.train_file_path)
-          let insert_sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_column", "train_data_column" , "train_target_column") VALUES 
-              (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`")`
+          let insert_sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_column", "train_data_column", "train_target_column", "task_mode", "model_name", "metric_name") VALUES 
+              (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`", "`+vm.task_mode+`", "`+vm.model_name+`", "`+vm.metric_name+`")`
           console.log("insert_sentence", insert_sentence) 
           db.run(insert_sentence, function(err){
             if (err){
@@ -322,6 +375,7 @@ export default {
               hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                                       + ' --task_id ' + vm.task_id + ' --mode train' + ' --dataset_path ' + vm.train_file_path 
                                       + ' --id_idx ' + vm.train_id_column, {encoding: 'utf8'})
+
               console.log("hash_id_file_address", hash_id_file_address)
               hash_id_file_address = hash_id_file_address.split("?")
               console.log("hash_id_file_address_2", hash_id_file_address)
@@ -423,13 +477,12 @@ export default {
 
             let make_train_local = null;
             try{   
-              // make_train_local = ex.execSync(vm.exe_position + ' make_train_local  --root ' + vm.root 
-              //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --data_path ' + vm.PathForm.train_data_path + ' --target_path ' + vm.PathForm.train_target_path, {encoding: 'utf8'})  
-              // console.log("make_train_local", make_train_local)
               make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
                                       + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
                                       + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_column 
-                                      + ' --target_idx ' + vm.train_target_column,{encoding: 'utf8'})
+                                      + ' --target_idx ' + vm.train_target_column + ' --task_mode ' + vm.task_mode
+                                      + ' --model_name ' + vm.model_name + ' --metric_name ' + vm.metric_name, {encoding: 'utf8'})
+
               console.log("make_train_local", make_train_local)
             }catch(err){
               console.log(err)
@@ -450,6 +503,17 @@ export default {
     this.root = new_root.root;
     this.exe_position = new_root.exe_position
     console.log('dbadress',__dirname)
-  }
+  },
+  // mounted() {
+  //     let recaptchaScript1 = document.createElement('script')
+  //     recaptchaScript1.setAttribute('src', 'http://code.jquery.com/jquery.min.js')
+  //     // plugin.async = true;
+  //     document.head.appendChild(recaptchaScript1)
+  //     let recaptchaScript2 = document.createElement('script')
+  //     recaptchaScript2.setAttribute('src', 'selectFilter.min.js')
+  //     // plugin.async = true;
+  //     document.head.appendChild(recaptchaScript2)
+  //   }
+
 }
 </script>

@@ -96,7 +96,6 @@
 import { mount } from '@vue/test-utils'
 import Navbar from '../../src/components/Navbar.vue'
 
-window.require = require;
 
 const wrapper = mount(Navbar)
 // const vm = wrapper.vm

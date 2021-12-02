@@ -1,6 +1,6 @@
-const path = require('path');
-const os = window.require('os');
-const node_path = window.require('path');
+
+const os = ('os');
+const node_path = window.node_path;
 import store from './store'
 import db from './db'
 

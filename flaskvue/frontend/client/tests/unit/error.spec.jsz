@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
 import Hello from './Hello.vue'
 
-test('Hello', () => {
+test('assert error', () => {
   // 渲染这个组件
   const wrapper = shallowMount(Hello)
 

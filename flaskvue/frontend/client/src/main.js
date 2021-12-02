@@ -36,15 +36,15 @@ Vue.component('header-items', HeaderItems)
 Vue.component('sidebar-items', SidebarItems)
 Vue.component('sidebar-header', SidebarHeader)
 
-const node_path = window.require('path');
-
-console.log(" this.exe_position",  node_path.resolve("./resources/dist/run/run.exe"))
-console.log("dir",__dirname)
-console.log(node_path.join(__dirname, '../dist/run/run.exe'))
+// const node_path = window.require('path');
+// console.log(node_path, window.node_path)
+// console.log(" this.exe_position",  node_path.resolve("./resources/dist/run/run.exe"))
+// console.log("dir",__dirname)
+// console.log(node_path.join(__dirname, '../dist/run/run.exe'))
 import db from './db'
 
-const fs = window.require("fs")
-console.log("fs", fs)
+// const fs = window.require("fs")
+// console.log("fs", fs)
 // import path from 'path'
 // var leveldown = window.require('leveldown');
 // console.log("....", leveldown)
@@ -53,8 +53,7 @@ console.log("fs", fs)
 // var levelup2 = window.require('levelup');
 // console.log("levelup2", levelup2)
 
-const sqlite3 = window.require('sqlite3');
-console.log("sqlite3", sqlite3)
+// 
 
 // function createDatabase(file){
 //   var db = new sqlite3.Database(file);
@@ -130,6 +129,7 @@ console.log("sqlite3", sqlite3)
 
 
 // import VueRouter from 'vue-router';
+// Vue.use(VueRouter);
 // // Change import to require for packaging
 
 // console.log("11111111111111111111111111")

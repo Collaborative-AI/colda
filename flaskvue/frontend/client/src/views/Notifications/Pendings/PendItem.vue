@@ -52,11 +52,11 @@
 import store from '../../../store.js'
 import db from '../../../db'
 // import penditem from "../Penditem.vue"
-const fs = window.require('fs');
-const ex = window.require("child_process");
-const node_path = window.require('path');
-const os = window.require('os');
-const {dialog} = window.require('electron').remote
+const fs = window.fs;
+const ex = window.ex;
+const node_path = window.node_path;
+const os = window.os;
+const dialog = window.dialog
 
 export default {
   name: 'PendItem',  // Name of the component

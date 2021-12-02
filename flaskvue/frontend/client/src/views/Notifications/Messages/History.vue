@@ -105,11 +105,10 @@
 </template>
 
 <script>
-const fs = window.require('fs');
-const ex = window.require("child_process");
-const path = window.require('path');
-const os = window.require('os');
-const node_path = window.require('path');
+const fs = window.fs;
+const ex = window.ex;
+const os = window.os;
+const node_path = window.node_path;
 
 import store from '../../../store'
 // 导入 vue-markdown 组件解析 markdown 原文为　HTML

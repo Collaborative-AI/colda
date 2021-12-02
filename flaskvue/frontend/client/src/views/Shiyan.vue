@@ -87,27 +87,27 @@
 //const { require } = window
 
 // node electron
-const fs = window.require('fs');
+const fs = window.fs;
 
 // const xlsx2json = window.require("node-xlsx");
-const join = window.require('path').join;
+const join = window.node_path.join;
 const address = 'tem/' + 'b/'
-const os = window.require('os');
+const os = window.os;
 // const ex = require("child_process").execFileSync;
-const ex = window.require("child_process");
+const ex = window.ex;
 // import dialog from 'electron';
 // const dialog = window.nodeRequire('electron');
 // const dialog1 = require('electron');
 // import dialog from 'electron';
-const sqlite3 = window.require('sqlite3').verbose();
-const node_path = window.require('path');
+// const sqlite3 = window.require('sqlite3').verbose();
+const node_path = window.node_path;
 
 // import $ from 'jquery'
 
 // const remote = window.require('electron').remote 
 // const dialog = remote.dialog;
 
-const {dialog} = window.require('electron').remote
+// const {dialog} = window.require('electron').remote
 
 // const dialog = window.require('electron')
 // const { require } = window
@@ -127,7 +127,7 @@ const axios = require('axios').default
 // import db from '../nedb.js'
 // const db = require('../nedb.js').default
 const store = require('../store').default
-const {remote} = window.require('electron')
+// const {remote} = window.require('electron')
 // import db from '../leveldb'
 // import { remote } from 'electron';
 // import store from '../store'

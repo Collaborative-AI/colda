@@ -30,9 +30,11 @@ async function createWindow() {
       // security.html#node-integration for more info
 
       // nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION, (default is false)
+      // nodeIntegration: false => cannot use window.require to call node module in rendering process
       nodeIntegration: true,
-      enableRemoteModule: true,
-      contextIsolation: false,
+      enableRemoteModule: true, // 允許在 Render Process 使用 Remote Module
+      contextIsolation: false, // 讓在 preload.js 的定義可以傳遞到 Render Process (React)
+      preload: node_path.join(__dirname, "../src/preload.js")
       // contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION, (default is true)
     },
   });

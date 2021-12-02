@@ -4,40 +4,41 @@
 // import path from 'path'
 // console.log("fs", fs)
 
-console.log("54321")
-// const Database = window.db
-const Database = require('better-sqlite3');
-console.log('21312312', Database)
-const db = new Database('foobar.db', { verbose: console.log });
-console.log('21312312', db)
+// console.log("54321")
+// // const Database = window.db
+// const Database = require('better-sqlite3');
+// console.log('21312312', Database)
+// const db = new Database('foobar.db', { verbose: console.log });
+// console.log('21312312', db)
 // let db = 5
 
 
-// const sqlite3 = window.require('sqlite3').verbose();
-// const node_path = window.require('path');
-// const fs = window.require("fs")
+const sqlite3 = window.require('sqlite3').verbose();
+const node_path = window.require('path');
+const fs = window.require("fs")
 // console.log('dbadress', __dirname)
 
-// function createDatabase(file){
-//   console.log("file_position", file)
-//   if(!fs.existsSync(file)){
+function createDatabase(file){
+  console.log("file_position", file)
+  if(!fs.existsSync(file)){
     
-//     console.log("creating database file");
-//     fs.openSync(file, "w");
-//     console.log("file created");
-//   }
+    console.log("creating database file");
+    fs.openSync(file, "w");
+    console.log("file created");
+  }
 
-  // var db = new sqlite3.Database(
-  //   file, 
-  //   sqlite3.OPEN_READWRITE, 
-  //   function (err) {
-  //       if (err) {
-  //           return console.log(err.message)
-  //       }
-  //       console.log('connect database successfully')
-  //   }
-  // )
-  // return db
+  var db = new sqlite3.Database(
+    file, 
+    sqlite3.OPEN_READWRITE, 
+    function (err) {
+        if (err) {
+            return console.log(err.message)
+        }
+        console.log('connect database successfully')
+    }
+  )
+  return db
+}
 
 let db = createDatabase(node_path.join(__dirname,'../../Apollo_Client_data.db'))
 console.log('position', __dirname)
@@ -89,7 +90,7 @@ db.serialize(function() {
                                                    
                                          
                                            
-// });
+});
 // let db=5;
 console.log('db1',db)
 export default db

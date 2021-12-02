@@ -27,7 +27,7 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
+          <th scope="col" v-for="(ptitle, idx) in ptitles" :key="ptitle.index">{{idx+1}}.{{ptitle}}</th>
         </tr>
       </thead>
       <tbody>
@@ -42,40 +42,43 @@
     <!-- <div>{{pdatas[0]}}</div> -->
 
     <div class="form-group">
-      <label for="name">Input ID column</label>
+      <label for="name">Input ID Column</label>
       <input type="text" v-model="train_id_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input data column (eg. 3-6)</label>
+      <label for="name">Input Data Column (eg. 3-6)</label>
       <input type="text" v-model="train_data_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input target column</label>
+      <label for="name">Input Target Column</label>
       <input type="text" v-model="train_target_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-        
-    <select v-model='task_mode' @change='get_model_name'>
+    <label for="name">Select Task Mode</label>
+    &nbsp;
+    <select v-model='task_mode' @change='get_model_name' class="form-control">
       <option v-for="item in task_mode_list" :key="item.index" :value="item.name">{{item.name}}</option>
     </select>
-    <!-- &nbsp; -->
-    <select v-model="model_name" @change='get_metric_name'>
+    <br>
+    <label for="name">Select Model Name</label>
+    &nbsp;
+    <select v-model="model_name" @change='get_metric_name' class="form-control">
       <option v-for="item in model_name_list" :key="item.index" :value="item.name">{{item.name}}</option>
     </select>
     <!-- &nbsp; -->
-    <select v-model="metric_name">
+    <br>
+    <label for="name">Select Metric Name</label>
+    &nbsp;
+    <select v-model="metric_name" class="form-control">
       <option v-for="item in metric_name_list"  :key="item.index" :value="item.name">{{item.name}}</option>
     </select>
 
 
     </div>
-    <!-- <script type="application/javascript" defer src="http://code.jquery.com/jquery.min.js"></script>
-    <script type="application/javascript" defer src="selectFilter.min.js"></script>
-    <script src="http://code.jquery.com/jquery.min.js"></script>
-    <script src="selectFilter.min.js"></script> -->
+    
 
     
     
@@ -114,6 +117,7 @@ export default {
       train_target_column:"",
       assistor_username_list:"",
       assistor_id:"",
+      ptitles:"",
       pdatas:"",
       select_data:false,
       PathForm: {
@@ -217,7 +221,8 @@ export default {
             
             vm.pdatas = data.split("\n")
             for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
-            vm.pdatas=vm.pdatas.slice(0,3)
+            vm.ptitles=vm.pdatas[0]
+            vm.pdatas=vm.pdatas.slice(1,4)
             vm.select_data=true
             console.log('preview',vm.pdatas[0])
           })
@@ -504,16 +509,7 @@ export default {
     this.exe_position = new_root.exe_position
     console.log('dbadress',__dirname)
   },
-  // mounted() {
-  //     let recaptchaScript1 = document.createElement('script')
-  //     recaptchaScript1.setAttribute('src', 'http://code.jquery.com/jquery.min.js')
-  //     // plugin.async = true;
-  //     document.head.appendChild(recaptchaScript1)
-  //     let recaptchaScript2 = document.createElement('script')
-  //     recaptchaScript2.setAttribute('src', 'selectFilter.min.js')
-  //     // plugin.async = true;
-  //     document.head.appendChild(recaptchaScript2)
-  //   }
+  
 
 }
 </script>

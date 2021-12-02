@@ -505,7 +505,7 @@ export default {
 
           }
 
-          let select_train_target_column = 'SELECT train_file_path, train_target_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
+          let select_train_target_column = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
           console.log("select_train_target_column", select_train_target_column)
           db.get(select_train_target_column, function(err, row){
             if (err){ 
@@ -516,11 +516,18 @@ export default {
             console.log("train_file_path", train_file_path)
             let train_target_column = row.train_target_column
             console.log("train_target_column", train_target_column)
+            let task_mode = row.task_mode
+            console.log('task_mode1',task_mode)
+            let metric_name = row.metric_name
+            console.log('metric_name1',metric_name)
             let make_residual_multiple_paths = null;
             try{
               make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
                 + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 1 ' 
-                + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column, {encoding: 'utf8'})
+                + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column
+                + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
+            
+
 
               make_residual_multiple_paths = make_residual_multiple_paths.split("?")
               let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
@@ -745,7 +752,7 @@ export default {
         console.log(err)
       }
       
-      let select_train_data_path = 'SELECT train_file_path, train_data_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+      let select_train_data_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
       db.get(select_train_data_path, function(err, row){
         if (err){ 
           throw err;
@@ -754,11 +761,14 @@ export default {
         console.log("train_file_path", train_file_path)
         let train_data_column = row.train_data_column
         console.log("train_data_column", train_data_column)
+        let task_mode = row.task_mode
+        let model_name = row.model_name
         try{
           
           // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
           let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
-            + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_column, {encoding: 'utf8'})
+            + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_column
+            + ' --task_mode ' + task_mode + ' --model_name ' + model_name, {encoding: 'utf8'})
           
           train_output = train_output.split("?")
           console.log('train_output1', train_output)
@@ -799,7 +809,7 @@ export default {
       });
     },
 
-    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address){
+    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address, task_mode, model_name){
 
       let Assistor_train_output_path = null;
 
@@ -808,7 +818,11 @@ export default {
       try{
         Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
           + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
-          + from_id + ' --dataset_path ' + default_train_file_path + ' --data_idx ' + default_train_data_column,{encoding: 'utf8'})
+          + from_id + ' --dataset_path ' + default_train_file_path + ' --data_idx ' + default_train_data_column
+          + ' --task_mode ' + task_mode + ' --model_name ' + model_name ,{encoding: 'utf8'})
+
+          
+
         
         Assistor_train_output_path = Assistor_train_output_path.split("?")
         indicator = vm.handle_Algorithm_return_value("Assistor_train_output_path", Assistor_train_output_path, "200", "make_train")
@@ -822,7 +836,7 @@ export default {
       if (indicator == false){
         console.log("recall unread_situation_assistor_train_part")
         setTimeout(function(){
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address,task_mode, model_name)
         }, 7000);
       }else{
 
@@ -932,7 +946,7 @@ export default {
             which_mode = 'Manual'
           }
           if (which_mode == "Auto"){
-            let select_default_train_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
+            let select_default_train_data_path = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
             db.get(select_default_train_data_path, function(err, row){
               if (err){ 
                 throw err;
@@ -941,12 +955,14 @@ export default {
               console.log("default_train_file_path",default_train_file_path)
               let default_train_data_column = row.default_train_data_column
               console.log("default_train_data_column",default_train_data_column)
+              // let task_mode = row.task_mode
+              // let model_name = row.model_name      question?
 
-              vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address)
+              vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address,task_mode, model_name)
 
             }); //end db
           } else if (which_mode == "Manual") {
-            let select_pending_train_data_path = 'SELECT pending_train_file_path, pending_train_data_column FROM User_Manual_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
+            let select_pending_train_data_path = 'SELECT * FROM User_Manual_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
             db.get(select_pending_train_data_path, function(err, row){
               if (err){ 
                 throw err;
@@ -955,8 +971,10 @@ export default {
               console.log("pending_train_file_path",pending_train_file_path)
               let pending_train_data_column = row.pending_train_data_column
               console.log("pending_train_data_column",pending_train_data_column)
+              let task_mode = row.task_mode
+              let model_name = row.model_name
 
-              vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address)
+              vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address,task_mode, model_name)
 
             }); //end db
 
@@ -1060,17 +1078,20 @@ export default {
             }
           }
 
-          let select_train_target_path = 'SELECT train_file_path, train_target_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+          let select_train_target_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
           db.get(select_train_target_path, function(err, row){
             if (err){ 
               throw err;
             }
+            console.log('select train target path', row)
             let train_file_path = row.train_file_path
             console.log("train_file_path", train_file_path)
             let train_target_column = row.train_target_column
             console.log("train_target_column", train_target_column)
+            let task_mode = row.task_mode
+            let metric_name = row.metric_name
 
-            vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address)
+            vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name)
 
           });
           
@@ -1081,7 +1102,7 @@ export default {
         }) 
     },
 
-    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address){
+    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name){
       console.log("unread_output_make_result_helper_rounds", rounds)
       let make_result_done = null;
       let indicator = null;
@@ -1126,7 +1147,8 @@ export default {
 
           make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
             + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
-            + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column, {encoding: 'utf8'})
+            + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column
+            + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
 
           make_residual_multiple_paths = make_residual_multiple_paths.split("?")
           let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")

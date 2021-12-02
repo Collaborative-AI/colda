@@ -20,6 +20,8 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@syncfusion/ej2-vue-buttons": "^19.3.53",
+    "@syncfusion/ej2-vue-dropdowns": "^19.3.55",
     "aws-sdk": "^2.953.0",
     "axios": "^0.21.4",
     "better-sqlite3": "^7.4.5",

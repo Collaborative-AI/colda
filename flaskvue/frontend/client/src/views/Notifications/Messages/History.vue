@@ -131,15 +131,6 @@ var test_rmse = []
 // const training_alpha = []
 // const test_rmse = []
 
-// var grapharea = document.getElementById("chart")
-
-// var myChart = new mdbLineChart(grapharea, {  data: History.lineChartData, options: History.lineChartOptions });
-
-// myChart.destroy();
-
-// myChart = new mdbLineChart(grapharea, {  data: History.lineChartData, options: History.lineChartOptions });
-
-
 
 
 

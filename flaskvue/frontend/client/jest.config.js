@@ -14,8 +14,9 @@ module.exports = {
     //     "window": {}
     //   }
     "verbose": false,
-    "runner": "jest-electron/runner",
-    "testEnvironment": "jest-electron/environment"
+    // "runner": "jest-electron/runner",
+    // "testEnvironment": "jest-electron/environment"
+    // "testEnvironment": "node"
     // runner: '@jest-runner/electron',
     // testEnvironment: '@jest-runner/electron/environment',
     // testRunner: "jest-circus/runner"

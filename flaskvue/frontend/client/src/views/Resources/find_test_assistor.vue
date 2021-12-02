@@ -68,11 +68,11 @@
 import store from '../../store'
 import db from '../../db'
 
-const fs = window.require('fs');
-const {dialog} = window.require('electron').remote
-const ex = window.require("child_process");
-const os = window.require('os');
-const node_path = window.require('path');
+const fs = window.fs;
+const ex = window.ex;
+const node_path = window.node_path;
+const os = window.os;
+const dialog = window.dialog
 // const store = require('../../store').defaultv
 // const $ = require('jquery')
 

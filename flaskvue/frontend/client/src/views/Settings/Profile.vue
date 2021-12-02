@@ -90,8 +90,8 @@
 
 <script>
 
-const {dialog} = window.require('electron').remote
-const fs = window.require('fs');
+const fs = window.fs;
+const dialog = window.dialog
 
 // const store = require('../../store').default
 // const db = require('../../db').default

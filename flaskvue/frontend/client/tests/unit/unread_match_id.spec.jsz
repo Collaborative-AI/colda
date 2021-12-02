@@ -7,7 +7,7 @@ import db from '../../src/db';
 import axios from 'axios'
 // jest.mock("axios")
 
-window.require = require;
+
 
 // const Navbar = require('../../components/Navbar.vue');
 

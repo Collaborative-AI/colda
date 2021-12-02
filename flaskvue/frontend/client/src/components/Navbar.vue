@@ -78,6 +78,7 @@ import store from '../store.js'
 import axios from 'axios'
 import $ from 'jquery'
 import db from '../db'
+console.log('dbzzzz', db)
 import authority from '../authority'
 
 // const store = require('../store').default
@@ -87,14 +88,26 @@ import authority from '../authority'
 // const db = require('../db').default
 
 // // use Node API
-const fs = window.require('fs');
+const fs = window.fs;
+console.log("123", fs)
 // const join = window.require('path').join;
 //// const xlsx2json = window.require("node-xlsx");
-const sqlite3 = window.require('sqlite3').verbose();;
-const ex = window.require("child_process");
-const dialog = window.require('electron').remote;
-const os = window.require('os');
-const node_path = window.require('path');
+// const zz = require('sqlite3')
+// console.log('zz', zz)
+// const sqlite3 = window.require('sqlite3').verbose();
+// console.log('sqlite3', sqlite3)
+
+const ex = window.ex;
+console.log("1231", ex)
+
+const os = window.os;
+console.log("1232", os, )
+const node_path = window.node_path;
+console.log("1233", node_path)
+
+
+const dialog = window.dialog;
+console.log("1234", dialog)
 // change csv to array
 
 import Home from '../views/Home.vue'
@@ -141,13 +154,33 @@ export default {
     return a + b;
   },
 
-    test_axios(callback) {
+    test_axios() {
+      console.log("wowowowowoow")
+      console.log(this.$axios, this.$axios.get, this.$axios.get('/url'))
       this.$axios.get('/url')
-            .then((response) => {
-              // handle success
-            console.log("response123", response)
-            callback()
-            })
+        .then((response) => {
+          // handle success
+          console.log('response', response)
+          // return response
+
+
+      })
+
+      // db.get('/url')
+      //   .then((response) => {
+      //     // handle success
+      //     console.log('response2', response)
+      //     return response
+      // })
+      console.log("6666666",this.$db, this.$db.get, this.$db.get())
+      let select_sentence = ''
+      console.log( '6235235', this.$db.get(select_sentence, function(err, row){
+        if (err){
+          console.log(err);
+        }
+        console.log('response2', row)
+      }) )
+
     },
 
     refreshView () {
@@ -216,7 +249,8 @@ export default {
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
       console.log('select_sentence', select_sentence)
-      console.log('db',db)
+      console.log('db224',db)
+      console.log('db.get', db.get)
       db.get(select_sentence, function(err, row){
         if (err){
           console.log(err);

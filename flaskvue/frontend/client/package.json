@@ -15,8 +15,8 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "rebuild": "electron-rebuild -f -w sqlite3",
-    "test": "jest"
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "test": "ELECTRON_RUN_AS_NODE=true ./node_modules/.bin/electron ./node_modules/.bin/jest"
   },
   "main": "background.js",
   "dependencies": {
@@ -24,6 +24,7 @@
     "@syncfusion/ej2-vue-dropdowns": "^19.3.55",
     "aws-sdk": "^2.953.0",
     "axios": "^0.21.4",
+    "better-sqlite3": "^7.4.5",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "chart.js": "^2.9.4",
@@ -84,6 +85,7 @@
     "jest": "^24.9.0",
     "jest-electron": "^0.1.12",
     "regenerator-runtime": "^0.13.9",
+    "spectron": "^15.0.0",
     "vue-cli-plugin-electron-builder": "~2.1.1"
   },
   "browserslist": [

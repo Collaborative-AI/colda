@@ -57,174 +57,175 @@
   
 
 // import { mount } from '@vue/test-utils';
-import { createLocalVue, mount } from '@vue/test-utils'
-import vue from 'vue'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
+// import vue from 'vue'
 // import Counter from './counter'
-import Navbar from '../../src/components/Navbar.vue'
+// import Navbar from '../../src/components/Navbar.vue'
+// console.log('555555', Navbar)
 import db from '../../src/db';
 import axios from 'axios'
 // jest.mock("axios")
+// console.log("4444", axios)
+// import axios from '../../src/http'
 
-window.require = require;
+// jest.mock('axios');
 
-// const Navbar = require('../../components/Navbar.vue');
+// let db = 'a'
 
-// 现在挂载组件，你便得到了这个包裹器
-// const wrapper = mount(Counter)
-// const wrapper =  mount(Navbar)
+// jest.mock('db')
+// jest.mock("db", () => ({
+//   get: () => Promise.resolve({ data: [{ val: 666 }] })
+//   })); 
 
-// 你可以通过 `wrapper.vm` 访问实际的 Vue 实例
-// const vm = wrapper.vm
+  // jest.mock("axios", () => ({
+  //   get: () => Promise.resolve({ data: [{ val: 666 }] })
+  //   })); 
 
-// 在控制台将其记录下来即可深度审阅包裹器
-// 我们对 Vue Test Utils 的探索也由此开始
-// console.log(wrapper)
-// jest.mock("axios", () => ({
-//     get: () => Promise.resolve({ data: [{ val: 1 }] })
-//   }));
+// let a = Navbar.methods.test_axios
+// console.log("a", a(), a[0], typeof a)
 
-// describe('Navbar', () => {
-//       // 现在挂载组件，你便得到了这个包裹器
-//       // const wrapper = mount(Navbar)
-//       beforeEach(()=>{
-//         const localVue = createLocalVue()
-//         localVue.use(vue)
-//         const wrapper = mount(Navbar, {
-//           mocks: {
-//              $toasted: {
-//                  success: () => {},
-//              }
-//           },
-//           stubs: ['router-link','router-view']
-//         });
-//       console.log('wrapper',wrapper)
-//       })
-      
-      
-//       // 也便于检查已存在的元素
-//       it('check exist element', () => {
-//           expect(wrapper.find('li').exists()).toBe(true)
-//         })
-  
-//       it('component function', () => {
-//           expect(wrapper.vm.plus(1, 2)).toBe(3);
-//         })
-//         // ch
-//       const users = [{ id: 1, name: "testa" }, { id: 2, name: "testb" }];
-//       const test_example = {
-//           check_dict: { "e7bc07bc-568b-4917-b774-9961729da1c2": "1"}
-//       }
-  
-      
-//       it('function async', () => {
-//           axios.get = jest.fn().mockReturnValue(users);
-//           // let mockFn = jest.fn().mockReturnValue('default');
-//           axios.post = jest.fn().mockReturnValue(users);
-//           db.get = jest.fn().mockReturnValue(users);
-  
-//           wrapper.vm.sharedState.user_id = 2
-          
-  
-//           const result = axios.get('/match_assistor_id/')
-//           expect(result).toEqual(users);
-//           const result1 = db.get()
-//           expect(result1).toEqual(users);
-//           const result2 = axios.post('/match_assistor_id/')
-//           expect(result2).toEqual(users);
-//           expect(wrapper.vm.unread_request(test_example)).toBe('done');
-//         })
+// let a = Navbar.methods.test_axios
+// console.log("a", a(), a[0], typeof a)
+// let Navbar_mock = jest.mock('../../src/components/Navbar.vue');
+// console.log('Navbar_mock', Navbar_mock)
+// let a_mock = jest.mock(a)
+// console.log("a_mock", a_mock)
 
-  
-//     })
+// console.log("a", a(), a[0], typeof a)
 
 
+// console.log('jest', jest)
 
 
+import {sum} from './index'
 
+test('Window Loads Properly', () => {
+    expect(sum(1, 2)).toBe(3);
+}) 
 
 describe('Navbar', () => {
     // 现在挂载组件，你便得到了这个包裹器
     // const wrapper = mount(Navbar)
 
-  
-    jest.mock("axios", () => ({
+    const axios = {
       get: () => Promise.resolve({ data: [{ val: 1 }] })
-  })); 
+    };
 
-  it('your test name', () => {
-    const wrapper = mount('your component name', {
-      mocks: {
-        $toasted: {
-            success: () => {},
-        },
-        $axios : axios
-     },
-    })
-    expect(wrapper.vm.test_axios(callback)).toBe(3);
-
-});
-
-
-
-    jest.mock("axios", () => ({
-      get: () => Promise.resolve({ data: [{ val: 1 }] })
-    })); 
-    
+    // const db = {
+    //   get: () => 6
+    // };
     
     const wrapper = mount(Navbar, {
+      // global:{
         mocks: {
-           $toasted: {
-               success: () => {},
-           },
-           $axios : axios
-        },
-        stubs: ['router-link','router-view']
-      });
-    console.log('wrapper',wrapper)
-    // 也便于检查已存在的元素
-    it('check exist element', () => {
-        expect(wrapper.find('li').exists()).toBe(true)
-      })
+          //  $toasted: {
+          //      success: () => {},
+          //  },
+          $axios: axios,
+          // $db: db,
+            // get: () => Promise.resolve({ data: [{ val: 1 }] })
+          
+          // axios: {
+          //   // get: async () => ({
+          //   //   data: { val:1 }
+          //   // })
+          //   // get: async () => ({ data: { foo: true }}),
+          //   // get: Promise.resolve({ data: [{ val: 1 }] })
+          //   get: async () => ({ data: { foo: true }})
+          // },
+      },
 
-    it('component function', () => {
-        expect(wrapper.vm.plus(1, 2)).toBe(3);
-      })
 
-      it('component function', () => {
-        expect(wrapper.vm.test_axios()).toBe(3);
-      })
-      // ch
-    const users = [{ id: 1, name: "testa" }, { id: 2, name: "testb" }];
-    const test_example = {
-        check_dict: { "e7bc07bc-568b-4917-b774-9961729da1c2": "1"}
-    }
 
+      //   //  $db: db
+
+      stubs: ['router-link','router-view']
+  });
+    // https://vue-test-utils.vuejs.org/zh/api/options.html#localvue
     
-    it('function async', () => {
-        axios.get = jest.fn().mockReturnValue(users);
-        // let mockFn = jest.fn().mockReturnValue('default');
-        axios.post = jest.fn().mockReturnValue(users);
-        db.get = jest.fn().mockReturnValue(users);
 
-        wrapper.vm.sharedState.user_id = 2
+    // console.log('wrapper！！！',wrapper, wrapper.vm)
+    // console.log('vm', wrapper.vm)
+    // 也便于检查已存在的元素
+    // test('check exist element', () => {
+    //     expect(wrapper.find('li').exists()).toBe(true)
+    //   })
+
+      test('function async', () => {
+    //     axios.get = jest.fn().mockReturnValue(users);
+    // //     // let mockFn = jest.fn().mockReturnValue('default');
+    // //     axios.post = jest.fn().mockReturnValue(users);
+    //     db.get = jest.fn().mockReturnValue(users);
+    //     console.log('$$$$$', db)
+    //     // db.get = jest.fn().mockReturnValue(users);
+    //     // console.log('%%%%', db)
         
+    //     wrapper.vm.sharedState.user_id = 2
+    //     // wrapper.vm.test_axios()
+    //     console.log("sssss", axios.get)
 
         // wrapper.vm.$nextTick(() => {
         //     expect(wrapper.vm.test_response).toEqual(users);
         //   });
         // const result = wrapper.vm.unread_request(test_example);
         // expect(wrapper.vm.test_response.length).toBe(1);
-        const result = axios.get('/match_assistor_id/')
-        expect(result).toEqual(users);
-        const result1 = db.get()
-        expect(result1).toEqual(users);
-        const result2 = axios.post('/match_assistor_id/')
-        expect(result2).toEqual(users);
-        expect(wrapper.vm.unread_request(test_example)).toBe('done');
+        // const result = axios.get('/match_assistor_id/')
+        // expect(result).toEqual(users);
+        // const result1 = db.get()
+        // expect(result1).toEqual(users);
+        // const result2 = axios.post('/match_assistor_id/')
+        // expect(result2).toEqual(users);
+        
+
+        wrapper.vm.test_axios()
+        // expect(wrapper.vm.test_axios()).toBe('done');
+
+        // expect(wrapper.vm.unread_request(test_example)).toBe('done');
       })
 
 
-  })
+    })
+//     // test('component function', () => {
+//     //     expect(wrapper.vm.plus(1, 2)).toBe(3);
+//     //   })
+
+//     //   // ch
+//     const users = [{ id: 1, name: "testa" }, { id: 2, name: "testb" }];
+//     const test_example = {
+//         check_dict: { "e7bc07bc-568b-4917-b774-9961729da1c2": "1"}
+//     }
+
+    
+//     test('function async', () => {
+//         axios.get = jest.fn().mockReturnValue(users);
+//     //     // let mockFn = jest.fn().mockReturnValue('default');
+//     //     axios.post = jest.fn().mockReturnValue(users);
+//         db.get = jest.fn().mockReturnValue(users);
+//         console.log('$$$$$', db)
+//         // db.get = jest.fn().mockReturnValue(users);
+//         // console.log('%%%%', db)
+        
+//         wrapper.vm.sharedState.user_id = 2
+//         // wrapper.vm.test_axios()
+//         console.log("sssss", axios.get)
+
+//         // wrapper.vm.$nextTick(() => {
+//         //     expect(wrapper.vm.test_response).toEqual(users);
+//         //   });
+//         // const result = wrapper.vm.unread_request(test_example);
+//         // expect(wrapper.vm.test_response.length).toBe(1);
+//         // const result = axios.get('/match_assistor_id/')
+//         // expect(result).toEqual(users);
+//         // const result1 = db.get()
+//         // expect(result1).toEqual(users);
+//         // const result2 = axios.post('/match_assistor_id/')
+//         // expect(result2).toEqual(users);
+//         // expect(wrapper.vm.test_axios()).toBe('done');
+//         // expect(wrapper.vm.unread_request(test_example)).toBe('done');
+//       })
+
+
+//   })
 
 //   describe('MyComponent', () => {
 //     it('When foo is set to -something-, set bar to true', () => {

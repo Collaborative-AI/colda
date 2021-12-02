@@ -1,6 +1,7 @@
-const path = require('path');
-const os = window.require('os');
-const node_path = window.require('path');
+
+const os = window.os;
+const node_path = window.node_path;
+console.log("store.js", node_path)
 import db from './db'
 
 export default {

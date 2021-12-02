@@ -32,7 +32,8 @@
                       
                         <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user'])"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
-                        </li>                    
+                        </li>       
+                        <button @click="test_axios()">123</button>             
                         <!-- <li class="nav-item">
                             <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Brand</span></a>
                         </li>
@@ -80,7 +81,7 @@ import $ from 'jquery'
 import db from '../db'
 console.log('dbzzzz', db)
 import authority from '../authority'
-
+// import axios from '../http'
 
 
 // // use Node API
@@ -146,15 +147,67 @@ export default {
     return a + b;
   },
 
-    test_axios() {
+    // test_axios_integration() {
+    //   console.log("llililililili")
+    //   console.log(this.$axios, this.$axios.get, this.$axios.get('/url'))
+    //   this.$axios.get('/url')
+    //     .then((response) => {
+    //       // handle success
+    //       console.log('response', response)
+    //       // return response
+    //   })
+
+    //   // db.get('/url')
+    //   //   .then((response) => {
+    //   //     // handle success
+    //   //     console.log('response2', response)
+    //   //     return response
+    //   // })
+
+    //   // console.log("6666666",this.$db, this.$db.get, this.$db.get())
+    //   // let select_sentence = ''
+    //   // console.log( '6235235', this.$db.get(select_sentence, function(err, row){
+    //   //   if (err){
+    //   //     console.log(err);
+    //   //   }
+    //   //   console.log('response2', row)
+    //   // }) )
+
+    //   const better_sqlite3_command = this.$db.prepare('SELECT age FROM cats WHERE name = ?');
+    //   console.log("45421", better_sqlite3_command)
+    //   const cat = better_sqlite3_command.get('Joey');
+    //   console.log("452123", cat)
+
+    // },
+
+    test_axios(x) {
       console.log("wowowowowoow")
-      console.log(this.$axios, this.$axios.get, this.$axios.get('/url'))
-      this.$axios.get('/url')
+      console.log('zzzz', this.$axios)
+      this.$axios.get('/changshi')
         .then((response) => {
           // handle success
-          console.log('response', response)
+          console.log('response', x(response.data))
           // return response
       })
+
+      function sleep(millisecond) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve()
+            }, millisecond)
+        })
+    }
+
+
+    async function test() {
+        const start = new Date().getTime();
+       console.log("执行开始",start);
+       await sleep(3000);
+       console.log("执行结束",new Date().getTime() - start)
+   }
+    
+    test();
+
 
       // db.get('/url')
       //   .then((response) => {
@@ -172,10 +225,10 @@ export default {
       //   console.log('response2', row)
       // }) )
 
-      const better_sqlite3_command = this.$db.prepare('SELECT age FROM cats WHERE name = ?');
-      console.log("45421", better_sqlite3_command)
-      const cat = better_sqlite3_command.get('Joey');
-      console.log("452123", cat)
+      // const better_sqlite3_command = this.$db.prepare('SELECT age FROM cats WHERE name = ?');
+      // console.log("45421", better_sqlite3_command)
+      // const cat = better_sqlite3_command.get('Joey');
+      // console.log("452123", cat)
 
     },
 

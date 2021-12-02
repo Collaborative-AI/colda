@@ -23,6 +23,11 @@
     1. cd into frontend/client, npm install
     2. npm run electron:build
 
+4. Unittest:
+    1. npm run test
+    "test": "ELECTRON_RUN_AS_NODE=true ./node_modules/.bin/electron ./node_modules/.bin/jest"
+
+    
 Simple Test Flow:
     1. After lauching the packaged APP, Open 2 operation interfaces. 
         - Account 1(Sponsor): Username: testa password: 123

@@ -60,10 +60,10 @@
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 // import vue from 'vue'
 // import Counter from './counter'
-// import Navbar from '../../src/components/Navbar.vue'
-// console.log('555555', Navbar)
+import Navbar from '../../src/components/Navbar.vue'
+console.log('555555', Navbar)
 import db from '../../src/db';
-import axios from 'axios'
+
 // jest.mock("axios")
 // console.log("4444", axios)
 // import axios from '../../src/http'
@@ -96,8 +96,9 @@ import axios from 'axios'
 
 // console.log('jest', jest)
 
-
+jest.setTimeout(30000);
 import {sum} from './index'
+import axios from '../../src/http'
 
 test('Window Loads Properly', () => {
     expect(sum(1, 2)).toBe(3);
@@ -107,13 +108,14 @@ describe('Navbar', () => {
     // 现在挂载组件，你便得到了这个包裹器
     // const wrapper = mount(Navbar)
 
-    const axios = {
-      get: () => Promise.resolve({ data: [{ val: 1 }] })
-    };
-
-    // const db = {
-    //   get: () => 6
+    // const axios = {
+    //   get: () => Promise.resolve({ data: [{ val: 1 }] })
     // };
+
+    const db = {
+      prepare: () => { return {get: () => 6} },
+      get: () => 6
+    };
     
     const wrapper = mount(Navbar, {
       // global:{
@@ -122,23 +124,8 @@ describe('Navbar', () => {
           //      success: () => {},
           //  },
           $axios: axios,
-          // $db: db,
-            // get: () => Promise.resolve({ data: [{ val: 1 }] })
-          
-          // axios: {
-          //   // get: async () => ({
-          //   //   data: { val:1 }
-          //   // })
-          //   // get: async () => ({ data: { foo: true }}),
-          //   // get: Promise.resolve({ data: [{ val: 1 }] })
-          //   get: async () => ({ data: { foo: true }})
-          // },
+          $db: db,
       },
-
-
-
-      //   //  $db: db
-
       stubs: ['router-link','router-view']
   });
     // https://vue-test-utils.vuejs.org/zh/api/options.html#localvue
@@ -151,40 +138,31 @@ describe('Navbar', () => {
     //     expect(wrapper.find('li').exists()).toBe(true)
     //   })
 
-      test('function async', () => {
-    //     axios.get = jest.fn().mockReturnValue(users);
-    // //     // let mockFn = jest.fn().mockReturnValue('default');
-    // //     axios.post = jest.fn().mockReturnValue(users);
-    //     db.get = jest.fn().mockReturnValue(users);
-    //     console.log('$$$$$', db)
-    //     // db.get = jest.fn().mockReturnValue(users);
-    //     // console.log('%%%%', db)
-        
-    //     wrapper.vm.sharedState.user_id = 2
-    //     // wrapper.vm.test_axios()
-    //     console.log("sssss", axios.get)
+      test('function async', (done) => {
 
-        // wrapper.vm.$nextTick(() => {
-        //     expect(wrapper.vm.test_response).toEqual(users);
-        //   });
-        // const result = wrapper.vm.unread_request(test_example);
-        // expect(wrapper.vm.test_response.length).toBe(1);
-        // const result = axios.get('/match_assistor_id/')
-        // expect(result).toEqual(users);
-        // const result1 = db.get()
-        // expect(result1).toEqual(users);
-        // const result2 = axios.post('/match_assistor_id/')
-        // expect(result2).toEqual(users);
-        
-
-        wrapper.vm.test_axios()
+        wrapper.vm.test_axios((data) => {
+          expect(data).toEqual(
+            'good,NIHAO'
+          )
+          done()
         // expect(wrapper.vm.test_axios()).toBe('done');
 
         // expect(wrapper.vm.unread_request(test_example)).toBe('done');
       })
 
+      // wrapper.vm.test_axios()
+
 
     })
+
+
+
+  })
+
+
+
+
+    
 //     // test('component function', () => {
 //     //     expect(wrapper.vm.plus(1, 2)).toBe(3);
 //     //   })

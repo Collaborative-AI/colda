@@ -1,7 +1,7 @@
 
-const os = window.os;
-const node_path = window.node_path;
-console.log("store.js", node_path)
+const os = window.os ? window.os : require('os');
+const node_path = window.node_path ? window.node_path : require('path');
+
 import db from './db'
 
 export default {

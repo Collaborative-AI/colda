@@ -1,8 +1,8 @@
 
-const os = ('os');
-const node_path = window.node_path;
+// const os = ('os');
+// const node_path = window.node_path ? window.node_path : require('path');
 import store from './store'
-import db from './db'
+// import db from './db'
 
 export default {
     // check 

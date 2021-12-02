@@ -1,5 +1,4 @@
 # client
-ELECTRON_RUN_AS_NODE=true ./node_modules/.bin/electron ./node_modules/.bin/jest
 1. first time launch:
     1. cd into frontend/client
     2. sudo apt install npm 
@@ -98,7 +97,7 @@ step: 1. sponsor press test on history record page, go to test request page
 sponsor and assistor swap roles
 multiple assistor test
 
-
+better-sqlite3: https://github.com/JoshuaWise/better-sqlite3/blob/master/docs/api.md
     
 
 

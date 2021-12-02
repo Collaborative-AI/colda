@@ -60,8 +60,8 @@
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 // import vue from 'vue'
 // import Counter from './counter'
-// import Navbar from '../../src/components/Navbar.vue'
-// console.log('555555', Navbar)
+import Navbar from '../../src/components/Navbar.vue'
+console.log('555555', Navbar)
 import db from '../../src/db';
 import axios from 'axios'
 // jest.mock("axios")
@@ -111,9 +111,10 @@ describe('Navbar', () => {
       get: () => Promise.resolve({ data: [{ val: 1 }] })
     };
 
-    // const db = {
-    //   get: () => 6
-    // };
+    const db = {
+      prepare: () => { return {get: () => 6} },
+      get: () => 6
+    };
     
     const wrapper = mount(Navbar, {
       // global:{
@@ -122,7 +123,7 @@ describe('Navbar', () => {
           //      success: () => {},
           //  },
           $axios: axios,
-          // $db: db,
+          $db: db,
             // get: () => Promise.resolve({ data: [{ val: 1 }] })
           
           // axios: {
@@ -185,6 +186,15 @@ describe('Navbar', () => {
 
 
     })
+
+
+
+
+
+
+
+
+    
 //     // test('component function', () => {
 //     //     expect(wrapper.vm.plus(1, 2)).toBe(3);
 //     //   })

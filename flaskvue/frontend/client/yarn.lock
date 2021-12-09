@@ -6258,6 +6258,11 @@
     "keyboardevent-from-electron-accelerator" "^2.0.0"
     "keyboardevents-areequal" "^0.2.1"
 
+"electron-log@^4.4.1":
+  "integrity" "sha512-nK/DwxPLtwWbggPCm27eMQhYHc3gzoZ+cokBK99diO4WsZJKrv5l44EUW8mRfWpmC8ZubnMyp6GTUIJyTc9AJA=="
+  "resolved" "https://registry.npmjs.org/electron-log/-/electron-log-4.4.1.tgz"
+  "version" "4.4.1"
+
 "electron-publish@22.11.7":
   "integrity" "sha512-A4EhRRNBVz4SPzUlBrPO6BmuyDeI0pyprggPAV9rQ+SDVSnSB/WKPot9JwWMyArkGj3AUUTMNVT6hwZhMvhfqw=="
   "resolved" "https://registry.npmjs.org/electron-publish/-/electron-publish-22.11.7.tgz"

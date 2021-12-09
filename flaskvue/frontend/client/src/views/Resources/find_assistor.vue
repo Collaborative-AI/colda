@@ -507,7 +507,7 @@ export default {
     let new_root = store.changeroot()
     this.root = new_root.root;
     this.exe_position = new_root.exe_position
-    console.log('dbadress',__dirname)
+    // console.log('dbadress',__dirname)
   },
   
 

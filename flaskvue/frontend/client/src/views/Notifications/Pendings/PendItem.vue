@@ -4,7 +4,12 @@
     <div>Task Name: {{ task_name }}</div>
     <div>Task Id:{{ task_id }}</div>
     <div>Test Id:{{ test_id }}</div>
+    <div>Task Mode: {{ task_mode }}</div>
+    <div>Model Name: {{ model_name }}</div>
+    <div>Metric Name: {{ metric_name }}</div>
+    
     <div>Task Description: {{ task_description }}</div>
+
 
     <div class="form-group">
       <label for="name">Select File Path</label>
@@ -73,6 +78,9 @@ export default {
       task_id: '',
       test_id: '',
       task_description: '',
+      task_mode: '',
+      model_name: '',
+      metric_name: '',
       test_indicator: '',
       task_name: '',
       pdatas:"",
@@ -411,6 +419,9 @@ export default {
     this.task_description = this.$route.params.task_description
     this.task_id = this.$route.params.task_id
     this.task_name = this.$route.params.task_name
+    this.task_mode = this.$route.params.task_name,
+    this.model_name = this.$route.params.model_name,
+    this.metric_name = this.$route.params.metric_name,
     this.test_id = this.$route.params.test_id
     this.test_indicator = this.$route.params.test_indicator
     

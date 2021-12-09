@@ -6,3 +6,8 @@ window.dialog = require('electron').remote.dialog;
 window.db = require('better-sqlite3');
 
 console.log("---", window.fs, window.ex , window.os , window.node_path, window.dialog , window.db)
+
+if (process.env.NODE_ENV === 'test') {
+    console.log("test environment")
+    window.electronRequire = require
+  }

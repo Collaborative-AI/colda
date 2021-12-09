@@ -16,6 +16,10 @@
                             <div class="text-truncate">Task Name: {{ pend.pending_task_name }}</div>
                             <div class="small">Task ID:  {{ pend.pending_task_id }}</div>
                             <div class='small'>Test ID: {{ pend.pending_test_id }}</div>
+                            <div class='small'>Task Mode: {{ pend.pending_task_mode }}</div>
+                            <div class='small'>Model Name: {{ pend.pending_model_name }}</div>
+                            <div class='small'>Metric Name: {{ pend.pending_metric_name }}</div>
+
                             <div class="small">Task Description:  {{ pend.pending_task_description }}</div>
                         </div>
                         <span class="ml-auto mb-auto">
@@ -30,7 +34,15 @@
                             </div> -->
                             <br />
                             <div class="text-right text-muted pt-1">
-                              <router-link v-bind:to="{ name: 'PendItem', params: { task_description: pend.pending_task_description, task_id: pend.pending_task_id, task_name: pend.pending_task_name, test_id: pend.pending_test_id,  test_indicator: pend.test_indicator } }">
+                              <router-link v-bind:to="{ name: 'PendItem', params: { 
+                                                        task_description: pend.pending_task_description, 
+                                                        task_id: pend.pending_task_id, 
+                                                        task_name: pend.pending_task_name, 
+                                                        task_mode: pend.pending_task_mode,
+                                                        model_name: pend.pending_model_name,
+                                                        metric_name: pend.pending_metric_name,
+                                                        test_id: pend.pending_test_id,  
+                                                        test_indicator: pend.test_indicator } }">
                                 <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Details</button>
                               </router-link>
                             </div>

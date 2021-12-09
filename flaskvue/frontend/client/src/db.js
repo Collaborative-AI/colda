@@ -11,8 +11,8 @@ console.log("5555")
 console.log('21312312', Database)
 console.log('12123', window.db)
 const db = new Database('Apollo_Client_data.db', { verbose: console.log });
-// console.log('21312312', db)
-// let db = 5
+console.log('21312312', db)
+// let db = 5 
 
 
 // const sqlite3 = window.require('sqlite3').verbose();

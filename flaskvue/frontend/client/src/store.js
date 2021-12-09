@@ -1,6 +1,7 @@
 
 const os = window.os ? window.os : require('os');
 const node_path = window.node_path ? window.node_path : require('path');
+const paht = require('path');
 
 import db from './db'
 

@@ -418,8 +418,10 @@ export default {
               id_file: hash_id_file_data,
               task_id: vm.task_id,
               task_name: vm.task_name,
+              task_mode: vm.task_mode,
+              model_name: vm.model_name,
+              metric_name: vm.metric_name,
               task_description: vm.task_description,
-          
             }
             console.log('fins_assistor_data', find_assistor_data)
 

@@ -229,6 +229,7 @@ class User(PaginatedAPIMixin, db.Model):
 
         return [task_id_list, sender_random_id_list]
 
+
     def new_match_id(self):
         '''用户未读的match完的id'''
         last_match_time = self.last_matched_file_read_time or datetime(1900, 1, 1)
@@ -390,6 +391,9 @@ class Pending(PaginatedAPIMixin, db.Model):
     pending_task_id = db.Column(db.String(120), index=True)
     pending_test_id = db.Column(db.String(120), index=True)
     pending_task_name = db.Column(db.String(120))
+    pending_task_mode = db.Column(db.String(120))
+    pending_model_name = db.Column(db.String(120))
+    pending_metric_name = db.Column(db.String(120))
     pending_task_description = db.Column(db.String(500))
     test_indicator = db.Column(db.String(10))
 
@@ -398,6 +402,9 @@ class Pending(PaginatedAPIMixin, db.Model):
             'pending_task_id': self.pending_task_id,
             'pending_test_id': self.pending_test_id,
             'pending_task_name': self.pending_task_name,
+            'pending_task_mode': self.pending_task_mode,
+            'pending_model_name': self.pending_model_name,
+            'pending_metric_name': self.pending_metric_name,
             'pending_task_description': self.pending_task_description,
             'test_indicator': self.test_indicator,
         } 
@@ -520,6 +527,9 @@ class Matched(PaginatedAPIMixin, db.Model):
     task_description = db.Column(db.String(500))
     test_name = db.Column(db.String(120))
     test_description = db.Column(db.String(500))
+    task_mode = db.Column(db.String(120))
+    model_name = db.Column(db.String(120))
+    metric_name = db.Column(db.String(120))
 
     request_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     match_id_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)

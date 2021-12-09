@@ -92,6 +92,12 @@ def find_assistor():
         return bad_request('id_file is required.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
+    if 'task_mode' not in data:
+        return bad_request('task_mode is required.')
+    if 'model_name' not in data:
+        return bad_request('model_name is required.')
+    if 'metric_name' not in data:
+        return bad_request('metric_name is required.')
     if 'task_name' not in data:
         return bad_request('task_name is required.')
     if 'task_description' not in data:
@@ -101,6 +107,9 @@ def find_assistor():
     id_file = data['id_file']
     task_id = data['task_id']
     task_name = data['task_name']
+    task_mode = data['task_mode']
+    model_name = data['model_name']
+    metric_name = data['metric_name']
     task_description = data['task_description']
     
     assistor_id_list = []
@@ -152,7 +161,9 @@ def find_assistor():
         else:
             matched.task_name = task_name
         matched.task_description = task_description
-
+        matched.task_mode = task_mode
+        matched.model_name = model_name
+        matched.metric_name = metric_name
         matched.sponsor_random_id = sponsor_random_id
 
         assistor_random_id = str(uuid.uuid4())
@@ -183,6 +194,9 @@ def find_assistor():
     matched.sponsor_id = g.current_user.id
     matched.assistor_id_pair = g.current_user.id
     matched.task_id = task_id
+    matched.task_mode = task_mode
+    matched.model_name = model_name
+    matched.metric_name = metric_name
     matched.sponsor_random_id = sponsor_random_id
     matched.assistor_random_id_pair = sponsor_random_id
     matched.Matched_id_file = json.dumps(data_array_id)
@@ -232,6 +246,12 @@ def find_test_assistor():
         return bad_request('id_file is required.')
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
+    if 'task_mode' not in data:
+        return bad_request('task_mode is required.')
+    if 'model_name' not in data:
+        return bad_request('model_name is required.')
+    if 'metric_name' not in data:
+        return bad_request('metric_name is required.')
     if 'test_name' not in data:
         return bad_request('test_name is required.')
     if 'test_description' not in data:
@@ -241,6 +261,9 @@ def find_test_assistor():
     id_file = data['id_file']
     test_id = data['test_id']
     test_name = data['test_name']
+    task_mode = data['task_mode']
+    model_name = data['model_name']
+    metric_name = data['metric_name']
     test_description = data['test_description']
 
     assistor_id_list = []
@@ -292,7 +315,9 @@ def find_test_assistor():
             matched.test_name = test_name
         
         matched.test_description = test_description
-
+        matched.task_mode = task_mode
+        matched.model_name = model_name
+        matched.metric_name = metric_name
         matched.sponsor_random_id = sponsor_random_id
 
         assistor_random_id = str(uuid.uuid4())
@@ -323,6 +348,9 @@ def find_test_assistor():
         matched.test_name = temp_test_name
     else:
         matched.test_name = test_name
+    matched.task_mode = task_mode
+    matched.model_name = model_name
+    matched.metric_name = metric_name
     matched.test_description = test_description
     matched.sponsor_random_id = sponsor_random_id
     matched.assistor_random_id_pair = sponsor_random_id

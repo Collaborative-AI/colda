@@ -67,6 +67,42 @@ def generate_msg(*args):
     
     return " ".join(res)
 
+def get_log(self_id, task_id, test_id=None):
+
+    """
+    read txt file and return content of txt file.
+
+    Parameters:
+       self_id - id of current user
+       task_id - task_id of task
+       test_id - test_id of test
+
+    Returns:
+        data - List. ['first log_interval\n', 'second\n', 'third']
+
+    Raises:
+        KeyError - raises an exception
+    """
+    
+
+    root = os.path.abspath(os.path.dirname(__file__))
+    root = os.path.join(root, 'log_file')
+
+    self_id = str(self_id)
+    task_id = str(task_id)
+    test_id = str(test_id)
+
+    if test_id is None:
+        log_path = os.path.join(root, self_id, 'task', task_id, 'train', 'log.txt')
+        f = open(log_path, "r")
+        return f.readlines()
+            
+    else:
+        log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'log.txt')
+        f = open(log_path, "r")
+        return f.readlines() 
+
+
 
 def log(msg, self_id, task_id, test_id=None):
     

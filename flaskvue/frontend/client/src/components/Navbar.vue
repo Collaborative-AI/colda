@@ -88,19 +88,19 @@ import authority from '../authority'
 // If we run npm run electron:serve, window.ex would have the object
 // else we are running unittest, we will require directly
 const ex = window.ex ? window.ex : require('child_process');
-console.log("1231", ex, window.ex)
+// console.log("1231", ex, window.ex)
 
 const fs = window.fs ? window.fs : require('fs');
-console.log("123", fs)
+// console.log("123", fs)
 
 const os = window.os ? window.os : require('os');
-console.log("1232", os)
+// console.log("1232", os)
 
 const node_path = window.node_path ? window.node_path : require('path');
-console.log("1233", node_path)
+// console.log("1233", node_path)
 
 const dialog = window.dialog ? window.dialog : require('electron');
-console.log("1234", dialog)
+// console.log("1234", dialog)
 
 
 import Home from '../views/Home.vue'

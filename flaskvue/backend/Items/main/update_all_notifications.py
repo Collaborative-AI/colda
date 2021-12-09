@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import collections
 from collections import defaultdict
 
 from flask import Flask, session, request, g, current_app
@@ -103,6 +104,7 @@ def update_all_notifications():
             elif response_data[i]["name"] == "unread request":
                 print("unread request", task_id_list)
                 check_dict = {}
+                # info_dict = collections.defaultdict(dict)
                 lastest_time = datetime(1900, 1, 1)
                 for j in range(len(task_id_list)):
                     record = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id_list[j], Matched.test_indicator == "train").order_by(Matched.request_timestamp.desc()).all()
@@ -110,6 +112,9 @@ def update_all_notifications():
                     if record[0].request_timestamp > lastest_time:
                         lastest_time = record[0].request_timestamp
                     check_dict[task_id_list[j]] = 1
+                    # info_dict[task_id_list[j]]['task_mode'] = record.task_mode
+                    # info_dict[task_id_list[j]]['model_name'] = record.model_name
+                    # info_dict[task_id_list[j]]['metric_name'] = record.metric_name
                 # Update the Notification
 
                 last_requests_read_time = user.last_requests_read_time or datetime(1900, 1, 1)          
@@ -122,6 +127,7 @@ def update_all_notifications():
                     db.session.commit()
 
                 returndict["unread request"]["check_dict"] = check_dict
+                # returndict["unread request"]["info_dict"] = info_dict
 
             elif response_data[i]["name"] == "unread match id":    
                 print("unread match id", task_id_list)
@@ -274,6 +280,7 @@ def update_all_notifications():
                 check_dict = {}
                 test_id_to_task_id = {}
                 lastest_time = datetime(1900, 1, 1)
+                # info_dict = collections.defaultdict(dict)
 
                 for j in range(len(test_id_list)):
                     record = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id_list[j], Matched.test_indicator == "test").order_by(Matched.request_timestamp.desc()).all()
@@ -282,7 +289,9 @@ def update_all_notifications():
                         lastest_time = record[0].request_timestamp
                     check_dict[test_id_list[j]] = 1
                     test_id_to_task_id[test_id_list[j]] = record[0].task_id
-
+                    # info_dict[task_id_list[j]]['task_mode'] = record.task_mode
+                    # info_dict[task_id_list[j]]['model_name'] = record.model_name
+                    # info_dict[task_id_list[j]]['metric_name'] = record.metric_name
                 # Update the Notification
 
                 last_test_requests_read_time = user.last_test_requests_read_time or datetime(1900, 1, 1)          
@@ -296,6 +305,7 @@ def update_all_notifications():
 
                 returndict["unread test request"]["check_dict"] = check_dict
                 returndict["unread test request"]["test_id_to_task_id"] = test_id_to_task_id
+                # returndict["unread test request"]["info_dict"] = info_dict
 
             elif response_data[i]["name"] == "unread test match id":   
                 test_id_list = task_id_list 

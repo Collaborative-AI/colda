@@ -35,12 +35,18 @@ def add_train_pending():
     # Retrieve task name and task description of thie unique task_id
     query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
     task_name = query.task_name
+    task_mode = query.task_mode
+    model_name = query.model_name
+    metric_name = query.metric_name
     task_description = query.task_description
 
     pending = Pending()
     pending.pending_assistor_id = g.current_user.id
     pending.pending_task_id = task_id
     pending.pending_task_name = task_name
+    pending.pending_task_mode = task_mode
+    pending.pending_model_name = model_name
+    pending.pending_metric_name = metric_name
     pending.pending_task_description = task_description
     pending.test_indicator = "train"
 
@@ -69,6 +75,9 @@ def add_test_pending():
     # Retrieve task name and task description of thie unique task_id
     query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
     test_name = query.test_name
+    task_mode = query.task_mode
+    model_name = query.model_name
+    metric_name = query.metric_name
     test_description = query.test_description
     task_id = query.task_id
 
@@ -77,6 +86,9 @@ def add_test_pending():
     pending.pending_task_id = task_id
     pending.pending_test_id = test_id
     pending.pending_task_name = test_name
+    pending.pending_task_mode = task_mode
+    pending.pending_model_name = model_name
+    pending.pending_metric_name = metric_name
     pending.pending_task_description = test_description
     pending.test_indicator = "test"
 

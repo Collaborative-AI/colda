@@ -32,6 +32,9 @@ def make_train(args):
             delimiter=',').astype(np.int64)
         data = data[self_from_idx]
     model = Model(task_mode, model_name)
+    print(data.shape, target.shape)
+    print(task_mode, model_name)
+    exit()
     model.fit(data, target)
     save(model, os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'model.pkl'))
     output = model.predict(data)

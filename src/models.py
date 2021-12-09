@@ -3,9 +3,10 @@ from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
 from sklearn.svm import SVR, SVC
 from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
 from sklearn.neural_network import MLPRegressor, MLPClassifier
+from sklearn.multioutput import MultiOutputRegressor
 
 
-class Model():
+class Model:
     def __init__(self, task_mode, model_name, model=None):
         self.task_mode = task_mode
         self.model_name = model_name
@@ -19,7 +20,10 @@ class Model():
                                          'mlp': MLPClassifier}}
         if task_mode in model_dict:
             if model_name in model_dict[task_mode]:
-                model = model_dict[task_mode][model_name]()
+                if task_mode == 'regression' and model_name in ['svm', 'gradient_boosting']:
+                    model = MultiOutputRegressor(model_dict[task_mode][model_name]())
+                else:
+                    model = model_dict[task_mode][model_name]()
             else:
                 raise ValueError('Not valid model name')
         else:

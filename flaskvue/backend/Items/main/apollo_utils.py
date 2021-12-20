@@ -1,6 +1,7 @@
 import errno
 import os
 import re
+import logging
 from flask_mail import Message
 from Items import mail
 from Items.extensions import mail
@@ -84,43 +85,81 @@ def get_log(self_id, task_id, test_id=None):
         KeyError - raises an exception
     """
     
-
     root = os.path.abspath(os.path.dirname(__file__))
     root = os.path.join(root, 'log_file')
 
     self_id = str(self_id)
     task_id = str(task_id)
-    test_id = str(test_id)
+    if test_id:
+        test_id = str(test_id)
 
     if test_id is None:
-        log_path = os.path.join(root, self_id, 'task', task_id, 'train', 'log.txt')
+        log_path = os.path.join(root, self_id, 'task', task_id, 'train', 'current_task.log')
         f = open(log_path, "r")
         return f.readlines()
             
     else:
-        log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'log.txt')
+        log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'current_test.log')
         f = open(log_path, "r")
         return f.readlines() 
 
+def generate_logger(log_path):
+    logger = logging.getLogger('Apollo_logger')
+
+    if not logger.handlers:
+        logger.setLevel(level=logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+        handler = logging.FileHandler(log_path)
+        handler.setFormatter(formatter)
+        
+        logger.addHandler(handler)
+
+        # 输出到窗口
+        # handler = logging.StreamHandler(sys.stdout)
+        # handler.setFormatter(formatter)
+        # logger.addHandler(handler)
+    
+    return logger
 
 
 def log(msg, self_id, task_id, test_id=None):
+    
+    """
+    Use python logging module to store the log information. The output level of the logging
+    module is set to debug, which is the lowest level
+
+    Parameters:
+       self_id - id of current user
+       task_id - task_id of task
+       test_id - test_id of test
+
+    Returns:
+        None
+
+    Raises:
+        KeyError - raises an exception
+    """
     
     root = os.path.abspath(os.path.dirname(__file__))
     root = os.path.join(root, 'log_file')
 
     self_id = str(self_id)
     task_id = str(task_id)
-    test_id = str(test_id)
+    if test_id:
+        test_id = str(test_id)
 
+    log_path = None
     if test_id is None:
         makedir_exist_ok(os.path.join(root, self_id, 'task', task_id, 'train'))
-        log_path = os.path.join(root, self_id, 'task', task_id, 'train', 'log.txt')
+        log_path = os.path.join(root, self_id, 'task', task_id, 'train', 'current_task.log')
     else:
         makedir_exist_ok(os.path.join(root, self_id, 'task', task_id, 'test', test_id))
-        log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'log.txt')
-    with open(log_path, 'a') as f:
-        f.write(msg + '\n')
+        log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'current_test.log')
+    
+    logger = generate_logger(log_path)
+    logger.debug(msg)
+    
     return
 
 def validate_password(password):

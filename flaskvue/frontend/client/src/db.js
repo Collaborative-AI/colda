@@ -46,6 +46,8 @@ db.exec("CREATE TABLE IF NOT EXISTS User_Sponsor_Table (task_name          text,
                                             task_mode          text, \
                                             model_name         text, \
                                             metric_name        text)");
+
+
 // // user manual
 db.exec("CREATE TABLE IF NOT EXISTS User_Manual_Table (task_name                  text,\
                                                 task_description           text,\

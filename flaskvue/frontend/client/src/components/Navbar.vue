@@ -302,129 +302,241 @@ export default {
       console.log('select_sentence', select_sentence)
       console.log('db224',db)
       console.log('db.get', db.get)
-      db.get(select_sentence, function(err, row){
-        if (err){
-          console.log(err);
+      var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
+      console.log('row1',row);
+
+      if (row == null){
+        vm.sharedState.mode = "Manual";
+      }
+      else{
+        vm.sharedState.mode = row.mode;
+      }  
+      
+      for (let task_id in cur_unread_request_Taskid_dict){
+        console.log('navbar unread request mode', vm.sharedState.mode )
+
+        if (vm.sharedState.mode == 'Auto'){
+
+        let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
+        console.log("select_default_train_file_path", select_default_train_file_path)
+
+        var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+        let default_train_file_path = row.default_train_file_path
+        console.log("default_train_id_path", default_train_file_path)
+        let default_train_id_column = row.default_train_id_column
+
+        let hash_id_file_address = null;
+        let Log_address = null;
+        try{   
+          hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                                  + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
+                                  + ' --id_idx ' + default_train_id_column, {encoding: 'utf8'})
+
+          hash_id_file_address = hash_id_file_address.split("?")
+          let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
+          Log_address = vm.handle_train_log_address(task_id)
+          if (indicator == false){
+            console.log("hash_id_file_address wrong")
+            fs.appendFileSync(Log_address, "hash_id_file_address wrong")
+            return 
+          }
+          
+        }catch(err){
+          console.log(err)
         }
 
-        console.log("retrieve_setting_mode_row", row)
-        // return row
+        console.log("Log_address------------", Log_address)
 
-        if (row == null){
-          vm.sharedState.mode = "Manual";
+        try {
+          fs.appendFileSync(Log_address, "\n You are Assistor\n")
+          fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
+          fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
+          fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
+        } catch (err) {
+          console.log(err)
         }
-        else{
-          vm.sharedState.mode = row.mode;
-        }  
-    
-        for (let task_id in cur_unread_request_Taskid_dict){
-          console.log('navbar unread request mode', vm.sharedState.mode )
+        let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
-          if (vm.sharedState.mode == 'Auto'){
-
-          let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-          console.log("select_default_train_file_path", select_default_train_file_path)
-          db.get(select_default_train_file_path, function(err, row){
-            if (err){ 
-              console.log(err);
-            }
+        const match_assistor_id_data = {
+          task_id: task_id,
+          file: hash_id_file_data,
+        }
+        console.log('hash_id_file_data', hash_id_file_data)
+        
+        vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
+          .then((response) => {
+            // handle success
+            console.log("2.2 assistor uploads id file", response)
+            vm.test_response = response
+            // return response
             
-            let default_train_file_path = row.default_train_file_path
-            console.log("default_train_id_path", default_train_file_path)
-            let default_train_id_column = row.default_train_id_column
-
-            let hash_id_file_address = null;
-            let Log_address = null;
-            try{   
-              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                                      + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
-                                      + ' --id_idx ' + default_train_id_column, {encoding: 'utf8'})
-              
-              hash_id_file_address = hash_id_file_address.split("?")
-              let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
-              Log_address = vm.handle_train_log_address(task_id)
-              if (indicator == false){
-                console.log("hash_id_file_address wrong")
-                fs.appendFileSync(Log_address, "hash_id_file_address wrong")
-                return 
-              }
-              
-            }catch(err){
-              console.log(err)
-            }
-
-            console.log("Log_address------------", Log_address)
+            vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
 
             try {
-              fs.appendFileSync(Log_address, "\n You are Assistor\n")
-              fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
-              fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
-              fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
+              fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
+              fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
             } catch (err) {
               console.log(err)
             }
-            let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+          })
+          .catch((error) => {
+            // handle error
+            console.log(error)
+            // console.log(error.response.data)
+            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+          })
 
-            const match_assistor_id_data = {
-              task_id: task_id,
-              file: hash_id_file_data,
-            }
-            console.log('hash_id_file_data', hash_id_file_data)
+        
+      } else if (vm.sharedState.mode == 'Manual'){
+        vm.sharedState.pending_num++;
+
+        console.log(task_id)
+
+        const add_train_pending = {
+            task_id: task_id,
+          }
+        
+        vm.$axios.post('/add_train_pending/', add_train_pending)
+          .then((response) => {
+            // handle success
+            console.log("add_train_pending response", response.data)
+          })
+          .catch((error) => {
+            // handle error
+            console.log(error)
+            // console.log(error.response.data)
+            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+          })
+        
+      } else{
+        console.log("unread request: mode run")
+        // dialog.showErrorBox('mode:run')
+      }
+
+    }//end for
+
+      // db.get(select_sentence, function(err, row){
+      //   if (err){
+      //     console.log(err);
+      //   }
+      //   console.log("retrieve_setting_mode_row", row)
+      //   // return row
+
+      //   if (row == null){
+      //     vm.sharedState.mode = "Manual";
+      //   }
+      //   else{
+      //     vm.sharedState.mode = row.mode;
+      //   }  
+    
+      //   for (let task_id in cur_unread_request_Taskid_dict){
+      //     console.log('navbar unread request mode', vm.sharedState.mode )
+
+      //     if (vm.sharedState.mode == 'Auto'){
+
+      //     let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
+      //     console.log("select_default_train_file_path", select_default_train_file_path)
+      //     db.get(select_default_train_file_path, function(err, row){
+      //       if (err){ 
+      //         console.log(err);
+      //       }
             
-            vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
-              .then((response) => {
-                // handle success
-                console.log("2.2 assistor uploads id file", response)
-                vm.test_response = response
-                // return response
+      //       let default_train_file_path = row.default_train_file_path
+      //       console.log("default_train_id_path", default_train_file_path)
+      //       let default_train_id_column = row.default_train_id_column
+
+      //       let hash_id_file_address = null;
+      //       let Log_address = null;
+      //       try{   
+      //         hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+      //                                 + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
+      //                                 + ' --id_idx ' + default_train_id_column, {encoding: 'utf8'})
+              
+      //         hash_id_file_address = hash_id_file_address.split("?")
+      //         let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
+      //         Log_address = vm.handle_train_log_address(task_id)
+      //         if (indicator == false){
+      //           console.log("hash_id_file_address wrong")
+      //           fs.appendFileSync(Log_address, "hash_id_file_address wrong")
+      //           return 
+      //         }
+              
+      //       }catch(err){
+      //         console.log(err)
+      //       }
+
+      //       console.log("Log_address------------", Log_address)
+
+      //       try {
+      //         fs.appendFileSync(Log_address, "\n You are Assistor\n")
+      //         fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
+      //         fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
+      //         fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
+      //       } catch (err) {
+      //         console.log(err)
+      //       }
+      //       let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+
+      //       const match_assistor_id_data = {
+      //         task_id: task_id,
+      //         file: hash_id_file_data,
+      //       }
+      //       console.log('hash_id_file_data', hash_id_file_data)
+            
+      //       vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
+      //         .then((response) => {
+      //           // handle success
+      //           console.log("2.2 assistor uploads id file", response)
+      //           vm.test_response = response
+      //           // return response
                 
-                vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
+      //           vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
 
-                try {
-                  fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
-                  fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
-                } catch (err) {
-                  console.log(err)
-                }
-              })
-              .catch((error) => {
-                // handle error
-                console.log(error)
-                // console.log(error.response.data)
-                // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-              })
+      //           try {
+      //             fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
+      //             fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
+      //           } catch (err) {
+      //             console.log(err)
+      //           }
+      //         })
+      //         .catch((error) => {
+      //           // handle error
+      //           console.log(error)
+      //           // console.log(error.response.data)
+      //           // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+      //         })
 
-          })  
-        } else if (vm.sharedState.mode == 'Manual'){
-          vm.sharedState.pending_num++;
+      //     })  
+      //   } else if (vm.sharedState.mode == 'Manual'){
+      //     vm.sharedState.pending_num++;
 
-          console.log(task_id)
+      //     console.log(task_id)
 
-          const add_train_pending = {
-              task_id: task_id,
-            }
+      //     const add_train_pending = {
+      //         task_id: task_id,
+      //       }
           
-          vm.$axios.post('/add_train_pending/', add_train_pending)
-            .then((response) => {
-              // handle success
-              console.log("add_train_pending response", response.data)
-            })
-            .catch((error) => {
-              // handle error
-              console.log(error)
-              // console.log(error.response.data)
-              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-            })
+      //     vm.$axios.post('/add_train_pending/', add_train_pending)
+      //       .then((response) => {
+      //         // handle success
+      //         console.log("add_train_pending response", response.data)
+      //       })
+      //       .catch((error) => {
+      //         // handle error
+      //         console.log(error)
+      //         // console.log(error.response.data)
+      //         // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+      //       })
           
-        } else{
-          console.log("unread request: mode run")
-          // dialog.showErrorBox('mode:run')
-        }
+      //   } else{
+      //     console.log("unread request: mode run")
+      //     // dialog.showErrorBox('mode:run')
+      //   }
 
-      }//end for
-    })
+      // }//end for
+    // })//end db
     // return vm.test_response
-    return 'done'
+    // return 'done'
     
     },
 
@@ -562,99 +674,190 @@ export default {
 
           let select_train_target_column = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
           console.log("select_train_target_column", select_train_target_column)
-          db.get(select_train_target_column, function(err, row){
-            if (err){ 
-              console.log(err);
+          var row = db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+
+          console.log("match row",row)
+          let train_file_path = row.train_file_path
+          console.log("train_file_path", train_file_path)
+          let train_target_column = row.train_target_column
+          console.log("train_target_column", train_target_column)
+          let task_mode = row.task_mode
+          console.log('task_mode1',task_mode)
+          let metric_name = row.metric_name
+          console.log('metric_name1',metric_name)
+          let make_residual_multiple_paths = null;
+          try{
+            make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
+              + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 1 ' 
+              + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column
+              + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
+
+            make_residual_multiple_paths = make_residual_multiple_paths.split("?")
+            let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
+            if (indicator == false){
+              console.log("make_residual_multiple_paths wrong")
+              fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
+              return 
             }
-            console.log("match row",row)
-            let train_file_path = row.train_file_path
-            console.log("train_file_path", train_file_path)
-            let train_target_column = row.train_target_column
-            console.log("train_target_column", train_target_column)
-            let task_mode = row.task_mode
-            console.log('task_mode1',task_mode)
-            let metric_name = row.metric_name
-            console.log('metric_name1',metric_name)
-            let make_residual_multiple_paths = null;
+
+          }catch(err){
+            console.log(err)
+          }
+
+          console.log("3.6 Sponsor makes residual finished")
+          vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
+          try {
+            fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
+          } catch (err) {
+            console.log(err)
+          }
+
+          // Read Files
+          let all_residual_data = [];
+          let assistor_random_id_list = [];
+          let residual_paths = make_residual_multiple_paths.slice(2, make_residual_multiple_paths.length)
+          for (let i = 0; i < residual_paths.length; i++){
+
+            let data = null;
             try{
-              make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
-                + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 1 ' 
-                + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column
-                + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
-            
-
-
-              make_residual_multiple_paths = make_residual_multiple_paths.split("?")
-              let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
-              if (indicator == false){
-                console.log("make_residual_multiple_paths wrong")
-                fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
-                return 
-              }
-
+              // data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+              data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
             }catch(err){
               console.log(err)
             }
+            all_residual_data.push(data);
 
-            console.log("3.6 Sponsor makes residual finished")
-            vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
+            // let cur_path = make_residual_multiple_paths[i]
+            let cur_path = residual_paths[i]
+            let path_split = cur_path.split(node_path.sep);
+            let assistor_random_id = path_split[path_split.length-1].split(".")[0];
+            assistor_random_id_list.push(assistor_random_id);
+            
+          }
+
+          console.log("assistor_random_id_list", assistor_random_id_list)
+          const send_situation_payload = {
+              task_id: task_id,
+              assistor_random_id_list: assistor_random_id_list,
+              residual_list: all_residual_data,
+            }
+
+          // send initial situation
+          // async
+          vm.$axios.post('/send_situation/', send_situation_payload)
+            .then((response) => {
+            // handle success
+            console.log("3.7 Sponsor sends all situations", response)
+            vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
+            
             try {
-              fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
+              fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
+              fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
             } catch (err) {
               console.log(err)
             }
 
-            // Read Files
-            let all_residual_data = [];
-            let assistor_random_id_list = [];
-            let residual_paths = make_residual_multiple_paths.slice(2, make_residual_multiple_paths.length)
-            for (let i = 0; i < residual_paths.length; i++){
+          })
+          .catch((error) => {
+            console.log(error)
+          })
 
-              let data = null;
-              try{
-                // data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
-                data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
-              }catch(err){
-                console.log(err)
-              }
-              all_residual_data.push(data);
+        
 
-              // let cur_path = make_residual_multiple_paths[i]
-              let cur_path = residual_paths[i]
-              let path_split = cur_path.split(node_path.sep);
-              let assistor_random_id = path_split[path_split.length-1].split(".")[0];
-              assistor_random_id_list.push(assistor_random_id);
+
+          // db.get(select_train_target_column, function(err, row){
+          //   if (err){ 
+          //     console.log(err);
+          //   }
+          //   console.log("match row",row)
+          //   let train_file_path = row.train_file_path
+          //   console.log("train_file_path", train_file_path)
+          //   let train_target_column = row.train_target_column
+          //   console.log("train_target_column", train_target_column)
+          //   let task_mode = row.task_mode
+          //   console.log('task_mode1',task_mode)
+          //   let metric_name = row.metric_name
+          //   console.log('metric_name1',metric_name)
+          //   let make_residual_multiple_paths = null;
+          //   try{
+          //     make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
+          //       + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 1 ' 
+          //       + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column
+          //       + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
+            
+
+
+          //     make_residual_multiple_paths = make_residual_multiple_paths.split("?")
+          //     let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
+          //     if (indicator == false){
+          //       console.log("make_residual_multiple_paths wrong")
+          //       fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
+          //       return 
+          //     }
+
+          //   }catch(err){
+          //     console.log(err)
+          //   }
+
+          //   console.log("3.6 Sponsor makes residual finished")
+          //   vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
+          //   try {
+          //     fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
+          //   } catch (err) {
+          //     console.log(err)
+          //   }
+
+          //   // Read Files
+          //   let all_residual_data = [];
+          //   let assistor_random_id_list = [];
+          //   let residual_paths = make_residual_multiple_paths.slice(2, make_residual_multiple_paths.length)
+          //   for (let i = 0; i < residual_paths.length; i++){
+
+          //     let data = null;
+          //     try{
+          //       // data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
+          //       data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
+          //     }catch(err){
+          //       console.log(err)
+          //     }
+          //     all_residual_data.push(data);
+
+          //     // let cur_path = make_residual_multiple_paths[i]
+          //     let cur_path = residual_paths[i]
+          //     let path_split = cur_path.split(node_path.sep);
+          //     let assistor_random_id = path_split[path_split.length-1].split(".")[0];
+          //     assistor_random_id_list.push(assistor_random_id);
               
-            }
+          //   }
 
-            console.log("assistor_random_id_list", assistor_random_id_list)
-            const send_situation_payload = {
-                task_id: task_id,
-                assistor_random_id_list: assistor_random_id_list,
-                residual_list: all_residual_data,
-              }
+          //   console.log("assistor_random_id_list", assistor_random_id_list)
+          //   const send_situation_payload = {
+          //       task_id: task_id,
+          //       assistor_random_id_list: assistor_random_id_list,
+          //       residual_list: all_residual_data,
+          //     }
 
-            // send initial situation
-            // async
-            vm.$axios.post('/send_situation/', send_situation_payload)
-              .then((response) => {
-              // handle success
-              console.log("3.7 Sponsor sends all situations", response)
-              vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
+          //   // send initial situation
+          //   // async
+          //   vm.$axios.post('/send_situation/', send_situation_payload)
+          //     .then((response) => {
+          //     // handle success
+          //     console.log("3.7 Sponsor sends all situations", response)
+          //     vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
               
-              try {
-                fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
-                fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
-              } catch (err) {
-                console.log(err)
-              }
+          //     try {
+          //       fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
+          //       fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
+          //     } catch (err) {
+          //       console.log(err)
+          //     }
 
-            })
-            .catch((error) => {
-              console.log(error)
-            })
+          //   })
+          //   .catch((error) => {
+          //     console.log(error)
+          //   })
 
-          });
+          // });
           
         })
         .catch((error) => {
@@ -808,60 +1011,104 @@ export default {
       }
       
       let select_train_data_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
-      db.get(select_train_data_path, function(err, row){
-        if (err){ 
-          throw err;
-        }
-        let train_file_path = row.train_file_path
-        console.log("train_file_path", train_file_path)
-        let train_data_column = row.train_data_column
-        console.log("train_data_column", train_data_column)
-        let task_mode = row.task_mode
-        let model_name = row.model_name
-        try{
-          
-          // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
-          let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
-            + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_column
-            + ' --task_mode ' + task_mode + ' --model_name ' + model_name, {encoding: 'utf8'})
-          
-          train_output = train_output.split("?")
-          console.log('train_output1', train_output)
-          let indicator = vm.handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
-          if (indicator == false){
-            console.log("train_output wrong")
-            fs.appendFileSync(Log_address, "train_output wrong")
-            return 
-          }
+      var row = db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
-          console.log("4.3 Sponsor round " + rounds + " training done.");
-          vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
+      let train_file_path = row.train_file_path
+      console.log("train_file_path", train_file_path)
+      let train_data_column = row.train_data_column
+      console.log("train_data_column", train_data_column)
+      let task_mode = row.task_mode
+      let model_name = row.model_name
+      try{
         
-        }catch(err){
-          console.log(err)
-        }
+        // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
+        let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root 
+          + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds 
+          + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_column
+          + ' --task_mode ' + task_mode + ' --model_name ' + model_name, {encoding: 'utf8'})
 
-        try {
-          fs.appendFileSync(Log_address, "4.3 Sponsor round " + rounds + " training done." + "\n")
-          fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
-        } catch (err) {
-          console.log(err)
-        }
+  
 
-        // const path = `/Sponsor_situation_training_done/`
-
-        // const Sponsor_situation_training_done_data = {
-        //   task_id: task_id
-        // } 
         
-        // vm.$axios.post(path, Sponsor_situation_training_done_data)
-        //   .then((response) => {
-        //     console.log("4.4 Sponsor update training done")
-        //   })
-        //   .catch((error)=>{
-        //     console.log(error)
-        //   })  
-      });
+        train_output = train_output.split("?")
+        console.log('train_output1', train_output)
+        let indicator = vm.handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
+        if (indicator == false){
+          console.log("train_output wrong")
+          fs.appendFileSync(Log_address, "train_output wrong")
+          return 
+        }
+
+        console.log("4.3 Sponsor round " + rounds + " training done.");
+        vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
+      
+      }catch(err){
+        console.log(err)
+      }
+
+      try {
+        fs.appendFileSync(Log_address, "4.3 Sponsor round " + rounds + " training done." + "\n")
+        fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
+      } catch (err) {
+        console.log(err)
+      }
+
+
+
+      // db.get(select_train_data_path, function(err, row){
+      //   if (err){ 
+      //     throw err;
+      //   }
+      //   let train_file_path = row.train_file_path
+      //   console.log("train_file_path", train_file_path)
+      //   let train_data_column = row.train_data_column
+      //   console.log("train_data_column", train_data_column)
+      //   let task_mode = row.task_mode
+      //   let model_name = row.model_name
+      //   try{
+          
+      //     // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
+      //     let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
+      //       + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_column
+      //       + ' --task_mode ' + task_mode + ' --model_name ' + model_name, {encoding: 'utf8'})
+          
+      //     train_output = train_output.split("?")
+      //     console.log('train_output1', train_output)
+      //     let indicator = vm.handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
+      //     if (indicator == false){
+      //       console.log("train_output wrong")
+      //       fs.appendFileSync(Log_address, "train_output wrong")
+      //       return 
+      //     }
+
+      //     console.log("4.3 Sponsor round " + rounds + " training done.");
+      //     vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
+        
+      //   }catch(err){
+      //     console.log(err)
+      //   }
+
+      //   try {
+      //     fs.appendFileSync(Log_address, "4.3 Sponsor round " + rounds + " training done." + "\n")
+      //     fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
+      //   } catch (err) {
+      //     console.log(err)
+      //   }
+
+      //   // const path = `/Sponsor_situation_training_done/`
+
+      //   // const Sponsor_situation_training_done_data = {
+      //   //   task_id: task_id
+      //   // } 
+        
+      //   // vm.$axios.post(path, Sponsor_situation_training_done_data)
+      //   //   .then((response) => {
+      //   //     console.log("4.4 Sponsor update training done")
+      //   //   })
+      //   //   .catch((error)=>{
+      //   //     console.log(error)
+      //   //   })  
+      // });
     },
 
     unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address, task_mode, model_name){
@@ -990,53 +1237,97 @@ export default {
           // Assistor trains the data
         let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE task_id = ' + '"'+ task_id + '"';
         // console.log("select_pending_record", select_pending_record)
-        db.get(select_pending_record, function(err, row){
-          if (err){ 
-            console.log(err);
-          }
-          let which_mode = null
-          if (row == null){
-            which_mode = 'Auto'
-          }else{
-            which_mode = 'Manual'
-          }
-          if (which_mode == "Auto"){
-            let select_default_train_data_path = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-            db.get(select_default_train_data_path, function(err, row){
-              if (err){ 
-                throw err;
-              }
-              let default_train_file_path = row.default_train_file_path
-              console.log("default_train_file_path",default_train_file_path)
-              let default_train_data_column = row.default_train_data_column
-              console.log("default_train_data_column",default_train_data_column)
-              // let task_mode = row.task_mode
-              // let model_name = row.model_name      question?
+        var row = db.prepare('SELECT * FROM User_Manual_Table WHERE task_id = ?').get(task_id);
 
-              vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address,task_mode, model_name)
+        
+        let which_mode = null
+        if (row == null){
+          which_mode = 'Auto'
+        }else{
+          which_mode = 'Manual'
+        }
+        if (which_mode == "Auto"){
+          let select_default_train_data_path = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
+          var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
 
-            }); //end db
-          } else if (which_mode == "Manual") {
-            let select_pending_train_data_path = 'SELECT * FROM User_Manual_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
-            db.get(select_pending_train_data_path, function(err, row){
-              if (err){ 
-                throw err;
-              }
-              let pending_train_file_path = row.pending_train_file_path
-              console.log("pending_train_file_path",pending_train_file_path)
-              let pending_train_data_column = row.pending_train_data_column
-              console.log("pending_train_data_column",pending_train_data_column)
-              let task_mode = row.task_mode
-              let model_name = row.model_name
+          
+          let default_train_file_path = row.default_train_file_path
+          console.log("default_train_file_path",default_train_file_path)
+          let default_train_data_column = row.default_train_data_column
+          console.log("default_train_data_column",default_train_data_column)
+          // let task_mode = row.task_mode
+          // let model_name = row.model_name      question?
 
-              vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address,task_mode, model_name)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address,task_mode, model_name)
 
-            }); //end db
+          
+        } else if (which_mode == "Manual") {
+          let select_pending_train_data_path = 'SELECT * FROM User_Manual_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
+          var row = db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND task_id = ?').get(vm.sharedState.user_id, task_id);
 
-          }else{
-            console.log('unread situation assistor 3rd case')
-          }  
-        })  
+          
+          let pending_train_file_path = row.pending_train_file_path
+          console.log("pending_train_file_path",pending_train_file_path)
+          let pending_train_data_column = row.pending_train_data_column
+          console.log("pending_train_data_column",pending_train_data_column)
+          let task_mode = row.task_mode
+          let model_name = row.model_name
+
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address,task_mode, model_name)
+
+
+        }else{
+          console.log('unread situation assistor 3rd case')
+        }  
+         
+
+        // db.get(select_pending_record, function(err, row){
+        //   if (err){ 
+        //     console.log(err);
+        //   }
+        //   let which_mode = null
+        //   if (row == null){
+        //     which_mode = 'Auto'
+        //   }else{
+        //     which_mode = 'Manual'
+        //   }
+        //   if (which_mode == "Auto"){
+        //     let select_default_train_data_path = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
+        //     db.get(select_default_train_data_path, function(err, row){
+        //       if (err){ 
+        //         throw err;
+        //       }
+        //       let default_train_file_path = row.default_train_file_path
+        //       console.log("default_train_file_path",default_train_file_path)
+        //       let default_train_data_column = row.default_train_data_column
+        //       console.log("default_train_data_column",default_train_data_column)
+        //       // let task_mode = row.task_mode
+        //       // let model_name = row.model_name      question?
+
+        //       vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address,task_mode, model_name)
+
+        //     }); //end db
+        //   } else if (which_mode == "Manual") {
+        //     let select_pending_train_data_path = 'SELECT * FROM User_Manual_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
+        //     db.get(select_pending_train_data_path, function(err, row){
+        //       if (err){ 
+        //         throw err;
+        //       }
+        //       let pending_train_file_path = row.pending_train_file_path
+        //       console.log("pending_train_file_path",pending_train_file_path)
+        //       let pending_train_data_column = row.pending_train_data_column
+        //       console.log("pending_train_data_column",pending_train_data_column)
+        //       let task_mode = row.task_mode
+        //       let model_name = row.model_name
+
+        //       vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address,task_mode, model_name)
+
+        //     }); //end db
+
+        //   }else{
+        //     console.log('unread situation assistor 3rd case')
+        //   }  
+        // })  
 
         }) //end axios
 
@@ -1134,21 +1425,18 @@ export default {
           }
 
           let select_train_target_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
-          db.get(select_train_target_path, function(err, row){
-            if (err){ 
-              throw err;
-            }
-            console.log('select train target path', row)
-            let train_file_path = row.train_file_path
-            console.log("train_file_path", train_file_path)
-            let train_target_column = row.train_target_column
-            console.log("train_target_column", train_target_column)
-            let task_mode = row.task_mode
-            let metric_name = row.metric_name
+          var row = db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
-            vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name)
+          console.log('select train target path', row)
+          let train_file_path = row.train_file_path
+          console.log("train_file_path", train_file_path)
+          let train_target_column = row.train_target_column
+          console.log("train_target_column", train_target_column)
+          let task_mode = row.task_mode
+          let metric_name = row.metric_name
 
-          });
+          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name)
+
           
         })
         .catch((error) => {
@@ -1282,10 +1570,10 @@ export default {
       let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
 
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-      db.get(select_sentence, function(err, row){
-        if (err){
-          console.log(err);
-        }
+                
+      var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+
+      
 
         console.log("retrieve_setting_mode_row", row)
 
@@ -1305,10 +1593,9 @@ export default {
             
             
             let select_default_test_id_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-            db.get(select_default_test_id_path, function(err, row){
-              if (err){ 
-                throw err;
-              }
+            var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+
+            
               let default_train_id_column = row.default_train_id_column
               let default_train_file_path = row.default_train_file_path
               console.log("default_train_id_column", default_train_id_column)
@@ -1370,7 +1657,7 @@ export default {
                   // console.log(error.response.data)
                   // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
                 })
-            });
+            
           }else if (vm.sharedState.mode == 'Manual'){
             // console.log(task_id)
             vm.sharedState.pending_num++;
@@ -1394,7 +1681,7 @@ export default {
             // dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
           }
         }
-      })
+      
       
     },
 
@@ -1533,10 +1820,10 @@ export default {
           }
 
           let select_test_data_path = 'SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
-          db.get(select_test_data_path, function(err, row){
-            if (err){ 
-              throw err;
-            }
+          var row = db.prepare('SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
+
+
+          
             let test_file_path = row.test_file_path
             let test_data_column = row.test_data_column
             console.log("test_file_path", test_file_path)
@@ -1566,7 +1853,7 @@ export default {
             } catch (err) {
               console.log(err)
             }
-          });
+        
           
           })
           .catch((error) => {
@@ -1658,10 +1945,9 @@ export default {
 
           let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id = ' + '"'+ test_id + '"';
           // console.log("select_pending_record", select_pending_record)
-          db.get(select_pending_record, function(err, row){
-            if (err){ 
-              console.log(err);
-            }
+          var row = db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
+
+          
             let which_mode = null
             if (row == null){
               which_mode = 'Auto'
@@ -1671,10 +1957,9 @@ export default {
 
             if(which_mode == "Auto"){
             let select_default_test_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-            db.get(select_default_test_data_path, function(err, row){
-              if (err){ 
-                throw err;
-              }
+            var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+
+            
               let default_train_file_path = row.default_train_file_path
               let default_train_data_column = row.default_train_data_column
               console.log("default_train_file_path",default_train_file_path)
@@ -1738,13 +2023,13 @@ export default {
               .catch((error) => {
                 console.log(error)
               })
-            });
+            
             }else if(which_mode == "Manual"){
               let select_default_test_data_path = 'SELECT pending_test_file_path, pending_test_data_column FROM User_Manual_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id=' + '"' + test_id + '"';
-            db.get(select_default_test_data_path, function(err, row){
-              if (err){ 
-                throw err;
-              }
+             
+              var row = db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
+
+            
               let pending_test_file_path = row.pending_test_file_path
               let pending_test_data_column = row.pending_test_data_column
               console.log("pending_test_file_path",pending_test_file_path)
@@ -1808,12 +2093,12 @@ export default {
               .catch((error) => {
                 console.log(error)
               })
-            });
+         
 
             }else{
               console.log('unread_test_match_id_assistor error')
             }
-          })
+          
 
         })
         .catch((error) => {
@@ -1933,10 +2218,9 @@ export default {
       console.log("max_round", max_round)
 
       let select_test_target_path = 'SELECT test_file_path, test_target_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
-      db.get(select_test_target_path, function(err, row){
-        if (err){ 
-          throw err;
-        }
+      var row = db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, test_indicator, test_id);
+
+      
         let test_file_path = row.test_file_path
         let test_target_column= row.test_target_column
         // console.log("test_target_path",test_target_path)
@@ -1976,7 +2260,7 @@ export default {
           }
         }
        
-      });
+   
     },
   },
 

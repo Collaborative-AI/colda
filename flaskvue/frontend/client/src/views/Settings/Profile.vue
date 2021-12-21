@@ -24,11 +24,11 @@
       <button @click="get_default_train_file_path()" class="btn btn-success">Select File</button>
     </div>
     <div style="overflow:auto">
-    <table class="table" v-if="select_data" >
+    <table class="table" v-if="select_data">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
+          <th scope="col" v-for="(ptitle, idx) in ptitles" :key="ptitle.index">{{idx+1}}.{{ptitle}}</th>
         </tr>
       </thead>
       <tbody>
@@ -106,6 +106,7 @@ export default {
       default_train_file_path: "",
       default_train_id_column: "",
       default_train_data_column: "",
+      ptitles:"",
       pdatas:"",
       select_data:false,
       // profileForm: {
@@ -213,7 +214,8 @@ export default {
             
             vm.pdatas = data.split("\n")
             for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
-            vm.pdatas=vm.pdatas.slice(0,3)
+            vm.ptitles=vm.pdatas[0]
+            vm.pdatas=vm.pdatas.slice(1,4)
             vm.select_data=true
             console.log('preview',vm.pdatas[0])
           })
@@ -302,44 +304,60 @@ export default {
     // },
     getUser (id) {
       let vm = this
-      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
-      db.get(select_sentence, function(err, row){
-        if (err){ 
-          console.log(err);
-        }
 
-        console.log(row)
-
-        if (row != null){
-          // vm.profileForm.default_train_data_path = row.default_train_data_path
-          // vm.profileForm.default_train_id_path = row.default_train_id_path
-          // vm.profileForm.default_test_data_path = row.default_test_data_path
-          // vm.profileForm.default_test_id_path = row.default_test_id_path
+      const row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
+      // console.log('haha',row);
+      if (row != null){
           vm.default_train_file_path = row.default_train_file_path
           vm.default_train_id_column = row.default_train_id_column
           vm.default_train_data_column = row.default_train_data_column
           vm.sharedState.mode = row.mode
           console.log('mode', vm.sharedState.mode)
         }
-        
 
-        // if (row == null){
-        //   console.log("get false")
-        //   vm.
-        // }else{
-        //     if (row.default_train_file_path == "" | row.default_train_id_column == "" | 
-        //       row.default_train_data_column == ""){
-        //     console.log("get false")
-        //     vm.sharedState.set_default = false
-        //     vm.sharedState.receive_request = false
-        //   }
-        // }
 
-      })
+
+
+
+      // let vm = this
+      // let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
+      // db.exec(select_sentence, function(err, row){
+      //   if (err){ 
+      //     console.log(err);
+      //   }
+
+      //   console.log('xianshi',row)
+
+      //   if (row != null){
+      //     vm.default_train_file_path = row.default_train_file_path
+      //     vm.default_train_id_column = row.default_train_id_column
+      //     vm.default_train_data_column = row.default_train_data_column
+      //     vm.sharedState.mode = row.mode
+      //     console.log('mode', vm.sharedState.mode)
+      //   }
+
+      // })
+      // let vm = this
+      // let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
+      // db.exec(select_sentence, function(err, row){
+      //   if (err){ 
+      //     console.log(err);
+      //   }
+
+      //   console.log('xianshi',row)
+
+      //   if (row != null){
+      //     vm.default_train_file_path = row.default_train_file_path
+      //     vm.default_train_id_column = row.default_train_id_column
+      //     vm.default_train_data_column = row.default_train_data_column
+      //     vm.sharedState.mode = row.mode
+      //     console.log('mode', vm.sharedState.mode)
+      //   }
+
+      // })
     },
     onSubmit (e) {
       let vm = this;
-      
       let both_path_validation = true
       console.log("vm.default_train_file_path", vm.default_train_file_path)
       try {
@@ -352,78 +370,149 @@ export default {
 
       console.log("vm.default_train_id_column", vm.default_train_id_column)
       console.log("vm.default_train_data_column", vm.default_train_data_column)
-      // try {
-      //   fs.statSync(vm.profileForm.default_train_id_path);
-      // } catch (err) {
-      //   dialog.showErrorBox('Train ID Path not Correct', 'Please Select A Train ID File')
-      //   console.log('Please Select A Train ID File')
-      //   both_path_validation = false
-      // }
 
-      // console.log("vm.profileForm.default_test_data_path", vm.profileForm.default_test_data_path)
-      // try {
-      //   fs.statSync(vm.profileForm.default_test_data_path);
-      // } catch (err) {
-      //   dialog.showErrorBox('Test Data Path not Correct', 'Please Select A Test Data File')
-      //   console.log('Please Select A Test Data File')
-      //   both_path_validation = false
-      // }
 
-      // console.log("vm.profileForm.default_test_id_path", vm.profileForm.default_test_id_path)
-      // try {
-      //   fs.statSync(vm.profileForm.default_test_id_path);
-      // } catch (err) {
-      //   dialog.showErrorBox('Test ID Path not Correct', 'Please Select A Test ID File')
-      //   console.log('Please Select A Test ID File')
-      //   both_path_validation = false
-      // }
 
-      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
-      db.get(select_sentence, function(err, row){
-        if (err){ 
-          console.log(err);
-        }
-        console.log("row", row)
-        
-        if (row == null){
-          // db.run(`INSERT INTO "User_Default_Table"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
-          let insert_new_val = `INSERT INTO "User_Default_Table" ("user_id", "default_train_file_path", "default_train_id_column", "default_train_data_column", "mode") VALUES 
-            (`+`"`+vm.sharedState.user_id+`", "`+vm.default_train_file_path+`", "`+vm.default_train_id_column+`", "`
-            +vm.default_train_data_column+`", "`+vm.sharedState.mode+`")`
-          console.log("insert_new_val", insert_new_val)
-          console.log("db", db)
-          db.run(insert_new_val, function(err){
-            if (err){
-              console.log(err)
-            }
-          })
-        }else{          
-          
-          if(both_path_validation == true){
-            db.serialize(function() {
-              let update_sentence = 'UPDATE "User_Default_Table"'
-                        +'SET "default_train_file_path" = "' + vm.default_train_file_path + '",'
-                        +'"default_train_id_column" = "' + vm.default_train_id_column + '",'
-                        +'"default_train_data_column" = "' + vm.default_train_data_column + '",'   
-                        +'"mode" = "' + vm.sharedState.mode + '" '                  
-                        +'WHERE "user_id" = ' + vm.sharedState.user_id
-              console.log("update_sentence", update_sentence) 
-              
+//       const stmt = db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column,@mode)');
+//       stmt.run({
+//         user_id:vm.sharedState.user_id , 
+//         default_train_file_path:3 , 
+//         default_train_id_column:4, 
+//         default_train_data_column:5 , 
+//         default_train_target_column:6,
+//         mode: 'auto'
+// });
+      const row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
+      console.log('haha',row);
+      if (row == null){
 
-              db.run(update_sentence, function(err, rows) {
-                if (err){
-                  console.log(err)
-                }
-              });
-
-            });
-          }
-        }  
-        
-        console.log("vm.sharedState.mode", vm.sharedState.mode)
-      })
+        const stmt = db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column,@mode)');
+        stmt.run({
+          user_id:vm.sharedState.user_id , 
+          default_train_file_path:vm.default_train_file_path , 
+          default_train_id_column:vm.default_train_id_column, 
+          default_train_data_column:vm.default_train_data_column , 
+          default_train_target_column:"",
+          mode: vm.sharedState.mode
+        });
+      }else{
+        if(both_path_validation == true){
+          const stmt = db.prepare('UPDATE User_Default_Table' 
+          + 'SET default_train_file_path = ? ,'
+          + 'default_train_id_column = ? ,'
+          + 'default_train_data_column = ? ,'
+          + 'mode = ? ,'
+          + 'WHERE user_id = ?'); 
+          stmt.run(vm.default_train_file_path, vm.default_train_id_column, vm.default_train_data_column, vm.sharedState.mode, vm.sharedState.user_id);
+        } 
+      }
       vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
     },
+//     onSubmit (e) {
+//       let vm = this;
+//       let both_path_validation = true
+//       console.log("vm.default_train_file_path", vm.default_train_file_path)
+//       try {
+//         fs.statSync(vm.default_train_file_path);
+//       } catch (err) {
+//         dialog.showErrorBox('Train Data Path not Correct', 'Please Select A Train Data File')
+//         console.log('Please Select A Train Data File')
+//         both_path_validation = false
+//       }
+
+//       console.log("vm.default_train_id_column", vm.default_train_id_column)
+//       console.log("vm.default_train_data_column", vm.default_train_data_column)
+
+
+
+// //       const stmt = db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column,@mode)');
+// //       stmt.run({
+        
+// //         user_id:vm.sharedState.user_id , 
+// //         default_train_file_path:3 , 
+// //         default_train_id_column:4, 
+// //         default_train_data_column:5 , 
+// //         default_train_target_column:6,
+// //   mode: 'auto'
+// // });
+
+
+
+//       // try {
+//       //   fs.statSync(vm.profileForm.default_train_id_path);
+//       // } catch (err) {
+//       //   dialog.showErrorBox('Train ID Path not Correct', 'Please Select A Train ID File')
+//       //   console.log('Please Select A Train ID File')
+//       //   both_path_validation = false
+//       // }
+
+//       // console.log("vm.profileForm.default_test_data_path", vm.profileForm.default_test_data_path)
+//       // try {
+//       //   fs.statSync(vm.profileForm.default_test_data_path);
+//       // } catch (err) {
+//       //   dialog.showErrorBox('Test Data Path not Correct', 'Please Select A Test Data File')
+//       //   console.log('Please Select A Test Data File')
+//       //   both_path_validation = false
+//       // }
+
+//       // console.log("vm.profileForm.default_test_id_path", vm.profileForm.default_test_id_path)
+//       // try {
+//       //   fs.statSync(vm.profileForm.default_test_id_path);
+//       // } catch (err) {
+//       //   dialog.showErrorBox('Test ID Path not Correct', 'Please Select A Test ID File')
+//       //   console.log('Please Select A Test ID File')
+//       //   both_path_validation = false
+//       // }
+
+
+
+
+
+//       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + this.sharedState.user_id;
+//       db.run(select_sentence, function(err, row){
+//         if (err){ 
+//           console.log(err);
+//         }
+//         console.log("row", row)
+        
+//         if (row == null){
+//           // db.run(`INSERT INTO "User_Default_Table"("user_id", "default_train_data_path", "default_train_id_path") VALUES (1, 'love', 'consume')`)
+//           let insert_new_val = `INSERT INTO "User_Default_Table" ("user_id", "default_train_file_path", "default_train_id_column", "default_train_data_column", "mode") VALUES 
+//             (`+`"`+vm.sharedState.user_id+`", "`+vm.default_train_file_path+`", "`+vm.default_train_id_column+`", "`
+//             +vm.default_train_data_column+`", "`+vm.sharedState.mode+`")`
+//           console.log("insert_new_val", insert_new_val)
+//           console.log("db", db)
+//           db.run(insert_new_val, function(err){
+//             if (err){
+//               console.log(err)
+//             }
+//           })
+//         }else{          
+          
+//           if(both_path_validation == true){
+//             db.serialize(function() {
+//               let update_sentence = 'UPDATE "User_Default_Table"'
+//                         +'SET "default_train_file_path" = "' + vm.default_train_file_path + '",'
+//                         +'"default_train_id_column" = "' + vm.default_train_id_column + '",'
+//                         +'"default_train_data_column" = "' + vm.default_train_data_column + '",'   
+//                         +'"mode" = "' + vm.sharedState.mode + '" '                  
+//                         +'WHERE "user_id" = ' + vm.sharedState.user_id
+//               console.log("update_sentence", update_sentence) 
+              
+
+//               db.run(update_sentence, function(err, rows) {
+//                 if (err){
+//                   console.log(err)
+//                 }
+//               });
+
+//             });
+//           }
+//         }  
+//         console.log("vm.sharedState.mode", vm.sharedState.mode)
+//       })
+//       vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
+//     },
 
   },
   created () {

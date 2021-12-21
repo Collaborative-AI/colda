@@ -100,6 +100,8 @@ const node_path = window.node_path ? window.node_path : require('path');
 // console.log("1233", node_path)
 
 const dialog = window.dialog ? window.dialog : require('electron');
+
+const electron_log = window.log ? window.log : require("electron-log")
 // console.log("1234", dialog)
 
 
@@ -296,6 +298,7 @@ export default {
       vm.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
 
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
+
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
       console.log('select_sentence', select_sentence)
       console.log('db224',db)
@@ -314,7 +317,7 @@ export default {
         console.log('navbar unread request mode', vm.sharedState.mode )
 
         if (vm.sharedState.mode == 'Auto'){
-
+     
         let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
         console.log("select_default_train_file_path", select_default_train_file_path)
 

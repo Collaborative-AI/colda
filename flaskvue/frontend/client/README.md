@@ -26,6 +26,7 @@
 4. Unittest:
     1. npm run test
     "test": "ELECTRON_RUN_AS_NODE=true ./node_modules/.bin/electron ./node_modules/.bin/jest"
+    2. jest path/to/my-test.js => test single file
 
     
 Simple Test Flow:

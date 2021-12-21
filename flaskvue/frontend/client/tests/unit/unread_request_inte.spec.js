@@ -97,7 +97,7 @@ import db from '../../src/db';
 // console.log('jest', jest)
 
 jest.setTimeout(30000);
-import {sum} from '../unit/index'
+import {sum} from './index'
 import axios from '../../src/http'
 
 test('Window Loads Properly', () => {

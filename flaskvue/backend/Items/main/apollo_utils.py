@@ -71,7 +71,7 @@ def generate_msg(*args):
 def get_log(self_id, task_id, test_id=None):
 
     """
-    read txt file and return content of txt file.
+    read log file and return content of log file.
 
     Parameters:
        self_id - id of current user
@@ -79,7 +79,7 @@ def get_log(self_id, task_id, test_id=None):
        test_id - test_id of test
 
     Returns:
-        data - List. ['first log_interval\n', 'second\n', 'third']
+        data - List[String]. ['first log_interval\n', 'second\n', 'third']
 
     Raises:
         KeyError - raises an exception
@@ -104,18 +104,34 @@ def get_log(self_id, task_id, test_id=None):
         return f.readlines() 
 
 def generate_logger(log_path):
+
+    """
+    generate an logger instance. If there is no handler in the logger instance, add handler.
+    If ther is handler, skip
+
+    Parameters:
+       log_path - String. The file position of log file
+
+    Returns:
+        logger - Object
+
+    Raises:
+        KeyError - raises an exception
+    """
+
     logger = logging.getLogger('Apollo_logger')
 
     if not logger.handlers:
         logger.setLevel(level=logging.DEBUG)
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
+        # output to file
         handler = logging.FileHandler(log_path)
         handler.setFormatter(formatter)
         
         logger.addHandler(handler)
 
-        # 输出到窗口
+        # output to terminal
         # handler = logging.StreamHandler(sys.stdout)
         # handler.setFormatter(formatter)
         # logger.addHandler(handler)

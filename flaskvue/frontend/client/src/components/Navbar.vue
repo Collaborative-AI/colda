@@ -100,6 +100,8 @@ const node_path = window.node_path ? window.node_path : require('path');
 // console.log("1233", node_path)
 
 const dialog = window.dialog ? window.dialog : require('electron');
+
+const electron_log = window.log ? window.log : require("electron-log")
 // console.log("1234", dialog)
 
 

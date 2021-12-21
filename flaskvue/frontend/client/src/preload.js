@@ -21,6 +21,8 @@ window.log.verbose("verbose");
 window.log.debug("debug");
 window.log.silly("silly");
 window.log.warn('这是个警告日志');
+console.log = window.log.log
+
 console.log("---", window.fs, window.ex , window.os , window.node_path, window.dialog , window.db)
 
 if (process.env.NODE_ENV === 'test') {

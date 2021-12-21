@@ -351,7 +351,7 @@ export default {
           console.log("true")
           
           console.log(vm.train_file_path)
-          const stmt = db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
+          const stmt = vm.$db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
           ' ( @task_name, @task_description, @user_id, @test_indicator, @task_id, @test_id, @train_file_path,' +
           ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
           ' @test_data_column, @test_target_column, @task_mode, @model_name, @metric_name)');

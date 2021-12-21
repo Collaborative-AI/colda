@@ -18,9 +18,9 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 from Items.main.apollo_utils import get_log
 
-@main.route('/get_task_id_log', methods=['POST'])
+@main.route('/get_backend_log', methods=['POST'])
 @token_auth.login_required
-def get_task_id_log():
+def get_backend_log():
 
     """
     return log of current task. Must have task_id in data, Might have test_id in data.
@@ -29,7 +29,7 @@ def get_task_id_log():
        None
 
     Returns:
-        data - List[String]. ['first log_interval\n', 'second\n', 'third']
+        data - List[List[String, String, List[String]]]. List[String]: ['first log_interval\n', 'second\n', 'third']
 
     Raises:
         KeyError - raises an exception
@@ -40,16 +40,24 @@ def get_task_id_log():
         return bad_request('You must post JSON data.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
-    if 'task_id' not in data and 'test_id' not in data:
-        return bad_request('task_id or test_id is required.')
-    if not data.get('task_id') and not data.get('test_id'):
-        return bad_request('task_id or test_id is required.')
+    # if 'task_id' not in data and 'test_id' not in data:
+    #     return bad_request('task_id or test_id is required.')
+    # if not data.get('task_id') and not data.get('test_id'):
+    #     return bad_request('task_id or test_id is required.')
 
     task_id = data['task_id']
 
-    if "task_id" in data:
-        return jsonify(get_log(g.current_user.id, task_id))
+    records = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == g.current_user.id).all()
+    
+    res = []
+    for record in records:
+        if record.test_indicator == "train":
+            task_id = record.task_id
+            res.append([task_id, "train", get_log(g.current_user.id, task_id)])
+        elif record.test_indicator == "test":
+            task_id = record.task_id
+            test_id = record.test_id
+            res.append([test_id, "test", get_log(g.current_user.id, task_id, test_id)])
 
-    elif "test_id" in data:
-        test_id = data['test_id']
-        return jsonify(get_log(g.current_user.id, task_id, test_id))
+    return jsonify(res)
+

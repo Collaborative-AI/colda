@@ -1,10 +1,14 @@
 module.exports = {
+
     preset: '@vue/cli-plugin-unit-jest/presets/no-babel',
     "moduleFileExtensions": [
         "js",
         "json",
         "vue"
       ],
+    // roots: [
+    //   '<rootDir>/test',
+    // ],
     transform: {
       '^.+\\.(ts|tsx)?$': 'ts-jest',
       "^.+\\.(js|jsx)$": "babel-jest",
@@ -14,6 +18,7 @@ module.exports = {
     //     "window": {}
     //   }
     "verbose": false,
+    // testMatch: ['**/__tests__/*.js?(x)'],
     // "runner": "jest-electron/runner",
     // "testEnvironment": "jest-electron/environment"
     

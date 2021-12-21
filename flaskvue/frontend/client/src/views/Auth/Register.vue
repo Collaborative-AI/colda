@@ -129,6 +129,7 @@ export default {
         this.$router.push({path: '/resend', query: {'username': this.loginForm.username}})
         
       }).catch((error) => {
+        console.log('error is', error)
         for (var field in error.response.data.message) {
           if (field == 'username') {
             this.registerForm.usernameError = error.response.data.message.username

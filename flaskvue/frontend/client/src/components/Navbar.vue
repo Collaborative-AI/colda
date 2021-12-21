@@ -1253,6 +1253,13 @@ export default {
           console.log("default_train_file_path",default_train_file_path)
           let default_train_data_column = row.default_train_data_column
           console.log("default_train_data_column",default_train_data_column)
+
+          vm.$axios.get('/changshi')
+            .then((response) => {
+              // handle success
+              console.log('response', x(response.data))
+              // return response
+      })
           // let task_mode = row.task_mode
           // let model_name = row.model_name      question?
 

@@ -83,8 +83,9 @@
 </template>
 
 <script>
-import store from '../../../store.js'
-import db from '../../../db'
+// import store from '../../../store.js'
+import store from '../../../../store.js'
+import db from '../../../../db'
 // import { set } from 'vue/types/umd'
 // import penditem from "../Penditem.vue"
 

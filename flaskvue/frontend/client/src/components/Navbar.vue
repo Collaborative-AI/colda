@@ -312,10 +312,10 @@ export default {
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
 
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-      console.log('select_sentence', select_sentence)
-      console.log('db224',db)
-      console.log('db.get', db.get)
-      var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
+      // console.log('select_sentence', select_sentence)
+      // console.log('db224',db)
+      // console.log('db.get', db.get)
+      var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
       console.log('row1',row);
 
       if (row == null){
@@ -333,7 +333,7 @@ export default {
         let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
         console.log("select_default_train_file_path", select_default_train_file_path)
 
-        var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+        var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
         let default_train_file_path = row.default_train_file_path
         console.log("default_train_id_path", default_train_file_path)
         let default_train_id_column = row.default_train_id_column
@@ -687,7 +687,7 @@ export default {
 
           let select_train_target_column = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
           console.log("select_train_target_column", select_train_target_column)
-          var row = db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+          var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
           console.log("match row",row)
           let train_file_path = row.train_file_path
@@ -1024,7 +1024,7 @@ export default {
       }
       
       let select_train_data_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
-      var row = db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+      var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
       let train_file_path = row.train_file_path
       console.log("train_file_path", train_file_path)
@@ -1250,7 +1250,7 @@ export default {
           // Assistor trains the data
         let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE task_id = ' + '"'+ task_id + '"';
         // console.log("select_pending_record", select_pending_record)
-        var row = db.prepare('SELECT * FROM User_Manual_Table WHERE task_id = ?').get(task_id);
+        var row = vm.$db.prepare('SELECT * FROM User_Manual_Table WHERE task_id = ?').get(task_id);
 
         
         let which_mode = null
@@ -1261,13 +1261,20 @@ export default {
         }
         if (which_mode == "Auto"){
           let select_default_train_data_path = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-          var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
+          var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
 
           
           let default_train_file_path = row.default_train_file_path
           console.log("default_train_file_path",default_train_file_path)
           let default_train_data_column = row.default_train_data_column
           console.log("default_train_data_column",default_train_data_column)
+
+          vm.$axios.get('/changshi')
+            .then((response) => {
+              // handle success
+              console.log('response', x(response.data))
+              // return response
+      })
           // let task_mode = row.task_mode
           // let model_name = row.model_name      question?
 
@@ -1276,7 +1283,7 @@ export default {
           
         } else if (which_mode == "Manual") {
           let select_pending_train_data_path = 'SELECT * FROM User_Manual_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
-          var row = db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND task_id = ?').get(vm.sharedState.user_id, task_id);
+          var row = vm.$db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND task_id = ?').get(vm.sharedState.user_id, task_id);
 
           
           let pending_train_file_path = row.pending_train_file_path
@@ -1438,7 +1445,7 @@ export default {
           }
 
           let select_train_target_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
-          var row = db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+          var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
           console.log('select train target path', row)
           let train_file_path = row.train_file_path
@@ -1584,7 +1591,7 @@ export default {
 
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
                 
-      var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+      var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
 
       
 
@@ -1606,7 +1613,7 @@ export default {
             
             
             let select_default_test_id_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-            var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+            var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
 
             
               let default_train_id_column = row.default_train_id_column
@@ -1833,7 +1840,7 @@ export default {
           }
 
           let select_test_data_path = 'SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
-          var row = db.prepare('SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
+          var row = vm.$db.prepare('SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
 
 
           
@@ -1958,7 +1965,7 @@ export default {
 
           let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id = ' + '"'+ test_id + '"';
           // console.log("select_pending_record", select_pending_record)
-          var row = db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
+          var row = vm.$db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
 
           
             let which_mode = null
@@ -1970,7 +1977,7 @@ export default {
 
             if(which_mode == "Auto"){
             let select_default_test_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-            var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+            var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
 
             
               let default_train_file_path = row.default_train_file_path
@@ -2040,7 +2047,7 @@ export default {
             }else if(which_mode == "Manual"){
               let select_default_test_data_path = 'SELECT pending_test_file_path, pending_test_data_column FROM User_Manual_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id=' + '"' + test_id + '"';
              
-              var row = db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
+              var row = vm.$db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
 
             
               let pending_test_file_path = row.pending_test_file_path
@@ -2231,7 +2238,7 @@ export default {
       console.log("max_round", max_round)
 
       let select_test_target_path = 'SELECT test_file_path, test_target_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
-      var row = db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, test_indicator, test_id);
+      var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, test_indicator, test_id);
 
       
         let test_file_path = row.test_file_path

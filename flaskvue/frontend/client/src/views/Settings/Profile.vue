@@ -304,8 +304,8 @@ export default {
     // },
     getUser (id) {
       let vm = this
-
-      const row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
+      console.log('bug1')
+      const row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
       // console.log('haha',row);
       if (row != null){
           vm.default_train_file_path = row.default_train_file_path
@@ -314,6 +314,7 @@ export default {
           vm.sharedState.mode = row.mode
           console.log('mode', vm.sharedState.mode)
         }
+        console.log('bug2')
 
 
 
@@ -382,30 +383,37 @@ export default {
 //         default_train_target_column:6,
 //         mode: 'auto'
 // });
-      const row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
+      const row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
       console.log('haha',row);
       if (row == null){
-
-        const stmt = db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column,@mode)');
+        console.log('dele0')
+        const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column,@mode)');
         stmt.run({
-          user_id:vm.sharedState.user_id , 
-          default_train_file_path:vm.default_train_file_path , 
-          default_train_id_column:vm.default_train_id_column, 
-          default_train_data_column:vm.default_train_data_column , 
-          default_train_target_column:"",
+          user_id: vm.sharedState.user_id , 
+          default_train_file_path: vm.default_train_file_path , 
+          default_train_id_column: vm.default_train_id_column, 
+          default_train_data_column: vm.default_train_data_column , 
+          default_train_target_column: "",
           mode: vm.sharedState.mode
         });
+        console.log('dele1')
       }else{
+        console.log('dele4')
         if(both_path_validation == true){
-          const stmt = db.prepare('UPDATE User_Default_Table' 
-          + 'SET default_train_file_path = ? ,'
-          + 'default_train_id_column = ? ,'
-          + 'default_train_data_column = ? ,'
-          + 'mode = ? ,'
-          + 'WHERE user_id = ?'); 
-          stmt.run(vm.default_train_file_path, vm.default_train_id_column, vm.default_train_data_column, vm.sharedState.mode, vm.sharedState.user_id);
+
+
+          const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
+          + ' SET default_train_file_path = ?,'
+          + ' default_train_id_column = ?,'
+          + ' default_train_data_column =?,'
+          + ' default_train_target_column =?,'
+          + ' mode = ?'
+          + ' WHERE user_id = ?'); 
+          console.log('dele3')
+          stmt.run(vm.default_train_file_path, vm.default_train_id_column, vm.default_train_data_column, '', vm.sharedState.mode, vm.sharedState.user_id);
         } 
       }
+      console.log('dele2')
       vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
     },
 //     onSubmit (e) {

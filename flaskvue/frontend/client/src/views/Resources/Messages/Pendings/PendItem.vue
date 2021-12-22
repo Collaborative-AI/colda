@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import store from '../../../store.js'
-import db from '../../../db'
+import store from '../../../../store'
+import db from '../../../../db'
 // import penditem from "../Penditem.vue"
 const fs = window.fs;
 const ex = window.ex;

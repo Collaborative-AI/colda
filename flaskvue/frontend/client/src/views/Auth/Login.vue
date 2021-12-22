@@ -44,15 +44,15 @@ export default {
   data () {
     return {
       sharedState: store.state,
-      loginForm: {
-        username: '',
-        password: '',
-        submitted: false,  // 是否点击了 submit 按钮
-        errors: 0,  // 表单是否在前端验证通过，0 表示没有错误，验证通过
-        usernameError: null,
-        passwordError: null
-      },
-      verifivation_res: false,
+      // loginForm: {
+      //   username: '',
+      //   password: '',
+      //   submitted: false,  // 是否点击了 submit 按钮
+      //   errors: 0,  // 表单是否在前端验证通过，0 表示没有错误，验证通过
+      //   usernameError: null,
+      //   passwordError: null
+      // },
+      // verifivation_res: false,
     }
   },
   methods: {
@@ -67,7 +67,9 @@ export default {
       console.log('用户点击了初始化')
     },
 
-    onSubmit (e) {
+    onSubmit (x) {
+      let vm = this
+      console.log("submittttt", this.loginForm.username)
       this.loginForm.submitted = true  // 先更新状态
       this.loginForm.errors = 0
 
@@ -85,6 +87,7 @@ export default {
         this.loginForm.passwordError = null
       }
 
+       console.log("!!!", this.loginForm.username)
       if (this.verifivation_res == false){
         console.log("ggggggg")
         this.loginForm.errors++
@@ -104,7 +107,7 @@ export default {
       // }
       // // axios 实现Basic Auth需要在config中设置 auth 这个属性即可
       // this.$axios.post('/tokens', payload)
-
+      console.log("!!!", this.loginForm.username)
       const path = '/tokens'
       // axios 实现Basic Auth需要在config中设置 auth 这个属性即可
       this.$axios.post(path, {}, {
@@ -124,14 +127,15 @@ export default {
 
             const name = JSON.parse(atob(response.data.token.split('.')[1])).name
             this.$toasted.success(`Welcome ${name}!`, { icon: 'fingerprint' })
-
-            if (typeof this.$route.query.redirect == 'undefined') {
-              this.$router.push('/')
-            } else {
-              this.$router.push(this.$route.query.redirect)
-            }
-
-
+            console.log("####")
+            
+            // vm.$route.query.redirect, 
+            // if (typeof this.$route.query.redirect == 'undefined') {
+            //   this.$router.push('/')
+            // } else {
+            //   this.$router.push(this.$route.query.redirect)
+            // }
+            x()
           }
           
         })
@@ -141,6 +145,7 @@ export default {
             this.loginForm.usernameError = 'Invalid username or password.'
             this.loginForm.passwordError = 'Invalid username or password.'
           } else {
+            console.log("666")
             console.log(error.response)
           }
         })

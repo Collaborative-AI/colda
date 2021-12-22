@@ -182,14 +182,26 @@ export default {
 
     // },
 
-    test_axios(x) {
-      console.log("wowowowowoow")
+    test_axios(x,y,z) {
+      let vm = this
+      console.log("wowowowowoow", vm.username)
       console.log('zzzz', this.$axios)
-      this.$axios.get('/changshi')
+      vm.$axios.get('/changshi')
         .then((response) => {
           // handle success
+          let a = 5
+          y(5)
           console.log('response', x(response.data))
           // return response
+          
+          vm.$axios.get('/changshi2')
+            .then((response) => {
+              // handle success
+              console.log('response', z(response.data))
+              // return response
+ 
+          })
+          return 5
       })
 
       function sleep(millisecond) {

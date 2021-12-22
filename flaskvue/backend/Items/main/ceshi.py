@@ -34,6 +34,13 @@ def changshi():
 #   print("data2", request.get_data())
   return "good,NIHAO"
 
+# @main.route('/ceshi', methods=['GET'])
+@main.route('/changshi2', methods=['GET'])
+def changshi2():
+  print("wori")
+
+  return "best,NIHAO"
+
 @main.route('/ceshi/<string:ID>/<int:value>', methods=['GET'])
 @token_auth.login_required
 def ceshi(ID,value):

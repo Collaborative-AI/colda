@@ -1965,7 +1965,7 @@ export default {
 
             if(which_mode == "Auto"){
             let select_default_test_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-            var row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+            var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
 
             
               let default_train_file_path = row.default_train_file_path

@@ -1,8 +1,8 @@
-"""version1
+"""comment
 
-Revision ID: 482428aeb477
+Revision ID: 9ba801faef03
 Revises: 
-Create Date: 2021-11-25 11:36:32.902502
+Create Date: 2021-12-22 12:37:31.298942
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '482428aeb477'
+revision = '9ba801faef03'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,6 +25,9 @@ def upgrade():
     sa.Column('task_description', sa.String(length=500), nullable=True),
     sa.Column('test_name', sa.String(length=120), nullable=True),
     sa.Column('test_description', sa.String(length=500), nullable=True),
+    sa.Column('task_mode', sa.String(length=120), nullable=True),
+    sa.Column('model_name', sa.String(length=120), nullable=True),
+    sa.Column('metric_name', sa.String(length=120), nullable=True),
     sa.Column('request_timestamp', sa.DateTime(), nullable=True),
     sa.Column('match_id_timestamp', sa.DateTime(), nullable=True),
     sa.Column('sponsor_id', sa.Integer(), nullable=True),
@@ -113,8 +116,11 @@ def upgrade():
     sa.Column('pending_task_id', sa.String(length=120), nullable=True),
     sa.Column('pending_test_id', sa.String(length=120), nullable=True),
     sa.Column('pending_task_name', sa.String(length=120), nullable=True),
+    sa.Column('pending_task_mode', sa.String(length=120), nullable=True),
+    sa.Column('pending_model_name', sa.String(length=120), nullable=True),
+    sa.Column('pending_metric_name', sa.String(length=120), nullable=True),
     sa.Column('pending_task_description', sa.String(length=500), nullable=True),
-    sa.Column('test_indicator', sa.String(length=10), nullable=True),
+    sa.Column('pending_test_indicator', sa.String(length=10), nullable=True),
     sa.ForeignKeyConstraint(['pending_assistor_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

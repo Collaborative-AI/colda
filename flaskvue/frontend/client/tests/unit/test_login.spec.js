@@ -1,11 +1,10 @@
 
-// import train_helper_functions from './helper_folder/Apollo_train_helper_functions.js'
 import { login_helper } from './helper_folder/Apollo_login_helper'
 jest.setTimeout(10000);
 
 afterAll(() => {
   window.localStorage.setItem('Apollo-token', null)
-  console.log('1 - afterAll')
+  console.log('afterAll')
 });
 
 describe('test_login', () => {

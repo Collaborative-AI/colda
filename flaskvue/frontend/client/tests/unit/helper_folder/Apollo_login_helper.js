@@ -16,15 +16,15 @@ login_helper.check_login_first_user = test('check_login_first_user',(done)=>{
     }
   }
 
-  // let login_parameters = generate_parameters(train_callback_functions.login)
-  let login_parameters = []
-  login_parameters.push(check_login_final)
-  login_parameters.push('Login_unittest')
+  // let cur_parameters = generate_parameters(train_callback_functions.login)
+  let cur_parameters = []
+  cur_parameters.push(check_login_final)
+  cur_parameters.push('Login_unittest')
   // sponsor
   Login_wrapper.setData({loginForm: {username: unittest_parameters.first_user_username, 
                                      password: unittest_parameters.first_user_password}, 
                                      verification_res: unittest_parameters.verification_res})
-  Login_wrapper.vm.onSubmit(login_parameters)
+  Login_wrapper.vm.onSubmit(cur_parameters)
 })
 
 login_helper.check_login_second_user = test('check_login_second_user',(done)=>{  
@@ -38,15 +38,15 @@ login_helper.check_login_second_user = test('check_login_second_user',(done)=>{
     }
   }
 
-  // let login_parameters = generate_parameters(train_callback_functions.login)
-  let login_parameters = []
-  login_parameters.push(check_login_final)
-  login_parameters.push('Login_unittest')
+  // let cur_parameters = generate_parameters(train_callback_functions.login)
+  let cur_parameters = []
+  cur_parameters.push(check_login_final)
+  cur_parameters.push('Login_unittest')
   // assistor
   Login_wrapper.setData({loginForm: {username: unittest_parameters.second_user_username, 
                                      password: unittest_parameters.second_user_password}, 
                                      verification_res: unittest_parameters.verification_res})
-  Login_wrapper.vm.onSubmit(login_parameters)
+  Login_wrapper.vm.onSubmit(cur_parameters)
 })
 
 export { login_helper }

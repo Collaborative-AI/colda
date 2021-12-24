@@ -20,7 +20,7 @@ find_assistor_helper.get_train_id = test('check_find_assistor_sponsor_get_train_
   Find_Assistor_wrapper.vm.get_train_id(cur_parameters)
 })
 
-find_assistor_helper.check_db = test('check_find_assistor_sponsor_db',(done) => {  
+find_assistor_helper.onSubmit = test('check_find_assistor_sponsor_db',(done) => {  
   let check_find_assistor_sponsor_onSubmit_1 = (data) => {
     try{
       let train_file_path = data[0]
@@ -70,19 +70,19 @@ find_assistor_helper.check_db = test('check_find_assistor_sponsor_db',(done) => 
     }
   }
 
-  // let check_find_assistor_sponsor_onSubmit_3 = (data) => {
-  //   try{
+  let check_find_assistor_sponsor_onSubmit_3 = (data) => {
+    try{
 
-  //     console.log('check_find_assistor_sponsor_onSubmit_3')
-  //   }catch (error){
-  //     done(error)
-  //   }
-  // }
+      console.log('check_find_assistor_sponsor_onSubmit_3')
+    }catch (error){
+      done(error)
+    }
+  }
 
   let cur_parameters = [];
   cur_parameters.push(check_find_assistor_sponsor_onSubmit_1)
   cur_parameters.push(check_find_assistor_sponsor_onSubmit_2)
-  // cur_parameters.push(check_find_assistor_sponsor_onSubmit_3)
+  cur_parameters.push(check_find_assistor_sponsor_onSubmit_3)
   cur_parameters.push('find_assistor_unittest')
   // assistor
   Find_Assistor_wrapper.setData({task_id: unittest_parameters.task_id,
@@ -98,8 +98,6 @@ find_assistor_helper.check_db = test('check_find_assistor_sponsor_db',(done) => 
                                  metric_name: unittest_parameters.metric_name})
   Find_Assistor_wrapper.vm.onSubmit(cur_parameters)
 })
-
-
 
 
 

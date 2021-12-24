@@ -90,13 +90,14 @@
 
 <script>
 
-const fs = window.fs;
-const dialog = window.dialog
+const fs = window.fs ? window.fs : require('fs');
+const dialog = window.dialog ? window.dialog : require('electron');
 
 // const store = require('../../store').default
 // const db = require('../../db').default
 import store from '../../store'
 import db from '../../db'
+import { execute_unittest_list, generate_unittest_parameters } from '../../utils.js'
 
 export default {
   name: 'Profile',  //this is the name of the component
@@ -373,7 +374,6 @@ export default {
       console.log("vm.default_train_data_column", vm.default_train_data_column)
 
 
-
 //       const stmt = db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column,@mode)');
 //       stmt.run({
 //         user_id:vm.sharedState.user_id , 
@@ -390,9 +390,9 @@ export default {
         const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column,@mode)');
         stmt.run({
           user_id: vm.sharedState.user_id , 
-          default_train_file_path: vm.default_train_file_path , 
+          default_train_file_path: vm.default_train_file_path, 
           default_train_id_column: vm.default_train_id_column, 
-          default_train_data_column: vm.default_train_data_column , 
+          default_train_data_column: vm.default_train_data_column, 
           default_train_target_column: "",
           mode: vm.sharedState.mode
         });
@@ -414,6 +414,8 @@ export default {
         } 
       }
       console.log('dele2')
+      let unittest_parameters = generate_unittest_parameters(vm.default_train_file_path, vm.default_train_id_column, vm.default_train_data_column)
+      execute_unittest_list(arguments[arguments.length-1], 0, "profile_unittest", unittest_parameters)
       vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
     },
 //     onSubmit (e) {

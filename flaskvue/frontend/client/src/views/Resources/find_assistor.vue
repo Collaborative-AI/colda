@@ -176,7 +176,7 @@ export default {
         .then((response) => {
           this.task_id = response.data.task_id
 
-           let unittest_parameters = generate_unittest_parameters(this.task_id)
+          let unittest_parameters = generate_unittest_parameters(this.task_id)
           execute_unittest_list(arguments[arguments.length-1], 0, "find_assistor_unittest", unittest_parameters)
           console.log("task_id))))))))))))))00", this.task_id)
         })
@@ -510,8 +510,8 @@ export default {
             console.log(err)
           }
 
-          // unittest_parameters = generate_unittest_parameters()
-          // execute_unittest_list(arguments[arguments.length-1], 1, "find_assistor_unittest", unittest_parameters)        // })          
+          unittest_parameters = generate_unittest_parameters()
+          execute_unittest_list(arguments[arguments.length-1], 2, "find_assistor_unittest", unittest_parameters)        // })          
           
         }
 

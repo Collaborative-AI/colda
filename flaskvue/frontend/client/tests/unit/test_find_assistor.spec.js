@@ -4,7 +4,7 @@ jest.setTimeout(10000);
 
 afterAll(() => {
   window.localStorage.setItem('Apollo-token', null)
-  console.log('1 - afterAll')
+  console.log('afterAll')
 });
 
 describe('test_find_assistor', () => {

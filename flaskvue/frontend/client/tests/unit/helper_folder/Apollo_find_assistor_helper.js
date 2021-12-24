@@ -104,6 +104,4 @@ find_assistor_helper.onSubmit = test('check_find_assistor_sponsor_db',(done) => 
 
 
 
-
-
 export { find_assistor_helper }

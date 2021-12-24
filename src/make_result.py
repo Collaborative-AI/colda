@@ -63,7 +63,7 @@ def make_result(args):
 def result_func(alpha, task_mode, history, output, target):
     output = history + alpha * output
     if task_mode == 'regression':
-        loss = ((target - output) ** 2)
+        loss = ((target - output) ** 2).mean()
     elif task_mode == 'classification':
         exp_output = np.exp(output - np.max(output, axis=-1, keepdims=True))
         softmax_output = exp_output / np.sum(exp_output, axis=-1, keepdims=True)

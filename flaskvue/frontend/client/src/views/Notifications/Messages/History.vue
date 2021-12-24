@@ -1,5 +1,6 @@
 <template>
 <div>
+  {{backend_log}}
 
 
 
@@ -162,6 +163,7 @@ export default {
       task_name: '',
       page: 'chart',
       test_num: '2',
+      backend_log: "",
       
       // baseline_rmse: [30, 30, 80, 81, 56, 55, 40],
       lineChartData: {
@@ -383,6 +385,24 @@ export default {
         })
 
     },
+
+    get_backend_log(task_id){
+      let vm = this
+      console.log('hshs')
+      const payload = {
+        task_id: task_id,
+      }
+      this.$axios.post('/get_backend_log/', payload)
+        .then((response) => {
+          console.log('backend',response)
+          vm.backend_log=response.data
+          
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    },
     
     getLog(task_id) {
       const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
@@ -598,6 +618,7 @@ export default {
     this.exe_position = new_root.exe_position
     this.getLog(this.$route.query.from)
     this.checkSponsor(this.$route.query.from)
+    this.get_backend_log(this.task_id)
     this.$nextTick(this.draw_chart())
     
     // this.$nextTick(this.checkSponsor(this.$route.query.from))

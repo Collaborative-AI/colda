@@ -52,11 +52,7 @@ export default {
         usernameError: null,
         passwordError: null
       },
-<<<<<<< HEAD
-      verifivation_res: false,
-=======
       verification_res: false,
->>>>>>> cdbef07836d6c035ff55d5c6de451c293f30250b
     }
   },
   methods: {
@@ -133,15 +129,6 @@ export default {
             this.$toasted.success(`Welcome ${name}!`, { icon: 'fingerprint' })
             console.log("####")
             
-<<<<<<< HEAD
-            // vm.$route.query.redirect, 
-            if (typeof this.$route.query.redirect == 'undefined') {
-              this.$router.push('/')
-            } else {
-              this.$router.push(this.$route.query.redirect)
-            }
-            
-=======
             // if (typeof this.$route.query.redirect == 'undefined') {
             //   this.$router.push('/')
             // } else {
@@ -149,7 +136,6 @@ export default {
             // }
 
             execute_unittest_list(arguments[arguments.length-1], 0, "Login_unittest")
->>>>>>> cdbef07836d6c035ff55d5c6de451c293f30250b
           }
           
         })

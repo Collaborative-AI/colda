@@ -47,7 +47,7 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
   // Do something with response data
-  console.log("axios response", response)
+  // console.log("axios response", response)
   return response
 }, function (error) {
   // Do something with response error

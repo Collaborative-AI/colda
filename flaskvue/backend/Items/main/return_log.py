@@ -36,6 +36,7 @@ def get_backend_log():
     """
 
     data = request.get_json()
+    print('data',data)
     if not data:
         return bad_request('You must post JSON data.')
     if 'task_id' not in data or not data.get('task_id'):

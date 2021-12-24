@@ -328,7 +328,7 @@ export default {
         vm.sharedState.mode = row.mode;
       } 
       // check vm.sharedState.mode
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_request_unittest")
+      // execute_unittest_list(arguments[arguments.length-1], 0, "unread_request_unittest")
 
       for (let task_id in cur_unread_request_Taskid_dict){
         console.log('navbar unread request mode', vm.sharedState.mode )
@@ -352,7 +352,7 @@ export default {
           console.log("default_train_id_path", default_train_file_path)
           let default_train_id_column = row.default_train_id_column
 
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_request_unittest")
+          // execute_unittest_list(arguments[arguments.length-1], 1, "unread_request_unittest")
 
           let hash_id_file_address = null;
           let Log_address = null;
@@ -373,7 +373,7 @@ export default {
           }catch(err){
             console.log(err)
           }
-          execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest")
+          // execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest")
 
           console.log("Log_address------------", Log_address)
 
@@ -396,7 +396,7 @@ export default {
           vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
             .then((response) => {
               // handle success
-              execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest")
+              // execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest")
               console.log("2.2 assistor uploads id file", response)
               vm.test_response = response
               // return response

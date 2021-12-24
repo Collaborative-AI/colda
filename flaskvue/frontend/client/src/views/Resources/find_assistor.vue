@@ -435,11 +435,11 @@ export default {
             metric_name: vm.metric_name,
             task_description: vm.task_description,
           }
-          console.log('fins_assistor_data', find_assistor_data)
+          // console.log('fins_assistor_data', find_assistor_data)
 
           vm.$axios.post('/find_assistor', find_assistor_data)
           .then((response) => {
-            console.log('response!!', response.data)
+            // console.log('response!!', response.data)
             if (response.data == "wrong username"){
               console.log("Username Wrong", response)
               vm.$toasted.success(`Username Wrong. Please start a new task"`, { icon: 'fingerprint' })
@@ -486,7 +486,7 @@ export default {
             }
 
             vm.task_id = ""
-            vm.$router.push('/notifications')
+            // vm.$router.push('/notifications')
             vm.select_data=false
 
           })
@@ -510,8 +510,8 @@ export default {
             console.log(err)
           }
 
-          // unittest_parameters = generate_unittest_parameters()
-          // execute_unittest_list(arguments[arguments.length-1], 1, "find_assistor_unittest", unittest_parameters)        // })          
+          unittest_parameters = generate_unittest_parameters()
+          execute_unittest_list(arguments[arguments.length-1], 2, "find_assistor_unittest", unittest_parameters)        // })          
           
         }
 

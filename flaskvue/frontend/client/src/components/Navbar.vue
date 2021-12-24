@@ -570,13 +570,16 @@ export default {
 
 
     unread_match_id(unread_match_id_notification) {
-      
-          
+            
       console.log("3.1 Update match id notification response", unread_match_id_notification)
       this.$toasted.success("3.1 Update the match id notification", { icon: 'fingerprint' })
 
       let cur_unread_match_id_Taskid_dict = unread_match_id_notification["check_dict"]
 
+      // check if testing task id in the cur_unread_request_Taskid_dict
+      let unittest_parameters = generate_unittest_parameters(cur_unread_match_id_Taskid_dict)
+      execute_unittest_list(arguments[arguments.length-1], 0, "unread_match_id_unittest", unittest_parameters)
+      
       for (let task_id in cur_unread_match_id_Taskid_dict){
         
         const Log_address = this.handle_train_log_address(task_id)
@@ -597,7 +600,7 @@ export default {
           } catch (err) {
             console.log(err)
           }
-          this.unread_match_id_sponsor(task_id)
+          this.unread_match_id_sponsor(task_id, arguments[arguments.length-1])
         }  
         else{
           console.log("3.2 Unread_match_id_assistor")
@@ -606,7 +609,7 @@ export default {
           } catch (err) {
             console.log(err)
           }
-          this.unread_match_id_assistor(task_id)
+          this.unread_match_id_assistor(task_id, arguments[arguments.length-1])
         }
       }
       return 'done'
@@ -631,6 +634,11 @@ export default {
         .then((response) => {
           // call back
           // iterate the match_id_file
+
+          // check users/user_id/match_id_file return value
+          let unittest_parameters = generate_unittest_parameters(response.data)
+          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          
           console.log("3.3 Sponsor gets matched id file")
           vm.$toasted.success("3.3 Sponsor gets matched id file", { icon: 'fingerprint' })
 
@@ -663,6 +671,10 @@ export default {
             }catch(err){
               console.log(err)
             }
+
+            // check if we run here
+            let unittest_parameters = generate_unittest_parameters()
+            execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
 
             fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
             console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2]);
@@ -775,6 +787,12 @@ export default {
           vm.$axios.post('/send_situation/', send_situation_payload)
             .then((response) => {
             // handle success
+
+            // check send_situation return value
+            let unittest_parameters = generate_unittest_parameters(response.data)
+            execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
+          
+
             console.log("3.7 Sponsor sends all situations", response)
             vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
             
@@ -907,7 +925,11 @@ export default {
       // async
       this.$axios.post(path, payload)
         .then((response) => {
-
+          
+          // check users/user_id/match_id_file return value
+          let unittest_parameters = generate_unittest_parameters(response.data)
+          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          
           console.log("3.3 Assistor gets matched id file", response)
           vm.$toasted.success("3.3 Assistor gets matched id file", { icon: 'fingerprint' })
           try {
@@ -975,6 +997,8 @@ export default {
             console.log(err)
           }
 
+          let unittest_parameters = generate_unittest_parameters()
+          execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
           // const path = `/assistor_write_match_index_done/`
 
           // const assistor_write_match_index_done_data = {

@@ -35,8 +35,6 @@ def send_situation():
     task_id = data.get('task_id')
     assistor_random_id_list = data.get('assistor_random_id_list')
 
-    
-
     # get recent round
     cur_round = 1
     query = Message.query.filter(Message.sender_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()

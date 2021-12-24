@@ -68,11 +68,12 @@
 import store from '../../store'
 import db from '../../db'
 
-const fs = window.fs;
-const ex = window.ex;
-const node_path = window.node_path;
-const os = window.os;
-const dialog = window.dialog
+
+const fs = window.fs ? window.fs : require('fs');
+const ex = window.ex ? window.ex : require('child_process');
+const node_path = window.node_path ? window.node_path : require('path');
+const os = window.os ? window.os : require('os');
+const dialog = window.dialog ? window.dialog : require('electron');
 // const store = require('../../store').defaultv
 // const $ = require('jquery')
 

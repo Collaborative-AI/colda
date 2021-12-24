@@ -10103,9 +10103,9 @@
   "version" "0.4.1"
 
 "json-schema@0.2.3":
-  "integrity" "sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA=="
-  "resolved" "https://registry.npmjs.org/json-schema/-/json-schema-0.4.0.tgz"
-  "version" "0.4.0"
+  "integrity" "sha1-tIDIkuWaLwWVTOcnvT8qTogvnhM="
+  "resolved" "https://registry.npmjs.org/json-schema/-/json-schema-0.2.3.tgz"
+  "version" "0.2.3"
 
 "json-stringify-safe@^5.0.1", "json-stringify-safe@~5.0.1":
   "integrity" "sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus="

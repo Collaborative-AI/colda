@@ -36,7 +36,7 @@
 
 <script>
 import store from '../../store.js'
-
+import { execute_unittest_list } from '../../utils.js'
 // const store = require('../../store').default
 
 export default {
@@ -44,22 +44,22 @@ export default {
   data () {
     return {
       sharedState: store.state,
-      // loginForm: {
-      //   username: '',
-      //   password: '',
-      //   submitted: false,  // 是否点击了 submit 按钮
-      //   errors: 0,  // 表单是否在前端验证通过，0 表示没有错误，验证通过
-      //   usernameError: null,
-      //   passwordError: null
-      // },
-      // verifivation_res: false,
+      loginForm: {
+        username: '',
+        password: '',
+        submitted: false,  // 是否点击了 submit 按钮
+        errors: 0,  // 表单是否在前端验证通过，0 表示没有错误，验证通过
+        usernameError: null,
+        passwordError: null
+      },
+      verification_res: false,
     }
   },
   methods: {
     verify(result){
       console.log(result) // result为true表示验证通过，false表示验证三次都失败了哦
       if (result == true){
-        this.verifivation_res = true;
+        this.verification_res = true;
       }
     },
 
@@ -67,9 +67,9 @@ export default {
       console.log('用户点击了初始化')
     },
 
-    onSubmit (x) {
+    onSubmit (e) {
       let vm = this
-      console.log("submittttt", this.loginForm.username)
+      console.log("submittttt", arguments.length, this.loginForm.username, this.loginForm.password)
       this.loginForm.submitted = true  // 先更新状态
       this.loginForm.errors = 0
 
@@ -88,7 +88,7 @@ export default {
       }
 
        console.log("!!!", this.loginForm.username)
-      if (this.verifivation_res == false){
+      if (this.verification_res == false){
         console.log("ggggggg")
         this.loginForm.errors++
         this.$toasted.success("Please move slider into the right place", { icon: 'fingerprint' })
@@ -129,13 +129,13 @@ export default {
             this.$toasted.success(`Welcome ${name}!`, { icon: 'fingerprint' })
             console.log("####")
             
-            // vm.$route.query.redirect, 
             // if (typeof this.$route.query.redirect == 'undefined') {
             //   this.$router.push('/')
             // } else {
             //   this.$router.push(this.$route.query.redirect)
             // }
-            x()
+
+            execute_unittest_list(arguments[arguments.length-1], 0, "Login_unittest")
           }
           
         })
@@ -146,7 +146,7 @@ export default {
             this.loginForm.passwordError = 'Invalid username or password.'
           } else {
             console.log("666")
-            console.log(error.response)
+            console.log(error)
           }
         })
     }

@@ -109,3 +109,10 @@ better-sqlite3: https://github.com/JoshuaWise/better-sqlite3/blob/master/docs/ap
 
 
 
+<!-- generate_sentence(user_id, task_id, test_id=null):
+if test_id != null{
+
+}
+let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + user_id;
+    better-sqlite3: select (取出来)
+    结果返回来 return array -->

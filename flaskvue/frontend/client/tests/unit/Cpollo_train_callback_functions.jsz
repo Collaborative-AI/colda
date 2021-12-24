@@ -1,0 +1,85 @@
+/*
+    In this file, all callback functions for unittest, which are the
+    parameters passing in the test functions, are constructed
+    The structure is Object[Object], or Dict[Dict]
+*/
+
+import { retrieve_db_record } from './Apollo_unittest_utils'  
+
+
+let train_callback_functions = {}
+
+train_callback_functions.login = {}
+
+// let check_login = (data) => {
+//   try{
+//     console.log("daozhelile")
+//     done()
+//     console.log('window', window.localStorage.getItem('Apollo-token'))
+//   }catch (error){
+//     done(error)
+//   }
+// }
+
+
+
+// train_callback_functions.login.check_login = check_login
+
+train_callback_functions.find_assistor_sponsor = {}
+let test_find_assistor_db = (data) => {
+  try{
+    let task_name = data[0]
+
+    let user_id = data[2]
+    let task_id = data[4]
+    row = retrieve_db_record(user_id, task_id)
+    expect(data)
+
+
+  }catch (error){
+    console.log(error)
+  }
+}
+
+
+
+
+
+train_callback_functions.unread_request_assistor = {}
+
+
+
+
+
+train_callback_functions.unread_match_id_sponsor = {}
+
+
+
+
+
+train_callback_functions.unread_match_id_assistor = {}
+
+
+
+
+
+train_callback_functions.unread_situation_sponsor = {}
+
+
+
+
+
+train_callback_functions.unread_situation_assistor = {}
+
+
+
+
+
+
+train_callback_functions.unread_output_sponsor = {}
+
+
+
+
+
+export default train_callback_functions

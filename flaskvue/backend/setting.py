@@ -43,6 +43,11 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    SQLALCHEMY_ENGINE_OPTIONS = {
+    # "poolclass": QueuePool,
+    "pool_size": 50,
+}
+
     MESSAGES_PER_PAGE = 10
 
     # gmail for email validation

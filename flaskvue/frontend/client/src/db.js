@@ -27,7 +27,10 @@ db.exec("CREATE TABLE IF NOT EXISTS User_Default_Table (user_id                 
                                                      default_train_id_column          text, \
                                                      default_train_data_column        text, \
                                                      default_train_target_column      text, \
-                                                     mode                       text)");
+                                                     mode                       text, \
+                                                     task_mode                  text, \
+                                                     model_name                 text, \
+                                                     metric_name                text)");
 
 db.exec("CREATE TABLE IF NOT EXISTS User_Sponsor_Table (task_name          text,\
                                             task_description   text,\
@@ -61,7 +64,10 @@ db.exec("CREATE TABLE IF NOT EXISTS User_Manual_Table (task_name                
                                                 pending_test_file_path    text, \
                                                 pending_test_id_column          text, \
                                                 pending_test_data_column        text, \
-                                                pending_test_target_column      text)");
+                                                pending_test_target_column      text, \
+                                                task_mode                  text, \
+                                                model_name                 text, \
+                                                metric_name                text)");
 
 
 

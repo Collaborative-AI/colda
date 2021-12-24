@@ -125,6 +125,7 @@ export default {
       showView: true,
       test_response: {},
       
+      
     }
   },
   methods: {
@@ -190,7 +191,7 @@ export default {
         .then((response) => {
           // handle success
           let a = 5
-          y(5)
+          
           console.log('response', x(response.data))
           // return response
           
@@ -310,6 +311,8 @@ export default {
       vm.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
 
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
+      let cur_unread_request_info_dict = unread_request_notification["info_dict"]
+      
 
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
       // console.log('select_sentence', select_sentence)
@@ -327,6 +330,15 @@ export default {
       
       for (let task_id in cur_unread_request_Taskid_dict){
         console.log('navbar unread request mode', vm.sharedState.mode )
+
+       
+        const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
+          + ' SET task_mode = ?,'
+          + ' model_name = ?,'
+          + ' metric_name = ?'
+          + ' WHERE user_id = ?'); 
+          stmt.run(cur_unread_request_info_dict[task_id]["task_mode"], cur_unread_request_info_dict[task_id]["model_name"], cur_unread_request_info_dict[task_id]["metri_name"], vm.sharedState.user_id);
+
 
         if (vm.sharedState.mode == 'Auto'){
      
@@ -1030,6 +1042,7 @@ export default {
       console.log("train_file_path", train_file_path)
       let train_data_column = row.train_data_column
       console.log("train_data_column", train_data_column)
+      console.log('row1', row)
       let task_mode = row.task_mode
       let model_name = row.model_name
       try{
@@ -1268,17 +1281,20 @@ export default {
           console.log("default_train_file_path",default_train_file_path)
           let default_train_data_column = row.default_train_data_column
           console.log("default_train_data_column",default_train_data_column)
+          let task_mode = row.task_mode
+          console.log("task_mode",task_mode)
+          let model_name = row.model_name 
+          console.log("model_name",model_name)
 
           vm.$axios.get('/changshi')
             .then((response) => {
               // handle success
-              console.log('response', x(response.data))
+              console.log('response', (response.data))
               // return response
       })
-          // let task_mode = row.task_mode
-          // let model_name = row.model_name      question?
+             
 
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address,task_mode, model_name)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address, task_mode, model_name)
 
           
         } else if (which_mode == "Manual") {
@@ -1293,7 +1309,7 @@ export default {
           let task_mode = row.task_mode
           let model_name = row.model_name
 
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address,task_mode, model_name)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address, task_mode, model_name)
 
 
         }else{
@@ -1473,7 +1489,9 @@ export default {
 
         make_result_done = ex.execSync(vm.exe_position + ' make_result --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
           + ' --task_id '+ task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path 
-          + ' --target_idx ' + train_target_column, {encoding: 'utf8'})
+          + ' --target_idx ' + train_target_column + ' --task_mode ' + task_mode 
+          + ' --metric_name ' + metric_name, {encoding: 'utf8'}) 
+
 
         make_result_done = make_result_done.split("?")
         indicator = vm.handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")

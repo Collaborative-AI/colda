@@ -260,9 +260,13 @@ export default {
           // });
           console.log("true")
           console.log(vm.test_file_path,vm.test_id_column,vm.test_target_column)
+
           let insert_sentence = `INSERT INTO "User_Sponsor_Table"("user_id", "test_indicator", "task_id", "task_name", "test_id", "test_file_path", "test_id_column","test_data_column","test_target_column") VALUES 
               (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.task_name + `", "` +vm.test_id + `", "` +vm.test_file_path+ `", "` +vm.test_id_column+`", "`+vm.test_data_column+`", "`+vm.test_target_column+`")`
           console.log(insert_sentence)
+
+          
+
           db.run(insert_sentence, function(err){
             if (err){
               console.log(err);

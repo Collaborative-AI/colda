@@ -42,11 +42,11 @@ const PendItem = () => import('../views/Resources/Messages/Pendings/PendItem.vue
 
 
 // User Notifications
-// const Notifications = () => import('../views/Notifications/Notifications.vue')
+const Notifications = () => import('../views/Notifications/Notifications.vue')
 // const RecivedComments = () => import('../views/Notifications/RecivedComments.vue')
-// const MessagesIndex = () => import('../views/Notifications/Messages/Index.vue')
-// const RecivedMessages = () => import('../views/Notifications/Messages/List.vue')
-// const MessagesHistory = () => import('../views/Notifications/Messages/History.vue')
+const MessagesIndex = () => import('../views/Notifications/Messages/Index.vue')
+const RecivedMessages = () => import('../views/Notifications/Messages/List.vue')
+const MessagesHistory = () => import('../views/Notifications/Messages/History.vue')
 
 // User Personal Settings
 const Settings = () => import('../views/Settings/Settings.vue')
@@ -191,57 +191,57 @@ const routes = [
       authority: ['user', 'admin'],
     }
   },
-  // {
-  //   // 用户通知
-  //   path: '/notifications',
-  //   component: Notifications,
-  //   children: [
-  //       { 
-  //           path: '', 
-  //           component: MessagesIndex, 
-  //           children: [
-  //             // 默认匹配，哪些人给你发送过私信
-  //             { 
-  //                 path: '', 
-  //                 name: 'MessagesIndex', 
-  //                 component: RecivedMessages
-  //             },
-  //             // 与某个用户之间的全部历史对话记录
-  //             { 
-  //                 path: 'history', 
-  //                 name: 'MessagesHistory', 
-  //                 component: MessagesHistory
-  //             }
-  //         ]
-  //       },
-  //       // {   path: 'comments', 
-  //       //     name: 'RecivedComments', 
-  //       //     component: RecivedComments 
-  //       // },
-  //       // { 
-  //       //     path: 'messages', 
-  //       //     component: MessagesIndex,
-  //       //     children: [
-  //       //         // 默认匹配，哪些人给你发送过私信
-  //       //         { 
-  //       //             path: '', 
-  //       //             name: 'MessagesIndex', 
-  //       //             component: RecivedMessages
-  //       //         },
-  //       //         // 与某个用户之间的全部历史对话记录
-  //       //         { 
-  //       //             path: 'history', 
-  //       //             name: 'MessagesHistory', 
-  //       //             component: MessagesHistory
-  //       //         }
-  //       //     ]
-  //       // },
-  //   ],
-  //   meta: {
-  //     requiresAuth: true,
-  //     authority: ['user', 'admin'],
-  //   }
-  // },
+  {
+    // 用户通知
+    path: '/notifications',
+    component: Notifications,
+    children: [
+        { 
+            path: '', 
+            component: MessagesIndex, 
+            children: [
+              // 默认匹配，哪些人给你发送过私信
+              { 
+                  path: '', 
+                  name: 'MessagesIndex', 
+                  component: RecivedMessages
+              },
+              // 与某个用户之间的全部历史对话记录
+              { 
+                  path: 'history', 
+                  name: 'MessagesHistory', 
+                  component: MessagesHistory
+              }
+          ]
+        },
+        // {   path: 'comments', 
+        //     name: 'RecivedComments', 
+        //     component: RecivedComments 
+        // },
+        // { 
+        //     path: 'messages', 
+        //     component: MessagesIndex,
+        //     children: [
+        //         // 默认匹配，哪些人给你发送过私信
+        //         { 
+        //             path: '', 
+        //             name: 'MessagesIndex', 
+        //             component: RecivedMessages
+        //         },
+        //         // 与某个用户之间的全部历史对话记录
+        //         { 
+        //             path: 'history', 
+        //             name: 'MessagesHistory', 
+        //             component: MessagesHistory
+        //         }
+        //     ]
+        // },
+    ],
+    meta: {
+      requiresAuth: true,
+      authority: ['user', 'admin'],
+    }
+  },
   {
     path: '/plist',
     name: 'Plist',

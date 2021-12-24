@@ -44,15 +44,15 @@ export default {
   data () {
     return {
       sharedState: store.state,
-      // loginForm: {
-      //   username: '',
-      //   password: '',
-      //   submitted: false,  // 是否点击了 submit 按钮
-      //   errors: 0,  // 表单是否在前端验证通过，0 表示没有错误，验证通过
-      //   usernameError: null,
-      //   passwordError: null
-      // },
-      // verifivation_res: false,
+      loginForm: {
+        username: '',
+        password: '',
+        submitted: false,  // 是否点击了 submit 按钮
+        errors: 0,  // 表单是否在前端验证通过，0 表示没有错误，验证通过
+        usernameError: null,
+        passwordError: null
+      },
+      verifivation_res: false,
     }
   },
   methods: {
@@ -130,12 +130,12 @@ export default {
             console.log("####")
             
             // vm.$route.query.redirect, 
-            // if (typeof this.$route.query.redirect == 'undefined') {
-            //   this.$router.push('/')
-            // } else {
-            //   this.$router.push(this.$route.query.redirect)
-            // }
-            x()
+            if (typeof this.$route.query.redirect == 'undefined') {
+              this.$router.push('/')
+            } else {
+              this.$router.push(this.$route.query.redirect)
+            }
+            
           }
           
         })

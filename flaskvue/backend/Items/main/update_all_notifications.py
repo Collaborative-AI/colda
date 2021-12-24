@@ -112,9 +112,10 @@ def update_all_notifications():
                     if record[0].request_timestamp > lastest_time:
                         lastest_time = record[0].request_timestamp
                     check_dict[task_id_list[j]] = 1
-                    info_dict[task_id_list[j]]['task_mode'] = record.task_mode
-                    info_dict[task_id_list[j]]['model_name'] = record.model_name
-                    info_dict[task_id_list[j]]['metric_name'] = record.metric_name
+                    print(type(info_dict[task_id_list[j]]))
+                    info_dict[task_id_list[j]]['task_mode'] = record[0].task_mode
+                    info_dict[task_id_list[j]]['model_name'] = record[0].model_name
+                    info_dict[task_id_list[j]]['metric_name'] = record[0].metric_name
                 # Update the Notification
 
                 last_requests_read_time = user.last_requests_read_time or datetime(1900, 1, 1)          
@@ -289,9 +290,9 @@ def update_all_notifications():
                         lastest_time = record[0].request_timestamp
                     check_dict[test_id_list[j]] = 1
                     test_id_to_task_id[test_id_list[j]] = record[0].task_id
-                    info_dict[test_id_list[j]]['task_mode'] = record.task_mode
-                    info_dict[test_id_list[j]]['model_name'] = record.model_name
-                    info_dict[test_id_list[j]]['metric_name'] = record.metric_name
+                    info_dict[test_id_list[j]]['task_mode'] = record[0].task_mode
+                    info_dict[test_id_list[j]]['model_name'] = record[0].model_name
+                    info_dict[test_id_list[j]]['metric_name'] = record[0].metric_name
                 # Update the Notification
 
                 last_test_requests_read_time = user.last_test_requests_read_time or datetime(1900, 1, 1)          

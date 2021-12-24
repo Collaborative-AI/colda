@@ -326,8 +326,10 @@ export default {
       }
       else{
         vm.sharedState.mode = row.mode;
-      }  
-      
+      } 
+      // check vm.sharedState.mode
+      execute_unittest_list(arguments[arguments.length-1], 0, "unread_request_unittest")
+
       for (let task_id in cur_unread_request_Taskid_dict){
         console.log('navbar unread request mode', vm.sharedState.mode )
 
@@ -341,75 +343,79 @@ export default {
 
 
         if (vm.sharedState.mode == 'Auto'){
-     
-        let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-        console.log("select_default_train_file_path", select_default_train_file_path)
 
-        var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
-        let default_train_file_path = row.default_train_file_path
-        console.log("default_train_id_path", default_train_file_path)
-        let default_train_id_column = row.default_train_id_column
+          let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
+          console.log("select_default_train_file_path", select_default_train_file_path)
 
-        let hash_id_file_address = null;
-        let Log_address = null;
-        try{   
-          hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                                  + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
-                                  + ' --id_idx ' + default_train_id_column, {encoding: 'utf8'})
+          var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+          let default_train_file_path = row.default_train_file_path
+          console.log("default_train_id_path", default_train_file_path)
+          let default_train_id_column = row.default_train_id_column
 
-          hash_id_file_address = hash_id_file_address.split("?")
-          let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
-          Log_address = vm.handle_train_log_address(task_id)
-          if (indicator == false){
-            console.log("hash_id_file_address wrong")
-            fs.appendFileSync(Log_address, "hash_id_file_address wrong")
-            return 
-          }
-          
-        }catch(err){
-          console.log(err)
-        }
+          execute_unittest_list(arguments[arguments.length-1], 1, "unread_request_unittest")
 
-        console.log("Log_address------------", Log_address)
+          let hash_id_file_address = null;
+          let Log_address = null;
+          try{   
+            hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                                    + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
+                                    + ' --id_idx ' + default_train_id_column, {encoding: 'utf8'})
 
-        try {
-          fs.appendFileSync(Log_address, "\n You are Assistor\n")
-          fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
-          fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
-          fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
-        } catch (err) {
-          console.log(err)
-        }
-        let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
-
-        const match_assistor_id_data = {
-          task_id: task_id,
-          file: hash_id_file_data,
-        }
-        console.log('hash_id_file_data', hash_id_file_data)
-        
-        vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
-          .then((response) => {
-            // handle success
-            console.log("2.2 assistor uploads id file", response)
-            vm.test_response = response
-            // return response
-            
-            vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
-
-            try {
-              fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
-              fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
-            } catch (err) {
-              console.log(err)
+            hash_id_file_address = hash_id_file_address.split("?")
+            let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
+            Log_address = vm.handle_train_log_address(task_id)
+            if (indicator == false){
+              console.log("hash_id_file_address wrong")
+              fs.appendFileSync(Log_address, "hash_id_file_address wrong")
+              return 
             }
-          })
-          .catch((error) => {
-            // handle error
-            console.log(error)
-            // console.log(error.response.data)
-            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-          })
+            
+          }catch(err){
+            console.log(err)
+          }
+          execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest")
+
+          console.log("Log_address------------", Log_address)
+
+          try {
+            fs.appendFileSync(Log_address, "\n You are Assistor\n")
+            fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
+            fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
+            fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
+          } catch (err) {
+            console.log(err)
+          }
+          let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+
+          const match_assistor_id_data = {
+            task_id: task_id,
+            file: hash_id_file_data,
+          }
+          console.log('hash_id_file_data', hash_id_file_data)
+          
+          vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
+            .then((response) => {
+              // handle success
+              execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest")
+              console.log("2.2 assistor uploads id file", response)
+              vm.test_response = response
+              // return response
+              
+              vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
+
+              try {
+                fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
+                fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
+              } catch (err) {
+                console.log(err)
+              }
+            })
+            .catch((error) => {
+              // handle error
+              console.log(error)
+              // console.log(error.response.data)
+              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            })
 
         
       } else if (vm.sharedState.mode == 'Manual'){
@@ -1054,7 +1060,6 @@ export default {
           + ' --task_mode ' + task_mode + ' --model_name ' + model_name, {encoding: 'utf8'})
 
   
-
         
         train_output = train_output.split("?")
         console.log('train_output1', train_output)
@@ -1264,7 +1269,6 @@ export default {
         let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE task_id = ' + '"'+ task_id + '"';
         // console.log("select_pending_record", select_pending_record)
         var row = vm.$db.prepare('SELECT * FROM User_Manual_Table WHERE task_id = ?').get(task_id);
-
         
         let which_mode = null
         if (row == null){

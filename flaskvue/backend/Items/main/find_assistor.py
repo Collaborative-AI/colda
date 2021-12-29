@@ -102,7 +102,7 @@ def find_assistor():
         return bad_request('task_name is required.')
     if 'task_description' not in data:
         return bad_request('task_description is required.')
-
+    print('find_assistor----------------')
     assistor_username_list = data['assistor_username_list']
     id_file = data['id_file']
     task_id = data['task_id']

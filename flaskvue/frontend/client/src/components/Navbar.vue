@@ -104,6 +104,7 @@ const dialog = window.dialog ? window.dialog : require('electron');
 const electron_log = window.log ? window.log : require("electron-log")
 // console.log("1234", dialog)
 
+import { execute_unittest_list, generate_unittest_parameters } from '../utils.js'
 
 import Home from '../views/Home.vue'
 // const Home = require('../views/Home.vue').default
@@ -312,8 +313,8 @@ export default {
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
 
       // check if testing task id in the cur_unread_request_Taskid_dict
-      let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_request_unittest", unittest_parameters)
+      // let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
+      // execute_unittest_list(arguments[arguments.length-1], 0, "unread_request_unittest", unittest_parameters)
 
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
       // console.log('select_sentence', select_sentence)
@@ -343,8 +344,8 @@ export default {
           let default_train_id_column = row.default_train_id_column
 
           // check task_id and vm.sharedState.mode
-          let unittest_parameters = generate_unittest_parameters(task_id, vm.sharedState.mode)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_request_unittest", unittest_parameters)
+          // let unittest_parameters = generate_unittest_parameters(task_id, vm.sharedState.mode)
+          // execute_unittest_list(arguments[arguments.length-1], 1, "unread_request_unittest", unittest_parameters)
 
           let hash_id_file_address = null;
           let Log_address = null;
@@ -365,8 +366,8 @@ export default {
           }catch(err){
             console.log(err)
           }
-          let unittest_parameters = generate_unittest_parameters()
-          execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest", unittest_parameters)
+          // let unittest_parameters = generate_unittest_parameters()
+          // execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest", unittest_parameters)
 
           console.log("Log_address------------", Log_address)
 
@@ -391,8 +392,8 @@ export default {
               // handle success
 
               // check match_assistor_id response
-              let unittest_parameters = generate_unittest_parameters(response.data)
-              execute_unittest_list(arguments[arguments.length-1], 3, "unread_request_unittest", unittest_parameters)
+              // let unittest_parameters = generate_unittest_parameters(response.data)
+              // execute_unittest_list(arguments[arguments.length-1], 3, "unread_request_unittest", unittest_parameters)
               
               console.log("2.2 assistor uploads id file", response)
               vm.test_response = response
@@ -577,8 +578,8 @@ export default {
       let cur_unread_match_id_Taskid_dict = unread_match_id_notification["check_dict"]
 
       // check if testing task id in the cur_unread_request_Taskid_dict
-      let unittest_parameters = generate_unittest_parameters(cur_unread_match_id_Taskid_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_match_id_unittest", unittest_parameters)
+      // let unittest_parameters = generate_unittest_parameters(cur_unread_match_id_Taskid_dict)
+      // execute_unittest_list(arguments[arguments.length-1], 0, "unread_match_id_unittest", unittest_parameters)
       
       for (let task_id in cur_unread_match_id_Taskid_dict){
         
@@ -636,8 +637,8 @@ export default {
           // iterate the match_id_file
 
           // check users/user_id/match_id_file return value
-          let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          // let unittest_parameters = generate_unittest_parameters(response.data)
+          // execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
           
           console.log("3.3 Sponsor gets matched id file")
           vm.$toasted.success("3.3 Sponsor gets matched id file", { icon: 'fingerprint' })
@@ -673,8 +674,8 @@ export default {
             }
 
             // check if we run here
-            let unittest_parameters = generate_unittest_parameters()
-            execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+            // let unittest_parameters = generate_unittest_parameters()
+            // execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
 
             fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
             console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2]);
@@ -789,8 +790,8 @@ export default {
             // handle success
 
             // check send_situation return value
-            let unittest_parameters = generate_unittest_parameters(response.data)
-            execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
+            // let unittest_parameters = generate_unittest_parameters(response.data)
+            // execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
           
 
             console.log("3.7 Sponsor sends all situations", response)
@@ -927,8 +928,8 @@ export default {
         .then((response) => {
           
           // check users/user_id/match_id_file return value
-          let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          // let unittest_parameters = generate_unittest_parameters(response.data)
+          // execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
           
           console.log("3.3 Assistor gets matched id file", response)
           vm.$toasted.success("3.3 Assistor gets matched id file", { icon: 'fingerprint' })
@@ -997,8 +998,8 @@ export default {
             console.log(err)
           }
 
-          let unittest_parameters = generate_unittest_parameters()
-          execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+          // let unittest_parameters = generate_unittest_parameters()
+          // execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
           // const path = `/assistor_write_match_index_done/`
 
           // const assistor_write_match_index_done_data = {

@@ -8,11 +8,15 @@ export function generate_unittest_parameters(){
 }
 
 export function execute_unittest_list(unittest_list, index, indicator, unittest_parameters){
-  if (Array.isArray(unittest_list) && unittest_list.length > 1 && unittest_list[unittest_list.length-1] == indicator){
-    unittest_list[index](unittest_parameters)
-    console.log(unittest_list)
-    return true
-  }
+  console.log('unittest_list',unittest_list)
+  if (Array.isArray(unittest_list)) {
+    if (unittest_list.length > 1 && unittest_list[unittest_list.length-1] == indicator){
+      unittest_list[index](unittest_parameters)
+      console.log(unittest_list)
+      return true
+    }
+    return false
+  } 
   console.log(indicator + ' wrong')
   return false
 }

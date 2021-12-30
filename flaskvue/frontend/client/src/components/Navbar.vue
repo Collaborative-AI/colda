@@ -33,7 +33,7 @@
                         <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user'])"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
                         </li>       
-                        <button @click="test_axios()">123</button>             
+                        <!-- <button @click="test_axios()">123</button>              -->
                         <!-- <li class="nav-item">
                             <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Brand</span></a>
                         </li>
@@ -81,6 +81,8 @@ import $ from 'jquery'
 import db from '../db'
 console.log('dbzzzz', db)
 import authority from '../authority'
+import { execute_unittest_list, generate_unittest_parameters } from '../utils.js'
+
 // import axios from '../http'
 
 
@@ -590,7 +592,7 @@ export default {
 
       // check if testing task id in the cur_unread_request_Taskid_dict
       let unittest_parameters = generate_unittest_parameters(cur_unread_match_id_Taskid_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_match_id_unittest", unittest_parameters)
+      // execute_unittest_list(arguments[arguments.length-1], 0, "unread_match_id_unittest", unittest_parameters)
       
       for (let task_id in cur_unread_match_id_Taskid_dict){
         
@@ -649,7 +651,7 @@ export default {
 
           // check users/user_id/match_id_file return value
           let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          // execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
           
           console.log("3.3 Sponsor gets matched id file")
           vm.$toasted.success("3.3 Sponsor gets matched id file", { icon: 'fingerprint' })
@@ -686,7 +688,7 @@ export default {
 
             // check if we run here
             let unittest_parameters = generate_unittest_parameters()
-            execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+            // execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
 
             fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
             console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2]);
@@ -802,7 +804,7 @@ export default {
 
             // check send_situation return value
             let unittest_parameters = generate_unittest_parameters(response.data)
-            execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
+            // execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
           
 
             console.log("3.7 Sponsor sends all situations", response)
@@ -940,7 +942,7 @@ export default {
           
           // check users/user_id/match_id_file return value
           let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          // execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
           
           console.log("3.3 Assistor gets matched id file", response)
           vm.$toasted.success("3.3 Assistor gets matched id file", { icon: 'fingerprint' })
@@ -1010,7 +1012,7 @@ export default {
           }
 
           unittest_parameters = generate_unittest_parameters()
-          execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+          // execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
           // const path = `/assistor_write_match_index_done/`
 
           // const assistor_write_match_index_done_data = {
@@ -1090,7 +1092,7 @@ export default {
         let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root 
           + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds 
           + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_column
-          + ' --task_mode ' + task_mode + ' --model_name ' + model_name, {encoding: 'utf8'})
+          + ' --task_mode ' + 'regression' + ' --model_name ' + model_name, {encoding: 'utf8'})
 
   
         
@@ -1185,7 +1187,7 @@ export default {
         Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
           + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
           + from_id + ' --dataset_path ' + default_train_file_path + ' --data_idx ' + default_train_data_column
-          + ' --task_mode ' + task_mode + ' --model_name ' + model_name ,{encoding: 'utf8'})
+          + ' --task_mode ' + 'regression' + ' --model_name ' + model_name ,{encoding: 'utf8'})
 
           
 

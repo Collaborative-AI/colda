@@ -389,6 +389,10 @@ export default {
             
             // call make_hash to convert id to sha-256 id
             console.log("vm.exe_position", vm.exe_position)
+            // hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+            //                         + ' --task_id ' + vm.task_id + ' --mode train' + ' --dataset_path ' + vm.train_file_path 
+            //                         + ' --id_idx ' + vm.train_id_column, {encoding: 'utf8'})
+
             hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                                     + ' --task_id ' + vm.task_id + ' --mode train' + ' --dataset_path ' + vm.train_file_path 
                                     + ' --id_idx ' + vm.train_id_column, {encoding: 'utf8'})
@@ -504,6 +508,14 @@ export default {
                                     + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_column 
                                     + ' --target_idx ' + vm.train_target_column + ' --task_mode ' + vm.task_mode
                                     + ' --model_name ' + vm.model_name + ' --metric_name ' + vm.metric_name, {encoding: 'utf8'})
+
+            // make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
+            //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
+            //                         + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_column 
+            //                         + ' --target_idx ' + vm.train_target_column, {encoding: 'utf8'})
+
+
+
 
             console.log("make_train_local", make_train_local)
           }catch(err){

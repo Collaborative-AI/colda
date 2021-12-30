@@ -57,7 +57,7 @@ unittest_parameters.default_train_data_column = "2-7"
 
 const path = `/users/${unittest_parameters.user_id}/notifications/`
 
-let get_notification = axios.get(path)
+let get_notification = async()=> {axios.get(path)
   .then((response) => {
     const all_notifications = {
       response_data: response.data
@@ -76,6 +76,7 @@ let get_notification = axios.get(path)
       unittest_parameters.unread_test_output_notification = response.data["unread test output"]
     })
 })
+}
 
 let Login_wrapper = mount(Login, {
   mocks: {

@@ -20,7 +20,7 @@ find_assistor_helper.get_train_id = test('check_find_assistor_sponsor_get_train_
   Find_Assistor_wrapper.vm.get_train_id(cur_parameters)
 })
 
-find_assistor_helper.onSubmit = test('check_find_assistor_sponsor_db',(done) => {  
+find_assistor_helper.onSubmit = test('check_find_assistor_sponsor_onSubmit_1',(done) => {  
   let check_find_assistor_sponsor_onSubmit_1 = (data) => {
     try{
       let train_file_path = data[0]

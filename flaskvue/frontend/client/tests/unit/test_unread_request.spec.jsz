@@ -23,7 +23,15 @@ describe('test_unread_request', () => {
   // Assistor updates default_train_file_path, default_train_id_column, 
   // default_train_data_column
   profile_helper.onSubmit
-  await get_notification
+
+  async function test_get_notification(){
+    let res1 = await get_notification()
+    let res2 = await get_notification()
+    console.log(res1, res2)
+  }
+  
+  test_get_notification()
+  
   unread_request_helper.unread_request
 
 })

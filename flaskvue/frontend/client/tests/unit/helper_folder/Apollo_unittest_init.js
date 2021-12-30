@@ -55,28 +55,29 @@ unittest_parameters.default_train_id_column = "1"
 unittest_parameters.default_train_data_column = "2-7"
 
 
-const path = `/users/${unittest_parameters.user_id}/notifications/`
-
-let get_notification = async()=> {axios.get(path)
-  .then((response) => {
-    const all_notifications = {
-      response_data: response.data
-    } 
-    axios.post('/update_all_notifications/', all_notifications)
+async function get_notification(){
+  const path = `/users/${unittest_parameters.user_id}/notifications/`
+  axios.get(path)
     .then((response) => {
-      // train stage
-      unittest_parameters.unread_request_notification = response.data["unread request"]
-      unittest_parameters.unread_match_id_notification = response.data["unread match id"]
-      unittest_parameters.unread_situation_notification = response.data["unread situation"]
-      unittest_parameters.unread_output_notification = response.data["unread output"]
+      const all_notifications = {
+        response_data: response.data
+      } 
+      axios.post('/update_all_notifications/', all_notifications)
+      .then((response) => {
+        // train stage
+        unittest_parameters.unread_request_notification = response.data["unread request"]
+        unittest_parameters.unread_match_id_notification = response.data["unread match id"]
+        unittest_parameters.unread_situation_notification = response.data["unread situation"]
+        unittest_parameters.unread_output_notification = response.data["unread output"]
 
-      // test stage
-      unittest_parameters.unread_test_request_notification = response.data["unread test request"]
-      unittest_parameters.unread_test_match_id_notification = response.data["unread test match id"]
-      unittest_parameters.unread_test_output_notification = response.data["unread test output"]
-    })
-})
+        // test stage
+        unittest_parameters.unread_test_request_notification = response.data["unread test request"]
+        unittest_parameters.unread_test_match_id_notification = response.data["unread test match id"]
+        unittest_parameters.unread_test_output_notification = response.data["unread test output"]
+      })
+  })
 }
+
 
 let Login_wrapper = mount(Login, {
   mocks: {

@@ -1,4 +1,6 @@
+import axios from 'axios';
 import db from '../../../src/db'
+import {unittest_parameters} from './Apollo_unittest_init'
 
 let retrieve_User_Manual_Table_record = function(user_id, task_id, test_id=null){
   if (test_id != null){
@@ -20,13 +22,9 @@ let retrieve_User_Sponsor_Table_record = function(user_id, task_id, test_id=null
   return row
 };
 
-let retrieve_User_Default_Table_record = function(user_id, task_id, test_id=null){
-  if (test_id != null){
-    // row is a single result and it is a dict
-    let row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ? AND task_id = ? AND test_id = ?').get(user_id, task_id, test_id);
-    return row
-  }
-  let row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ? AND task_id = ?').get(user_id, task_id);
+let retrieve_User_Default_Table_record = function(user_id){
+  
+  let row = db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(user_id);
   return row
 };
 
@@ -40,6 +38,23 @@ let generate_parameters = function(parameters_dict){
 
 }
 
+function get_notifications(){
+  const path = `/users/`+ unittest_parameters.user_id.toString() + `/notifications/`
+  console.log('come', path)
+  return axios.get(path)
+}
+
+function update_notifications(response){
+  const all_notifications = {
+    response_data: response.data
+  } 
+  return axios.post('/update_all_notifications/', all_notifications)
+}
+
+function delete_db(){
+  return axios.get('/delete_all_rows/')
+}
 
 
-export { retrieve_User_Sponsor_Table_record, retrieve_User_Manual_Table_record, retrieve_User_Default_Table_record, generate_parameters}
+
+export { retrieve_User_Sponsor_Table_record, retrieve_User_Manual_Table_record, retrieve_User_Default_Table_record, generate_parameters, get_notifications, update_notifications, delete_db }

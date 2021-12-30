@@ -1,0 +1,31 @@
+import { login_helper } from './helper_folder/Apollo_login_helper';
+import { delete_db} from './helper_folder/Apollo_unittest_utils'
+
+jest.setTimeout(10000);
+
+
+
+afterAll(() => {
+  window.localStorage.setItem('Apollo-token', null)
+  console.log('afterAll')
+});
+
+describe('test_delete_db', () => {
+  console.log('des1')
+  
+
+// }
+  // Sponsor logins
+  login_helper.check_login_first_user
+  
+  test('update_notification', (done) => {
+    async function delete_all_row(){
+      console.log('come2')
+      let res = await delete_db()
+      console.log('zz3', res)
+      
+      done()
+    }
+    delete_all_row()
+  })
+})

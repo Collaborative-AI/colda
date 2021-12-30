@@ -10,7 +10,7 @@ unread_request_helper.unread_request = test('check_unread_request', (done) => {
       let request_dict = data[0]
       console.log('request_dict', request_dict)
 
-      expect(request_dict['unittest_parameters.task_id']).not.toBeNull()
+      expect(request_dict[unittest_parameters.task_id]).not.toBeNull()
 
       console.log('check_unread_request_1')
     }catch (error){
@@ -84,6 +84,7 @@ unread_request_helper.unread_request = test('check_unread_request', (done) => {
   //                                task_mode: unittest_parameters.task_mode,
   //                                model_name: unittest_parameters.model_name,
   //                                metric_name: unittest_parameters.metric_name})
+  console.log('zz5', unittest_parameters.unread_request_notification)
   Navbar_wrapper.vm.unread_request(unittest_parameters.unread_request_notification, cur_parameters)
 })
 

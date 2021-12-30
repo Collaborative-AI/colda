@@ -11,6 +11,7 @@ profile_helper.onSubmit = test('check_profile_onSubmit_db',(done)=>{
       let default_train_file_path = data[0]
       let default_train_id_column = data[1]
       let default_train_data_column = data[2]
+      console.log('user_id3', unittest_parameters.user_id)
       let row = retrieve_User_Default_Table_record(unittest_parameters.user_id)
 
       expect(default_train_file_path).toEqual(

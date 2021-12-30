@@ -1,5 +1,6 @@
-import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper} from './Apollo_unittest_init'
+import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, modify_parameter} from './Apollo_unittest_init'
 import { generate_parameters, retrieve_User_Sponsor_Table_record } from './Apollo_unittest_utils'
+
 jest.setTimeout(10000);
 
 let login_helper = {}
@@ -10,7 +11,10 @@ login_helper.check_login_first_user = test('check_login_first_user',(done)=>{
     try{
       done()
       console.log('window', window.localStorage.getItem('Apollo-token'))
-      unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
+      // unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
+      modify_parameter('user_id', JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id)
+      console.log('param2', unittest_parameters)
+      console.log('user_id2', unittest_parameters.user_id)
     }catch (error){
       done(error)
     }
@@ -32,7 +36,10 @@ login_helper.check_login_second_user = test('check_login_second_user',(done)=>{
     try{
       done()
       console.log('window', window.localStorage.getItem('Apollo-token'))
-      unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
+      // unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
+      modify_parameter('user_id', JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id)
+      console.log('param3', unittest_parameters)
+
     }catch (error){
       done(error)
     }

@@ -33,7 +33,7 @@ export default {
       // // windows
       // root: __dirname + "/../exp",
       // exe_position: __dirname + '/../dist/run/run.exe',
-      mode: "Manual",
+      mode: "Auto",
       // pending:[],
       // 用户登录后，就算刷新页面也能再次计算出 user_name
     //   user_name: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_name : '',

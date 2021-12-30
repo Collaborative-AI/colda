@@ -305,7 +305,7 @@ export default {
     // },
     getUser (id) {
       let vm = this
-      console.log('bug1')
+      // console.log('bug1')
       const row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
       // console.log('haha',row);
       if (row != null){
@@ -315,7 +315,7 @@ export default {
           vm.sharedState.mode = row.mode
           console.log('mode', vm.sharedState.mode)
         }
-        console.log('bug2')
+        // console.log('bug2')
 
 
 

@@ -29,6 +29,7 @@ find_assistor_helper.onSubmit = test('check_find_assistor_sponsor_onSubmit_1',(d
       let train_target_column = data[3]
 
       console.log('bxbx')
+      
       let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
 
       

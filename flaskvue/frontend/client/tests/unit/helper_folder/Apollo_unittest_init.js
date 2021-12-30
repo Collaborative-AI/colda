@@ -14,8 +14,11 @@ import Find_Assistor from '../../../src/views/Resources/find_assistor.vue'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 // https://next.vue-test-utils.vuejs.org/api/#setdata
+const unittest_parameters = {}
+// const user_id_array = []
+// user_id_array[0] = '1'
+// unittest_parameters.user_id = user_id_array
 
-let unittest_parameters = {}
 unittest_parameters.user_id = ''
 unittest_parameters.task_id = ''
 unittest_parameters.test_id = ''
@@ -25,7 +28,7 @@ unittest_parameters.first_user_password = 'Xie1@123'
 unittest_parameters.second_user_username = 'xie2'
 unittest_parameters.second_user_password = 'Xie2@123'
 
-unittest_parameters.unread_request_notification = ''
+unittest_parameters.unread_request_notification = null
 unittest_parameters.unread_match_id_notification = ''
 unittest_parameters.unread_situation_notification = ''
 unittest_parameters.unread_output_notification = ''
@@ -50,33 +53,56 @@ unittest_parameters.model_name = 'linear'
 unittest_parameters.metric_name = 'MAD_RMSE_R2'
 
 // profile.vue
-unittest_parameters.default_train_file_path = "/Users/qile/Documents/Apollo_Data/1/train/dataset.csv"
+// unittest_parameters.default_train_file_path = "/Users/qile/Documents/Apollo_Data/1/train/dataset.csv"
+unittest_parameters.default_train_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
 unittest_parameters.default_train_id_column = "1"
 unittest_parameters.default_train_data_column = "2-7"
 
 
-async function get_notification(){
-  const path = `/users/${unittest_parameters.user_id}/notifications/`
-  axios.get(path)
-    .then((response) => {
-      const all_notifications = {
-        response_data: response.data
-      } 
-      axios.post('/update_all_notifications/', all_notifications)
-      .then((response) => {
-        // train stage
-        unittest_parameters.unread_request_notification = response.data["unread request"]
-        unittest_parameters.unread_match_id_notification = response.data["unread match id"]
-        unittest_parameters.unread_situation_notification = response.data["unread situation"]
-        unittest_parameters.unread_output_notification = response.data["unread output"]
 
-        // test stage
-        unittest_parameters.unread_test_request_notification = response.data["unread test request"]
-        unittest_parameters.unread_test_match_id_notification = response.data["unread test match id"]
-        unittest_parameters.unread_test_output_notification = response.data["unread test output"]
-      })
-  })
+function modify_parameter(param, val){
+  unittest_parameters[param] = val
+  console.log('param1', unittest_parameters)
 }
+
+
+
+
+// async fetchPostsList(callback) {
+//   return axios.get('https://jsonplaceholder.typicode.com/posts').then(res => {
+//     // console.log('res',res)
+//     return callback(res.data);
+//   })
+// }
+
+// async function get_notification(unittest_parameters){
+//   console.log('jinlai')
+//   console.log('unit_test_param', unittest_parameters)
+//   console.log('user_id1', unittest_parameters.user_id)
+//   // const path = `/users/`+ unittest_parameters.user_id.toString() + `/notifications/`
+//   const path = `/users/`+ `2` + `/notifications/`
+//   axios.get(path)
+//     .then((response) => {
+//       console.log('res1',response)
+//       const all_notifications = {
+//         response_data: response.data
+//       } 
+//       axios.post('/update_all_notifications/', all_notifications)
+//       .then((response) => {
+//         // train stage
+//         console.log('res2',response)
+//         unittest_parameters.unread_request_notification = response.data["unread request"]
+//         unittest_parameters.unread_match_id_notification = response.data["unread match id"]
+//         unittest_parameters.unread_situation_notification = response.data["unread situation"]
+//         unittest_parameters.unread_output_notification = response.data["unread output"]
+
+//         // test stage
+//         unittest_parameters.unread_test_request_notification = response.data["unread test request"]
+//         unittest_parameters.unread_test_match_id_notification = response.data["unread test match id"]
+//         unittest_parameters.unread_test_output_notification = response.data["unread test output"]
+//       })
+//   })
+// }
 
 
 let Login_wrapper = mount(Login, {
@@ -145,4 +171,4 @@ let Profile_wrapper = mount(Profile, {
   stubs: ['router-link','router-view']
 });
 
-export { unittest_parameters, get_notification, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Profile_wrapper }
+export { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Profile_wrapper, modify_parameter}

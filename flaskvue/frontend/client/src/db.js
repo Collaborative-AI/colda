@@ -22,15 +22,17 @@ console.log('21312312', db)
 //   down TEXT    NOT NULL
 // )`)
 
-db.exec("CREATE TABLE IF NOT EXISTS User_Default_Table (user_id                    int, \
-                                                     default_train_file_path    text, \
-                                                     default_train_id_column          text, \
-                                                     default_train_data_column        text, \
-                                                     default_train_target_column      text, \
-                                                     mode                       text, \
-                                                     task_mode                  text, \
-                                                     model_name                 text, \
-                                                     metric_name                text)");
+db.exec("CREATE TABLE IF NOT EXISTS User_Default_Table (task_id                 text,\
+                                                        user_id                    int, \
+                                                        default_train_file_path    text, \
+                                                        default_train_id_column          text, \
+                                                        default_train_data_column        text, \
+                                                        default_train_target_column      text, \
+                                                        mode                       text, \
+                                                        task_mode                  text, \
+                                                        model_name                 text, \
+                                                        metric_name                text)");
+
 
 db.exec("CREATE TABLE IF NOT EXISTS User_Sponsor_Table (task_name          text,\
                                             task_description   text,\

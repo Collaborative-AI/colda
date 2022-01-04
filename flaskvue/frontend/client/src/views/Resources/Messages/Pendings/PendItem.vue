@@ -173,15 +173,36 @@ export default {
 
     train_unread_request(){
       let vm = this;
+      console.log('jin train')
 
       let task_id = vm.task_id
       let insert_sentence = `INSERT INTO "User_Manual_Table"("pending_train_file_path", "pending_train_id_column", "pending_train_data_column", "pending_train_target_column","user_id", "task_id") VALUES 
               (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + task_id + `")`
       console.log("insert_sentence", insert_sentence)
-      db.run(insert_sentence, function(err){
-        if (err){
-          console.log(err);
-        }
+
+      const stmt = vm.$db.prepare('INSERT INTO User_Manual_Table VALUES' +
+          ' ( @task_name, @task_description, @user_id, @task_id, @test_id, @pending_train_file_path,' +
+          ' @pending_train_id_column, @pending_train_data_column, @pending_train_target_column, @pending_test_file_path, @pending_test_id_column,' +
+          ' @pending_test_data_column, @pending_test_target_column, @task_mode, @model_name, @metric_name)');
+             
+          stmt.run({
+            task_name: '', 
+            task_description: '', 
+            user_id: vm.sharedState.user_id, 
+            task_id: task_id,
+            test_id: '',
+            pending_train_file_path: vm.manual_file_path, 
+            pending_train_id_column: vm.manual_id_column, 
+            pending_train_data_column: vm.manual_data_column, 
+            pending_train_target_column: vm.manual_target_column, 
+            pending_test_file_path: '',
+            pending_test_id_column: '',
+            pending_test_data_column: '',
+            pending_test_target_column: '',
+            task_mode: '', 
+            model_name: '',
+            metric_name: ''
+          });
 
         console.log("2.1 Update Test request notification response")
       
@@ -202,6 +223,8 @@ export default {
           hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                                   + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + vm.manual_file_path 
                                   + ' --id_idx ' + vm.manual_id_column, {encoding: 'utf8'})
+
+
           hash_id_file_address = hash_id_file_address.split('?')
           let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
           Log_address = vm.handle_train_log_address(task_id)
@@ -257,21 +280,44 @@ export default {
           })
         
         
-      })
+      
           
 
     },
 
     test_unread_request(){
+      console.log('jin test')
       let vm = this
 
       let insert_sentence = `INSERT INTO "User_Manual_Table"("pending_test_file_path", "pending_test_id_column", "pending_test_data_column", "pending_test_target_column","user_id", "test_id") VALUES 
               (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + vm.test_id + `")`
       console.log("insert_sentence", insert_sentence)
-      db.run(insert_sentence, function(err){
-        if (err){
-          console.log(err);
-        }
+
+      const stmt = vm.$db.prepare('INSERT INTO User_Manual_Table VALUES' +
+          ' ( @task_name, @task_description, @user_id, @task_id, @test_id, @pending_train_file_path,' +
+          ' @pending_train_id_column, @pending_train_data_column, @pending_train_target_column, @pending_test_file_path, @pending_test_id_column,' +
+          ' @pending_test_data_column, @pending_test_target_column, @task_mode, @model_name, @metric_name)');
+             
+          stmt.run({
+            task_name: '', 
+            task_description: '', 
+            user_id: vm.sharedState.user_id, 
+            task_id: '',
+            test_id: vm.test_id,
+            pending_train_file_path: '', 
+            pending_train_id_column: '', 
+            pending_train_data_column: '', 
+            pending_train_target_column: '', 
+            pending_test_file_path: vm.manual_file_path,
+            pending_test_id_column: vm.manual_id_column,
+            pending_test_data_column: vm.manual_data_column,
+            pending_test_target_column: vm.manual_target_column,
+            task_mode: '', 
+            model_name: '',
+            metric_name: ''
+          });
+      
+
 
         console.log("2.1 Update Test request notification response")
         vm.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
@@ -297,6 +343,8 @@ export default {
                                     + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id
                                     + ' --mode test' + ' --test_id ' + test_id
                                     + ' --dataset_path ' + vm.manual_file_path + ' --id_idx ' + vm.manual_id_column, {encoding: 'utf8'})
+
+
 
           test_hash_id_file_address = test_hash_id_file_address.split("?")
           let indicator = vm.handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
@@ -357,7 +405,7 @@ export default {
           })
 
         
-          })
+          
         
 
 
@@ -424,6 +472,8 @@ export default {
     this.metric_name = this.$route.params.metric_name,
     this.test_id = this.$route.params.test_id
     this.test_indicator = this.$route.params.test_indicator
+
+    console.log('chuan', this.$route.params)
     
 
     let new_root = store.changeroot()

@@ -21,7 +21,7 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
+          <th scope="col" v-for="(ptitle, idx) in ptitles" :key="ptitle.index">{{idx+1}}.{{ptitle}}</th>
         </tr>
       </thead>
       <tbody>
@@ -91,6 +91,7 @@ export default {
       test_id_column: "",
       test_data_column: "",
       test_target_column: "",
+      ptitles:"",
       pdatas:"",
       select_data:false,
       PathForm: {
@@ -151,9 +152,10 @@ export default {
             
             vm.pdatas = data.split("\n")
             for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
-            vm.pdatas=vm.pdatas.slice(0,3)
+            vm.ptitles=vm.pdatas[0]
+            vm.pdatas=vm.pdatas.slice(1,4)
             vm.select_data=true
-            console.log('preview',vm.pdatas[0][0])
+            console.log('preview',vm.pdatas[0])
           })
 
         } catch (err) {
@@ -266,12 +268,42 @@ export default {
               (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.task_name + `", "` +vm.test_id + `", "` +vm.test_file_path+ `", "` +vm.test_id_column+`", "`+vm.test_data_column+`", "`+vm.test_target_column+`")`
           console.log(insert_sentence)
 
+          var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', vm.task_id);
+
+          console.log("s1 row",row)
+          vm.task_mode = row.task_mode
+          vm.model_name = row.model_name
+          vm.metric_name = row.metric_name
+
+
+          const stmt = vm.$db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
+          ' ( @task_name, @task_description, @user_id, @test_indicator, @task_id, @test_id, @train_file_path,' +
+          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+          ' @test_data_column, @test_target_column, @task_mode, @model_name, @metric_name)');
+             
+          stmt.run({
+            task_name: vm.task_name, 
+            task_description: '', 
+            user_id: vm.sharedState.user_id, 
+            test_indicator: "test", 
+            task_id: vm.task_id,
+            test_id: vm.test_id,
+            train_file_path: '', 
+            train_id_column: '', 
+            train_data_column: '', 
+            train_target_column: '', 
+            test_file_path: vm.test_file_path,
+            test_id_column: vm.test_id_column,
+            test_data_column: vm.test_data_column,
+            test_target_column: vm.test_target_column,
+            task_mode: vm.task_mode, 
+            model_name: vm.model_name,
+            metric_name: vm.metric_name
+          });
+
           
 
-          db.run(insert_sentence, function(err){
-            if (err){
-              console.log(err);
-            }
+         
 
           let match_id_address = vm.test_id_column
           let test_hash_id_file_address = null;
@@ -286,6 +318,7 @@ export default {
                                     + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id
                                     + ' --mode test' + ' --test_id ' + vm.test_id
                                     + ' --dataset_path ' + vm.test_file_path + ' --id_idx ' + vm.test_id_column, {encoding: 'utf8'})
+
 
             // test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
             console.log(test_hash_id_file_address)
@@ -380,7 +413,7 @@ export default {
             //   console.log(err)
             // }
 
-          })          
+                   
           
         }
 

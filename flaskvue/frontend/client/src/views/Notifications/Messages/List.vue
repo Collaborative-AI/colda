@@ -168,7 +168,7 @@ export default {
     getUserHistory (id) {
       let vm=this
       let page = 1
-      let per_page = 5
+      let per_page = 100
       if (typeof this.$route.query.page != 'undefined') {
         page = this.$route.query.page
       }

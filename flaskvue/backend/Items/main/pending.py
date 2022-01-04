@@ -48,7 +48,9 @@ def add_train_pending():
     pending.pending_model_name = model_name
     pending.pending_metric_name = metric_name
     pending.pending_task_description = task_description
-    pending.test_indicator = "train"
+    pending.pending_test_indicator = "train"
+
+    print('kan1',pending.pending_test_indicator)
 
     db.session.add(pending)
     db.session.commit()
@@ -90,7 +92,9 @@ def add_test_pending():
     pending.pending_model_name = model_name
     pending.pending_metric_name = metric_name
     pending.pending_task_description = test_description
-    pending.test_indicator = "test"
+    pending.pending_test_indicator = "test"
+
+    print('kan1',pending.pending_test_indicator)
 
     db.session.add(pending)
     db.session.commit()
@@ -111,6 +115,7 @@ def get_all_pending():
     res = [item.to_dict() for item in all_pending_items]
 
     data = {"all_pending_items": res}
+    print('haha',data)
     
     return jsonify(data)
 

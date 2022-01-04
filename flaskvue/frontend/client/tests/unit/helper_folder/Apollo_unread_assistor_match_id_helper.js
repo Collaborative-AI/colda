@@ -4,7 +4,7 @@ jest.setTimeout(10000);
 
 let unread_assistor_match_id_helper = {}
 
-unread_assistor_match_id_helper.unread_assistor_match_id = test('unread_assistor_match_id_helper', (done) => {  
+unread_assistor_match_id_helper.unread_assistor_match_id = test('unread_assistor_match_id_helper', (done) => {
   let unread_assistor_match_id_1 = (data) => {
     try{
       let match_id_dict = data[0]

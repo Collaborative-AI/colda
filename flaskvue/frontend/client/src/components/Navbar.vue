@@ -342,16 +342,21 @@ export default {
       for (let task_id in cur_unread_request_Taskid_dict){
         console.log('navbar unread request mode', vm.sharedState.mode )
 
-       
-        const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
+
+        if (vm.sharedState.mode == 'Auto'){
+
+          const stmt1 = vm.$db.prepare('UPDATE User_Default_Table' 
+          + ' SET task_id = ?'
+          + ' WHERE user_id = ?'); 
+          stmt1.run(task_id, vm.sharedState.user_id);
+
+          const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
           + ' SET task_mode = ?,'
           + ' model_name = ?,'
           + ' metric_name = ?'
-          + ' WHERE user_id = ?'); 
-          stmt.run(cur_unread_request_info_dict[task_id]["task_mode"], cur_unread_request_info_dict[task_id]["model_name"], cur_unread_request_info_dict[task_id]["metri_name"], vm.sharedState.user_id);
+          + ' WHERE user_id = ? AND task_id = ?'); 
+          stmt.run(cur_unread_request_info_dict[task_id]["task_mode"], cur_unread_request_info_dict[task_id]["model_name"], cur_unread_request_info_dict[task_id]["metric_name"], vm.sharedState.user_id, task_id);
 
-
-        if (vm.sharedState.mode == 'Auto'){
 
           let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
           console.log("select_default_train_file_path", select_default_train_file_path)
@@ -1478,6 +1483,7 @@ export default {
             // Store the output from assistor
             let save_output_pos = null;
             try{
+              console.log('train_cur_round',  rounds)
               save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
 
@@ -2251,6 +2257,7 @@ export default {
               // Store test output from assistors
               let test_save_output_pos = null
               try{
+                console.log('j_round', j)
                 test_save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                   + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + j, {encoding: 'utf8'})
 
@@ -2267,11 +2274,12 @@ export default {
               }
 
               // Store match_id file
+              console.log('wokan1', cur_output)
               fs.writeFileSync(test_save_output_pos[2], cur_output)
             }
 
 
-          }
+          }//end for loop
           console.log("4.3 Test: Sponsor saves assistors' Output model");
 
           vm.$toasted.success("4.3 Test: Sponsor saves assistors' Output model", { icon: 'fingerprint' })
@@ -2300,11 +2308,13 @@ export default {
       console.log("max_round", max_round)
 
       let select_test_target_path = 'SELECT test_file_path, test_target_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
-      var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, test_indicator, test_id);
+      var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
 
       
         let test_file_path = row.test_file_path
-        let test_target_column= row.test_target_column
+        let test_target_column = row.test_target_column
+        let task_mode = row.task_mode
+        let metric_name = row.metric_name
         // console.log("test_target_path",test_target_path)
         let eval_done = null;
         let indicator = null;
@@ -2312,9 +2322,12 @@ export default {
 
           eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
             + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round 
-            + ' --dataset_path ' + test_file_path + ' --target_idx ' + test_target_column, {encoding: 'utf8'})
+            + ' --dataset_path ' + test_file_path + ' --target_idx ' + test_target_column
+            + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
+
 
           eval_done = eval_done.split("?")
+          console.log('wokan2', eval_done)
           indicator = vm.handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
         }catch(err){
           console.log(err)

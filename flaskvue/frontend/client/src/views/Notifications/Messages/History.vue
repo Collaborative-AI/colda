@@ -1,6 +1,6 @@
 <template>
 <div>
-  {{backend_log}}
+  <!-- {{backend_log}} -->
 
 
 

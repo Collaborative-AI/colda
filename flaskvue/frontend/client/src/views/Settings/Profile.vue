@@ -387,8 +387,9 @@ export default {
       console.log('haha',row);
       if (row == null){
         console.log('dele0')
-        const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column, @mode, @task_mode, @model_name, @metric_name)');
+        const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @task_id, @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column, @mode, @task_mode, @model_name, @metric_name)');
         stmt.run({
+          task_id: "",
           user_id: vm.sharedState.user_id , 
           default_train_file_path: vm.default_train_file_path, 
           default_train_id_column: vm.default_train_id_column, 

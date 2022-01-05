@@ -12,7 +12,9 @@ describe('test_login', () => {
   // train_helper_functions.login.check_login_first_user
   console.log("676766767")
   // train_helper_functions.login.check_login_second_user
-  login_helper.check_login_first_user
-  login_helper.check_login_second_user
+  // login_helper.check_login_first_user
+  // login_helper.check_login_second_user
+  login_helper.check_login_first_user()
+  // login_helper.check_login_second_user()
   
 })

@@ -1,5 +1,8 @@
+// only import necessary function
 import { login_helper } from './helper_folder/Apollo_login_helper';
 import { delete_db} from './helper_folder/Apollo_unittest_utils'
+
+
 
 jest.setTimeout(10000);
 

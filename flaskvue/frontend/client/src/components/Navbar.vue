@@ -408,7 +408,7 @@ export default {
             task_id: task_id,
             file: hash_id_file_data,
           }
-          console.log('hash_id_file_data', hash_id_file_data)
+          // console.log('hash_id_file_data', hash_id_file_data)
           
           vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
             .then((response) => {
@@ -418,7 +418,7 @@ export default {
               let unittest_parameters = generate_unittest_parameters(response.data)
               execute_unittest_list(arguments[arguments.length-1], 3, "unread_request_unittest", unittest_parameters)
               
-              console.log("2.2 assistor uploads id file", response)
+              // console.log("2.2 assistor uploads id file", response)
               vm.test_response = response
               // return response
               
@@ -601,8 +601,8 @@ export default {
       let cur_unread_match_id_Taskid_dict = unread_match_id_notification["check_dict"]
 
       // check if testing task id in the cur_unread_request_Taskid_dict
-      // let unittest_parameters = generate_unittest_parameters(cur_unread_match_id_Taskid_dict)
-      // execute_unittest_list(arguments[arguments.length-1], 0, "unread_match_id_unittest", unittest_parameters)
+      let unittest_parameters = generate_unittest_parameters(cur_unread_match_id_Taskid_dict)
+      execute_unittest_list(arguments[arguments.length-1], 0, "unread_match_id_unittest", unittest_parameters)
       
       for (let task_id in cur_unread_match_id_Taskid_dict){
         
@@ -660,8 +660,8 @@ export default {
           // iterate the match_id_file
 
           // check users/user_id/match_id_file return value
-          // let unittest_parameters = generate_unittest_parameters(response.data)
-          // execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          let unittest_parameters = generate_unittest_parameters(response.data)
+          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
           
           console.log("3.3 Sponsor gets matched id file")
           vm.$toasted.success("3.3 Sponsor gets matched id file", { icon: 'fingerprint' })
@@ -697,8 +697,8 @@ export default {
             }
 
             // check if we run here
-            // let unittest_parameters = generate_unittest_parameters()
-            // execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+            let unittest_parameters = generate_unittest_parameters()
+            execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
 
             fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
             console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2]);
@@ -813,8 +813,8 @@ export default {
             // handle success
 
             // check send_situation return value
-            // let unittest_parameters = generate_unittest_parameters(response.data)
-            // execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
+            let unittest_parameters = generate_unittest_parameters(response.data)
+            execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
           
 
             console.log("3.7 Sponsor sends all situations", response)
@@ -951,10 +951,10 @@ export default {
         .then((response) => {
           
           // check users/user_id/match_id_file return value
-          // let unittest_parameters = generate_unittest_parameters(response.data)
-          // execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          let unittest_parameters = generate_unittest_parameters(response.data)
+          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
           
-          console.log("3.3 Assistor gets matched id file", response)
+          // console.log("3.3 Assistor gets matched id file", response)
           vm.$toasted.success("3.3 Assistor gets matched id file", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "3.3 Assistor gets matched id file\n")
@@ -1021,8 +1021,9 @@ export default {
             console.log(err)
           }
 
-          // let unittest_parameters = generate_unittest_parameters()
-          // execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+          unittest_parameters = generate_unittest_parameters()
+          execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+          console.log('wokan7', arguments[arguments.length-1])
           // const path = `/assistor_write_match_index_done/`
 
           // const assistor_write_match_index_done_data = {
@@ -1050,6 +1051,9 @@ export default {
 
       let cur_unread_situation_Taskid_dict = unread_situation_notification["check_dict"]
       let cur_unread_situation_Rounds_dict = unread_situation_notification["rounds_dict"]
+
+      let unittest_parameters = generate_unittest_parameters(cur_unread_situation_Taskid_dict)
+      execute_unittest_list(arguments[arguments.length-1], 0, "unread_situation_unittest", unittest_parameters)
       for (let task_id in cur_unread_situation_Taskid_dict){
         
         const Log_address = this.handle_train_log_address(task_id)
@@ -1065,10 +1069,10 @@ export default {
 
         // check if the current client is sponsor or not of the specific task
         if (check_sponsor == 1){
-          this.unread_situation_sponsor(rounds, task_id)
+          this.unread_situation_sponsor(rounds, task_id, arguments[arguments.length-1])
         }  
         else{
-          this.unread_situation_assistor(rounds, task_id)
+          this.unread_situation_assistor(rounds, task_id, arguments[arguments.length-1])
         }
       }
     },
@@ -1096,6 +1100,9 @@ export default {
       console.log('row1', row)
       let task_mode = row.task_mode
       let model_name = row.model_name
+
+      // let unittest_parameters = generate_unittest_parameters(row)
+      // execute_unittest_list(arguments[arguments.length-1], 1, "unread_situation_unittest", unittest_parameters)
       try{
         
         // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
@@ -1432,6 +1439,9 @@ export default {
       this.$toasted.success("5.1 Update the output notification", { icon: 'fingerprint' })
 
       let cur_unread_output_Rounds_dict = unread_output_notification["rounds_dict"]
+
+      let unittest_parameters = generate_unittest_parameters(cur_unread_output_Rounds_dict)
+      execute_unittest_list(arguments[arguments.length-1], 0, "unread_output_unittest", unittest_parameters)
 
       for (let task_id in cur_unread_output_Rounds_dict){
 
@@ -2386,172 +2396,172 @@ export default {
     let getTime = window.performance;
     let startTime = getTime.now();
 
-    $(function() {
-      let since = 0
-      let total_notifications_count = 0  // 总通知计数
-      let unread_request_count = 0  // 收到的新评论通知计数
-      let unread_match_id_count = 0  // 收到的新私信通知计数
-      let unread_situation_count = 0  // 新粉丝通知计数
-      let unread_output_count = 0  // 新的喜欢或赞的通知计数
-      let unread_messages_count = 0
-      let sender_random_id_list = []
-      let task_id_list = []
+    // $(function() {
+    //   let since = 0
+    //   let total_notifications_count = 0  // 总通知计数
+    //   let unread_request_count = 0  // 收到的新评论通知计数
+    //   let unread_match_id_count = 0  // 收到的新私信通知计数
+    //   let unread_situation_count = 0  // 新粉丝通知计数
+    //   let unread_output_count = 0  // 新的喜欢或赞的通知计数
+    //   let unread_messages_count = 0
+    //   let sender_random_id_list = []
+    //   let task_id_list = []
       
-      let vm = this
+    //   let vm = this
 
-      function polling() {
-        console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
+    //   function polling() {
+    //     console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
 
-        // db.select
-        // check result => None => change to setting page
+    //     // db.select
+    //     // check result => None => change to setting page
 
 
-        if (window.localStorage.getItem('Apollo-token')) {
-          // 如果用户已登录，才开始请求 API
-          const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
-          const user_id = payload.user_id
-          // const path = `/users/${user_id}/notifications/?since=${since}`
-          const path = `/users/${user_id}/notifications/`
-          // const path = ''
-          // console.log("since shua xin",since)
-          axios.get(path)
-            .then((response) => {
-              // handle success
-            console.log("response.data", response.data, response.data.length)
-            for (let item of response.data){
-              // console.log('item', item, item.payload)
-              if (item.payload >= 1){
+    //     if (window.localStorage.getItem('Apollo-token')) {
+    //       // 如果用户已登录，才开始请求 API
+    //       const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
+    //       const user_id = payload.user_id
+    //       // const path = `/users/${user_id}/notifications/?since=${since}`
+    //       const path = `/users/${user_id}/notifications/`
+    //       // const path = ''
+    //       // console.log("since shua xin",since)
+    //       axios.get(path)
+    //         .then((response) => {
+    //           // handle success
+    //         console.log("response.data", response.data, response.data.length)
+    //         for (let item of response.data){
+    //           // console.log('item', item, item.payload)
+    //           if (item.payload >= 1){
 
       
-                console.log("++++++++++++++++++++++++=", response.data)
+    //             console.log("++++++++++++++++++++++++=", response.data)
 
-                const all_notifications = {
-                  response_data: response.data
-                } 
+    //             const all_notifications = {
+    //               response_data: response.data
+    //             } 
 
-                axios.post('/update_all_notifications/', all_notifications)
-                .then((response) => {
-                  // train stage
-                  let unread_request_notification = response.data["unread request"]
-                  let unread_match_id_notification = response.data["unread match id"]
-                  let unread_situation_notification = response.data["unread situation"]
-                  let unread_output_notification = response.data["unread output"]
+    //             axios.post('/update_all_notifications/', all_notifications)
+    //             .then((response) => {
+    //               // train stage
+    //               let unread_request_notification = response.data["unread request"]
+    //               let unread_match_id_notification = response.data["unread match id"]
+    //               let unread_situation_notification = response.data["unread situation"]
+    //               let unread_output_notification = response.data["unread output"]
 
-                  // test stage
-                  let unread_test_request_notification = response.data["unread test request"]
-                  let unread_test_match_id_notification = response.data["unread test match id"]
-                  let unread_test_output_notification = response.data["unread test output"]
-
-
-                  console.log("unread_request_notification",unread_request_notification,
-                    unread_request_notification["check_dict"])
-                  console.log("unread_match_id_notification",unread_match_id_notification,
-                    unread_match_id_notification["check_dict"])
-                  console.log("unread_situation_notification",unread_situation_notification,
-                    unread_situation_notification["check_dict"])
-                  console.log("unread_output_notification",unread_output_notification,
-                    unread_output_notification["check_dict"])
-
-                  console.log("unread_test_request_notification",unread_test_request_notification,
-                    unread_test_request_notification["check_dict"])
-                  console.log("unread_test_match_id_notification",unread_test_match_id_notification,
-                    unread_test_match_id_notification["check_dict"])
-                  console.log("unread_test_output_notification",unread_test_output_notification,
-                    unread_test_output_notification["check_dict"])
+    //               // test stage
+    //               let unread_test_request_notification = response.data["unread test request"]
+    //               let unread_test_match_id_notification = response.data["unread test match id"]
+    //               let unread_test_output_notification = response.data["unread test output"]
 
 
-                  if (unread_request_notification["check_dict"] ){
-                      unread_request(unread_request_notification)
-                  }
+    //               console.log("unread_request_notification",unread_request_notification,
+    //                 unread_request_notification["check_dict"])
+    //               console.log("unread_match_id_notification",unread_match_id_notification,
+    //                 unread_match_id_notification["check_dict"])
+    //               console.log("unread_situation_notification",unread_situation_notification,
+    //                 unread_situation_notification["check_dict"])
+    //               console.log("unread_output_notification",unread_output_notification,
+    //                 unread_output_notification["check_dict"])
 
-                  if (unread_match_id_notification["check_dict"]){
-                      unread_match_id(unread_match_id_notification)
-                  }
+    //               console.log("unread_test_request_notification",unread_test_request_notification,
+    //                 unread_test_request_notification["check_dict"])
+    //               console.log("unread_test_match_id_notification",unread_test_match_id_notification,
+    //                 unread_test_match_id_notification["check_dict"])
+    //               console.log("unread_test_output_notification",unread_test_output_notification,
+    //                 unread_test_output_notification["check_dict"])
 
-                  if (unread_situation_notification["check_dict"]){
-                      unread_situation(unread_situation_notification)
-                  }
 
-                  if (unread_output_notification["rounds_dict"]){
-                      unread_output(unread_output_notification)
-                  }
+    //               if (unread_request_notification["check_dict"] ){
+    //                   unread_request(unread_request_notification)
+    //               }
 
-                  if (unread_test_request_notification["check_dict"]){
-                      unread_test_request(unread_test_request_notification)
-                  }
+    //               if (unread_match_id_notification["check_dict"]){
+    //                   unread_match_id(unread_match_id_notification)
+    //               }
 
-                  if (unread_test_match_id_notification["check_dict"]){
-                      unread_test_match_id(unread_test_match_id_notification)
-                  }
+    //               if (unread_situation_notification["check_dict"]){
+    //                   unread_situation(unread_situation_notification)
+    //               }
 
-                  if (unread_test_output_notification["check_dict"]){
-                      unread_test_output(unread_test_output_notification)
-                  }
-                })
-                .catch((error) => {
-                  // handle error
-                  console.log(error)
-                }) 
-                break
-              }
-            }
+    //               if (unread_output_notification["rounds_dict"]){
+    //                   unread_output(unread_output_notification)
+    //               }
+
+    //               if (unread_test_request_notification["check_dict"]){
+    //                   unread_test_request(unread_test_request_notification)
+    //               }
+
+    //               if (unread_test_match_id_notification["check_dict"]){
+    //                   unread_test_match_id(unread_test_match_id_notification)
+    //               }
+
+    //               if (unread_test_output_notification["check_dict"]){
+    //                   unread_test_output(unread_test_output_notification)
+    //               }
+    //             })
+    //             .catch((error) => {
+    //               // handle error
+    //               console.log(error)
+    //             }) 
+    //             break
+    //           }
+    //         }
             
 
-            console.log("--------------------------------------------------------- new polling")
+    //         console.log("--------------------------------------------------------- new polling")
           
 
-            total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count
-            // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标
-            $('#new_notifications_count').text(total_notifications_count)
-            $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');
+    //         total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count
+    //         // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标
+    //         $('#new_notifications_count').text(total_notifications_count)
+    //         $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');
           
-            // if (promise_list.length >= 1){
-            //   Promise.all(promise_list).then((resArr) => {
+    //         // if (promise_list.length >= 1){
+    //         //   Promise.all(promise_list).then((resArr) => {
                   
 
 
-              //   });
-              // }else{
-              //   setTimeout(function(){
-              //     console.log("polling again")
-              //     polling()
-              //   }, 15000)
-              // }
+    //           //   });
+    //           // }else{
+    //           //   setTimeout(function(){
+    //           //     console.log("polling again")
+    //           //     polling()
+    //           //   }, 15000)
+    //           // }
               
-              setTimeout(function(){
-                console.log("polling again")
-                polling()
-              }, 5000)
+    //           setTimeout(function(){
+    //             console.log("polling again")
+    //             polling()
+    //           }, 5000)
 
               
-            })
-            .catch((error) => {
+    //         })
+    //         .catch((error) => {
               
-              setTimeout(function(){
-                console.log("polling again")
-                polling()
-              }, 5000)
-              // handle error
-              console.log(error)
-            })
-        }else{
-          setTimeout(function(){
-            polling()
-          }, 5000);
-        }
-        console.log(`第${count}次结束 ${getTime.now() - startTime}`); // 显示开始时间
-        count += 1
-      }
+    //           setTimeout(function(){
+    //             console.log("polling again")
+    //             polling()
+    //           }, 5000)
+    //           // handle error
+    //           console.log(error)
+    //         })
+    //     }else{
+    //       setTimeout(function(){
+    //         polling()
+    //       }, 5000);
+    //     }
+    //     console.log(`第${count}次结束 ${getTime.now() - startTime}`); // 显示开始时间
+    //     count += 1
+    //   }
 
-      // setTimeout(function(){
-      //   polling()
-      // }, 3000);
-      setTimeout(function(){
-          polling()
-        }, 7000);
-      // polling()
+    //   // setTimeout(function(){
+    //   //   polling()
+    //   // }, 3000);
+    //   setTimeout(function(){
+    //       polling()
+    //     }, 7000);
+    //   // polling()
      
-    })
+    // })
   }
  }
 // exports.default = Navbar

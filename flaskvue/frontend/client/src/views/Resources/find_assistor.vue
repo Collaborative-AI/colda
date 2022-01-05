@@ -445,7 +445,7 @@ export default {
           .then((response) => {
             // console.log('response!!', response.data)
             if (response.data == "wrong username"){
-              console.log("Username Wrong", response)
+              // console.log("Username Wrong", response)
               vm.$toasted.success(`Username Wrong. Please start a new task"`, { icon: 'fingerprint' })
               fs.appendFileSync(Log_address, "Username Wrong. Please start a new task")
               return
@@ -461,7 +461,7 @@ export default {
               console.log("log.txt created");
             }
             // handle success
-            console.log("1.1 Sponsor calls for help", response)
+            // console.log("1.1 Sponsor calls for help", response)
             vm.$toasted.success(`1.1 Sponsor calls for help`, { icon: 'fingerprint' })
 
             console.log("1.2 Sponsor sends id file")

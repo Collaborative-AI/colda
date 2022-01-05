@@ -28,6 +28,8 @@ unittest_parameters.first_user_password = 'Xie1@123'
 unittest_parameters.second_user_username = 'xie2'
 unittest_parameters.second_user_password = 'Xie2@123'
 
+unittest_parameters.unread_request_notification_first_been_call = true
+
 unittest_parameters.unread_request_notification = null
 unittest_parameters.unread_match_id_notification = ''
 unittest_parameters.unread_situation_notification = ''
@@ -62,7 +64,11 @@ unittest_parameters.default_train_data_column = "2-7"
 
 function modify_parameter(param, val){
   unittest_parameters[param] = val
-  console.log('param1', unittest_parameters)
+  // console.log('param1', unittest_parameters)
+}
+
+function modify_first_been_call(function_name){
+  unittest_parameters[function_name] = false
 }
 
 
@@ -171,4 +177,4 @@ let Profile_wrapper = mount(Profile, {
   stubs: ['router-link','router-view']
 });
 
-export { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Profile_wrapper, modify_parameter}
+export { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Profile_wrapper, modify_parameter, modify_first_been_call}

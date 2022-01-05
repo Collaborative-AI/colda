@@ -27,7 +27,6 @@ describe('test_unread_match_id', () => {
   
   // Sponsor logins
   logout_helper.logout()
-
   login_helper.check_login_first_user()
   delete_db_helper.delete_db()
   // Sponsor gets train id
@@ -35,39 +34,39 @@ describe('test_unread_match_id', () => {
   // Sponsor finds assistor
   find_assistor_helper.onSubmit()
   // Sponsor logouts
-  logout_helper.logout()
+  // logout_helper.logout()
 
-  // Assistor logins
-  login_helper.check_login_second_user()
-  // Assistor updates default_train_file_path, default_train_id_column, 
-  // default_train_data_column
-  profile_helper.onSubmit()
-  //assistor gets notification
-  notification_helper.update_notification()
-  //assistor runs unread request
-  unread_request_helper.unread_request()
-  //assistor logouts
-  logout_helper.logout()
+  // // Assistor logins
+  // login_helper.check_login_second_user()
+  // // Assistor updates default_train_file_path, default_train_id_column, 
+  // // default_train_data_column
+  // profile_helper.onSubmit()
+  // //assistor gets notification
+  // notification_helper.update_notification()
+  // //assistor runs unread request
+  // unread_request_helper.unread_request()
+  // //assistor logouts
+  // logout_helper.logout()
 
   //sponsor logins
-  login_helper.check_login_first_user()
-  // sponsor gets nofification
-  notification_helper.update_notification()
-  //sponsor runs unread match id
-  unread_sponsor_match_id_helper.unread_sponsor_match_id()
-  //sponsor logouts
-  logout_helper.logout()
+  // login_helper.check_login_first_user()
+  // // sponsor gets nofification
+  // notification_helper.update_notification()
+  // //sponsor runs unread match id
+  // unread_sponsor_match_id_helper.unread_sponsor_match_id()
+  // //sponsor logouts
+  // logout_helper.logout()
 
-  //assistor logins
-  login_helper.check_login_second_user()
-  //assistor gets nofification
-  notification_helper.update_notification()
-  //sponsor runs unread match id
-  unread_assistor_match_id_helper.unread_assistor_match_id()
-  //assistor logouts
-  logout_helper.logout()
+  // //assistor logins
+  // login_helper.check_login_second_user()
+  // //assistor gets nofification
+  // notification_helper.update_notification()
+  // //sponsor runs unread match id
+  // unread_assistor_match_id_helper.unread_assistor_match_id()
+  // //assistor logouts
+  // logout_helper.logout()
 
-  // //sponsor logins
+  //sponsor logins
   // login_helper.check_login_first_user()
   // // sponsor gets nofification
   // notification_helper.update_notification()
@@ -76,7 +75,7 @@ describe('test_unread_match_id', () => {
   // //sponsor logouts
   // logout_helper.logout()
 
-  // // //assistor logins
+  // //assistor logins
   // login_helper.check_login_second_user()
   // //assistor gets nofification
   // notification_helper.update_notification()
@@ -84,8 +83,6 @@ describe('test_unread_match_id', () => {
   // unread_assistor_situation_helper.unread_assistor_situation()
   // //sponsor logouts
   // logout_helper.logout()
-  logout_helper.logout()
-
   
 
 

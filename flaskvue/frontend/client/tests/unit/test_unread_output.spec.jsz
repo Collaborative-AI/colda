@@ -88,7 +88,7 @@ describe('test_unread_output', () => {
   // sponsor gets nofification
   notification_helper.update_notification()
   //sponsor runs unread situation
-  unread_sponsor_situation_helper.unread_output_singleTask()
+  unread_output_helper.unread_output_singleTask()
   //sponsor logouts
   logout_helper.logout()
 

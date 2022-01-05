@@ -18,6 +18,7 @@
                         <div class="font-weight-bold mr-3">
                             <div v-if="message.test_indicator == 'train' " class="text-truncate">Task Name: {{ message.task_name }}</div>
                             <div v-if="message.test_indicator == 'test' " class="text-truncate">Test Name: {{ message.test_name }}</div> 
+                            <!-- <div v-if="message.test_indicator == 'test' " class="small">Task Name: {{ message.task_name }}</div> -->
                             <div class="small">Task ID:  {{ message.task_id }}</div>
                             <div v-if="message.test_indicator == 'train' " class="small">Task Description:  {{ message.task_description }}</div>
                             <div v-if="message.test_indicator == 'test' " class="small">Test ID:  {{ message.test_id }}</div>
@@ -40,7 +41,7 @@
                             </div> -->
                             <br />
                             <div class="text-right text-muted pt-1">
-                              <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id, from_task_name: message.task_name } }">
+                              <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id, from_task_name: message.task_name, from_test_id: message.test_id} }">
                                 <button class="btn btn-block u-btn-outline-primary g-rounded-20 ">Details</button>
                               </router-link>
                             </div>
@@ -183,6 +184,9 @@ export default {
           // handle success
           vm.messages = response.data
           console.log("vm.messages", vm.messages)
+
+
+          
           // console.log(this.messages.items)
           // console.log(typeof(this.messages))
           // console.log(this.messages.items[0].task_id)

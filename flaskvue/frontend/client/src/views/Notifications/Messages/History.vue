@@ -17,7 +17,7 @@
     
     <!-- End Panel Header -->
     <div class="form-group">
-      <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id, from_task_name: task_name } }">
+      <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id, from_task_name: task_name, from_test_id: test_id } }">
         <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button>
       </router-link>
       
@@ -161,6 +161,7 @@ export default {
       root: '',
       task_id: '',
       task_name: '',
+      test_id: '',
       page: 'chart',
       test_num: '2',
       backend_log: "",
@@ -405,6 +406,7 @@ export default {
     },
     
     getLog(task_id) {
+      let vm = this
       const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
       let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
       Log_content = Log_content.split("\n")
@@ -412,6 +414,15 @@ export default {
       for (let i = 0; i < Log_content.length; i++){
         this.messages.push(Log_content[i])
       }
+      // if (this.test_id == null){
+      //   for (let i in this.messages){
+      //     if (this.messages[i].search("Train Stage Ends") != -1){
+      //       this.messages = 
+
+      //     }
+      //   }
+
+      // }
 
     
       // const test_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + response.data.test_id + '/log.txt'
@@ -613,6 +624,8 @@ export default {
   created () {
     this.task_id = this.$route.query.from;
     this.task_name = this.$route.query.from_task_name
+    this.test_id = this.$route.query.from_test_id
+    console.log('this.test_id', this.test_id)
     let new_root = store.changeroot()
     this.root = new_root.root;
     this.exe_position = new_root.exe_position

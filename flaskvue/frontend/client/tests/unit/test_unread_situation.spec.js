@@ -26,6 +26,8 @@ afterAll(() => {
 describe('test_unread_match_id', () => {
   
   // Sponsor logins
+  logout_helper.logout()
+
   login_helper.check_login_first_user()
   delete_db_helper.delete_db()
   // Sponsor gets train id
@@ -65,23 +67,25 @@ describe('test_unread_match_id', () => {
   //assistor logouts
   logout_helper.logout()
 
-  //sponsor logins
-  login_helper.check_login_first_user()
-  // sponsor gets nofification
-  notification_helper.update_notification()
-  //sponsor runs unread situation
-  unread_sponsor_situation_helper.unread_sponsor_situation()
-  //sponsor logouts
+  // //sponsor logins
+  // login_helper.check_login_first_user()
+  // // sponsor gets nofification
+  // notification_helper.update_notification()
+  // //sponsor runs unread situation
+  // unread_sponsor_situation_helper.unread_sponsor_situation()
+  // //sponsor logouts
+  // logout_helper.logout()
+
+  // // //assistor logins
+  // login_helper.check_login_second_user()
+  // //assistor gets nofification
+  // notification_helper.update_notification()
+  // //assistor runs unread situation
+  // unread_assistor_situation_helper.unread_assistor_situation()
+  // //sponsor logouts
+  // logout_helper.logout()
   logout_helper.logout()
 
-  //assistor logins
-  login_helper.check_login_second_user()
-  //assistor gets nofification
-  notification_helper.update_notification()
-  //assistor runs unread situation
-  unread_assistor_situation_helper.unread_assistor_situation()
-  //sponsor logouts
-  logout_helper.logout()
   
 
 

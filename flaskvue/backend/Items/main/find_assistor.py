@@ -84,6 +84,7 @@ def find_assistor():
 
     # check the data sent by the sponsor
     data = request.get_json()
+    print('data', data)
     if not data:
         return bad_request('You must post JSON data.')
     if 'assistor_username_list' not in data or not data.get('assistor_username_list'):

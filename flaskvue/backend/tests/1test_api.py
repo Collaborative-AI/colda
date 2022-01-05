@@ -52,6 +52,7 @@ class APITestCase(unittest.TestCase):
         response = self.client.post('/tokens', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
+        print('sss', json_response)
         self.assertIsNotNone(json_response.get('token'))
         token = json_response['token']
         return {

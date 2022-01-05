@@ -35,7 +35,6 @@ function check_find_assistor_sponsor_onSubmit_1(){
         
         let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
   
-        
         expect(train_file_path).toEqual(
           row.train_file_path
         )
@@ -107,13 +106,8 @@ function check_find_assistor_sponsor_onSubmit_1(){
   })
 }
 
-
-
 let find_assistor_helper = {}
 find_assistor_helper.get_train_id = check_find_assistor_sponsor_get_train_id
-
 find_assistor_helper.onSubmit = check_find_assistor_sponsor_onSubmit_1
-
-
 
 export { find_assistor_helper }

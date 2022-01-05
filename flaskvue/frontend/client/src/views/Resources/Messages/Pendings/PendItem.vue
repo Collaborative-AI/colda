@@ -17,12 +17,12 @@
       <button @click="get_manual_file_path()" class="btn btn-success">Select File</button>
     </div>
 
-    <div style="overflow:auto">
+ <div style="overflow:auto">
     <table class="table" v-if="select_data">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col" v-for="(pdata, idx) in pdatas[0]" :key="pdata.index">{{idx+1}}</th>
+          <th scope="col" v-for="(ptitle, idx) in ptitles" :key="ptitle.index">{{idx+1}}.{{ptitle}}</th>
         </tr>
       </thead>
       <tbody>
@@ -44,6 +44,15 @@
       <label for="name">Input data column</label>
       <input type="text" v-model="manual_data_column" class="form-control" id="name" placeholder="">
     </div>
+
+    <div class="form-group">
+    <label for="name">Select Model Name</label>
+    &nbsp;
+    <select v-model="model_name" class="form-control">
+      <option v-for="item in model_name_list"  :key="item.index" :value="item">{{item}}</option>
+    </select>
+    </div>
+
     <br>
     
     <button @click="Accept()" class="btn btn-success">Accept</button>
@@ -75,6 +84,7 @@ export default {
       manual_file_path: '',
       manual_id_column: '',
       manual_data_column: '',
+      manual_target_column: '',
       task_id: '',
       test_id: '',
       task_description: '',
@@ -83,8 +93,10 @@ export default {
       metric_name: '',
       test_indicator: '',
       task_name: '',
+      ptitles:"",
       pdatas:"",
       select_data:false,
+      model_name_list:['linear'],
     }
   },
 
@@ -121,7 +133,8 @@ export default {
             
             vm.pdatas = data.split("\n")
             for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
-            vm.pdatas=vm.pdatas.slice(0,3)
+            vm.ptitles=vm.pdatas[0]
+            vm.pdatas=vm.pdatas.slice(1,4)
             vm.select_data=true
             console.log('preview',vm.pdatas[0])
           })
@@ -180,6 +193,35 @@ export default {
               (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + task_id + `")`
       console.log("insert_sentence", insert_sentence)
 
+
+      
+
+
+      // const stmt = vm.$db.prepare('INSERT INTO User_Manual_Table VALUES' +
+      //     ' ( @task_name, @task_description, @user_id, @task_id, @test_id, @pending_train_file_path,' +
+      //     ' @pending_train_id_column, @pending_train_data_column, @pending_train_target_column, @pending_test_file_path, @pending_test_id_column,' +
+      //     ' @pending_test_data_column, @pending_test_target_column, @task_mode, @model_name, @metric_name)');
+             
+      //     stmt.run({
+      //       task_name: 'haha', 
+      //       task_description: '', 
+      //       user_id: '', 
+      //       task_id: '',
+      //       test_id: '',
+      //       pending_train_file_path: '', 
+      //       pending_train_id_column: '', 
+      //       pending_train_data_column: '', 
+      //       pending_train_target_column: '', 
+      //       pending_test_file_path: '',
+      //       pending_test_id_column: '',
+      //       pending_test_data_column: '',
+      //       pending_test_target_column: '',
+      //       task_mode: '', 
+      //       model_name: '',
+      //       metric_name: ''
+      //     });
+
+
       const stmt = vm.$db.prepare('INSERT INTO User_Manual_Table VALUES' +
           ' ( @task_name, @task_description, @user_id, @task_id, @test_id, @pending_train_file_path,' +
           ' @pending_train_id_column, @pending_train_data_column, @pending_train_target_column, @pending_test_file_path, @pending_test_id_column,' +
@@ -200,7 +242,7 @@ export default {
             pending_test_data_column: '',
             pending_test_target_column: '',
             task_mode: '', 
-            model_name: '',
+            model_name: vm.model_name,
             metric_name: ''
           });
 
@@ -211,6 +253,7 @@ export default {
           test_id: vm.test_id,
           test_indicator: vm.test_indicator
         }
+        console.log('wokan4', this.test_indicator)
 
         vm.$axios.post('/delete_pending/', delete_pending)
           .then((response) => {

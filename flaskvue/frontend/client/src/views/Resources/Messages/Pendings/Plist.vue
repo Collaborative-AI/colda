@@ -42,7 +42,7 @@
                                                         model_name: pend.pending_model_name,
                                                         metric_name: pend.pending_metric_name,
                                                         test_id: pend.pending_test_id,  
-                                                        test_indicator: pend.test_indicator } }">
+                                                        test_indicator: pend.pending_test_indicator } }">
                                 <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Details</button>
                               </router-link>
                             </div>
@@ -116,6 +116,7 @@ export default {
           // handle success
           console.log("get_all_pending response", response.data)
           vm.pending =  response.data.all_pending_items
+          console.log('wokan5',vm.pending)
         })
         .catch((error) => {
           // handle error

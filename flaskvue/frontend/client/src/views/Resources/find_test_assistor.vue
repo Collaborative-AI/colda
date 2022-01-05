@@ -275,6 +275,8 @@ export default {
           vm.model_name = row.model_name
           vm.metric_name = row.metric_name
 
+          
+
 
           const stmt = vm.$db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
           ' ( @task_name, @task_description, @user_id, @test_indicator, @task_id, @test_id, @train_file_path,' +

@@ -50,7 +50,7 @@ def add_train_pending():
     pending.pending_task_description = task_description
     pending.pending_test_indicator = "train"
 
-    print('kan1',pending.pending_test_indicator)
+    print('kan1')
 
     db.session.add(pending)
     db.session.commit()
@@ -115,7 +115,6 @@ def get_all_pending():
     res = [item.to_dict() for item in all_pending_items]
 
     data = {"all_pending_items": res}
-    print('haha',data)
     
     return jsonify(data)
 
@@ -139,11 +138,14 @@ def dalete_pending():
     test_id = data['test_id']
     test_indicator = data['test_indicator']
 
+    print('delete sucess1')
+
     if test_indicator == "train":
-        Pending.query.filter(Pending.pending_assistor_id == g.current_user.id, Pending.test_indicator == test_indicator, Pending.pending_task_id == task_id).delete()
+        Pending.query.filter(Pending.pending_assistor_id == g.current_user.id, Pending.pending_test_indicator == test_indicator, Pending.pending_task_id == task_id).delete()
         db.session.commit()
     else:
-        Pending.query.filter(Pending.pending_assistor_id == g.current_user.id, Pending.test_indicator == test_indicator, Pending.pending_test_id == test_id).delete()
+        Pending.query.filter(Pending.pending_assistor_id == g.current_user.id, Pending.pending_test_indicator == test_indicator, Pending.pending_test_id == test_id).delete()
         db.session.commit()
 
+    print('delete sucess2')
     return jsonify("Sucessfully delete")

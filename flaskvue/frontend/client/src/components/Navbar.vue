@@ -345,17 +345,17 @@ export default {
 
         if (vm.sharedState.mode == 'Auto'){
 
-          const stmt1 = vm.$db.prepare('UPDATE User_Default_Table' 
-          + ' SET task_id = ?'
-          + ' WHERE user_id = ?'); 
-          stmt1.run(task_id, vm.sharedState.user_id);
+          // const stmt1 = vm.$db.prepare('UPDATE User_Default_Table' 
+          // + ' SET task_id = ?'
+          // + ' WHERE user_id = ?'); 
+          // stmt1.run(task_id, vm.sharedState.user_id);
 
-          const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
-          + ' SET task_mode = ?,'
-          + ' model_name = ?,'
-          + ' metric_name = ?'
-          + ' WHERE user_id = ? AND task_id = ?'); 
-          stmt.run(cur_unread_request_info_dict[task_id]["task_mode"], cur_unread_request_info_dict[task_id]["model_name"], cur_unread_request_info_dict[task_id]["metric_name"], vm.sharedState.user_id, task_id);
+          // const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
+          // + ' SET task_mode = ?,'
+          // + ' model_name = ?,'
+          // + ' metric_name = ?'
+          // + ' WHERE user_id = ? AND task_id = ?'); 
+          // stmt.run(cur_unread_request_info_dict[task_id]["task_mode"], cur_unread_request_info_dict[task_id]["model_name"], cur_unread_request_info_dict[task_id]["metric_name"], vm.sharedState.user_id, task_id);
 
 
           let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
@@ -1190,7 +1190,7 @@ export default {
     unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address, task_mode, model_name){
 
       let Assistor_train_output_path = null;
-
+      console.log('wokan6', model_name )
       // get response from make_train.py. 
       let indicator = null;
       try{

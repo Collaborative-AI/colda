@@ -49,6 +49,14 @@
       <input type="text" v-model="default_train_data_column" class="form-control" id="name" placeholder="">
     </div>
 
+    <div class="form-group">
+    <label for="name">Select Model Name</label>
+    &nbsp;
+    <select v-model="default_model_name" class="form-control">
+      <option v-for="item in model_name_list"  :key="item.index" :value="item">{{item}}</option>
+    </select>
+    </div>
+
     <!-- <div class="form-group">
       <label for="location">Default Train/Test ID Path</label>
       <input type="text" v-model="profileForm.default_train_id_path" class="form-control" id="location" placeholder="">
@@ -107,9 +115,11 @@ export default {
       default_train_file_path: "",
       default_train_id_column: "",
       default_train_data_column: "",
+      default_model_name: "",
       ptitles:"",
       pdatas:"",
       select_data:false,
+      model_name_list:['linear'],
       // profileForm: {
       //   default_train_data_path: "",
       //   default_train_id_path: "",
@@ -312,6 +322,7 @@ export default {
           vm.default_train_file_path = row.default_train_file_path
           vm.default_train_id_column = row.default_train_id_column
           vm.default_train_data_column = row.default_train_data_column
+          vm.default_model_name = row.model_name
           vm.sharedState.mode = row.mode
           console.log('mode', vm.sharedState.mode)
         }
@@ -397,7 +408,7 @@ export default {
           default_train_target_column: "",
           mode: vm.sharedState.mode,
           task_mode: "",
-          model_name: "",
+          model_name: vm.default_model_name,
           metric_name: "",
         });
         console.log('dele1')
@@ -409,12 +420,13 @@ export default {
           const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
           + ' SET default_train_file_path = ?,'
           + ' default_train_id_column = ?,'
-          + ' default_train_data_column =?,'
-          + ' default_train_target_column =?,'
+          + ' default_train_data_column = ?,'
+          + ' default_train_target_column = ?,'
+          + ' model_name = ?,'
           + ' mode = ?'
           + ' WHERE user_id = ?'); 
           console.log('dele3')
-          stmt.run(vm.default_train_file_path, vm.default_train_id_column, vm.default_train_data_column, '', vm.sharedState.mode, vm.sharedState.user_id);
+          stmt.run(vm.default_train_file_path, vm.default_train_id_column, vm.default_train_data_column, '', vm.default_model_name, vm.sharedState.mode, vm.sharedState.user_id);
         } 
       }
       console.log('dele2')

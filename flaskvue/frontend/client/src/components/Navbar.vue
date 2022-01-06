@@ -81,7 +81,7 @@ import $ from 'jquery'
 import db from '../db'
 console.log('dbzzzz', db)
 import authority from '../authority'
-import { execute_unittest_list, generate_unittest_parameters } from '../utils.js'
+import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../utils.js'
 
 // import axios from '../http'
 
@@ -90,23 +90,12 @@ import { execute_unittest_list, generate_unittest_parameters } from '../utils.js
 // If we run npm run electron:serve, window.ex would have the object
 // else we are running unittest, we will require directly
 const ex = window.ex ? window.ex : require('child_process');
-// console.log("1231", ex, window.ex)
-
 const fs = window.fs ? window.fs : require('fs');
-// console.log("123", fs)
-
 const os = window.os ? window.os : require('os');
-// console.log("1232", os)
-
 const node_path = window.node_path ? window.node_path : require('path');
-// console.log("1233", node_path)
-
 const dialog = window.dialog ? window.dialog : require('electron');
-
 const electron_log = window.log ? window.log : require("electron-log")
-// console.log("1234", dialog)
 
-// import { execute_unittest_list, generate_unittest_parameters } from '../utils.js'
 
 import Home from '../views/Home.vue'
 // const Home = require('../views/Home.vue').default
@@ -127,112 +116,9 @@ export default {
       exe_position: '',
       showView: true,
       test_response: {},
-      
-      
     }
   },
   methods: {
-
-    plus(a, b) {
-    return a + b;
-  },
-
-    // test_axios_integration() {
-    //   console.log("llililililili")
-    //   console.log(this.$axios, this.$axios.get, this.$axios.get('/url'))
-    //   this.$axios.get('/url')
-    //     .then((response) => {
-    //       // handle success
-    //       console.log('response', response)
-    //       // return response
-    //   })
-
-    //   // db.get('/url')
-    //   //   .then((response) => {
-    //   //     // handle success
-    //   //     console.log('response2', response)
-    //   //     return response
-    //   // })
-
-    //   // console.log("6666666",this.$db, this.$db.get, this.$db.get())
-    //   // let select_sentence = ''
-    //   // console.log( '6235235', this.$db.get(select_sentence, function(err, row){
-    //   //   if (err){
-    //   //     console.log(err);
-    //   //   }
-    //   //   console.log('response2', row)
-    //   // }) )
-
-    //   const better_sqlite3_command = this.$db.prepare('SELECT age FROM cats WHERE name = ?');
-    //   console.log("45421", better_sqlite3_command)
-    //   const cat = better_sqlite3_command.get('Joey');
-    //   console.log("452123", cat)
-
-    // },
-
-    test_axios(x,y,z) {
-      let vm = this
-      console.log("wowowowowoow", vm.username)
-      console.log('zzzz', this.$axios)
-      vm.$axios.get('/changshi')
-        .then((response) => {
-          // handle success
-          let a = 5
-          
-          console.log('response', x(response.data))
-          // return response
-          
-          vm.$axios.get('/changshi2')
-            .then((response) => {
-              // handle success
-              console.log('response', z(response.data))
-              // return response
- 
-          })
-          return 5
-      })
-
-      function sleep(millisecond) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve()
-            }, millisecond)
-        })
-    }
-
-
-    async function test() {
-        const start = new Date().getTime();
-       console.log("执行开始",start);
-       await sleep(3000);
-       console.log("执行结束",new Date().getTime() - start)
-   }
-    
-    test();
-
-
-      // db.get('/url')
-      //   .then((response) => {
-      //     // handle success
-      //     console.log('response2', response)
-      //     return response
-      // })
-
-      // console.log("6666666",this.$db, this.$db.get, this.$db.get())
-      // let select_sentence = ''
-      // console.log( '6235235', this.$db.get(select_sentence, function(err, row){
-      //   if (err){
-      //     console.log(err);
-      //   }
-      //   console.log('response2', row)
-      // }) )
-
-      // const better_sqlite3_command = this.$db.prepare('SELECT age FROM cats WHERE name = ?');
-      // console.log("45421", better_sqlite3_command)
-      // const cat = better_sqlite3_command.get('Joey');
-      // console.log("452123", cat)
-
-    },
 
     refreshView () {
       this.showView = false // 通过v-if移除router-view节点
@@ -246,8 +132,6 @@ export default {
       this.$toasted.show('You have been logged out.', { icon: 'fingerprint' })
       this.$router.push('/login')
     },
-
-    
 
     handle_train_log_address(task_id) {
       const Log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
@@ -288,24 +172,18 @@ export default {
       return true
     },
 
-
     unread_request(unread_request_notification) {
       if (unread_request_notification == null){
         return
       }
       let vm = this
-
-      console.log("this.sharedState.receive_request", vm.sharedState.mode)
-      
-      console.log("2.1 Update request notification response", unread_request_notification)
-      vm.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
+      Log(generate_message_string("this.sharedState.receive_request", vm.sharedState.mode), 'debug')
+      Log(generate_message_string("2.1 Update request notification response", unread_request_notification), 'debug')
 
       let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
-      console.log('cur_unread_request', unread_request_notification)
-      let cur_unread_request_info_dict = unread_request_notification["info_dict"]
-      
+      Log(generate_message_string('cur_unread_request', unread_request_notification), 'debug')
 
-      // check if testing task id in the cur_unread_request_Taskid_dict
+      // Unittest: check if testing task id in the cur_unread_request_Taskid_dict
       let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
       execute_unittest_list(arguments[arguments.length-1], 0, "unread_request_unittest", unittest_parameters)
 
@@ -415,7 +293,7 @@ export default {
               vm.test_response = response
               // return response
               
-              vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
+              // vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
 
               try {
                 fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
@@ -468,7 +346,7 @@ export default {
     unread_match_id(unread_match_id_notification) {
             
       console.log("3.1 Update match id notification response", unread_match_id_notification)
-      this.$toasted.success("3.1 Update the match id notification", { icon: 'fingerprint' })
+      // this.$toasted.success("3.1 Update the match id notification", { icon: 'fingerprint' })
 
       let cur_unread_match_id_Taskid_dict = unread_match_id_notification["check_dict"]
 
@@ -536,7 +414,7 @@ export default {
           execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
           
           console.log("3.3 Sponsor gets matched id file")
-          vm.$toasted.success("3.3 Sponsor gets matched id file", { icon: 'fingerprint' })
+          // vm.$toasted.success("3.3 Sponsor gets matched id file", { icon: 'fingerprint' })
 
           try {
             fs.appendFileSync(Log_address, "3.3 Sponsor gets matched id file\n")
@@ -574,7 +452,7 @@ export default {
 
             fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
             console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2]);
-            vm.$toasted.success('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2], { icon: 'fingerprint' })
+            // vm.$toasted.success('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2], { icon: 'fingerprint' })
             try {
               fs.appendFileSync(Log_address, "3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
             } catch (err) {
@@ -599,7 +477,7 @@ export default {
             }
 
             console.log('3.5 Sponsor matches id to index');
-            vm.$toasted.success('3.5 Sponsor matches id to index', { icon: 'fingerprint' })
+            // vm.$toasted.success('3.5 Sponsor matches id to index', { icon: 'fingerprint' })
             try {
               fs.appendFileSync(Log_address, "3.5 Sponsor matches id to index\n")
             } catch (err) {
@@ -641,7 +519,7 @@ export default {
           }
 
           console.log("3.6 Sponsor makes residual finished")
-          vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
+          // vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
           } catch (err) {
@@ -691,7 +569,7 @@ export default {
           
 
             // console.log("3.7 Sponsor sends all situations", response)
-            vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
+            // vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
             
             try {
               fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
@@ -828,7 +706,7 @@ export default {
           execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
           
           // console.log("3.3 Assistor gets matched id file", response)
-          vm.$toasted.success("3.3 Assistor gets matched id file", { icon: 'fingerprint' })
+          // vm.$toasted.success("3.3 Assistor gets matched id file", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "3.3 Assistor gets matched id file\n")
           } catch (err) {
@@ -861,7 +739,7 @@ export default {
           fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
 
           console.log('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos[2]);
-          vm.$toasted.success('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos[2], { icon: 'fingerprint' })
+          // vm.$toasted.success('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos[2], { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
           } catch (err) {
@@ -886,7 +764,7 @@ export default {
           }
 
           console.log('3.5 Assistor matches id to index');
-          vm.$toasted.success('3.5 Assistor matches id to index', { icon: 'fingerprint' })
+          // vm.$toasted.success('3.5 Assistor matches id to index', { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "3.5 Assistor matches id to index\n")
             fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
@@ -921,7 +799,7 @@ export default {
 
     unread_situation(unread_situation_notification) {
       console.log("4.1 Update the situation notification", unread_situation_notification)
-      this.$toasted.success("4.1 Update the situation notification", { icon: 'fingerprint' })
+      // this.$toasted.success("4.1 Update the situation notification", { icon: 'fingerprint' })
 
       let cur_unread_situation_Taskid_dict = unread_situation_notification["check_dict"]
       let cur_unread_situation_Rounds_dict = unread_situation_notification["rounds_dict"]
@@ -955,7 +833,7 @@ export default {
     unread_situation_sponsor(rounds, task_id) {
       let vm = this;
       console.log("4.2 Cur round is:" + rounds + task_id);
-      vm.$toasted.success("4.2 Cur round is:" + rounds +  task_id, { icon: 'fingerprint' })
+      // vm.$toasted.success("4.2 Cur round is:" + rounds +  task_id, { icon: 'fingerprint' })
     
       const Log_address = vm.handle_train_log_address(task_id)
       
@@ -1003,7 +881,7 @@ export default {
         }
 
         console.log("4.3 Sponsor round " + rounds + " training done.");
-        vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
+        // vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
       
       }catch(err){
         console.log(err)
@@ -1106,7 +984,7 @@ export default {
       }else{
 
         console.log("4.4 Assistor round " + rounds + " training done.");
-        vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
+        // vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
         try {
           fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
         } catch (err) {
@@ -1126,7 +1004,7 @@ export default {
           .then((response) => {
           // handle success
           console.log("4.5 Assistor sends output", response)
-          vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
+          // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
             fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
@@ -1162,7 +1040,7 @@ export default {
           execute_unittest_list(arguments[arguments.length-1], 1, "unread_situation_unittest", unittest_parameters)
 
           console.log("4.2 assistor gets situation file")
-          vm.$toasted.success("4.2 assistor gets situation file", { icon: 'fingerprint' })
+          // vm.$toasted.success("4.2 assistor gets situation file", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "4.2 assistor gets situation file\n")
           } catch (err) {
@@ -1198,7 +1076,7 @@ export default {
           fs.writeFileSync(save_residual_file_pos[2], cur_situation_file)
 
           console.log('4.3 Assistor Saved Residual File!');
-          vm.$toasted.success('4.3 Assistor Saved Residual File!', { icon: 'fingerprint' })
+          // vm.$toasted.success('4.3 Assistor Saved Residual File!', { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "4.3 Assistor Saved Residual File!\n")
           }catch (err) {
@@ -1241,7 +1119,7 @@ export default {
 
       // Only sponsor would receive unread_output
       console.log("5.1 Update the output notification", unread_output_notification)
-      this.$toasted.success("5.1 Update the output notification", { icon: 'fingerprint' })
+      // this.$toasted.success("5.1 Update the output notification", { icon: 'fingerprint' })
 
       let cur_unread_output_Rounds_dict = unread_output_notification["rounds_dict"]
 
@@ -1279,7 +1157,7 @@ export default {
       this.$axios.post(url, payload)
         .then((response) => {
           console.log("5.2 Sponsor gets output model")
-          vm.$toasted.success("5.2 Sponsor gets output model", { icon: 'fingerprint' })
+          // vm.$toasted.success("5.2 Sponsor gets output model", { icon: 'fingerprint' })
 
           try {
             fs.appendFileSync(Log_address, "5.2 Sponsor gets output model\n")
@@ -1322,7 +1200,7 @@ export default {
             fs.writeFileSync(save_output_pos[2], cur_output)           
 
             console.log('5.3 Sponsor saves Output model');
-            vm.$toasted.success('5.3 Sponsor saves Output model', { icon: 'fingerprint' })
+            // vm.$toasted.success('5.3 Sponsor saves Output model', { icon: 'fingerprint' })
             try {
               fs.appendFileSync(Log_address, "5.3 Sponsor saves Output model\n")
             } catch (err) {
@@ -1385,7 +1263,7 @@ export default {
       }else{
         console.log("jinlaile")
         console.log("5.4 Sponsor makes result done.")
-        vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
+        // vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
         try {
           fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
         } catch (err) {
@@ -1394,6 +1272,7 @@ export default {
 
         // terminate
         if ((rounds+1) >= vm.max_round){
+          vm.$toasted.success("Training Done", { icon: 'fingerprint' })
           fs.appendFileSync(Log_address, "---------------------- Train Stage Ends\n");
         }else{        
 
@@ -1418,7 +1297,7 @@ export default {
         }
 
         console.log("5.5 Sponsor makes residual finished")
-        vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
+        // vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
 
         try {
           fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
@@ -1451,7 +1330,7 @@ export default {
           .then((response) => {
           // handle success
           console.log("5.6 Sponsor updates situation done", response)
-            vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
+            // vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
             try {
               fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
               fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
@@ -1476,7 +1355,7 @@ export default {
 
         
       console.log("2.1 Update Test request notification response", unread_test_request_notification)
-      this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
+      // this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
       let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
       let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
@@ -1592,7 +1471,7 @@ export default {
             .then((response) => {
               // handle success
               console.log("2.2 Test: assistor uploads id file", response)
-              vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
+              // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
               try {
                 fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
                 fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
@@ -1636,7 +1515,7 @@ export default {
 
     unread_test_match_id(unread_test_match_id_notification) {
       console.log("3.1 Update Test match id notification response", unread_test_match_id_notification)
-      this.$toasted.success("3.1 Update the Test match id notification", { icon: 'fingerprint' })
+      // this.$toasted.success("3.1 Update the Test match id notification", { icon: 'fingerprint' })
 
       let cur_unread_test_match_id_Testid_dict = unread_test_match_id_notification["check_dict"]
       let test_id_to_task_id = unread_test_match_id_notification["test_id_to_task_id"]
@@ -1711,7 +1590,7 @@ export default {
 
 
           console.log("3.4 Test: Sponsor gets matched id file")
-          vm.$toasted.success("3.4 Test: Sponsor gets matched id file", { icon: 'fingerprint' })
+          // vm.$toasted.success("3.4 Test: Sponsor gets matched id file", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "3.4 Test: Sponsor gets matched id file\n")
           } catch (err) {
@@ -1749,7 +1628,7 @@ export default {
 
             
             console.log('3.5 Test: Sponsor Saved Matched id File!');
-            vm.$toasted.success('3.5 Test: Sponsor Saved Matched id File!', { icon: 'fingerprint' })
+            // vm.$toasted.success('3.5 Test: Sponsor Saved Matched id File!', { icon: 'fingerprint' })
             try {
               fs.appendFileSync(Log_address, "3.5 Test: Sponsor Saved Matched id File!\n")
             } catch (err) {
@@ -1773,7 +1652,7 @@ export default {
             }
 
             console.log('3.6 Test: Sponsor matches id to index');
-            vm.$toasted.success('3.6 Test: Sponsor matches id to index', { icon: 'fingerprint' })
+            // vm.$toasted.success('3.6 Test: Sponsor matches id to index', { icon: 'fingerprint' })
             try {
               fs.appendFileSync(Log_address, "3.6 Test: Sponsor matches id to index\n")
             } catch (err) {
@@ -1808,7 +1687,7 @@ export default {
             }
 
             console.log("3.7 Test: Sponsor stores all test model results")
-            vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
+            // vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
 
             try {
               fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
@@ -1847,7 +1726,7 @@ export default {
 
 
           console.log("3.4 Test: assistor gets matched id file", response)
-          vm.$toasted.success("3.4 Test: assistor gets matched id file", { icon: 'fingerprint' })
+          // vm.$toasted.success("3.4 Test: assistor gets matched id file", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "3.4 Test: assistor gets matched id file\n")
           } catch (err) {
@@ -1879,7 +1758,7 @@ export default {
           fs.writeFileSync(test_save_match_id_file_pos[2], cur_match_id_file)
           
           console.log('3.5 Test: Assistor Saved Matched id File!');
-          vm.$toasted.success('3.5 Test: Assistor Saved Matched id File!', { icon: 'fingerprint' })
+          // vm.$toasted.success('3.5 Test: Assistor Saved Matched id File!', { icon: 'fingerprint' })
 
 
           unittest_parameters = generate_unittest_parameters()
@@ -1908,7 +1787,7 @@ export default {
           }
 
           console.log('3.6 Test: Assistor matches id to index');
-          vm.$toasted.success('3.6 Test: Assistor matches id to index', { icon: 'fingerprint' })
+          // vm.$toasted.success('3.6 Test: Assistor matches id to index', { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "3.6 Test: Assistor matches id to index\n")
           } catch (err) {
@@ -1955,7 +1834,7 @@ export default {
               }
 
               console.log("3.7 Test: assistor stores all test model results")
-              vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
+              // vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
 
               try {
                 fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
@@ -1982,7 +1861,7 @@ export default {
                 .then((response) => {
                 // handle success
                 console.log("3.8 Test: assistor sends all test model results", response)
-                vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
+                // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
                 try {
                   fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
                   fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
@@ -2024,7 +1903,7 @@ export default {
               }
 
               console.log("3.7 Test: assistor stores all test model results")
-              vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
+              // vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
 
               try {
                 fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
@@ -2050,8 +1929,9 @@ export default {
               vm.$axios.post('/send_test_output/', payload1)
                 .then((response) => {
                 // handle success
+                vm.$toasted.success("Testing Done", { icon: 'fingerprint' })
                 console.log("3.8 Test: assistor sends all test model results", response)
-                vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
+                // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
                 try {
                   fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
                   fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
@@ -2080,7 +1960,7 @@ export default {
     unread_test_output(unread_test_output_notification) {
 
       console.log("4.1 Update Test output notification", unread_test_output_notification)
-      this.$toasted.success("4.1 Update Test output notification", { icon: 'fingerprint' })
+      // this.$toasted.success("4.1 Update Test output notification", { icon: 'fingerprint' })
 
       let cur_unread_test_output_Testid_dict = unread_test_output_notification["check_dict"]
       let test_id_to_task_id = unread_test_output_notification["test_id_to_task_id"]
@@ -2122,7 +2002,7 @@ export default {
       this.$axios.post(url, payload)
         .then((response) => {
           console.log("4.2 Test: Sponsor gets assistors' Test output model")
-          vm.$toasted.success("4.2 Test: Sponsor gets assistors' Test output model", { icon: 'fingerprint' })
+          // vm.$toasted.success("4.2 Test: Sponsor gets assistors' Test output model", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "4.2 Test: Sponsor gets assistors' Test output model\n")
           } catch (err) {
@@ -2173,7 +2053,7 @@ export default {
           }//end for loop
           console.log("4.3 Test: Sponsor saves assistors' Output model");
 
-          vm.$toasted.success("4.3 Test: Sponsor saves assistors' Output model", { icon: 'fingerprint' })
+          // vm.$toasted.success("4.3 Test: Sponsor saves assistors' Output model", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "4.3 Test: Sponsor saves assistors' Output model\n")
           } catch (err) {
@@ -2231,7 +2111,7 @@ export default {
           }, 7000);
         }else{
           console.log("4.4 Test: Sponsor evaluates output models done");
-          vm.$toasted.success("4.4 Test: Sponsor evaluates output models done", { icon: 'fingerprint' })
+          vm.$toasted.success("Testing Done", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
           } catch (err) {

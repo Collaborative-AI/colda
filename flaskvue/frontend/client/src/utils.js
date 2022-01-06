@@ -20,3 +20,15 @@ export function execute_unittest_list(unittest_list, index, indicator, unittest_
   console.log(indicator + ' wrong')
   return false
 }
+
+export function generate_message_string(){
+  let message_list = []
+  for (let i = 0; i < arguments.length; i++){
+    message_list.push(arguments[i])
+  }
+  return arguments.join(" ")
+}
+
+export function Log(message, level){
+  console.log(message, level)
+}

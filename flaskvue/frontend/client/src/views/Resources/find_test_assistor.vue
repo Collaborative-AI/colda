@@ -67,7 +67,7 @@
 <script>
 import store from '../../store'
 import db from '../../db'
-
+import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../../utils.js'
 
 const fs = window.fs ? window.fs : require('fs');
 const ex = window.ex ? window.ex : require('child_process');
@@ -303,24 +303,15 @@ export default {
             metric_name: vm.metric_name
           });
 
-          
-
-         
-
           let match_id_address = vm.test_id_column
           let test_hash_id_file_address = null;
 
           try{
-            // test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --id_path ' + match_id_address + ' --root ' + vm.root 
-            //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
-            //                         + ' --mode test' + ' --test_id ' + vm.test_id
-            //                         + ' --dataset_path ' + "1" + ' --id_idx ' + "1", {encoding: 'utf8'})
 
             test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
                                     + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id
                                     + ' --mode test' + ' --test_id ' + vm.test_id
                                     + ' --dataset_path ' + vm.test_file_path + ' --id_idx ' + vm.test_id_column, {encoding: 'utf8'})
-
 
             // test_hash_id_file_address = test_hash_id_file_address.replace(/\n/g, '')
             console.log(test_hash_id_file_address)
@@ -368,18 +359,17 @@ export default {
                 fs.openSync(Log_address, "w");
                 console.log("log.txt created");
               }
-             
-             
-             // handle success
-              console.log("1.1 Test: Sponsor calls for help", response)
-              vm.$toasted.success(`1.1 Test: Sponsor calls for help`, { icon: 'fingerprint' })
 
-              console.log("1.2 Test: Sponsor sends id file")
-              vm.$toasted.success(`1.2 Test: Sponsor sends id file`, { icon: 'fingerprint' })
-
-              // Create 'Local_Data/id/task_id/' folder
-              // const new_address = 'Local_Data/' + this.sharedState.user_id + '/' + response.data.task_id + '/' + response.data.test_id + '/'
-              // fs.mkdirSync(new_address, { recursive: true})
+               // handle success
+              vm.$toasted.success(`Testing Starts`, { icon: 'fingerprint' })
+            
+              Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
+              Log(generate_message_string("Test ID: " + vm.test_id + "\n"), 'info')
+              Log(generate_message_string("Testing Stage Starts\n"), 'info')
+              Log(generate_message_string("1.0 Test: Find Test Assistor\n"), 'info')
+              Log(generate_message_string("1.1 Test: Sponsor calls for help\n"), 'info')
+              Log(generate_message_string("1.2 Test: Sponsor sends id file\n"), 'info')
+              Log(generate_message_string("1.3 Test: Find Test Assistor Done\n"), 'info')
 
               try {
                 fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
@@ -393,7 +383,6 @@ export default {
                 console.log(err)
               }
 
-              // // Upload the matching ID file
               // this.sponsor_request_show = true
               vm.test_id = ""
               vm.$router.push('/notifications')
@@ -405,17 +394,6 @@ export default {
               // console.log(error.response.data)
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
-
-            // let make_test_local = null;
-            // try{   
-            //   make_test_local = ex.execSync(vm.exe_position + ' make_test_local  --root ' + vm.root 
-            //                           + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --test_id ' + vm.test_id +' --data_path ' + vm.PathForm.test_data_path + ' --target_path ' + vm.PathForm.test_target_path, {encoding: 'utf8'})  
-            //   console.log("make_test_local", make_test_local)
-            // }catch(err){
-            //   console.log(err)
-            // }
-
-                   
           
         }
 

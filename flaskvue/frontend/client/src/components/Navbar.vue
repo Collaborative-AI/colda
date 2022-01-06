@@ -133,22 +133,6 @@ export default {
   },
   methods: {
 
-    // which_mode(task_id){
-    //   let select_pending_record = 'SELECT * FROM User_Assistor_Table WHERE "task_id" = ' + '"'+ task_id + '"';
-    //   // console.log("select_pending_record", select_pending_record)
-    //   db.get(select_pending_record, function(err, row){
-    //     if (err){ 
-    //       console.log(err);
-    //     }
-    //   if (row == null){
-    //     return 'Auto'
-    //   }else{
-    //     return 'Manual'
-    //   } 
-    //   }) //end db
-      
-    // },
-
     plus(a, b) {
     return a + b;
   },
@@ -325,10 +309,6 @@ export default {
       let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
       execute_unittest_list(arguments[arguments.length-1], 0, "unread_request_unittest", unittest_parameters)
 
-      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-      // console.log('select_sentence', select_sentence)
-      // console.log('db224',db)
-      // console.log('db.get', db.get)
       var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
       console.log('row1',row);
 
@@ -344,21 +324,6 @@ export default {
 
 
         if (vm.sharedState.mode == 'auto'){
-
-          // const stmt1 = vm.$db.prepare('UPDATE User_Default_Table' 
-          // + ' SET task_id = ?'
-          // + ' WHERE user_id = ?'); 
-          // stmt1.run(task_id, vm.sharedState.user_id);
-
-          // const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
-          // + ' SET task_mode = ?,'
-          // + ' model_name = ?,'
-          // + ' metric_name = ?'
-          // + ' WHERE user_id = ? AND task_id = ?'); 
-          // stmt.run(cur_unread_request_info_dict[task_id]["task_mode"], cur_unread_request_info_dict[task_id]["model_name"], cur_unread_request_info_dict[task_id]["metric_name"], vm.sharedState.user_id, task_id);
-
-
-
           var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
           console.log('row kan', row)
           let default_file_path = row.default_file_path
@@ -1241,7 +1206,6 @@ export default {
           }
 
           // Assistor trains the data
-          let select_pending_record = 'SELECT * FROM User_Assistor_Table WHERE task_id = ' + '"'+ task_id + '"';
           // console.log("select_pending_record", select_pending_record)
           var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE task_id = ? AND task_indicator = ? AND user_id = ').get(task_id, 'train', vm.sharedState.user_id);
           
@@ -1255,17 +1219,13 @@ export default {
           console.log("model_name",model_name)
 
           if (mode == "auto"){
-            // let select_default_train_data_path = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-            //这句sql需要加task_id
-            var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND task_id = ? AND task_indicator = ?').get(vm.sharedState.user_id, task_id, 'train');
             
             let unittest_parameters = generate_unittest_parameters(train_file_path, train_data_column, mode, model_name)
             execute_unittest_list(arguments[arguments.length-1], 3, "unread_situation_unittest", unittest_parameters)  
 
             vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name)
           }else if (mode == "manual") {
-            let select_pending_train_data_path = 'SELECT * FROM User_Assistor_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
-            var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND task_id = ? AND task_indicator = ?').get(vm.sharedState.user_id, task_id, 'train');
+
             vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name)
           }else{
             console.log('unread situation assistor 3rd case')
@@ -1524,7 +1484,6 @@ export default {
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_request_Testid_dict)
       execute_unittest_list(arguments[arguments.length-1], 0, "unread_test_request_unittest", unittest_parameters)
 
-      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
                 
       var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
       console.log("retrieve_setting_mode_row", row)
@@ -1956,8 +1915,6 @@ export default {
             console.log(err)
           }
 
-          let select_pending_record = 'SELECT * FROM User_Assistor_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id = ' + '"'+ test_id + '"';
-          // console.log("select_pending_record", select_pending_record)
           var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND task_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
 
           
@@ -1976,7 +1933,7 @@ export default {
             
               let default_test_file_path = row.test_file_path
               let default_test_data_column = row.test_data_column
-              console.log("default_train_file_path",default_test_file_path)
+              console.log("default_test_file_path",default_test_file_path)
 
               let test_outputs_pos = null
               try{
@@ -2039,7 +1996,6 @@ export default {
               })
             
             }else if(which_mode == "manual"){
-              let select_default_test_data_path = 'SELECT pending_test_file_path, pending_test_data_column FROM User_Assistor_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id=' + '"' + test_id + '"';
              
               var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND task_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
 

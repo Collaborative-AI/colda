@@ -36,7 +36,10 @@ function unread_sponsor_situation_helper_function(){
   
     let unread_sponsor_situation_3 = (data) => {
       try{
-        expect(data).toBe(true)
+        console.log('zzz90',data)
+        console.log('zzz91',typeof(data[0]))
+        let indicator = data[0]
+        expect(indicator).toEqual(true)
         done()
       }catch (error){
         done(error)

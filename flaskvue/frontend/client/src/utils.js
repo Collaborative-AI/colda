@@ -26,9 +26,9 @@ export function generate_message_string(){
   for (let i = 0; i < arguments.length; i++){
     message_list.push(arguments[i])
   }
-  return arguments.join(" ")
+  return message_list.join(" ")
 }
 
-export function Log(message, level){
+export function Log(message, level, file_name){
   console.log(message, level)
 }

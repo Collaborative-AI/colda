@@ -48,7 +48,7 @@ describe('test_unread_match_id', () => {
   //assistor logouts
   logout_helper.logout()
 
-  //assistor logins
+  // assistor logins
   login_helper.check_login_second_user()
   //assistor gets nofification
   notification_helper.update_notification()

@@ -35,7 +35,7 @@ function unread_assistor_situation_helper_function(){
   
     let unread_assistor_situation_3 = (data) => {
       try{
-        expect(data).toBe(true)
+        expect(data[0]).toEqual(true)
       }catch (error){
         done(error)
       }

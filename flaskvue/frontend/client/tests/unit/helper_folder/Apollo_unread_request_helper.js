@@ -11,7 +11,7 @@ function check_unread_request(){
   
         expect(request_dict[unittest_parameters.task_id]).not.toBeNull()
   
-        console.log('check_unread_match_id_1')
+        console.log('zztoo1')
       }catch (error){
         done(error)
       }
@@ -19,19 +19,20 @@ function check_unread_request(){
   
     let check_unread_request_2 = (data) => {
       try{
+        console.log('zzz9',data)
         let task_id = data[0]
         let setting_mode = data[1]
-        // let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
+
   
         expect(task_id).toEqual(
           unittest_parameters.task_id
         )
   
         expect(setting_mode).toEqual(
-          'Auto'
+          'auto'
         )
   
-        console.log('check_unread_request_2')
+        console.log('zztoo2')
       }catch (error){
         done(error)
       }
@@ -40,7 +41,7 @@ function check_unread_request(){
     let check_unread_request_3 = (data) => {
       try{
         
-        console.log('check_unread_request_3')
+        console.log('zztoo3')
       }catch (error){
         done(error)
       }
@@ -61,7 +62,7 @@ function check_unread_request(){
           unittest_parameters.task_id
         )
         done()
-        console.log('check_unread_request_4')
+        console.log('zzoo4')
       }catch (error){
         done(error)
       }

@@ -105,7 +105,7 @@ export default {
         console.log("retrieve_setting_mode_row", row)
 
         if (row == null){
-          this.mode = "Manual";
+          this.mode = "manual";
         }
         else{
           this.mode = row.mode;

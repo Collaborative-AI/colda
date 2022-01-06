@@ -108,7 +108,7 @@ function check_find_test_assistor_sponsor_onSubmit_1(){
 }
 
 let find_test_assistor_helper = {}
-find_test_assistor_helper.get_train_id = check_find_test_assistor_sponsor_get_train_id
+find_test_assistor_helper.get_test_id = check_find_test_assistor_sponsor_get_test_id
 find_test_assistor_helper.onSubmit = check_find_test_assistor_sponsor_onSubmit_1
 
 export { find_test_assistor_helper }

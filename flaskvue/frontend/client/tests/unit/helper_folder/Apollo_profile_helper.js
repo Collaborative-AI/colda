@@ -7,20 +7,20 @@ function check_profile_onSubmit_db(){
     let check_profile_onSubmit_db = (data) => {
       try{
         console.log('woshidata',data)
-        let default_train_file_path = data[0] 
-        let default_train_id_column = data[1]
-        let default_train_data_column = data[2]
+        let default_file_path = data[0] 
+        let default_id_column = data[1]
+        let default_data_column = data[2]
         console.log('user_id3', unittest_parameters.user_id)
         let row = retrieve_User_Default_Table_record(unittest_parameters.user_id)
-  
-        expect(default_train_file_path).toEqual(
-          row.default_train_file_path
+        console.log('rowshi', row)
+        expect(default_file_path).toEqual(
+          row.default_file_path
         )
-        expect(default_train_id_column).toEqual(
-          row.default_train_id_column
+        expect(default_id_column).toEqual(
+          row.default_id_column
         )
-        expect(default_train_data_column).toEqual(
-          row.default_train_data_column
+        expect(default_data_column).toEqual(
+          row.default_data_column
         )
   
         done()

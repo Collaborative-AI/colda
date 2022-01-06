@@ -11,7 +11,7 @@ import Login from '../../../src/views/Auth/Login.vue'
 import Navbar from '../../../src/components/Navbar.vue'
 import Profile from '../../../src/views/Settings/Profile.vue'
 import Find_Assistor from '../../../src/views/Resources/find_assistor.vue'
-import Find_Test_Assistor from '../../../src/views/find_test_assistor.vue'
+// import Find_Test_Assistor from '../../../src/views/Resources/find_test_assistor.vue'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 // https://next.vue-test-utils.vuejs.org/api/#setdata
@@ -57,9 +57,9 @@ unittest_parameters.metric_name = 'MAD_RMSE_R2'
 
 // profile.vue
 // unittest_parameters.default_train_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
-unittest_parameters.default_train_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
-unittest_parameters.default_train_id_column = "1"
-unittest_parameters.default_train_data_column = "2-7"
+unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
+unittest_parameters.default_id_column = "1"
+unittest_parameters.default_data_column = "2-7"
 
 
 
@@ -179,22 +179,22 @@ let Profile_wrapper = mount(Profile, {
 });
 
 
-let Find_Test_Assistor_Wrapper = mount(Find_Test_Assistor, {
-  mocks: {
-     $toasted: {
-         success: () => {},
-     },
-    $axios: axios,
-    $db: db,
-    fs: fs,
-    ex: ex,
-    node_path: node_path,
-    os: os,
-    dialog: dialog,
-    // split: 
-  },
-  stubs: ['router-link','router-view']
-});
+// let Find_Test_Assistor_Wrapper = mount(Find_Test_Assistor, {
+//   mocks: {
+//      $toasted: {
+//          success: () => {},
+//      },
+//     $axios: axios,
+//     $db: db,
+//     fs: fs,
+//     ex: ex,
+//     node_path: node_path,
+//     os: os,
+//     dialog: dialog,
+//     // split: 
+//   },
+//   stubs: ['router-link','router-view']
+// });
 
 
-export { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Profile_wrapper, Find_Test_Assistor_Wrapper, modify_parameter, modify_first_been_call}
+export { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Profile_wrapper, modify_parameter, modify_first_been_call}

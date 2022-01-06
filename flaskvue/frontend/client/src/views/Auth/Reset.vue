@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Register</h1>
+    <h1>Reset</h1>
     <div class="row">
       <div class="col-md-4">
         <form @submit.prevent="onSubmit">

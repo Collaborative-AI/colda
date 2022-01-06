@@ -1,12 +1,12 @@
 <html>
   <body>
+    {{ msg }}
     <form action = {{ reset_url }}, method='POST'>
-        
         <div>
-            <p>New Password: <input type ="text" name = "newPassword" /></p>
+            <p>Token: <input type ="text" name = "token" value = {{ token }}/></p>
+            <p>New Password: <input type ="text" name = "newPassword" value = ""/></p>
             <p><input type = "submit" value = "Submit" /></p>
         </div>
-    
     </form>
    
   </body>

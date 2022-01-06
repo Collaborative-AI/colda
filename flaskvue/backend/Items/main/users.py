@@ -80,7 +80,6 @@ def create_user():
 @main.route('/confirm_email/<token>', methods=['GET'])
 def confirm_email(token):
 
-
     email = confirm_token(token)
     user = User.query.filter_by(email=email).first_or_404()
     msg = ''
@@ -89,11 +88,9 @@ def confirm_email(token):
             if user.email == email:
                 user.confirmed = 'true'
                 db.session.commit()
-
                 msg = 'You have confirmed your account. Thanks!'
 
             msg = 'The confirmation link is invalid or has expired.'
-
         msg = 'Account already confirmed. Please login.'
     else:
         msg = 'The confirmation link is invalid or has expired.'
@@ -153,28 +150,53 @@ def forgot():
     return jsonify('A password reset email has been sent via email.')
 
 
-@main.route('/forgot/new/<token>', methods=['get'])
+@main.route('/forgot/new/<token>', methods=['GET', 'POST'])
 def forgot_new(token):
 
+    if request.method == 'POST':
+        # would have a "\" append in the end
+        token = request.form['token'][:-1]
+        print("niubi", token)
     email = confirm_token(token)
     # debug(email, 'email')
-    user = User.query.filter_by(email=email).first_or_404()
+    if email == False:
+        flash('Token has expired')
+        return 'Token has expired'
 
     # form = ChangePasswordForm()
     # if form.validate_on_submit():
-    user = User.query.filter_by(email=email).first()
-    if user:
+    user = User.query.filter(User.email == email).first()
+    if not user:
+        flash('Cannot Find the User according to email')
+        return 'Cannot Find the User according to email'
+    
+    if request.method == 'POST':
+        print("11", request.form)
         password = request.form['newPassword']
-        user.password_hash = generate_password_hash(password)
+        print('password', password)
+        validate_password_indicator, return_message = validate_password(password)
+        if not validate_password_indicator:
+            msg = ('New password must follow the following instructions:\n' + ' At least 8 characters. At most 25 characters\n'
+                + 'A mixture of both uppercase and lowercase letters\n' + 'A mixture of letters and numbers' + 'Inclusion of at least one special character, e.g., ! @')
+            confirm_url = url_for('main.forgot_new', token=token, msg=msg, _external=True)
+
+            return render_template('forgot_new.html', confirm_url=confirm_url)
+        print('validate_password_indicator', validate_password_indicator,user.password_hash)
+        user_password_hash = generate_password_hash(password)
+        print("email",email)
+        User.query.filter(User.email == email).update({"password_hash": user_password_hash})
         db.session.commit()
+        print("zz", user.password_hash)
 
+        flash('Password successfully changed.')
         return 'Password successfully changed.'
-
     else:
-        flash('Password change was unsuccessful.', 'danger')
-        return 'Password change was unsuccessful.'
-    # else:
-    #     return render_template('forgot_new.html', form=form)
+        print('123token', token)
+        msg = 'Hello ' + user.username
+        confirm_url = url_for('main.forgot_new', token=token, _external=True)
+        print("/forgot/new/<token>_confirm_url", confirm_url)
+        return render_template('forgot_new.html', confirm_url=confirm_url, msg=msg, token=token)
+        
 
 
 @main.route('/users', methods=['GET'])

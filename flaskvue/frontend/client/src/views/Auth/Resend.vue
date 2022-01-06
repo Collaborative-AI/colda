@@ -32,11 +32,12 @@ export default {
         .then((response) => {
           // handle success
           console.log("resend successfully", response.data)
-          this.$toasted.success(`resend successfully`, { icon: 'fingerprint' })
+          this.$toasted.success(`Resend successfully`, { icon: 'fingerprint' })
         })
         .catch((error) => {
           // handle error
           console.log(error)
+          this.$toasted.success(`Resend failed`, { icon: 'fingerprint' })
           // console.log(error.response.data)
           // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
         })

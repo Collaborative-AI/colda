@@ -45,8 +45,8 @@ unittest_parameters.verification_res = true
 // find_assistor.vue
 unittest_parameters.task_name = 'test1'
 unittest_parameters.task_description = "good test"
-// unittest_parameters.train_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
-unittest_parameters.train_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
+unittest_parameters.train_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
+// unittest_parameters.train_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
 unittest_parameters.train_id_column = "1"
 unittest_parameters.train_data_column = "2-8"
 unittest_parameters.train_target_column = "9"
@@ -56,8 +56,8 @@ unittest_parameters.model_name = 'linear'
 unittest_parameters.metric_name = 'MAD_RMSE_R2'
 
 // profile.vue
-// unittest_parameters.default_train_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
-unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
+unittest_parameters.default_train_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
+// unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
 unittest_parameters.default_id_column = "1"
 unittest_parameters.default_data_column = "2-7"
 

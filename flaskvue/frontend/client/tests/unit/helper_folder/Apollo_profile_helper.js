@@ -1,5 +1,5 @@
 import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Profile_wrapper } from './Apollo_unittest_init'
-import { generate_parameters, retrieve_User_Sponsor_Table_record, retrieve_User_Manual_Table_record, retrieve_User_Default_Table_record } from './Apollo_unittest_utils'
+import { generate_parameters, retrieve_User_Sponsor_Table_record, retrieve_User_Assistor_Table_record, retrieve_User_Default_Table_record } from './Apollo_unittest_utils'
 jest.setTimeout(10000);
 
 function check_profile_onSubmit_db(){

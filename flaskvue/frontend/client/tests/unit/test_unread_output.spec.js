@@ -23,9 +23,10 @@ afterAll(() => {
 
 });
 
-describe('test_unread_output', () => {
+describe('test_unread_match_id', () => {
   
   // Sponsor logins
+  logout_helper.logout()
   login_helper.check_login_first_user()
   delete_db_helper.delete_db()
   // Sponsor gets train id
@@ -47,15 +48,6 @@ describe('test_unread_output', () => {
   //assistor logouts
   logout_helper.logout()
 
-  //sponsor logins
-  login_helper.check_login_first_user()
-  // sponsor gets nofification
-  notification_helper.update_notification()
-  //sponsor runs unread match id
-  unread_sponsor_match_id_helper.unread_sponsor_match_id()
-  //sponsor logouts
-  logout_helper.logout()
-
   //assistor logins
   login_helper.check_login_second_user()
   //assistor gets nofification
@@ -65,7 +57,17 @@ describe('test_unread_output', () => {
   //assistor logouts
   logout_helper.logout()
 
-  //sponsor logins
+  // sponsor logins
+  login_helper.check_login_first_user()
+  // sponsor gets nofification
+  notification_helper.update_notification()
+  //sponsor runs unread match id
+  unread_sponsor_match_id_helper.unread_sponsor_match_id()
+  //sponsor logouts
+  logout_helper.logout()
+
+
+  // sponsor logins
   login_helper.check_login_first_user()
   // sponsor gets nofification
   notification_helper.update_notification()
@@ -83,13 +85,17 @@ describe('test_unread_output', () => {
   //sponsor logouts
   logout_helper.logout()
 
-  //sponsor logins
+  // sponsor logins
   login_helper.check_login_first_user()
   // sponsor gets nofification
   notification_helper.update_notification()
   //sponsor runs unread situation
-  unread_output_helper.unread_output_singleTask()
+  unread_output_helper.unread_output()
   //sponsor logouts
   logout_helper.logout()
+
+  
+
+
 
 })

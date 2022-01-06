@@ -10,7 +10,7 @@ function unread_assistor_situation_helper_function(){
         console.log('situation_dict', situation_dict)
   
         expect(situation_dict[unittest_parameters.task_id]).not.toBeNull()
-        done()
+        
         console.log('unread_assistor_situation_1')
         
       }catch (error){
@@ -18,36 +18,53 @@ function unread_assistor_situation_helper_function(){
       }
     }
   
-    // let unread_assistor_match_id_2 = (data) => {
-    //   try{
-    //     let response_data = data[0]
-    //     let match_id_file = response_data.match_id_file
-    //     let assistor_random_id_pair = response_data.assistor_random_id_pair
-    //     // let row = retrieve_User_assistor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
+    let unread_assistor_situation_2 = (data) => {
+      try{
+        let response = data[0]
+        let sender_random_id = response.data.sender_random_id
+        let cur_situation_file = response.data.situation
   
-    //     expect(match_id_file).not.toBeNull()
-    //     expect(assistor_random_id_pair).not.toBeNull()
-        
-    //     console.log('unread_assistor_match_id_2')
-    //   }catch (error){
-    //     done(error)
-    //   }
-    // }
+        expect(sender_random_id).not.toBeNull()
+        expect(cur_situation_file).not.toBeNull()
+
+
+      }catch (error){
+        done(error)
+      }
+    }
   
-    // let unread_assistor_match_id_3 = (data) => {
-    //   try{
+    let unread_assistor_situation_3 = (data) => {
+      try{
+        expect(data).toBe(true)
+      }catch (error){
+        done(error)
+      }
+    }
+
+    let unread_assistor_situation_4 = (data) => {
+      try{
+        let train_file_path = data[0]
+        let train_data_column = data[1]
+        let mode = data[2]
+        let model_name = data[3]
         
-    //     console.log('unread_assistor_match_id_3')
-    //     done()
-    //   }catch (error){
-    //     done(error)
-    //   }
-    // }
+        let row = retrieve_User_Assistor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
+  
+        expect(train_file_path).toEqual(row.train_file_path)
+        expect(train_data_column).toEqual(row.train_data_column)
+        expect(mode).toEqual(row.mode)
+        expect(model_name).toEqual(row.model_name)
+        done()
+      }catch (error){
+        done(error)
+      }
+    }
   
     let cur_parameters = [];
     cur_parameters.push(unread_assistor_situation_1)
-    // cur_parameters.push(unread_assistor_situation_2)
-    // cur_parameters.push(unread_assistor_situation_3)
+    cur_parameters.push(unread_assistor_situation_2)
+    cur_parameters.push(unread_assistor_situation_3)
+    cur_parameters.push(unread_assistor_situation_4)
     cur_parameters.push('unread_situation_unittest')
     
     Navbar_wrapper.vm.unread_situation(unittest_parameters.unread_situation_notification, cur_parameters)

@@ -134,7 +134,7 @@ export default {
   methods: {
 
     // which_mode(task_id){
-    //   let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE "task_id" = ' + '"'+ task_id + '"';
+    //   let select_pending_record = 'SELECT * FROM User_Assistor_Table WHERE "task_id" = ' + '"'+ task_id + '"';
     //   // console.log("select_pending_record", select_pending_record)
     //   db.get(select_pending_record, function(err, row){
     //     if (err){ 
@@ -333,17 +333,17 @@ export default {
       console.log('row1',row);
 
       if (row == null){
-        vm.sharedState.mode = "Manual";
+        vm.sharedState.mode = "manual";
       }
       else{
-        vm.sharedState.mode = row.mode;
+        vm.sharedState.mode = row.default_mode;
       } 
 
       for (let task_id in cur_unread_request_Taskid_dict){
         console.log('navbar unread request mode', vm.sharedState.mode )
 
 
-        if (vm.sharedState.mode == 'Auto'){
+        if (vm.sharedState.mode == 'auto'){
 
           // const stmt1 = vm.$db.prepare('UPDATE User_Default_Table' 
           // + ' SET task_id = ?'
@@ -358,13 +358,43 @@ export default {
           // stmt.run(cur_unread_request_info_dict[task_id]["task_mode"], cur_unread_request_info_dict[task_id]["model_name"], cur_unread_request_info_dict[task_id]["metric_name"], vm.sharedState.user_id, task_id);
 
 
-          let select_default_train_file_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
+          let select_default_train_file_path = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
           console.log("select_default_train_file_path", select_default_train_file_path)
 
           var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
-          let default_train_file_path = row.default_train_file_path
-          console.log("default_train_id_path", default_train_file_path)
-          let default_train_id_column = row.default_train_id_column
+          console.log('row kan', row)
+          let default_file_path = row.default_file_path
+          let default_id_column = row.default_id_column
+          let default_data_column = row.default_data_column
+          let default_target_column = row.default_target_column
+          let default_mode = row.default_mode
+          let default_model_name = row.default_model_name
+
+          const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+          ' @test_data_column, @test_target_column, @mode, @task_indicator, @model_name)');
+             
+          stmt.run({
+            user_id: vm.sharedState.user_id, 
+            task_id: task_id,
+            test_id: '',
+            task_name: '', 
+            task_description: '', 
+            test_name: '',
+            test_description: '',
+            train_file_path: default_file_path, 
+            train_id_column: default_id_column, 
+            train_data_column: default_data_column, 
+            train_target_column: default_target_column, 
+            test_file_path: default_file_path,
+            test_id_column: default_id_column,
+            test_data_column: default_data_column,
+            test_target_column: default_target_column,
+            mode: default_mode, 
+            task_indicator: 'train',
+            model_name: default_model_name
+          });
 
           // check task_id and vm.sharedState.mode
           let unittest_parameters = generate_unittest_parameters(task_id, vm.sharedState.mode)
@@ -374,8 +404,8 @@ export default {
           let Log_address = null;
           try{   
             hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                                    + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_train_file_path 
-                                    + ' --id_idx ' + default_train_id_column, {encoding: 'utf8'})
+                                    + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + default_file_path 
+                                    + ' --id_idx ' + default_id_column, {encoding: 'utf8'})
 
             hash_id_file_address = hash_id_file_address.split("?")
             let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
@@ -439,7 +469,7 @@ export default {
             })
 
         
-      } else if (vm.sharedState.mode == 'Manual'){
+      } else if (vm.sharedState.mode == 'manual'){
         vm.sharedState.pending_num++;
 
         console.log(task_id)
@@ -1024,6 +1054,7 @@ export default {
 
           unittest_parameters = generate_unittest_parameters()
           execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+
           console.log('wokan7', arguments[arguments.length-1])
           // const path = `/assistor_write_match_index_done/`
 
@@ -1055,6 +1086,7 @@ export default {
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_situation_Taskid_dict)
       execute_unittest_list(arguments[arguments.length-1], 0, "unread_situation_unittest", unittest_parameters)
+
       for (let task_id in cur_unread_situation_Taskid_dict){
         
         const Log_address = this.handle_train_log_address(task_id)
@@ -1099,11 +1131,12 @@ export default {
       let train_data_column = row.train_data_column
       console.log("train_data_column", train_data_column)
       console.log('row1', row)
-      let task_mode = row.task_mode
+      // let task_mode = row.task_mode
       let model_name = row.model_name
 
-      // let unittest_parameters = generate_unittest_parameters(row)
-      // execute_unittest_list(arguments[arguments.length-1], 1, "unread_situation_unittest", unittest_parameters)
+      let unittest_parameters = generate_unittest_parameters(train_file_path, train_data_column, model_name)
+      execute_unittest_list(arguments[arguments.length-1], 1, "unread_situation_unittest", unittest_parameters)
+
       try{
         
         // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
@@ -1117,6 +1150,10 @@ export default {
         train_output = train_output.split("?")
         console.log('train_output1', train_output)
         let indicator = vm.handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
+
+        let unittest_parameters = generate_unittest_parameters(indicator)
+        execute_unittest_list(arguments[arguments.length-1], 2, "unread_situation_unittest", unittest_parameters)
+
         if (indicator == false){
           console.log("train_output wrong")
           fs.appendFileSync(Log_address, "train_output wrong")
@@ -1195,7 +1232,7 @@ export default {
       // });
     },
 
-    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address, task_mode, model_name){
+    unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address, model_name){
 
       let Assistor_train_output_path = null;
       console.log('wokan6', model_name )
@@ -1279,6 +1316,9 @@ export default {
           // call back
           // store the situation file
 
+          let unittest_parameters = generate_unittest_parameters(response)
+          execute_unittest_list(arguments[arguments.length-1], 1, "unread_situation_unittest", unittest_parameters)
+
           console.log("4.2 assistor gets situation file")
           vm.$toasted.success("4.2 assistor gets situation file", { icon: 'fingerprint' })
           try {
@@ -1298,6 +1338,11 @@ export default {
             
             save_residual_file_pos = save_residual_file_pos.split("?")
             let indicator = vm.handle_Algorithm_return_value("save_residual_file_pos", save_residual_file_pos, "200", "save_residual")
+
+            let unittest_parameters = generate_unittest_parameters(indicator)
+            execute_unittest_list(arguments[arguments.length-1], 2, "unread_situation_unittest", unittest_parameters)
+
+
             if (indicator == false){
               console.log("save_residual_file_pos wrong")
               fs.appendFileSync(Log_address, "save_residual_file_pos wrong")
@@ -1319,29 +1364,35 @@ export default {
           }
 
           // Assistor trains the data
-        let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE task_id = ' + '"'+ task_id + '"';
+        let select_pending_record = 'SELECT * FROM User_Assistor_Table WHERE task_id = ' + '"'+ task_id + '"';
         // console.log("select_pending_record", select_pending_record)
-        var row = vm.$db.prepare('SELECT * FROM User_Manual_Table WHERE task_id = ?').get(task_id);
+        var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE task_id = ?').get(task_id);
         
         let which_mode = null
-        if (row == null){
-          which_mode = 'Auto'
+        if (row.mode == 'auto'){
+          which_mode = 'auto'
+        }else if (row.mode == 'manual'){
+          which_mode = 'manual'
         }else{
-          which_mode = 'Manual'
+          console.log('doumeijin')
         }
-        if (which_mode == "Auto"){
+        if (which_mode == "auto"){
           let select_default_train_data_path = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-          var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
-
+          //这句sql需要加task_id
+          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND task_id = ?').get(vm.sharedState.user_id, task_id);
           
-          let default_train_file_path = row.default_train_file_path
+          let default_train_file_path = row.train_file_path
           console.log("default_train_file_path",default_train_file_path)
-          let default_train_data_column = row.default_train_data_column
+          let default_train_data_column = row.train_data_column
           console.log("default_train_data_column",default_train_data_column)
-          let task_mode = row.task_mode
+          let task_mode = row.mode
           console.log("task_mode",task_mode)
           let model_name = row.model_name 
           console.log("model_name",model_name)
+
+          let unittest_parameters = generate_unittest_parameters(default_train_file_path, default_train_data_column, task_mode, model_name)
+          execute_unittest_list(arguments[arguments.length-1], 3, "unread_situation_unittest", unittest_parameters)
+
 
           vm.$axios.get('/changshi')
             .then((response) => {
@@ -1351,22 +1402,21 @@ export default {
       })
              
 
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address, task_mode, model_name)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column, vm, Log_address, model_name)
 
           
-        } else if (which_mode == "Manual") {
-          let select_pending_train_data_path = 'SELECT * FROM User_Manual_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
-          var row = vm.$db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND task_id = ?').get(vm.sharedState.user_id, task_id);
+        } else if (which_mode == "manual") {
+          let select_pending_train_data_path = 'SELECT * FROM User_Assistor_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
+          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND task_id = ?').get(vm.sharedState.user_id, task_id);
 
           
-          let pending_train_file_path = row.pending_train_file_path
+          let pending_train_file_path = row.train_file_path
           console.log("pending_train_file_path",pending_train_file_path)
-          let pending_train_data_column = row.pending_train_data_column
+          let pending_train_data_column = row.train_data_column
           console.log("pending_train_data_column",pending_train_data_column)
-          let task_mode = row.task_mode
           let model_name = row.model_name
 
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address, task_mode, model_name)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, pending_train_file_path, pending_train_data_column, vm, Log_address, model_name)
 
 
         }else{
@@ -1401,7 +1451,7 @@ export default {
 
         //     }); //end db
         //   } else if (which_mode == "Manual") {
-        //     let select_pending_train_data_path = 'SELECT * FROM User_Manual_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
+        //     let select_pending_train_data_path = 'SELECT * FROM User_Assistor_Table WHERE user_id=' + vm.sharedState.user_id + ' AND task_id= ' + '"'+ task_id + '"'
         //     db.get(select_pending_train_data_path, function(err, row){
         //       if (err){ 
         //         throw err;
@@ -1454,7 +1504,7 @@ export default {
           console.log(err)
         }
         let rounds = cur_unread_output_Rounds_dict[task_id];
-        this.unread_output_singleTask(rounds, task_id);
+        this.unread_output_singleTask(rounds, task_id, arguments[arguments.length-1]);
       }
     },
 
@@ -1500,6 +1550,11 @@ export default {
 
               save_output_pos = save_output_pos.split("?")
               let indicator = vm.handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
+
+              let unittest_parameters = generate_unittest_parameters(indicator)
+              execute_unittest_list(arguments[arguments.length-1], 1, "unread_output_unittest", unittest_parameters)
+
+
               if (indicator == false){
                 console.log("save_output_pos wrong")
                 fs.appendFileSync(Log_address, "save_output_pos wrong")
@@ -1531,6 +1586,10 @@ export default {
           console.log("train_target_column", train_target_column)
           let task_mode = row.task_mode
           let metric_name = row.metric_name
+
+          let unittest_parameters = generate_unittest_parameters(train_file_path, train_target_column, task_mode, metric_name)
+          execute_unittest_list(arguments[arguments.length-1], 2, "unread_output_unittest", unittest_parameters)
+
 
           vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name)
 
@@ -1668,118 +1727,157 @@ export default {
       let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
       let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
 
+      let unittest_parameters = generate_unittest_parameters(cur_unread_test_request_Testid_dict)
+      execute_unittest_list(arguments[arguments.length-1], 0, "unread_test_request_unittest", unittest_parameters)
+
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
                 
       var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+      console.log("retrieve_setting_mode_row", row)
 
-      
+      if (row == null){
+        vm.sharedState.mode = "manual";
+      }
+      else{
+        vm.sharedState.mode = row.default_mode;
+      }  
+    
 
-        console.log("retrieve_setting_mode_row", row)
-
-        if (row == null){
-          vm.sharedState.mode = "Manual";
-        }
-        else{
-          vm.sharedState.mode = row.mode;
-        }  
-      
-
-        for (let test_id in cur_unread_test_request_Testid_dict){
-          let task_id = test_id_to_task_id[test_id]
+      for (let test_id in cur_unread_test_request_Testid_dict){
+        let task_id = test_id_to_task_id[test_id]
+        
+        console.log('unread test request mode', vm.sharedState.mode)
+        if (vm.sharedState.mode == 'auto'){
           
-          console.log('unread test request mode', vm.sharedState.mode)
-          if (vm.sharedState.mode == 'Auto'){
-            
-            
-            let select_default_test_id_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-            var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+          let select_default_test_id_path = 'SELECT default_train_file_path, default_train_id_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
+          var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+          console.log("default_row", row)
+          let default_file_path = row.default_file_path
+          let default_id_column = row.default_id_column
+          let default_data_column = row.default_data_column
+          let default_target_column = row.default_target_column
+          let default_mode = row.default_mode
+          let default_model_name = row.default_model_name
 
-            
-              let default_train_id_column = row.default_train_id_column
-              let default_train_file_path = row.default_train_file_path
-              console.log("default_train_id_column", default_train_id_column)
-              let test_hash_id_file_address = null
-              let Log_address = null
-              try{
+          let test_hash_id_file_address = null
+          let Log_address = null
+ 
 
-                test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
-                                          + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id
-                                          + ' --mode test' + ' --test_id ' + test_id
-                                          + ' --dataset_path ' + default_train_file_path + ' --id_idx ' + default_train_id_column, {encoding: 'utf8'})
+          const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+          ' @test_data_column, @test_target_column, @mode, @task_indicator, @model_name)');
+             
+          stmt.run({
+            user_id: vm.sharedState.user_id, 
+            task_id: task_id,
+            test_id: test_id,
+            task_name: '', 
+            task_description: '', 
+            test_name: '',
+            test_description: '',
+            train_file_path: default_file_path, 
+            train_id_column: default_id_column, 
+            train_data_column: default_data_column, 
+            train_target_column: default_target_column, 
+            test_file_path: default_file_path,
+            test_id_column: default_id_column,
+            test_data_column: default_data_column,
+            test_target_column: default_target_column,
+            mode: default_mode, 
+            task_indicator: 'test',
+            model_name: default_model_name
+          });
 
-                test_hash_id_file_address = test_hash_id_file_address.split("?")
-                let indicator = vm.handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
-                Log_address = vm.handle_test_log_address(task_id, test_id)
-                if (indicator == false){
-                  console.log("test_hash_id_file_address wrong")
-                  fs.appendFileSync(Log_address, "test_hash_id_file_address wrong")
-                  return 
-                }
 
-              }catch(err){
-                console.log(err)
-              }
+          let unittest_parameters = generate_unittest_parameters(test_id, vm.sharedState.mode)
+          execute_unittest_list(arguments[arguments.length-1], 1, "unread_test_request_unittest", unittest_parameters)
 
+          try{
+
+            test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
+                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id
+                                      + ' --mode test' + ' --test_id ' + test_id
+                                      + ' --dataset_path ' + default_file_path + ' --id_idx ' + default_id_column, {encoding: 'utf8'})
+
+            test_hash_id_file_address = test_hash_id_file_address.split("?")
+            let indicator = vm.handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
+            Log_address = vm.handle_test_log_address(task_id, test_id)
+            console.log('daozhele')
+            if (indicator == false){
+              console.log("test_hash_id_file_address wrong")
+              fs.appendFileSync(Log_address, "test_hash_id_file_address wrong")
+              return 
+            }
+
+          }catch(err){
+            console.log(err)
+          }
+
+          try {
+            fs.appendFileSync(Log_address, "\n You are Assistor\n")
+            fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
+            fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
+            fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
+            fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
+          } catch (err) {
+            console.log(err)
+          }
+
+          let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+
+          let unittest_parameters = generate_unittest_parameters()
+          execute_unittest_list(arguments[arguments.length-1], 2, "unread_test_request_unittest", unittest_parameters)
+
+
+          const match_test_assistor_id_data = {
+            file: test_hash_id_file_data,
+            task_id: task_id,
+            test_id: test_id
+          }
+
+          vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
+            .then((response) => {
+              // handle success
+              console.log("2.2 Test: assistor uploads id file", response)
+              vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
               try {
-                fs.appendFileSync(Log_address, "\n You are Assistor\n")
-                fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
-                fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
-                fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
-                fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
+                fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
+                fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
               } catch (err) {
                 console.log(err)
               }
-
-              let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
-
-              const match_test_assistor_id_data = {
-                file: test_hash_id_file_data,
-                task_id: task_id,
-                test_id: test_id
-              }
-
-              vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
-                .then((response) => {
-                  // handle success
-                  console.log("2.2 Test: assistor uploads id file", response)
-                  vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
-                  try {
-                    fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
-                    fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
-                  } catch (err) {
-                    console.log(err)
-                  }
-                })
-                .catch((error) => {
-                  // handle error
-                  console.log(error)
-                  // console.log(error.response.data)
-                  // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-                })
-            
-          }else if (vm.sharedState.mode == 'Manual'){
-            // console.log(task_id)
-            vm.sharedState.pending_num++;
-            const add_test_pending = {
-                test_id: test_id,
-              }
-            
-            vm.$axios.post('/add_test_pending/', add_test_pending)
-              .then((response) => {
-                // handle success
-                console.log("add_test_pending response", response.data)
-              })
-              .catch((error) => {
-                // handle error
-                console.log(error)
-                // console.log(error.response.data)
-                // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-              })
-          }else{
-            console.log("unread request: If you want to receive, open receive")
-            // dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
-          }
+            })
+            .catch((error) => {
+              // handle error
+              console.log(error)
+              // console.log(error.response.data)
+              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            })
+          
+        }else if (vm.sharedState.mode == 'manual'){
+          // console.log(task_id)
+          vm.sharedState.pending_num++;
+          const add_test_pending = {
+              test_id: test_id,
+            }
+          
+          vm.$axios.post('/add_test_pending/', add_test_pending)
+            .then((response) => {
+              // handle success
+              console.log("add_test_pending response", response.data)
+            })
+            .catch((error) => {
+              // handle error
+              console.log(error)
+              // console.log(error.response.data)
+              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            })
+        }else{
+          console.log("unread request: If you want to receive, open receive")
+          // dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
         }
+      }
       
       
     },
@@ -1792,6 +1890,10 @@ export default {
       let test_id_to_task_id = unread_test_match_id_notification["test_id_to_task_id"]
       let max_rounds_dict = unread_test_match_id_notification["max_rounds"]
       console.log("max_rounds_dict", max_rounds_dict)
+
+      let unittest_parameters = generate_unittest_parameters(cur_unread_test_match_id_Testid_dict)
+      execute_unittest_list(arguments[arguments.length-1], 0, "unread_test_match_id_unittest", unittest_parameters)
+
 
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
@@ -1850,6 +1952,12 @@ export default {
         .then((response) => {
           // call back
           // iterate the match_id_file
+
+
+          let unittest_parameters = generate_unittest_parameters(response.data)
+          execute_unittest_list(arguments[arguments.length-1], 1, "unread_test_match_id_unittest", unittest_parameters)
+
+
           console.log("3.4 Test: Sponsor gets matched id file")
           vm.$toasted.success("3.4 Test: Sponsor gets matched id file", { icon: 'fingerprint' })
           try {
@@ -1883,6 +1991,10 @@ export default {
             }
 
             fs.writeFileSync(test_save_match_id_file_pos[2], cur_match_id_file)
+
+            let unittest_parameters = generate_unittest_parameters()
+            execute_unittest_list(arguments[arguments.length-1], 2, "unread_test_match_id_unittest", unittest_parameters)
+
             
             console.log('3.5 Test: Sponsor Saved Matched id File!');
             vm.$toasted.success('3.5 Test: Sponsor Saved Matched id File!', { icon: 'fingerprint' })
@@ -1978,6 +2090,10 @@ export default {
       this.$axios.post(path, payload)
         .then((response) => {
 
+          let unittest_parameters = generate_unittest_parameters(response.data)
+          execute_unittest_list(arguments[arguments.length-1], 1, "unread_test_match_id_unittest", unittest_parameters)
+
+
           console.log("3.4 Test: assistor gets matched id file", response)
           vm.$toasted.success("3.4 Test: assistor gets matched id file", { icon: 'fingerprint' })
           try {
@@ -2012,6 +2128,11 @@ export default {
           
           console.log('3.5 Test: Assistor Saved Matched id File!');
           vm.$toasted.success('3.5 Test: Assistor Saved Matched id File!', { icon: 'fingerprint' })
+
+
+          unittest_parameters = generate_unittest_parameters()
+          execute_unittest_list(arguments[arguments.length-1], 2, "unread_test_match_id_unittest", unittest_parameters)
+
           try {
             fs.appendFileSync(Log_address, "3.5 Test: Assistor Saved Matched id File!\n")
           } catch (err) {
@@ -2042,33 +2163,35 @@ export default {
             console.log(err)
           }
 
-          let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id = ' + '"'+ test_id + '"';
+          let select_pending_record = 'SELECT * FROM User_Assistor_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id = ' + '"'+ test_id + '"';
           // console.log("select_pending_record", select_pending_record)
-          var row = vm.$db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
+          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
 
           
             let which_mode = null
-            if (row == null){
-              which_mode = 'Auto'
+            if (row.mode == 'auto'){
+              which_mode = 'auto'
+            }else if (row.mode == 'manual'){
+              which_mode = 'manual'
             }else{
-              which_mode = 'Manual'
-            } 
+              console.log('doumeijin')
+            }
 
-            if(which_mode == "Auto"){
+            if(which_mode == "auto"){
             let select_default_test_data_path = 'SELECT default_train_file_path, default_train_data_column FROM User_Default_Table WHERE user_id=' + vm.sharedState.user_id;
-            var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+            var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND task_id = ?').get(vm.sharedState.user_id, task_id);
 
             
-              let default_train_file_path = row.default_train_file_path
-              let default_train_data_column = row.default_train_data_column
-              console.log("default_train_file_path",default_train_file_path)
+              let default_test_file_path = row.test_file_path
+              let default_test_data_column = row.test_data_column
+              console.log("default_train_file_path",default_test_file_path)
 
               let test_outputs_pos = null
               try{
 
                 test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                   + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
-                  + ' --dataset_path ' +  default_train_file_path + ' --data_idx ' + default_train_data_column, {encoding: 'utf8'})
+                  + ' --dataset_path ' +  default_test_file_path + ' --data_idx ' + default_test_data_column, {encoding: 'utf8'})
 
                 test_outputs_pos = test_outputs_pos.split("?")
                 let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
@@ -2123,14 +2246,14 @@ export default {
                 console.log(error)
               })
             
-            }else if(which_mode == "Manual"){
-              let select_default_test_data_path = 'SELECT pending_test_file_path, pending_test_data_column FROM User_Manual_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id=' + '"' + test_id + '"';
+            }else if(which_mode == "manual"){
+              let select_default_test_data_path = 'SELECT pending_test_file_path, pending_test_data_column FROM User_Assistor_Table WHERE user_id ='+ vm.sharedState.user_id + ' AND test_id=' + '"' + test_id + '"';
              
-              var row = vm.$db.prepare('SELECT * FROM User_Manual_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
+              var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ?').get(vm.sharedState.user_id, test_id);
 
             
-              let pending_test_file_path = row.pending_test_file_path
-              let pending_test_data_column = row.pending_test_data_column
+              let pending_test_file_path = row.test_file_path
+              let pending_test_data_column = row.test_data_column
               console.log("pending_test_file_path",pending_test_file_path)
 
               let test_outputs_pos = null
@@ -2214,6 +2337,10 @@ export default {
       let cur_unread_test_output_Testid_dict = unread_test_output_notification["check_dict"]
       let test_id_to_task_id = unread_test_output_notification["test_id_to_task_id"]
 
+      let unittest_parameters = generate_unittest_parameters(cur_unread_test_output__Testid_dict)
+      execute_unittest_list(arguments[arguments.length-1], 0, "unread_test_output_unittest", unittest_parameters)
+
+
       for (let test_id in cur_unread_test_output_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
@@ -2274,6 +2401,11 @@ export default {
 
                 test_save_output_pos = test_save_output_pos.split("?")
                 let indicator = vm.handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
+
+                let unittest_parameters = generate_unittest_parameters(indicator)
+                execute_unittest_list(arguments[arguments.length-1], 1, "unread_test_output_unittest", unittest_parameters)
+
+
                 if (indicator == false){
                   console.log("test_save_output_pos wrong")
                   fs.appendFileSync(Log_address, "test_save_output_pos wrong")

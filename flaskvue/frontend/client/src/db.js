@@ -22,54 +22,53 @@ console.log('21312312', db)
 //   down TEXT    NOT NULL
 // )`)
 
-db.exec("CREATE TABLE IF NOT EXISTS User_Default_Table (task_id                 text,\
-                                                        user_id                    int, \
-                                                        default_train_file_path    text, \
-                                                        default_train_id_column          text, \
-                                                        default_train_data_column        text, \
-                                                        default_train_target_column      text, \
-                                                        mode                       text, \
-                                                        task_mode                  text, \
-                                                        model_name                 text, \
-                                                        metric_name                text)");
+db.exec("CREATE TABLE IF NOT EXISTS User_Default_Table (user_id                    int,  \
+                                                        default_file_path          text, \
+                                                        default_id_column          text, \
+                                                        default_data_column        text, \
+                                                        default_target_column      text, \
+                                                        default_mode               text, \
+                                                        default_model_name         text)");
 
 
-db.exec("CREATE TABLE IF NOT EXISTS User_Sponsor_Table (task_name          text,\
-                                            task_description   text,\
-                                            user_id            int, \
-                                            test_indicator     text, \
-                                            task_id            text, \
-                                            test_id            text, \
-                                            train_file_path    text, \
-                                            train_id_column    text, \
-                                            train_data_column  text, \
-                                            train_target_column text, \
-                                            test_file_path     text, \
-                                            test_id_column     text, \
-                                            test_data_column   text, \
-                                            test_target_column text, \
-                                            task_mode          text, \
-                                            model_name         text, \
-                                            metric_name        text)");
+db.exec("CREATE TABLE IF NOT EXISTS User_Sponsor_Table (task_name               text, \
+                                                        task_description        text, \
+                                                        user_id                 int,  \
+                                                        test_indicator          text, \
+                                                        task_id                 text, \
+                                                        test_id                 text, \
+                                                        train_file_path         text, \
+                                                        train_id_column         text, \
+                                                        train_data_column       text, \
+                                                        train_target_column     text,\
+                                                        test_file_path          text, \
+                                                        test_id_column          text, \
+                                                        test_data_column        text, \
+                                                        test_target_column      text, \
+                                                        task_mode               text, \
+                                                        model_name              text, \
+                                                        metric_name             text)");
 
 
 // // user manual
-db.exec("CREATE TABLE IF NOT EXISTS User_Manual_Table (task_name                  text,\
-                                                task_description           text,\
-                                                user_id                    int, \
-                                                task_id                    text,\
-                                                test_id                    text,\
-                                                pending_train_file_path    text, \
-                                                pending_train_id_column          text, \
-                                                pending_train_data_column        text, \
-                                                pending_train_target_column      text, \
-                                                pending_test_file_path    text, \
-                                                pending_test_id_column          text, \
-                                                pending_test_data_column        text, \
-                                                pending_test_target_column      text, \
-                                                task_mode                  text, \
-                                                model_name                 text, \
-                                                metric_name                text)");
+db.exec("CREATE TABLE IF NOT EXISTS User_Assistor_Table (   user_id                    int, \
+                                                            task_id                    text,\
+                                                            test_id                    text,\
+                                                            task_name                  text,\
+                                                            task_description           text,\
+                                                            test_name                  text,\
+                                                            test_description           text,\
+                                                            train_file_path            text, \
+                                                            train_id_column            text, \
+                                                            train_data_column          text, \
+                                                            train_target_column        text, \
+                                                            test_file_path             text, \
+                                                            test_id_column             text, \
+                                                            test_data_column           text, \
+                                                            test_target_column         text, \
+                                                            mode                       text, \
+                                                            task_indicator             text, \
+                                                            model_name                 text)");
 
 
 
@@ -135,7 +134,7 @@ db.exec("CREATE TABLE IF NOT EXISTS User_Manual_Table (task_name                
 //                                            model_name         text, \
 //                                            metric_name        text)");
 // // user manual
-//     db.run("CREATE TABLE IF NOT EXISTS User_Manual_Table (id                  int primary key, \
+//     db.run("CREATE TABLE IF NOT EXISTS User_Assistor_Table (id                  int primary key, \
 //                                                    task_name                  text,\
 //                                                    task_description           text,\
 //                                                    user_id                    int, \

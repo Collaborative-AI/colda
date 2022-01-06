@@ -102,6 +102,7 @@ function check_find_assistor_sponsor_onSubmit_1(){
                                    task_mode: unittest_parameters.task_mode,
                                    model_name: unittest_parameters.model_name,
                                    metric_name: unittest_parameters.metric_name})
+                                   
     Find_Assistor_wrapper.vm.onSubmit(cur_parameters)
   })
 }

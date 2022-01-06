@@ -57,7 +57,7 @@ export default {
   methods: {
 
     // which_mode(task_id){
-    //   let select_pending_record = 'SELECT * FROM User_Manual_Table WHERE "task_id" = ' + '"'+ task_id + '"';
+    //   let select_pending_record = 'SELECT * FROM User_Assistor_Table WHERE "task_id" = ' + '"'+ task_id + '"';
     //   // console.log("select_pending_record", select_pending_record)
     //   db.get(select_pending_record, function(err, row){
     //     if (err){ 

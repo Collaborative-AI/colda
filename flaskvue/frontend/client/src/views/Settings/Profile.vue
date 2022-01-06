@@ -82,11 +82,11 @@
     <!-- <input type="radio" id="not_receive" value="not_receive" v-model="picked">
     <label for="not_receive">Not respond</label> -->
     <br>
-    <input type="radio" id="Auto" value="Auto" v-model="sharedState.mode">
-    <label for="Auto">Auto</label>
+    <input type="radio" id="auto" value="auto" v-model="sharedState.mode">
+    <label for="auto">Auto</label>
     <br>
-    <input type="radio" id="Manual" value="Manual" v-model="sharedState.mode">
-    <label for="Manual">Manual</label>
+    <input type="radio" id="manual" value="manual" v-model="sharedState.mode">
+    <label for="manual">Manual</label>
     <br>
 
 
@@ -319,11 +319,11 @@ export default {
       const row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
       // console.log('haha',row);
       if (row != null){
-          vm.default_train_file_path = row.default_train_file_path
-          vm.default_train_id_column = row.default_train_id_column
-          vm.default_train_data_column = row.default_train_data_column
-          vm.default_model_name = row.model_name
-          vm.sharedState.mode = row.mode
+          vm.default_train_file_path = row.default_file_path
+          vm.default_train_id_column = row.default_id_column
+          vm.default_train_data_column = row.default_data_column
+          vm.default_model_name = row.default_model_name
+          vm.sharedState.mode = row.default_mode
           console.log('mode', vm.sharedState.mode)
         }
         // console.log('bug2')
@@ -398,18 +398,15 @@ export default {
       console.log('haha',row);
       if (row == null){
         console.log('dele0')
-        const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @task_id, @user_id , @default_train_file_path , @default_train_id_column, @default_train_data_column , @default_train_target_column, @mode, @task_mode, @model_name, @metric_name)');
+        const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_file_path , @default_id_column, @default_data_column , @default_target_column, @default_mode, @default_model_name)');
         stmt.run({
-          task_id: "",
           user_id: vm.sharedState.user_id , 
-          default_train_file_path: vm.default_train_file_path, 
-          default_train_id_column: vm.default_train_id_column, 
-          default_train_data_column: vm.default_train_data_column, 
-          default_train_target_column: "",
-          mode: vm.sharedState.mode,
-          task_mode: "",
-          model_name: vm.default_model_name,
-          metric_name: "",
+          default_file_path: vm.default_train_file_path, 
+          default_id_column: vm.default_train_id_column, 
+          default_data_column: vm.default_train_data_column, 
+          default_target_column: "",
+          default_mode: vm.sharedState.mode,
+          default_model_name: vm.default_model_name,
         });
         console.log('dele1')
       }else{
@@ -418,15 +415,15 @@ export default {
 
 
           const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
-          + ' SET default_train_file_path = ?,'
-          + ' default_train_id_column = ?,'
-          + ' default_train_data_column = ?,'
-          + ' default_train_target_column = ?,'
-          + ' model_name = ?,'
-          + ' mode = ?'
+          + ' SET default_file_path = ?,'
+          + ' default_id_column = ?,'
+          + ' default_data_column = ?,'
+          + ' default_target_column = ?,'
+          + ' default_mode = ?,'
+          + ' default_model_name = ?'
           + ' WHERE user_id = ?'); 
           console.log('dele3')
-          stmt.run(vm.default_train_file_path, vm.default_train_id_column, vm.default_train_data_column, '', vm.default_model_name, vm.sharedState.mode, vm.sharedState.user_id);
+          stmt.run(vm.default_train_file_path, vm.default_train_id_column, vm.default_train_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id);
         } 
       }
       console.log('dele2')

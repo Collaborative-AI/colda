@@ -188,7 +188,7 @@ export default {
       execute_unittest_list(arguments[arguments.length-1], 0, "unread_request_unittest", unittest_parameters)
 
       var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
-      console.log('row1',row);
+      Log(generate_message_string('row1',row), 'debug')
 
       if (row == null){
         vm.sharedState.mode = "manual";
@@ -198,12 +198,11 @@ export default {
       } 
 
       for (let task_id in cur_unread_request_Taskid_dict){
-        console.log('navbar unread request mode', vm.sharedState.mode )
-
+        Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 
         if (vm.sharedState.mode == 'auto'){
           var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
-          console.log('row kan', row)
+          Log(generate_message_string('row kan', row), 'debug')
           let default_file_path = row.default_file_path
           let default_id_column = row.default_id_column
           let default_data_column = row.default_data_column
@@ -263,7 +262,10 @@ export default {
           unittest_parameters = generate_unittest_parameters()
           execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest", unittest_parameters)
 
-          console.log("Log_address------------", Log_address)
+          Log(generate_message_string("\nYou are Assistor\n"), 'info')
+          Log(generate_message_string("Task ID: " + task_id + "\n"), 'info')
+          Log(generate_message_string("2.0 Unread Request Starts\n"), 'info')
+          Log(generate_message_string("2.1 Update the request notification\n"), 'info')
 
           try {
             fs.appendFileSync(Log_address, "\n You are Assistor\n")
@@ -279,21 +281,17 @@ export default {
             task_id: task_id,
             file: hash_id_file_data,
           }
-          // console.log('hash_id_file_data', hash_id_file_data)
           
           vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
             .then((response) => {
               // handle success
 
-              // check match_assistor_id response
+              // Unittest: check match_assistor_id response
               let unittest_parameters = generate_unittest_parameters(response.data)
               execute_unittest_list(arguments[arguments.length-1], 3, "unread_request_unittest", unittest_parameters)
-              
-              // console.log("2.2 assistor uploads id file", response)
-              vm.test_response = response
-              // return response
-              
-              // vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
+
+              Log(generate_message_string("2.2 Assistor uploads match id file\n"), 'info')
+              Log(generate_message_string("2.3 Unread Request Done\n"), 'info')
 
               try {
                 fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
@@ -308,13 +306,8 @@ export default {
               // console.log(error.response.data)
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
-
-        
       } else if (vm.sharedState.mode == 'manual'){
         vm.sharedState.pending_num++;
-
-        console.log(task_id)
-
         const add_train_pending = {
             task_id: task_id,
           }
@@ -322,7 +315,7 @@ export default {
         vm.$axios.post('/add_train_pending/', add_train_pending)
           .then((response) => {
             // handle success
-            console.log("add_train_pending response", response.data)
+            Log(generate_message_string("add_train_pending response", response.data), 'debug')
           })
           .catch((error) => {
             // handle error
@@ -330,7 +323,6 @@ export default {
             // console.log(error.response.data)
             // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
           })
-        
       } else{
         console.log("unread request: mode run")
         // dialog.showErrorBox('mode:run')
@@ -358,6 +350,9 @@ export default {
         
         const Log_address = this.handle_train_log_address(task_id)
 
+        Log(generate_message_string("3.0 Unread Match ID Starts\n"), 'info')
+        Log(generate_message_string("3.1 Update the match id notification\n"), 'info')
+
         try {
           fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Update the match id notification\n")
@@ -368,7 +363,7 @@ export default {
         let check_sponsor = cur_unread_match_id_Taskid_dict[task_id]
 
         if (check_sponsor == 1){
-          console.log("3.2 Unread_match_id_sponsor")
+          Log(generate_message_string("3.2 Unread_match_id_sponsor\n"), 'info')
           try {
             fs.appendFileSync(Log_address, "3.2 Unread_match_id_sponsor\n")
           } catch (err) {
@@ -377,7 +372,7 @@ export default {
           this.unread_match_id_sponsor(task_id, arguments[arguments.length-1])
         }  
         else{
-          console.log("3.2 Unread_match_id_assistor")
+          Log(generate_message_string("3.2 Unread_match_id_assistor\n"), 'info')
           try {
             fs.appendFileSync(Log_address, "3.2 Unread_match_id_assistor\n")
           } catch (err) {
@@ -413,9 +408,8 @@ export default {
           let unittest_parameters = generate_unittest_parameters(response.data)
           execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
           
-          console.log("3.3 Sponsor gets matched id file")
-          // vm.$toasted.success("3.3 Sponsor gets matched id file", { icon: 'fingerprint' })
-
+          Log(generate_message_string("3.3 Sponsor gets matched id file\n"), 'info')
+    
           try {
             fs.appendFileSync(Log_address, "3.3 Sponsor gets matched id file\n")
           } catch (err) {

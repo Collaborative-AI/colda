@@ -81,7 +81,7 @@ import $ from 'jquery'
 import db from '../db'
 console.log('dbzzzz', db)
 import authority from '../authority'
-import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../utils.js'
+import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, check_if_notification_is_null } from '../utils.js'
 
 // import axios from '../http'
 
@@ -173,9 +173,12 @@ export default {
     },
 
     unread_request(unread_request_notification) {
-      if (unread_request_notification == null){
+
+      // Only assistor will enter this function
+      if (check_if_notification_is_null(unread_request_notification, 'unread_request_notification')){
         return
       }
+
       let vm = this
       Log(generate_message_string("this.sharedState.receive_request", vm.sharedState.mode), 'debug')
       Log(generate_message_string("2.1 Update request notification response", unread_request_notification), 'debug')
@@ -197,6 +200,7 @@ export default {
         vm.sharedState.mode = row.default_mode;
       } 
 
+      // Assistor might receive multiple task request, We need to iterate them
       for (let task_id in cur_unread_request_Taskid_dict){
         Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 
@@ -255,10 +259,10 @@ export default {
               fs.appendFileSync(Log_address, "hash_id_file_address wrong")
               return 
             }
-            
           }catch(err){
             console.log(err)
           }
+
           unittest_parameters = generate_unittest_parameters()
           execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest", unittest_parameters)
 
@@ -275,6 +279,8 @@ export default {
           } catch (err) {
             console.log(err)
           }
+
+          // Read the data from designated position
           let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
           const match_assistor_id_data = {
@@ -303,8 +309,7 @@ export default {
             .catch((error) => {
               // handle error
               console.log(error)
-              // console.log(error.response.data)
-              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+              this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
             })
       } else if (vm.sharedState.mode == 'manual'){
         vm.sharedState.pending_num++;
@@ -320,8 +325,7 @@ export default {
           .catch((error) => {
             // handle error
             console.log(error)
-            // console.log(error.response.data)
-            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
           })
       } else{
         console.log("unread request: mode run")
@@ -336,7 +340,11 @@ export default {
 
 
     unread_match_id(unread_match_id_notification) {
-            
+
+      if (check_if_notification_is_null(unread_match_id_notification, 'unread_match_id_notification')){
+        return
+      }
+
       console.log("3.1 Update match id notification response", unread_match_id_notification)
       // this.$toasted.success("3.1 Update the match id notification", { icon: 'fingerprint' })
 
@@ -391,7 +399,6 @@ export default {
       let vm = this;
       const Log_address = vm.handle_train_log_address(task_id)
       
-
       // Obtain Match_id file
       // async
       const payload = {
@@ -560,7 +567,6 @@ export default {
             // check send_situation return value
             let unittest_parameters = generate_unittest_parameters(response.data)
             execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
-          
 
             // console.log("3.7 Sponsor sends all situations", response)
             // vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
@@ -576,103 +582,6 @@ export default {
           .catch((error) => {
             console.log(error)
           })
-
-        
-
-
-          // db.get(select_train_target_column, function(err, row){
-          //   if (err){ 
-          //     console.log(err);
-          //   }
-          //   console.log("match row",row)
-          //   let train_file_path = row.train_file_path
-          //   console.log("train_file_path", train_file_path)
-          //   let train_target_column = row.train_target_column
-          //   console.log("train_target_column", train_target_column)
-          //   let task_mode = row.task_mode
-          //   console.log('task_mode1',task_mode)
-          //   let metric_name = row.metric_name
-          //   console.log('metric_name1',metric_name)
-          //   let make_residual_multiple_paths = null;
-          //   try{
-          //     make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
-          //       + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 1 ' 
-          //       + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column
-          //       + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
-            
-
-
-          //     make_residual_multiple_paths = make_residual_multiple_paths.split("?")
-          //     let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
-          //     if (indicator == false){
-          //       console.log("make_residual_multiple_paths wrong")
-          //       fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
-          //       return 
-          //     }
-
-          //   }catch(err){
-          //     console.log(err)
-          //   }
-
-          //   console.log("3.6 Sponsor makes residual finished")
-          //   vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
-          //   try {
-          //     fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
-          //   } catch (err) {
-          //     console.log(err)
-          //   }
-
-          //   // Read Files
-          //   let all_residual_data = [];
-          //   let assistor_random_id_list = [];
-          //   let residual_paths = make_residual_multiple_paths.slice(2, make_residual_multiple_paths.length)
-          //   for (let i = 0; i < residual_paths.length; i++){
-
-          //     let data = null;
-          //     try{
-          //       // data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
-          //       data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
-          //     }catch(err){
-          //       console.log(err)
-          //     }
-          //     all_residual_data.push(data);
-
-          //     // let cur_path = make_residual_multiple_paths[i]
-          //     let cur_path = residual_paths[i]
-          //     let path_split = cur_path.split(node_path.sep);
-          //     let assistor_random_id = path_split[path_split.length-1].split(".")[0];
-          //     assistor_random_id_list.push(assistor_random_id);
-              
-          //   }
-
-          //   console.log("assistor_random_id_list", assistor_random_id_list)
-          //   const send_situation_payload = {
-          //       task_id: task_id,
-          //       assistor_random_id_list: assistor_random_id_list,
-          //       residual_list: all_residual_data,
-          //     }
-
-          //   // send initial situation
-          //   // async
-          //   vm.$axios.post('/send_situation/', send_situation_payload)
-          //     .then((response) => {
-          //     // handle success
-          //     console.log("3.7 Sponsor sends all situations", response)
-          //     vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
-              
-          //     try {
-          //       fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
-          //       fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
-          //     } catch (err) {
-          //       console.log(err)
-          //     }
-
-          //   })
-          //   .catch((error) => {
-          //     console.log(error)
-          //   })
-
-          // });
           
         })
         .catch((error) => {
@@ -792,6 +701,11 @@ export default {
     },
 
     unread_situation(unread_situation_notification) {
+
+      if (check_if_notification_is_null(unread_situation_notification, 'unread_situation_notification')){
+        return
+      }
+
       console.log("4.1 Update the situation notification", unread_situation_notification)
       // this.$toasted.success("4.1 Update the situation notification", { icon: 'fingerprint' })
 
@@ -968,7 +882,6 @@ export default {
     unread_situation_assistor(rounds, task_id) {
       
       let vm = this;
-
       const Log_address = vm.handle_train_log_address(task_id)
 
       const payload = {
@@ -1062,6 +975,11 @@ export default {
     },
     
     unread_output(unread_output_notification) {
+
+      // Only sponsor will enter this function
+      if (check_if_notification_is_null(unread_output_notification, 'unread_output_notification')){
+        return
+      }
 
       // Only sponsor would receive unread_output
       console.log("5.1 Update the output notification", unread_output_notification)
@@ -1307,12 +1225,13 @@ export default {
     
     
     unread_test_request(unread_test_request_notification) {
-      let vm = this;
-      
-      // Only assistor calls this function
-      
-        // console.log('navbar unread test request mode', vm.sharedState.mode )
 
+      // Only assistor will enter this function
+      if (check_if_notification_is_null(unread_test_request_notification, 'unread_test_request_notification')){
+        return
+      }
+
+      let vm = this;
         
       console.log("2.1 Update Test request notification response", unread_test_request_notification)
       // this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
@@ -1333,7 +1252,6 @@ export default {
       else{
         vm.sharedState.mode = row.default_mode;
       }  
-    
 
       for (let test_id in cur_unread_test_request_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
@@ -1472,6 +1390,11 @@ export default {
     },
 
     unread_test_match_id(unread_test_match_id_notification) {
+
+      if (check_if_notification_is_null(unread_test_match_id_notification, 'unread_test_match_id_notification')){
+        return
+      }
+
       console.log("3.1 Update Test match id notification response", unread_test_match_id_notification)
       // this.$toasted.success("3.1 Update the Test match id notification", { icon: 'fingerprint' })
 
@@ -1482,7 +1405,6 @@ export default {
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_match_id_Testid_dict)
       execute_unittest_list(arguments[arguments.length-1], 0, "unread_test_match_id_unittest", unittest_parameters)
-
 
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
@@ -1523,8 +1445,7 @@ export default {
 
     unread_test_match_id_sponsor(task_id, test_id, max_rounds) {
 
-      // Create 'Local_Data/id/task_id/Match/' folder
-      // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + test_id + '/' + 'Match/'
+      
       let vm = this;
       const Log_address = vm.handle_test_log_address(task_id, test_id)
       
@@ -1619,47 +1540,44 @@ export default {
 
           }
 
-          let select_test_data_path = 'SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
           var row = vm.$db.prepare('SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
-
-
           
-            let test_file_path = row.test_file_path
-            let test_data_column = row.test_data_column
-            console.log("test_file_path", test_file_path)
-            
-            try{
-              let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
+          let test_file_path = row.test_file_path
+          let test_data_column = row.test_data_column
+          console.log("test_file_path", test_file_path)
+          
+          try{
+            let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+              + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
 
-              test_done = test_done.split("?")
-              let indicator = vm.handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
-              if (indicator == false){
-                console.log("test_done wrong")
-                fs.appendFileSync(Log_address, "test_done wrong")
-                return 
-              }
-
-            }catch(err){
-              console.log(err)
+            test_done = test_done.split("?")
+            let indicator = vm.handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
+            if (indicator == false){
+              console.log("test_done wrong")
+              fs.appendFileSync(Log_address, "test_done wrong")
+              return 
             }
 
-            console.log("3.7 Test: Sponsor stores all test model results")
-            // vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
+          }catch(err){
+            console.log(err)
+          }
 
-            try {
-              fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
-              fs.appendFileSync(Log_address, "--------------------------3. Unread Test Match ID Done\n")
-            } catch (err) {
-              console.log(err)
-            }
+          console.log("3.7 Test: Sponsor stores all test model results")
+          // vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
+
+          try {
+            fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
+            fs.appendFileSync(Log_address, "--------------------------3. Unread Test Match ID Done\n")
+          } catch (err) {
+            console.log(err)
+          }
+      
         
-          
-          })
-          .catch((error) => {
-            console.log(error)
-            // handle error
-          }) 
+        })
+        .catch((error) => {
+          console.log(error)
+          // handle error
+        }) 
 
          
     },
@@ -1833,6 +1751,11 @@ export default {
     },
 
     unread_test_output(unread_test_output_notification) {
+      
+      // only sponsor will enter this function
+      if (check_if_notification_is_null(unread_test_output_notification, 'unread_test_output_notification')){
+        return
+      }
 
       console.log("4.1 Update Test output notification", unread_test_output_notification)
       // this.$toasted.success("4.1 Update Test output notification", { icon: 'fingerprint' })
@@ -1921,7 +1844,6 @@ export default {
               console.log('wokan1', cur_output)
               fs.writeFileSync(test_save_output_pos[2], cur_output)
             }
-
 
           }//end for loop
           console.log("4.3 Test: Sponsor saves assistors' Output model");

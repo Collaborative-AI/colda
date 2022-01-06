@@ -32,3 +32,11 @@ export function generate_message_string(){
 export function Log(message, level){
   console.log(message, level)
 }
+
+export function check_if_notification_is_null(notification, name){
+  if (notification == null){
+    Log(name + 'is null')
+    return True
+  }
+  return False
+}

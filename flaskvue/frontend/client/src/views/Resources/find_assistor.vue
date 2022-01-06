@@ -94,7 +94,7 @@
 <script>
 import { config } from 'process';
 import store from '../../store.js'
-import { execute_unittest_list, generate_unittest_parameters } from '../../utils.js'
+import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../../utils.js'
 
 const fs = window.fs ? window.fs : require('fs');
 const ex = window.ex ? window.ex : require('child_process');
@@ -370,14 +370,6 @@ export default {
             model_name: vm.model_name,
             metric_name: vm.metric_name
           });
-
-          // let insert_sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_column", "train_data_column", "train_target_column", "task_mode", "model_name", "metric_name") VALUES 
-          //     (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`", "`+vm.task_mode+`", "`+vm.model_name+`", "`+vm.metric_name+`")`
-          // console.log("insert_sentence", insert_sentence) 
-          // db.run(insert_sentence, function(err){
-          //   if (err){
-          //     console.log(err);
-          //   }
           
           // test if the sqlite db stores the aboving values
           let unittest_parameters = generate_unittest_parameters(vm.train_file_path, vm.train_id_column, vm.train_data_column, vm.train_target_column)
@@ -389,10 +381,6 @@ export default {
             
             // call make_hash to convert id to sha-256 id
             console.log("vm.exe_position", vm.exe_position)
-            // hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-            //                         + ' --task_id ' + vm.task_id + ' --mode train' + ' --dataset_path ' + vm.train_file_path 
-            //                         + ' --id_idx ' + vm.train_id_column, {encoding: 'utf8'})
-
             hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
                                     + ' --task_id ' + vm.task_id + ' --mode train' + ' --dataset_path ' + vm.train_file_path 
                                     + ' --id_idx ' + vm.train_id_column, {encoding: 'utf8'})
@@ -413,9 +401,7 @@ export default {
             console.log(err)
           }
           execute_unittest_list(arguments[arguments.length-1], "find_assistor_unittest")
-          console.log("-----------------dddd")
-        // let hash_id_file_data = fs.readFileSync(hash_id_file_address, {encoding:'utf8', flag:'r'});
-        //     console.log(hash_id_file_data)
+
           let hash_id_file_data = null
           try{
             hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
@@ -461,11 +447,15 @@ export default {
               console.log("log.txt created");
             }
             // handle success
-            // console.log("1.1 Sponsor calls for help", response)
-            vm.$toasted.success(`1.1 Sponsor calls for help`, { icon: 'fingerprint' })
+            vm.$toasted.success(`Training Starts`, { icon: 'fingerprint' })
 
-            console.log("1.2 Sponsor sends id file")
-            vm.$toasted.success(`1.2 Sponsor sends id file`, { icon: 'fingerprint' })
+            Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
+            Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'info')
+            Log(generate_message_string("Training Stage Starts\n"), 'info')
+            Log(generate_message_string("1.0 Find Assistor\n"), 'info')
+            Log(generate_message_string("1.1 Sponsor calls for help\n"), 'info')
+            Log(generate_message_string("1.2 Sponsor sends id file\n"), 'info')
+            Log(generate_message_string("1.3 Find Assistor Done\n"), 'info')
 
             try {
               fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
@@ -474,25 +464,14 @@ export default {
               fs.appendFileSync(Log_address, "---------------------- 1. Find assistor\n")
               fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
               fs.appendFileSync(Log_address, "1.2 Sponsor sends id file\n")
-            } catch (err) {
-              console.log(err)
-            }
-
-            
-            // console.log("1.3 Sponsor creates " + new_address)
-            // this.$toasted.success("1.3 Sponsor creates " + new_address, { icon: 'fingerprint' })
-
-            try {
-              // fs.appendFileSync(Log_address, "1.3 Sponsor creates " + new_address + "\n")
               fs.appendFileSync(Log_address, "---------------------- 1. Find assistor Done\n")
             } catch (err) {
               console.log(err)
             }
-
+            
             vm.task_id = ""
             // vm.$router.push('/notifications')
             vm.select_data=false
-
           })
           .catch((error) => {
             // handle error
@@ -508,14 +487,6 @@ export default {
                                     + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_column 
                                     + ' --target_idx ' + vm.train_target_column + ' --task_mode ' + vm.task_mode
                                     + ' --model_name ' + vm.model_name + ' --metric_name ' + vm.metric_name, {encoding: 'utf8'})
-
-            // make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
-            //                         + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
-            //                         + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_column 
-            //                         + ' --target_idx ' + vm.train_target_column, {encoding: 'utf8'})
-
-
-
 
             console.log("make_train_local", make_train_local)
           }catch(err){

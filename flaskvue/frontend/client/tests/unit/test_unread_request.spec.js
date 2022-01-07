@@ -14,8 +14,6 @@ jest.setTimeout(10000);
 
 
 
-
-
 afterAll(() => {
   window.localStorage.setItem('Apollo-token', null)
   console.log('afterAll')
@@ -26,6 +24,7 @@ describe('test_unread_request', () => {
 
 // }
   // Sponsor logins
+  logout_helper.logout()
   login_helper.check_login_first_user()
   delete_db_helper.delete_db()
   // Sponsor gets train id
@@ -35,13 +34,11 @@ describe('test_unread_request', () => {
   logout_helper.logout()
 
   // Assistor logins
-  // window.localStorage.removeItem('Apollo-token')
-  // store.state.is_authenticated = false
-  // store.state.user_id = 0
-  // login_helper.check_login_second_user()
-  // // Assistor updates default_train_file_path, default_train_id_column, 
-  // // default_train_data_column
-  // profile_helper.onSubmit()
+
+  login_helper.check_login_second_user()
+  // Assistor updates default_train_file_path, default_train_id_column, 
+  // default_train_data_column
+  profile_helper.onSubmit()
 
   
   // notification_helper.update_notification()

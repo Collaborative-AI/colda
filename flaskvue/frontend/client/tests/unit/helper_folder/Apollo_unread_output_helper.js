@@ -34,7 +34,7 @@ function unread_output_helper_function(){
         let task_mode = data[2]
         let metric_name = data[3]
         
-        let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
+        let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id, 'train')
   
         expect(train_file_path).toEqual(row.train_file_path)
         expect(train_target_column).toEqual(row.train_target_column)

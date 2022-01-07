@@ -2,7 +2,7 @@ import axios from 'axios';
 import db from '../../../src/db'
 import {unittest_parameters} from './Apollo_unittest_init'
 
-let retrieve_User_Assistor_Table_record = function(user_id, task_id, test_indicator, test_id=null ){
+let retrieve_User_Assistor_Table_record = function(user_id, task_id, test_indicator, test_id=null){
   if (test_id != null){
     // row is a single result and it is a dict
     let row = db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND task_id = ? AND test_id = ? AND test_indicator = ?').get(user_id, task_id, test_id, test_indicator);
@@ -57,6 +57,7 @@ function update_notifications(response){
 function delete_db(){
   return axios.get('/delete_all_rows/')
 }
+
 
 
 

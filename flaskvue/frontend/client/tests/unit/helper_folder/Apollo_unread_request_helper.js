@@ -23,7 +23,6 @@ function check_unread_request(){
         let task_id = data[0]
         let setting_mode = data[1]
 
-  
         expect(task_id).toEqual(
           unittest_parameters.task_id
         )
@@ -40,7 +39,6 @@ function check_unread_request(){
   
     let check_unread_request_3 = (data) => {
       try{
-        
         console.log('zztoo3')
       }catch (error){
         done(error)
@@ -102,7 +100,6 @@ function check_unread_request(){
 }
 
 let unread_request_helper = {}
-
 unread_request_helper.unread_request = check_unread_request
 
 export { unread_request_helper }

@@ -33,7 +33,7 @@ function check_find_test_assistor_sponsor_onSubmit_1(){
   
         console.log('bxbx')
         
-        let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
+        let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id, 'train')
   
         expect(test_file_path).toEqual(
           row.test_file_path

@@ -864,6 +864,10 @@ export default {
           .then((response) => {
           // handle success
           console.log("4.5 Assistor sends output", response)
+
+          let unittest_parameters = generate_unittest_parameters(response.data)
+          execute_unittest_list(arguments[arguments.length-1], 4, "unread_situation_unittest", unittest_parameters) 
+
           // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
@@ -918,9 +922,9 @@ export default {
             save_residual_file_pos = save_residual_file_pos.split("?")
             let indicator = vm.handle_Algorithm_return_value("save_residual_file_pos", save_residual_file_pos, "200", "save_residual")
 
+            // Unittest
             let unittest_parameters = generate_unittest_parameters(indicator)
             execute_unittest_list(arguments[arguments.length-1], 2, "unread_situation_unittest", unittest_parameters)
-
 
             if (indicator == false){
               console.log("save_residual_file_pos wrong")

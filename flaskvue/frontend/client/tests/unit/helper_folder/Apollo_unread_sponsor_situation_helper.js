@@ -24,7 +24,7 @@ function unread_sponsor_situation_helper_function(){
         let train_data_column = data[1]
         let model_name = data[2]
         
-        let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
+        let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id, 'train')
   
         expect(train_file_path).toEqual(row.train_file_path)
         expect(train_data_column).toEqual(row.train_data_column)

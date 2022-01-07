@@ -65,9 +65,7 @@ function unread_assistor_match_id_helper_function(){
 }
 
 let unread_assistor_match_id_helper = {}
-
 unread_assistor_match_id_helper.unread_assistor_match_id = unread_assistor_match_id_helper_function
-
 
 
 export { unread_assistor_match_id_helper }

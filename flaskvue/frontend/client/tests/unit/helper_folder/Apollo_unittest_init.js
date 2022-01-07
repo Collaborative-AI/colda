@@ -23,6 +23,7 @@ const unittest_parameters = {}
 unittest_parameters.user_id = ''
 unittest_parameters.task_id = ''
 unittest_parameters.test_id = ''
+unittest_parameters.test_indicator = 'train'
 
 unittest_parameters.first_user_username = 'xie1'
 unittest_parameters.first_user_password = 'Xie1@123'
@@ -56,11 +57,10 @@ unittest_parameters.model_name = 'linear'
 unittest_parameters.metric_name = 'MAD_RMSE_R2'
 
 // profile.vue
-unittest_parameters.default_train_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
+unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
 // unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
 unittest_parameters.default_id_column = "1"
 unittest_parameters.default_data_column = "2-7"
-
 
 
 function modify_parameter(param, val){

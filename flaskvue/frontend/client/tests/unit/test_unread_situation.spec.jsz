@@ -67,8 +67,6 @@ describe('test_unread_match_id', () => {
   logout_helper.logout()
 
 
-  
-
   // sponsor logins
   login_helper.check_login_first_user()
   // sponsor gets nofification

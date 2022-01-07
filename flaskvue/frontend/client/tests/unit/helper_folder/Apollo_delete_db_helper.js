@@ -1,7 +1,7 @@
 import {delete_db} from './Apollo_unittest_utils'
 
 function delete_db_function(){
-    test('check_profile_onSubmit_db',(done)=>{
+    test('delete_db_rows',(done)=>{
         async function clear_database(){
         let res1 = await delete_db()
         console.log('output res1', res1)

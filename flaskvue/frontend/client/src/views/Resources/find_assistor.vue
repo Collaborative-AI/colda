@@ -415,6 +415,7 @@ export default {
           const Log_address = node_path.join(vm.root.toString(), user_id.toString(), "task", vm.task_id.toString(), "train", "log.txt")
           
           let assistor_username_list = vm.assistor_username_list.split(",")
+          console.log(assistor_username_list,"assistor_username_list")
           const find_assistor_data = {
             assistor_username_list: assistor_username_list,
             id_file: hash_id_file_data,

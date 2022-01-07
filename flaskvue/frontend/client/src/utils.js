@@ -34,6 +34,7 @@ export function Log(message, level, file_name){
 }
 
 export function check_if_notification_is_null(notification, name){
+  console.log(name,'qwedas', notification)
   if (notification == null){
     Log(name + 'is null')
     return true

@@ -35,11 +35,24 @@ class Config(object):
 
     # mysql
     # master username
+#     master_username = 'apollo'
+#     password = 'Aa1234567!'
+#     end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'
+#     # database name (created by create schema in mysql workbench)
+#     database_name = 'apollo_aws_mysql'
+#     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
+#     SQLALCHEMY_TRACK_MODIFICATIONS = False
+#     SQLALCHEMY_ENGINE_OPTIONS = {
+#     # "poolclass": QueuePool,
+#     "pool_size": 50,
+# }
+
+    # unittest
     master_username = 'apollo'
     password = 'Aa1234567!'
     end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'
     # database name (created by create schema in mysql workbench)
-    database_name = 'apollo_aws_mysql'
+    database_name = 'apollo_aws_mysql_unittest'
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
@@ -47,6 +60,7 @@ class Config(object):
     "pool_size": 50,
 }
 
+<<<<<<< HEAD
     # unittest
 #     master_username = 'apollo'
 #     password = 'Aa1234567!'
@@ -60,6 +74,8 @@ class Config(object):
 #     "pool_size": 50,
 # }
 
+=======
+>>>>>>> 1c16ce9fb52a78853a026ebbaf41bb60e2b68876
 
 
 

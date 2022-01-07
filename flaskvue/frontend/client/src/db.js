@@ -67,7 +67,7 @@ db.exec("CREATE TABLE IF NOT EXISTS User_Assistor_Table (   user_id             
                                                             test_data_column           text, \
                                                             test_target_column         text, \
                                                             mode                       text, \
-                                                            task_indicator             text, \
+                                                            test_indicator             text, \
                                                             model_name                 text)");
 
 

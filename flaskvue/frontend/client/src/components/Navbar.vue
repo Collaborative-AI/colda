@@ -217,7 +217,7 @@ export default {
           const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
           ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
           ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @task_indicator, @model_name)');
+          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
           stmt.run({
             user_id: vm.sharedState.user_id, 
@@ -236,7 +236,7 @@ export default {
             test_data_column: default_data_column,
             test_target_column: default_target_column,
             mode: default_mode, 
-            task_indicator: 'train',
+            test_indicator: 'train',
             model_name: default_model_name
           });
 
@@ -945,7 +945,7 @@ export default {
           // Assistor trains the data
           // console.log("select_pending_record", select_pending_record)
           console.log('zz88', task_id)
-          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE task_id = ? AND task_indicator = ? AND user_id = ?').get(task_id, 'train', vm.sharedState.user_id);
+          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE task_id = ? AND test_indicator = ? AND user_id = ?').get(task_id, 'train', vm.sharedState.user_id);
           
           let train_file_path = row.train_file_path
           console.log("train_file_path",train_file_path)
@@ -1276,7 +1276,7 @@ export default {
           const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
           ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
           ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @task_indicator, @model_name)');
+          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
           stmt.run({
             user_id: vm.sharedState.user_id, 
@@ -1295,7 +1295,7 @@ export default {
             test_data_column: default_data_column,
             test_target_column: default_target_column,
             mode: default_mode, 
-            task_indicator: 'test',
+            test_indicator: 'test',
             model_name: default_model_name
           });
 
@@ -1671,7 +1671,7 @@ export default {
             console.log(err)
           }
 
-          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND task_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
+          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND test_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
 
           let mode = row.mode
           let test_file_path = row.test_file_path

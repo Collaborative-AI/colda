@@ -191,7 +191,7 @@ export default {
       const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
           ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
           ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @task_indicator, @model_name)');
+          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
           stmt.run({
             user_id: vm.sharedState.user_id, 
@@ -210,7 +210,7 @@ export default {
             test_data_column: '',
             test_target_column: '',
             mode: 'manual',
-            task_indicator: 'train',
+            test_indicator: 'train',
             model_name: vm.model_name
           });
 
@@ -307,7 +307,7 @@ export default {
       const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
           ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
           ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @task_indicator, @model_name)');
+          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
           stmt.run({
             user_id: vm.sharedState.user_id, 
@@ -326,7 +326,7 @@ export default {
             test_data_column: vm.manual_data_column,
             test_target_column: vm.manual_target_column,
             mode: 'manual', 
-            task_indicator: 'test',
+            test_indicator: 'test',
             model_name: vm.model_name
           });
       

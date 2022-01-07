@@ -150,14 +150,14 @@ export default {
     getUser (id) {
       let vm = this
       // console.log('bug1')
-      const row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
+      var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
       console.log('haha',row);
       if (row != null){
           vm.default_file_path = row.default_file_path
           vm.default_id_column = row.default_id_column
           vm.default_data_column = row.default_data_column
-          vm.default_model_name = row.model_name
-          vm.sharedState.mode = row.mode
+          vm.default_model_name = row.default_model_name
+          vm.sharedState.mode = row.default_mode
           console.log('mode', vm.sharedState.mode)
         } 
     },

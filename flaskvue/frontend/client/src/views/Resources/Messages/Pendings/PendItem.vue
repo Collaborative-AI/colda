@@ -195,7 +195,7 @@ export default {
              
           stmt.run({
             user_id: vm.sharedState.user_id, 
-            task_id: task_id,
+            task_id: vm.task_id,
             test_id: '',
             task_name: '', 
             task_description: '', 

@@ -9,8 +9,9 @@ window.log = require('electron-log')
 // log.transports.file.level = false; // 禁用写Log文件
 // log.transports.console.level = false; //禁用console输出
 // level: error, warn, info, verbose, debug
-window.log.transports.file.resolvePath = () => window.node_path.join(__dirname, 'logs/main.log');
-console.log('log_path', window.node_path.join(__dirname, 'logs/main.log'));
+window.log.transports.file.resolvePath = () => window.node_path.join(__dirname, '../exp/logs/main.log');
+
+console.log('log_path', window.node_path.join(__dirname, '../exp/logs/main.log'));
 window.log.transports.file.level = 'silly';
 window.log.transports.console.level = 'silly'; // 修改输出到文件的时候，默认的输出日志级别, 默认为warn。
 

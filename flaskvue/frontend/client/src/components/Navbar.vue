@@ -81,7 +81,7 @@ import $ from 'jquery'
 import db from '../db'
 console.log('dbzzzz', db)
 import authority from '../authority'
-import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../utils.js'
+import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, check_if_notification_is_null } from '../utils.js'
 
 // import axios from '../http'
 
@@ -173,9 +173,12 @@ export default {
     },
 
     unread_request(unread_request_notification) {
-      if (unread_request_notification == null){
+
+      // Only assistor will enter this function
+      if (check_if_notification_is_null(unread_request_notification, 'unread_request_notification')){
         return
       }
+
       let vm = this
       Log(generate_message_string("this.sharedState.receive_request", vm.sharedState.mode), 'debug')
       Log(generate_message_string("2.1 Update request notification response", unread_request_notification), 'debug')
@@ -197,6 +200,7 @@ export default {
         vm.sharedState.mode = row.default_mode;
       } 
 
+      // Assistor might receive multiple task request, We need to iterate them
       for (let task_id in cur_unread_request_Taskid_dict){
         Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 
@@ -255,10 +259,10 @@ export default {
               fs.appendFileSync(Log_address, "hash_id_file_address wrong")
               return 
             }
-            
           }catch(err){
             console.log(err)
           }
+
           unittest_parameters = generate_unittest_parameters()
           execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest", unittest_parameters)
 
@@ -275,6 +279,8 @@ export default {
           } catch (err) {
             console.log(err)
           }
+
+          // Read the data from designated position
           let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
           const match_assistor_id_data = {
@@ -303,8 +309,7 @@ export default {
             .catch((error) => {
               // handle error
               console.log(error)
-              // console.log(error.response.data)
-              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+              this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
             })
       } else if (vm.sharedState.mode == 'manual'){
         vm.sharedState.pending_num++;
@@ -320,8 +325,7 @@ export default {
           .catch((error) => {
             // handle error
             console.log(error)
-            // console.log(error.response.data)
-            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
           })
       } else{
         console.log("unread request: mode run")
@@ -336,7 +340,11 @@ export default {
 
 
     unread_match_id(unread_match_id_notification) {
-            
+
+      if (check_if_notification_is_null(unread_match_id_notification, 'unread_match_id_notification')){
+        return
+      }
+
       console.log("3.1 Update match id notification response", unread_match_id_notification)
       // this.$toasted.success("3.1 Update the match id notification", { icon: 'fingerprint' })
 
@@ -391,7 +399,6 @@ export default {
       let vm = this;
       const Log_address = vm.handle_train_log_address(task_id)
       
-
       // Obtain Match_id file
       // async
       const payload = {
@@ -560,7 +567,6 @@ export default {
             // check send_situation return value
             let unittest_parameters = generate_unittest_parameters(response.data)
             execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
-          
 
             // console.log("3.7 Sponsor sends all situations", response)
             // vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
@@ -576,103 +582,6 @@ export default {
           .catch((error) => {
             console.log(error)
           })
-
-        
-
-
-          // db.get(select_train_target_column, function(err, row){
-          //   if (err){ 
-          //     console.log(err);
-          //   }
-          //   console.log("match row",row)
-          //   let train_file_path = row.train_file_path
-          //   console.log("train_file_path", train_file_path)
-          //   let train_target_column = row.train_target_column
-          //   console.log("train_target_column", train_target_column)
-          //   let task_mode = row.task_mode
-          //   console.log('task_mode1',task_mode)
-          //   let metric_name = row.metric_name
-          //   console.log('metric_name1',metric_name)
-          //   let make_residual_multiple_paths = null;
-          //   try{
-          //     make_residual_multiple_paths = ex.execSync(vm.exe_position + ' make_residual --root ' + vm.root 
-          //       + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round 1 ' 
-          //       + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column
-          //       + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
-            
-
-
-          //     make_residual_multiple_paths = make_residual_multiple_paths.split("?")
-          //     let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
-          //     if (indicator == false){
-          //       console.log("make_residual_multiple_paths wrong")
-          //       fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
-          //       return 
-          //     }
-
-          //   }catch(err){
-          //     console.log(err)
-          //   }
-
-          //   console.log("3.6 Sponsor makes residual finished")
-          //   vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
-          //   try {
-          //     fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
-          //   } catch (err) {
-          //     console.log(err)
-          //   }
-
-          //   // Read Files
-          //   let all_residual_data = [];
-          //   let assistor_random_id_list = [];
-          //   let residual_paths = make_residual_multiple_paths.slice(2, make_residual_multiple_paths.length)
-          //   for (let i = 0; i < residual_paths.length; i++){
-
-          //     let data = null;
-          //     try{
-          //       // data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
-          //       data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
-          //     }catch(err){
-          //       console.log(err)
-          //     }
-          //     all_residual_data.push(data);
-
-          //     // let cur_path = make_residual_multiple_paths[i]
-          //     let cur_path = residual_paths[i]
-          //     let path_split = cur_path.split(node_path.sep);
-          //     let assistor_random_id = path_split[path_split.length-1].split(".")[0];
-          //     assistor_random_id_list.push(assistor_random_id);
-              
-          //   }
-
-          //   console.log("assistor_random_id_list", assistor_random_id_list)
-          //   const send_situation_payload = {
-          //       task_id: task_id,
-          //       assistor_random_id_list: assistor_random_id_list,
-          //       residual_list: all_residual_data,
-          //     }
-
-          //   // send initial situation
-          //   // async
-          //   vm.$axios.post('/send_situation/', send_situation_payload)
-          //     .then((response) => {
-          //     // handle success
-          //     console.log("3.7 Sponsor sends all situations", response)
-          //     vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
-              
-          //     try {
-          //       fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
-          //       fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
-          //     } catch (err) {
-          //       console.log(err)
-          //     }
-
-          //   })
-          //   .catch((error) => {
-          //     console.log(error)
-          //   })
-
-          // });
           
         })
         .catch((error) => {
@@ -792,6 +701,11 @@ export default {
     },
 
     unread_situation(unread_situation_notification) {
+
+      if (check_if_notification_is_null(unread_situation_notification, 'unread_situation_notification')){
+        return
+      }
+
       console.log("4.1 Update the situation notification", unread_situation_notification)
       // this.$toasted.success("4.1 Update the situation notification", { icon: 'fingerprint' })
 
@@ -887,67 +801,22 @@ export default {
       } catch (err) {
         console.log(err)
       }
-
-
-
-      // db.get(select_train_data_path, function(err, row){
-      //   if (err){ 
-      //     throw err;
-      //   }
-      //   let train_file_path = row.train_file_path
-      //   console.log("train_file_path", train_file_path)
-      //   let train_data_column = row.train_data_column
-      //   console.log("train_data_column", train_data_column)
-      //   let task_mode = row.task_mode
-      //   let model_name = row.model_name
-      //   try{
-          
-      //     // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
-      //     let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
-      //       + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_column
-      //       + ' --task_mode ' + task_mode + ' --model_name ' + model_name, {encoding: 'utf8'})
-          
-      //     train_output = train_output.split("?")
-      //     console.log('train_output1', train_output)
-      //     let indicator = vm.handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
-      //     if (indicator == false){
-      //       console.log("train_output wrong")
-      //       fs.appendFileSync(Log_address, "train_output wrong")
-      //       return 
-      //     }
-
-      //     console.log("4.3 Sponsor round " + rounds + " training done.");
-      //     vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
-        
-      //   }catch(err){
-      //     console.log(err)
-      //   }
-
-      //   try {
-      //     fs.appendFileSync(Log_address, "4.3 Sponsor round " + rounds + " training done." + "\n")
-      //     fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
-      //   } catch (err) {
-      //     console.log(err)
-      //   }
-
-      //   // const path = `/Sponsor_situation_training_done/`
-
-      //   // const Sponsor_situation_training_done_data = {
-      //   //   task_id: task_id
-      //   // } 
-        
-      //   // vm.$axios.post(path, Sponsor_situation_training_done_data)
-      //   //   .then((response) => {
-      //   //     console.log("4.4 Sponsor update training done")
-      //   //   })
-      //   //   .catch((error)=>{
-      //   //     console.log(error)
-      //   //   })  
-      // });
     },
 
-    unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name){
-
+    unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time){
+      
+      let waiting_current_time = new Date();
+      // let waiting_current_time = myDate.toLocaleTimeString(); 
+      let time_interval = waiting_current_time.getTime() - waiting_start_time.getTime()
+      console.log("time_interval", time_interval)
+      var leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
+      var leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
+      var minutes = Math.floor(leave2/(60*1000))  //间隔分钟
+      
+      if (minutes > 30){
+        console.log('Waiting time interval exceeded')
+        return 
+      }
       let Assistor_train_output_path = null;
       console.log('wokan6', model_name )
       // get response from make_train.py. 
@@ -958,9 +827,6 @@ export default {
           + from_id + ' --dataset_path ' + train_file_path + ' --data_idx ' + train_data_column
           + ' --task_mode ' + 'regression' + ' --model_name ' + model_name ,{encoding: 'utf8'})
 
-          
-
-        
         Assistor_train_output_path = Assistor_train_output_path.split("?")
         indicator = vm.handle_Algorithm_return_value("Assistor_train_output_path", Assistor_train_output_path, "200", "make_train")
       }
@@ -1016,7 +882,6 @@ export default {
     unread_situation_assistor(rounds, task_id) {
       
       let vm = this;
-
       const Log_address = vm.handle_train_log_address(task_id)
 
       const payload = {
@@ -1091,15 +956,15 @@ export default {
           let model_name = row.model_name 
           console.log("model_name",model_name)
 
-          if (mode == "auto"){
+          if (mode == "auto" || mode == 'manual'){
             
             let unittest_parameters = generate_unittest_parameters(train_file_path, train_data_column, mode, model_name)
             execute_unittest_list(arguments[arguments.length-1], 3, "unread_situation_unittest", unittest_parameters)  
 
-            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name)
-          }else if (mode == "manual") {
-
-            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name)
+            let waiting_start_time = new Date();
+            // let waiting_start_time = myDate.getMinutes();
+            // var waiting_start_time = myDate.toLocaleTimeString(); 
+            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time)
           }else{
             console.log('unread situation assistor 3rd case')
           }  
@@ -1111,6 +976,11 @@ export default {
     },
     
     unread_output(unread_output_notification) {
+
+      // Only sponsor will enter this function
+      if (check_if_notification_is_null(unread_output_notification, 'unread_output_notification')){
+        return
+      }
 
       // Only sponsor would receive unread_output
       console.log("5.1 Update the output notification", unread_output_notification)
@@ -1217,8 +1087,8 @@ export default {
           let unittest_parameters = generate_unittest_parameters(train_file_path, train_target_column, task_mode, metric_name)
           execute_unittest_list(arguments[arguments.length-1], 2, "unread_output_unittest", unittest_parameters)
 
-
-          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name)
+          let waiting_start_time = new Date();
+          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time)
 
           
         })
@@ -1228,7 +1098,21 @@ export default {
         }) 
     },
 
-    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name){
+    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time){
+
+      let waiting_current_time = new Date();
+      // let waiting_current_time = myDate.toLocaleTimeString(); 
+      let time_interval = waiting_current_time.getTime() - waiting_start_time.getTime()
+      console.log("time_interval", time_interval)
+      var leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
+      var leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
+      var minutes = Math.floor(leave2/(60*1000))  //间隔分钟
+      
+      if (minutes > 30){
+        console.log('Waiting time interval exceeded')
+        return 
+      }
+
       console.log("unread_output_make_result_helper_rounds", rounds)
       let make_result_done = null;
       let indicator = null;
@@ -1342,12 +1226,13 @@ export default {
     
     
     unread_test_request(unread_test_request_notification) {
-      let vm = this;
-      
-      // Only assistor calls this function
-      
-        // console.log('navbar unread test request mode', vm.sharedState.mode )
 
+      // Only assistor will enter this function
+      if (check_if_notification_is_null(unread_test_request_notification, 'unread_test_request_notification')){
+        return
+      }
+
+      let vm = this;
         
       console.log("2.1 Update Test request notification response", unread_test_request_notification)
       // this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
@@ -1368,7 +1253,6 @@ export default {
       else{
         vm.sharedState.mode = row.default_mode;
       }  
-    
 
       for (let test_id in cur_unread_test_request_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
@@ -1452,9 +1336,9 @@ export default {
 
           let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
+          // Unittest
           unittest_parameters = generate_unittest_parameters()
           execute_unittest_list(arguments[arguments.length-1], 2, "unread_test_request_unittest", unittest_parameters)
-
 
           const match_test_assistor_id_data = {
             file: test_hash_id_file_data,
@@ -1504,11 +1388,14 @@ export default {
           // dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
         }
       }
-      
-      
     },
 
     unread_test_match_id(unread_test_match_id_notification) {
+
+      if (check_if_notification_is_null(unread_test_match_id_notification, 'unread_test_match_id_notification')){
+        return
+      }
+
       console.log("3.1 Update Test match id notification response", unread_test_match_id_notification)
       // this.$toasted.success("3.1 Update the Test match id notification", { icon: 'fingerprint' })
 
@@ -1519,7 +1406,6 @@ export default {
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_match_id_Testid_dict)
       execute_unittest_list(arguments[arguments.length-1], 0, "unread_test_match_id_unittest", unittest_parameters)
-
 
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
@@ -1560,8 +1446,7 @@ export default {
 
     unread_test_match_id_sponsor(task_id, test_id, max_rounds) {
 
-      // Create 'Local_Data/id/task_id/Match/' folder
-      // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + test_id + '/' + 'Match/'
+      
       let vm = this;
       const Log_address = vm.handle_test_log_address(task_id, test_id)
       
@@ -1656,47 +1541,44 @@ export default {
 
           }
 
-          let select_test_data_path = 'SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
           var row = vm.$db.prepare('SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
-
-
           
-            let test_file_path = row.test_file_path
-            let test_data_column = row.test_data_column
-            console.log("test_file_path", test_file_path)
-            
-            try{
-              let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
+          let test_file_path = row.test_file_path
+          let test_data_column = row.test_data_column
+          console.log("test_file_path", test_file_path)
+          
+          try{
+            let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+              + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
 
-              test_done = test_done.split("?")
-              let indicator = vm.handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
-              if (indicator == false){
-                console.log("test_done wrong")
-                fs.appendFileSync(Log_address, "test_done wrong")
-                return 
-              }
-
-            }catch(err){
-              console.log(err)
+            test_done = test_done.split("?")
+            let indicator = vm.handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
+            if (indicator == false){
+              console.log("test_done wrong")
+              fs.appendFileSync(Log_address, "test_done wrong")
+              return 
             }
 
-            console.log("3.7 Test: Sponsor stores all test model results")
-            // vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
+          }catch(err){
+            console.log(err)
+          }
 
-            try {
-              fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
-              fs.appendFileSync(Log_address, "--------------------------3. Unread Test Match ID Done\n")
-            } catch (err) {
-              console.log(err)
-            }
+          console.log("3.7 Test: Sponsor stores all test model results")
+          // vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
+
+          try {
+            fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
+            fs.appendFileSync(Log_address, "--------------------------3. Unread Test Match ID Done\n")
+          } catch (err) {
+            console.log(err)
+          }
+      
         
-          
-          })
-          .catch((error) => {
-            console.log(error)
-            // handle error
-          }) 
+        })
+        .catch((error) => {
+          console.log(error)
+          // handle error
+        }) 
 
          
     },
@@ -1791,158 +1673,75 @@ export default {
 
           var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND task_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
 
+          let mode = row.mode
+          let test_file_path = row.test_file_path
+          let test_data_column = row.test_data_column
+
+          if(mode == "auto" || mode == "manual"){
+            
+            let test_outputs_pos = null
+            try{
+
+              test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
+                + ' --dataset_path ' +  test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
+
+              test_outputs_pos = test_outputs_pos.split("?")
+              let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
+              if (indicator == false){
+                console.log("test_outputs_pos wrong")
+                fs.appendFileSync(Log_address, "test_outputs_pos wrong")
+                return 
+              }
+              
+            }catch(err){
+              console.log(err)
+            }
+
+            console.log("3.7 Test: assistor stores all test model results")
+            // vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
+
+            try {
+              fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
+            } catch (err) {
+              console.log(err)
+            }
+
+            let all_test_output = [];
+            let make_test_lists = test_outputs_pos.slice(2, test_outputs_pos.length)
+            console.log("make_test_lists", make_test_lists)
+            for (let i = 0; i < make_test_lists.length; i++){
+              let data = fs.readFileSync(make_test_lists[i], {encoding:'utf8', flag:'r'});
+              all_test_output.push(data);
+            }
+            console.log("all_test_output", all_test_output)
+
+            const payload1 = {
+              output: all_test_output,
+              test_id: test_id,
+              task_id: task_id,
+            }
+
+            vm.$axios.post('/send_test_output/', payload1)
+              .then((response) => {
+              // handle success
+              console.log("3.8 Test: assistor sends all test model results", response)
+              // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
+              try {
+                fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
+                fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
+                fs.appendFileSync(Log_address, "-------------------------- Test stage done\n")
+              } catch (err) {
+                console.log(err)
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+            })
           
-            let which_mode = null
-            if (row.mode == 'auto'){
-              which_mode = 'auto'
-            }else if (row.mode == 'manual'){
-              which_mode = 'manual'
-            }else{
-              console.log('doumeijin')
-            }
-
-            if(which_mode == "auto"){
-            var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND task_id = ? AND task_indicator = ?').get(vm.sharedState.user_id, task_id, 'test');
-
-            
-              let default_test_file_path = row.test_file_path
-              let default_test_data_column = row.test_data_column
-              console.log("default_test_file_path",default_test_file_path)
-
-              let test_outputs_pos = null
-              try{
-
-                test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                  + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
-                  + ' --dataset_path ' +  default_test_file_path + ' --data_idx ' + default_test_data_column, {encoding: 'utf8'})
-
-                test_outputs_pos = test_outputs_pos.split("?")
-                let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
-                if (indicator == false){
-                  console.log("test_outputs_pos wrong")
-                  fs.appendFileSync(Log_address, "test_outputs_pos wrong")
-                  return 
-                }
-                
-              }catch(err){
-                console.log(err)
-              }
-
-              console.log("3.7 Test: assistor stores all test model results")
-              // vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
-
-              try {
-                fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
-              } catch (err) {
-                console.log(err)
-              }
-
-              let all_test_output = [];
-              let make_test_lists = test_outputs_pos.slice(2, test_outputs_pos.length)
-              console.log("make_test_lists", make_test_lists)
-              for (let i = 0; i < make_test_lists.length; i++){
-                let data = fs.readFileSync(make_test_lists[i], {encoding:'utf8', flag:'r'});
-                all_test_output.push(data);
-              }
-              console.log("all_test_output", all_test_output)
-
-              const payload1 = {
-                output: all_test_output,
-                test_id: test_id,
-                task_id: task_id,
-              }
-
-              vm.$axios.post('/send_test_output/', payload1)
-                .then((response) => {
-                // handle success
-                console.log("3.8 Test: assistor sends all test model results", response)
-                // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
-                try {
-                  fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
-                  fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
-                  fs.appendFileSync(Log_address, "-------------------------- Test stage done\n")
-                } catch (err) {
-                  console.log(err)
-                }
-              })
-              .catch((error) => {
-                console.log(error)
-              })
-            
-            }else if(which_mode == "manual"){
-             
-              var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND task_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
-
-            
-              let pending_test_file_path = row.test_file_path
-              let pending_test_data_column = row.test_data_column
-              console.log("pending_test_file_path",pending_test_file_path)
-
-              let test_outputs_pos = null
-              try{
-
-                test_outputs_pos = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                  + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --from_id ' + from_id 
-                  + ' --dataset_path ' +  pending_test_file_path + ' --data_idx ' + pending_test_data_column, {encoding: 'utf8'})
-
-                test_outputs_pos = test_outputs_pos.split("?")
-                let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
-                if (indicator == false){
-                  console.log("test_outputs_pos wrong")
-                  fs.appendFileSync(Log_address, "test_outputs_pos wrong")
-                  return 
-                }
-                
-              }catch(err){
-                console.log(err)
-              }
-
-              console.log("3.7 Test: assistor stores all test model results")
-              // vm.$toasted.success("3.7 Test: assistor stores all test model results", { icon: 'fingerprint' })
-
-              try {
-                fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
-              } catch (err) {
-                console.log(err)
-              }
-
-              let all_test_output = [];
-              let make_test_lists = test_outputs_pos.slice(2, test_outputs_pos.length)
-              console.log("make_test_lists", make_test_lists)
-              for (let i = 0; i < make_test_lists.length; i++){
-                let data = fs.readFileSync(make_test_lists[i], {encoding:'utf8', flag:'r'});
-                all_test_output.push(data);
-              }
-              console.log("all_test_output", all_test_output)
-
-              const payload1 = {
-                output: all_test_output,
-                test_id: test_id,
-                task_id: task_id,
-              }
-
-              vm.$axios.post('/send_test_output/', payload1)
-                .then((response) => {
-                // handle success
-                vm.$toasted.success("Testing Done", { icon: 'fingerprint' })
-                console.log("3.8 Test: assistor sends all test model results", response)
-                // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
-                try {
-                  fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
-                  fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
-                  fs.appendFileSync(Log_address, "-------------------------- Test stage done\n")
-                } catch (err) {
-                  console.log(err)
-                }
-              })
-              .catch((error) => {
-                console.log(error)
-              })
-         
-
-            }else{
-              console.log('unread_test_match_id_assistor error')
-            }
+          }else{
+            console.log('unread_test_match_id_assistor error')
+          }
           
 
         })
@@ -1953,6 +1752,11 @@ export default {
     },
 
     unread_test_output(unread_test_output_notification) {
+      
+      // only sponsor will enter this function
+      if (check_if_notification_is_null(unread_test_output_notification, 'unread_test_output_notification')){
+        return
+      }
 
       console.log("4.1 Update Test output notification", unread_test_output_notification)
       // this.$toasted.success("4.1 Update Test output notification", { icon: 'fingerprint' })
@@ -1980,8 +1784,6 @@ export default {
     },
 
     unread_test_output_singleTask(task_id, test_id){
-
-      // const Test_Output_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Test/Output/';
 
       const Log_address = this.handle_test_log_address(task_id, test_id)
 
@@ -2044,7 +1846,6 @@ export default {
               fs.writeFileSync(test_save_output_pos[2], cur_output)
             }
 
-
           }//end for loop
           console.log("4.3 Test: Sponsor saves assistors' Output model");
 
@@ -2054,8 +1855,8 @@ export default {
           } catch (err) {
             console.log(err)
           }
-          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response)
-
+          let waiting_start_time = new Date()
+          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time)
 
         })
         .catch((error) => {
@@ -2066,62 +1867,70 @@ export default {
           
     },
 
-    unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response){
+    unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time){
       
+      let waiting_current_time = new Date();
+      // let waiting_current_time = myDate.toLocaleTimeString(); 
+      let time_interval = waiting_current_time.getTime() - waiting_start_time.getTime()
+      console.log("time_interval", time_interval)
+      var leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
+      var leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
+      var minutes = Math.floor(leave2/(60*1000))  //间隔分钟
+      
+      if (minutes > 30){
+        console.log('Waiting time interval exceeded')
+        return 
+      }
 
       let max_round = JSON.parse(response.data.output[0]).length - 1;
       console.log("unread_test_output_max_round", JSON.parse(response.data.output[0]))
       console.log("max_round", max_round)
 
-      let select_test_target_path = 'SELECT test_file_path, test_target_column FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="test"' + ' AND "test_id"="' + test_id + '"';
       var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
 
-      
-        let test_file_path = row.test_file_path
-        let test_target_column = row.test_target_column
-        let task_mode = row.task_mode
-        let metric_name = row.metric_name
-        // console.log("test_target_path",test_target_path)
-        let eval_done = null;
-        let indicator = null;
-        try{
+      let test_file_path = row.test_file_path
+      let test_target_column = row.test_target_column
+      let task_mode = row.task_mode
+      let metric_name = row.metric_name
+      // console.log("test_target_path",test_target_path)
+      let eval_done = null;
+      let indicator = null;
+      try{
 
-          eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-            + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round 
-            + ' --dataset_path ' + test_file_path + ' --target_idx ' + test_target_column
-            + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
+        eval_done = ex.execSync(vm.exe_position + ' make_eval --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+          + ' --task_id '+ task_id + ' --test_id ' + test_id + ' --round ' + max_round 
+          + ' --dataset_path ' + test_file_path + ' --target_idx ' + test_target_column
+          + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
 
 
-          eval_done = eval_done.split("?")
-          console.log('wokan2', eval_done)
-          indicator = vm.handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
-        }catch(err){
+        eval_done = eval_done.split("?")
+        console.log('wokan2', eval_done)
+        indicator = vm.handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
+      }catch(err){
+        console.log(err)
+      }
+
+      if (indicator == false){
+        console.log("recall unread_test_output_make_eval_helper")
+        setTimeout(function(){
+          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response)
+        }, 7000);
+      }else{
+        console.log("4.4 Test: Sponsor evaluates output models done");
+        vm.$toasted.success("Testing Done", { icon: 'fingerprint' })
+        try {
+          fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
+        } catch (err) {
           console.log(err)
         }
 
-        if (indicator == false){
-          console.log("recall unread_test_output_make_eval_helper")
-          setTimeout(function(){
-            vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response)
-          }, 7000);
-        }else{
-          console.log("4.4 Test: Sponsor evaluates output models done");
-          vm.$toasted.success("Testing Done", { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
-          } catch (err) {
-            console.log(err)
-          }
-
-          try {
-            fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
-            fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
-          } catch (err) {
-            console.log(err)
-          }
+        try {
+          fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
+          fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
+        } catch (err) {
+          console.log(err)
         }
-       
-   
+      }
     },
   },
 

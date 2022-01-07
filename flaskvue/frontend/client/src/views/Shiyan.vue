@@ -211,11 +211,27 @@ export default {
     },
     
     make_hash(){
-      let vm=this
-      let hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + '1'
-                                      + ' --task_id ' + 'aaa' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
-                                      + ' --id_idx ' + '2-7', {encoding: 'utf8'})
-      console.log('make_hash', hash_id_file_address)
+      function wait(ms){
+        var start = new Date().getTime();
+        var end = start;
+        while(end < start + ms) {
+          end = new Date().getTime();
+        }
+      }
+      // let vm=this
+      let waiting_start_time = new Date();
+      wait(5000);
+      let waiting_current_time = new Date();
+      let date3 = waiting_current_time.getTime() - waiting_start_time.getTime()
+      console.log("~~", date3)
+      var leave1=date3%(24*3600*1000)
+      var leave2=leave1%(3600*1000)        //计算小时数后剩余的毫秒数
+      var minutes=Math.floor(leave2/(60*1000))
+      console.log(leave1, leave2, minutes)
+      // let hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + '1'
+      //                                 + ' --task_id ' + 'aaa' + ' --mode train' + ' --dataset_path ' +  '/Users/xianjianxie/Downloads/data/BostonHousing/2/123/1.0/0/train/combine.csv'
+      //                                 + ' --id_idx ' + '2-7', {encoding: 'utf8'})
+      // console.log('make_hash', hash_id_file_address)
     },
 
     make_hash2(){

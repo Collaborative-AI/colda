@@ -38,17 +38,16 @@ describe('test_unread_request', () => {
   // window.localStorage.removeItem('Apollo-token')
   // store.state.is_authenticated = false
   // store.state.user_id = 0
-  login_helper.check_login_second_user()
-  // Assistor updates default_train_file_path, default_train_id_column, 
-  // default_train_data_column
-  
-  profile_helper.onSubmit()
+  // login_helper.check_login_second_user()
+  // // Assistor updates default_train_file_path, default_train_id_column, 
+  // // default_train_data_column
+  // profile_helper.onSubmit()
 
   
-  notification_helper.update_notification()
+  // notification_helper.update_notification()
   // // console.log('rsee')
-  unread_request_helper.unread_request()
-  logout_helper.logout()
+  // unread_request_helper.unread_request()
+  // logout_helper.logout()
  
 
 })

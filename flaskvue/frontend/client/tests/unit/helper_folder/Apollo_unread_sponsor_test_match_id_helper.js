@@ -36,7 +36,23 @@ function unread_sponsor_test_match_id_helper_function(){
   
     let unread_sponsor_test_match_id_3 = (data) => {
       try{
-        done()
+        
+        console.log('unread_sponsor_test_match_id_3')
+      }catch (error){
+        done(error)
+      }
+    }
+
+    let unread_sponsor_test_match_id_4 = (data) => {
+      try{
+        val0 = data[0].toFixed(2)
+        val1 = data[1].toFixed(2)
+        val2 = data[2].toFixed(2)
+        val3 = data[3].toFixed(2)
+        expect(val0).toEqual(9.26)
+        expect(val1).toEqual(-8.01)
+        expect(val2).toEqual(1.26)
+        expect(val3).toEqual(-1.00)
         console.log('unread_sponsor_test_match_id_3')
       }catch (error){
         done(error)
@@ -49,6 +65,7 @@ function unread_sponsor_test_match_id_helper_function(){
     cur_parameters.push(unread_sponsor_test_match_id_1)
     cur_parameters.push(unread_sponsor_test_match_id_2)
     cur_parameters.push(unread_sponsor_test_match_id_3)
+    cur_parameters.push(unread_sponsor_test_match_id_4)
     cur_parameters.push('unread_test_match_id_unittest')
     // assistor
     // Navbar_wrapper.setData({task_id: unittest_parameters.task_id,

@@ -39,8 +39,21 @@ function check_unread_test_request(){
   
     let check_unread_test_request_3 = (data) => {
       try{
-        
+        expect(data[0]).toEqual(true)
         console.log('check_unread_test_request_3')
+      }catch (error){
+        done(error)
+      }
+    }
+
+
+    let check_unread_test_request_1 = (data) => {
+      try{
+        console.log('woshidata', data)
+  
+        expect(data).not.toBeNull()
+  
+        console.log('check_unread_test_request')
       }catch (error){
         done(error)
       }
@@ -51,6 +64,7 @@ function check_unread_test_request(){
     cur_parameters.push(check_unread_test_request_1)
     cur_parameters.push(check_unread_test_request_2)
     cur_parameters.push(check_unread_test_request_3)
+    cur_parameters.push(check_unread_test_request_4)
     cur_parameters.push('unread_test_request_unittest')
     console.log('wokan', cur_parameters)
     

@@ -1314,8 +1314,16 @@ export default {
                                       + ' --mode test' + ' --test_id ' + test_id
                                       + ' --dataset_path ' + default_file_path + ' --id_idx ' + default_id_column, {encoding: 'utf8'})
 
+            
+
             test_hash_id_file_address = test_hash_id_file_address.split("?")
             let indicator = vm.handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
+
+            
+            unittest_parameters = generate_unittest_parameters(indicator)
+            execute_unittest_list(arguments[arguments.length-1], 2, "unread_test_request_unittest", unittest_parameters)
+
+
             Log_address = vm.handle_test_log_address(task_id, test_id)
             console.log('daozhele')
             if (indicator == false){
@@ -1340,9 +1348,7 @@ export default {
 
           let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
-          // Unittest
-          unittest_parameters = generate_unittest_parameters()
-          execute_unittest_list(arguments[arguments.length-1], 2, "unread_test_request_unittest", unittest_parameters)
+          
 
           const match_test_assistor_id_data = {
             file: test_hash_id_file_data,
@@ -1354,6 +1360,12 @@ export default {
             .then((response) => {
               // handle success
               console.log("2.2 Test: assistor uploads id file", response)
+
+
+            
+              unittest_parameters = generate_unittest_parameters(response)
+              execute_unittest_list(arguments[arguments.length-1], 3, "unread_test_request_unittest", unittest_parameters)
+
               // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
               try {
                 fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
@@ -1555,7 +1567,16 @@ export default {
             let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
               + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
 
+            
+            
             test_done = test_done.split("?")
+
+            let zhongjian = test_done[4]
+            let unittest_parameters = generate_unittest_parameters(zhongjian)
+            execute_unittest_list(arguments[arguments.length-1], 3, "unread_test_match_id_unittest", unittest_parameters)
+
+
+
             let indicator = vm.handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
             if (indicator == false){
               console.log("test_done wrong")
@@ -1691,6 +1712,11 @@ export default {
                 + ' --dataset_path ' +  test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
 
               test_outputs_pos = test_outputs_pos.split("?")
+
+              let zhongjian = test_outputs_pos[4]
+              let unittest_parameters = generate_unittest_parameters(zhongjian)
+              execute_unittest_list(arguments[arguments.length-1], 3, "unread_test_match_id_unittest", unittest_parameters)
+              
               let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
               if (indicator == false){
                 console.log("test_outputs_pos wrong")

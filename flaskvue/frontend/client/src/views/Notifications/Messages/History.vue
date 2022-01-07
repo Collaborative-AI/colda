@@ -900,11 +900,11 @@ export default {
         }
       }
 
-      for (let i = 0; i < Log_content2.length; i++){
-        this.messages2.push(Log_content2[i])
-        console.log('dai',Log_content[i])
+      // for (let i = 0; i < Log_content2.length; i++){
+      //   this.messages2.push(Log_content2[i])
+      //   console.log('dai',Log_content[i])
         
-      }
+      // }
 
 
       for (let message of this.messages){        

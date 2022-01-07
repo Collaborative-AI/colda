@@ -36,7 +36,7 @@ export function Log(message, level, file_name){
 export function check_if_notification_is_null(notification, name){
   if (notification == null){
     Log(name + 'is null')
-    return True
+    return true
   }
-  return False
+  return false
 }

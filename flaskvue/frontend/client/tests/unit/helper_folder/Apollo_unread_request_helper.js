@@ -74,17 +74,7 @@ function check_unread_request(){
     cur_parameters.push('unread_request_unittest')
     console.log('wokan', cur_parameters)
     // assistor
-    // Navbar_wrapper.setData({task_id: unittest_parameters.task_id,
-    //                                task_name: unittest_parameters.task_name, 
-    //                                task_description: unittest_parameters.task_description,
-    //                                train_file_path: unittest_parameters.train_file_path,
-    //                                train_id_column: unittest_parameters.train_id_column,
-    //                                train_data_column: unittest_parameters.train_data_column,
-    //                                train_target_column: unittest_parameters.train_target_column,
-    //                                assistor_username_list: unittest_parameters.assistor_username_list,
-    //                                task_mode: unittest_parameters.task_mode,
-    //                                model_name: unittest_parameters.model_name,
-    //                                metric_name: unittest_parameters.metric_name})
+    
     // if (unittest_parameters.unread_request_notification_first_been_call == false){
     console.log('zz8', unittest_parameters)
     console.log('zz5', unittest_parameters.unread_request_notification)

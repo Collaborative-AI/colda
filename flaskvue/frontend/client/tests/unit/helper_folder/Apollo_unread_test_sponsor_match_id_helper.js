@@ -1,5 +1,5 @@
 import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper} from './Apollo_unittest_init'
-import { generate_parameters, retrieve_User_Sponsor_Table_record } from './Apollo_unittest_utils'
+import { generate_parameters, retrieve_User_Sponsor_Table_record, cut_decimal } from './Apollo_unittest_utils'
 jest.setTimeout(10000);
 
 
@@ -46,15 +46,26 @@ function unread_test_sponsor_match_id_helper_function(){
     let unread_test_sponsor_match_id_4 = (data) => {
       try{
         console.log('sdfad', data)
-        val0 = data[0].toFixed(2)
-        val1 = data[1].toFixed(2)
-        val2 = data[2].toFixed(2)
-        val3 = data[3].toFixed(2)
-        expect(val0).toEqual(9.26)
-        expect(val1).toEqual(-8.01)
-        expect(val2).toEqual(1.26)
-        expect(val3).toEqual(-1.00)
-        console.log('unread_sponsor_test_match_id_3')
+        data = data[0]
+        let test_array = [-15.62146, -7.63978, -3.17975, -3.77626, -2.13779, 1.60417, -1.76595, -0.91224]
+        let test_array_index = 0
+        for (let i in data){
+          let cur_list = data[i]
+          console.log('cur_list', cur_list)
+          for (let j = 0; j < cur_list.length; j++){
+            let cur_number = cur_list[j]
+            cur_number = parseFloat(cur_number.toFixed(5))
+            console.log('number_spo', cur_number, test_array[test_array_index])
+            expect(cur_number).toEqual(
+              test_array[test_array_index]
+            )
+            test_array_index += 1
+          }
+        }
+        
+
+        // let a = data.split("\n")
+        done()
       }catch (error){
         done(error)
       }

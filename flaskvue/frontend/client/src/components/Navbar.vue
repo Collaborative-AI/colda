@@ -157,7 +157,7 @@ export default {
 
     // Helper Function for checking algorithm return value
     handle_Algorithm_return_value(name, return_val, first_val, second_val) {
-      console.log(name, return_val)
+      // console.log(name, return_val)
       // check if return_val obeys the correct return value
       if (first_val != null){
         if (return_val[0] != first_val){
@@ -883,7 +883,7 @@ export default {
         vm.$axios.post('/send_output/', Assistor_output_payload)
           .then((response) => {
           // handle success
-          console.log("4.5 Assistor sends output", response)
+          console.log("4.5 Assistor sends output")
 
           let unittest_parameters = generate_unittest_parameters(response.data)
           execute_unittest_list(unittest_callbacks, 4, "unread_situation_unittest", unittest_parameters) 
@@ -1174,7 +1174,8 @@ export default {
         }
         
         // terminate
-        if ((rounds+1) >= vm.max_round){
+        console.log('max_round', rounds, vm.max_round)
+        if ((rounds+1) > vm.max_round){
           vm.$toasted.success("Training Done", { icon: 'fingerprint' })
           fs.appendFileSync(Log_address, "---------------------- Train stage done\n");
         }else{        
@@ -1312,10 +1313,10 @@ export default {
             task_description: '', 
             test_name: '',
             test_description: '',
-            train_file_path: default_file_path, 
-            train_id_column: default_id_column, 
-            train_data_column: default_data_column, 
-            train_target_column: default_target_column, 
+            train_file_path: '', 
+            train_id_column: '', 
+            train_data_column: '', 
+            train_target_column: '', 
             test_file_path: default_file_path,
             test_id_column: default_id_column,
             test_data_column: default_data_column,
@@ -1381,7 +1382,7 @@ export default {
           vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
             .then((response) => {
               // handle success
-              console.log("2.2 Test: assistor uploads id file", response)
+              console.log("2.2 Test: assistor uploads id file")
 
 
             
@@ -1468,7 +1469,7 @@ export default {
           } catch (err) {
             console.log(err)
           }
-          this.unread_test_match_id_sponsor(task_id, test_id, cur_max_round)
+          this.unread_test_match_id_sponsor(task_id, test_id, cur_max_round, unittest_callbacks)
         }  
         else{
           console.log("3.2 Unread_test_match_id_assistor")
@@ -1477,7 +1478,7 @@ export default {
           } catch (err) {
             console.log(err)
           }
-          this.unread_test_match_id_assistor(task_id, test_id, cur_max_round)
+          this.unread_test_match_id_assistor(task_id, test_id, cur_max_round, unittest_callbacks)
         }
       }
     },
@@ -1502,10 +1503,8 @@ export default {
           // call back
           // iterate the match_id_file
 
-
           let unittest_parameters = generate_unittest_parameters(response.data)
           execute_unittest_list(unittest_callbacks, 1, "unread_test_match_id_unittest", unittest_parameters)
-
 
           console.log("3.4 Test: Sponsor gets matched id file")
           // vm.$toasted.success("3.4 Test: Sponsor gets matched id file", { icon: 'fingerprint' })
@@ -1590,9 +1589,7 @@ export default {
               + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
 
             test_done = test_done.split("?")
-            let make_test_res = test_done[2]
-            console.log('make test res', make_test_res, typeof(make_test_res))
-            console.log( 'JSON', JSON.parse(make_test_res))
+            let make_test_res = JSON.parse(test_done[2])
             let unittest_parameters = generate_unittest_parameters(make_test_res)
             execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
 
@@ -1721,6 +1718,9 @@ export default {
           let test_file_path = row.test_file_path
           let test_data_column = row.test_data_column
 
+          unittest_parameters = generate_unittest_parameters(test_file_path, test_data_column)
+          execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
+
           if(mode == "auto" || mode == "manual"){
             
             let test_outputs_pos = null
@@ -1732,9 +1732,9 @@ export default {
 
               test_outputs_pos = test_outputs_pos.split("?")
 
-              let make_test_assistor_res = test_outputs_pos[2]
+              let make_test_assistor_res = JSON.parse(test_outputs_pos[2])
               let unittest_parameters = generate_unittest_parameters(make_test_assistor_res)
-              execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
+              execute_unittest_list(unittest_callbacks, 4, "unread_test_match_id_unittest", unittest_parameters)
               
               let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
               if (indicator == false){
@@ -1775,9 +1775,9 @@ export default {
               .then((response) => {
               // handle success
               let unittest_parameters = generate_unittest_parameters(response.data)
-              execute_unittest_list(unittest_callbacks, 4, "unread_test_match_id_unittest", unittest_parameters)
+              execute_unittest_list(unittest_callbacks, 5, "unread_test_match_id_unittest", unittest_parameters)
 
-              console.log("3.8 Test: assistor sends all test model results", response)
+              console.log("3.8 Test: assistor sends all test model results")
               // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
               try {
                 fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
@@ -2014,177 +2014,177 @@ export default {
     let getTime = window.performance;
     let startTime = getTime.now();
 
-    $(function() {
-      let since = 0
-      let total_notifications_count = 0  // 总通知计数
-      let unread_request_count = 0  // 收到的新评论通知计数
-      let unread_match_id_count = 0  // 收到的新私信通知计数
-      let unread_situation_count = 0  // 新粉丝通知计数
-      let unread_output_count = 0  // 新的喜欢或赞的通知计数
-      let unread_messages_count = 0
-      let sender_random_id_list = []
-      let task_id_list = []
+    // $(function() {
+    //   let since = 0
+    //   let total_notifications_count = 0  // 总通知计数
+    //   let unread_request_count = 0  // 收到的新评论通知计数
+    //   let unread_match_id_count = 0  // 收到的新私信通知计数
+    //   let unread_situation_count = 0  // 新粉丝通知计数
+    //   let unread_output_count = 0  // 新的喜欢或赞的通知计数
+    //   let unread_messages_count = 0
+    //   let sender_random_id_list = []
+    //   let task_id_list = []
       
-      let vm = this
+    //   let vm = this
 
-      function polling() {
-        // console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
+    //   function polling() {
+    //     // console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
 
-        // db.select
-        // check result => None => change to setting page
+    //     // db.select
+    //     // check result => None => change to setting page
 
 
-        if (window.localStorage.getItem('Apollo-token')) {
-          // 如果用户已登录，才开始请求 API
-          const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
-          const user_id = payload.user_id
-          // const path = `/users/${user_id}/notifications/?since=${since}`
-          const path = `/users/${user_id}/notifications/`
-          // const path = ''
-          // console.log("since shua xin",since)
-          axios.get(path)
-            .then((response) => {
-              // handle success
+    //     if (window.localStorage.getItem('Apollo-token')) {
+    //       // 如果用户已登录，才开始请求 API
+    //       const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
+    //       const user_id = payload.user_id
+    //       // const path = `/users/${user_id}/notifications/?since=${since}`
+    //       const path = `/users/${user_id}/notifications/`
+    //       // const path = ''
+    //       // console.log("since shua xin",since)
+    //       axios.get(path)
+    //         .then((response) => {
+    //           // handle success
               
-              for (let res of response.data){
-                if (res.task_id_list.length != 0){
-                  console.log("response.data", res)
-                }
-              }
-            for (let item of response.data){
-              // console.log('item', item, item.payload)
-              if (item.payload >= 1){
+    //           for (let res of response.data){
+    //             if (res.task_id_list.length != 0){
+    //               console.log("response.data", res)
+    //             }
+    //           }
+    //         for (let item of response.data){
+    //           // console.log('item', item, item.payload)
+    //           if (item.payload >= 1){
 
       
-                console.log("++++++++++++++++++++++++=", response.data)
+    //             console.log("++++++++++++++++++++++++=", response.data)
 
-                const all_notifications = {
-                  response_data: response.data
-                } 
+    //             const all_notifications = {
+    //               response_data: response.data
+    //             } 
 
-                axios.post('/update_all_notifications/', all_notifications)
-                .then((response) => {
-                  // train stage
-                  let unread_request_notification = response.data["unread request"]
-                  let unread_match_id_notification = response.data["unread match id"]
-                  let unread_situation_notification = response.data["unread situation"]
-                  let unread_output_notification = response.data["unread output"]
+    //             axios.post('/update_all_notifications/', all_notifications)
+    //             .then((response) => {
+    //               // train stage
+    //               let unread_request_notification = response.data["unread request"]
+    //               let unread_match_id_notification = response.data["unread match id"]
+    //               let unread_situation_notification = response.data["unread situation"]
+    //               let unread_output_notification = response.data["unread output"]
 
-                  // test stage
-                  let unread_test_request_notification = response.data["unread test request"]
-                  let unread_test_match_id_notification = response.data["unread test match id"]
-                  let unread_test_output_notification = response.data["unread test output"]
-
-
-                  console.log("unread_request_notification",unread_request_notification,
-                    unread_request_notification["check_dict"])
-                  console.log("unread_match_id_notification",unread_match_id_notification,
-                    unread_match_id_notification["check_dict"])
-                  console.log("unread_situation_notification",unread_situation_notification,
-                    unread_situation_notification["check_dict"])
-                  console.log("unread_output_notification",unread_output_notification,
-                    unread_output_notification["check_dict"])
-
-                  console.log("unread_test_request_notification",unread_test_request_notification,
-                    unread_test_request_notification["check_dict"])
-                  console.log("unread_test_match_id_notification",unread_test_match_id_notification,
-                    unread_test_match_id_notification["check_dict"])
-                  console.log("unread_test_output_notification",unread_test_output_notification,
-                    unread_test_output_notification["check_dict"])
+    //               // test stage
+    //               let unread_test_request_notification = response.data["unread test request"]
+    //               let unread_test_match_id_notification = response.data["unread test match id"]
+    //               let unread_test_output_notification = response.data["unread test output"]
 
 
-                  if (unread_request_notification["check_dict"] ){
-                      unread_request(unread_request_notification)
-                  }
+    //               console.log("unread_request_notification",unread_request_notification,
+    //                 unread_request_notification["check_dict"])
+    //               console.log("unread_match_id_notification",unread_match_id_notification,
+    //                 unread_match_id_notification["check_dict"])
+    //               console.log("unread_situation_notification",unread_situation_notification,
+    //                 unread_situation_notification["check_dict"])
+    //               console.log("unread_output_notification",unread_output_notification,
+    //                 unread_output_notification["check_dict"])
 
-                  if (unread_match_id_notification["check_dict"]){
-                      unread_match_id(unread_match_id_notification)
-                  }
+    //               console.log("unread_test_request_notification",unread_test_request_notification,
+    //                 unread_test_request_notification["check_dict"])
+    //               console.log("unread_test_match_id_notification",unread_test_match_id_notification,
+    //                 unread_test_match_id_notification["check_dict"])
+    //               console.log("unread_test_output_notification",unread_test_output_notification,
+    //                 unread_test_output_notification["check_dict"])
 
-                  if (unread_situation_notification["check_dict"]){
-                      unread_situation(unread_situation_notification)
-                  }
 
-                  if (unread_output_notification["rounds_dict"]){
-                      unread_output(unread_output_notification)
-                  }
+    //               if (unread_request_notification["check_dict"] ){
+    //                   unread_request(unread_request_notification)
+    //               }
 
-                  if (unread_test_request_notification["check_dict"]){
-                      unread_test_request(unread_test_request_notification)
-                  }
+    //               if (unread_match_id_notification["check_dict"]){
+    //                   unread_match_id(unread_match_id_notification)
+    //               }
 
-                  if (unread_test_match_id_notification["check_dict"]){
-                      unread_test_match_id(unread_test_match_id_notification)
-                  }
+    //               if (unread_situation_notification["check_dict"]){
+    //                   unread_situation(unread_situation_notification)
+    //               }
 
-                  if (unread_test_output_notification["check_dict"]){
-                      unread_test_output(unread_test_output_notification)
-                  }
-                })
-                .catch((error) => {
-                  // handle error
-                  console.log(error)
-                }) 
-                break
-              }
-            }
+    //               if (unread_output_notification["rounds_dict"]){
+    //                   unread_output(unread_output_notification)
+    //               }
+
+    //               if (unread_test_request_notification["check_dict"]){
+    //                   unread_test_request(unread_test_request_notification)
+    //               }
+
+    //               if (unread_test_match_id_notification["check_dict"]){
+    //                   unread_test_match_id(unread_test_match_id_notification)
+    //               }
+
+    //               if (unread_test_output_notification["check_dict"]){
+    //                   unread_test_output(unread_test_output_notification)
+    //               }
+    //             })
+    //             .catch((error) => {
+    //               // handle error
+    //               console.log(error)
+    //             }) 
+    //             break
+    //           }
+    //         }
             
 
-            // console.log("--------------------------------------------------------- new polling")
+    //         // console.log("--------------------------------------------------------- new polling")
           
 
-            total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count
-            // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标
-            $('#new_notifications_count').text(total_notifications_count)
-            $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');
+    //         total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count
+    //         // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标
+    //         $('#new_notifications_count').text(total_notifications_count)
+    //         $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');
           
-            // if (promise_list.length >= 1){
-            //   Promise.all(promise_list).then((resArr) => {
+    //         // if (promise_list.length >= 1){
+    //         //   Promise.all(promise_list).then((resArr) => {
                   
 
 
-              //   });
-              // }else{
-              //   setTimeout(function(){
-              //     console.log("polling again")
-              //     polling()
-              //   }, 15000)
-              // }
+    //           //   });
+    //           // }else{
+    //           //   setTimeout(function(){
+    //           //     console.log("polling again")
+    //           //     polling()
+    //           //   }, 15000)
+    //           // }
               
-              setTimeout(function(){
-                // console.log("polling again")
-                polling()
-              }, 5000)
+    //           setTimeout(function(){
+    //             // console.log("polling again")
+    //             polling()
+    //           }, 5000)
 
               
-            })
-            .catch((error) => {
+    //         })
+    //         .catch((error) => {
               
-              setTimeout(function(){
-                // console.log("polling again")
-                polling()
-              }, 5000)
-              // handle error
-              console.log(error)
-            })
-        }else{
-          setTimeout(function(){
-            polling()
-          }, 5000);
-        }
-        // console.log(`第${count}次结束 ${getTime.now() - startTime}`); // 显示开始时间
-        count += 1
-      }
+    //           setTimeout(function(){
+    //             // console.log("polling again")
+    //             polling()
+    //           }, 5000)
+    //           // handle error
+    //           console.log(error)
+    //         })
+    //     }else{
+    //       setTimeout(function(){
+    //         polling()
+    //       }, 5000);
+    //     }
+    //     // console.log(`第${count}次结束 ${getTime.now() - startTime}`); // 显示开始时间
+    //     count += 1
+    //   }
 
-      // setTimeout(function(){
-      //   polling()
-      // }, 3000);
-      setTimeout(function(){
-          polling()
-        }, 7000);
-      // polling()
+    //   // setTimeout(function(){
+    //   //   polling()
+    //   // }, 3000);
+    //   setTimeout(function(){
+    //       polling()
+    //     }, 7000);
+    //   // polling()
      
-    })
+    // })
   }
  }
 // exports.default = Navbar

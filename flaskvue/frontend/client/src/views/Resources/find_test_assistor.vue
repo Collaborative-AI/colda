@@ -430,8 +430,8 @@ export default {
     console.log('ttt', this.$toasted)
     console.log('fff', this.$route)
     // console.log('565656', this.$route.query.from)
-    // this.task_id = this.$route.query.from;
-    // this.task_name = this.$route.query.from_task_name
+    this.task_id = this.$route.query.from;
+    this.task_name = this.$route.query.from_task_name
 
     this.get_test_id();
 

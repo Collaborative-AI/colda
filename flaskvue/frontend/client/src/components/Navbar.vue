@@ -1588,7 +1588,7 @@ export default {
               + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
 
             test_done = test_done.split("?")
-            let make_test_res = test_done[4]
+            let make_test_res = test_done[2]
             let unittest_parameters = generate_unittest_parameters(make_test_res)
             execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
 
@@ -1728,15 +1728,9 @@ export default {
 
               test_outputs_pos = test_outputs_pos.split("?")
 
-<<<<<<< HEAD
-              let zhongjian = test_outputs_pos[2]
-              let unittest_parameters = generate_unittest_parameters(zhongjian)
-              execute_unittest_list(arguments[arguments.length-1], 3, "unread_test_match_id_unittest", unittest_parameters)
-=======
-              let make_test_assistor_res = test_outputs_pos[4]
+              let make_test_assistor_res = test_outputs_pos[2]
               let unittest_parameters = generate_unittest_parameters(make_test_assistor_res)
               execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
->>>>>>> 56a6da3bad148b8a2388fdb591be18ad1df8eed8
               
               let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
               if (indicator == false){
@@ -1759,7 +1753,7 @@ export default {
             }
 
             let all_test_output = [];
-            let make_test_lists = test_outputs_pos.slice(2, test_outputs_pos.length)
+            let make_test_lists = test_outputs_pos.slice(3, test_outputs_pos.length)
             console.log("make_test_lists", make_test_lists)
             for (let i = 0; i < make_test_lists.length; i++){
               let data = fs.readFileSync(make_test_lists[i], {encoding:'utf8', flag:'r'});
@@ -1833,11 +1827,11 @@ export default {
         } catch (err) {
           console.log(err)
         }
-        this.unread_test_output_singleTask(task_id, test_id);
+        this.unread_test_output_singleTask(task_id, test_id, unittest_callbacks);
       }
     },
 
-    unread_test_output_singleTask(task_id, test_id){
+    unread_test_output_singleTask(task_id, test_id, unittest_callbacks){
 
       const Log_address = this.handle_test_log_address(task_id, test_id)
 

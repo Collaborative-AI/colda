@@ -1,5 +1,5 @@
-import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper} from './Apollo_unittest_init'
-import { generate_parameters } from './Apollo_unittest_utils'
+import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper} from '../../Apollo_unittest_init'
+import { generate_parameters } from '../../Apollo_unittest_utils'
 jest.setTimeout(10000);
 
 function unread_assistor_match_id_helper_function(){

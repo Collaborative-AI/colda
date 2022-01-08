@@ -1,17 +1,16 @@
-import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper} from './Apollo_unittest_init'
-import { generate_parameters } from './Apollo_unittest_utils'
+import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper} from '../../Apollo_unittest_init'
+import { generate_parameters } from '../../Apollo_unittest_utils'
 jest.setTimeout(10000);
 
-function unread_test_assistor_match_id_helper_function(){
-  test('unread_test_assistor_match_id_helper', (done) => {
+function unread_test_assistor_match_id(){
+  test('unread_test_assistor_match_id', (done) => {
     let unread_test_assistor_match_id_1 = (data) => {
       try{
         let test_match_id_dict = data[0]
-        console.log('test_match_id_dict', test_match_id_dict)
   
         expect(test_match_id_dict[unittest_parameters.test_id]).not.toBeNull()
   
-        console.log('unread_assistor_test_match_id_1')
+        console.log('1_unread_test_assistor_match_id')
       }catch (error){
         done(error)
       }
@@ -27,7 +26,7 @@ function unread_test_assistor_match_id_helper_function(){
         expect(match_id_file).not.toBeNull()
         expect(assistor_random_id_pair).not.toBeNull()
         
-        console.log('unread_assistor_test_match_id_2')
+        console.log('1_unread_test_assistor_match_id')
       }catch (error){
         done(error)
       }
@@ -35,8 +34,7 @@ function unread_test_assistor_match_id_helper_function(){
   
     let unread_test_assistor_match_id_3 = (data) => {
       try{
-        console.log('unread_assistor_test_match_id_3')
-        
+        console.log('1_unread_test_assistor_match_id')
       }catch (error){
         done(error)
       }
@@ -54,8 +52,8 @@ function unread_test_assistor_match_id_helper_function(){
         expect(test_data_column).toEqual(
           unittest_parameters.default_data_column
         )
-        console.log('unread_assistor_test_match_id_4')
         
+        console.log('1_unread_test_assistor_match_id')
       }catch (error){
         done(error)
       }
@@ -112,26 +110,12 @@ function unread_test_assistor_match_id_helper_function(){
     cur_parameters.push(unread_test_assistor_match_id_5)
     cur_parameters.push(unread_test_assistor_match_id_6)
     cur_parameters.push('unread_test_match_id_unittest')
-    // assistor
-    // Navbar_wrapper.setData({task_id: unittest_parameters.task_id,
-    //                                task_name: unittest_parameters.task_name, 
-    //                                task_description: unittest_parameters.task_description,
-    //                                train_file_path: unittest_parameters.train_file_path,
-    //                                train_id_column: unittest_parameters.train_id_column,
-    //                                train_data_column: unittest_parameters.train_data_column,
-    //                                train_target_column: unittest_parameters.train_target_column,
-    //                                assistor_username_list: unittest_parameters.assistor_username_list,
-    //                                task_mode: unittest_parameters.task_mode,
-    //                                model_name: unittest_parameters.model_name,
-    //                                metric_name: unittest_parameters.metric_name})
+
     Navbar_wrapper.vm.unread_test_match_id(unittest_parameters.unread_test_match_id_notification, cur_parameters)
   })
 }
 
 let unread_test_assistor_match_id_helper = {}
-
-unread_test_assistor_match_id_helper.unread_test_assistor_match_id = unread_test_assistor_match_id_helper_function
-
-
+unread_test_assistor_match_id_helper.unread_test_assistor_match_id = unread_test_assistor_match_id
 
 export { unread_test_assistor_match_id_helper }

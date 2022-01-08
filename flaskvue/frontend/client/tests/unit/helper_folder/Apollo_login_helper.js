@@ -57,11 +57,27 @@ function check_login_second_user(){
   })
 }
 
+
+// function ceshi(){
+//   test('ceshi',()=>{  
+//     console.log('zhiyuanlai ssm', unittest_parameters.default_id_column)
+//     modify_parameter('default_id_column', "3456")
+//     console.log('zhiyuanlai ssm2', unittest_parameters.default_id_column)
+//   })
+
+//   test('ceshi2',()=>{  
+//     console.log('zhiyuanlai ssm', unittest_parameters.default_id_column)
+//     modify_parameter('default_id_column', "5432")
+//     console.log('zhiyuanlai ssm2', unittest_parameters.default_id_column)
+//   })
+// }
+
 let login_helper = {}
 // train_helper_functions.login = {}
 
 login_helper.check_login_first_user = check_login_first_user
 
 login_helper.check_login_second_user = check_login_second_user
+// login_helper.ceshi = ceshi
 
 export { login_helper}

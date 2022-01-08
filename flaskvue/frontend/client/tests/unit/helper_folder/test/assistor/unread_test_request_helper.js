@@ -1,32 +1,32 @@
-import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, modify_parameter, modify_first_been_call} from './Apollo_unittest_init'
-import { generate_parameters, retrieve_User_Sponsor_Table_record } from './Apollo_unittest_utils'
+import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, modify_parameter, modify_first_been_call} from '../../Apollo_unittest_init'
+import { generate_parameters, retrieve_User_Sponsor_Table_record } from '../../Apollo_unittest_utils'
 jest.setTimeout(10000);
 
-function check_unread_test_request(){
-  test('check_unread_test_request', (done) => {
-    let check_unread_test_request_1 = (data) => {
+function unread_test_request(){
+  test('unread_test_request', (done) => {
+    let unread_test_request_1 = (data) => {
       try{
         let cur_unread_test_request_Testid_dict = data[0]
         let test_id_to_task_id = data[1]
-        console.log('unread_test_request')
         
         expect(cur_unread_test_request_Testid_dict[unittest_parameters.test_id]).not.toBeNull()
         expect(test_id_to_task_id[unittest_parameters.test_id]).toEqual(
           unittest_parameters.task_id
         )
   
-        console.log('check_unread_test_request')
+        console.log('1_unread_test_request')
       }catch (error){
+        console.log('Error: 1_unread_test_request', error)
         done(error)
+        
       }
     }
   
-    let check_unread_test_request_2 = (data) => {
+    let unread_test_request_2 = (data) => {
       try{
         let test_id = data[0]
         let setting_mode = data[1]
-        // let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
-  
+        
         expect(test_id).toEqual(
           unittest_parameters.test_id
         )
@@ -35,23 +35,24 @@ function check_unread_test_request(){
           'auto'
         )
   
-        console.log('check_unread_test_request_2')
+        console.log('2_unread_test_request')
       }catch (error){
+        console.log('Error: 2_unread_test_request', error)
         done(error)
       }
     }
   
-    let check_unread_test_request_3 = (data) => {
+    let unread_test_request_3 = (data) => {
       try{
         expect(data[0]).toEqual(true)
-        console.log('check_unread_test_request_3')
+        console.log('3_unread_test_request')
       }catch (error){
+        console.log('Error: 3_unread_test_request', error)
         done(error)
       }
     }
 
-
-    let check_unread_test_request_4 = (data) => {
+    let unread_test_request_4 = (data) => {
       try{
         console.log("aaa", data)
         let match_test_assistor_id_response = data[0].stored
@@ -59,33 +60,26 @@ function check_unread_test_request(){
         expect(match_test_assistor_id_response).toEqual(
           "assistor test match id stored"
         )
+        console.log('4_unread_test_request')
         done()
-        console.log('check_unread_test_request')
       }catch (error){
+        console.log('Error: 4_unread_test_request', error)
         done(error)
       }
     }
   
-  
     let cur_parameters = [];
-    cur_parameters.push(check_unread_test_request_1)
-    cur_parameters.push(check_unread_test_request_2)
-    cur_parameters.push(check_unread_test_request_3)
-    cur_parameters.push(check_unread_test_request_4)
+    cur_parameters.push(unread_test_request_1)
+    cur_parameters.push(unread_test_request_2)
+    cur_parameters.push(unread_test_request_3)
+    cur_parameters.push(unread_test_request_4)
     cur_parameters.push('unread_test_request_unittest')
-    console.log('wokan', cur_parameters)
-    
-    console.log('zz8', unittest_parameters)
-    console.log('zz5', unittest_parameters.unread_request_notification)
+
     Navbar_wrapper.vm.unread_test_request(unittest_parameters.unread_test_request_notification, cur_parameters)
-    
-    
-  
   })
 }
 
 let unread_test_request_helper = {}
-
-unread_test_request_helper.unread_test_request = check_unread_test_request
+unread_test_request_helper.unread_test_request = unread_test_request
 
 export { unread_test_request_helper }

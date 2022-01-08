@@ -16,7 +16,7 @@ jest.setTimeout(10000);
 
 afterAll(() => {
   
-  window.localStorage.setItem('Apollo-token', null)
+  window.localStorage.removeItem('Apollo-token')
   console.log('afterAll')
 
 });

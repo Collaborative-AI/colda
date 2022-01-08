@@ -3,7 +3,7 @@ import { login_helper } from './helper_folder/Apollo_login_helper'
 jest.setTimeout(10000);
 
 afterAll(() => {
-  window.localStorage.setItem('Apollo-token', null)
+  window.localStorage.removeItem('Apollo-token')
   console.log('afterAll')
 });
 
@@ -15,6 +15,7 @@ describe('test_login', () => {
   // login_helper.check_login_first_user
   // login_helper.check_login_second_user
   login_helper.check_login_first_user()
+
   // login_helper.check_login_second_user()
   
 })

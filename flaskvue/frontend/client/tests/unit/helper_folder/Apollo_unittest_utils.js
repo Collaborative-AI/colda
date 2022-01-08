@@ -58,6 +58,8 @@ function delete_db(){
   return axios.get('/delete_all_rows/')
 }
 
+
+
 // function cut_decimal(number){
 //   if (number == 0){
 //     return number

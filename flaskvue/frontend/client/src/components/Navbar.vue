@@ -248,9 +248,6 @@ export default {
           
           let unittest_parameters = generate_unittest_parameters(task_id, vm.sharedState.mode)
           execute_unittest_list(unittest_callbacks, 1, "unread_request_unittest", unittest_parameters)
-          
-          
-          // execute_unittest_list(unittest_callbacks, 1, "unread_request_unittest", unittest_parameters)
 
           let hash_id_file_address = null;
           let Log_address = null;
@@ -271,12 +268,8 @@ export default {
             console.log(err)
           }
 
-          
           unittest_parameters = generate_unittest_parameters()
           execute_unittest_list(unittest_callbacks, 2, "unread_request_unittest", unittest_parameters)
-          
-          // unittest_parameters = generate_unittest_parameters()
-          // execute_unittest_list(unittest_callbacks, 2, "unread_request_unittest", unittest_parameters)
 
           Log(generate_message_string("\nYou are Assistor\n"), 'info')
           Log(generate_message_string("Task ID: " + task_id + "\n"), 'info')
@@ -1825,7 +1818,6 @@ export default {
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_output_Testid_dict)
       execute_unittest_list(unittest_callbacks, 0, "unread_test_output_unittest", unittest_parameters)
 
-
       for (let test_id in cur_unread_test_output_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
@@ -1871,18 +1863,20 @@ export default {
             let multiple_outputs_from_one_assistor = JSON.parse(response.data.output[i]);
             console.log("multiple_outputs_from_one_assistor", multiple_outputs_from_one_assistor)
 
-            for (let j = 1; j < multiple_outputs_from_one_assistor.length+1; j++){
-              
+            for (let j = 0; j < multiple_outputs_from_one_assistor.length; j++){
               let cur_output = multiple_outputs_from_one_assistor[j];
               
               // Store test output from assistors
               let test_save_output_pos = null
               try{
-                console.log('j_round', j)
+                console.log('j_round', j, vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+                  + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + (j+1))
+
                 test_save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                  + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + j, {encoding: 'utf8'})
+                  + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + (j+1), {encoding: 'utf8'})
 
                 test_save_output_pos = test_save_output_pos.split("?")
+                console.log('test_save_output_pos', test_save_output_pos)
                 let indicator = vm.handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
 
                 let unittest_parameters = generate_unittest_parameters(indicator)
@@ -1939,7 +1933,7 @@ export default {
         return 
       }
 
-      let max_round = JSON.parse(response.data.output[0]).length - 1;
+      let max_round = JSON.parse(response.data.output[0]).length;
       console.log("unread_test_output_max_round", JSON.parse(response.data.output[0]))
       console.log("max_round", max_round)
 
@@ -1959,9 +1953,12 @@ export default {
           + ' --dataset_path ' + test_file_path + ' --target_idx ' + test_target_column
           + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
 
-
         eval_done = eval_done.split("?")
         console.log('wokan2', eval_done)
+        let make_eval_res = JSON.parse(eval_done[2])
+        let unittest_parameters = generate_unittest_parameters(make_eval_res)
+        execute_unittest_list(unittest_callbacks, 2, "unread_test_output_unittest", unittest_parameters)
+
         indicator = vm.handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
       }catch(err){
         console.log(err)
@@ -1973,6 +1970,8 @@ export default {
           vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response)
         }, 7000);
       }else{
+        
+
         console.log("4.4 Test: Sponsor evaluates output models done");
         vm.$toasted.success("Testing Done", { icon: 'fingerprint' })
         try {
@@ -1989,7 +1988,7 @@ export default {
         }
 
         let unittest_parameters = generate_unittest_parameters()
-        execute_unittest_list(unittest_callbacks, 2, "unread_test_output_unittest", unittest_parameters)
+        execute_unittest_list(unittest_callbacks, 3, "unread_test_output_unittest", unittest_parameters)
       }
     },
   },

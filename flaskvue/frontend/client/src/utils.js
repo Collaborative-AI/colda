@@ -12,7 +12,7 @@ export function execute_unittest_list(unittest_list, index, indicator, unittest_
   if (Array.isArray(unittest_list)) {
     if (unittest_list.length > 1 && unittest_list[unittest_list.length-1] == indicator){
       unittest_list[index](unittest_parameters)
-      console.log(unittest_list)
+      // console.log(unittest_list)
       index += 1
       return true
     }

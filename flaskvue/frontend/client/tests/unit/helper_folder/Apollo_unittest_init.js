@@ -72,14 +72,20 @@ unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/
 unittest_parameters.default_id_column = "1"
 unittest_parameters.default_data_column = "2-7"
 
-
 function modify_parameter(param, val){
   unittest_parameters[param] = val
   // console.log('param1', unittest_parameters)
 }
 
-function modify_first_been_call(function_name){
-  unittest_parameters[function_name] = false
+unittest_parameters.unittest_log_index = 1
+unittest_parameters.prev_test_name = null
+function generate_unittest_log(test_name){
+  if (test_name != unittest_parameters.prev_test_name){
+    unittest_parameters.unittest_log_index = 0
+    unittest_parameters.prev_test_name = test_name
+  } 
+  unittest_parameters.unittest_log_index += 1
+  return unittest_parameters.unittest_log_index.toString() + '_' + test_name
 }
 
 
@@ -221,4 +227,4 @@ let Find_Test_Assistor_Wrapper = mount(Find_Test_Assistor, {
 });
 
 
-export { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper, Profile_wrapper, modify_parameter, modify_first_been_call}
+export { unittest_parameters, generate_unittest_log, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper, Profile_wrapper, modify_parameter }

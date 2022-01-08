@@ -363,13 +363,13 @@ export default {
                // handle success
               vm.$toasted.success(`Testing Starts`, { icon: 'fingerprint' })
             
-              Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
-              Log(generate_message_string("Test ID: " + vm.test_id + "\n"), 'info')
-              Log(generate_message_string("Testing Stage Starts\n"), 'info')
-              Log(generate_message_string("1.0 Test: Find Test Assistor\n"), 'info')
-              Log(generate_message_string("1.1 Test: Sponsor calls for help\n"), 'info')
-              Log(generate_message_string("1.2 Test: Sponsor sends id file\n"), 'info')
-              Log(generate_message_string("1.3 Test: Find Test Assistor Done\n"), 'info')
+              Log(generate_message_string("\nYou are SPONSOR\n"), 'warn')
+              Log(generate_message_string("Test ID: " + vm.test_id + "\n"), 'warn')
+              Log(generate_message_string("Testing Stage Starts\n"), 'warn')
+              Log(generate_message_string("1.0 Test: Find Test Assistor\n"), 'warn')
+              Log(generate_message_string("1.1 Test: Sponsor calls for help\n"), 'warn')
+              Log(generate_message_string("1.2 Test: Sponsor sends id file\n"), 'warn')
+              Log(generate_message_string("1.3 Test: Find Test Assistor Done\n"), 'warn')
 
               try {
                 fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
@@ -394,6 +394,22 @@ export default {
               // console.log(error.response.data)
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
+
+          let make_test_local = null;
+          try{   
+            make_test_local = ex.execSync(vm.exe_position + ' make_test_local --root  ' + vm.root
+                                    + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
+                                    + ' --dataset_path ' + vm.test_file_path + ' --data_idx ' + vm.test_data_column 
+                                    + ' --target_idx ' + vm.test_target_column + ' --task_mode ' + vm.task_mode
+                                    + ' --model_name ' + vm.model_name + ' --metric_name ' + vm.metric_name, {encoding: 'utf8'})
+
+            console.log("make_train_local", make_test_local)
+
+            
+
+          }catch(err){
+            console.log(err)
+          }
           
         }
 

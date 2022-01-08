@@ -450,13 +450,13 @@ export default {
             // handle success
             vm.$toasted.success(`Training Starts`, { icon: 'fingerprint' })
 
-            Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
-            Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'info')
-            Log(generate_message_string("Training Stage Starts\n"), 'info')
-            Log(generate_message_string("1.0 Find Assistor\n"), 'info')
-            Log(generate_message_string("1.1 Sponsor calls for help\n"), 'info')
-            Log(generate_message_string("1.2 Sponsor sends id file\n"), 'info')
-            Log(generate_message_string("1.3 Find Assistor Done\n"), 'info')
+            Log(generate_message_string("\nYou are SPONSOR\n"), 'warn')
+            Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'warn')
+            Log(generate_message_string("Training Stage Starts\n"), 'warn')
+            Log(generate_message_string("1.0 Find Assistor\n"), 'warn')
+            Log(generate_message_string("1.1 Sponsor calls for help\n"), 'warn')
+            Log(generate_message_string("1.2 Sponsor sends id file\n"), 'warn')
+            Log(generate_message_string("1.3 Find Assistor Done\n"), 'warn')
 
             try {
               fs.appendFileSync(Log_address, "\n You are SPONSOR\n")

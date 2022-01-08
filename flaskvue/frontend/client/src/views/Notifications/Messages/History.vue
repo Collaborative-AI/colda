@@ -884,7 +884,9 @@ export default {
       let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
       Log_content = Log_content.split("\n")
       console.log('root address', this.root)
-      const train_log_address2 = node_path.join(this.root.toString(),'logs','main.log')
+      const train_log_address2 = node_path.join(this.root.toString(), 'logs', this.task_id.toString(),'log.txt');
+      // const train_log_address2 = node_path.join(this.root.toString(), '../exp/logs', this.task_id.toString(),'log.txt');
+
       let Log_content2 = fs.readFileSync(train_log_address2, {encoding:'utf8', flag:'r'});
       Log_content2 = Log_content2.split("\n")
       this.messages = [];
@@ -894,17 +896,16 @@ export default {
         this.messages.push(Log_content[i])
         // console.log('dai',Log_content[i])
         if (Log_content[i].search("Train stage done") != -1 && vm.test_id == null){
-          console.log('zaina',Log_content[i].search("Train stage done"))
-          console.log('cheng')
+          // console.log('zaina',Log_content[i].search("Train stage done"))
+          // console.log('cheng')
           break
         }
       }
 
-      // for (let i = 0; i < Log_content2.length; i++){
-      //   this.messages2.push(Log_content2[i])
-      //   console.log('dai',Log_content[i])
+      for (let i = 327; i < Log_content2.length; i++){
+        this.messages2.push(Log_content2[i])
         
-      // }
+      }
 
 
       for (let message of this.messages){        
@@ -921,7 +922,7 @@ export default {
         continue
       }
     }
-    console.log('this.task_mode', this.task_mode)
+    // console.log('this.task_mode', this.task_mode)
      
       // if (this.test_id == null){
         
@@ -949,7 +950,7 @@ export default {
     // },
     checkSponsor(task_id) {
       let vm = this
-      console.log('checksponsor')
+      // console.log('checksponsor')
       const payload = {
         task_id: task_id,
       }
@@ -1004,17 +1005,17 @@ export default {
       if (this.task_mode == 'regression'){
 
       
-      console.log('messages2',this.messages)
+      // console.log('messages2',this.messages)
             const rmse_list=[]
             const alpha_list =[]
             const mad_list = []
             const r2_list = []
-            console.log('messages',this.messages)
+            // console.log('messages',this.messages)
             for (let message of this.messages){
               // console.log('rmse', message.search("RMSE:"))
               if (message.search("Test") != -1){
                 vm.test_num = '1'
-                console.log('test_num', vm.test_num)
+                // console.log('test_num', vm.test_num)
                 break
               }
             }
@@ -1026,7 +1027,7 @@ export default {
               }
               // console.log('content', message)
               let rmse = message.slice(message.search("RMSE")+6,message.search("RMSE")+11)
-              console.log('rmse_num', message.slice(message.search("RMSE")+6,message.search("RMSE")+11))
+              // console.log('rmse_num', message.slice(message.search("RMSE")+6,message.search("RMSE")+11))
               rmse_list[rmse_list.length] = rmse
             }
             for (let message of this.messages){
@@ -1036,19 +1037,19 @@ export default {
               }
               // console.log('content', message)
               let alpha = message.slice(message.search("Alpha:")+8,message.search("Alpha:")+13)
-              console.log('alpha_num', message.slice(message.search("Alpha:")+8,message.search("Alpha:")+13))
+              // console.log('alpha_num', message.slice(message.search("Alpha:")+8,message.search("Alpha:")+13))
               alpha_list[alpha_list.length] = alpha
             }
             for (let message of this.messages){
-              console.log('alpha', message.search("alpha:"))
+              // console.log('alpha', message.search("alpha:"))
               if (message.search("MAD") == -1){
                 continue
               }
-              console.log('content', message)
-              console.log('che',message)
+              // console.log('content', message)
+              // console.log('che',message)
               let mad = message.slice(message.search("MAD:")+5,message.search("MAD:")+10)
-              console.log('dachu',mad)
-              console.log('mad_num', message.slice(message.search("MAD:")+5,message.search("MAD:")+10))
+              // console.log('dachu',mad)
+              // console.log('mad_num', message.slice(message.search("MAD:")+5,message.search("MAD:")+10))
               mad_list[mad_list.length] = mad
             }
             for (let message of this.messages){
@@ -1059,10 +1060,10 @@ export default {
               r2_list[r2_list.length] = r2
             }
             // console.log('messages',this.messages)
-            console.log('rmse_list',rmse_list)
-            console.log('alpha_list',alpha_list)
-            console.log('mad_list', mad_list )
-            console.log('r2_list', r2_list)
+            // console.log('rmse_list',rmse_list)
+            // console.log('alpha_list',alpha_list)
+            // console.log('mad_list', mad_list )
+            // console.log('r2_list', r2_list)
             // console.log('mad_list', mad_list)
             // for (let i in baseline_rmse){
             //   baseline_rmse[i] = rmse_list[0]
@@ -1088,14 +1089,14 @@ export default {
             test_r2 = []
             if (vm.test_id != null){
             test_rmse = rmse_list.slice(rmse_list.length-2,rmse_list.length)
-            console.log('test_rmse',test_rmse)
+            // console.log('test_rmse',test_rmse)
             test_mad = mad_list.slice(mad_list.length-2,mad_list.length)
-            console.log('test_mad',test_mad)
+            // console.log('test_mad',test_mad)
             test_r2 = r2_list.slice(r2_list.length-2,r2_list.length)
-            console.log('test_r2',test_r2)
+            // console.log('test_r2',test_r2)
             }
 
-            console.log('training_alpha',training_alpha)
+            // console.log('training_alpha',training_alpha)
             
             vm.lineChartData.datasets[0].data = baseline_rmse
             vm.lineChartData.datasets[1].data = training_rmse
@@ -1114,17 +1115,17 @@ export default {
       }
       else if (this.task_mode == 'classification'){
 
-        console.log('messages2',this.messages)
+        // console.log('messages2',this.messages)
             const accuracy_list=[]
             const f1_list = []
             const alpha_list =[]
               
-            console.log('messages',this.messages)
+            // console.log('messages',this.messages)
             for (let message of this.messages){
               // console.log('rmse', message.search("RMSE:"))
               if (message.search("Test") != -1){
                 vm.test_num = '1'
-                console.log('test_num', vm.test_num)
+                // console.log('test_num', vm.test_num)
                 break
               }
             }
@@ -1146,25 +1147,25 @@ export default {
               }
               // console.log('content', message)
               let alpha = message.slice(message.search("Alpha:")+8,message.search("Alpha:")+13)
-              console.log('alpha_num', message.slice(message.search("Alpha:")+8,message.search("Alpha:")+13))
+              // console.log('alpha_num', message.slice(message.search("Alpha:")+8,message.search("Alpha:")+13))
               alpha_list[alpha_list.length] = alpha
             }
             for (let message of this.messages){
               if (message.search("F1:") == -1){
                 continue
               }
-              console.log('content', message)
-              console.log('che',message)
+              // console.log('content', message)
+              // console.log('che',message)
               let f1 = message.slice(message.search("F1:")+4,message.search("F1:")+9)
-              console.log('dachu',f1)
-              console.log('f1_num', message.slice(message.search("F1:")+4,message.search("F1:")+9))
+              // console.log('dachu',f1)
+              // console.log('f1_num', message.slice(message.search("F1:")+4,message.search("F1:")+9))
               f1_list[f1_list.length] = f1
             }
             
             // console.log('messages',this.messages)
-            console.log('accuracy_list',accuracy_list)
-            console.log('f1_list', f1_list )
-            console.log('alpha_list',alpha_list)
+            // console.log('accuracy_list',accuracy_list)
+            // console.log('f1_list', f1_list )
+            // console.log('alpha_list',alpha_list)
             
             // console.log('mad_list', mad_list)
             // for (let i in baseline_rmse){
@@ -1190,13 +1191,13 @@ export default {
             
             if (vm.test_id != null){
             test_accuracy = accuracy_list.slice(accuracy_list.length-2,accuracy_list.length)
-            console.log('test_accuracy',test_accuracy)
+            // console.log('test_accuracy',test_accuracy)
             test_f1 = f1_list.slice(f1_list.length-2,f1_list.length)
-            console.log('test_f1',test_f1)
+            // console.log('test_f1',test_f1)
   
             }
 
-            console.log('training_alpha',training_alpha)
+            // console.log('training_alpha',training_alpha)
             
             vm.lineChartData5.datasets[0].data = baseline_accuracy
             vm.lineChartData5.datasets[1].data = training_accuracy
@@ -1215,7 +1216,7 @@ export default {
 
       }
       else{
-        console.log('doumeijin')
+        // console.log('doumeijin')
       }
 
     }
@@ -1305,6 +1306,12 @@ export default {
     this.task_name = this.$route.query.from_task_name
     this.test_id = this.$route.query.from_test_id
     console.log('this.test_id', this.test_id)
+
+    window.log.transports.file.resolvePath = () => window.node_path.join(this.root.toString(), '/logs', this.task_id.toString(),'log.txt');
+    // const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
+
+    // window.log.transports.file.resolvePath = () => wino.join(, 'logs/main.log');
+
     let new_root = store.changeroot()
     this.root = new_root.root;
     this.exe_position = new_root.exe_position

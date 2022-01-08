@@ -37,6 +37,7 @@ function check_profile_onSubmit_db(){
     Profile_wrapper.setData({default_file_path: unittest_parameters.default_file_path, 
                              default_id_column: unittest_parameters.default_id_column, 
                              default_data_column: unittest_parameters.default_data_column,
+                             default_model_name: unittest_parameters.model_name,
                              sharedState: {'mode':'auto'}  })
     Profile_wrapper.vm.onSubmit(cur_parameters)
   })

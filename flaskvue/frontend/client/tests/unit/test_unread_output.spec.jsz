@@ -6,8 +6,10 @@ import { notification_helper } from './helper_folder/Apollo_notification_helper'
 import { unread_request_helper } from './helper_folder/Apollo_unread_request_helper';
 import { unread_sponsor_match_id_helper } from './helper_folder/Apollo_unread_sponsor_match_id_helper'
 import { unread_assistor_match_id_helper } from './helper_folder/Apollo_unread_assistor_match_id_helper';
+import { unread_sponsor_situation_helper } from './helper_folder/Apollo_unread_sponsor_situation_helper';
+import { unread_assistor_situation_helper } from './helper_folder/Apollo_unread_assistor_situation_helper';
 import { logout_helper } from './helper_folder/Apollo_logout_helper';
-
+import { unread_output_helper } from './helper_folder/Apollo_unread_output_helper';
 import { unittest_parameters, modify_parameter, Navbar_wrapper } from './helper_folder/Apollo_unittest_init'
 import store from '../../src/store'
  
@@ -31,7 +33,7 @@ describe('test_unread_match_id', () => {
   find_assistor_helper.get_train_id()
   // Sponsor finds assistor
   find_assistor_helper.onSubmit()
-
+  // Sponsor logouts
   logout_helper.logout()
 
   // Assistor logins
@@ -43,43 +45,53 @@ describe('test_unread_match_id', () => {
   notification_helper.update_notification()
   //assistor runs unread request
   unread_request_helper.unread_request()
-
+  //assistor logouts
   logout_helper.logout()
-  // assistor logins
-  
+
+  //assistor logins
   login_helper.check_login_second_user()
   //assistor gets nofification
   notification_helper.update_notification()
   //sponsor runs unread match id
   unread_assistor_match_id_helper.unread_assistor_match_id()
+  //assistor logouts
   logout_helper.logout()
 
-  
   //sponsor logins
   login_helper.check_login_first_user()
-  // sponsor gets nofification
+  //sponsor gets nofification
   notification_helper.update_notification()
   //sponsor runs unread match id
   unread_sponsor_match_id_helper.unread_sponsor_match_id()
+  //sponsor logouts
   logout_helper.logout()
-  
-  
+
+
+  //sponsor logins
+  login_helper.check_login_first_user()
+  //sponsor gets nofification
+  notification_helper.update_notification()
+  //sponsor runs unread situation
+  unread_sponsor_situation_helper.unread_sponsor_situation()
+  //sponsor logouts
+  logout_helper.logout()
+
+  //assistor logins
+  login_helper.check_login_second_user()
+  //assistor gets nofification
+  notification_helper.update_notification()
+  //assistor runs unread situation
+  unread_assistor_situation_helper.unread_assistor_situation()
+  //sponsor logouts
+  logout_helper.logout()
+
+  //sponsor logins
+  login_helper.check_login_first_user()
+  //sponsor gets nofification
+  notification_helper.update_notification()
+  //sponsor runs unread output
+  unread_output_helper.unread_output()
+  //sponsor logouts
+  logout_helper.logout()
+
 })
-
-
- // // Assistor gets notification
-  // await get_notifications()
-  // // Assistor runs unread request()
-  // unread_request_helper.unread_request
-
-  // // Sponsor logins
-  // login_helper.check_login_first_user
-  // await get_notifications()
-  // // Sponsor runs unread match id()
-  // unread_sponsor_match_id_helper.unread_sponsor_match_id
-
-  // // Assistor logins
-  // login_helper.check_login_second_user
-  // await get_notifications()
-  // // Sponsor runs unread match id()
-  // unread_assistor_match_id_helper.unread_assistor_match_id

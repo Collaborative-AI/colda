@@ -1,4 +1,12 @@
 # client
+
+# task_mode: regression / classification
+# model_name: linear
+# metric_name: RMSE
+
+测试注释: Navbar 下方
+Login.vue this.$route
+find_test_assistor this.$route
 1. first time launch:
     1. cd into frontend/client
     2. sudo apt install npm 

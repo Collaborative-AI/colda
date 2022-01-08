@@ -400,7 +400,6 @@ export default {
           }catch(err){
             console.log(err)
           }
-          execute_unittest_list(arguments[arguments.length-1], "find_assistor_unittest")
 
           let hash_id_file_data = null
           try{

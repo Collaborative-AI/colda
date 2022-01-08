@@ -41,10 +41,10 @@ describe('test_unread_request', () => {
   profile_helper.onSubmit()
 
   
-  // notification_helper.update_notification()
-  // // console.log('rsee')
-  // unread_request_helper.unread_request()
-  // logout_helper.logout()
+  notification_helper.update_notification()
+  // console.log('rsee')
+  unread_request_helper.unread_request()
+  logout_helper.logout()
  
 
 })

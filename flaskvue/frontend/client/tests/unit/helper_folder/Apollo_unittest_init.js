@@ -11,7 +11,7 @@ import Login from '../../../src/views/Auth/Login.vue'
 import Navbar from '../../../src/components/Navbar.vue'
 import Profile from '../../../src/views/Settings/Profile.vue'
 import Find_Assistor from '../../../src/views/Resources/find_assistor.vue'
-// import Find_Test_Assistor from '../../../src/views/Resources/find_test_assistor.vue'
+import Find_Test_Assistor from '../../../src/views/Resources/find_test_assistor.vue'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 // https://next.vue-test-utils.vuejs.org/api/#setdata
@@ -51,13 +51,20 @@ unittest_parameters.train_file_path = "/Users/qile/Documents/Apollo_Data/data/Bo
 unittest_parameters.train_id_column = "1"
 unittest_parameters.train_data_column = "2-8"
 unittest_parameters.train_target_column = "9"
+
+unittest_parameters.test_description = 'new test'
+unittest_parameters.test_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
+unittest_parameters.test_id_column = "1"
+unittest_parameters.test_data_column = "2-8"
+unittest_parameters.test_target_column = "9"
+
 unittest_parameters.assistor_username_list = 'xie2'
 unittest_parameters.task_mode = 'regression'
 unittest_parameters.model_name = 'linear'
 unittest_parameters.metric_name = 'MAD_RMSE_R2'
 
 // profile.vue
-unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
+unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
 // unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/train/dataset.csv"
 unittest_parameters.default_id_column = "1"
 unittest_parameters.default_data_column = "2-7"
@@ -116,6 +123,7 @@ let Login_wrapper = mount(Login, {
   mocks: {
     $toasted: {
       success: () => 6,
+      error: () => {},
     },
     // $router: {
     //   push: () => 6,
@@ -135,6 +143,7 @@ let Navbar_wrapper = mount(Navbar, {
   mocks: {
      $toasted: {
          success: () => {},
+         error: () => {},
      },
     $axios: axios,
     $db: db,
@@ -147,6 +156,7 @@ let Find_Assistor_wrapper = mount(Find_Assistor, {
   mocks: {
      $toasted: {
          success: () => {},
+         error: () => {},
      },
     $axios: axios,
     $db: db,
@@ -160,11 +170,40 @@ let Find_Assistor_wrapper = mount(Find_Assistor, {
   stubs: ['router-link','router-view']
 });
 
-
+const $route = {
+  fullPath: 'full/path'
+}
 let Profile_wrapper = mount(Profile, {
   mocks: {
      $toasted: {
          success: () => {},
+         error: () => {},
+     },
+     $route,
+      // query: {
+      //         from: {},
+      //         from_task_name: {}
+
+      //       }
+      
+    $axios: axios,
+    $db: db,
+    fs: fs,
+    ex: ex,
+    node_path: node_path,
+    os: os,
+    dialog: dialog,
+    // split: 
+  },
+  stubs: ['router-link','router-view']
+});
+
+
+let Find_Test_Assistor_Wrapper = mount(Find_Test_Assistor, {
+  mocks: {
+     $toasted: {
+         success: () => {},
+         error: () => {},
      },
     $axios: axios,
     $db: db,
@@ -179,22 +218,4 @@ let Profile_wrapper = mount(Profile, {
 });
 
 
-// let Find_Test_Assistor_Wrapper = mount(Find_Test_Assistor, {
-//   mocks: {
-//      $toasted: {
-//          success: () => {},
-//      },
-//     $axios: axios,
-//     $db: db,
-//     fs: fs,
-//     ex: ex,
-//     node_path: node_path,
-//     os: os,
-//     dialog: dialog,
-//     // split: 
-//   },
-//   stubs: ['router-link','router-view']
-// });
-
-
-export { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Profile_wrapper, modify_parameter, modify_first_been_call}
+export { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper, Profile_wrapper, modify_parameter, modify_first_been_call}

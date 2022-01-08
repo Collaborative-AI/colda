@@ -119,22 +119,22 @@ describe('test_unread_test_match_id', () => {
    logout_helper.logout()
 
   //sponsor logins
-  login_helper.check_login_first_user()
-  //sponsor updates notifications
-  notification_helper.update_notification()
-  //sponsor unread test match id
-  unread_test_sponsor_match_id_helper.unread_test_sponsor_match_id()
-  //sponsor logouts
-  logout_helper.logout()
+  // login_helper.check_login_first_user()
+  // //sponsor updates notifications
+  // notification_helper.update_notification()
+  // //sponsor unread test match id
+  // unread_test_sponsor_match_id_helper.unread_test_sponsor_match_id()
+  // //sponsor logouts
+  // logout_helper.logout()
 
-  //assistor logins
-  login_helper.check_login_second_user()
-  //assistor updates notifications
-  notification_helper.update_notification()
-  //assistor runs unread match id
-  unread_test_assistor_match_id_helper.unread_test_assistor_match_id()
-  //assistor logouts
-  logout_helper.logout()
+  // //assistor logins
+  // login_helper.check_login_second_user()
+  // //assistor updates notifications
+  // notification_helper.update_notification()
+  // //assistor runs unread match id
+  // unread_test_assistor_match_id_helper.unread_test_assistor_match_id()
+  // //assistor logouts
+  // logout_helper.logout()
 
 
 })

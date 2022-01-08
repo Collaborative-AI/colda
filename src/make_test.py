@@ -38,10 +38,6 @@ def make_test(args):
         np.savetxt(output_path_i, output, delimiter=",")
         output_path.append(output_path_i)
     output_path = '?'.join(output_path)
-<<<<<<< HEAD
-    print('200?make_test?{output}?{output_path}'.format(output = b, output_path = output_path), end='')
-=======
     make_test_res = json.dumps(make_test_res)
     print('200?make_test?{make_test_res}?{output_path}'.format(make_test_res = make_test_res, output_path = output_path), end='')
->>>>>>> a91538fa2f3ea3d916ccef02c28a58270779a0c9
     return

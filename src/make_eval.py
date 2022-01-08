@@ -73,5 +73,5 @@ def make_eval(args):
     print('evalshi', type(eval))
     result_path = '?'.join(result_path)
     make_eval_res = json.dumps(make_eval_res)
-    print('200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res = make_eval_res, eval = eval), end='')
+    print('200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res = make_eval_res, result_path = result_path), end='')
     return

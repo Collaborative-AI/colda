@@ -105,8 +105,10 @@ def make_data(data_name):
         test_dataset = pd.DataFrame(test_data, columns=columns)
         train_dataset['y'] = train_target
         test_dataset['y'] = test_target
-        train_dataset.insert(0, 'ID', train_dataset.index)
-        test_dataset.insert(0, 'ID', test_dataset.index)
+        train_dataset_index = train_dataset.index.to_numpy()
+        test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
+        train_dataset.insert(0, 'ID', train_dataset_index)
+        test_dataset.insert(0, 'ID', test_dataset_index)
     elif data_name == 'Iris':
         from sklearn.datasets import load_iris
         loaded_dataset = load_iris()
@@ -116,8 +118,10 @@ def make_data(data_name):
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
         test_dataset = dataset.iloc[perm[split_idx:]].reset_index(drop=True)
-        train_dataset.insert(0, 'ID', train_dataset.index)
-        test_dataset.insert(0, 'ID', test_dataset.index)
+        train_dataset_index = train_dataset.index.to_numpy()
+        test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
+        train_dataset.insert(0, 'ID', train_dataset_index)
+        test_dataset.insert(0, 'ID', test_dataset_index)
     elif data_name == 'Diabetes':
         from sklearn.datasets import load_diabetes
         loaded_dataset = load_diabetes()
@@ -127,8 +131,10 @@ def make_data(data_name):
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
         test_dataset = dataset.iloc[perm[split_idx:]].reset_index(drop=True)
-        train_dataset.insert(0, 'ID', train_dataset.index)
-        test_dataset.insert(0, 'ID', test_dataset.index)
+        train_dataset_index = train_dataset.index.to_numpy()
+        test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
+        train_dataset.insert(0, 'ID', train_dataset_index)
+        test_dataset.insert(0, 'ID', test_dataset_index)
     elif data_name == 'BostonHousing':
         from sklearn.datasets import load_boston
         loaded_dataset = load_boston()
@@ -138,8 +144,10 @@ def make_data(data_name):
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
         test_dataset = dataset.iloc[perm[split_idx:]].reset_index(drop=True)
-        train_dataset.insert(0, 'ID', train_dataset.index)
-        test_dataset.insert(0, 'ID', test_dataset.index)
+        train_dataset_index = train_dataset.index.to_numpy()
+        test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
+        train_dataset.insert(0, 'ID', train_dataset_index)
+        test_dataset.insert(0, 'ID', test_dataset_index)
     elif data_name == 'Wine':
         from sklearn.datasets import load_wine
         loaded_dataset = load_wine()
@@ -149,8 +157,10 @@ def make_data(data_name):
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
         test_dataset = dataset.iloc[perm[split_idx:]].reset_index(drop=True)
-        train_dataset.insert(0, 'ID', train_dataset.index)
-        test_dataset.insert(0, 'ID', test_dataset.index)
+        train_dataset_index = train_dataset.index.to_numpy()
+        test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
+        train_dataset.insert(0, 'ID', train_dataset_index)
+        test_dataset.insert(0, 'ID', test_dataset_index)
     elif data_name == 'BreastCancer':
         from sklearn.datasets import load_breast_cancer
         loaded_dataset = load_breast_cancer().astype(np.int64)
@@ -160,8 +170,10 @@ def make_data(data_name):
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
         test_dataset = dataset.iloc[perm[split_idx:]].reset_index(drop=True)
-        train_dataset.insert(0, 'ID', train_dataset.index)
-        test_dataset.insert(0, 'ID', test_dataset.index)
+        train_dataset_index = train_dataset.index.to_numpy()
+        test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
+        train_dataset.insert(0, 'ID', train_dataset_index)
+        test_dataset.insert(0, 'ID', test_dataset_index)
     else:
         raise ValueError('Not valid data name')
     return train_dataset, test_dataset

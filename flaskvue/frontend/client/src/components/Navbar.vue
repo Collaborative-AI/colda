@@ -204,6 +204,8 @@ export default {
 
       // Assistor might receive multiple task request, We need to iterate them
       for (let task_id in cur_unread_request_Taskid_dict){
+        window.log.transports.file.resolvePath = () => window.node_path.join(this.root.toString(), '/logs', task_id.toString(),'log.txt');
+
         Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 
         if (vm.sharedState.mode == 'auto'){
@@ -1589,6 +1591,8 @@ export default {
 
             test_done = test_done.split("?")
             let make_test_res = test_done[2]
+            console.log('make test res', make_test_res, typeof(make_test_res))
+            console.log( 'JSON', JSON.parse(make_test_res))
             let unittest_parameters = generate_unittest_parameters(make_test_res)
             execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
 
@@ -1986,6 +1990,7 @@ export default {
     let new_root = store.changeroot()
     this.root = new_root.root;
     this.exe_position = new_root.exe_position
+    
   },
   mounted () {
     console.log("mounted @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2")

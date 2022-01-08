@@ -25,6 +25,13 @@ Vue.use(huakuai)
 // Vue.use(mdbvue)
 
 
+import BinUI from 'bin-ui'
+import 'bin-ui/lib/styles/index.css'
+
+Vue.use(BinUI)
+// Vue.use(BinUI,{disabledDoc:true}) // 可以设置禁用doc地址log
+
+
 import VueDashboard from 'vue-dashboard-vd'
 // import 'vue-dashboard-vd/dist/vue-dashboard-vd.css'
 Vue.use(VueDashboard);

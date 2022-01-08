@@ -304,6 +304,22 @@ export default {
       }
     },
 
+    handle_Algorithm_return_value(name, return_val, first_val, second_val) {
+      console.log(name, return_val)
+      // check if return_val obeys the correct return value
+      if (first_val != null){
+        if (return_val[0] != first_val){
+          return false
+        }
+      }
+      if (second_val != null){
+         if (return_val[1] != second_val){
+           return false
+         }
+      }  
+      return true
+    },
+
     onSubmit (e) {
       console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
@@ -488,6 +504,16 @@ export default {
                                     + ' --target_idx ' + vm.train_target_column + ' --task_mode ' + vm.task_mode
                                     + ' --model_name ' + vm.model_name + ' --metric_name ' + vm.metric_name, {encoding: 'utf8'})
 
+
+            make_train_local = make_train_local.split("?")
+            
+            let indicator = vm.handle_Algorithm_return_value("make_train_local", make_train_local, "200", "make_train_local")
+
+            if (indicator == false){
+              console.log("make_train_local_done wrong")
+              fs.appendFileSync(Log_address, "make_train_local_done wrong")
+              return 
+            }
             console.log("make_train_local", make_train_local)
           }catch(err){
             console.log(err)

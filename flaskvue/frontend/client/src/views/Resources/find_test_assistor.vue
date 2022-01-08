@@ -218,6 +218,22 @@ export default {
     //   }
     // },
 
+    handle_Algorithm_return_value(name, return_val, first_val, second_val) {
+      console.log(name, return_val)
+      // check if return_val obeys the correct return value
+      if (first_val != null){
+        if (return_val[0] != first_val){
+          return false
+        }
+      }
+      if (second_val != null){
+         if (return_val[1] != second_val){
+           return false
+         }
+      }  
+      return true
+    },
+
     onSubmit (e) {
       let vm = this;
       if (this.task_id == ""){
@@ -406,12 +422,23 @@ export default {
           let make_test_local = null;
           try{   
             make_test_local = ex.execSync(vm.exe_position + ' make_test_local --root  ' + vm.root
-                                    + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
+                                    + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id + ' --test_id ' + vm.test_id
                                     + ' --dataset_path ' + vm.test_file_path + ' --data_idx ' + vm.test_data_column 
                                     + ' --target_idx ' + vm.test_target_column + ' --task_mode ' + vm.task_mode
                                     + ' --model_name ' + vm.model_name + ' --metric_name ' + vm.metric_name, {encoding: 'utf8'})
 
-            console.log("make_train_local", make_test_local)
+
+            make_test_local = make_test_local.split("?")
+            
+            let indicator = vm.handle_Algorithm_return_value("make_test_local", make_test_local, "200", "make_test_local")
+
+            if (indicator == false){
+              console.log("make_test_local_done wrong")
+              fs.appendFileSync(Log_address, "make_test_local_done wrong")
+              return 
+            }
+
+            console.log("make_test_local", make_test_local)
 
             
 

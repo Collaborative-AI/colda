@@ -884,7 +884,8 @@ export default {
       const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
       let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
       Log_content = Log_content.split("\n")
-      console.log('root address', this.root)
+      // $log('root address', this.root) 
+      vm.$log.pretty('title','pretty print','danger')
       const train_log_address2 = node_path.join(this.root.toString(), 'logs', this.task_id.toString(),'log.txt');
       // const train_log_address2 = node_path.join(this.root.toString(), '../exp/logs', this.task_id.toString(),'log.txt');
 

@@ -21,7 +21,6 @@ def make_test_local(args):
     target = dataset[:, target_idx]
     model = load(os.path.join(root, self_id, 'task', task_id, 'train', 'local', 'model.pkl'))
     output = model.predict(data)
-    # print('?zhongjian2',output)
     metric = Metric(task_mode, metric_name)
     eval = metric.eval(output, target)
     msg = 'Test Local Client: {}, {}'.format(self_id, eval)

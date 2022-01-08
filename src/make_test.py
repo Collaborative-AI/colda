@@ -1,6 +1,7 @@
 import numpy as np
 import os
 from utils import load, makedir_exist_ok, parse_idx
+import json
 
 
 def make_test(args):
@@ -22,9 +23,14 @@ def make_test(args):
             delimiter=',').astype(np.int64)
         data = data[self_from_idx]
     output_path = []
+    a = [[1],[2]]
+    b = json.dumps(a)
+    # print(b)
+    
     for i in range(1, round + 1):
         model = load(os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(i), 'model.pkl'))
         output = model.predict(data)
+        print('duolun',output)
         # print('?make_test_resjian1',output)
         output_path_i = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'round', str(i), 'output')
         makedir_exist_ok(output_path_i)
@@ -32,5 +38,5 @@ def make_test(args):
         np.savetxt(output_path_i, output, delimiter=",")
         output_path.append(output_path_i)
     output_path = '?'.join(output_path)
-    print('200?make_test?{output}?{output_path}'.format(output = output, output_path = output_path), end='')
+    print('200?make_test?{output}?{output_path}'.format(output = b, output_path = output_path), end='')
     return

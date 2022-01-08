@@ -1519,12 +1519,12 @@ export default {
             const from_id = response.data.assistor_random_id_pair[i];
             let cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
             cur_match_id_file = cur_match_id_file.join('\n');
-
+            console.log('sponsor_match', cur_match_id_file)
             // Store match_id file from different assistor
             let test_save_match_id_file_pos = null;
             try{
               test_save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
+                + ' --task_id '+ task_id + ' --from_id ' + from_id  + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
               
               test_save_match_id_file_pos = test_save_match_id_file_pos.split("?")
               let indicator = vm.handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos, "200", "save_match_id")
@@ -1554,7 +1554,7 @@ export default {
 
             try{
               let test_make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-                + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id  + ' --test_id ' + test_id, {encoding: 'utf8'})
+                + ' --task_id '+ task_id + ' --from_id ' + from_id  + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
 
               test_make_match_idx_done = test_make_match_idx_done.split("?")
               let indicator = vm.handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
@@ -1582,7 +1582,7 @@ export default {
           
           let test_file_path = row.test_file_path
           let test_data_column = row.test_data_column
-          console.log("test_file_path", test_file_path)
+          console.log("test_file_path", test_file_path, max_rounds)
           
           try{
             let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
@@ -1654,12 +1654,15 @@ export default {
           const from_id = response.data.sponsor_random_id;
           let cur_match_id_file = JSON.parse(response.data.match_id_file[0]);
           cur_match_id_file = cur_match_id_file.join('\n');
+          // console.log('assistor_match', cur_match_id_file)
 
           // Store match_id file from sponsor
           let test_save_match_id_file_pos = null;
           try{
+            console.log('yuju1', vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
             test_save_match_id_file_pos = ex.execSync(vm.exe_position + ' save_match_id --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id + ' --test_id ' + test_id, {encoding: 'utf8'})
+              + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
 
             test_save_match_id_file_pos = test_save_match_id_file_pos.split("?")
             let indicator = vm.handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos, "200", "save_match_id")
@@ -1689,8 +1692,11 @@ export default {
           }
 
           try{
+            console.log('yuju2', vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
+              + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
+
             let test_make_match_idx_done = ex.execSync(vm.exe_position + ' make_match_idx --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
-              + ' --task_id '+ task_id + ' --mode test' + ' --from_id ' + from_id + ' --test_id ' + test_id, {encoding: 'utf8'})
+              + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
 
             test_make_match_idx_done = test_make_match_idx_done.split("?")
             let indicator = vm.handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
@@ -1717,7 +1723,7 @@ export default {
           let mode = row.mode
           let test_file_path = row.test_file_path
           let test_data_column = row.test_data_column
-
+          console.log('zzz77', from_id)
           unittest_parameters = generate_unittest_parameters(test_file_path, test_data_column)
           execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
 

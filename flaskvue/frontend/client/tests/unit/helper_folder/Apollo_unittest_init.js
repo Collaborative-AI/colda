@@ -20,6 +20,7 @@ const unittest_parameters = {}
 // user_id_array[0] = '1'
 // unittest_parameters.user_id = user_id_array
 
+unittest_parameters.max_round = 1
 unittest_parameters.user_id = ''
 unittest_parameters.task_id = ''
 unittest_parameters.test_id = ''

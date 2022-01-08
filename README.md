@@ -9,7 +9,7 @@ pip install numpy
 pip install -U scikit-learn  
 cd package  
 #### To one folder
-pyinstaller run.py  
+<!-- pyinstaller run.py   -->
 pyinstaller run.spec
 #### To one file
 pyinstaller -F run.py  

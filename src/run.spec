@@ -3,6 +3,7 @@
 
 block_cipher = None
 
+
 from PyInstaller.utils.hooks import collect_submodules
 
 hidden_imports = collect_submodules('sklearn')
@@ -21,9 +22,6 @@ a = Analysis(['run.py'],
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
-
-
-
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 

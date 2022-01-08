@@ -64,5 +64,5 @@ def make_eval(args):
             msg = 'Test Round: {}, {}'.format(i, eval)
             log(msg, root, self_id, task_id, test_id)
     result_path = '?'.join(result_path)
-    print('200?make_eval?{}'.format(result_path), end='')
+    print('200?make_eval?{eval}?{result_path}'.format(result_path = result_path, eval = eval), end='')
     return

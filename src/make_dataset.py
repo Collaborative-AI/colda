@@ -20,7 +20,7 @@ def main():
     num_users = args['num_users']
     task_id = args['task_id']
     match_rate = args['match_rate']
-    # np.random.seed(task_id)
+    np.random.seed(task_id)
     control = '_'.join([data_name, str(num_users), str(task_id), str(match_rate)])
     path = os.path.join(root, control)
     if os.path.exists(path):

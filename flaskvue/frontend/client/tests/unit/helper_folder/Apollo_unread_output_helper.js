@@ -20,7 +20,7 @@ function unread_output_helper_function(){
   
     let unread_output_2 = (data) => {
       try{
-        expect(data).toBe(true)
+        expect(data[0]).toBe(true)
       }catch (error){
         done(error)
       }
@@ -40,20 +40,30 @@ function unread_output_helper_function(){
         expect(train_target_column).toEqual(row.train_target_column)
         expect(task_mode).toEqual(row.task_mode)
         expect(metric_name).toEqual(row.metric_name)
-        done()
-        
       
       }catch (error){
         done(error)
       }
     }
   
-    
+    let unread_output_4 = (data) => {
+      try{
+        let send_situation_response = data[0].message
+
+        expect(send_situation_response).toEqual(
+          "send situation successfully!"
+        )
+        done()
+      }catch (error){
+        done(error)
+      }
+    }
   
     let cur_parameters = [];
     cur_parameters.push(unread_output_1)
     cur_parameters.push(unread_output_2)
     cur_parameters.push(unread_output_3)
+    cur_parameters.push(unread_output_4)
     cur_parameters.push('unread_output_unittest')
     
 

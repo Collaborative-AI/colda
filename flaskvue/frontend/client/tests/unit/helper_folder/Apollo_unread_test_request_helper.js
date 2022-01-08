@@ -6,10 +6,14 @@ function check_unread_test_request(){
   test('check_unread_test_request', (done) => {
     let check_unread_test_request_1 = (data) => {
       try{
-        let test_request_dict = data[0]
-        console.log('test_request_dict', test_request_dict)
-  
-        expect(request_dict[unittest_parameters.test_id]).not.toBeNull()
+        let cur_unread_test_request_Testid_dict = data[0]
+        let test_id_to_task_id = data[1]
+        console.log('unread_test_request')
+        
+        expect(cur_unread_test_request_Testid_dict[unittest_parameters.test_id]).not.toBeNull()
+        expect(test_id_to_task_id[unittest_parameters.test_id]).toEqual(
+          unittest_parameters.task_id
+        )
   
         console.log('check_unread_test_request')
       }catch (error){
@@ -47,12 +51,15 @@ function check_unread_test_request(){
     }
 
 
-    let check_unread_test_request_1 = (data) => {
+    let check_unread_test_request_4 = (data) => {
       try{
-        console.log('woshidata', data)
+        console.log("aaa", data)
+        let match_test_assistor_id_response = data[0].stored
   
-        expect(data).not.toBeNull()
-  
+        expect(match_test_assistor_id_response).toEqual(
+          "assistor test match id stored"
+        )
+        done()
         console.log('check_unread_test_request')
       }catch (error){
         done(error)
@@ -70,7 +77,7 @@ function check_unread_test_request(){
     
     console.log('zz8', unittest_parameters)
     console.log('zz5', unittest_parameters.unread_request_notification)
-    Navbar_wrapper.vm.unread_request(unittest_parameters.unread_test_request_notification, cur_parameters)
+    Navbar_wrapper.vm.unread_test_request(unittest_parameters.unread_test_request_notification, cur_parameters)
     
     
   

@@ -145,7 +145,10 @@ class User(PaginatedAPIMixin, db.Model):
     def add_notification(self, name, data):
         '''给用户实例对象增加通知'''
         # 如果具有相同名称的通知已存在，则先删除该通知
+        a = self.notifications.filter_by(name=name).first()
+        print("aaa", a)
         self.notifications.filter_by(name=name).delete()
+        db.session.commit()
 
         task_id_list = data[0]
         sender_random_id_list = data[1]
@@ -157,11 +160,19 @@ class User(PaginatedAPIMixin, db.Model):
         count = len(task_id_list)
 
         # 为用户添加通知，写入数据库
-        n = Notification(name=name, payload_json=json.dumps(count), user=self,
-            sender_random_id_list=json.dumps(sender_random_id_list),task_id_list=json.dumps(task_id_list))
+        notification = Notification()
+        notification.name = name
+        notification.payload_json = json.dumps(count)
+        notification.user_id = self.id
+        notification.sender_random_id_list = json.dumps(sender_random_id_list)
+        notification.task_id_list = json.dumps(task_id_list)
+        # n = Notification(name=name, payload_json=json.dumps(count), user=self,
+        #     sender_random_id_list=json.dumps(sender_random_id_list),task_id_list=json.dumps(task_id_list))
 
-        db.session.add(n)
-        return n
+        print('add_notification', self, data, notification)
+        db.session.add(notification)
+        db.session.commit()
+        return notification
         
     def new_recived_messages(self):
         '''用户未读的私信计数'''
@@ -244,7 +255,7 @@ class User(PaginatedAPIMixin, db.Model):
 
             # sender must be sponsor
             sender_random_id_list.append(query[i].sponsor_random_id)
-
+        print('new_match_id', task_id_list, sender_random_id_list)
         return [task_id_list, sender_random_id_list]
 
     def new_situation(self):

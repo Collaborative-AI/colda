@@ -36,7 +36,7 @@ def match_assistor_id():
     Raises:
         KeyError - raises an exception
     """
-
+    print('match_assistor_id')
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
@@ -48,6 +48,7 @@ def match_assistor_id():
     task_id = data.get('task_id')
 
     record = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
+    print('record', task_id, g.current_user.id, record)
     sponsor_id = record.sponsor_id
 
     data_array = data['file']
@@ -108,11 +109,13 @@ def match_assistor_id():
                 user = User.query.get_or_404(row.assistor_id_pair)
           
                 user.add_notification('unread match id', user.new_match_id()) 
+                print('match_assistor_id1')
                 db.session.commit()
 
             user = User.query.get_or_404(sponsor_id)
             # send message notification to the sponsor when all assistor upload the output
             user.add_notification('unread match id', user.new_match_id())
+            print('match_assistor_id2')
             db.session.commit()
 
             log(generate_msg('2.4:', 'Server sends unread match id to all participants of this task'), g.current_user.id, task_id)

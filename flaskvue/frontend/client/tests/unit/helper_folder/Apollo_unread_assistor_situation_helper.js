@@ -16,6 +16,7 @@ function unread_assistor_situation_helper_function(){
         
       }catch (error){
         done(error)
+        console.log('unread_assistor_situation_1', error)
       }
     }
   
@@ -27,10 +28,11 @@ function unread_assistor_situation_helper_function(){
   
         expect(sender_random_id).not.toBeNull()
         expect(cur_situation_file).not.toBeNull()
-        console.log('situation22222')
+        console.log('situation33333')
 
       }catch (error){
         done(error)
+        console.log('unread_assistor_situation_2', error)
       }
     }
   
@@ -40,6 +42,7 @@ function unread_assistor_situation_helper_function(){
         console.log('situation33333')
       }catch (error){
         done(error)
+        console.log('unread_assistor_situation_3', error)
       }
     }
 
@@ -58,18 +61,21 @@ function unread_assistor_situation_helper_function(){
         expect(model_name).toEqual(row.model_name)
       }catch (error){
         done(error)
+        console.log('unread_assistor_situation_4', error)
       }
     }
     
     let unread_assistor_situation_5 = (data) => {
       try{
-        let send_output_response = data[0]
+        let send_output_response = data[0].send_output
   
         expect(send_output_response).toEqual('send output successfully')
-
+        
         done()
+        console.log('situation55555')
       }catch (error){
         done(error)
+        console.log('unread_assistor_situation_5', error)
       }
     }
 

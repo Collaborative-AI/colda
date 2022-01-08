@@ -113,6 +113,8 @@ export default {
         .then((response) => {
           this.test_id = response.data.test_id
           console.log("task_id))))))))))))))00", this.task_id)
+          let unittest_parameters = generate_unittest_parameters(this.test_id)
+          execute_unittest_list(arguments[arguments.length-1], 0, "find_test_assistor_unittest", unittest_parameters)
         })
         .catch((error) => {
           console.log(error)
@@ -275,7 +277,8 @@ export default {
           vm.model_name = row.model_name
           vm.metric_name = row.metric_name
 
-          
+          let unittest_parameters = generate_unittest_parameters(vm.task_mode, vm.model_name, vm.metric_name)
+          execute_unittest_list(arguments[arguments.length-1], 0, "find_assistor_unittest", unittest_parameters)
 
 
           const stmt = vm.$db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
@@ -303,11 +306,13 @@ export default {
             metric_name: vm.metric_name
           });
 
+          // Check DB
+          unittest_parameters = generate_unittest_parameters()
+          execute_unittest_list(arguments[arguments.length-1], 1, "find_test_assistor_unittest", unittest_parameters)
+
           let match_id_address = vm.test_id_column
           let test_hash_id_file_address = null;
-
           try{
-
             test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
                                     + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id
                                     + ' --mode test' + ' --test_id ' + vm.test_id
@@ -351,7 +356,10 @@ export default {
           
           vm.$axios.post('/find_test_assistor/', payload)
             .then((response) => {
-             
+              
+              let unittest_parameters = generate_unittest_parameters(response.data)
+              execute_unittest_list(arguments[arguments.length-1], 2, "find_test_assistor_unittest", unittest_parameters)
+
               const Log_address = node_path.join(vm.root.toString(), vm.sharedState.user_id.toString(), "task", vm.task_id.toString(), "test", vm.test_id.toString(), "log.txt")
               console.log("node_path_log", Log_address)
               if(!fs.existsSync(Log_address)){
@@ -419,8 +427,12 @@ export default {
 
   },
   created () {
-    this.task_id = this.$route.query.from;
-    this.task_name = this.$route.query.from_task_name
+    console.log('ttt', this.$toasted)
+    console.log('fff', this.$route)
+    // console.log('565656', this.$route.query.from)
+    // this.task_id = this.$route.query.from;
+    // this.task_name = this.$route.query.from_task_name
+
     this.get_test_id();
 
     let new_root = store.changeroot()

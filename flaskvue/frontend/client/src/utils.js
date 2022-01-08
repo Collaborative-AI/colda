@@ -8,13 +8,15 @@ export function generate_unittest_parameters(){
 }
 
 export function execute_unittest_list(unittest_list, index, indicator, unittest_parameters){
-  console.log('unittest_list',unittest_list)
+  // console.log('unittest_list',unittest_list)
   if (Array.isArray(unittest_list)) {
     if (unittest_list.length > 1 && unittest_list[unittest_list.length-1] == indicator){
       unittest_list[index](unittest_parameters)
       console.log(unittest_list)
+      index += 1
       return true
     }
+    console.log(indicator + ' wrong')
     return false
   } 
   console.log(indicator + ' wrong')
@@ -35,7 +37,7 @@ export function Log(message, level, file_name){
 
 export function check_if_notification_is_null(notification, name){
   console.log(name,'qwedas', notification)
-  if (notification == null){
+  if (notification == null || notification == {}){
     Log(name + 'is null')
     return true
   }

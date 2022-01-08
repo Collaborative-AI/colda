@@ -172,7 +172,7 @@ export default {
       return true
     },
 
-    unread_request(unread_request_notification) {
+    unread_request(unread_request_notification, unittest_callbacks) {
 
       // Only assistor will enter this function
       if (check_if_notification_is_null(unread_request_notification, 'unread_request_notification')){
@@ -187,11 +187,13 @@ export default {
       Log(generate_message_string('cur_unread_request', unread_request_notification), 'debug')
 
       // Unittest: check if testing task id in the cur_unread_request_Taskid_dict
+      console.log('55555', unittest_callbacks)
       let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_request_unittest", unittest_parameters)
+      execute_unittest_list(unittest_callbacks, 0, "unread_request_unittest", unittest_parameters)
+      
 
       var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
-      Log(generate_message_string('row1',row), 'debug')
+      Log(generate_message_string('55555',row), 'debug')
 
       if (row == null){
         vm.sharedState.mode = "manual";
@@ -241,8 +243,12 @@ export default {
           });
 
           // check task_id and vm.sharedState.mode
+          
           let unittest_parameters = generate_unittest_parameters(task_id, vm.sharedState.mode)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_request_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 1, "unread_request_unittest", unittest_parameters)
+          
+          
+          // execute_unittest_list(unittest_callbacks, 1, "unread_request_unittest", unittest_parameters)
 
           let hash_id_file_address = null;
           let Log_address = null;
@@ -263,8 +269,12 @@ export default {
             console.log(err)
           }
 
+          
           unittest_parameters = generate_unittest_parameters()
-          execute_unittest_list(arguments[arguments.length-1], 2, "unread_request_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 2, "unread_request_unittest", unittest_parameters)
+          
+          // unittest_parameters = generate_unittest_parameters()
+          // execute_unittest_list(unittest_callbacks, 2, "unread_request_unittest", unittest_parameters)
 
           Log(generate_message_string("\nYou are Assistor\n"), 'info')
           Log(generate_message_string("Task ID: " + task_id + "\n"), 'info')
@@ -294,7 +304,7 @@ export default {
 
               // Unittest: check match_assistor_id response
               let unittest_parameters = generate_unittest_parameters(response.data)
-              execute_unittest_list(arguments[arguments.length-1], 3, "unread_request_unittest", unittest_parameters)
+              execute_unittest_list(unittest_callbacks, 3, "unread_request_unittest", unittest_parameters)
 
               Log(generate_message_string("2.2 Assistor uploads match id file\n"), 'info')
               Log(generate_message_string("2.3 Unread Request Done\n"), 'info')
@@ -339,7 +349,7 @@ export default {
     },
 
 
-    unread_match_id(unread_match_id_notification) {
+    unread_match_id(unread_match_id_notification, unittest_callbacks) {
 
       if (check_if_notification_is_null(unread_match_id_notification, 'unread_match_id_notification')){
         return
@@ -352,7 +362,7 @@ export default {
 
       // check if testing task id in the cur_unread_request_Taskid_dict
       let unittest_parameters = generate_unittest_parameters(cur_unread_match_id_Taskid_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_match_id_unittest", unittest_parameters)
+      execute_unittest_list(unittest_callbacks, 0, "unread_match_id_unittest", unittest_parameters)
       
       for (let task_id in cur_unread_match_id_Taskid_dict){
         
@@ -377,7 +387,7 @@ export default {
           } catch (err) {
             console.log(err)
           }
-          this.unread_match_id_sponsor(task_id, arguments[arguments.length-1])
+          this.unread_match_id_sponsor(task_id, unittest_callbacks)
         }  
         else{
           Log(generate_message_string("3.2 Unread_match_id_assistor\n"), 'info')
@@ -386,13 +396,13 @@ export default {
           } catch (err) {
             console.log(err)
           }
-          this.unread_match_id_assistor(task_id, arguments[arguments.length-1])
+          this.unread_match_id_assistor(task_id, unittest_callbacks)
         }
       }
       return 'done'
     },
 
-    unread_match_id_sponsor(task_id) {
+    unread_match_id_sponsor(task_id, unittest_callbacks) {
       
       // Create 'Local_Data/id/task_id/Match/' folder
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
@@ -413,7 +423,7 @@ export default {
 
           // check users/user_id/match_id_file return value
           let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 1, "unread_match_id_unittest", unittest_parameters)
           
           Log(generate_message_string("3.3 Sponsor gets matched id file\n"), 'info')
     
@@ -449,7 +459,7 @@ export default {
 
             // check if we run here
             let unittest_parameters = generate_unittest_parameters()
-            execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+            execute_unittest_list(unittest_callbacks, 2, "unread_match_id_unittest", unittest_parameters)
 
             fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
             console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2]);
@@ -476,6 +486,9 @@ export default {
             }catch(err){
               console.log(err)
             }
+
+            unittest_parameters = generate_unittest_parameters()
+            execute_unittest_list(unittest_callbacks, 3, "unread_match_id_unittest", unittest_parameters)
 
             console.log('3.5 Sponsor matches id to index');
             // vm.$toasted.success('3.5 Sponsor matches id to index', { icon: 'fingerprint' })
@@ -519,7 +532,7 @@ export default {
             console.log(err)
           }
 
-          console.log("3.6 Sponsor makes residual finished")
+          console.log("param2 Sponsor makes residual finished")
           // vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
@@ -565,8 +578,8 @@ export default {
             // handle success
 
             // check send_situation return value
-            let unittest_parameters = generate_unittest_parameters(response.data)
-            execute_unittest_list(arguments[arguments.length-1], 3, "unread_match_id_unittest", unittest_parameters)
+            unittest_parameters = generate_unittest_parameters(response.data)
+            execute_unittest_list(unittest_callbacks, 4, "unread_match_id_unittest", unittest_parameters)
 
             // console.log("3.7 Sponsor sends all situations", response)
             // vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
@@ -590,7 +603,7 @@ export default {
         }) 
     },
 
-    unread_match_id_assistor(task_id) {
+    unread_match_id_assistor(task_id, unittest_callbacks) {
 
       let vm = this;
       const Log_address = vm.handle_train_log_address(task_id)
@@ -606,7 +619,7 @@ export default {
           
           // check users/user_id/match_id_file return value
           let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_match_id_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 1, "unread_match_id_unittest", unittest_parameters)
           
           // console.log("3.3 Assistor gets matched id file", response)
           // vm.$toasted.success("3.3 Assistor gets matched id file", { icon: 'fingerprint' })
@@ -676,9 +689,9 @@ export default {
           }
 
           unittest_parameters = generate_unittest_parameters()
-          execute_unittest_list(arguments[arguments.length-1], 2, "unread_match_id_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 2, "unread_match_id_unittest", unittest_parameters)
 
-          console.log('wokan7', arguments[arguments.length-1])
+          console.log('wokan7', unittest_callbacks)
           // const path = `/assistor_write_match_index_done/`
 
           // const assistor_write_match_index_done_data = {
@@ -700,7 +713,7 @@ export default {
         }) 
     },
 
-    unread_situation(unread_situation_notification) {
+    unread_situation(unread_situation_notification, unittest_callbacks) {
 
       if (check_if_notification_is_null(unread_situation_notification, 'unread_situation_notification')){
         return
@@ -713,7 +726,7 @@ export default {
       let cur_unread_situation_Rounds_dict = unread_situation_notification["rounds_dict"]
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_situation_Taskid_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_situation_unittest", unittest_parameters)
+      execute_unittest_list(unittest_callbacks, 0, "unread_situation_unittest", unittest_parameters)
 
       for (let task_id in cur_unread_situation_Taskid_dict){
         
@@ -730,15 +743,15 @@ export default {
 
         // check if the current client is sponsor or not of the specific task
         if (check_sponsor == 1){
-          this.unread_situation_sponsor(rounds, task_id, arguments[arguments.length-1])
+          this.unread_situation_sponsor(rounds, task_id, unittest_callbacks)
         }  
         else{
-          this.unread_situation_assistor(rounds, task_id, arguments[arguments.length-1])
+          this.unread_situation_assistor(rounds, task_id, unittest_callbacks)
         }
       }
     },
 
-    unread_situation_sponsor(rounds, task_id) {
+    unread_situation_sponsor(rounds, task_id, unittest_callbacks) {
       let vm = this;
       console.log("4.2 Cur round is:" + rounds + task_id);
       // vm.$toasted.success("4.2 Cur round is:" + rounds +  task_id, { icon: 'fingerprint' })
@@ -763,7 +776,7 @@ export default {
       let model_name = row.model_name
 
       let unittest_parameters = generate_unittest_parameters(train_file_path, train_data_column, model_name)
-      execute_unittest_list(arguments[arguments.length-1], 1, "unread_situation_unittest", unittest_parameters)
+      execute_unittest_list(unittest_callbacks, 1, "unread_situation_unittest", unittest_parameters)
 
       try{
         
@@ -780,7 +793,7 @@ export default {
         let indicator = vm.handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
 
         let unittest_parameters = generate_unittest_parameters(indicator)
-        execute_unittest_list(arguments[arguments.length-1], 2, "unread_situation_unittest", unittest_parameters)
+        execute_unittest_list(unittest_callbacks, 2, "unread_situation_unittest", unittest_parameters)
 
         if (indicator == false){
           console.log("train_output wrong")
@@ -803,7 +816,7 @@ export default {
       }
     },
 
-    unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time){
+    unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks){
       
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 
@@ -822,6 +835,10 @@ export default {
       // get response from make_train.py. 
       let indicator = null;
       try{
+        console.log('allzzz', vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
+          + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
+          + from_id + ' --dataset_path ' + train_file_path + ' --data_idx ' + train_data_column
+          + ' --task_mode ' + 'regression' + ' --model_name ' + model_name)
         Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
           + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
           + from_id + ' --dataset_path ' + train_file_path + ' --data_idx ' + train_data_column
@@ -842,7 +859,8 @@ export default {
           vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address,task_mode, model_name)
         }, 7000);
       }else{
-
+        
+        console.log('Assistor_train_output_path', Assistor_train_output_path)
         console.log("4.4 Assistor round " + rounds + " training done.");
         // vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
         try {
@@ -866,7 +884,7 @@ export default {
           console.log("4.5 Assistor sends output", response)
 
           let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(arguments[arguments.length-1], 4, "unread_situation_unittest", unittest_parameters) 
+          execute_unittest_list(unittest_callbacks, 4, "unread_situation_unittest", unittest_parameters) 
 
           // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
           try {
@@ -883,7 +901,7 @@ export default {
 
       }
     },
-    unread_situation_assistor(rounds, task_id) {
+    unread_situation_assistor(rounds, task_id, unittest_callbacks) {
       
       let vm = this;
       const Log_address = vm.handle_train_log_address(task_id)
@@ -900,7 +918,7 @@ export default {
           // store the situation file
 
           let unittest_parameters = generate_unittest_parameters(response)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_situation_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 1, "unread_situation_unittest", unittest_parameters)
 
           console.log("4.2 assistor gets situation file")
           // vm.$toasted.success("4.2 assistor gets situation file", { icon: 'fingerprint' })
@@ -924,7 +942,7 @@ export default {
 
             // Unittest
             let unittest_parameters = generate_unittest_parameters(indicator)
-            execute_unittest_list(arguments[arguments.length-1], 2, "unread_situation_unittest", unittest_parameters)
+            execute_unittest_list(unittest_callbacks, 2, "unread_situation_unittest", unittest_parameters)
 
             if (indicator == false){
               console.log("save_residual_file_pos wrong")
@@ -963,12 +981,12 @@ export default {
           if (mode == "auto" || mode == 'manual'){
             
             let unittest_parameters = generate_unittest_parameters(train_file_path, train_data_column, mode, model_name)
-            execute_unittest_list(arguments[arguments.length-1], 3, "unread_situation_unittest", unittest_parameters)  
+            execute_unittest_list(unittest_callbacks, 3, "unread_situation_unittest", unittest_parameters)  
 
             let waiting_start_time = new Date();
             // let waiting_start_time = myDate.getMinutes();
             // var waiting_start_time = myDate.toLocaleTimeString(); 
-            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time)
+            vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks)
           }else{
             console.log('unread situation assistor 3rd case')
           }  
@@ -979,7 +997,7 @@ export default {
         })
     },
     
-    unread_output(unread_output_notification) {
+    unread_output(unread_output_notification, unittest_callbacks) {
 
       // Only sponsor will enter this function
       if (check_if_notification_is_null(unread_output_notification, 'unread_output_notification')){
@@ -993,7 +1011,7 @@ export default {
       let cur_unread_output_Rounds_dict = unread_output_notification["rounds_dict"]
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_output_Rounds_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_output_unittest", unittest_parameters)
+      execute_unittest_list(unittest_callbacks, 0, "unread_output_unittest", unittest_parameters)
 
       for (let task_id in cur_unread_output_Rounds_dict){
 
@@ -1005,11 +1023,11 @@ export default {
           console.log(err)
         }
         let rounds = cur_unread_output_Rounds_dict[task_id];
-        this.unread_output_singleTask(rounds, task_id, arguments[arguments.length-1]);
+        this.unread_output_singleTask(rounds, task_id, unittest_callbacks);
       }
     },
 
-    unread_output_singleTask(rounds, task_id){
+    unread_output_singleTask(rounds, task_id, unittest_callbacks){
       
       let vm = this
       const Log_address = vm.handle_train_log_address(task_id)
@@ -1053,7 +1071,7 @@ export default {
               let indicator = vm.handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
 
               let unittest_parameters = generate_unittest_parameters(indicator)
-              execute_unittest_list(arguments[arguments.length-1], 1, "unread_output_unittest", unittest_parameters)
+              execute_unittest_list(unittest_callbacks, 1, "unread_output_unittest", unittest_parameters)
 
 
               if (indicator == false){
@@ -1089,10 +1107,10 @@ export default {
           let metric_name = row.metric_name
 
           let unittest_parameters = generate_unittest_parameters(train_file_path, train_target_column, task_mode, metric_name)
-          execute_unittest_list(arguments[arguments.length-1], 2, "unread_output_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 2, "unread_output_unittest", unittest_parameters)
 
           let waiting_start_time = new Date();
-          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time)
+          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time, unittest_callbacks)
 
           
         })
@@ -1102,7 +1120,7 @@ export default {
         }) 
     },
 
-    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time){
+    unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time, unittest_callbacks){
 
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 
@@ -1152,7 +1170,7 @@ export default {
         } catch (err) {
           console.log(err)
         }
-
+        
         // terminate
         if ((rounds+1) >= vm.max_round){
           vm.$toasted.success("Training Done", { icon: 'fingerprint' })
@@ -1211,8 +1229,10 @@ export default {
         // async
         vm.$axios.post('/send_situation/', payload1)
           .then((response) => {
-          // handle success
-          console.log("5.6 Sponsor updates situation done", response)
+            // handle success
+            console.log("5.6 Sponsor updates situation done", response)
+            let unittest_parameters = generate_unittest_parameters(response.data)
+            execute_unittest_list(unittest_callbacks, 3, "unread_output_unittest", unittest_parameters)
             // vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
             try {
               fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
@@ -1229,7 +1249,7 @@ export default {
     },
     
     
-    unread_test_request(unread_test_request_notification) {
+    unread_test_request(unread_test_request_notification, unittest_callbacks) {
 
       // Only assistor will enter this function
       if (check_if_notification_is_null(unread_test_request_notification, 'unread_test_request_notification')){
@@ -1244,8 +1264,8 @@ export default {
       let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
       let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
 
-      let unittest_parameters = generate_unittest_parameters(cur_unread_test_request_Testid_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_test_request_unittest", unittest_parameters)
+      let unittest_parameters = generate_unittest_parameters(cur_unread_test_request_Testid_dict, test_id_to_task_id)
+      execute_unittest_list(unittest_callbacks, 0, "unread_test_request_unittest", unittest_parameters)
 
                 
       var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
@@ -1305,7 +1325,7 @@ export default {
 
 
           let unittest_parameters = generate_unittest_parameters(test_id, vm.sharedState.mode)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_test_request_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 1, "unread_test_request_unittest", unittest_parameters)
 
           try{
 
@@ -1321,7 +1341,7 @@ export default {
 
             
             unittest_parameters = generate_unittest_parameters(indicator)
-            execute_unittest_list(arguments[arguments.length-1], 2, "unread_test_request_unittest", unittest_parameters)
+            execute_unittest_list(unittest_callbacks, 2, "unread_test_request_unittest", unittest_parameters)
 
 
             Log_address = vm.handle_test_log_address(task_id, test_id)
@@ -1363,8 +1383,8 @@ export default {
 
 
             
-              unittest_parameters = generate_unittest_parameters(response)
-              execute_unittest_list(arguments[arguments.length-1], 3, "unread_test_request_unittest", unittest_parameters)
+              unittest_parameters = generate_unittest_parameters(response.data)
+              execute_unittest_list(unittest_callbacks, 3, "unread_test_request_unittest", unittest_parameters)
 
               // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
               try {
@@ -1406,7 +1426,7 @@ export default {
       }
     },
 
-    unread_test_match_id(unread_test_match_id_notification) {
+    unread_test_match_id(unread_test_match_id_notification, unittest_callbacks) {
 
       if (check_if_notification_is_null(unread_test_match_id_notification, 'unread_test_match_id_notification')){
         return
@@ -1421,7 +1441,7 @@ export default {
       console.log("max_rounds_dict", max_rounds_dict)
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_match_id_Testid_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_test_match_id_unittest", unittest_parameters)
+      execute_unittest_list(unittest_callbacks, 0, "unread_test_match_id_unittest", unittest_parameters)
 
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
@@ -1460,7 +1480,7 @@ export default {
       }
     },
 
-    unread_test_match_id_sponsor(task_id, test_id, max_rounds) {
+    unread_test_match_id_sponsor(task_id, test_id, max_rounds, unittest_callbacks) {
 
       
       let vm = this;
@@ -1482,7 +1502,7 @@ export default {
 
 
           let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_test_match_id_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 1, "unread_test_match_id_unittest", unittest_parameters)
 
 
           console.log("3.4 Test: Sponsor gets matched id file")
@@ -1520,7 +1540,7 @@ export default {
             fs.writeFileSync(test_save_match_id_file_pos[2], cur_match_id_file)
 
             let unittest_parameters = generate_unittest_parameters()
-            execute_unittest_list(arguments[arguments.length-1], 2, "unread_test_match_id_unittest", unittest_parameters)
+            execute_unittest_list(unittest_callbacks, 2, "unread_test_match_id_unittest", unittest_parameters)
 
             
             console.log('3.5 Test: Sponsor Saved Matched id File!');
@@ -1567,15 +1587,10 @@ export default {
             let test_done = ex.execSync(vm.exe_position + ' make_test --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
               + ' --task_id ' + task_id + ' --test_id ' + test_id + ' --round ' + max_rounds + ' --dataset_path ' + test_file_path + ' --data_idx ' + test_data_column, {encoding: 'utf8'})
 
-            
-            
             test_done = test_done.split("?")
-
-            let zhongjian = test_done[4]
-            let unittest_parameters = generate_unittest_parameters(zhongjian)
-            execute_unittest_list(arguments[arguments.length-1], 3, "unread_test_match_id_unittest", unittest_parameters)
-
-
+            let make_test_res = test_done[4]
+            let unittest_parameters = generate_unittest_parameters(make_test_res)
+            execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
 
             let indicator = vm.handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
             if (indicator == false){
@@ -1608,7 +1623,7 @@ export default {
          
     },
 
-    unread_test_match_id_assistor(task_id, test_id, max_rounds) {
+    unread_test_match_id_assistor(task_id, test_id, max_rounds, unittest_callbacks) {
 
       let vm = this;
       const Log_address = vm.handle_test_log_address(task_id, test_id)
@@ -1624,7 +1639,7 @@ export default {
         .then((response) => {
 
           let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(arguments[arguments.length-1], 1, "unread_test_match_id_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 1, "unread_test_match_id_unittest", unittest_parameters)
 
 
           console.log("3.4 Test: assistor gets matched id file", response)
@@ -1664,7 +1679,7 @@ export default {
 
 
           unittest_parameters = generate_unittest_parameters()
-          execute_unittest_list(arguments[arguments.length-1], 2, "unread_test_match_id_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 2, "unread_test_match_id_unittest", unittest_parameters)
 
           try {
             fs.appendFileSync(Log_address, "3.5 Test: Assistor Saved Matched id File!\n")
@@ -1713,9 +1728,15 @@ export default {
 
               test_outputs_pos = test_outputs_pos.split("?")
 
+<<<<<<< HEAD
               let zhongjian = test_outputs_pos[2]
               let unittest_parameters = generate_unittest_parameters(zhongjian)
               execute_unittest_list(arguments[arguments.length-1], 3, "unread_test_match_id_unittest", unittest_parameters)
+=======
+              let make_test_assistor_res = test_outputs_pos[4]
+              let unittest_parameters = generate_unittest_parameters(make_test_assistor_res)
+              execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
+>>>>>>> 56a6da3bad148b8a2388fdb591be18ad1df8eed8
               
               let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
               if (indicator == false){
@@ -1755,6 +1776,9 @@ export default {
             vm.$axios.post('/send_test_output/', payload1)
               .then((response) => {
               // handle success
+              let unittest_parameters = generate_unittest_parameters(response.data)
+              execute_unittest_list(unittest_callbacks, 4, "unread_test_match_id_unittest", unittest_parameters)
+
               console.log("3.8 Test: assistor sends all test model results", response)
               // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
               try {
@@ -1781,7 +1805,7 @@ export default {
         }) 
     },
 
-    unread_test_output(unread_test_output_notification) {
+    unread_test_output(unread_test_output_notification, unittest_callbacks) {
       
       // only sponsor will enter this function
       if (check_if_notification_is_null(unread_test_output_notification, 'unread_test_output_notification')){
@@ -1795,7 +1819,7 @@ export default {
       let test_id_to_task_id = unread_test_output_notification["test_id_to_task_id"]
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_output_Testid_dict)
-      execute_unittest_list(arguments[arguments.length-1], 0, "unread_test_output_unittest", unittest_parameters)
+      execute_unittest_list(unittest_callbacks, 0, "unread_test_output_unittest", unittest_parameters)
 
 
       for (let test_id in cur_unread_test_output_Testid_dict){
@@ -1858,7 +1882,7 @@ export default {
                 let indicator = vm.handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
 
                 let unittest_parameters = generate_unittest_parameters(indicator)
-                execute_unittest_list(arguments[arguments.length-1], 1, "unread_test_output_unittest", unittest_parameters)
+                execute_unittest_list(unittest_callbacks, 1, "unread_test_output_unittest", unittest_parameters)
 
 
                 if (indicator == false){
@@ -1886,7 +1910,7 @@ export default {
             console.log(err)
           }
           let waiting_start_time = new Date()
-          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time)
+          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time, unittest_callbacks)
 
         })
         .catch((error) => {
@@ -1897,7 +1921,7 @@ export default {
           
     },
 
-    unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time){
+    unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time, unittest_callbacks){
       
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 

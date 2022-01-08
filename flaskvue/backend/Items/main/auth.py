@@ -36,7 +36,7 @@ def verify_token(token):
         # update the last_seen time after visiting any url
         g.current_user.update_jwt()
         db.session.commit()
-    print("我1111")
+    # print("我1111")
     return g.current_user is not None
 
 

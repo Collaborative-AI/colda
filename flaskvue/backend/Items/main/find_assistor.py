@@ -84,7 +84,7 @@ def find_assistor():
 
     # check the data sent by the sponsor
     data = request.get_json()
-    print('data', data)
+    # print('data', data)
     if not data:
         return bad_request('You must post JSON data.')
     if 'assistor_username_list' not in data or not data.get('assistor_username_list'):
@@ -174,6 +174,7 @@ def find_assistor():
         matched.test_indicator = "train"
         matched.Terminate = "false"
 
+        print('xsxs', matched)
         db.session.add(matched)
         db.session.commit()
         # send matched notification to the assistor
@@ -359,7 +360,7 @@ def find_test_assistor():
     matched.test_indicator = "test"
     matched.test_id = test_id
     matched.Terminate = "false"
-
+    print('xsxs', matched)
     db.session.add(matched)                      
     db.session.commit()
 

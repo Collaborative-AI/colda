@@ -159,7 +159,7 @@ def log(msg, self_id, task_id, test_id=None):
     
     root = os.path.abspath(os.path.dirname(__file__))
     root = os.path.join(root, 'log_file')
-
+    
     self_id = str(self_id)
     task_id = str(task_id)
     if test_id:
@@ -177,6 +177,7 @@ def log(msg, self_id, task_id, test_id=None):
     file = open(log_path,'w')
     file.close()
     
+    # print('log_path', msg, self_id, task_id)
     logger = generate_logger(log_path)
     logger.debug(msg)
     

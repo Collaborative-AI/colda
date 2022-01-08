@@ -41,7 +41,7 @@
                             </div> -->
                             <br />
                             <div class="text-right text-muted pt-1">
-                              <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id, from_task_name: message.task_name, from_test_id: message.test_id} }">
+                              <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id, from_task_name: message.task_name, from_task_description: message.task_description, from_test_id: message.test_id} }">
                                 <button class="btn btn-block u-btn-outline-primary g-rounded-20 ">Details</button>
                               </router-link>
                             </div>

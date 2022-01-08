@@ -267,6 +267,7 @@ export default {
       task_id: '',
       task_name: '',
       test_id: '',
+      task_description: '',
       page: 'chart',
       test_num: '2',
       backend_log: "",
@@ -1305,6 +1306,7 @@ export default {
     this.task_id = this.$route.query.from;
     this.task_name = this.$route.query.from_task_name
     this.test_id = this.$route.query.from_test_id
+    this.task_description = this.$route.query.from_task_description
     console.log('this.test_id', this.test_id)
 
     window.log.transports.file.resolvePath = () => window.node_path.join(this.root.toString(), '/logs', this.task_id.toString(),'log.txt');

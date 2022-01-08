@@ -14,8 +14,6 @@ import { unread_test_request_helper } from './helper_folder/Apollo_unread_test_r
 import { logout_helper } from './helper_folder/Apollo_logout_helper';
 import { delete_db_helper } from './helper_folder/Apollo_delete_db_helper';
 import { find_assistor_helper } from './helper_folder/Apollo_find_assistor_helper';
-import { unread_test_sponsor_match_id_helper } from './helper_folder/Apollo_unread_test_sponsor_match_id_helper';
-import { unread_test_assistor_match_id_helper } from './helper_folder/Apollo_unread_test_assistor_match_id_helper';
 import axios from 'axios';
 // import store from '../../src/store'
 jest.setTimeout(10000);
@@ -26,8 +24,9 @@ afterAll(() => {
   console.log('afterAll')
 });
 
-describe('test_unread_test_match_id', () => {
-  console.log('test_unread_test_match_id')
+describe('test_unread_test_request', () => {
+  console.log('des1')
+
 
   //  Sponsor logins
    logout_helper.logout()
@@ -115,25 +114,4 @@ describe('test_unread_test_match_id', () => {
    unread_test_request_helper.unread_test_request()
    //logout
    logout_helper.logout()
-
-
-  //sponsor logins
-  login_helper.check_login_first_user()
-  //sponsor updates notifications
-  notification_helper.update_notification()
-  //sponsor unread test match id
-  unread_test_sponsor_match_id_helper.unread_test_sponsor_match_id()
-  //sponsor logouts
-  logout_helper.logout()
-
-  //assistor logins
-  login_helper.check_login_second_user()
-  //assistor updates notifications
-  notification_helper.update_notification()
-  //assistor runs unread match id
-  unread_test_assistor_match_id_helper.unread_test_assistor_match_id()
-  //assistor logouts
-  logout_helper.logout()
-
-
 })

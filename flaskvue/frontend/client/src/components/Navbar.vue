@@ -1871,7 +1871,7 @@ export default {
             let multiple_outputs_from_one_assistor = JSON.parse(response.data.output[i]);
             console.log("multiple_outputs_from_one_assistor", multiple_outputs_from_one_assistor)
 
-            for (let j = 1; j < multiple_outputs_from_one_assistor.length+1; j++){
+            for (let j = 1; j < multiple_outputs_from_one_assistor.length; j++){
               
               let cur_output = multiple_outputs_from_one_assistor[j];
               
@@ -1882,7 +1882,9 @@ export default {
                 test_save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                   + ' --task_id '+ task_id + ' --mode test --test_id ' + test_id + ' --from_id ' + from_id + ' --round ' + j, {encoding: 'utf8'})
 
+                console.log('test save output pos', test_save_output_pos)
                 test_save_output_pos = test_save_output_pos.split("?")
+            
                 let indicator = vm.handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
 
                 let unittest_parameters = generate_unittest_parameters(indicator)
@@ -1970,7 +1972,7 @@ export default {
       if (indicator == false){
         console.log("recall unread_test_output_make_eval_helper")
         setTimeout(function(){
-          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response)
+          vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time, unittest_callbacks)
         }, 7000);
       }else{
         console.log("4.4 Test: Sponsor evaluates output models done");

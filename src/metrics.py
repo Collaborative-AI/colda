@@ -24,6 +24,7 @@ class Metric():
 
     def eval(self, output, target):
         evaluation = []
+        evaluation_dict = {}
         if self.task_mode == 'regression':
             pass
         elif self.task_mode == 'classification':
@@ -33,8 +34,9 @@ class Metric():
         for i in range(len(self.metric)):
             evaluation_i = self.metric[i](output, target)
             evaluation.append('{}: {:.4f}'.format(self.metric_name[i], evaluation_i))
+            evaluation_dict[self.metric_name[i]] = evaluation_i
         evaluation = ', '.join(evaluation)
-        return evaluation
+        return evaluation, evaluation_dict
 
 
 def MAD(output, target):

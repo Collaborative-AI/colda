@@ -1,5 +1,7 @@
 import numpy as np
 import os
+import json
+import collections
 from utils import log, parse_idx
 from metrics import Metric
 
@@ -36,6 +38,8 @@ def make_eval(args):
         if not os.path.exists(sponsor_test_result_path):
             print("300?make_eval sponsor cannot find test output file")
             return
+    
+    make_eval_res = collections.defaultdict(dict)
     for i in range(1, round + 1):
         output_path_i = os.path.join(task_path, 'test', test_id, 'round', str(i), 'output')
         output_i = np.genfromtxt(os.path.join(output_path_i, '{}.csv'.format(self_id)), delimiter=',')
@@ -60,9 +64,11 @@ def make_eval(args):
         np.savetxt(result_path_i, result, delimiter=",")
         if dataset_path is not None and target_idx is not None:
             metric = Metric(task_mode, metric_name)
-            eval = metric.eval(result, target)
+            eval, eval_dict = metric.eval(result, target)
+            make_eval_res[i] = eval_dict
             msg = 'Test Round: {}, {}'.format(i, eval)
             log(msg, root, self_id, task_id, test_id)
     result_path = '?'.join(result_path)
-    print('200?make_eval?{eval}?{result_path}'.format(result_path = result_path, eval = eval), end='')
+    make_eval_res = json.dumps(make_eval_res)
+    print('200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res = make_eval_res, eval = eval), end='')
     return

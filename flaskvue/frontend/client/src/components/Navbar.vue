@@ -204,7 +204,7 @@ export default {
 
       // Assistor might receive multiple task request, We need to iterate them
       for (let task_id in cur_unread_request_Taskid_dict){
-        window.log.transports.file.resolvePath = () => window.node_path.join(this.root.toString(), '/logs', task_id.toString(),'log.txt');
+        // window.log.transports.file.resolvePath = () => window.node_path.join(this.root.toString(), '/logs', task_id.toString(),'log.txt');
 
         Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 
@@ -1175,7 +1175,7 @@ export default {
         
         // terminate
         console.log('max_round', rounds, vm.max_round)
-        if ((rounds+1) > vm.max_round){
+        if (rounds >= vm.max_round){
           vm.$toasted.success("Training Done", { icon: 'fingerprint' })
           fs.appendFileSync(Log_address, "---------------------- Train stage done\n");
         }else{        

@@ -299,7 +299,7 @@ class User(PaginatedAPIMixin, db.Model):
         return [task_id_list, sender_random_id_list]
 
     def new_test_request(self):
-
+        print('last_test_requests_read_time', self.last_test_requests_read_time)
         last_test_request_time = self.last_test_requests_read_time or datetime(1900, 1, 1)
 
         query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
@@ -333,10 +333,13 @@ class User(PaginatedAPIMixin, db.Model):
 
     def new_test_output(self):
         last_test_output_time = self.last_test_output_read_time or datetime(1900, 1, 1)
+        print('last_test_output_time', self.last_test_output_read_time, last_test_output_time)
+        
         query = Message.query.filter_by(assistor_id=self.id).filter(
             Message.output_timestamp > last_test_output_time, Message.test_indicator == "test").all()
         
-        print("new_output---------------------",self.id)
+        
+        print("new_output---------------------",self.id,len(query))
         test_id_list = []
         sender_random_id_list = []
         for i in range(len(query)):
@@ -345,7 +348,7 @@ class User(PaginatedAPIMixin, db.Model):
 
                 # sender must be sponsor
                 sender_random_id_list.append(query[i].sender_random_id)
-
+        print('zzz',test_id_list, sender_random_id_list)
         return [test_id_list, sender_random_id_list]
 
 

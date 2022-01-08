@@ -20,23 +20,29 @@ function unread_test_output_helper_function(){
   
     let unread_test_output_2 = (data) => {
       try{
-        expect(data).toBe(true)
+        expect(data[0]).toBe(true)
+        // done()
+      }catch (error){
+        done(error)
+      }
+    }
+
+    let unread_test_output_3 = (data) => {
+      try{
+        console.log('unread_test_output_3')
         done()
       }catch (error){
         done(error)
       }
     }
   
-  
-    
-  
     let cur_parameters = [];
     cur_parameters.push(unread_test_output_1)
     cur_parameters.push(unread_test_output_2)
+    cur_parameters.push(unread_test_output_3)
     cur_parameters.push('unread_test_output_unittest')
     
-
-    Navbar_wrapper.vm.unread_test_output(unittest_parameters.unread_output_notification, cur_parameters)
+    Navbar_wrapper.vm.unread_test_output(unittest_parameters.unread_test_output_notification, cur_parameters)
   })
 }
 let unread_test_output_helper = {}

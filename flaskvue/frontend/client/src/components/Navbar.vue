@@ -1871,7 +1871,7 @@ export default {
             let multiple_outputs_from_one_assistor = JSON.parse(response.data.output[i]);
             console.log("multiple_outputs_from_one_assistor", multiple_outputs_from_one_assistor)
 
-            for (let j = 0; j < multiple_outputs_from_one_assistor.length; j++){
+            for (let j = 1; j < multiple_outputs_from_one_assistor.length+1; j++){
               
               let cur_output = multiple_outputs_from_one_assistor[j];
               
@@ -1887,7 +1887,6 @@ export default {
 
                 let unittest_parameters = generate_unittest_parameters(indicator)
                 execute_unittest_list(unittest_callbacks, 1, "unread_test_output_unittest", unittest_parameters)
-
 
                 if (indicator == false){
                   console.log("test_save_output_pos wrong")
@@ -1988,6 +1987,9 @@ export default {
         } catch (err) {
           console.log(err)
         }
+
+        let unittest_parameters = generate_unittest_parameters()
+        execute_unittest_list(unittest_callbacks, 2, "unread_test_output_unittest", unittest_parameters)
       }
     },
   },

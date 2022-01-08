@@ -20,7 +20,7 @@ python run.py make_hash --root ./exp --self_id 1 --mode default --dataset_path .
 # Train
 # hash id
 python run.py make_hash --root ./exp --self_id 0 --task_id xyz --mode train --dataset_path ./data/Wine_2_123_1.0/0/train/dataset.csv --id_idx 1
-python run.py make_hash --root ./exp --self_id 1 --task_id xyz --mode train --dataset_path ./data/Wine_2_123_1.0/1/train/dataset.csv --id_idx 1
+python run.py make_hash --root ./exp --self_id 1 --task_id xyz --mode train --dataset_path ./data/Wine_2_123_1.0/1/all/dataset.csv --id_idx 1
 
 # match id
 python run.py save_match_id --root ./exp --self_id 0 --task_id xyz --mode train --from_id 1
@@ -37,7 +37,7 @@ python save_residual_exe.py --root ./exp --self_id 1 --task_id xyz --from_id 0 -
 
 # train
 python run.py make_train --root ./exp --self_id 0 --task_id xyz --round 1 --dataset_path ./data/Wine_2_123_1.0/0/train/dataset.csv --data_idx 2-8 --task_mode regression --model_name linear
-python run.py make_train --root ./exp --self_id 1 --task_id xyz --round 1 --from_id 0 --dataset_path ./data/Wine_2_123_1.0/1/train/dataset.csv --data_idx 2-7 --task_mode regression --model_name linear
+python run.py make_train --root ./exp --self_id 1 --task_id xyz --round 1 --from_id 0 --dataset_path ./data/Wine_2_123_1.0/1/all/dataset.csv --data_idx 2-7 --task_mode regression --model_name linear
 
 # output
 python run.py save_output --root ./exp --self_id 0 --task_id xyz --mode train --from_id 1 --round 1
@@ -52,7 +52,7 @@ python save_residual_exe.py --root ./exp --self_id 1 --task_id xyz --from_id 0 -
 
 # train
 python run.py make_train --root ./exp --self_id 0 --task_id xyz --round 2 --dataset_path ./data/Wine_2_123_1.0/0/train/dataset.csv --data_idx 2-8 --task_mode regression --model_name linear
-python run.py make_train --root ./exp --self_id 1 --task_id xyz --round 2 --from_id 0 --dataset_path ./data/Wine_2_123_1.0/1/train/dataset.csv --data_idx 2-7 --task_mode regression --model_name linear
+python run.py make_train --root ./exp --self_id 1 --task_id xyz --round 2 --from_id 0 --dataset_path ./data/Wine_2_123_1.0/1/all/dataset.csv --data_idx 2-7 --task_mode regression --model_name linear
 
 # output
 python run.py save_output --root ./exp --self_id 0 --task_id xyz --mode train --from_id 1 --round 2
@@ -62,7 +62,7 @@ python run.py make_result --root ./exp --self_id 0 --task_id xyz --round 2 --dat
 # Test
 # hash id
 python run.py make_hash --root ./exp --self_id 0 --task_id xyz --mode test --test_id uvw --dataset_path ./data/Wine_2_123_1.0/0/test/dataset.csv --id_idx 1
-python run.py make_hash --root ./exp --self_id 1 --task_id xyz --mode test --test_id uvw --dataset_path ./data/Wine_2_123_1.0/1/test/dataset.csv --id_idx 1
+python run.py make_hash --root ./exp --self_id 1 --task_id xyz --mode test --test_id uvw --dataset_path ./data/Wine_2_123_1.0/1/all/dataset.csv --id_idx 1
 
 # match id 
 python run.py save_match_id --root ./exp --self_id 0 --task_id xyz --from_id 1 --mode test --test_id uvw
@@ -73,7 +73,7 @@ python run.py make_match_idx --root ./exp --self_id 1 --task_id xyz --from_id 0 
 
 # test
 python run.py make_test --root ./exp --self_id 0 --task_id xyz --test_id uvw --round 2 --dataset_path ./data/Wine_2_123_1.0/0/test/dataset.csv --data_idx 2-8
-python run.py make_test --root ./exp --self_id 1 --task_id xyz --test_id uvw --round 2 --from_id 0 --dataset_path ./data/Wine_2_123_1.0/1/test/dataset.csv --data_idx 2-7
+python run.py make_test --root ./exp --self_id 1 --task_id xyz --test_id uvw --round 2 --from_id 0 --dataset_path ./data/Wine_2_123_1.0/1/all/dataset.csv --data_idx 2-7
 
 # output
 python run.py save_output --root ./exp --self_id 0 --task_id xyz --mode test --test_id uvw --from_id 1 --round 1

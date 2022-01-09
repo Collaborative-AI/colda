@@ -57,7 +57,59 @@ function check_login_second_user(){
   })
 }
 
+function check_login_third_user(){
+  test('check_login_third_user',(done)=>{
+    let check_login_final = (data) => {
+      try{
+        done()
+        console.log('window', window.localStorage.getItem('Apollo-token'))
+        // unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
+        modify_parameter('user_id', JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id)
+        console.log('user_id2', unittest_parameters.user_id)
+  
+      }catch (error){
+        done(error)
+      }
+    }
+  
+    // let cur_parameters = generate_parameters(train_callback_functions.login)
+    let cur_parameters = []
+    cur_parameters.push(check_login_final)
+    cur_parameters.push('Login_unittest')
+    // assistor
+    Login_wrapper.setData({loginForm: {username: unittest_parameters.third_user_username, 
+                                       password: unittest_parameters.third_user_password}, 
+                                       verification_res: unittest_parameters.verification_res})
+    Login_wrapper.vm.onSubmit(cur_parameters)
+  })
+}
 
+function check_login_fourth_user(){
+  test('check_login_fourth_user',(done)=>{
+    let check_login_final = (data) => {
+      try{
+        done()
+        console.log('window', window.localStorage.getItem('Apollo-token'))
+        // unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
+        modify_parameter('user_id', JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id)
+        console.log('user_id2', unittest_parameters.user_id)
+  
+      }catch (error){
+        done(error)
+      }
+    }
+  
+    // let cur_parameters = generate_parameters(train_callback_functions.login)
+    let cur_parameters = []
+    cur_parameters.push(check_login_final)
+    cur_parameters.push('Login_unittest')
+    // assistor
+    Login_wrapper.setData({loginForm: {username: unittest_parameters.fourth_user_username, 
+                                       password: unittest_parameters.fourth_user_password}, 
+                                       verification_res: unittest_parameters.verification_res})
+    Login_wrapper.vm.onSubmit(cur_parameters)
+  })
+}
 // function ceshi(){
 //   test('ceshi',()=>{  
 //     console.log('zhiyuanlai ssm', unittest_parameters.default_id_column)
@@ -73,11 +125,9 @@ function check_login_second_user(){
 // }
 
 let login_helper = {}
-// train_helper_functions.login = {}
-
 login_helper.check_login_first_user = check_login_first_user
-
 login_helper.check_login_second_user = check_login_second_user
-// login_helper.ceshi = ceshi
+login_helper.check_login_third_user = check_login_third_user
+login_helper.check_login_fourth_user = check_login_fourth_user
 
 export { login_helper}

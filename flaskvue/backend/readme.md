@@ -57,9 +57,12 @@
 
 1: testa apolloumn.email@gmail.com Aa1234567!
 2: testb Aa1234567!
+
+database_name = 'apollo_aws_mysql_unittest'
 3: xie1 Xie1@123
 4：xie2 Xie2@123
-5: leq1 Leq3@123
+5: leq1 Leq1@123
+5: leq2 Leq2@123
 
 
 10. AWS RDB information:

@@ -1,4 +1,6 @@
 import { login_helper } from './helper_folder/Apollo_login_helper';
+import { logout_helper } from './helper_folder/Apollo_logout_helper';
+import { delete_db_helper } from './helper_folder/Apollo_delete_db_helper';
 import { find_assistor_helper } from './helper_folder/Apollo_find_assistor_helper'
 jest.setTimeout(10000);
 
@@ -8,8 +10,14 @@ afterAll(() => {
 });
 
 describe('test_find_assistor', () => {
-  console.log("876766767")
-  login_helper.check_login_first_user
-  find_assistor_helper.get_train_id
-  find_assistor_helper.onSubmit
+  
+  let sponsor_mode = 'classification'
+  let assistor_username_list = 'xie2,leq1,leq2'
+
+  login_helper.check_login_first_user()
+  delete_db_helper.delete_db()
+  find_assistor_helper.get_train_id()
+
+  find_assistor_helper.onSubmit(sponsor_mode, assistor_username_list)
+  logout_helper.logout()
 })

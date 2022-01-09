@@ -1365,8 +1365,6 @@ export default {
 
           let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
-          
-
           const match_test_assistor_id_data = {
             file: test_hash_id_file_data,
             task_id: task_id,
@@ -1378,8 +1376,6 @@ export default {
               // handle success
               console.log("2.2 Test: assistor uploads id file")
 
-
-            
               unittest_parameters = generate_unittest_parameters(response.data)
               execute_unittest_list(unittest_callbacks, 3, "unread_test_request_unittest", unittest_parameters)
 
@@ -1733,6 +1729,7 @@ export default {
               test_outputs_pos = test_outputs_pos.split("?")
 
               let make_test_assistor_res = JSON.parse(test_outputs_pos[2])
+              console.log('wawa', make_test_assistor_res)
               let unittest_parameters = generate_unittest_parameters(make_test_assistor_res)
               execute_unittest_list(unittest_callbacks, 4, "unread_test_match_id_unittest", unittest_parameters)
               

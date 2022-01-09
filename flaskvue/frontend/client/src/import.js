@@ -9,7 +9,7 @@ let log = null
 console.log('5412312312')
 if (window.require != undefined){
   // console.log(window.require('sqlite3'))
-  // Database = window.require('better-sqlite3')
+  Database = window.require('better-sqlite3')
   fs = window.require('fs');
   ex = window.require("child_process");
   os = window.require('os');

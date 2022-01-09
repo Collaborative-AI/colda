@@ -27,8 +27,13 @@ afterAll(() => {
 
 });
 
-describe('test_unread_match_id', () => {
+describe('test_multiple_rounds_classification', () => {
   
+  let max_round = 2
+  let verify_algo = true
+  let sponsor_mode = 'classification'
+  let assistor_mode = 'regression'
+
   // Sponsor logins
   logout_helper.logout()
   login_helper.check_login_first_user()
@@ -36,7 +41,7 @@ describe('test_unread_match_id', () => {
   // Sponsor gets train id
   find_assistor_helper.get_train_id()
   // Sponsor finds assistor
-  find_assistor_helper.onSubmit()
+  find_assistor_helper.onSubmit(sponsor_mode)
   // Sponsor logouts
   logout_helper.logout()
 
@@ -70,7 +75,6 @@ describe('test_unread_match_id', () => {
   //sponsor logouts
   logout_helper.logout()
 
-  let max_round = 2
   for (let current_round = 1; current_round < 3; current_round++){
     //sponsor logins
     login_helper.check_login_first_user()
@@ -125,7 +129,7 @@ describe('test_unread_match_id', () => {
   //sponsor updates notifications
   notification_helper.update_notification()
   //sponsor unread test match id
-  unread_test_sponsor_match_id_helper.unread_test_sponsor_match_id()
+  unread_test_sponsor_match_id_helper.unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo)
   //sponsor logouts
   logout_helper.logout()
 
@@ -134,7 +138,7 @@ describe('test_unread_match_id', () => {
   //assistor updates notifications
   notification_helper.update_notification()
   //assistor runs unread match id
-  unread_test_assistor_match_id_helper.unread_test_assistor_match_id()
+  unread_test_assistor_match_id_helper.unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
   //assistor logouts
   logout_helper.logout()
 
@@ -143,7 +147,7 @@ describe('test_unread_match_id', () => {
   //sponsor updates notifications
   notification_helper.update_notification()
   // //sponsor unread test output
-  unread_test_output_helper.unread_test_output()
+  unread_test_output_helper.unread_test_output(sponsor_mode, assistor_mode, verify_algo)
   //sponsor logouts
   logout_helper.logout()
 

@@ -450,6 +450,7 @@ export default {
             // console.log('response!!', response.data)
             if (response.data == "wrong username"){
               // console.log("Username Wrong", response)
+              console.log('user_name_wrong')
               vm.$toasted.success(`Username Wrong. Please start a new task"`, { icon: 'fingerprint' })
               fs.appendFileSync(Log_address, "Username Wrong. Please start a new task")
               return

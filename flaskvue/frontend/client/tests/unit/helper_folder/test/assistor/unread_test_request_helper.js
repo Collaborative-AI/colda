@@ -1,4 +1,4 @@
-import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, modify_parameter, modify_first_been_call} from '../../Apollo_unittest_init'
+import { unittest_parameters, generate_unittest_log, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, modify_parameter, modify_first_been_call} from '../../Apollo_unittest_init'
 import { generate_parameters, retrieve_User_Sponsor_Table_record } from '../../Apollo_unittest_utils'
 jest.setTimeout(10000);
 
@@ -14,11 +14,9 @@ function unread_test_request(){
           unittest_parameters.task_id
         )
   
-        console.log('1_unread_test_request')
+        console.log(generate_unittest_log('unread_test_request'))
       }catch (error){
-        console.log('Error: 1_unread_test_request', error)
-        done(error)
-        
+        console.log(error)
       }
     }
   
@@ -35,35 +33,32 @@ function unread_test_request(){
           'auto'
         )
   
-        console.log('2_unread_test_request')
+        console.log(generate_unittest_log('unread_test_request'))
       }catch (error){
-        console.log('Error: 2_unread_test_request', error)
-        done(error)
+        console.log(error)
       }
     }
   
     let unread_test_request_3 = (data) => {
       try{
         expect(data[0]).toEqual(true)
-        console.log('3_unread_test_request')
+        console.log(generate_unittest_log('unread_test_request'))
       }catch (error){
-        console.log('Error: 3_unread_test_request', error)
-        done(error)
+        console.log(error)
       }
     }
 
     let unread_test_request_4 = (data) => {
       try{
-        console.log("aaa", data)
         let match_test_assistor_id_response = data[0].stored
   
         expect(match_test_assistor_id_response).toEqual(
           "assistor test match id stored"
         )
-        console.log('4_unread_test_request')
+
+        console.log(generate_unittest_log('unread_test_request'))
         done()
       }catch (error){
-        console.log('Error: 4_unread_test_request', error)
         done(error)
       }
     }

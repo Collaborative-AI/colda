@@ -117,7 +117,7 @@ describe('test_multiple_rounds_regression', () => {
   //assistor logouts
   logout_helper.logout()
 
-  for (let current_round = 1; current_round < 3; current_round++){
+  for (let current_round = 1; current_round <= max_round; current_round++){
     //sponsor logins
     login_helper.check_login_first_user()
     //sponsor gets nofification
@@ -164,86 +164,86 @@ describe('test_multiple_rounds_regression', () => {
     logout_helper.logout()
   }
   
-  // // Sponsor logins
-  // login_helper.check_login_first_user()
-  // // Sponsor gets test id
-  // find_test_assistor_helper.get_test_id()
-  // // Sponsor finds assistor
-  // find_test_assistor_helper.onSubmit()
-  // // Sponsor logouts
-  // logout_helper.logout()
+  // Sponsor logins
+  login_helper.check_login_first_user()
+  // Sponsor gets test id
+  find_test_assistor_helper.get_test_id()
+  // Sponsor finds assistor
+  find_test_assistor_helper.onSubmit()
+  // Sponsor logouts
+  logout_helper.logout()
 
-  // // assistor logins
-  // login_helper.check_login_second_user()
-  // //assistor updates nofifications
-  // notification_helper.update_notification()
-  // //unread request
-  // unread_test_request_helper.unread_test_request()
-  // //logout
-  // logout_helper.logout()
+  // assistor logins
+  login_helper.check_login_second_user()
+  //assistor updates nofifications
+  notification_helper.update_notification()
+  //unread request
+  unread_test_request_helper.unread_test_request()
+  //logout
+  logout_helper.logout()
 
-  // // assistor logins
-  // login_helper.check_login_third_user()
-  // //assistor updates nofifications
-  // notification_helper.update_notification()
-  // //unread request
-  // unread_test_request_helper.unread_test_request()
-  // //logout
-  // logout_helper.logout()
+  // assistor logins
+  login_helper.check_login_third_user()
+  //assistor updates nofifications
+  notification_helper.update_notification()
+  //unread request
+  unread_test_request_helper.unread_test_request()
+  //logout
+  logout_helper.logout()
 
-  // // assistor logins
-  // login_helper.check_login_fourth_user()
-  // //assistor updates nofifications
-  // notification_helper.update_notification()
-  // //unread request
-  // unread_test_request_helper.unread_test_request()
-  // //logout
-  // logout_helper.logout()
+  // assistor logins
+  login_helper.check_login_fourth_user()
+  //assistor updates nofifications
+  notification_helper.update_notification()
+  //unread request
+  unread_test_request_helper.unread_test_request()
+  //logout
+  logout_helper.logout()
 
-  // //sponsor logins
-  // login_helper.check_login_first_user()
-  // //sponsor updates notifications
-  // notification_helper.update_notification()
-  // //sponsor unread test match id
-  // unread_test_sponsor_match_id_helper.unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo)
-  // //sponsor logouts
-  // logout_helper.logout()
+  //sponsor logins
+  login_helper.check_login_first_user()
+  //sponsor updates notifications
+  notification_helper.update_notification()
+  //sponsor unread test match id
+  unread_test_sponsor_match_id_helper.unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo)
+  //sponsor logouts
+  logout_helper.logout()
 
-  // //assistor logins
-  // login_helper.check_login_second_user()
-  // //assistor updates notifications
-  // notification_helper.update_notification()
-  // //assistor runs unread match id
-  // unread_test_assistor_match_id_helper.unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
-  // //assistor logouts
-  // logout_helper.logout()
+  //assistor logins
+  login_helper.check_login_second_user()
+  //assistor updates notifications
+  notification_helper.update_notification()
+  //assistor runs unread match id
+  unread_test_assistor_match_id_helper.unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
+  //assistor logouts
+  logout_helper.logout()
 
-  // //assistor logins
-  // login_helper.check_login_third_user()
-  // //assistor updates notifications
-  // notification_helper.update_notification()
-  // //assistor runs unread match id
-  // unread_test_assistor_match_id_helper.unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
-  // //assistor logouts
-  // logout_helper.logout()
+  //assistor logins
+  login_helper.check_login_third_user()
+  //assistor updates notifications
+  notification_helper.update_notification()
+  //assistor runs unread match id
+  unread_test_assistor_match_id_helper.unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
+  //assistor logouts
+  logout_helper.logout()
 
-  // //assistor logins
-  // login_helper.check_login_fourth_user()
-  // //assistor updates notifications
-  // notification_helper.update_notification()
-  // //assistor runs unread match id
-  // unread_test_assistor_match_id_helper.unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
-  // //assistor logouts
-  // logout_helper.logout()
+  //assistor logins
+  login_helper.check_login_fourth_user()
+  //assistor updates notifications
+  notification_helper.update_notification()
+  //assistor runs unread match id
+  unread_test_assistor_match_id_helper.unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
+  //assistor logouts
+  logout_helper.logout()
 
-  // //sponsor logins
-  // login_helper.check_login_first_user()
-  // //sponsor updates notifications
-  // notification_helper.update_notification()
-  // // //sponsor unread test output
-  // unread_test_output_helper.unread_test_output(sponsor_mode, assistor_mode, verify_algo)
-  // //sponsor logouts
-  // logout_helper.logout()
+  //sponsor logins
+  login_helper.check_login_first_user()
+  //sponsor updates notifications
+  notification_helper.update_notification()
+  // //sponsor unread test output
+  unread_test_output_helper.unread_test_output(sponsor_mode, assistor_mode, verify_algo)
+  //sponsor logouts
+  logout_helper.logout()
 
 
 })

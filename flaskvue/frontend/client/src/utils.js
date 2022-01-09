@@ -57,7 +57,7 @@ export function Log(message, level){
 }
 
 export function check_if_notification_is_null(notification, name){
-  // console.log(name,'qwedas', notification)
+  console.log(name,'qwedas', notification)
   if (notification == null || notification == {}){
     Log(name + 'is null')
     return true

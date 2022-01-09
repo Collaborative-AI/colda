@@ -22,7 +22,7 @@ from Items.main.auth import token_auth
 def update_all_notifications():
 
     data = request.get_json()
-    print("notification data", data)
+    # print("notification data", data)
     if not data:
         return bad_request('You must post JSON data.')
     if 'response_data' not in data or not data.get('response_data'):
@@ -30,9 +30,9 @@ def update_all_notifications():
 
     response_data = data.get('response_data')
     
-    print("response_data", response_data)
-    print("response_data[0]", response_data[0])
-    print("list", response_data[0]["sender_random_id_list"])
+    # print("response_data", response_data)
+    # print("response_data[0]", response_data[0])
+    # print("list", response_data[0]["sender_random_id_list"])
 
     returndict = {"unread request":{}, "unread match id":{}, "unread situation":{}, "unread output":{}, "unread test request":{}, "unread test match id":{}, "unread test output":{}, "unread train stop":{}, "unread test stop":{}}
     user = User.query.get_or_404(g.current_user.id)

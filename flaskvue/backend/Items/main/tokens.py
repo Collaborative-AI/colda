@@ -29,5 +29,5 @@ def get_token():
     
     token = g.current_user.get_jwt()
     db.session.commit()
-    print("!!!!!", token)
+    # print("!!!!!", token)
     return jsonify({'token': token})

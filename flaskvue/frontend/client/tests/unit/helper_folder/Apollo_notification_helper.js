@@ -28,18 +28,31 @@ function update_notification(){
           // console.log(res1, res2)
           console.log('come2')
           let res1 = await get_notifications()
-          // console.log('zz1', res1)
-          let res2 = await update_notifications(res1)
-          // console.log('zz2', res2)
-          // console.log('zz4', res2.data["unread request"])
-          modify_parameter("unread_request_notification", res2.data["unread request"])
-          modify_parameter("unread_match_id_notification", res2.data["unread match id"])
-          modify_parameter("unread_situation_notification", res2.data["unread situation"])
-          modify_parameter("unread_output_notification", res2.data["unread output"])
-          // test stage
-          modify_parameter("unread_test_request_notification", res2.data["unread test request"])
-          modify_parameter("unread_test_match_id_notification", res2.data["unread test match id"])
-          modify_parameter("unread_test_output_notification", res2.data["unread test output"])
+          console.log('zz1', res1)
+          console.log('zz2', res1.data, res1.data.length)
+          console.log('zz3', res1.data != undefined, res1.data != [])
+          
+          let has_payload_greater_than_zero = false
+          for (let item of res1.data){
+            if (item.payload >= 1){
+              console.log('lihaine')
+              has_payload_greater_than_zero = true
+              let res2 = await update_notifications(res1)
+              // console.log('zz2', res2)
+              // console.log('zz4', res2.data["unread request"])
+              modify_parameter("unread_request_notification", res2.data["unread request"])
+              modify_parameter("unread_match_id_notification", res2.data["unread match id"])
+              modify_parameter("unread_situation_notification", res2.data["unread situation"])
+              modify_parameter("unread_output_notification", res2.data["unread output"])
+              // test stage
+              modify_parameter("unread_test_request_notification", res2.data["unread test request"])
+              modify_parameter("unread_test_match_id_notification", res2.data["unread test match id"])
+              modify_parameter("unread_test_output_notification", res2.data["unread test output"])
+            }
+          }
+          if (has_payload_greater_than_zero == false){
+            console.log('get_notification_null')
+          }
           done()
         }
         notification()

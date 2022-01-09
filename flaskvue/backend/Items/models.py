@@ -494,13 +494,13 @@ class Notification(PaginatedAPIMixin, db.Model):
         return json.loads(str(self.payload_json))
 
     def get_sender_random_id_list(self):
-        print("self.sender_random_id_list", self.sender_random_id_list)
+        # print("self.sender_random_id_list", self.sender_random_id_list)
         if not self.sender_random_id_list:
             return []
         return json.loads(str(self.sender_random_id_list))
     
     def get_task_id_list(self):
-        print("self.task_id_list", self.task_id_list)
+        # print("self.task_id_list", self.task_id_list)
         if not self.task_id_list:
             return []
         return json.loads(str(self.task_id_list))

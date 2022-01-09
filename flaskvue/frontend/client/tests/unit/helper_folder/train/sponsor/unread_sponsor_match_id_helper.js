@@ -73,7 +73,19 @@ function unread_sponsor_match_id(){
   })
 }
 
+
+function null_match_id_notification(){ 
+  test('null_match_id_notification', () => { 
+
+    let cur_parameters = [];
+    cur_parameters.push('unread_match_id_unittest')
+    Navbar_wrapper.vm.unread_match_id(unittest_parameters.unread_match_id_notification, cur_parameters)
+    console.log(generate_unittest_log('unread_sponsor_match_id'))
+  })
+}
+
 let unread_sponsor_match_id_helper = {}
 unread_sponsor_match_id_helper.unread_sponsor_match_id = unread_sponsor_match_id
+unread_sponsor_match_id_helper.null_match_id_notification = null_match_id_notification
 
 export { unread_sponsor_match_id_helper }

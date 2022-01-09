@@ -32,7 +32,7 @@ def send_situation():
 
     # get data from transferred message
     residual_list = data.get('residual_list')
-    print('residual list 1', residual_list)
+    # print('residual list 1', residual_list)
     print('residual length', len(residual_list))
     task_id = data.get('task_id')
     assistor_random_id_list = data.get('assistor_random_id_list')

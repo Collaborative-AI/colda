@@ -89,7 +89,7 @@ import { execute_unittest_list, generate_unittest_parameters, generate_message_s
 // // use Node API
 // If we run npm run electron:serve, window.ex would have the object
 // else we are running unittest, we will require directly
-import { ex,fs,os,node_path,dialog } from '../import.js'
+import { ex,fs,os,node_path,dialog, log } from '../import.js'
 
 // const ex = window.ex ? window.ex : require('child_process');
 // const fs = window.fs ? window.fs : require('fs');
@@ -206,7 +206,7 @@ export default {
       // Assistor might receive multiple task request, We need to iterate them
       for (let task_id in cur_unread_request_Taskid_dict){
         // console.log('root shi', this.root)
-        electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
         Log('assistor ceshi', 'info')
         // Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 
@@ -365,7 +365,7 @@ export default {
       
       for (let task_id in cur_unread_match_id_Taskid_dict){
 
-        electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
         // Log('sponsor ceshi3', 'info')
         const Log_address = this.handle_train_log_address(task_id)
 
@@ -409,7 +409,7 @@ export default {
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
       let vm = this;
 
-      electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
       
@@ -618,7 +618,7 @@ export default {
 
       let vm = this;
 
-      electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
       
@@ -753,7 +753,7 @@ export default {
 
       for (let task_id in cur_unread_situation_Taskid_dict){
 
-        electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
         
         const Log_address = this.handle_train_log_address(task_id)
@@ -784,7 +784,7 @@ export default {
       let vm = this;
       // console.log("4.2 Cur round is:" + rounds + task_id);
       // vm.$toasted.success("4.2 Cur round is:" + rounds +  task_id, { icon: 'fingerprint' })
-      electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
     
       const Log_address = vm.handle_train_log_address(task_id)
@@ -855,7 +855,7 @@ export default {
     unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks){
       
 
-      electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 
@@ -944,7 +944,7 @@ export default {
     unread_situation_assistor(rounds, task_id, unittest_callbacks) {
       
       let vm = this;
-      electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
 
@@ -1063,7 +1063,7 @@ export default {
 
       for (let task_id in cur_unread_output_Rounds_dict){
 
-        electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
         Log(generate_message_string("-------------------------- 5. Unread Output\n"), 'info')
         Log(generate_message_string("5.1 Update the output notification\n"), 'info')
@@ -1084,7 +1084,7 @@ export default {
       
       let vm = this
 
-      electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
       // const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
@@ -1180,7 +1180,7 @@ export default {
 
     unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time, unittest_callbacks){
       
-      electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 
@@ -1350,7 +1350,7 @@ export default {
       for (let test_id in cur_unread_test_request_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
-        electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
      
         // // console.log('unread test request mode', vm.sharedState.mode)
         if (vm.sharedState.mode == 'auto'){
@@ -1522,7 +1522,7 @@ export default {
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
-        electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
 
         const Log_address = this.handle_test_log_address(task_id, test_id)
@@ -1568,7 +1568,7 @@ export default {
       
       let vm = this;
 
-      electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_test_log_address(task_id, test_id)
       
@@ -1711,7 +1711,7 @@ export default {
 
       let vm = this;
 
-      electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_test_log_address(task_id, test_id)
       
@@ -1913,7 +1913,7 @@ export default {
       for (let test_id in cur_unread_test_output_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
-        electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
 
         const Log_address = this.handle_test_log_address(task_id, test_id)
@@ -1934,7 +1934,7 @@ export default {
 
       let vm = this
       // Obtain output from assistors
-      electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
 
       const payload = {
@@ -2016,7 +2016,7 @@ export default {
 
     unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time, unittest_callbacks){
       
-      electron_log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 

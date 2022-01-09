@@ -96,7 +96,8 @@ import { config } from 'process';
 import store from '../../store.js'
 import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../../utils.js'
 
-import { ex,fs,os,node_path,dialog } from '../../import.js'
+import { ex,fs,os,node_path,dialog,log } from '../../import.js'
+
 
 // const fs = window.fs ? window.fs : require('fs');
 // const ex = window.ex ? window.ex : require('child_process');
@@ -326,7 +327,7 @@ export default {
       
       console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
-      electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
+      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
       Log('sponsor ceshi', 'info')
       console.log('sponsor ceshi1')
       if (this.assistor_username_list == ""){

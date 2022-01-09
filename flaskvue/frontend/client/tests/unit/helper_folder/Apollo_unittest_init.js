@@ -6,6 +6,7 @@ const ex = require('child_process');
 const node_path = require('path');
 const os = require('os');
 const dialog = console.log
+const log = require('electron-log')
 
 import Login from '../../../src/views/Auth/Login.vue'
 import Navbar from '../../../src/components/Navbar.vue'
@@ -52,17 +53,17 @@ unittest_parameters.verification_res = true
 unittest_parameters.task_name = 'test1'
 unittest_parameters.task_description = "good test"
 // unittest_parameters.train_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
-unittest_parameters.train_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/0/train/dataset.csv"
-// unittest_parameters.train_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
+// unittest_parameters.train_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/0/train/dataset.csv"
+unittest_parameters.train_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
 unittest_parameters.train_id_column = "1"
 unittest_parameters.train_data_column = "2-8"
 unittest_parameters.train_target_column = "9"
 
 unittest_parameters.test_description = 'new test'
 // unittest_parameters.test_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
-unittest_parameters.test_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/0/test/dataset.csv"
+// unittest_parameters.test_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/0/test/dataset.csv"
 
-// unittest_parameters.test_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
+unittest_parameters.test_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
 
 unittest_parameters.test_id_column = "1"
 unittest_parameters.test_data_column = "2-8"
@@ -75,8 +76,8 @@ unittest_parameters.model_name = 'linear'
 unittest_parameters.metric_name = 'Accuracy_F1'
 // profile.vue
 // unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
-unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/1/all/dataset.csv"
-// unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
+// unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/1/all/dataset.csv"
+unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
 unittest_parameters.default_id_column = "1"
 unittest_parameters.default_data_column = "2-7"
 
@@ -177,10 +178,11 @@ let Find_Assistor_wrapper = mount(Find_Assistor, {
      },
     $axios: axios,
     $db: db,
-    fs: fs,
+    // fs: fs,
     ex: ex,
     node_path: node_path,
     os: os,
+    // log: log,
     dialog: {
       showErrorBox: dialog,
     }

@@ -11,7 +11,7 @@ afterAll(() => {
 
 describe('test_find_assistor', () => {
   
-  let sponsor_mode = 'classification'
+  let sponsor_mode = 'regression'
   let assistor_username_list = 'xie2,leq1,leq2'
 
   login_helper.check_login_first_user()

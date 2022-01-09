@@ -20,6 +20,9 @@ afterAll(() => {
 describe('test_unread_request', () => {
   console.log('des1')
 
+  let sponsor_mode = 'regression'
+  let assistor_username_list = 'xie2,leq1,leq2'
+
 // }
   // Sponsor logins
   logout_helper.logout()
@@ -28,7 +31,7 @@ describe('test_unread_request', () => {
   // Sponsor gets train id
   find_assistor_helper.get_train_id()
   // Sponsor finds assistor
-  find_assistor_helper.onSubmit()
+  find_assistor_helper.onSubmit(sponsor_mode, assistor_username_list)
   logout_helper.logout()
 
   // Assistor logins

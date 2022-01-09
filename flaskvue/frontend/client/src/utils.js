@@ -1,4 +1,4 @@
-// log = require('electron-log')
+const log = require('electron-log')
 // console = log
 
 export function generate_unittest_parameters(){
@@ -36,22 +36,22 @@ export function generate_message_string(){
 
 export function Log(message, level){
   if (level == 'error'){
-    window.log.error(message);
+    log.error(message);
   }
   else if (level == 'warn'){
-    window.log.warn(message);
+    log.warn(message);
   }
   else if (level == 'info'){
-    window.log.info(message);
+    log.info(message);
   }
   else if (level == 'verbose'){
-    window.log.verbose(message);
+    log.verbose(message);
   }
   else if (level == 'debug'){
-    window.log.debug(message);
+    log.debug(message);
   }
   else{
-    window.log.silly(message);
+    log.silly(message);
   }
   
 }

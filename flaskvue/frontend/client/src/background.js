@@ -11,7 +11,7 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 // console.log("BrowserWindow", BrowserWindow)
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
-const node_path = require('path');
+const path = require('path');
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } },
@@ -34,7 +34,9 @@ async function createWindow() {
       nodeIntegration: true,
       enableRemoteModule: true, // 允許在 Render Process 使用 Remote Module
       contextIsolation: false, // 讓在 preload.js 的定義可以傳遞到 Render Process (React)
-      preload: node_path.join(__dirname, "../src/preload.js")
+      // preload: node_path.join(__dirname, "../src/preload.js")
+      preload: path.join(app.getAppPath(), '../src/preload.js'),
+
       // contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION, (default is true)
     },
   });
@@ -44,7 +46,7 @@ async function createWindow() {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
     console.log("process.env.WEBPACK_DEV_SERVER_URL", process.env.WEBPACK_DEV_SERVER_URL)
-    
+    console.log('app get path', app.getAppPath(), path.join(app.getAppPath(), '../src/preload.js'))
     win.webContents.openDevTools();
     if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {

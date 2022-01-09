@@ -51,7 +51,7 @@ export default {
     getUserNotifications (id) {
       let since = 0
       const path = `/users/${id}/notifications/?since=${since}`
-      console.log("notification shua xin",since)
+      // console.log("notification shua xin",since)
       this.$axios.get(path)
         .then((response) => {
           // handle success
@@ -65,7 +65,7 @@ export default {
               
             }
             since = response.data[i].timestamp
-            console.log("notification",since)
+            // console.log("notification shua xin",since)
           }
         })
         .catch((error) => {

@@ -11,7 +11,7 @@ window.log = require('electron-log')
 // level: error, warn, info, verbose, debug
 // window.log.transports.file.resolvePath = () => window.node_path.join(__dirname, '../exp/logs/main.log');
 
-console.log('log_path', window.node_path.join(__dirname, '../exp/logs/main.log'));
+// console.log('log_path', window.node_path.join(__dirname, '../exp/logs/main.log'));
 window.log.transports.file.level = 'info';  //输出file等级设定
 window.log.transports.console.level = 'info'; // console.log等级设定。 修改输出到文件的时候，默认的输出日志级别, 默认为warn。
 
@@ -24,7 +24,7 @@ window.log.silly("silly");
 window.log.warn('这是个警告日志');
 console.log = window.log.log
 
-console.log("---", window.fs, window.ex , window.os , window.node_path, window.dialog , window.db)
+console.log("---", window.fs, window.ex , window.os , window.node_path, window.dialog )
 
 if (process.env.NODE_ENV === 'test') {
     console.log("test environment")

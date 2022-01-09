@@ -11,7 +11,7 @@ export default {
             console.log("checkAuthority_true", store.state.authority)
             return true
         }
-        console.log("checkAuthority_false", store.state.authority)
+        // console.log("checkAuthority_false", store.state.authority)
         return true
     },
     // includeAuthority(){

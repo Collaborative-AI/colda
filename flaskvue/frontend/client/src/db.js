@@ -4,14 +4,14 @@
 // import path from 'path'
 // console.log("fs", fs)
 
-console.log("54321")
+// console.log("54321")
 // const Database = window.db
 const Database = window.db ? window.db : require('better-sqlite3');
-console.log("5555")
-console.log('21312312', Database)
-console.log('12123', window.db)
-const db = new Database('Apollo_Client_data.db', { verbose: console.log });
-console.log('21312312', db)
+// console.log("5555")
+// console.log('21312312', Database)
+// console.log('12123', window.db)
+const db = new Database('Apollo_Client_data.db', { verbose: null });
+// console.log('21312312', db)
 // let db = 5 
 
 

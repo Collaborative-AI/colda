@@ -51,7 +51,7 @@ module.exports = {
               }
             ]
           },
-          "extraResources": ["./dist/**"],
+          "extraResources": ["./dist/**", "./src/preload.js"],
           "directories": {
             "output": "./build"
           },

@@ -108,11 +108,11 @@ export default {
   },
   methods: {
     get_test_id () {
-      console.log("$$$$$$$$$$$$$$$^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", this.task_id)
+      // console.log("$$$$$$$$$$$$$$$^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", this.task_id)
       this.$axios.get('/create_new_test_task/')
         .then((response) => {
           this.test_id = response.data.test_id
-          console.log("task_id))))))))))))))00", this.task_id)
+          // console.log("task_id))))))))))))))00", this.task_id)
           let unittest_parameters = generate_unittest_parameters(this.test_id)
           execute_unittest_list(arguments[arguments.length-1], 0, "find_test_assistor_unittest", unittest_parameters)
         })

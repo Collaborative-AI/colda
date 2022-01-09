@@ -285,7 +285,7 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.authority) {
       const hasauthority = authority.checkAuthority(to.meta.authority)
-      console.log("hasauthority", hasauthority)
+      // console.log("hasauthority", hasauthority)
       if (!hasauthority) next({ name: 'Home' })
     }
 

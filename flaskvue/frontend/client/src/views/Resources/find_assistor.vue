@@ -96,11 +96,14 @@ import { config } from 'process';
 import store from '../../store.js'
 import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../../utils.js'
 
+
 const fs = window.fs ? window.fs : require('fs');
 const ex = window.ex ? window.ex : require('child_process');
 const node_path = window.node_path ? window.node_path : require('path');
 const os = window.os ? window.os : require('os');
 const dialog = window.dialog ? window.dialog : require('electron');
+const electron_log = window.log ? window.log : require("electron-log")
+
 // const store = require('../../store').defaultv
 // const $ = require('jquery')
 
@@ -171,14 +174,14 @@ export default {
       }
     },
     get_train_id () {
-      console.log("$$$$$$$$$$$$$$$^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+      // console.log("$$$$$$$$$$$$$$$^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
       this.$axios.get('/create_new_train_task/')
         .then((response) => {
           this.task_id = response.data.task_id
 
           let unittest_parameters = generate_unittest_parameters(this.task_id)
           execute_unittest_list(arguments[arguments.length-1], 0, "find_assistor_unittest", unittest_parameters)
-          console.log("task_id))))))))))))))00", this.task_id)
+          // console.log("task_id))))))))))))))00", this.task_id)
         })
         .catch((error) => {
           console.log(error)
@@ -321,8 +324,12 @@ export default {
     },
 
     onSubmit (e) {
+      
       console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
+      electron_log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
+      Log('sponsor ceshi', 'info')
+      console.log('sponsor ceshi1')
       if (this.assistor_username_list == ""){
         dialog.showErrorBox('Please Type in the Assistor Username', 'Thank you very much')
       }else if (this.task_id == ""){

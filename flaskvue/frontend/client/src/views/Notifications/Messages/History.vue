@@ -863,13 +863,13 @@ export default {
 
     get_backend_log(task_id){
       let vm = this
-      console.log('hshs')
+      // console.log('hshs')
       const payload = {
         task_id: task_id,
       }
       this.$axios.post('/get_backend_log/', payload)
         .then((response) => {
-          console.log('backend',response)
+          // console.log('backend',response)
           vm.backend_log=response.data
           
         })
@@ -885,12 +885,12 @@ export default {
       let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
       Log_content = Log_content.split("\n")
       // $log('root address', this.root) 
-      vm.$log.pretty('title','pretty print','danger')
-      const train_log_address2 = node_path.join(this.root.toString(), 'logs', this.task_id.toString(),'log.txt');
+      // vm.$log.pretty('title','pretty print','danger')
+      // const train_log_address2 = node_path.join(this.root.toString(), 'logs', vm.sharedState.user_id.toString(), this.task_id.toString(),'log.txt');
       // const train_log_address2 = node_path.join(this.root.toString(), '../exp/logs', this.task_id.toString(),'log.txt');
 
-      let Log_content2 = fs.readFileSync(train_log_address2, {encoding:'utf8', flag:'r'});
-      Log_content2 = Log_content2.split("\n")
+      // let Log_content2 = fs.readFileSync(train_log_address2, {encoding:'utf8', flag:'r'});
+      // Log_content2 = Log_content2.split("\n")
       this.messages = [];
       this.messages2 = []
       
@@ -904,10 +904,10 @@ export default {
         }
       }
 
-      for (let i = 327; i < Log_content2.length; i++){
-        this.messages2.push(Log_content2[i])
+      // for (let i = 0; i < Log_content2.length; i++){
+      //   this.messages2.push(Log_content2[i])
         
-      }
+      // }
 
 
       for (let message of this.messages){        
@@ -1308,9 +1308,10 @@ export default {
     this.task_name = this.$route.query.from_task_name
     this.test_id = this.$route.query.from_test_id
     this.task_description = this.$route.query.from_task_description
-    console.log('this.test_id', this.test_id)
+    // console.log('this.test_id', this.test_id)
+    // this.log.transports.file.resolvePath = () => this.node_path.join(this.root.toString(), '/logs', this.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
 
-    window.log.transports.file.resolvePath = () => window.node_path.join(this.root.toString(), '/logs', this.task_id.toString(),'log.txt');
+    // window.log.transports.file.resolvePath = () => window.node_path.join(this.root.toString(), '/logs', this.task_id.toString(),'log.txt');
     // const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
 
     // window.log.transports.file.resolvePath = () => wino.join(, 'logs/main.log');

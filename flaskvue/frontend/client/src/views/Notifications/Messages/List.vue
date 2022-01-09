@@ -183,7 +183,7 @@ export default {
         .then((response) => {
           // handle success
           vm.messages = response.data
-          console.log("vm.messages", vm.messages)
+          // console.log("vm.messages", vm.messages)
 
 
           

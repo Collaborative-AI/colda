@@ -1,20 +1,18 @@
-import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper} from '../../Apollo_unittest_init'
+import { unittest_parameters, generate_unittest_log, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper} from '../../Apollo_unittest_init'
 import { generate_parameters, retrieve_User_Sponsor_Table_record } from '../../Apollo_unittest_utils'
 jest.setTimeout(10000);
 
 
-function unread_sponsor_situation_helper_function(){
-  test('unread_sponsor_situation_helper', (done) => { 
+function unread_sponsor_situation(){
+  test('unread_sponsor_situation', () => { 
     let unread_sponsor_situation_1 = (data) => {
       try{
         let situation_dict = data[0]
-        console.log('situation_dict', situation_dict)
-  
         expect(situation_dict[unittest_parameters.task_id]).not.toBeNull()
-        done()
-        console.log('unread_sponsor_situation_1')
+        
+        console.log(generate_unittest_log('unread_sponsor_situation'))
       }catch (error){
-        done(error)
+        console.log(error)
       }
     }
   
@@ -25,28 +23,26 @@ function unread_sponsor_situation_helper_function(){
         let model_name = data[2]
         
         let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id, 'train')
-  
         expect(train_file_path).toEqual(row.train_file_path)
         expect(train_data_column).toEqual(row.train_data_column)
         expect(model_name).toEqual(row.model_name)
+
+        console.log(generate_unittest_log('unread_sponsor_situation'))
       }catch (error){
-        done(error)
+        console.log(error)
       }
     }
   
     let unread_sponsor_situation_3 = (data) => {
       try{
-        console.log('zzz90',data)
-        console.log('zzz91',typeof(data[0]))
         let indicator = data[0]
         expect(indicator).toEqual(true)
-        done()
+
+        console.log(generate_unittest_log('unread_sponsor_situation'))
       }catch (error){
-        done(error)
+        console.log(error)
       }
     }
-  
-    
   
     let cur_parameters = [];
     cur_parameters.push(unread_sponsor_situation_1)
@@ -58,11 +54,7 @@ function unread_sponsor_situation_helper_function(){
   })
 }
 
-
-
 let unread_sponsor_situation_helper = {}
-
-unread_sponsor_situation_helper.unread_sponsor_situation = unread_sponsor_situation_helper_function
-
+unread_sponsor_situation_helper.unread_sponsor_situation = unread_sponsor_situation
 
 export { unread_sponsor_situation_helper }

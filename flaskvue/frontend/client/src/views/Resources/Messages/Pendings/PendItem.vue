@@ -66,11 +66,12 @@
 import store from '../../../../store'
 import db from '../../../../db'
 // import penditem from "../Penditem.vue"
-const fs = window.fs;
-const ex = window.ex;
-const node_path = window.node_path;
-const os = window.os;
-const dialog = window.dialog
+import { ex,fs,os,node_path,dialog } from '../../../../import.js'
+// const fs = window.fs;
+// const ex = window.ex;
+// const node_path = window.node_path;
+// const os = window.os;
+// const dialog = window.dialog
 
 export default {
   name: 'PendItem',  // Name of the component

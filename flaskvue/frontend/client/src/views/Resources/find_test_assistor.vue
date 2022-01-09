@@ -69,11 +69,13 @@ import store from '../../store'
 import db from '../../db'
 import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../../utils.js'
 
-const fs = window.fs ? window.fs : require('fs');
-const ex = window.ex ? window.ex : require('child_process');
-const node_path = window.node_path ? window.node_path : require('path');
-const os = window.os ? window.os : require('os');
-const dialog = window.dialog ? window.dialog : require('electron');
+import { ex,fs,os,node_path,dialog } from '../../import.js'
+
+// const fs = window.fs ? window.fs : require('fs');
+// const ex = window.ex ? window.ex : require('child_process');
+// const node_path = window.node_path ? window.node_path : require('path');
+// const os = window.os ? window.os : require('os');
+// const dialog = window.dialog ? window.dialog : require('electron');
 // const store = require('../../store').defaultv
 // const $ = require('jquery')
 
@@ -457,8 +459,8 @@ export default {
     console.log('ttt', this.$toasted)
     console.log('fff', this.$route)
     // console.log('565656', this.$route.query.from)
-    this.task_id = this.$route.query.from;
-    this.task_name = this.$route.query.from_task_name
+    // this.task_id = this.$route.query.from;
+    // this.task_name = this.$route.query.from_task_name
 
     this.get_test_id();
 

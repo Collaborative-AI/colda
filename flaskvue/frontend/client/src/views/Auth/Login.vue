@@ -37,6 +37,7 @@
 <script>
 import store from '../../store.js'
 import { execute_unittest_list } from '../../utils.js'
+// console.log('window44', window)
 // const store = require('../../store').default
 
 export default {

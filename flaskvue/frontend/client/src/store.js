@@ -1,8 +1,9 @@
 
-const os = window.os ? window.os : require('os');
-const node_path = window.node_path ? window.node_path : require('path');
-const paht = require('path');
+// const os = window.os ? window.os : require('os');
+// const node_path = window.node_path ? window.node_path : require('path');
+// const paht = require('path');
 
+import { os, node_path } from './import.js'
 import db from './db'
 
 export default {

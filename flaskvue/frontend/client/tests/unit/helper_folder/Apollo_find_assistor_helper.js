@@ -1,4 +1,4 @@
-import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper} from './Apollo_unittest_init'
+import { unittest_parameters, modify_parameter, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper} from './Apollo_unittest_init'
 import { generate_parameters, retrieve_User_Sponsor_Table_record } from './Apollo_unittest_utils'
 jest.setTimeout(10000);
 
@@ -22,8 +22,8 @@ function check_find_assistor_sponsor_get_train_id(){
   })
 }
 
-function check_find_assistor_sponsor_onSubmit_1(){
-  test('check_find_assistor_sponsor_onSubmit_1',(done) => { 
+function check_find_assistor_sponsor_onSubmit(sponsor_mode, assistor_username_list){
+  test('check_find_assistor_sponsor_onSubmit',(done) => { 
     let check_find_assistor_sponsor_onSubmit_1 = (data) => {
       try{
         let train_file_path = data[0]
@@ -50,7 +50,7 @@ function check_find_assistor_sponsor_onSubmit_1(){
         console.log('aqaqaq')
         console.log('check_find_assistor_sponsor_onSubmit_1')
       }catch (error){
-        done(error)
+        console.log(error)
       }
     }
   
@@ -66,8 +66,9 @@ function check_find_assistor_sponsor_onSubmit_1(){
         expect(task_id).toEqual(
           unittest_parameters.task_id
         )
+        let temp_assistor_username_list = assistor_username_list.split(",")
         expect(assistor_num).toEqual(
-          1
+          temp_assistor_username_list.length
         )
         done()
         // console.log('check_find_assistor_sponsor_onSubmit_2')
@@ -91,6 +92,9 @@ function check_find_assistor_sponsor_onSubmit_1(){
     cur_parameters.push(check_find_assistor_sponsor_onSubmit_3)
     cur_parameters.push('find_assistor_unittest')
     // assistor
+    console.log("43211234", sponsor_mode)
+    modify_parameter("task_mode", sponsor_mode)
+    modify_parameter("assistor_username_list", assistor_username_list)
     Find_Assistor_wrapper.setData({task_id: unittest_parameters.task_id,
                                    task_name: unittest_parameters.task_name, 
                                    task_description: unittest_parameters.task_description,
@@ -109,6 +113,6 @@ function check_find_assistor_sponsor_onSubmit_1(){
 
 let find_assistor_helper = {}
 find_assistor_helper.get_train_id = check_find_assistor_sponsor_get_train_id
-find_assistor_helper.onSubmit = check_find_assistor_sponsor_onSubmit_1
+find_assistor_helper.onSubmit = check_find_assistor_sponsor_onSubmit
 
 export { find_assistor_helper }

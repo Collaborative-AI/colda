@@ -96,14 +96,13 @@ import { config } from 'process';
 import store from '../../store.js'
 import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../../utils.js'
 
+import { ex,fs,os,node_path,dialog } from '../../import.js'
 
-const fs = window.fs ? window.fs : require('fs');
-const ex = window.ex ? window.ex : require('child_process');
-const node_path = window.node_path ? window.node_path : require('path');
-const os = window.os ? window.os : require('os');
-const dialog = window.dialog ? window.dialog : require('electron');
-const electron_log = window.log ? window.log : require("electron-log")
-
+// const fs = window.fs ? window.fs : require('fs');
+// const ex = window.ex ? window.ex : require('child_process');
+// const node_path = window.node_path ? window.node_path : require('path');
+// const os = window.os ? window.os : require('os');
+// const dialog = window.dialog ? window.dialog : require('electron');
 // const store = require('../../store').defaultv
 // const $ = require('jquery')
 
@@ -455,6 +454,7 @@ export default {
             // console.log('response!!', response.data)
             if (response.data == "wrong username"){
               // console.log("Username Wrong", response)
+              console.log('user_name_wrong')
               vm.$toasted.success(`Username Wrong. Please start a new task"`, { icon: 'fingerprint' })
               fs.appendFileSync(Log_address, "Username Wrong. Please start a new task")
               return

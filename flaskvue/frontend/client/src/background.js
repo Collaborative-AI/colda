@@ -35,8 +35,6 @@ async function createWindow() {
       enableRemoteModule: true, // 允許在 Render Process 使用 Remote Module
       contextIsolation: false, // 讓在 preload.js 的定義可以傳遞到 Render Process (React)
       // preload: node_path.join(__dirname, "../src/preload.js")
-      preload: path.join(app.getAppPath(), '../src/preload.js'),
-
       // contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION, (default is true)
     },
   });

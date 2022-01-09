@@ -73,9 +73,9 @@
 </template>
 
 <script>
-
-const fs = window.fs ? window.fs : require('fs');
-const dialog = window.dialog ? window.dialog : require('electron');
+import { ex,fs,os,node_path,dialog } from '../../import.js'
+// const fs = window.fs ? window.fs : require('fs');
+// const dialog = window.dialog ? window.dialog : require('electron');
 
 // const store = require('../../store').default
 // const db = require('../../db').default

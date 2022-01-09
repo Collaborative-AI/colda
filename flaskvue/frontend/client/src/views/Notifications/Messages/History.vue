@@ -191,11 +191,12 @@
 </template>
 
 <script>
-const fs = window.fs;
-const ex = window.ex;
-const os = window.os;
-const node_path = window.node_path;
-const log = window.log;
+import { ex,fs,os,node_path,dialog } from '../../../import.js'
+// const fs = window.fs;
+// const ex = window.ex;
+// const os = window.os;
+// const node_path = window.node_path;
+// const log = window.log;
 
 import store from '../../../store'
 // 导入 vue-markdown 组件解析 markdown 原文为　HTML

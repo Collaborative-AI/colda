@@ -5,7 +5,7 @@ const fs = require('fs');
 const ex = require('child_process');
 const node_path = require('path');
 const os = require('os');
-const dialog = require('electron');
+const dialog = console.log
 
 import Login from '../../../src/views/Auth/Login.vue'
 import Navbar from '../../../src/components/Navbar.vue'
@@ -173,7 +173,10 @@ let Find_Assistor_wrapper = mount(Find_Assistor, {
     ex: ex,
     node_path: node_path,
     os: os,
-    dialog: dialog,
+    dialog: {
+      showErrorBox: dialog,
+    }
+    
     // split: 
   },
   stubs: ['router-link','router-view']
@@ -201,7 +204,9 @@ let Profile_wrapper = mount(Profile, {
     ex: ex,
     node_path: node_path,
     os: os,
-    dialog: dialog,
+    dialog: {
+      showErrorBox: dialog,
+    }
     // split: 
   },
   stubs: ['router-link','router-view']
@@ -220,7 +225,9 @@ let Find_Test_Assistor_Wrapper = mount(Find_Test_Assistor, {
     ex: ex,
     node_path: node_path,
     os: os,
-    dialog: dialog,
+    dialog: {
+      showErrorBox: dialog,
+    }
     // split: 
   },
   stubs: ['router-link','router-view']

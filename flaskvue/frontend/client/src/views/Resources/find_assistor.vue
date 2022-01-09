@@ -96,11 +96,13 @@ import { config } from 'process';
 import store from '../../store.js'
 import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../../utils.js'
 
-const fs = window.fs ? window.fs : require('fs');
-const ex = window.ex ? window.ex : require('child_process');
-const node_path = window.node_path ? window.node_path : require('path');
-const os = window.os ? window.os : require('os');
-const dialog = window.dialog ? window.dialog : require('electron');
+import { ex,fs,os,node_path,dialog } from '../../import.js'
+
+// const fs = window.fs ? window.fs : require('fs');
+// const ex = window.ex ? window.ex : require('child_process');
+// const node_path = window.node_path ? window.node_path : require('path');
+// const os = window.os ? window.os : require('os');
+// const dialog = window.dialog ? window.dialog : require('electron');
 // const store = require('../../store').defaultv
 // const $ = require('jquery')
 

@@ -55,7 +55,7 @@ module.exports = {
           "directories": {
             "output": "./build"
           },
-          "asar":false,
+          // "asar":false,
 
         }
       }

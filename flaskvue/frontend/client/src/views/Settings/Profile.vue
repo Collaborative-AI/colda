@@ -228,6 +228,11 @@ export default {
         //   default_model_name: vm.default_model_name,
         // });
         console.log('dele1')
+        console.log('dele2')
+        let unittest_parameters = generate_unittest_parameters(vm.default_file_path, vm.default_id_column, vm.default_data_column)
+        execute_unittest_list(unittest_callbacks, 0, "profile_unittest", unittest_parameters)
+        vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
+
         })
       }else{
         console.log('dele4')
@@ -261,13 +266,14 @@ export default {
           // + ' WHERE user_id = ?'); 
           // console.log('dele3')
           // stmt.run(vm.default_file_path, vm.default_id_column, vm.default_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id);
+            console.log('dele2')
+            let unittest_parameters = generate_unittest_parameters(vm.default_file_path, vm.default_id_column, vm.default_data_column)
+            execute_unittest_list(unittest_callbacks, 0, "profile_unittest", unittest_parameters)
+            vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
+
           })
         }
       }
-      console.log('dele2')
-      let unittest_parameters = generate_unittest_parameters(vm.default_file_path, vm.default_id_column, vm.default_data_column)
-      execute_unittest_list(unittest_callbacks, 0, "profile_unittest", unittest_parameters)
-      vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
       })
     },
 

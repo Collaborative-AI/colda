@@ -284,45 +284,73 @@ export default {
           console.log("true")
           console.log(vm.test_file_path,vm.test_id_column,vm.test_target_column)
 
-          let insert_sentence = `INSERT INTO "User_Sponsor_Table"("user_id", "test_indicator", "task_id", "task_name", "test_id", "test_file_path", "test_id_column","test_data_column","test_target_column") VALUES 
-              (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.task_name + `", "` +vm.test_id + `", "` +vm.test_file_path+ `", "` +vm.test_id_column+`", "`+vm.test_data_column+`", "`+vm.test_target_column+`")`
-          console.log(insert_sentence)
+          let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ?' +
+                                 'AND test_indicator = train AND task_id = ?'
+          let param = [vm.sharedState.user_id, vm.task_id]
+          console.log('select_sentence', select_sentence)
 
-          var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', vm.task_id);
 
-          console.log("s1 row",row)
-          vm.task_mode = row.task_mode
-          vm.model_name = row.model_name
-          vm.metric_name = row.metric_name
+          db.get(select_sentence, param, (err, row) => {
+            if (err) {
+              console.error(err);
+            }
+            
+            console.log("s1 row",row)
+            vm.task_mode = row.task_mode
+            vm.model_name = row.model_name
+            vm.metric_name = row.metric_name
+
+          // var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', vm.task_id);
+
+          // console.log("s1 row",row)
+          // vm.task_mode = row.task_mode
+          // vm.model_name = row.model_name
+          // vm.metric_name = row.metric_name
+
+          let sentence = `INSERT INTO "User_Sponsor_Table"("user_id", "test_indicator", "task_id", "task_name",`+ `
+                          "test_id", "test_file_path", "test_id_column","test_data_column","test_target_column",`+ 
+                          `"task_mode", "model_name", "metric_name") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          let param = [vm.sharedState.user_id, 'test', vm.task_id, vm.task_name,
+                    vm.test_id, vm.test_file_path, vm.test_id_column, vm.test_data_column, 
+                    vm.test_target_column, vm.task_mode, vm.model_name, vm.metric_name]
+
+
+          // let insert_sentence = `INSERT INTO "User_Sponsor_Table"("user_id", "test_indicator", "task_id", "task_name", "test_id", "test_file_path", "test_id_column","test_data_column","test_target_column", "task_mode", "model_name", "metric_name") VALUES 
+          //     (`+`"`+vm.sharedState.user_id+`", "test","` + vm.task_id + `", "` +vm.task_name + `", "` +vm.test_id + `", "` +vm.test_file_path+ `", "` +vm.test_id_column+`", "`+vm.test_data_column+`", "`+vm.test_target_column+`", "`+vm.task_mode`", "`+vm.model_name`", "`+vm.metric_name`")`
+          // console.log(insert_sentence)
+          vm.$db.run(sentence, param, function(err){
+            if (err){
+              console.log(err);
+            }
 
           let unittest_parameters = generate_unittest_parameters(vm.task_mode, vm.model_name, vm.metric_name)
           execute_unittest_list(arguments[arguments.length-1], 0, "find_assistor_unittest", unittest_parameters)
 
 
-          const stmt = vm.$db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
-          ' ( @task_name, @task_description, @user_id, @test_indicator, @task_id, @test_id, @train_file_path,' +
-          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @task_mode, @model_name, @metric_name)');
+          // const stmt = vm.$db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
+          // ' ( @task_name, @task_description, @user_id, @test_indicator, @task_id, @test_id, @train_file_path,' +
+          // ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+          // ' @test_data_column, @test_target_column, @task_mode, @model_name, @metric_name)');
              
-          stmt.run({
-            task_name: vm.task_name, 
-            task_description: '', 
-            user_id: vm.sharedState.user_id, 
-            test_indicator: "test", 
-            task_id: vm.task_id,
-            test_id: vm.test_id,
-            train_file_path: '', 
-            train_id_column: '', 
-            train_data_column: '', 
-            train_target_column: '', 
-            test_file_path: vm.test_file_path,
-            test_id_column: vm.test_id_column,
-            test_data_column: vm.test_data_column,
-            test_target_column: vm.test_target_column,
-            task_mode: vm.task_mode, 
-            model_name: vm.model_name,
-            metric_name: vm.metric_name
-          });
+          // stmt.run({
+          //   task_name: vm.task_name, 
+          //   task_description: '', 
+          //   user_id: vm.sharedState.user_id, 
+          //   test_indicator: "test", 
+          //   task_id: vm.task_id,
+          //   test_id: vm.test_id,
+          //   train_file_path: '', 
+          //   train_id_column: '', 
+          //   train_data_column: '', 
+          //   train_target_column: '', 
+          //   test_file_path: vm.test_file_path,
+          //   test_id_column: vm.test_id_column,
+          //   test_data_column: vm.test_data_column,
+          //   test_target_column: vm.test_target_column,
+          //   task_mode: vm.task_mode, 
+          //   model_name: vm.model_name,
+          //   metric_name: vm.metric_name
+          // });
 
           // Check DB
           unittest_parameters = generate_unittest_parameters()
@@ -420,6 +448,10 @@ export default {
               // console.log(error.response.data)
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
+
+          })
+
+          })
 
           let make_test_local = null;
           try{   

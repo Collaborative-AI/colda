@@ -191,9 +191,20 @@ export default {
       // // console.log('55555', unittest_callbacks)
       let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
       execute_unittest_list(unittest_callbacks, 0, "unread_request_unittest", unittest_parameters)
+
+
+      var select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?' 
+      var param = [vm.sharedState.user_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, param, (err, row) => {
+        if (err) {
+          console.error(err);
+        }
       
 
-      var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
+      // var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
       // Log(generate_message_string('55555',row), 'debug')
 
       if (row == null){
@@ -211,7 +222,17 @@ export default {
         // Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 
         if (vm.sharedState.mode == 'auto'){
-          var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+
+          var select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id = ?'
+          var param = [vm.sharedState.user_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, param, (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+          // var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
           // Log(generate_message_string('row kan', row), 'debug')
           let default_file_path = row.default_file_path
           let default_id_column = row.default_id_column
@@ -220,31 +241,45 @@ export default {
           let default_mode = row.default_mode
           let default_model_name = row.default_model_name
 
-          const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+
+          var sentence = `INSERT INTO "User_Sponsor_Table"("user_id", "task_id", "test_id", "task_name", "task_description", "test_name", "test_description", "train_file_path",` +
+          ` "train_id_column, "train_data_column", "train_target_column", "test_file_path", "test_id_column",` +
+          ` "test_data_column", "test_target_column", "mode", "test_indicator", "model_name") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          var param = [vm.sharedState.user_id, task_id, '', '', '', '', '', default_file_path, default_id_column, default_data_column, default_target_column, 
+                      default_file_path, default_id_column, default_data_column, default_target_column, default_mode, 'train', default_model_name]
+
+          vm.$db.run(sentence, param, function(err){
+            if (err){
+              console.log('err info',err);
+            }
+
+
+
+          // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+          // ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+          // ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+          // ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
-          stmt.run({
-            user_id: vm.sharedState.user_id, 
-            task_id: task_id,
-            test_id: '',
-            task_name: '', 
-            task_description: '', 
-            test_name: '',
-            test_description: '',
-            train_file_path: default_file_path, 
-            train_id_column: default_id_column, 
-            train_data_column: default_data_column, 
-            train_target_column: default_target_column, 
-            test_file_path: default_file_path,
-            test_id_column: default_id_column,
-            test_data_column: default_data_column,
-            test_target_column: default_target_column,
-            mode: default_mode, 
-            test_indicator: 'train',
-            model_name: default_model_name
-          });
+          // stmt.run({
+          //   user_id: vm.sharedState.user_id, 
+          //   task_id: task_id,
+          //   test_id: '',
+          //   task_name: '', 
+          //   task_description: '', 
+          //   test_name: '',
+          //   test_description: '',
+          //   train_file_path: default_file_path, 
+          //   train_id_column: default_id_column, 
+          //   train_data_column: default_data_column, 
+          //   train_target_column: default_target_column, 
+          //   test_file_path: default_file_path,
+          //   test_id_column: default_id_column,
+          //   test_data_column: default_data_column,
+          //   test_target_column: default_target_column,
+          //   mode: default_mode, 
+          //   test_indicator: 'train',
+          //   model_name: default_model_name
+          // });
 
           // check task_id and vm.sharedState.mode
           
@@ -318,6 +353,8 @@ export default {
               // console.log(error)
               this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
             })
+          })
+          })
       } else if (vm.sharedState.mode == 'manual'){
         vm.sharedState.pending_num++;
         const add_train_pending = {
@@ -342,7 +379,7 @@ export default {
     }//end for
 
       
-    
+      })
     },
 
 
@@ -509,7 +546,17 @@ export default {
 
           // let select_train_target_column = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
           // // console.log("select_train_target_column", select_train_target_column)
-          var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+          var select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?'
+          var param = [vm.sharedState.user_id, 'train', task_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, param, (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
           // // console.log("match row",row)
           let train_file_path = row.train_file_path
@@ -612,6 +659,7 @@ export default {
           // console.log(error)
           // handle error
         }) 
+        })
     },
 
     unread_match_id_assistor(task_id, unittest_callbacks) {
@@ -796,8 +844,17 @@ export default {
       } catch (err) {
         // console.log(err)
       }
+
+      var select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?'
+      var param = [vm.sharedState.user_id, vm.task_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, param, (err, row) => {
+      if (err) {
+        console.error(err);
+      }
       
-      let select_train_data_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
       var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
       let train_file_path = row.train_file_path

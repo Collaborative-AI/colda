@@ -1,8 +1,11 @@
 import store from '../../../src/store'
 
-
 function logout_function(){
-    store.logoutAction()
+    test('logout', () => {
+
+        store.logoutAction()
+        
+    })
 }
 
 let logout_helper = {}

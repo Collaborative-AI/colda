@@ -5,11 +5,13 @@ let os = null
 let node_path = null
 let dialog = null
 let log = null
+let sqlite3 = null
 
 console.log('5412312312')
 if (window.require != undefined){
+  sqlite3 = window.require('sqlite3').verbose();
   // console.log(window.require('sqlite3'))
-  Database = window.require('better-sqlite3')
+  // Database = window.require('better-sqlite3')
   fs = window.require('fs');
   ex = window.require("child_process");
   os = window.require('os');
@@ -19,7 +21,8 @@ if (window.require != undefined){
   log = window.require('electron-log')
   console.log('wudi', log)
 } else {
-  Database = require('better-sqlite3')
+  // Database = require('better-sqlite3')
+  sqlite3 = require('sqlite3').verbose();
   fs = require('fs');
   ex = require("child_process");
   os = require('os');
@@ -31,4 +34,4 @@ if (window.require != undefined){
 }
 
 
-export { Database, fs, ex, os, node_path, dialog, log }
+export { Database, fs, ex, os, node_path, dialog, log, sqlite3 }

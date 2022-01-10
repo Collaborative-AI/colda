@@ -14,10 +14,13 @@ describe('test_find_assistor', () => {
   let sponsor_mode = 'regression'
   let assistor_username_list = 'xie2,leq1,leq2'
 
+  logout_helper.logout()
   login_helper.check_login_first_user()
   delete_db_helper.delete_db()
   find_assistor_helper.get_train_id()
 
   find_assistor_helper.onSubmit(sponsor_mode, assistor_username_list)
+  // find_assistor_helper.ceshi(sponsor_mode, assistor_username_list)
+
   logout_helper.logout()
 })

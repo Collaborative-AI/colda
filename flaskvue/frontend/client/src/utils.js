@@ -1,4 +1,6 @@
-const log = require('electron-log')
+// const log = require('electron-log')
+import {db} from './db'
+console.log('dbdachu',db)
 // console = log
 
 export function generate_unittest_parameters(){
@@ -14,14 +16,14 @@ export function execute_unittest_list(unittest_list, index, indicator, unittest_
   if (Array.isArray(unittest_list)) {
     if (unittest_list.length > 1 && unittest_list[unittest_list.length-1] == indicator){
       unittest_list[index](unittest_parameters)
-      // console.log(unittest_list)
+      console.log('zzzzzzz0',unittest_list)
       index += 1
       return true
     }
-    // console.log(indicator + ' wrong')
+    console.log(indicator + ' wrong')
     return false
   } 
-  // console.log(indicator + ' wrong')
+  console.log(indicator + ' wrong')
   return false
 }
 
@@ -35,24 +37,24 @@ export function generate_message_string(){
 
 
 export function Log(message, level){
-  if (level == 'error'){
-    log.error(message);
-  }
-  else if (level == 'warn'){
-    log.warn(message);
-  }
-  else if (level == 'info'){
-    log.info(message);
-  }
-  else if (level == 'verbose'){
-    log.verbose(message);
-  }
-  else if (level == 'debug'){
-    log.debug(message);
-  }
-  else{
-    log.silly(message);
-  }
+  // if (level == 'error'){
+  //   log.error(message);
+  // }
+  // else if (level == 'warn'){
+  //   log.warn(message);
+  // }
+  // else if (level == 'info'){
+  //   log.info(message);
+  // }
+  // else if (level == 'verbose'){
+  //   log.verbose(message);
+  // }
+  // else if (level == 'debug'){
+  //   log.debug(message);
+  // }
+  // else{
+  //   log.silly(message);
+  // }
   
 }
 
@@ -63,4 +65,19 @@ export function check_if_notification_is_null(notification, name){
     return true
   }
   return false
+}
+
+
+export function sqlite3_run(sql, params) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) {
+        console.log('Error running sql ' + sql)
+        console.log(err)
+        reject(err)
+      } else {
+        resolve({ id: this.lastID })
+      }
+    })
+  })
 }

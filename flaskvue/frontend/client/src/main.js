@@ -49,6 +49,7 @@ Vue.component('sidebar-header', SidebarHeader)
 // console.log("dir",__dirname)
 // console.log(node_path.join(__dirname, '../dist/run/run.exe'))
 import db from './db'
+console.log('dbdachu3',db)
 
 // const fs = window.require("fs")
 // console.log("fs", fs)

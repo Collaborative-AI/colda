@@ -1,5 +1,6 @@
 import axios from '../../../src/http'
 import db from '../../../src/db'
+console.log('dbshi',db)
 
 const fs = require('fs');
 const ex = require('child_process');

@@ -40,7 +40,7 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
     }
 
     // sponsor: regression and assistor: regression
-    let unread_test_sponsor_match_id_regression_regression = (data) => {
+    let unread_test_sponsor_match_id_regression_regression_1s_1a = (data) => {
       try{
         data = data[0]
         let test_array = [-15.62146, -7.63978, -3.17975, -3.77626, -2.13779, 1.60417, -1.76595, -0.91224]
@@ -67,7 +67,7 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
     }
 
     // sponsor: classification and assistor: regression
-    let unread_test_sponsor_match_id_classification_regression = (data) => {
+    let unread_test_sponsor_match_id_classification_regression_1s_1a = (data) => {
       try{
         data = data[0]
         let test_array = [-0.46054, -0.45200, -0.06237, -0.43070, -0.01779, -0.00139, 0.00462, -0.00120]
@@ -93,11 +93,27 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
       }
     }
 
-    let unread_test_sponsor_match_id_multiple_assistors = (data) => {
+    let unread_test_sponsor_match_id_regression_regression_1s_2a = (data) => {
       try{
-        
-        console.log(generate_unittest_log('unread_test_sponsor_match_id'))
-        done()
+        data = data[0]
+        let test_array = [-15.307662536170138, -6.242823411913374, -3.62703930434807, -2.253609528618039, -3.9262087320814665, 3.987855587724651, -2.980171893125066, -0.8147606613568552]
+        let test_array_index = 0
+
+        for (let i in data){
+          let cur_list = data[i]
+          for (let j = 0; j < cur_list.length; j++){
+            let cur_number = cur_list[j]
+            cur_number = parseFloat(cur_number.toFixed(5))
+            let cur_test_num = parseFloat(test_array[test_array_index].toFixed(5))
+            console.log('number_ass', cur_number, cur_test_num)
+            expect(cur_number).toEqual(
+              cur_test_num
+            )
+            test_array_index += 1
+          }
+        }
+
+        console.log(generate_unittest_log('unread_test_assistor_match_id'))
       }catch (error){
         done(error)
       }
@@ -107,14 +123,27 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
     cur_parameters.push(unread_test_sponsor_match_id_1)
     cur_parameters.push(unread_test_sponsor_match_id_2)
     cur_parameters.push(unread_test_sponsor_match_id_3)
+
     if (verify_algo == true){
       if (sponsor_mode == 'regression'){
-        cur_parameters.push(unread_test_sponsor_match_id_regression_regression)
+        if (temp_length == 1){
+          cur_parameters.push(unread_test_sponsor_match_id_regression_regression_1s_1a)
+        } else if (temp_length == 2){
+          cur_parameters.push(unread_test_sponsor_match_id_regression_regression_1s_2a)
+        } else if (temp_length == 3){
+          cur_parameters.push(unread_test_sponsor_match_id_regression_regression_1s_3a)
+        }
       } else if (sponsor_mode == 'classification'){
-        cur_parameters.push(unread_test_sponsor_match_id_classification_regression)
+        if (temp_length == 1){
+          cur_parameters.push(unread_test_sponsor_match_id_classification_regression_1s_1a)
+        } else if (temp_length == 2){
+          cur_parameters.push(unread_test_sponsor_match_id_classification_regression_1s_2a)
+        } else if (temp_length == 3){
+          cur_parameters.push(unread_test_sponsor_match_id_classification_regression_1s_3a)
+        }
       }
     } else {
-      cur_parameters.push(unread_test_sponsor_match_id_multiple_assistors)
+      // cur_parameters.push(unread_test_assistor_match_id_multiple_assistors)
     }
     
     cur_parameters.push('unread_test_match_id_unittest')

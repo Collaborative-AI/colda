@@ -35,7 +35,7 @@ function unread_test_request(){
   
         console.log(generate_unittest_log('unread_test_request'))
       }catch (error){
-        console.log(error)
+        done(error)
       }
     }
   
@@ -44,7 +44,7 @@ function unread_test_request(){
         expect(data[0]).toEqual(true)
         console.log(generate_unittest_log('unread_test_request'))
       }catch (error){
-        console.log(error)
+        done(error)
       }
     }
 

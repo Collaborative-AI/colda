@@ -281,7 +281,7 @@ export default {
               return 
             }
           }catch(err){
-            // console.log(err)
+            console.log(err)
           }
 
           unittest_parameters = generate_unittest_parameters()
@@ -298,7 +298,7 @@ export default {
             fs.appendFileSync(Log_address, "-2. Unread Request\n")
             fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           // Read the data from designated position
@@ -324,12 +324,12 @@ export default {
                 fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
                 fs.appendFileSync(Log_address, "----2. Unread Request Done\n")
               } catch (err) {
-                // console.log(err)
+                console.log(err)
               }
             })
             .catch((error) => {
               // handle error
-              // console.log(error)
+              console.log(error)
               this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
             })
           })
@@ -346,7 +346,7 @@ export default {
           })
           .catch((error) => {
             // handle error
-            // console.log(error)
+            console.log(error)
             this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
           })
       } else{
@@ -391,7 +391,7 @@ export default {
           fs.appendFileSync(Log_address, "---- 3. Unread Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Update the match id notification\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
 
         let check_sponsor = cur_unread_match_id_Taskid_dict[task_id]
@@ -401,7 +401,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.2 Unread_match_id_sponsor\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
           this.unread_match_id_sponsor(task_id, unittest_callbacks)
         }  
@@ -410,7 +410,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.2 Unread_match_id_assistor\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
           this.unread_match_id_assistor(task_id, unittest_callbacks)
         }
@@ -449,7 +449,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.3 Sponsor gets matched id file\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           for(let i = 0;i < response.data.match_id_file.length; i++){
@@ -473,7 +473,7 @@ export default {
               }
 
             }catch(err){
-              // console.log(err)
+              console.log(err)
             }
 
             // check if we run here
@@ -487,7 +487,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
             } catch (err) {
-              // console.log(err)
+              console.log(err)
             }
 
             // match_id (from different assistor) to index 
@@ -504,7 +504,7 @@ export default {
               }
 
             }catch(err){
-              // console.log(err)
+              console.log(err)
             }
 
             unittest_parameters = generate_unittest_parameters()
@@ -517,7 +517,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.5 Sponsor matches id to index\n")
             } catch (err) {
-              // console.log(err)
+              console.log(err)
             }
 
           }
@@ -551,7 +551,7 @@ export default {
             }
 
           }catch(err){
-            // console.log(err)
+            console.log(err)
           }
 
           // // console.log("param2 Sponsor makes residual finished")
@@ -561,7 +561,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           // Read Files
@@ -575,7 +575,7 @@ export default {
               // data = fs.readFileSync(make_residual_multiple_paths[i], {encoding:'utf8', flag:'r'});
               data = fs.readFileSync(residual_paths[i], {encoding:'utf8', flag:'r'});
             }catch(err){
-              // console.log(err)
+              console.log(err)
             }
             all_residual_data.push(data);
 
@@ -614,17 +614,17 @@ export default {
               fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
               fs.appendFileSync(Log_address, "---- 3. Unread Match ID Done\n")
             } catch (err) {
-              // console.log(err)
+              console.log(err)
             }
 
           })
           .catch((error) => {
-            // console.log(error)
+            console.log(error)
           })
           
         })
         .catch((error) => {
-          // console.log(error)
+          console.log(error)
           // handle error
         }) 
     },
@@ -679,7 +679,7 @@ export default {
             }
 
           }catch(err){
-            // console.log(err)
+            console.log(err)
           }
 
           // Store match_id file
@@ -692,7 +692,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           // match id to index from sponsor
@@ -709,7 +709,7 @@ export default {
             }
 
           }catch(err){
-            // console.log(err)
+            console.log(err)
           }
 
           // console.log('3.5 Assistor matches id to index');
@@ -722,7 +722,7 @@ export default {
             fs.appendFileSync(Log_address, "3.5 Assistor matches id to index\n")
             fs.appendFileSync(Log_address, "---- 3. Unread Match ID Done\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           unittest_parameters = generate_unittest_parameters()
@@ -739,13 +739,13 @@ export default {
           //       // console.log('3.6 Assistor update done');
           //   })
           //   .catch((error)=>{
-          //     // console.log(error)
+          //     console.log(error)
           //   })   
 
         })
         .catch((error) => {
           // handle error
-          // console.log(error)
+          console.log(error)
         }) 
     },
 
@@ -779,7 +779,7 @@ export default {
           fs.appendFileSync(Log_address, "---- 4. Unread Situation\n")
           fs.appendFileSync(Log_address, "4.1 Update the situation notification\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
 
         let check_sponsor = cur_unread_situation_Taskid_dict[task_id];
@@ -809,7 +809,7 @@ export default {
       try {
         fs.appendFileSync(Log_address, "4.2 Cur round is: " + rounds.toString() + "\n")
       } catch (err) {
-        // console.log(err)
+        console.log(err)
       }
       
       let select_train_data_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
@@ -853,7 +853,7 @@ export default {
         // vm.$toasted.success("4.3 Sponsor round " + rounds + " training done.", { icon: 'fingerprint' })
       
       }catch(err){
-        // console.log(err)
+        console.log(err)
       }
       Log(generate_message_string("4.3 Sponsor round " + rounds + " training done." + "\n"), 'info')
       Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
@@ -863,7 +863,7 @@ export default {
         fs.appendFileSync(Log_address, "4.3 Sponsor round " + rounds + " training done." + "\n")
         fs.appendFileSync(Log_address, "---- 4. Unread Situation Done\n")
       } catch (err) {
-        // console.log(err)
+        console.log(err)
       }
     },
 
@@ -899,7 +899,7 @@ export default {
         indicator = vm.handle_Algorithm_return_value("Assistor_train_output_path", Assistor_train_output_path, "200", "make_train")
       }
       catch(err){
-        // console.log(err)
+        console.log(err)
       }
 
       // There some situations that the sponsor sends unread_situation faster than the assistor writes and translate the match id file.
@@ -917,7 +917,7 @@ export default {
         try {
           fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
 
         let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path[2], {encoding:'utf8', flag:'r'});
@@ -947,11 +947,11 @@ export default {
             fs.appendFileSync(Log_address, "---- 4. Unread Situation Done\n")
             fs.appendFileSync(Log_address, "---- Train stage done\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
         })
         .catch((error) => {
-          // console.log(error)
+          console.log(error)
         })
 
       }
@@ -984,7 +984,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "4.2 assistor gets situation file\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           const from_id = response.data.sender_random_id;
@@ -1010,7 +1010,7 @@ export default {
             }
 
           }catch(err){
-            // console.log(err)
+            console.log(err)
           }
 
           fs.writeFileSync(save_residual_file_pos[2], cur_situation_file)
@@ -1022,7 +1022,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "4.3 Assistor Saved Residual File!\n")
           }catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           // Assistor trains the data
@@ -1053,7 +1053,7 @@ export default {
           }  
         }) //end axios
         .catch((error) => {
-          // console.log(error)
+          console.log(error)
           // handle error
         })
     },
@@ -1088,7 +1088,7 @@ export default {
           fs.appendFileSync(Log_address, "---- 5. Unread Output\n")
           fs.appendFileSync(Log_address, "5.1 Update the output notification\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
         let rounds = cur_unread_output_Rounds_dict[task_id];
         this.unread_output_singleTask(rounds, task_id, unittest_callbacks);
@@ -1120,7 +1120,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "5.2 Sponsor gets output model\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
           // iterate the output file
           for(let i = 0;i < response.data.output.length; i++){
@@ -1152,7 +1152,7 @@ export default {
               }
 
             }catch(err){
-            // console.log(err)
+            console.log(err)
           }
 
             fs.writeFileSync(save_output_pos[2], cur_output)           
@@ -1164,7 +1164,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "5.3 Sponsor saves Output model\n")
             } catch (err) {
-              // console.log(err)
+              console.log(err)
             }
           }
 
@@ -1189,7 +1189,7 @@ export default {
         })
         .catch((error) => {
           // handle error
-          // console.log(error)
+          console.log(error)
         }) 
     },
 
@@ -1225,7 +1225,7 @@ export default {
         indicator = vm.handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
 
       }catch(err){
-        // console.log(err)
+        console.log(err)
       }
 
       // When assistors train faster than sponsor and send their results, make_result might not find the sponsor's train results.
@@ -1245,7 +1245,7 @@ export default {
         try {
           fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
         
         // terminate
@@ -1274,7 +1274,7 @@ export default {
           }
 
           }catch(err){
-          // console.log(err)
+          console.log(err)
         }
 
         // console.log("5.5 Sponsor makes residual finished")
@@ -1284,7 +1284,7 @@ export default {
         try {
           fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
 
         let all_residual_data = [];
@@ -1322,11 +1322,11 @@ export default {
               fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
               fs.appendFileSync(Log_address, "---- 5. Unread Output Done\n")
             } catch (err) {
-              // console.log(err)
+              console.log(err)
             }
           })
           .catch((error) => {
-            // console.log(error)
+            console.log(error)
           })
         }
       }
@@ -1439,7 +1439,7 @@ export default {
             }
 
           }catch(err){
-            // console.log(err)
+            console.log(err)
           }
             Log(generate_message_string("\n You are Assistor\n"), 'info')
             Log(generate_message_string("Test ID: " + test_id + "\n"), 'info')
@@ -1455,7 +1455,7 @@ export default {
             fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
             fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
@@ -1482,12 +1482,12 @@ export default {
                 fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
                 fs.appendFileSync(Log_address, "----2. Unread Test Request Done\n")
               } catch (err) {
-                // console.log(err)
+                console.log(err)
               }
             })
             .catch((error) => {
               // handle error
-              // console.log(error)
+              console.log(error)
               // // console.log(error.response.data)
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
@@ -1506,7 +1506,7 @@ export default {
             })
             .catch((error) => {
               // handle error
-              // console.log(error)
+              console.log(error)
               // // console.log(error.response.data)
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
@@ -1550,7 +1550,7 @@ export default {
           fs.appendFileSync(Log_address, "--3.Unread Test Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Test: Update the Test match id notification\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
 
         let check_sponsor = cur_unread_test_match_id_Testid_dict[test_id]
@@ -1562,7 +1562,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.2 Test: Unread_test_match_id_sponsor\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
           this.unread_test_match_id_sponsor(task_id, test_id, cur_max_round, unittest_callbacks)
         }  
@@ -1571,7 +1571,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.2 Test: Unread_test_match_id_assistor\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
           this.unread_test_match_id_assistor(task_id, test_id, cur_max_round, unittest_callbacks)
         }
@@ -1609,7 +1609,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.4 Test: Sponsor gets matched id file\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           for(let i = 0;i < response.data.match_id_file.length; i++){
@@ -1633,7 +1633,7 @@ export default {
               }
 
             }catch(err){
-              // console.log(err)
+              console.log(err)
             }
 
             fs.writeFileSync(test_save_match_id_file_pos[2], cur_match_id_file)
@@ -1647,7 +1647,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.5 Test: Sponsor Saved Matched id File!\n")
             } catch (err) {
-              // console.log(err)
+              console.log(err)
             }
 
             try{
@@ -1663,7 +1663,7 @@ export default {
               }
               
             }catch(err){
-              // console.log(err)
+              console.log(err)
             }
 
             // console.log('3.6 Test: Sponsor matches id to index');
@@ -1671,7 +1671,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.6 Test: Sponsor matches id to index\n")
             } catch (err) {
-              // console.log(err)
+              console.log(err)
             }
 
           }
@@ -1699,7 +1699,7 @@ export default {
             }
 
           }catch(err){
-            // console.log(err)
+            console.log(err)
           }
 
           // console.log("3.7 Test: Sponsor stores all test model results")
@@ -1709,13 +1709,13 @@ export default {
             fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
             fs.appendFileSync(Log_address, "----3. Unread Test Match ID Done\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
       
         
         })
         .catch((error) => {
-          // console.log(error)
+          console.log(error)
           // handle error
         }) 
 
@@ -1749,7 +1749,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.4 Test: assistor gets matched id file\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           const from_id = response.data.sponsor_random_id;
@@ -1773,7 +1773,7 @@ export default {
             }
 
           }catch(err){
-            // console.log(err)
+            console.log(err)
           }
 
           fs.writeFileSync(test_save_match_id_file_pos[2], cur_match_id_file)
@@ -1788,7 +1788,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.5 Test: Assistor Saved Matched id File!\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           try{
@@ -1805,7 +1805,7 @@ export default {
             }
 
           }catch(err){
-            // console.log(err)
+            console.log(err)
           }
 
           // console.log('3.6 Test: Assistor matches id to index');
@@ -1813,7 +1813,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "3.6 Test: Assistor matches id to index\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
 
           let row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND test_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
@@ -1849,7 +1849,7 @@ export default {
               }
               
             }catch(err){
-              // console.log(err)
+              console.log(err)
             }
 
             // console.log("3.7 Test: assistor stores all test model results")
@@ -1858,7 +1858,7 @@ export default {
             try {
               fs.appendFileSync(Log_address, "3.7 Test: assistor stores all test model results\n")
             } catch (err) {
-              // console.log(err)
+              console.log(err)
             }
 
             let all_test_output = [];
@@ -1889,11 +1889,11 @@ export default {
                 fs.appendFileSync(Log_address, "---- 3. Unread Test Match ID Done\n")
                 fs.appendFileSync(Log_address, "---- Test stage done\n")
               } catch (err) {
-                // console.log(err)
+                console.log(err)
               }
             })
             .catch((error) => {
-              // console.log(error)
+              console.log(error)
             })
           
           }else{
@@ -1904,7 +1904,7 @@ export default {
         })
         .catch((error) => {
           // handle error
-          // console.log(error)
+          console.log(error)
         }) 
     },
 
@@ -1937,7 +1937,7 @@ export default {
           fs.appendFileSync(Log_address, "---- 4. Unread Test Output\n")
           fs.appendFileSync(Log_address, "4.1 Update Test output notification\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
         this.unread_test_output_singleTask(task_id, test_id, unittest_callbacks);
       }
@@ -1965,7 +1965,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "4.2 Test: Sponsor gets assistors' Test output model\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
           // iterate the match_id_file
           // List[List[List]] structure: [[[data from one assistor],[data from one assistor]],[[data from another assistor],[data from another assistor]]]
@@ -2000,7 +2000,7 @@ export default {
                 }
 
               }catch(err){
-                // console.log(err)
+                console.log(err)
               }
 
               // Store match_id file
@@ -2015,7 +2015,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "4.3 Test: Sponsor saves assistors' Output model\n")
           } catch (err) {
-            // console.log(err)
+            console.log(err)
           }
           let waiting_start_time = new Date()
           vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time, unittest_callbacks)
@@ -2023,7 +2023,7 @@ export default {
         })
         .catch((error) => {
             // handle error
-          // console.log(error)
+          console.log(error)
         }) 
 
           
@@ -2074,7 +2074,7 @@ export default {
 
         indicator = vm.handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
       }catch(err){
-        // console.log(err)
+        console.log(err)
       }
 
       if (indicator == false){
@@ -2090,14 +2090,14 @@ export default {
         try {
           fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
 
         try {
           fs.appendFileSync(Log_address, "---- 4. Unread Test Output Done\n")
           fs.appendFileSync(Log_address, "---- 4. Test Stage Done\n")
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
 
         let unittest_parameters = generate_unittest_parameters()

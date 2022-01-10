@@ -124,7 +124,7 @@ export default {
           vm.manual_file_path = path
           fs.readFile(path, 'utf8' , (err, data) => {
             if (err) {
-              console.error(err)
+              console.log('err info',err);
               return
             }
             

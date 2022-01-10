@@ -27,6 +27,7 @@ afterAll(() => {
 });
 
 describe('test_unread_test_match_id', () => {
+  console.log('test_unread_test_match_id')
 
   let max_round = 1
   let sponsor_mode = 'regression'
@@ -37,17 +38,14 @@ describe('test_unread_test_match_id', () => {
 
   switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
 
-
-  console.log('test_unread_test_match_id')
-
   //  Sponsor logins
-   logout_helper.logout()
    login_helper.check_login_first_user()
+
    delete_db_helper.delete_db()
    // Sponsor gets train id
    find_assistor_helper.get_train_id()
    // Sponsor finds assistor
-   find_assistor_helper.onSubmit()
+   find_assistor_helper.find_assistor(sponsor_mode, assistor_username_list)
    // Sponsor logouts
    logout_helper.logout()
  
@@ -81,42 +79,41 @@ describe('test_unread_test_match_id', () => {
    //sponsor logouts
    logout_helper.logout()
  
- 
-   // sponsor logins
-   login_helper.check_login_first_user()
-   // sponsor gets nofification
-   notification_helper.update_notification()
-   //sponsor runs unread situation
-   unread_sponsor_situation_helper.unread_sponsor_situation()
-   //sponsor logouts
-   logout_helper.logout()
- 
-   //assistor logins
-   login_helper.check_login_second_user()
-   //assistor gets nofification
-   notification_helper.update_notification()
-   //assistor runs unread situation
-   unread_assistor_situation_helper.unread_assistor_situation()
-   //sponsor logouts
-   logout_helper.logout()
- 
-   // sponsor logins
-   login_helper.check_login_first_user()
-   // sponsor gets nofification
-   notification_helper.update_notification()
-  //  //sponsor runs unread situation
-   let current_round = 1
-   let max_round = 1
-   unread_output_helper.unread_output(current_round, max_round)
-  //  //sponsor logouts
-   logout_helper.logout()
+   for (let current_round = 1; current_round <= max_round; current_round++){
+    // sponsor logins
+    login_helper.check_login_first_user()
+    // sponsor gets nofification
+    notification_helper.update_notification()
+    //sponsor runs unread situation
+    unread_sponsor_situation_helper.unread_sponsor_situation()
+    //sponsor logouts
+    logout_helper.logout()
+  
+    //assistor logins
+    login_helper.check_login_second_user()
+    //assistor gets nofification
+    notification_helper.update_notification()
+    //assistor runs unread situation
+    unread_assistor_situation_helper.unread_assistor_situation()
+    //sponsor logouts
+    logout_helper.logout()
+  
+    // sponsor logins
+    login_helper.check_login_first_user()
+    // sponsor gets nofification
+    notification_helper.update_notification()
+    //  //sponsor runs unread situation
+    unread_output_helper.unread_output(current_round, max_round)
+    //  //sponsor logouts
+    logout_helper.logout()
+  }
 
   //  Sponsor logins
    login_helper.check_login_first_user()
    // Sponsor gets test id
    find_test_assistor_helper.get_test_id()
    // Sponsor finds assistor
-   find_test_assistor_helper.onSubmit()
+   find_test_assistor_helper.find_test_assistor()
    // Sponsor logouts
    logout_helper.logout()
 
@@ -146,6 +143,5 @@ describe('test_unread_test_match_id', () => {
   unread_test_assistor_match_id_helper.unread_test_assistor_match_id()
   //assistor logouts
   logout_helper.logout()
-
 
 })

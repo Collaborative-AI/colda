@@ -23,7 +23,7 @@ describe('test_find_assistor', () => {
   delete_db_helper.delete_db()
   find_assistor_helper.get_train_id()
 
-  find_assistor_helper.onSubmit(sponsor_mode, assistor_username_list)
+  find_assistor_helper.find_assistor(sponsor_mode, assistor_username_list)
   // find_assistor_helper.ceshi(sponsor_mode, assistor_username_list)
 
   logout_helper.logout()

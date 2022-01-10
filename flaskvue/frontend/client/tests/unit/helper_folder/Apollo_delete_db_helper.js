@@ -2,17 +2,18 @@ import {delete_db} from './Apollo_unittest_utils'
 
 function delete_db_function(){
     test('delete_db_rows',(done)=>{
-        async function clear_database(){
+
+      async function clear_database(){
         let res1 = await delete_db()
-        
+      
         expect(res1.data).toEqual(
-            'done'
+          'done'
           )
 
-        // console.log('output res1', res1)
+        console.log('res1sdf')
         done()
-        }
-        clear_database()
+      }
+      clear_database()
     })
 }
 

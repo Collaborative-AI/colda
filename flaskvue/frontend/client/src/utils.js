@@ -15,7 +15,7 @@ export function change_db_param_to_string(db_parameters){
   let new_db_parameters = []
   for (let i = 0; i < db_parameters.length; i++){
     let db_param_i = db_parameters[i]
-    if (db_param_i > 0){
+    if (db_param_i.length > 0){
       new_db_parameters.push(db_param_i.toString())
     }
     else{
@@ -30,14 +30,14 @@ export function execute_unittest_list(unittest_list, index, indicator, unittest_
   if (Array.isArray(unittest_list)) {
     if (unittest_list.length > 1 && unittest_list[unittest_list.length-1] == indicator){
       unittest_list[index](unittest_parameters)
-      console.log('zzzzzzz0',unittest_list)
+      // console.log('zzzzzzz0',unittest_list)
       index += 1
       return true
     }
-    console.log(indicator + ' wrong')
+    console.log(indicator + ' execute_unittest_list wrong')
     return false
   } 
-  console.log(indicator + ' wrong')
+  console.log(indicator + ' execute_unittest_list wrong')
   return false
 }
 
@@ -51,6 +51,7 @@ export function generate_message_string(){
 
 
 export function Log(message, level){
+  console.log(message)
   // if (level == 'error'){
   //   log.error(message);
   // }

@@ -82,6 +82,7 @@ unittest_parameters.default_file_path = null
 // unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
 unittest_parameters.default_id_column = "1"
 unittest_parameters.default_data_column = "2-7"
+unittest_parameters.default_model_name = null
 
 function modify_parameter(param, val){
   unittest_parameters[param] = val
@@ -103,16 +104,18 @@ function generate_unittest_log(test_name){
 function switch_default_values(sponsor_mode, assistor_num, match_ratio){
   let total_participants = assistor_num + 1
   total_participants = total_participants.toString()
+  console.log('assistor_num', total_participants)
 
   function generate_data_path(user_id, folder_indicator) {
     let res = ''
+
     if (sponsor_mode == 'regression'){
-      // res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-      res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     } else if (sponsor_mode == 'classification'){
-      // res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-      res = "/Users/xianjianxie/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/xianjianxie/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     }
     return res
@@ -143,8 +146,9 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio){
   let default_model_name_object = {}
 
   for (let i = 2; i < assistor_num+2; i++){
+    let path_user_id = (i-1).toString()
     let cur_user_id = i.toString()
-    default_file_path_object[cur_user_id] = generate_data_path(cur_user_id, "all")
+    default_file_path_object[cur_user_id] = generate_data_path(path_user_id, "all")
     default_id_column_object[cur_user_id] = generate_default_id_column()
     default_data_column_object[cur_user_id] = generate_default_data_column()
     default_model_name_object[cur_user_id] = generate_default_model_name()
@@ -158,9 +162,13 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio){
   if (total_participants == 2){
     unittest_parameters.train_data_column = "2-8"
     unittest_parameters.train_target_column = "9"
+    unittest_parameters.test_data_column = "2-8"
+    unittest_parameters.test_target_column = "9"
   } else if (total_participants == 3){
     unittest_parameters.train_data_column = "2-6"
     unittest_parameters.train_target_column = "7"
+    unittest_parameters.test_data_column = "2-6"
+    unittest_parameters.test_target_column = "7"
   }
   unittest_parameters.task_mode = sponsor_mode
 

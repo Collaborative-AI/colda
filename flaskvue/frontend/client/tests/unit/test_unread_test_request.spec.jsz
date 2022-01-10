@@ -46,7 +46,7 @@ describe('test_unread_test_request', () => {
    // Sponsor gets train id
    find_assistor_helper.get_train_id()
    // Sponsor finds assistor
-   find_assistor_helper.onSubmit()
+   find_assistor_helper.find_assistor(sponsor_mode, assistor_username_list)
    // Sponsor logouts
    logout_helper.logout()
  
@@ -80,40 +80,41 @@ describe('test_unread_test_request', () => {
    //sponsor logouts
    logout_helper.logout()
  
- 
-   // sponsor logins
-   login_helper.check_login_first_user()
-   // sponsor gets nofification
-   notification_helper.update_notification()
-   //sponsor runs unread situation
-   unread_sponsor_situation_helper.unread_sponsor_situation()
-   //sponsor logouts
-   logout_helper.logout()
- 
-   //assistor logins
-   login_helper.check_login_second_user()
-   //assistor gets nofification
-   notification_helper.update_notification()
-   //assistor runs unread situation
-   unread_assistor_situation_helper.unread_assistor_situation()
-   //sponsor logouts
-   logout_helper.logout()
- 
-   // sponsor logins
-   login_helper.check_login_first_user()
-   // sponsor gets nofification
-   notification_helper.update_notification()
-   //sponsor runs unread situation
-   unread_output_helper.unread_output()
-   //sponsor logouts
-   logout_helper.logout()
+   for (let current_round = 1; current_round <= max_round; current_round++){
+    // sponsor logins
+    login_helper.check_login_first_user()
+    // sponsor gets nofification
+    notification_helper.update_notification()
+    //sponsor runs unread situation
+    unread_sponsor_situation_helper.unread_sponsor_situation()
+    //sponsor logouts
+    logout_helper.logout()
+  
+    //assistor logins
+    login_helper.check_login_second_user()
+    //assistor gets nofification
+    notification_helper.update_notification()
+    //assistor runs unread situation
+    unread_assistor_situation_helper.unread_assistor_situation()
+    //sponsor logouts
+    logout_helper.logout()
+  
+    // sponsor logins
+    login_helper.check_login_first_user()
+    // sponsor gets nofification
+    notification_helper.update_notification()
+    //sponsor runs unread situation
+    unread_output_helper.unread_output(current_round, max_round)
+    //sponsor logouts
+    logout_helper.logout()
+   }
 
    // Sponsor logins
    login_helper.check_login_first_user()
    // Sponsor gets test id
    find_test_assistor_helper.get_test_id()
    // Sponsor finds assistor
-   find_test_assistor_helper.onSubmit()
+   find_test_assistor_helper.find_test_assistor()
    // Sponsor logouts
    logout_helper.logout()
 

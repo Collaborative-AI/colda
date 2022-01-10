@@ -22,7 +22,6 @@ function unread_assistor_match_id(){
         let response_data = data[0]
         let match_id_file = response_data.match_id_file
         let assistor_random_id_pair = response_data.assistor_random_id_pair
-        // let row = retrieve_User_assistor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id)
   
         expect(match_id_file).not.toBeNull()
         expect(assistor_random_id_pair).not.toBeNull()

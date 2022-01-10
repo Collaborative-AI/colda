@@ -15,7 +15,7 @@ let retrieve_User_Assistor_Table_record = function(user_id, task_id, test_indica
     return row
   }
   let row = db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND task_id = ? AND test_indicator = ?').get(user_id, task_id, test_indicator);
-  console.log('zzz7',row)
+  // console.log('zzz7',row)
   return row
 };
 

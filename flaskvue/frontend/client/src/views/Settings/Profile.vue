@@ -123,7 +123,7 @@ export default {
 
           fs.readFile(path, 'utf8' , (err, data) => {
             if (err) {
-              console.error(err)
+              console.log('err info',err);
               return
             }
             
@@ -155,10 +155,9 @@ export default {
       let param = [this.sharedState.user_id]
       console.log('select_sentence', select_sentence)
 
-
       vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
       if (err) {
-        console.error(err);
+        console.log('err info',err);;
       }
 
       // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
@@ -198,7 +197,7 @@ export default {
 
       vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
       if (err) {
-        console.error(err);
+        console.log('err info',err);;
       }
 
       // const row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
@@ -212,30 +211,30 @@ export default {
                       vm.sharedState.mode, vm.default_model_name]
 
         vm.$db.run(sentence, change_db_param_to_string(param), function(err){
-                    if (err){
-                      console.log('err info',err);
-                    }
+          if (err){
+            console.log('err info',err);
+          }
 
 
-        // const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_file_path , @default_id_column, @default_data_column , @default_target_column, @default_mode, @default_model_name)');
-        // stmt.run({
-        //   user_id: vm.sharedState.user_id , 
-        //   default_file_path: vm.default_file_path, 
-        //   default_id_column: vm.default_id_column, 
-        //   default_data_column: vm.default_data_column, 
-        //   default_target_column: "",
-        //   default_mode: vm.sharedState.mode,
-        //   default_model_name: vm.default_model_name,
-        // });
-        console.log('dele1')
-        console.log('dele2')
-        let unittest_parameters = generate_unittest_parameters(vm.default_file_path, vm.default_id_column, vm.default_data_column)
-        execute_unittest_list(unittest_callbacks, 0, "profile_unittest", unittest_parameters)
-        vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
+          // const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_file_path , @default_id_column, @default_data_column , @default_target_column, @default_mode, @default_model_name)');
+          // stmt.run({
+          //   user_id: vm.sharedState.user_id , 
+          //   default_file_path: vm.default_file_path, 
+          //   default_id_column: vm.default_id_column, 
+          //   default_data_column: vm.default_data_column, 
+          //   default_target_column: "",
+          //   default_mode: vm.sharedState.mode,
+          //   default_model_name: vm.default_model_name,
+          // });
+          console.log('dele1')
+          console.log('dele2')
+          let unittest_parameters = generate_unittest_parameters(vm.default_file_path, vm.default_id_column, vm.default_data_column)
+          execute_unittest_list(unittest_callbacks, 0, "profile_unittest", unittest_parameters)
+          vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
 
         })
       }else{
-        console.log('dele4')
+        console.log('dele4', both_path_validation)
         if(both_path_validation == true){
 
           let sentence = 'UPDATE User_Default_Table' 
@@ -255,17 +254,16 @@ export default {
             }
             console.log(`Row(s) updated`);
 
-
-          // const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
-          // + ' SET default_file_path = ?,'
-          // + ' default_id_column = ?,'
-          // + ' default_data_column = ?,'
-          // + ' default_target_column = ?,'
-          // + ' default_mode = ?,'
-          // + ' default_model_name = ?'
-          // + ' WHERE user_id = ?'); 
-          // console.log('dele3')
-          // stmt.run(vm.default_file_path, vm.default_id_column, vm.default_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id);
+            // const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
+            // + ' SET default_file_path = ?,'
+            // + ' default_id_column = ?,'
+            // + ' default_data_column = ?,'
+            // + ' default_target_column = ?,'
+            // + ' default_mode = ?,'
+            // + ' default_model_name = ?'
+            // + ' WHERE user_id = ?'); 
+            // console.log('dele3')
+            // stmt.run(vm.default_file_path, vm.default_id_column, vm.default_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id);
             console.log('dele2')
             let unittest_parameters = generate_unittest_parameters(vm.default_file_path, vm.default_id_column, vm.default_data_column)
             execute_unittest_list(unittest_callbacks, 0, "profile_unittest", unittest_parameters)

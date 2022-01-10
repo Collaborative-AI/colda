@@ -28,9 +28,9 @@ function update_notification(){
           // console.log(res1, res2)
           console.log('come2')
           let res1 = await get_notifications()
-          console.log('zz1', res1)
-          console.log('zz2', res1.data, res1.data.length)
-          console.log('zz3', res1.data != undefined, res1.data != [])
+          // console.log('zz1', res1)
+          // console.log('zz2', res1.data, res1.data.length)
+          // console.log('zz3', res1.data != undefined, res1.data != [])
           
           let has_payload_greater_than_zero = false
           for (let item of res1.data){

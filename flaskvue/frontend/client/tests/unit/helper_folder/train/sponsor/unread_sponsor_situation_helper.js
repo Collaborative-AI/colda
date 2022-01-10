@@ -4,7 +4,7 @@ jest.setTimeout(10000);
 
 
 function unread_sponsor_situation(){
-  test('unread_sponsor_situation', () => { 
+  test('unread_sponsor_situation', (done) => { 
     let unread_sponsor_situation_1 = (data) => {
       try{
         let situation_dict = data[0]
@@ -29,7 +29,7 @@ function unread_sponsor_situation(){
 
         console.log(generate_unittest_log('unread_sponsor_situation'))
       }catch (error){
-        console.log(error)
+        done(error)
       }
     }
   
@@ -39,8 +39,9 @@ function unread_sponsor_situation(){
         expect(indicator).toEqual(true)
 
         console.log(generate_unittest_log('unread_sponsor_situation'))
+        done()
       }catch (error){
-        console.log(error)
+        done(error)
       }
     }
   

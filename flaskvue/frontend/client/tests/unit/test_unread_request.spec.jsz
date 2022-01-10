@@ -29,29 +29,25 @@ describe('test_unread_request', () => {
 
   switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
 
-
   console.log('des1')
-
-
 // }
   // Sponsor logins
   // logout_helper.logout()
   login_helper.check_login_first_user()
+
   delete_db_helper.delete_db()
-  // Sponsor gets train id
+  // // Sponsor gets train id
   find_assistor_helper.get_train_id()
-  // Sponsor finds assistor
-  find_assistor_helper.onSubmit(sponsor_mode, assistor_username_list)
+  // // Sponsor finds assistor
+  find_assistor_helper.find_assistor(sponsor_mode, assistor_username_list)
+
   logout_helper.logout()
 
-  // Assistor logins
 
   login_helper.check_login_second_user()
   // Assistor updates default_train_file_path, default_train_id_column, 
-  // default_train_data_column
   profile_helper.onSubmit()
 
-  
   notification_helper.update_notification()
   // console.log('rsee')
   unread_request_helper.unread_request()

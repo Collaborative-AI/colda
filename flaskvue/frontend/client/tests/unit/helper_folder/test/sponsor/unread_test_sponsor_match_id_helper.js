@@ -39,6 +39,16 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
       }
     }
 
+    let unread_test_sponsor_match_id_placeholder = (data) => {
+      try{
+
+        console.log(generate_unittest_log('unread_test_sponsor_match_id'))
+        done()
+      }catch (error){
+        done(error)
+      }
+    }
+
     // sponsor: regression and assistor: regression
     let unread_test_sponsor_match_id_regression_regression_1s_1a = (data) => {
       try{
@@ -114,6 +124,7 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
         }
 
         console.log(generate_unittest_log('unread_test_assistor_match_id'))
+        done()
       }catch (error){
         done(error)
       }
@@ -141,6 +152,7 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
         }
 
         console.log(generate_unittest_log('unread_test_assistor_match_id'))
+        done()
       }catch (error){
         done(error)
       }
@@ -151,6 +163,7 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
     cur_parameters.push(unread_test_sponsor_match_id_2)
     cur_parameters.push(unread_test_sponsor_match_id_3)
 
+    let temp_length = unittest_parameters.assistor_username_list.split(",").length
     if (verify_algo == true){
       if (sponsor_mode == 'regression'){
         if (temp_length == 1){
@@ -170,7 +183,7 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
         }
       }
     } else {
-      // cur_parameters.push(unread_test_assistor_match_id_multiple_assistors)
+      cur_parameters.push(unread_test_sponsor_match_id_placeholder)
     }
     
     cur_parameters.push('unread_test_match_id_unittest')

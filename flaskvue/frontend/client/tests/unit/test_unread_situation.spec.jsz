@@ -33,16 +33,14 @@ describe('test_unread_match_id', () => {
 
   switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
 
-  
   // Sponsor logins
-  logout_helper.logout()
   login_helper.check_login_first_user()
+
   delete_db_helper.delete_db()
   // Sponsor gets train id
   find_assistor_helper.get_train_id()
   // Sponsor finds assistor
-  find_assistor_helper.onSubmit()
-  // Sponsor logouts
+  find_assistor_helper.find_assistor(sponsor_mode, assistor_username_list)
   logout_helper.logout()
 
   // Assistor logins
@@ -54,7 +52,6 @@ describe('test_unread_match_id', () => {
   notification_helper.update_notification()
   //assistor runs unread request
   unread_request_helper.unread_request()
-  //assistor logouts
   logout_helper.logout()
 
   // assistor logins
@@ -63,7 +60,6 @@ describe('test_unread_match_id', () => {
   notification_helper.update_notification()
   //sponsor runs unread match id
   unread_assistor_match_id_helper.unread_assistor_match_id()
-  //assistor logouts
   logout_helper.logout()
 
   // sponsor logins
@@ -72,17 +68,15 @@ describe('test_unread_match_id', () => {
   notification_helper.update_notification()
   //sponsor runs unread match id
   unread_sponsor_match_id_helper.unread_sponsor_match_id()
-  //sponsor logouts
   logout_helper.logout()
 
 
   // sponsor logins
   login_helper.check_login_first_user()
-  // sponsor gets nofification
+  // // sponsor gets nofification
   notification_helper.update_notification()
   //sponsor runs unread situation
   unread_sponsor_situation_helper.unread_sponsor_situation()
-  //sponsor logouts
   logout_helper.logout()
 
   //assistor logins
@@ -91,10 +85,6 @@ describe('test_unread_match_id', () => {
   notification_helper.update_notification()
   //assistor runs unread situation
   unread_assistor_situation_helper.unread_assistor_situation()
-  //sponsor logouts
   logout_helper.logout()
-  
-
-
 
 })

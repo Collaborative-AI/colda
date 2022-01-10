@@ -31,17 +31,16 @@ afterAll(() => {
 describe('test_multiple_rounds_regression', () => {
   
   let max_round = 2
-  let verify_algo = true
-  let match_ratio = "1.0"
-  let sponsor_mode = 'regression'
+  let sponsor_mode = 'classification'
   let assistor_mode = 'regression'
-  let assistor_username_list = 'xie2'
+  let verify_algo = true
+  let match_ratio = '1.0'
+  let assistor_username_list = 'xie2,leq1'
 
   switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
   // Sponsor logins
-
   login_helper.check_login_first_user()
-  
+
   delete_db_helper.delete_db()
   // Sponsor gets train id
   find_assistor_helper.get_train_id()
@@ -52,6 +51,27 @@ describe('test_multiple_rounds_regression', () => {
 
   // Assistor logins
   login_helper.check_login_second_user()
+  // Assistor updates default_train_file_path, default_train_id_column, 
+  // default_train_data_column
+  profile_helper.onSubmit()
+  //assistor gets notification
+  notification_helper.update_notification()
+  //assistor runs unread request
+  unread_request_helper.unread_request()
+  //assistor logouts
+  logout_helper.logout()
+
+  //sponsor logins
+  login_helper.check_login_first_user()
+  //sponsor gets nofification
+  notification_helper.update_notification()
+  //sponsor runs unread match id
+  unread_sponsor_match_id_helper.null_match_id_notification()
+  //sponsor logouts
+  logout_helper.logout()
+
+  // Assistor logins
+  login_helper.check_login_third_user()
   // Assistor updates default_train_file_path, default_train_id_column, 
   // default_train_data_column
   profile_helper.onSubmit()
@@ -80,6 +100,15 @@ describe('test_multiple_rounds_regression', () => {
   //sponsor logouts
   logout_helper.logout()
 
+  //assistor logins
+  login_helper.check_login_third_user()
+  //assistor gets nofification
+  notification_helper.update_notification()
+  //sponsor runs unread match id
+  unread_assistor_match_id_helper.unread_assistor_match_id()
+  //assistor logouts
+  logout_helper.logout()
+
   for (let current_round = 1; current_round <= max_round; current_round++){
     //sponsor logins
     login_helper.check_login_first_user()
@@ -99,18 +128,25 @@ describe('test_multiple_rounds_regression', () => {
     //sponsor logouts
     logout_helper.logout()
 
+    //assistor logins
+    login_helper.check_login_third_user()
+    //assistor gets nofification
+    notification_helper.update_notification()
+    //assistor runs unread situation
+    unread_assistor_situation_helper.unread_assistor_situation()
+    //sponsor logouts
+    logout_helper.logout()
+
     // sponsor logins
     login_helper.check_login_first_user()
     // sponsor gets nofification
     notification_helper.update_notification()
-    //sponsor runs unread situation
-    
+    //sponsor runs unread output
     unread_output_helper.unread_output(current_round, max_round)
     //sponsor logouts
     logout_helper.logout()
   }
   
-
   // Sponsor logins
   login_helper.check_login_first_user()
   // Sponsor gets test id
@@ -122,6 +158,15 @@ describe('test_multiple_rounds_regression', () => {
 
   // assistor logins
   login_helper.check_login_second_user()
+  //assistor updates nofifications
+  notification_helper.update_notification()
+  //unread request
+  unread_test_request_helper.unread_test_request()
+  //logout
+  logout_helper.logout()
+
+  // assistor logins
+  login_helper.check_login_third_user()
   //assistor updates nofifications
   notification_helper.update_notification()
   //unread request
@@ -147,6 +192,15 @@ describe('test_multiple_rounds_regression', () => {
   //assistor logouts
   logout_helper.logout()
 
+  //assistor logins
+  login_helper.check_login_third_user()
+  //assistor updates notifications
+  notification_helper.update_notification()
+  //assistor runs unread match id
+  unread_test_assistor_match_id_helper.unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
+  //assistor logouts
+  logout_helper.logout()
+
   //sponsor logins
   login_helper.check_login_first_user()
   //sponsor updates notifications
@@ -155,6 +209,5 @@ describe('test_multiple_rounds_regression', () => {
   unread_test_output_helper.unread_test_output(sponsor_mode, assistor_mode, verify_algo)
   //sponsor logouts
   logout_helper.logout()
-
 
 })

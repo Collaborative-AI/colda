@@ -42,15 +42,24 @@ function unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
       try{
         let test_file_path = data[0]
         let test_data_column = data[1]
-
+        
         expect(test_file_path).toEqual(
-          unittest_parameters.default_file_path
+          unittest_parameters.default_file_path[unittest_parameters.user_id]
         )
         
         expect(test_data_column).toEqual(
-          unittest_parameters.default_data_column
+          unittest_parameters.default_data_column[unittest_parameters.user_id]
         )
         
+        console.log(generate_unittest_log('unread_test_assistor_match_id'))
+      }catch (error){
+        done(error)
+      }
+    }
+    
+    let unread_test_assistor_match_id_placeholder = (data) => {
+      try{
+
         console.log(generate_unittest_log('unread_test_assistor_match_id'))
       }catch (error){
         done(error)
@@ -210,10 +219,9 @@ function unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
         } else if (temp_length == 3){
           cur_parameters.push(unread_test_assistor_match_id_classification_regression_1s_3a)
         }
-        
       }
     } else {
-      // cur_parameters.push(unread_test_assistor_match_id_multiple_assistors)
+      cur_parameters.push(unread_test_assistor_match_id_placeholder)
     }
     
     cur_parameters.push(unread_test_assistor_match_id_6)

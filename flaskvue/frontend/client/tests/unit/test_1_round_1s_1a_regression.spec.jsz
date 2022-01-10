@@ -32,18 +32,21 @@ describe('test_unread_test_match_id', () => {
 
   let max_round = 1
   let verify_algo = true
+  let match_ratio = "1.0"
   let sponsor_mode = 'regression'
   let assistor_mode = 'regression'
   let assistor_username_list = 'xie2'
 
+  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
+
   //  Sponsor logins
-   logout_helper.logout()
+   
    login_helper.check_login_first_user()
    delete_db_helper.delete_db()
    // Sponsor gets train id
    find_assistor_helper.get_train_id()
    // Sponsor finds assistor
-   find_assistor_helper.onSubmit(sponsor_mode, assistor_username_list)
+   find_assistor_helper.find_assistor(sponsor_mode, assistor_username_list)
    // Sponsor logouts
    logout_helper.logout()
  
@@ -111,7 +114,7 @@ describe('test_unread_test_match_id', () => {
    // Sponsor gets test id
    find_test_assistor_helper.get_test_id()
    // Sponsor finds assistor
-   find_test_assistor_helper.onSubmit()
+   find_test_assistor_helper.find_test_assistor()
    // Sponsor logouts
    logout_helper.logout()
 

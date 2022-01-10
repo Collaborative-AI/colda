@@ -10,15 +10,11 @@ import { unread_request_helper } from './helper_folder/train/assistor/unread_req
 import { unread_sponsor_match_id_helper } from './helper_folder/train/sponsor/unread_sponsor_match_id_helper'
 import { unread_assistor_match_id_helper } from './helper_folder/train/assistor/unread_assistor_match_id_helper';
 
- 
-
 jest.setTimeout(10000);
 
 afterAll(() => {
-  
   window.localStorage.removeItem('Apollo-token')
   console.log('afterAll')
-
 });
 
 describe('test_unread_match_id', () => {
@@ -32,16 +28,13 @@ describe('test_unread_match_id', () => {
 
   switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
 
-  
-  // Sponsor logins
-  logout_helper.logout()
   login_helper.check_login_first_user()
+
   delete_db_helper.delete_db()
   // Sponsor gets train id
   find_assistor_helper.get_train_id()
   // Sponsor finds assistor
-  find_assistor_helper.onSubmit()
-
+  find_assistor_helper.find_assistor(sponsor_mode, assistor_username_list)
   logout_helper.logout()
 
   // Assistor logins
@@ -53,7 +46,6 @@ describe('test_unread_match_id', () => {
   notification_helper.update_notification()
   //assistor runs unread request
   unread_request_helper.unread_request()
-
   logout_helper.logout()
   // assistor logins
   
@@ -72,7 +64,6 @@ describe('test_unread_match_id', () => {
   //sponsor runs unread match id
   unread_sponsor_match_id_helper.unread_sponsor_match_id()
   logout_helper.logout()
-  
   
 })
 

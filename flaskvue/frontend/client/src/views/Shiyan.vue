@@ -322,7 +322,7 @@ export default {
      
       fs.readdir(dist_path,function(err,files){
       if(err){
-        return console.error(err);
+        return console.log('err info',err);;
       }
       files.forEach(function(file){
         console.info(file);
@@ -766,14 +766,14 @@ export default {
         
       //   console.log("data", data1, data1.split("\n"))
       // } catch (err) {
-      //   console.error(err)
+      //   console.log('err info',err);
       // }
 
       // try {
       //   route = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Log.txt'
       //   fs.appendFileSync(route, "1.22222\n")
       // } catch (err) {
-      //   console.error(err)
+      //   console.log('err info',err);
       // }
       try{
         let save_match_id_file_pos = ex.execSync('python3 ../../../package/save_match_id.py --self_id ' + this.sharedState.user_id 
@@ -1199,7 +1199,7 @@ export default {
       //   })
       //   .catch((error) => {
       //     // handle error
-      //     // console.log(error)
+      //     console.log(error)
       //     // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
       //   })
     },
@@ -1216,7 +1216,7 @@ export default {
       // })
       fs.readFile('/home/qile/Documents/Apollo/test.csv', 'utf8' , (err, data) => {
         if (err) {
-          console.error(err)
+          console.log('err info',err);
           return
         }
         console.log(typeof(data))
@@ -1338,7 +1338,7 @@ export default {
       //   })
       //   .catch((error) => {
       //     // handle error
-      //     // console.log(error)
+      //     console.log(error)
       //     // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
       //   })
       })      

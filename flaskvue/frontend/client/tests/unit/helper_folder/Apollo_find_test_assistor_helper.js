@@ -1,31 +1,32 @@
-import { unittest_parameters, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper} from './Apollo_unittest_init'
+import { unittest_parameters, generate_unittest_log, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper} from './Apollo_unittest_init'
 import { generate_parameters, retrieve_User_Sponsor_Table_record } from './Apollo_unittest_utils'
 jest.setTimeout(10000);
 
 
-function check_find_test_assistor_sponsor_get_test_id(){
-  test('check_find_test_assistor_sponsor_get_test_id', (done) => {
-    let check_find_test_assistor_sponsor_get_test_id = (data) => {
+function get_test_id_helper(){
+  test('get_test_id_helper', (done) => {
+    let get_test_id_helper_1 = (data) => {
       try{
-        let test_id = data[0]
-        done()
+        let test_id = data[0]     
         unittest_parameters.test_id = test_id
-        console.log('444', unittest_parameters.test_id)
+
+        console.log(generate_unittest_log('get_test_id_helper'))
+        done()
       }catch (error){
         done(error)
       }
     }
   
     let cur_parameters = [];
-    cur_parameters.push(check_find_test_assistor_sponsor_get_test_id)
+    cur_parameters.push(get_test_id_helper_1)
     cur_parameters.push('find_test_assistor_unittest')
     Find_Test_Assistor_Wrapper.vm.get_test_id(cur_parameters)
   })
 }
 
-function check_find_test_assistor_sponsor_onSubmit_1(){
-  test('check_find_test_assistor_sponsor_onSubmit_1',(done) => { 
-    let check_find_test_assistor_sponsor_onSubmit_1 = (data) => {
+function find_test_assistor(){
+  test('find_test_assistor',(done) => { 
+    let find_test_assistor_1 = (data) => {
       try{
         let task_mode = data[0]
         let model_name = data[1]
@@ -41,14 +42,14 @@ function check_find_test_assistor_sponsor_onSubmit_1(){
           unittest_parameters.metric_name
         )
  
-        console.log('testaqaqaq')
+        console.log(generate_unittest_log('find_test_assistor'))
       }catch (error){
         done(error)
       }
     }
   
 
-    let check_find_test_assistor_sponsor_onSubmit_2 = (data) => {
+    let find_test_assistor_2 = (data) => {
       try{        
         let row = retrieve_User_Sponsor_Table_record(unittest_parameters.user_id, unittest_parameters.task_id, 'test', unittest_parameters.test_id)
   
@@ -64,15 +65,15 @@ function check_find_test_assistor_sponsor_onSubmit_1(){
         expect(row.test_target_column).toEqual(
           row.test_target_column
         )
-        console.log('testqaqaqa')
+
+        console.log(generate_unittest_log('find_test_assistor'))
       }catch (error){
         done(error)
       }
     }
   
-    let check_find_test_assistor_sponsor_onSubmit_3 = (data) => {
+    let find_test_assistor_3 = (data) => {
       try{
-        
         let task_id = data[0].task_id
         let assistor_num = data[0].assistor_num
         let test_id = data[0].test_id
@@ -80,15 +81,16 @@ function check_find_test_assistor_sponsor_onSubmit_1(){
         expect(task_id).toEqual(
           unittest_parameters.task_id
         )
-        console.log('777', unittest_parameters.assistor_username_list.split(",").length)
+        
         expect(assistor_num).toEqual(
           unittest_parameters.assistor_username_list.split(",").length
         )
         expect(test_id).toEqual(
           unittest_parameters.test_id
         )
+
+        console.log(generate_unittest_log('find_test_assistor'))
         done()
-        // console.log('check_find_assistor_sponsor_onSubmit_2')
       }catch (error){
         done(error)
       }
@@ -96,9 +98,9 @@ function check_find_test_assistor_sponsor_onSubmit_1(){
   
   
     let cur_parameters = [];
-    cur_parameters.push(check_find_test_assistor_sponsor_onSubmit_1)
-    cur_parameters.push(check_find_test_assistor_sponsor_onSubmit_2)
-    cur_parameters.push(check_find_test_assistor_sponsor_onSubmit_3)
+    cur_parameters.push(find_test_assistor_1)
+    cur_parameters.push(find_test_assistor_2)
+    cur_parameters.push(find_test_assistor_3)
     cur_parameters.push('find_test_assistor_unittest')
     // assistor
     Find_Test_Assistor_Wrapper.setData({task_id: unittest_parameters.task_id,
@@ -115,7 +117,7 @@ function check_find_test_assistor_sponsor_onSubmit_1(){
 }
 
 let find_test_assistor_helper = {}
-find_test_assistor_helper.get_test_id = check_find_test_assistor_sponsor_get_test_id
-find_test_assistor_helper.onSubmit = check_find_test_assistor_sponsor_onSubmit_1
+find_test_assistor_helper.get_test_id = get_test_id_helper
+find_test_assistor_helper.find_test_assistor = find_test_assistor
 
 export { find_test_assistor_helper }

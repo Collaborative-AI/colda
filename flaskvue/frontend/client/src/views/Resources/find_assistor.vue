@@ -295,7 +295,7 @@ export default {
           this.train_file_path = path
           fs.readFile(path, 'utf8' , (err, data) => {
             if (err) {
-              console.error(err)
+              console.log('err info',err);
               return
             }
             
@@ -413,8 +413,6 @@ export default {
    
 
     onSubmit (unittest_callbacks) {
-
-      
       
       console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
@@ -460,7 +458,6 @@ export default {
           console.log("true")
           
           console.log(vm.train_file_path)
-
           
           let sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path",`+
                       ` "train_id_column", "train_data_column", "train_target_column", "task_mode", "model_name", "metric_name") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
@@ -602,48 +599,44 @@ export default {
               console.log(err)
             }
             let make_train_local = null;
-          try{   
-            make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
-                                    + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
-                                    + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_column 
-                                    + ' --target_idx ' + vm.train_target_column + ' --task_mode ' + vm.task_mode
-                                    + ' --model_name ' + vm.model_name + ' --metric_name ' + vm.metric_name, {encoding: 'utf8'})
 
+            try{   
+              make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
+                                      + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
+                                      + ' --dataset_path ' + vm.train_file_path + ' --data_idx ' + vm.train_data_column 
+                                      + ' --target_idx ' + vm.train_target_column + ' --task_mode ' + vm.task_mode
+                                      + ' --model_name ' + vm.model_name + ' --metric_name ' + vm.metric_name, {encoding: 'utf8'})
 
-            make_train_local = make_train_local.split("?")
-            
-            let indicator = vm.handle_Algorithm_return_value("make_train_local", make_train_local, "200", "make_train_local")
+              make_train_local = make_train_local.split("?")              
+              let indicator = vm.handle_Algorithm_return_value("make_train_local", make_train_local, "200", "make_train_local")
 
-            if (indicator == false){
-              console.log("make_train_local_done wrong")
-              fs.appendFileSync(Log_address, "make_train_local_done wrong")
-              return 
+              if (indicator == false){
+                console.log("make_train_local_done wrong")
+                fs.appendFileSync(Log_address, "make_train_local_done wrong")
+                return 
+              }
+              console.log("make_train_local", make_train_local)
+            }catch(err){
+              console.log(err)
             }
-            console.log("make_train_local", make_train_local)
-          }catch(err){
-            console.log(err)
-          }
-          unittest_parameters = generate_unittest_parameters()
-          execute_unittest_list(unittest_callbacks, 2, "find_assistor_unittest", unittest_parameters)        // })          
-          
-            vm.task_id = ""
-            // vm.$router.push('/notifications')
-            vm.select_data=false
+              unittest_parameters = generate_unittest_parameters()
+              execute_unittest_list(unittest_callbacks, 2, "find_assistor_unittest", unittest_parameters)        // })          
+              
+                vm.task_id = ""
+                // vm.$router.push('/notifications')
+                vm.select_data=false
 
-          })
+              })
+
           .catch((error) => {
-            // handle error
-            console.log(error)
-            // console.log(error.response.data)
-            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-          })
+              // handle error
+              console.log(error)
+              // console.log(error.response.data)
+              // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+            }) //axios (find_assistor)
 
-          
-
-            
-          })
-          
-
+        
+          }) //db.get
           
         }
 

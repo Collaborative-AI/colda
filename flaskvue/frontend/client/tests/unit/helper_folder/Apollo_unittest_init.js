@@ -53,18 +53,18 @@ unittest_parameters.verification_res = true
 // find_assistor.vue
 unittest_parameters.task_name = 'test1'
 unittest_parameters.task_description = "good test"
-// unittest_parameters.train_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
+unittest_parameters.train_file_path = null
 // unittest_parameters.train_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/0/train/dataset.csv"
-unittest_parameters.train_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
+// unittest_parameters.train_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
 unittest_parameters.train_id_column = "1"
 unittest_parameters.train_data_column = "2-8"
 unittest_parameters.train_target_column = "9"
 
 unittest_parameters.test_description = 'new test'
-// unittest_parameters.test_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
+unittest_parameters.test_file_path = null
 // unittest_parameters.test_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/0/test/dataset.csv"
 
-unittest_parameters.test_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
+// unittest_parameters.test_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
 
 unittest_parameters.test_id_column = "1"
 unittest_parameters.test_data_column = "2-8"
@@ -76,9 +76,9 @@ unittest_parameters.model_name = 'linear'
 // unittest_parameters.metric_name = 'MAD_RMSE_R2'
 unittest_parameters.metric_name = 'Accuracy_F1'
 // profile.vue
-// unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
+unittest_parameters.default_file_path = null
 // unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/1/all/dataset.csv"
-unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
+// unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
 unittest_parameters.default_id_column = "1"
 unittest_parameters.default_data_column = "2-7"
 
@@ -96,6 +96,69 @@ function generate_unittest_log(test_name){
   } 
   unittest_parameters.unittest_log_index += 1
   return unittest_parameters.unittest_log_index.toString() + '_' + test_name
+}
+
+
+function switch_default_values(sponsor_mode, assistor_num, match_ratio){
+  let total_participants = assistor_num + 1
+  total_participants = total_participants.toString()
+
+  function generate_data_path(user_id, folder_indicator) {
+    let res = ''
+    if (sponsor_mode == 'regression'){
+      res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    } else if (sponsor_mode == 'classification'){
+      res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    }
+    return res
+  }
+
+  function generate_default_id_column(){
+    return "1"
+  }
+
+  function generate_default_data_column(){
+    if (total_participants == 2){
+      return '2-7'
+    } else if (total_participants == 3){
+      return '2-5'
+    }
+  }
+
+  function generate_default_model_name(){
+    return 'linear'
+  }
+  
+  unittest_parameters.train_file_path = generate_data_path("0", "train")
+  unittest_parameters.test_file_path = generate_data_path("0", "test")
+
+  let default_file_path_object = {}
+  let default_id_column_object = {}
+  let default_data_column_object = {}
+  let default_model_name_object = {}
+
+  for (let i = 2; i < assistor_num+2; i++){
+    let cur_user_id = i.toString()
+    default_file_path_object[cur_user_id] = generate_data_path(cur_user_id, "all")
+    default_id_column_object[cur_user_id] = generate_default_id_column()
+    default_data_column_object[cur_user_id] = generate_default_data_column()
+    default_model_name_object[cur_user_id] = generate_default_model_name()
+  }
+
+  unittest_parameters.default_file_path = default_file_path_object
+  unittest_parameters.default_id_column = default_id_column_object
+  unittest_parameters.default_data_column = default_data_column_object
+  unittest_parameters.default_model_name = default_model_name_object
+ 
+  if (total_participants == 2){
+    unittest_parameters.train_data_column = "2-8"
+    unittest_parameters.train_target_column = "9"
+  } else if (total_participants == 3){
+    unittest_parameters.train_data_column = "2-6"
+    unittest_parameters.train_target_column = "7"
+  }
+
+
 }
 
 
@@ -245,4 +308,4 @@ let Find_Test_Assistor_Wrapper = mount(Find_Test_Assistor, {
 });
 
 
-export { unittest_parameters, generate_unittest_log, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper, Profile_wrapper, modify_parameter }
+export { unittest_parameters, generate_unittest_log, switch_default_values, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper, Profile_wrapper, modify_parameter }

@@ -26,7 +26,7 @@ function unread_test_output(sponsor_mode, assistor_mode, verify_algo){
     }
 
     // sponsor: regression and assistor: regression
-    let unread_test_output_regression_regression = (data) => {
+    let unread_test_output_regression_regression_1s_1a = (data) => {
       try{
         data = data[0]
         let test_dict = {
@@ -48,9 +48,11 @@ function unread_test_output(sponsor_mode, assistor_mode, verify_algo){
           for (let j in cur_running_res){
             let cur_number = cur_running_res[j]
             cur_number = parseFloat(cur_number.toFixed(5))
-            console.log('spo_eval', cur_number, cur_testing_dict[j])
+            let cur_testing_number = cur_testing_dict[j]
+            cur_testing_number = parseFloat(cur_testing_number.toFixed(5))
+            console.log('spo_eval', cur_number, cur_testing_number)
             expect(cur_number).toEqual(
-              cur_testing_dict[j]
+              cur_testing_number
             )
           }
         }
@@ -63,7 +65,7 @@ function unread_test_output(sponsor_mode, assistor_mode, verify_algo){
     
 
     // sponsor: classification and assistor: regression
-    let unread_test_output_classification_regression = (data) => {
+    let unread_test_output_classification_regression_1s_1a = (data) => {
       try{
         data = data[0]
         let test_dict = {
@@ -83,9 +85,50 @@ function unread_test_output(sponsor_mode, assistor_mode, verify_algo){
           for (let j in cur_running_res){
             let cur_number = cur_running_res[j]
             cur_number = parseFloat(cur_number.toFixed(5))
-            console.log('spo_eval', cur_number, cur_testing_dict[j])
+            let cur_testing_number = cur_testing_dict[j]
+            cur_testing_number = parseFloat(cur_testing_number.toFixed(5))
+            console.log('spo_eval', cur_number, cur_testing_number)
             expect(cur_number).toEqual(
-              cur_testing_dict[j]
+              cur_testing_number
+            )
+          }
+        }
+
+        console.log(generate_unittest_log('unread_test_output'))
+      }catch (error){
+        done(error)
+      }
+    }
+
+    // sponsor: regression and assistor: regression
+    let unread_test_output_regression_regression_1s_2a = (data) => {
+      try{
+        data = data[0]
+
+        let test_dict = {
+          "1": {
+            "MAD": 3.8372937900807953, 
+            "RMSE": 5.641336458075518, 
+            "R2": 0.37555098184055447
+          },
+          "2": {
+            "MAD": 3.6513637297118313,
+            "RMSE": 5.30278303987191,
+            "R2": 0.36121280565236213,
+          }
+        }
+        
+        for (let i in data){
+          let cur_running_res = data[i]
+          let cur_testing_dict = test_dict[i]
+          for (let j in cur_running_res){
+            let cur_number = cur_running_res[j]
+            cur_number = parseFloat(cur_number.toFixed(5))
+            let cur_testing_number = cur_testing_dict[j]
+            cur_testing_number = parseFloat(cur_testing_number.toFixed(5))
+            console.log('spo_eval', cur_number, cur_testing_number)
+            expect(cur_number).toEqual(
+              cur_testing_number
             )
           }
         }
@@ -138,14 +181,29 @@ function unread_test_output(sponsor_mode, assistor_mode, verify_algo){
     let cur_parameters = [];
     cur_parameters.push(unread_test_output_1)
     cur_parameters.push(unread_test_output_2)
+
+    let temp_length = unittest_parameters.assistor_username_list.split(",").length
     if (verify_algo == true){
+
       if (sponsor_mode == 'regression'){
-        cur_parameters.push(unread_test_output_regression_regression)
+        if (temp_length == 1){
+          cur_parameters.push(unread_test_output_regression_regression_1s_1a)
+        } else if (temp_length == 2){
+          cur_parameters.push(unread_test_output_regression_regression_1s_2a)
+        } else if (temp_length == 3){
+          cur_parameters.push(unread_test_output_regression_regression_1s_3a)
+        }
       } else if (sponsor_mode == 'classification'){
-        cur_parameters.push(unread_test_output_classification_regression)
+        if (temp_length == 1){
+          cur_parameters.push(unread_test_output_classification_regression_1s_1a)
+        } else if (temp_length == 2){
+          cur_parameters.push(unread_test_output_classification_regression_1s_2a)
+        } else if (temp_length == 3){
+          cur_parameters.push(unread_test_output_classification_regression_1s_3a)
+        }
       }
     } else {
-      cur_parameters.push(unread_test_output_multiple_assistors)
+      // cur_parameters.push(unread_test_output_multiple_assistors)
     }
     
     cur_parameters.push(unread_test_output_4)

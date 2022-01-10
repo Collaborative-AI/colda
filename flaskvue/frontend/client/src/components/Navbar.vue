@@ -218,6 +218,7 @@ export default {
       for (let task_id in cur_unread_request_Taskid_dict){
         // console.log('root shi', this.root)
         log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        console.log("5552121", node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt'))
         Log('assistor ceshi', 'info')
         // Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 

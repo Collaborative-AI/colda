@@ -7,12 +7,13 @@ function check_login_first_user(){
   test('check_login_first_user',(done)=>{  
     let check_login_final = (data) => {
       try{
-        done()
+
         console.log('window', window.localStorage.getItem('Apollo-token'))
         // unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
         modify_parameter('user_id', JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id)
         // console.log('param2', unittest_parameters)
         console.log('user_id1', unittest_parameters.user_id)
+        done()
       }catch (error){
         done(error)
       }
@@ -34,12 +35,12 @@ function check_login_second_user(){
   test('check_login_second_user',(done)=>{
     let check_login_final = (data) => {
       try{
-        done()
+
         console.log('window', window.localStorage.getItem('Apollo-token'))
         // unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
         modify_parameter('user_id', JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id)
         console.log('user_id2', unittest_parameters.user_id)
-  
+        done()
       }catch (error){
         done(error)
       }
@@ -61,12 +62,12 @@ function check_login_third_user(){
   test('check_login_third_user',(done)=>{
     let check_login_final = (data) => {
       try{
-        done()
+
         console.log('window', window.localStorage.getItem('Apollo-token'))
         // unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
         modify_parameter('user_id', JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id)
         console.log('user_id2', unittest_parameters.user_id)
-  
+        done()
       }catch (error){
         done(error)
       }
@@ -88,12 +89,12 @@ function check_login_fourth_user(){
   test('check_login_fourth_user',(done)=>{
     let check_login_final = (data) => {
       try{
-        done()
+        
         console.log('window', window.localStorage.getItem('Apollo-token'))
         // unittest_parameters.user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
         modify_parameter('user_id', JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id)
         console.log('user_id2', unittest_parameters.user_id)
-  
+        done()
       }catch (error){
         done(error)
       }

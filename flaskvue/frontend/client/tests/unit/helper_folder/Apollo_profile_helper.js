@@ -34,10 +34,11 @@ function check_profile_onSubmit_db(){
     cur_parameters.push(check_profile_onSubmit_db)
     cur_parameters.push('profile_unittest')
     // sponsor
-    Profile_wrapper.setData({default_file_path: unittest_parameters.default_file_path, 
-                             default_id_column: unittest_parameters.default_id_column, 
-                             default_data_column: unittest_parameters.default_data_column,
-                             default_model_name: unittest_parameters.model_name,
+    let user_id = unittest_parameters.user_id.toString()
+    Profile_wrapper.setData({default_file_path: unittest_parameters.default_file_path.user_id, 
+                             default_id_column: unittest_parameters.default_id_column.user_id, 
+                             default_data_column: unittest_parameters.default_data_column.user_id,
+                             default_model_name: unittest_parameters.model_name.user_id,
                              sharedState: {'mode':'auto'}  })
     Profile_wrapper.vm.onSubmit(cur_parameters)
   })

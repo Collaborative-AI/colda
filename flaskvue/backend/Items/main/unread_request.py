@@ -151,6 +151,7 @@ def match_test_assistor_id():
     test_id = data.get('test_id')
 
     record = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
+    print('match_test_assistor_id', record)
     sponsor_id = record.sponsor_id
 
     data_array = data['file']

@@ -4,6 +4,7 @@ import { delete_db_helper } from './helper_folder/Apollo_delete_db_helper'
 import { find_assistor_helper } from './helper_folder/Apollo_find_assistor_helper'
 import { profile_helper } from './helper_folder/Apollo_profile_helper'
 import { notification_helper } from './helper_folder/Apollo_notification_helper';
+import { switch_default_values_helper } from './helper_folder/Apollo_switch_default_values_helper';
 
 import { unread_request_helper } from './helper_folder/train/assistor/unread_request_helper';
 
@@ -18,14 +19,23 @@ afterAll(() => {
 });
 
 describe('test_unread_request', () => {
+
+  let max_round = 1
+  let sponsor_mode = 'regression'
+  let assistor_mode = 'regression'
+  let verify_algo = true
+  let match_ratio = '1.0'
+  let assistor_username_list = 'xie2'
+
+  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
+
+
   console.log('des1')
 
-  let sponsor_mode = 'regression'
-  let assistor_username_list = 'xie2,leq1,leq2'
 
 // }
   // Sponsor logins
-  logout_helper.logout()
+  // logout_helper.logout()
   login_helper.check_login_first_user()
   delete_db_helper.delete_db()
   // Sponsor gets train id

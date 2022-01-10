@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import { ex,fs,os,node_path,dialog } from '../../../import.js'
+import { ex,fs,os,node_path,dialog } from '../../../import_package.js'
 // const fs = window.fs;
 // const ex = window.ex;
 // const os = window.os;
@@ -1310,12 +1310,12 @@ export default {
     this.test_id = this.$route.query.from_test_id
     this.task_description = this.$route.query.from_task_description
     // console.log('this.test_id', this.test_id)
-    // this.log.transports.file.resolvePath = () => this.node_path.join(this.root.toString(), '/logs', this.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
+    // this.// log.transports.file.resolvePath = () => this.node_path.join(this.root.toString(), '/logs', this.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
 
-    // window.log.transports.file.resolvePath = () => window.node_path.join(this.root.toString(), '/logs', this.task_id.toString(),'log.txt');
+    // window.// log.transports.file.resolvePath = () => window.node_path.join(this.root.toString(), '/logs', this.task_id.toString(),'log.txt');
     // const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
 
-    // window.log.transports.file.resolvePath = () => wino.join(, 'logs/main.log');
+    // window.// log.transports.file.resolvePath = () => wino.join(, 'logs/main.log');
 
     let new_root = store.changeroot()
     this.root = new_root.root;

@@ -1,5 +1,7 @@
 import { login_helper } from './helper_folder/Apollo_login_helper'
 import { profile_helper } from './helper_folder/Apollo_profile_helper'
+import { switch_default_values_helper } from './helper_folder/Apollo_switch_default_values_helper';
+
 jest.setTimeout(10000);
 
 afterAll(() => {

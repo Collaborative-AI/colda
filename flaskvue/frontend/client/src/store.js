@@ -3,7 +3,7 @@
 // const node_path = window.node_path ? window.node_path : require('path');
 // const paht = require('path');
 
-import { os, node_path } from './import.js'
+import { os, node_path } from './import_package.js'
 import db from './db'
 
 export default {

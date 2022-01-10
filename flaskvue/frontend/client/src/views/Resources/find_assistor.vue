@@ -94,9 +94,9 @@
 <script>
 import { config } from 'process';
 import store from '../../store.js'
-import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, sqlite3_run } from '../../utils.js'
+import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, sqlite3_run, change_db_param_to_string } from '../../utils.js'
 
-import { ex,fs,os,node_path,dialog,log } from '../../import.js'
+import { ex,fs,os,node_path,dialog,log } from '../../import_package.js'
 
 
 // const fs = window.fs ? window.fs : require('fs');
@@ -167,7 +167,7 @@ export default {
       let param = [vm.task_name, vm.task_description, vm.sharedState.user_id, "train",
                     vm.task_id, vm.train_file_path, vm.train_id_column, vm.train_data_column, 
                     vm.train_target_column, vm.task_mode, vm.model_name, vm.metric_name]
-      // sqlite3_run(sentence, param)
+      // sqlite3_run(sentence, change_db_param_to_string(param))
       //       .then(function(response) {
       //          console.log('shuchu response', response)
       //                       let unittest_parameters = generate_unittest_parameters(vm.train_file_path, vm.train_id_column, vm.train_data_column, vm.train_target_column)
@@ -193,7 +193,7 @@ export default {
 
 
             // })
-      vm.$db.run(sentence, param, function(err) {
+      vm.$db.run(sentence, change_db_param_to_string(param), function(err) {
               if (err) {
                 return console.log(err.message);
               }
@@ -243,8 +243,8 @@ export default {
       // })
     },
     get_model_name() {
-      for (var i = 0; i < this.task_mode_list.length; i++) {
-        var obj = this.task_mode_list[i]
+      for (let i = 0; i < this.task_mode_list.length; i++) {
+        let obj = this.task_mode_list[i]
         if (this.task_mode == obj.name ) {
           this.model_name_list = obj.sub
         }
@@ -253,8 +253,8 @@ export default {
       this.metric_name=''
     },
     get_metric_name() {
-      for (var i = 0; i < this.model_name_list.length; i++) {
-        var obj = this.model_name_list[i]
+      for (let i = 0; i < this.model_name_list.length; i++) {
+        let obj = this.model_name_list[i]
         if (this.model_name == obj.name ) {
           this.metric_name_list = obj.sub
         }
@@ -418,7 +418,7 @@ export default {
       
       console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
-      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
       Log('sponsor ceshi', 'info')
       console.log('sponsor ceshi1', unittest_callbacks)
       if (this.assistor_username_list == ""){
@@ -473,7 +473,7 @@ export default {
           //     (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`", "`+vm.task_mode+`", "`+vm.model_name+`", "`+vm.metric_name+`")`
 
           // console.log("insert_sentence", insert_sentence) 
-          vm.$db.run(sentence, param, function(err){
+          vm.$db.run(sentence, change_db_param_to_string(param), function(err){
             if (err){
               console.log('err info',err);
             }
@@ -582,22 +582,22 @@ export default {
             // handle success
             vm.$toasted.success(`Training Starts`, { icon: 'fingerprint' })
 
-            Log(generate_message_string("\nYou are SPONSOR\n"), 'warn')
-            Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'warn')
-            Log(generate_message_string("Training Stage Starts\n"), 'warn')
-            Log(generate_message_string("1.0 Find Assistor\n"), 'warn')
-            Log(generate_message_string("1.1 Sponsor calls for help\n"), 'warn')
-            Log(generate_message_string("1.2 Sponsor sends id file\n"), 'warn')
-            Log(generate_message_string("1.3 Find Assistor Done\n"), 'warn')
+            Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
+            Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'info')
+            Log(generate_message_string("Training Stage Starts\n"), 'info')
+            Log(generate_message_string("1.0 Find Assistor\n"), 'info')
+            Log(generate_message_string("1.1 Sponsor calls for help\n"), 'info')
+            Log(generate_message_string("1.2 Sponsor sends id file\n"), 'info')
+            Log(generate_message_string("1.3 Find Assistor Done\n"), 'info')
 
             try {
               fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
               fs.appendFileSync(Log_address, "Task ID: " + vm.task_id + "\n")
-              fs.appendFileSync(Log_address, "---------------------- Train Stage Starts\n")
-              fs.appendFileSync(Log_address, "---------------------- 1. Find assistor\n")
+              fs.appendFileSync(Log_address, "---- Train Stage Starts\n")
+              fs.appendFileSync(Log_address, "---- 1. Find assistor\n")
               fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
               fs.appendFileSync(Log_address, "1.2 Sponsor sends id file\n")
-              fs.appendFileSync(Log_address, "---------------------- 1. Find assistor Done\n")
+              fs.appendFileSync(Log_address, "---- 1. Find assistor Done\n")
             } catch (err) {
               console.log(err)
             }

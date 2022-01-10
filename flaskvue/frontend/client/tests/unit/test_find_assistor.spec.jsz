@@ -2,6 +2,8 @@ import { login_helper } from './helper_folder/Apollo_login_helper';
 import { logout_helper } from './helper_folder/Apollo_logout_helper';
 import { delete_db_helper } from './helper_folder/Apollo_delete_db_helper';
 import { find_assistor_helper } from './helper_folder/Apollo_find_assistor_helper'
+import { switch_default_values_helper } from './helper_folder/Apollo_switch_default_values_helper';
+
 jest.setTimeout(10000);
 
 afterAll(() => {
@@ -12,9 +14,11 @@ afterAll(() => {
 describe('test_find_assistor', () => {
   
   let sponsor_mode = 'regression'
-  let assistor_username_list = 'xie2,leq1,leq2'
+  let assistor_username_list = 'xie2'
+  let match_ratio = '1.0'
+  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
 
-  logout_helper.logout()
+  // logout_helper.logout()
   login_helper.check_login_first_user()
   delete_db_helper.delete_db()
   find_assistor_helper.get_train_id()

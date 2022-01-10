@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { ex,fs,os,node_path,dialog } from '../../import.js'
+import { ex,fs,os,node_path,dialog } from '../../import_package.js'
 // const fs = window.fs ? window.fs : require('fs');
 // const dialog = window.dialog ? window.dialog : require('electron');
 
@@ -81,7 +81,7 @@ import { ex,fs,os,node_path,dialog } from '../../import.js'
 // const db = require('../../db').default
 import store from '../../store'
 import db from '../../db'
-import { execute_unittest_list, generate_unittest_parameters } from '../../utils.js'
+import { execute_unittest_list, generate_unittest_parameters, change_db_param_to_string } from '../../utils.js'
 
 export default {
   name: 'Profile',  //this is the name of the component
@@ -151,17 +151,17 @@ export default {
       let vm = this
       // console.log('bug1')
 
-      var select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?'
-      var param = [this.sharedState.user_id]
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?'
+      let param = [this.sharedState.user_id]
       console.log('select_sentence', select_sentence)
 
 
-      vm.$db.get(select_sentence, param, (err, row) => {
+      vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
       if (err) {
         console.error(err);
       }
 
-      // var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
+      // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
       console.log('haha',row);
       if (row != null){
           vm.default_file_path = row.default_file_path
@@ -173,7 +173,7 @@ export default {
         } 
       })
     },
-    onSubmit (e) {
+    onSubmit (unittest_callbacks) {
       let vm = this;
       let both_path_validation = true
       console.log("vm.default_file_path", vm.default_file_path)
@@ -188,12 +188,15 @@ export default {
       console.log("vm.default_id_column", vm.default_id_column)
       console.log("vm.default_data_column", vm.default_data_column)
 
-      var select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?'
-      var param = [this.sharedState.user_id]
-      console.log('select_sentence', select_sentence)
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?'
+      let param = [this.sharedState.user_id.toString()]
+      let a = ''
+      console.log('aaa1', a.length)
+      console.log('zzz995', typeof(this.sharedState.user_id))
+      console.log('select_sentence123', select_sentence, change_db_param_to_string(param))
 
 
-      vm.$db.get(select_sentence, param, (err, row) => {
+      vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
       if (err) {
         console.error(err);
       }
@@ -203,12 +206,12 @@ export default {
       if (row == null){
         console.log('dele0')
 
-        var sentence = `INSERT INTO User_Default_Table (user_id , default_file_path , default_id_column, default_data_column,` + 
+        let sentence = `INSERT INTO User_Default_Table (user_id , default_file_path , default_id_column, default_data_column,` + 
         `             default_target_column, default_mode, default_model_name) VALUES (?, ?, ?, ?, ?, ?, ?)`
-        var param = [vm.sharedState.user_id , vm.default_file_path, vm.default_id_column, vm.default_data_column,  "",
+        let param = [vm.sharedState.user_id , vm.default_file_path, vm.default_id_column, vm.default_data_column,  "",
                       vm.sharedState.mode, vm.default_model_name]
 
-        vm.$db.run(sentence, param, function(err){
+        vm.$db.run(sentence, change_db_param_to_string(param), function(err){
                     if (err){
                       console.log('err info',err);
                     }
@@ -230,7 +233,7 @@ export default {
         console.log('dele4')
         if(both_path_validation == true){
 
-          var sentence = 'UPDATE User_Default_Table' 
+          let sentence = 'UPDATE User_Default_Table' 
           + ' SET default_file_path = ?,'
           + ' default_id_column = ?,'
           + ' default_data_column = ?,'
@@ -239,9 +242,9 @@ export default {
           + ' default_model_name = ?'
           + ' WHERE user_id = ?'
 
-          var param = [vm.default_file_path, vm.default_id_column, vm.default_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id];
+          let param = [vm.default_file_path, vm.default_id_column, vm.default_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id];
 
-          db.run(sentence, param, function(err) {
+          db.run(sentence, change_db_param_to_string(param), function(err) {
             if (err) {
               console.log(err);
             }
@@ -263,7 +266,7 @@ export default {
       }
       console.log('dele2')
       let unittest_parameters = generate_unittest_parameters(vm.default_file_path, vm.default_id_column, vm.default_data_column)
-      execute_unittest_list(arguments[arguments.length-1], 0, "profile_unittest", unittest_parameters)
+      execute_unittest_list(unittest_callbacks, 0, "profile_unittest", unittest_parameters)
       vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
       })
     },

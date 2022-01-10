@@ -177,7 +177,7 @@ console.log("54321")
 // const db = new Database('foobar.db', { verbose: console.log });
 // console.log('21312312', db)
 // // let db = 5
-import {sqlite3,node_path, fs} from './import'
+import {sqlite3,node_path, fs} from './import_package'
 
 console.log('sqlite3shi',sqlite3)
 
@@ -195,7 +195,7 @@ function createDatabase(file){
     console.log("file created");
   }
 
-  var db = new sqlite3.Database(
+  let db = new sqlite3.Database(
     file, 
     sqlite3.OPEN_READWRITE, 
     function (err) {

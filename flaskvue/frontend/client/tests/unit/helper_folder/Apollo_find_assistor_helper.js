@@ -99,14 +99,9 @@ function check_find_assistor_sponsor_onSubmit(sponsor_mode, assistor_username_li
     cur_parameters.push('find_assistor_unittest')
     // assistor
     console.log("43211234", sponsor_mode)
-    modify_parameter("task_mode", sponsor_mode)
+    
     modify_parameter("assistor_username_list", assistor_username_list)
- 
-    if (sponsor_mode == 'regression'){
-      modify_parameter('metric_name', 'MAD_RMSE_R2')
-    } else if (sponsor_mode == 'classification'){
-      modify_parameter('metric_name', 'Accuracy_F1')
-    }
+    
     Find_Assistor_wrapper.setData({task_id: unittest_parameters.task_id,
                                    task_name: unittest_parameters.task_name, 
                                    task_description: unittest_parameters.task_description,

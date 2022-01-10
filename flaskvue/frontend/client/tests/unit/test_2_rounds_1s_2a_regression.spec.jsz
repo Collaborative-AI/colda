@@ -33,10 +33,11 @@ describe('test_multiple_rounds_regression', () => {
   let max_round = 2
   let sponsor_mode = 'regression'
   let assistor_mode = 'regression'
-  let verify_algo = false
+  let verify_algo = true
+  let match_ratio = '1.0'
   let assistor_username_list = 'xie2,leq1'
 
-  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, '1.0')
+  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
   // Sponsor logins
   // logout_helper.logout()
   // login_helper.check_login_first_user()

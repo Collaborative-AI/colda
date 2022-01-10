@@ -11,6 +11,20 @@ export function generate_unittest_parameters(){
   return unittest_parameters
 }
 
+export function change_db_param_to_string(db_parameters){
+  let new_db_parameters = []
+  for (let i = 0; i < db_parameters.length; i++){
+    let db_param_i = db_parameters[i]
+    if (db_param_i > 0){
+      new_db_parameters.push(db_param_i.toString())
+    }
+    else{
+      new_db_parameters.push(db_param_i)
+    }
+  }
+  return new_db_parameters
+}
+
 export function execute_unittest_list(unittest_list, index, indicator, unittest_parameters){
   // console.log('unittest_list',unittest_list)
   if (Array.isArray(unittest_list)) {

@@ -7,7 +7,8 @@ const ex = require('child_process');
 const node_path = require('path');
 const os = require('os');
 const dialog = console.log
-const log = require('electron-log')
+// const log = require('electron-log')
+const log = console.log
 
 import Login from '../../../src/views/Auth/Login.vue'
 import Navbar from '../../../src/components/Navbar.vue'
@@ -106,9 +107,13 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio){
   function generate_data_path(user_id, folder_indicator) {
     let res = ''
     if (sponsor_mode == 'regression'){
-      res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+
     } else if (sponsor_mode == 'classification'){
-      res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      res = "/Users/xianjianxie/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+
     }
     return res
   }
@@ -157,7 +162,13 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio){
     unittest_parameters.train_data_column = "2-6"
     unittest_parameters.train_target_column = "7"
   }
+  unittest_parameters.task_mode = sponsor_mode
 
+  if (sponsor_mode == 'regression'){
+    unittest_parameters.metric_name = 'MAD_RMSE_R2'
+  } else if (sponsor_mode == 'classification'){
+    unittest_parameters.metric_name = 'Accuracy_F1'
+  }
 
 }
 

@@ -932,7 +932,7 @@ export default {
         sleep(500); // 程序滞留500ms
         console.log(`第${count}次结束 ${getTime.now() - startTime}`); // 显示结束时间
         count += 1;
-        console.log("--------------------")
+        console.log("------")
         setTimeout(function(){ce()}, 300);
       }
 
@@ -1166,7 +1166,7 @@ export default {
     //   }
 
 
-    //   console.log("--------------------------")
+    //   console.log("----")
 
     //     if(indicator){
     //       this.test2("11111111111111111111111")

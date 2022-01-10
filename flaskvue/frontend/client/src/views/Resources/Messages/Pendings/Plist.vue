@@ -105,7 +105,7 @@ export default {
 
     check_if_new_pending(){
       let vm = this;
-      console.log("-------wowowowwo")
+      console.log("----wowowowwo")
       // when the cur_pending_num in Plist page is not equals to the pending_num in store.js, it means we have new pending_page.
       // cal get_all_pending one more time
       if (vm.cur_pending_num != vm.sharedState.pending_num){

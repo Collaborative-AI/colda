@@ -69,8 +69,6 @@ def make_eval(args):
             msg = 'Test Round: {}, {}'.format(i, eval)
             log(msg, root, self_id, task_id, test_id)
 
-
-    print('evalshi', type(eval))
     result_path = '?'.join(result_path)
     make_eval_res = json.dumps(make_eval_res)
     print('200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res = make_eval_res, result_path = result_path), end='')

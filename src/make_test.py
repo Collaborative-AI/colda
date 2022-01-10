@@ -31,7 +31,6 @@ def make_test(args):
         output = model.predict(data)
         for j in range(4):
             make_test_res[i].append(output[j][0])
-        # print('?make_test_resjian1',output)
         output_path_i = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'round', str(i), 'output')
         makedir_exist_ok(output_path_i)
         output_path_i = os.path.join(output_path_i, '{}.csv'.format(self_id))

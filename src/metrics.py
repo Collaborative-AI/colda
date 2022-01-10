@@ -35,7 +35,6 @@ class Metric():
             evaluation_i = self.metric[i](output, target)
             evaluation.append('{}: {:.4f}'.format(self.metric_name[i], evaluation_i))
             evaluation_dict[self.metric_name[i]] = evaluation_i
-            print('!!!', evaluation_dict)
         # evaluation = ', '.join(evaluation)
         return evaluation, evaluation_dict
 

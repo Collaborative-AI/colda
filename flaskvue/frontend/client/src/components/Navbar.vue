@@ -255,31 +255,31 @@ export default {
 
 
 
-          // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-          // ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-          // ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          // ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+          const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
-          // stmt.run({
-          //   user_id: vm.sharedState.user_id, 
-          //   task_id: task_id,
-          //   test_id: '',
-          //   task_name: '', 
-          //   task_description: '', 
-          //   test_name: '',
-          //   test_description: '',
-          //   train_file_path: default_file_path, 
-          //   train_id_column: default_id_column, 
-          //   train_data_column: default_data_column, 
-          //   train_target_column: default_target_column, 
-          //   test_file_path: default_file_path,
-          //   test_id_column: default_id_column,
-          //   test_data_column: default_data_column,
-          //   test_target_column: default_target_column,
-          //   mode: default_mode, 
-          //   test_indicator: 'train',
-          //   model_name: default_model_name
-          // });
+          stmt.run({
+            user_id: vm.sharedState.user_id, 
+            task_id: task_id,
+            test_id: '',
+            task_name: '', 
+            task_description: '', 
+            test_name: '',
+            test_description: '',
+            train_file_path: default_file_path, 
+            train_id_column: default_id_column, 
+            train_data_column: default_data_column, 
+            train_target_column: default_target_column, 
+            test_file_path: default_file_path,
+            test_id_column: default_id_column,
+            test_data_column: default_data_column,
+            test_target_column: default_target_column,
+            mode: default_mode, 
+            test_indicator: 'train',
+            model_name: default_model_name
+          });
 
           // check task_id and vm.sharedState.mode
           
@@ -846,7 +846,7 @@ export default {
       }
 
       var select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?'
-      var param = [vm.sharedState.user_id, vm.task_id]
+      var param = [vm.sharedState.user_id, 'train', task_id]
       console.log('select_sentence', select_sentence)
 
 
@@ -855,7 +855,7 @@ export default {
         console.error(err);
       }
       
-      var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+      // var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
       let train_file_path = row.train_file_path
       // // console.log("train_file_path", train_file_path)
@@ -907,6 +907,7 @@ export default {
       } catch (err) {
         // console.log(err)
       }
+      })
     },
 
     unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks){
@@ -1070,7 +1071,18 @@ export default {
           // Assistor trains the data
           // // console.log("select_pending_record", select_pending_record)
           // // console.log('zz88', task_id)
-          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE task_id = ? AND test_indicator = ? AND user_id = ?').get(task_id, 'train', vm.sharedState.user_id);
+
+          var select_sentence = 'SELECT * FROM User_Assistor_Table WHERE task_id = ? AND test_indicator = ? AND user_id = ?'
+          var param = [task_id, 'train', vm.sharedState.user_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, param, (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE task_id = ? AND test_indicator = ? AND user_id = ?').get(task_id, 'train', vm.sharedState.user_id);
           
           let train_file_path = row.train_file_path
           // // console.log("train_file_path",train_file_path)
@@ -1092,7 +1104,8 @@ export default {
             vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks)
           }else{
             // console.log('unread situation assistor 3rd case')
-          }  
+          }
+          }) 
         }) //end axios
         .catch((error) => {
           // console.log(error)
@@ -1210,8 +1223,18 @@ export default {
             }
           }
 
-          let select_train_target_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
-          var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+          var select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?'
+          var param = [vm.sharedState.user_id, 'train', task_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, param, (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // let select_train_target_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+          // var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
           // // console.log('select train target path', row)
           let train_file_path = row.train_file_path
@@ -1227,7 +1250,7 @@ export default {
           let waiting_start_time = new Date();
           vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time, unittest_callbacks)
 
-          
+          })
         })
         .catch((error) => {
           // handle error
@@ -1393,8 +1416,17 @@ export default {
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_request_Testid_dict, test_id_to_task_id)
       execute_unittest_list(unittest_callbacks, 0, "unread_test_request_unittest", unittest_parameters)
 
-                
-      var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+      var select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id = ?'
+      var param = [vm.sharedState.user_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, param, (err, row) => {
+      if (err) {
+        console.error(err);
+      }
+         
+      // var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
       // // console.log("retrieve_setting_mode_row", row)
 
       if (row == null){
@@ -1411,8 +1443,18 @@ export default {
      
         // // console.log('unread test request mode', vm.sharedState.mode)
         if (vm.sharedState.mode == 'auto'){
+
+          var select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id = ?'
+          var param = [vm.sharedState.user_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, param, (err, row) => {
+          if (err) {
+            console.error(err);
+          }
           
-          var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+          // var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
           // // console.log("default_row", row)
           let default_file_path = row.default_file_path
           let default_id_column = row.default_id_column
@@ -1423,33 +1465,45 @@ export default {
 
           let test_hash_id_file_address = null
           let Log_address = null
+
+
+          var sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,' +
+          ' train_id_column, train_data_column, train_target_column, test_file_path, test_id_column,' +
+          ' test_data_column, test_target_column, mode, test_indicator, model_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          var param = [vm.sharedState.user_id, task_id, test_id, '', '', '', '', '', '', '', '', default_file_path, default_id_column,
+                      default_data_column, default_target_column, default_mode, 'test', default_model_name]
+
+          vm.$db.run(sentence, param, function(err){
+                      if (err){
+                        console.log('err info',err);
+                      }
  
 
-          const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+          // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+          // ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+          // ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+          // ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
-          stmt.run({
-            user_id: vm.sharedState.user_id, 
-            task_id: task_id,
-            test_id: test_id,
-            task_name: '', 
-            task_description: '', 
-            test_name: '',
-            test_description: '',
-            train_file_path: '', 
-            train_id_column: '', 
-            train_data_column: '', 
-            train_target_column: '', 
-            test_file_path: default_file_path,
-            test_id_column: default_id_column,
-            test_data_column: default_data_column,
-            test_target_column: default_target_column,
-            mode: default_mode, 
-            test_indicator: 'test',
-            model_name: default_model_name
-          });
+          // stmt.run({
+          //   user_id: vm.sharedState.user_id, 
+          //   task_id: task_id,
+          //   test_id: test_id,
+          //   task_name: '', 
+          //   task_description: '', 
+          //   test_name: '',
+          //   test_description: '',
+          //   train_file_path: '', 
+          //   train_id_column: '', 
+          //   train_data_column: '', 
+          //   train_target_column: '', 
+          //   test_file_path: default_file_path,
+          //   test_id_column: default_id_column,
+          //   test_data_column: default_data_column,
+          //   test_target_column: default_target_column,
+          //   mode: default_mode, 
+          //   test_indicator: 'test',
+          //   model_name: default_model_name
+          // });
 
 
           let unittest_parameters = generate_unittest_parameters(test_id, vm.sharedState.mode)
@@ -1533,7 +1587,8 @@ export default {
               // // console.log(error.response.data)
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
-          
+          })
+          })
         }else if (vm.sharedState.mode == 'manual'){
           // // console.log(task_id)
           vm.sharedState.pending_num++;
@@ -1557,6 +1612,7 @@ export default {
           // dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
         }
       }
+      })
     },
 
     unread_test_match_id(unread_test_match_id_notification, unittest_callbacks) {
@@ -1718,7 +1774,17 @@ export default {
 
           }
 
-          var row = vm.$db.prepare('SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
+          var select_sentence = 'SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?'
+          var param = [vm.sharedState.user_id, 'test', test_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, param, (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // var row = vm.$db.prepare('SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
           
           let test_file_path = row.test_file_path
           let test_data_column = row.test_data_column
@@ -1754,7 +1820,7 @@ export default {
             // console.log(err)
           }
       
-        
+          })
         })
         .catch((error) => {
           // console.log(error)
@@ -1858,7 +1924,17 @@ export default {
             // console.log(err)
           }
 
-          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND test_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
+          var select_sentence = 'SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND test_indicator = ?'
+          var param = [vm.sharedState.user_id, test_id, 'test']
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, param, (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND test_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
 
           let mode = row.mode
           let test_file_path = row.test_file_path
@@ -1942,7 +2018,7 @@ export default {
             // console.log('unread_test_match_id_assistor error')
           }
           
-
+          })
         })
         .catch((error) => {
           // handle error
@@ -2092,7 +2168,17 @@ export default {
       // // console.log("unread_test_output_max_round", JSON.parse(response.data.output[0]))
       // // console.log("max_round", max_round)
 
-      var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
+      var select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?'
+      var param = [vm.sharedState.user_id, 'test', test_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, param, (err, row) => {
+      if (err) {
+        console.error(err);
+      }
+
+      // var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
 
       let test_file_path = row.test_file_path
       let test_target_column = row.test_target_column
@@ -2145,6 +2231,7 @@ export default {
         let unittest_parameters = generate_unittest_parameters()
         execute_unittest_list(unittest_callbacks, 3, "unread_test_output_unittest", unittest_parameters)
       }
+      })
     },
   },
 

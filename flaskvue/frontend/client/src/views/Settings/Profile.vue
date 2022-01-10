@@ -150,7 +150,18 @@ export default {
     getUser (id) {
       let vm = this
       // console.log('bug1')
-      var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
+
+      var select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?'
+      var param = [this.sharedState.user_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, param, (err, row) => {
+      if (err) {
+        console.error(err);
+      }
+
+      // var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
       console.log('haha',row);
       if (row != null){
           vm.default_file_path = row.default_file_path
@@ -160,6 +171,7 @@ export default {
           vm.sharedState.mode = row.default_mode
           console.log('mode', vm.sharedState.mode)
         } 
+      })
     },
     onSubmit (e) {
       let vm = this;
@@ -176,42 +188,84 @@ export default {
       console.log("vm.default_id_column", vm.default_id_column)
       console.log("vm.default_data_column", vm.default_data_column)
 
-      const row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
+      var select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?'
+      var param = [this.sharedState.user_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, param, (err, row) => {
+      if (err) {
+        console.error(err);
+      }
+
+      // const row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
       console.log('haha',row);
       if (row == null){
         console.log('dele0')
-        const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_file_path , @default_id_column, @default_data_column , @default_target_column, @default_mode, @default_model_name)');
-        stmt.run({
-          user_id: vm.sharedState.user_id , 
-          default_file_path: vm.default_file_path, 
-          default_id_column: vm.default_id_column, 
-          default_data_column: vm.default_data_column, 
-          default_target_column: "",
-          default_mode: vm.sharedState.mode,
-          default_model_name: vm.default_model_name,
-        });
+
+        var sentence = `INSERT INTO User_Default_Table (user_id , default_file_path , default_id_column, default_data_column,` + 
+        `             default_target_column, default_mode, default_model_name) VALUES (?, ?, ?, ?, ?, ?, ?)`
+        var param = [vm.sharedState.user_id , vm.default_file_path, vm.default_id_column, vm.default_data_column,  "",
+                      vm.sharedState.mode, vm.default_model_name]
+
+        vm.$db.run(sentence, param, function(err){
+                    if (err){
+                      console.log('err info',err);
+                    }
+
+
+        // const stmt = vm.$db.prepare('INSERT INTO User_Default_Table VALUES ( @user_id , @default_file_path , @default_id_column, @default_data_column , @default_target_column, @default_mode, @default_model_name)');
+        // stmt.run({
+        //   user_id: vm.sharedState.user_id , 
+        //   default_file_path: vm.default_file_path, 
+        //   default_id_column: vm.default_id_column, 
+        //   default_data_column: vm.default_data_column, 
+        //   default_target_column: "",
+        //   default_mode: vm.sharedState.mode,
+        //   default_model_name: vm.default_model_name,
+        // });
         console.log('dele1')
+        })
       }else{
         console.log('dele4')
         if(both_path_validation == true){
 
-
-          const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
+          var sentence = 'UPDATE User_Default_Table' 
           + ' SET default_file_path = ?,'
           + ' default_id_column = ?,'
           + ' default_data_column = ?,'
           + ' default_target_column = ?,'
           + ' default_mode = ?,'
           + ' default_model_name = ?'
-          + ' WHERE user_id = ?'); 
-          console.log('dele3')
-          stmt.run(vm.default_file_path, vm.default_id_column, vm.default_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id);
-        } 
+          + ' WHERE user_id = ?'
+
+          var param = [vm.default_file_path, vm.default_id_column, vm.default_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id];
+
+          db.run(sentence, param, function(err) {
+            if (err) {
+              console.log(err);
+            }
+            console.log(`Row(s) updated`);
+
+
+          // const stmt = vm.$db.prepare('UPDATE User_Default_Table' 
+          // + ' SET default_file_path = ?,'
+          // + ' default_id_column = ?,'
+          // + ' default_data_column = ?,'
+          // + ' default_target_column = ?,'
+          // + ' default_mode = ?,'
+          // + ' default_model_name = ?'
+          // + ' WHERE user_id = ?'); 
+          // console.log('dele3')
+          // stmt.run(vm.default_file_path, vm.default_id_column, vm.default_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id);
+          })
+        }
       }
       console.log('dele2')
       let unittest_parameters = generate_unittest_parameters(vm.default_file_path, vm.default_id_column, vm.default_data_column)
       execute_unittest_list(arguments[arguments.length-1], 0, "profile_unittest", unittest_parameters)
       vm.$toasted.success(`setting updated`, { icon: 'fingerprint' })
+      })
     },
 
   },

@@ -189,31 +189,42 @@ export default {
       let vm = this;
       console.log('jin train')
 
-      const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+      var sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,' +
+          ' train_id_column, train_data_column, train_target_column, test_file_path, test_id_column,' +
+          ' test_data_column, test_target_column, mode, test_indicator, model_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      var param = [vm.sharedState.user_id, vm.task_id, '', '', '', '', '', vm.manual_file_path, vm.manual_id_column, vm.manual_data_column, 
+                  vm.manual_target_column, '', '', '', '', 'manual', 'train', vm.model_name]
+
+      vm.$db.run(sentence, param, function(err){
+                  if (err){
+                    console.log('err info',err);
+                  }
+
+      // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+      //     ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+      //     ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+      //     ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
-          stmt.run({
-            user_id: vm.sharedState.user_id, 
-            task_id: vm.task_id,
-            test_id: '',
-            task_name: '', 
-            task_description: '', 
-            test_name: '',
-            test_description: '',
-            train_file_path: vm.manual_file_path, 
-            train_id_column: vm.manual_id_column, 
-            train_data_column: vm.manual_data_column, 
-            train_target_column: vm.manual_target_column, 
-            test_file_path: '',
-            test_id_column: '',
-            test_data_column: '',
-            test_target_column: '',
-            mode: 'manual',
-            test_indicator: 'train',
-            model_name: vm.model_name
-          });
+      //     stmt.run({
+      //       user_id: vm.sharedState.user_id, 
+      //       task_id: vm.task_id,
+      //       test_id: '',
+      //       task_name: '', 
+      //       task_description: '', 
+      //       test_name: '',
+      //       test_description: '',
+      //       train_file_path: vm.manual_file_path, 
+      //       train_id_column: vm.manual_id_column, 
+      //       train_data_column: vm.manual_data_column, 
+      //       train_target_column: vm.manual_target_column, 
+      //       test_file_path: '',
+      //       test_id_column: '',
+      //       test_data_column: '',
+      //       test_target_column: '',
+      //       mode: 'manual',
+      //       test_indicator: 'train',
+      //       model_name: vm.model_name
+      //     });
 
         console.log("2.1 Update Test request notification response")
       
@@ -290,10 +301,7 @@ export default {
             console.log(error)
 
           })
-        
-        
-      
-          
+      })  
 
     },
 
@@ -301,35 +309,46 @@ export default {
       console.log('jin test')
       let vm = this
 
-      let insert_sentence = `INSERT INTO "User_Assistor_Table"("pending_test_file_path", "pending_test_id_column", "pending_test_data_column", "pending_test_target_column","user_id", "test_id") VALUES 
-              (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + vm.test_id + `")`
-      console.log("insert_sentence", insert_sentence)
+      var sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,' +
+          ' train_id_column, train_data_column, train_target_column, test_file_path, test_id_column,' +
+          ' test_data_column, test_target_column, mode, test_indicator, model_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      var param = [vm.sharedState.user_id, '', vm.test_id, '', '', '', '', '', '', '', '', vm.manual_file_path, 
+                  vm.manual_id_column, vm.manual_data_column, vm.manual_target_column,'manual', 'test', vm.model_name]
 
-      const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+      vm.$db.run(sentence, param, function(err){
+                  if (err){
+                    console.log('err info',err);
+                  }
+
+      // let insert_sentence = `INSERT INTO "User_Assistor_Table"("pending_test_file_path", "pending_test_id_column", "pending_test_data_column", "pending_test_target_column","user_id", "test_id") VALUES 
+      //         (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + vm.test_id + `")`
+      // console.log("insert_sentence", insert_sentence)
+
+      // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+      //     ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+      //     ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+      //     ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
-          stmt.run({
-            user_id: vm.sharedState.user_id, 
-            task_id: '',
-            test_id: vm.test_id,
-            task_name: '', 
-            task_description: '', 
-            test_name: '',
-            test_description: '',
-            train_file_path: '', 
-            train_id_column: '', 
-            train_data_column: '', 
-            train_target_column: '', 
-            test_file_path: vm.manual_file_path,
-            test_id_column: vm.manual_id_column,
-            test_data_column: vm.manual_data_column,
-            test_target_column: vm.manual_target_column,
-            mode: 'manual', 
-            test_indicator: 'test',
-            model_name: vm.model_name
-          });
+      //     stmt.run({
+      //       user_id: vm.sharedState.user_id, 
+      //       task_id: '',
+      //       test_id: vm.test_id,
+      //       task_name: '', 
+      //       task_description: '', 
+      //       test_name: '',
+      //       test_description: '',
+      //       train_file_path: '', 
+      //       train_id_column: '', 
+      //       train_data_column: '', 
+      //       train_target_column: '', 
+      //       test_file_path: vm.manual_file_path,
+      //       test_id_column: vm.manual_id_column,
+      //       test_data_column: vm.manual_data_column,
+      //       test_target_column: vm.manual_target_column,
+      //       mode: 'manual', 
+      //       test_indicator: 'test',
+      //       model_name: vm.model_name
+      //     });
       
 
 
@@ -416,14 +435,9 @@ export default {
             // handle error
             console.log(error)
 
-          })
-
-        
+          }) 
           
-        
-
-
-
+      })
 
     },
 

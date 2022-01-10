@@ -118,6 +118,33 @@ function unread_test_sponsor_match_id(sponsor_mode, assistor_mode, verify_algo){
         done(error)
       }
     }
+
+
+    let unread_test_sponsor_match_id_classification_regression_1s_2a = (data) => {
+      try{
+        data = data[0]
+        let test_array = [-0.4289606386688076, -0.4377188317810896, -0.049991444558729725, -0.3750570533758708, -0.0031278807699227362, -0.0008288206037718598, 0.0007909454176475289, 0.007217208695665757]
+        let test_array_index = 0
+
+        for (let i in data){
+          let cur_list = data[i]
+          for (let j = 0; j < cur_list.length; j++){
+            let cur_number = cur_list[j]
+            cur_number = parseFloat(cur_number.toFixed(5))
+            let cur_test_num = parseFloat(test_array[test_array_index].toFixed(5))
+            console.log('number_ass', cur_number, cur_test_num)
+            expect(cur_number).toEqual(
+              cur_test_num
+            )
+            test_array_index += 1
+          }
+        }
+
+        console.log(generate_unittest_log('unread_test_assistor_match_id'))
+      }catch (error){
+        done(error)
+      }
+    }
     
     let cur_parameters = [];
     cur_parameters.push(unread_test_sponsor_match_id_1)

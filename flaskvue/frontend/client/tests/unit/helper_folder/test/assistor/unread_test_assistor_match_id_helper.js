@@ -140,6 +140,37 @@ function unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
       }
     }
 
+    let unread_test_assistor_match_id_classification_regression_1s_2a = (data) => {
+      try{
+        data = data[0]
+        
+        let test_dict = {
+          "2":[-0.4238868906169102, -0.2586372210914112, -0.4428156940745849, -0.09574657246773588, -0.0005701233802618347, 0.004780572580713037, -0.001406950989037245, -0.005697790044020885],
+          "3":[-0.2900955637362236, -0.3930651516543313, -0.31260972232907713, -0.4432712459386132, 0.0014376770143659373, -0.001140247898171215, 0.01209549485215565, -0.011325443914480815],
+        }
+        
+        let test_array = test_dict[unittest_parameters.user_id]
+        let test_array_index = 0
+        for (let i in data){
+          let cur_list = data[i]
+          for (let j = 0; j < cur_list.length; j++){
+            let cur_number = cur_list[j]
+            cur_number = parseFloat(cur_number.toFixed(5))
+            let cur_test_num = parseFloat(test_array[test_array_index].toFixed(5))
+            console.log('number_ass', cur_number, cur_test_num)
+            expect(cur_number).toEqual(
+              cur_test_num
+            )
+            test_array_index += 1
+          }
+        }
+
+        console.log(generate_unittest_log('unread_test_assistor_match_id'))
+      }catch (error){
+        done(error)
+      }
+    }
+
 
     let unread_test_assistor_match_id_6 = (data) => {
       try{

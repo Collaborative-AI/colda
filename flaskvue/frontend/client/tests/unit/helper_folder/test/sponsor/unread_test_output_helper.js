@@ -139,6 +139,41 @@ function unread_test_output(sponsor_mode, assistor_mode, verify_algo){
       }
     }
 
+    let unread_test_output_classification_regression_1s_2a = (data) => {
+      try{
+        data = data[0]
+        let test_dict = {
+          "1": {
+            "Accuracy": 0.8888888888888888, 
+            "F1": 0.8864809081527346
+          }, 
+          "2": {
+            "Accuracy": 0.9444444444444444, 
+            "F1": 0.9415032679738561
+          },
+        }
+        
+        for (let i in data){
+          let cur_running_res = data[i]
+          let cur_testing_dict = test_dict[i]
+          for (let j in cur_running_res){
+            let cur_number = cur_running_res[j]
+            cur_number = parseFloat(cur_number.toFixed(5))
+            let cur_testing_number = cur_testing_dict[j]
+            cur_testing_number = parseFloat(cur_testing_number.toFixed(5))
+            console.log('spo_eval', cur_number, cur_testing_number)
+            expect(cur_number).toEqual(
+              cur_testing_number
+            )
+          }
+        }
+
+        console.log(generate_unittest_log('unread_test_output'))
+      }catch (error){
+        done(error)
+      }
+    }
+
     // sponsor: regression and multiple assistors
     let unread_test_output_multiple_assistors = (data) => {
       try{

@@ -66,7 +66,8 @@
 import store from '../../../../store'
 import db from '../../../../db'
 // import penditem from "../Penditem.vue"
-import { ex,fs,os,node_path,dialog } from '../../../../import.js'
+import { ex,fs,os,node_path,dialog } from '../../../../import_package.js'
+import { change_db_param_to_string} from '../../../../utils'
 // const fs = window.fs;
 // const ex = window.ex;
 // const node_path = window.node_path;
@@ -189,31 +190,42 @@ export default {
       let vm = this;
       console.log('jin train')
 
-      const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+      let sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,' +
+          ' train_id_column, train_data_column, train_target_column, test_file_path, test_id_column,' +
+          ' test_data_column, test_target_column, mode, test_indicator, model_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      let param = [vm.sharedState.user_id, vm.task_id, '', '', '', '', '', vm.manual_file_path, vm.manual_id_column, vm.manual_data_column, 
+                  vm.manual_target_column, '', '', '', '', 'manual', 'train', vm.model_name]
+
+      vm.$db.run(sentence, change_db_param_to_string(param), function(err){
+                  if (err){
+                    console.log('err info',err);
+                  }
+
+      // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+      //     ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+      //     ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+      //     ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
-          stmt.run({
-            user_id: vm.sharedState.user_id, 
-            task_id: vm.task_id,
-            test_id: '',
-            task_name: '', 
-            task_description: '', 
-            test_name: '',
-            test_description: '',
-            train_file_path: vm.manual_file_path, 
-            train_id_column: vm.manual_id_column, 
-            train_data_column: vm.manual_data_column, 
-            train_target_column: vm.manual_target_column, 
-            test_file_path: '',
-            test_id_column: '',
-            test_data_column: '',
-            test_target_column: '',
-            mode: 'manual',
-            test_indicator: 'train',
-            model_name: vm.model_name
-          });
+      //     stmt.run({
+      //       user_id: vm.sharedState.user_id, 
+      //       task_id: vm.task_id,
+      //       test_id: '',
+      //       task_name: '', 
+      //       task_description: '', 
+      //       test_name: '',
+      //       test_description: '',
+      //       train_file_path: vm.manual_file_path, 
+      //       train_id_column: vm.manual_id_column, 
+      //       train_data_column: vm.manual_data_column, 
+      //       train_target_column: vm.manual_target_column, 
+      //       test_file_path: '',
+      //       test_id_column: '',
+      //       test_data_column: '',
+      //       test_target_column: '',
+      //       mode: 'manual',
+      //       test_indicator: 'train',
+      //       model_name: vm.model_name
+      //     });
 
         console.log("2.1 Update Test request notification response")
       
@@ -252,7 +264,7 @@ export default {
         try {
           fs.appendFileSync(Log_address, "\n You are Assistor\n")
           fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
-          fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
+          fs.appendFileSync(Log_address, "----2. Unread Request\n")
           fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
         } catch (err) {
           console.log(err)
@@ -272,7 +284,7 @@ export default {
 
             try {
               fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
-              fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
+              fs.appendFileSync(Log_address, "----2. Unread Request Done\n")
             } catch (err) {
               console.log(err)
             }
@@ -290,10 +302,7 @@ export default {
             console.log(error)
 
           })
-        
-        
-      
-          
+      })  
 
     },
 
@@ -301,35 +310,46 @@ export default {
       console.log('jin test')
       let vm = this
 
-      let insert_sentence = `INSERT INTO "User_Assistor_Table"("pending_test_file_path", "pending_test_id_column", "pending_test_data_column", "pending_test_target_column","user_id", "test_id") VALUES 
-              (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + vm.test_id + `")`
-      console.log("insert_sentence", insert_sentence)
+      let sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,' +
+          ' train_id_column, train_data_column, train_target_column, test_file_path, test_id_column,' +
+          ' test_data_column, test_target_column, mode, test_indicator, model_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      let param = [vm.sharedState.user_id, '', vm.test_id, '', '', '', '', '', '', '', '', vm.manual_file_path, 
+                  vm.manual_id_column, vm.manual_data_column, vm.manual_target_column,'manual', 'test', vm.model_name]
 
-      const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+      vm.$db.run(sentence, change_db_param_to_string(param), function(err){
+                  if (err){
+                    console.log('err info',err);
+                  }
+
+      // let insert_sentence = `INSERT INTO "User_Assistor_Table"("pending_test_file_path", "pending_test_id_column", "pending_test_data_column", "pending_test_target_column","user_id", "test_id") VALUES 
+      //         (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + vm.test_id + `")`
+      // console.log("insert_sentence", insert_sentence)
+
+      // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+      //     ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+      //     ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+      //     ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
-          stmt.run({
-            user_id: vm.sharedState.user_id, 
-            task_id: '',
-            test_id: vm.test_id,
-            task_name: '', 
-            task_description: '', 
-            test_name: '',
-            test_description: '',
-            train_file_path: '', 
-            train_id_column: '', 
-            train_data_column: '', 
-            train_target_column: '', 
-            test_file_path: vm.manual_file_path,
-            test_id_column: vm.manual_id_column,
-            test_data_column: vm.manual_data_column,
-            test_target_column: vm.manual_target_column,
-            mode: 'manual', 
-            test_indicator: 'test',
-            model_name: vm.model_name
-          });
+      //     stmt.run({
+      //       user_id: vm.sharedState.user_id, 
+      //       task_id: '',
+      //       test_id: vm.test_id,
+      //       task_name: '', 
+      //       task_description: '', 
+      //       test_name: '',
+      //       test_description: '',
+      //       train_file_path: '', 
+      //       train_id_column: '', 
+      //       train_data_column: '', 
+      //       train_target_column: '', 
+      //       test_file_path: vm.manual_file_path,
+      //       test_id_column: vm.manual_id_column,
+      //       test_data_column: vm.manual_data_column,
+      //       test_target_column: vm.manual_target_column,
+      //       mode: 'manual', 
+      //       test_indicator: 'test',
+      //       model_name: vm.model_name
+      //     });
       
 
 
@@ -376,7 +396,7 @@ export default {
         try {
           fs.appendFileSync(Log_address, "\n You are Assistor\n")
           fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
-          fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
+          fs.appendFileSync(Log_address, "----Test Stage: 2.Unread Test Request\n")
           fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
           fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
         } catch (err) {
@@ -398,7 +418,7 @@ export default {
             vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
             try {
               fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
-              fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
+              fs.appendFileSync(Log_address, "----2. Unread Test Request Done\n")
             } catch (err) {
               console.log(err)
             }
@@ -416,14 +436,9 @@ export default {
             // handle error
             console.log(error)
 
-          })
-
-        
+          }) 
           
-        
-
-
-
+      })
 
     },
 

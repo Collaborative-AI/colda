@@ -68,7 +68,7 @@ export default {
       console.log('用户点击了初始化')
     },
 
-    onSubmit (e) {
+    onSubmit (unittest_callbacks) {
       let vm = this
       console.log("submittttt", arguments.length, this.loginForm.username, this.loginForm.password)
       this.loginForm.submitted = true  // 先更新状态
@@ -136,7 +136,7 @@ export default {
             //   this.$router.push(this.$route.query.redirect)
             // }
 
-            execute_unittest_list(arguments[arguments.length-1], 0, "Login_unittest")
+            execute_unittest_list(unittest_callbacks, 0, "Login_unittest")
           }
           
         })

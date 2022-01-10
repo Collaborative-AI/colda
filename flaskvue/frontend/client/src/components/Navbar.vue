@@ -81,7 +81,7 @@ import $ from 'jquery'
 import db from '../db'
 // // console.log('dbzzzz', db)
 import authority from '../authority'
-import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, check_if_notification_is_null } from '../utils.js'
+import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, check_if_notification_is_null, change_db_param_to_string } from '../utils.js'
 
 // import axios from '../http'
 
@@ -89,7 +89,7 @@ import { execute_unittest_list, generate_unittest_parameters, generate_message_s
 // // use Node API
 // If we run npm run electron:serve, window.ex would have the object
 // else we are running unittest, we will require directly
-import { ex,fs,os,node_path,dialog, log } from '../import.js'
+import { ex,fs,os,node_path,dialog, log } from '../import_package.js'
 
 // const ex = window.ex ? window.ex : require('child_process');
 // const fs = window.fs ? window.fs : require('fs');
@@ -191,9 +191,20 @@ export default {
       // // console.log('55555', unittest_callbacks)
       let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
       execute_unittest_list(unittest_callbacks, 0, "unread_request_unittest", unittest_parameters)
+
+
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?' 
+      let param = [vm.sharedState.user_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+        if (err) {
+          console.error(err);
+        }
       
 
-      var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
+      // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
       // Log(generate_message_string('55555',row), 'debug')
 
       if (row == null){
@@ -206,13 +217,23 @@ export default {
       // Assistor might receive multiple task request, We need to iterate them
       for (let task_id in cur_unread_request_Taskid_dict){
         // console.log('root shi', this.root)
-        log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
         console.log("5552121", node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt'))
         Log('assistor ceshi', 'info')
         // Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 
         if (vm.sharedState.mode == 'auto'){
-          var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+
+          let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id = ?'
+          let param = [vm.sharedState.user_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+          // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
           // Log(generate_message_string('row kan', row), 'debug')
           let default_file_path = row.default_file_path
           let default_id_column = row.default_id_column
@@ -220,6 +241,20 @@ export default {
           let default_target_column = row.default_target_column
           let default_mode = row.default_mode
           let default_model_name = row.default_model_name
+
+
+          let sentence = `INSERT INTO "User_Sponsor_Table"("user_id", "task_id", "test_id", "task_name", "task_description", "test_name", "test_description", "train_file_path",` +
+          ` "train_id_column, "train_data_column", "train_target_column", "test_file_path", "test_id_column",` +
+          ` "test_data_column", "test_target_column", "mode", "test_indicator", "model_name") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          let param = [vm.sharedState.user_id, task_id, '', '', '', '', '', default_file_path, default_id_column, default_data_column, default_target_column, 
+                      default_file_path, default_id_column, default_data_column, default_target_column, default_mode, 'train', default_model_name]
+
+          vm.$db.run(sentence, change_db_param_to_string(param), function(err){
+            if (err){
+              console.log('err info',err);
+            }
+
+
 
           const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
           ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
@@ -282,7 +317,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "\n You are Assistor\n")
             fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
-            fs.appendFileSync(Log_address, "----------------------2. Unread Request\n")
+            fs.appendFileSync(Log_address, "----2. Unread Request\n")
             fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
           } catch (err) {
             // console.log(err)
@@ -309,7 +344,7 @@ export default {
 
               try {
                 fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
-                fs.appendFileSync(Log_address, "--------------------------2. Unread Request Done\n")
+                fs.appendFileSync(Log_address, "----2. Unread Request Done\n")
               } catch (err) {
                 // console.log(err)
               }
@@ -319,6 +354,8 @@ export default {
               // console.log(error)
               this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
             })
+          })
+          })
       } else if (vm.sharedState.mode == 'manual'){
         vm.sharedState.pending_num++;
         const add_train_pending = {
@@ -343,7 +380,7 @@ export default {
     }//end for
 
       
-    
+      })
     },
 
 
@@ -366,7 +403,7 @@ export default {
       
       for (let task_id in cur_unread_match_id_Taskid_dict){
 
-        log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
         // Log('sponsor ceshi3', 'info')
         const Log_address = this.handle_train_log_address(task_id)
 
@@ -374,7 +411,7 @@ export default {
         Log(generate_message_string("3.1 Update the match id notification\n"), 'info')
 
         try {
-          fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID\n")
+          fs.appendFileSync(Log_address, "---- 3. Unread Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Update the match id notification\n")
         } catch (err) {
           // console.log(err)
@@ -410,7 +447,7 @@ export default {
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
       let vm = this;
 
-      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
       
@@ -510,7 +547,17 @@ export default {
 
           // let select_train_target_column = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' +' AND "task_id"="' + task_id + '"';
           // // console.log("select_train_target_column", select_train_target_column)
-          var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+          let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?'
+          let param = [vm.sharedState.user_id, 'train', task_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // let row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
           // // console.log("match row",row)
           let train_file_path = row.train_file_path
@@ -594,11 +641,11 @@ export default {
             // // console.log("3.7 Sponsor sends all situations", response)
             // vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
             Log(generate_message_string("3.7 Sponsor sends all situations" + "\n"), 'info')
-            Log(generate_message_string("-------------------------- 3. Unread Match ID Done\n"), 'info')
+            Log(generate_message_string("---- 3. Unread Match ID Done\n"), 'info')
 
             try {
               fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
-              fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
+              fs.appendFileSync(Log_address, "---- 3. Unread Match ID Done\n")
             } catch (err) {
               // console.log(err)
             }
@@ -613,13 +660,14 @@ export default {
           // console.log(error)
           // handle error
         }) 
+        })
     },
 
     unread_match_id_assistor(task_id, unittest_callbacks) {
 
       let vm = this;
 
-      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
       
@@ -701,12 +749,12 @@ export default {
           // console.log('3.5 Assistor matches id to index');
           // vm.$toasted.success('3.5 Assistor matches id to index', { icon: 'fingerprint' })
           Log(generate_message_string("3.5 Assistor matches id to index\n"), 'info')
-          Log(generate_message_string("-------------------------- 3. Unread Match ID Done\n"), 'info')
+          Log(generate_message_string("---- 3. Unread Match ID Done\n"), 'info')
 
 
           try {
             fs.appendFileSync(Log_address, "3.5 Assistor matches id to index\n")
-            fs.appendFileSync(Log_address, "-------------------------- 3. Unread Match ID Done\n")
+            fs.appendFileSync(Log_address, "---- 3. Unread Match ID Done\n")
           } catch (err) {
             // console.log(err)
           }
@@ -754,15 +802,15 @@ export default {
 
       for (let task_id in cur_unread_situation_Taskid_dict){
 
-        log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
         
         const Log_address = this.handle_train_log_address(task_id)
-        Log(generate_message_string("-------------------------- 4. Unread Situation\n"), 'info')
+        Log(generate_message_string("---- 4. Unread Situation\n"), 'info')
         Log(generate_message_string("4.1 Update the situation notification\n"), 'info')
 
         try {
-          fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation\n")
+          fs.appendFileSync(Log_address, "---- 4. Unread Situation\n")
           fs.appendFileSync(Log_address, "4.1 Update the situation notification\n")
         } catch (err) {
           // console.log(err)
@@ -785,7 +833,7 @@ export default {
       let vm = this;
       // console.log("4.2 Cur round is:" + rounds + task_id);
       // vm.$toasted.success("4.2 Cur round is:" + rounds +  task_id, { icon: 'fingerprint' })
-      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
     
       const Log_address = vm.handle_train_log_address(task_id)
@@ -797,9 +845,18 @@ export default {
       } catch (err) {
         // console.log(err)
       }
+
+      let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?'
+      let param = [vm.sharedState.user_id, 'train', task_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+      if (err) {
+        console.error(err);
+      }
       
-      let select_train_data_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
-      var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+      // let row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
       let train_file_path = row.train_file_path
       // // console.log("train_file_path", train_file_path)
@@ -842,29 +899,30 @@ export default {
         // console.log(err)
       }
       Log(generate_message_string("4.3 Sponsor round " + rounds + " training done." + "\n"), 'info')
-      Log(generate_message_string("-------------------------- 4. Unread Situation Done\n"), 'info')
+      Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
 
 
       try {
         fs.appendFileSync(Log_address, "4.3 Sponsor round " + rounds + " training done." + "\n")
-        fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
+        fs.appendFileSync(Log_address, "---- 4. Unread Situation Done\n")
       } catch (err) {
         // console.log(err)
       }
+      })
     },
 
     unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks){
       
 
-      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 
       let time_interval = waiting_current_time.getTime() - waiting_start_time.getTime()
       // // console.log("time_interval", time_interval)
-      var leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
-      var leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
-      var minutes = Math.floor(leave2/(60*1000))  //间隔分钟
+      let leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
+      let leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
+      let minutes = Math.floor(leave2/(60*1000))  //间隔分钟
       
       if (minutes > 30){
         // // console.log('Waiting time interval exceeded')
@@ -924,14 +982,14 @@ export default {
           execute_unittest_list(unittest_callbacks, 4, "unread_situation_unittest", unittest_parameters) 
 
           Log(generate_message_string("4.5 Assistor sends output\n"), 'info')
-          Log(generate_message_string("-------------------------- 4. Unread Situation Done\n"), 'info')
-          Log(generate_message_string("-------------------------- Train stage done\n"), 'info')
+          Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
+          Log(generate_message_string("---- Train stage done\n"), 'info')
 
           // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
-            fs.appendFileSync(Log_address, "-------------------------- 4. Unread Situation Done\n")
-            fs.appendFileSync(Log_address, "-------------------------- Train stage done\n")
+            fs.appendFileSync(Log_address, "---- 4. Unread Situation Done\n")
+            fs.appendFileSync(Log_address, "---- Train stage done\n")
           } catch (err) {
             // console.log(err)
           }
@@ -945,7 +1003,7 @@ export default {
     unread_situation_assistor(rounds, task_id, unittest_callbacks) {
       
       let vm = this;
-      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
 
@@ -1014,7 +1072,18 @@ export default {
           // Assistor trains the data
           // // console.log("select_pending_record", select_pending_record)
           // // console.log('zz88', task_id)
-          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE task_id = ? AND test_indicator = ? AND user_id = ?').get(task_id, 'train', vm.sharedState.user_id);
+
+          let select_sentence = 'SELECT * FROM User_Assistor_Table WHERE task_id = ? AND test_indicator = ? AND user_id = ?'
+          let param = [task_id, 'train', vm.sharedState.user_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // let row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE task_id = ? AND test_indicator = ? AND user_id = ?').get(task_id, 'train', vm.sharedState.user_id);
           
           let train_file_path = row.train_file_path
           // // console.log("train_file_path",train_file_path)
@@ -1036,7 +1105,8 @@ export default {
             vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks)
           }else{
             // console.log('unread situation assistor 3rd case')
-          }  
+          }
+          }) 
         }) //end axios
         .catch((error) => {
           // console.log(error)
@@ -1064,14 +1134,14 @@ export default {
 
       for (let task_id in cur_unread_output_Rounds_dict){
 
-        log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
-        Log(generate_message_string("-------------------------- 5. Unread Output\n"), 'info')
+        Log(generate_message_string("---- 5. Unread Output\n"), 'info')
         Log(generate_message_string("5.1 Update the output notification\n"), 'info')
 
         const Log_address = this.handle_train_log_address(task_id)
         try {
-          fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output\n")
+          fs.appendFileSync(Log_address, "---- 5. Unread Output\n")
           fs.appendFileSync(Log_address, "5.1 Update the output notification\n")
         } catch (err) {
           // console.log(err)
@@ -1085,7 +1155,7 @@ export default {
       
       let vm = this
 
-      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
       // const Round_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + rounds + '/'
@@ -1154,8 +1224,18 @@ export default {
             }
           }
 
-          let select_train_target_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
-          var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
+          let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?'
+          let param = [vm.sharedState.user_id, 'train', task_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // let select_train_target_path = 'SELECT * FROM User_Sponsor_Table WHERE "user_id"=' + vm.sharedState.user_id + ' AND "test_indicator"="train"' + ' AND "task_id"="' + task_id + '"';
+          // let row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND task_id = ?').get(vm.sharedState.user_id, 'train', task_id);
 
           // // console.log('select train target path', row)
           let train_file_path = row.train_file_path
@@ -1171,7 +1251,7 @@ export default {
           let waiting_start_time = new Date();
           vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time, unittest_callbacks)
 
-          
+          })
         })
         .catch((error) => {
           // handle error
@@ -1181,15 +1261,15 @@ export default {
 
     unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time, unittest_callbacks){
       
-      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 
       let time_interval = waiting_current_time.getTime() - waiting_start_time.getTime()
       // // console.log("time_interval", time_interval)
-      var leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
-      var leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
-      var minutes = Math.floor(leave2/(60*1000))  //间隔分钟
+      let leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
+      let leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
+      let minutes = Math.floor(leave2/(60*1000))  //间隔分钟
       
       if (minutes > 30){
         // // console.log('Waiting time interval exceeded')
@@ -1236,11 +1316,11 @@ export default {
         
         // terminate
         // // console.log('max_round', rounds, vm.max_round)
-        Log(generate_message_string("---------------------- Train stage done\n"), 'info')
+        Log(generate_message_string("---- Train stage done\n"), 'info')
 
         if (rounds >= vm.max_round){
           vm.$toasted.success("Training Done", { icon: 'fingerprint' })
-          fs.appendFileSync(Log_address, "---------------------- Train stage done\n");
+          fs.appendFileSync(Log_address, "---- Train stage done\n");
         }else{        
 
         let make_residual_multiple_paths = null;
@@ -1302,11 +1382,11 @@ export default {
             execute_unittest_list(unittest_callbacks, 3, "unread_output_unittest", unittest_parameters)
             // vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
             Log(generate_message_string("5.6 Sponsor updates situation done\n"), 'info')
-            Log(generate_message_string("------------------------- 5. Unread Output Done\n"), 'info')
+            Log(generate_message_string("---- 5. Unread Output Done\n"), 'info')
 
             try {
               fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
-              fs.appendFileSync(Log_address, "-------------------------- 5. Unread Output Done\n")
+              fs.appendFileSync(Log_address, "---- 5. Unread Output Done\n")
             } catch (err) {
               // console.log(err)
             }
@@ -1337,8 +1417,17 @@ export default {
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_request_Testid_dict, test_id_to_task_id)
       execute_unittest_list(unittest_callbacks, 0, "unread_test_request_unittest", unittest_parameters)
 
-                
-      var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+      let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id = ?'
+      let param = [vm.sharedState.user_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+      if (err) {
+        console.error(err);
+      }
+         
+      // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
       // // console.log("retrieve_setting_mode_row", row)
 
       if (row == null){
@@ -1351,12 +1440,22 @@ export default {
       for (let test_id in cur_unread_test_request_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
-        log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
      
         // // console.log('unread test request mode', vm.sharedState.mode)
         if (vm.sharedState.mode == 'auto'){
+
+          let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id = ?'
+          let param = [vm.sharedState.user_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+          if (err) {
+            console.error(err);
+          }
           
-          var row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
+          // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
           // // console.log("default_row", row)
           let default_file_path = row.default_file_path
           let default_id_column = row.default_id_column
@@ -1367,33 +1466,45 @@ export default {
 
           let test_hash_id_file_address = null
           let Log_address = null
+
+
+          let sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,' +
+          ' train_id_column, train_data_column, train_target_column, test_file_path, test_id_column,' +
+          ' test_data_column, test_target_column, mode, test_indicator, model_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          let param = [vm.sharedState.user_id, task_id, test_id, '', '', '', '', '', '', '', '', default_file_path, default_id_column,
+                      default_data_column, default_target_column, default_mode, 'test', default_model_name]
+
+          vm.$db.run(sentence, change_db_param_to_string(param), function(err){
+                      if (err){
+                        console.log('err info',err);
+                      }
  
 
-          const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-          ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+          // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+          // ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+          // ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+          // ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
              
-          stmt.run({
-            user_id: vm.sharedState.user_id, 
-            task_id: task_id,
-            test_id: test_id,
-            task_name: '', 
-            task_description: '', 
-            test_name: '',
-            test_description: '',
-            train_file_path: '', 
-            train_id_column: '', 
-            train_data_column: '', 
-            train_target_column: '', 
-            test_file_path: default_file_path,
-            test_id_column: default_id_column,
-            test_data_column: default_data_column,
-            test_target_column: default_target_column,
-            mode: default_mode, 
-            test_indicator: 'test',
-            model_name: default_model_name
-          });
+          // stmt.run({
+          //   user_id: vm.sharedState.user_id, 
+          //   task_id: task_id,
+          //   test_id: test_id,
+          //   task_name: '', 
+          //   task_description: '', 
+          //   test_name: '',
+          //   test_description: '',
+          //   train_file_path: '', 
+          //   train_id_column: '', 
+          //   train_data_column: '', 
+          //   train_target_column: '', 
+          //   test_file_path: default_file_path,
+          //   test_id_column: default_id_column,
+          //   test_data_column: default_data_column,
+          //   test_target_column: default_target_column,
+          //   mode: default_mode, 
+          //   test_indicator: 'test',
+          //   model_name: default_model_name
+          // });
 
 
           let unittest_parameters = generate_unittest_parameters(test_id, vm.sharedState.mode)
@@ -1429,7 +1540,7 @@ export default {
           }
             Log(generate_message_string("\n You are Assistor\n"), 'info')
             Log(generate_message_string("Test ID: " + test_id + "\n"), 'info')
-            Log(generate_message_string("-----------------------Test Stage: 2.Unread Test Request\n"), 'info')
+            Log(generate_message_string("----Test Stage: 2.Unread Test Request\n"), 'info')
             Log(generate_message_string("2.1 Test: Update Test request notification\n"), 'info')
             Log(generate_message_string("2.2 Test: Hashing Done\n"), 'info')
 
@@ -1437,7 +1548,7 @@ export default {
           try {
             fs.appendFileSync(Log_address, "\n You are Assistor\n")
             fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
-            fs.appendFileSync(Log_address, "-----------------------Test Stage: 2.Unread Test Request\n")
+            fs.appendFileSync(Log_address, "----Test Stage: 2.Unread Test Request\n")
             fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
             fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
           } catch (err) {
@@ -1461,12 +1572,12 @@ export default {
               execute_unittest_list(unittest_callbacks, 3, "unread_test_request_unittest", unittest_parameters)
 
               Log(generate_message_string("2.2 Test: assistor uploads id file\n"), 'info')
-              Log(generate_message_string("--------------------------2. Unread Test Request Done\n"), 'info')
+              Log(generate_message_string("----2. Unread Test Request Done\n"), 'info')
 
               // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
               try {
                 fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
-                fs.appendFileSync(Log_address, "--------------------------2. Unread Test Request Done\n")
+                fs.appendFileSync(Log_address, "----2. Unread Test Request Done\n")
               } catch (err) {
                 // console.log(err)
               }
@@ -1477,7 +1588,8 @@ export default {
               // // console.log(error.response.data)
               // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
             })
-          
+          })
+          })
         }else if (vm.sharedState.mode == 'manual'){
           // // console.log(task_id)
           vm.sharedState.pending_num++;
@@ -1501,6 +1613,7 @@ export default {
           // dialog.showErrorBox('Please Open the Receive', "unread request: If you want to receive, open receive")
         }
       }
+      })
     },
 
     unread_test_match_id(unread_test_match_id_notification, unittest_callbacks) {
@@ -1523,17 +1636,17 @@ export default {
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
-        log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
 
         const Log_address = this.handle_test_log_address(task_id, test_id)
 
-        Log(generate_message_string("-----------------------3.Unread Test Match ID\n"), 'info')
+        Log(generate_message_string("----3.Unread Test Match ID\n"), 'info')
         Log(generate_message_string("3.1 Test: Update the Test match id notification\n"), 'info')
 
 
         try {
-          fs.appendFileSync(Log_address, "-----------------------3.Unread Test Match ID\n")
+          fs.appendFileSync(Log_address, "----3.Unread Test Match ID\n")
           fs.appendFileSync(Log_address, "3.1 Test: Update the Test match id notification\n")
         } catch (err) {
           // console.log(err)
@@ -1569,7 +1682,7 @@ export default {
       
       let vm = this;
 
-      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_test_log_address(task_id, test_id)
       
@@ -1662,7 +1775,17 @@ export default {
 
           }
 
-          var row = vm.$db.prepare('SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
+          let select_sentence = 'SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?'
+          let param = [vm.sharedState.user_id, 'test', test_id]
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // let row = vm.$db.prepare('SELECT test_file_path, test_data_column FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
           
           let test_file_path = row.test_file_path
           let test_data_column = row.test_data_column
@@ -1693,12 +1816,12 @@ export default {
 
           try {
             fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
-            fs.appendFileSync(Log_address, "--------------------------3. Unread Test Match ID Done\n")
+            fs.appendFileSync(Log_address, "----3. Unread Test Match ID Done\n")
           } catch (err) {
             // console.log(err)
           }
       
-        
+          })
         })
         .catch((error) => {
           // console.log(error)
@@ -1712,7 +1835,7 @@ export default {
 
       let vm = this;
 
-      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_test_log_address(task_id, test_id)
       
@@ -1802,7 +1925,17 @@ export default {
             // console.log(err)
           }
 
-          var row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND test_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
+          let select_sentence = 'SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND test_indicator = ?'
+          let param = [vm.sharedState.user_id, test_id, 'test']
+          console.log('select_sentence', select_sentence)
+
+
+          vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+          if (err) {
+            console.error(err);
+          }
+
+          // let row = vm.$db.prepare('SELECT * FROM User_Assistor_Table WHERE user_id = ? AND test_id = ? AND test_indicator = ?').get(vm.sharedState.user_id, test_id, 'test');
 
           let mode = row.mode
           let test_file_path = row.test_file_path
@@ -1872,8 +2005,8 @@ export default {
               // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
               try {
                 fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
-                fs.appendFileSync(Log_address, "-------------------------- 3. Unread Test Match ID Done\n")
-                fs.appendFileSync(Log_address, "-------------------------- Test stage done\n")
+                fs.appendFileSync(Log_address, "---- 3. Unread Test Match ID Done\n")
+                fs.appendFileSync(Log_address, "---- Test stage done\n")
               } catch (err) {
                 // console.log(err)
               }
@@ -1886,7 +2019,7 @@ export default {
             // console.log('unread_test_match_id_assistor error')
           }
           
-
+          })
         })
         .catch((error) => {
           // handle error
@@ -1914,13 +2047,13 @@ export default {
       for (let test_id in cur_unread_test_output_Testid_dict){
         let task_id = test_id_to_task_id[test_id]
 
-        log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+        // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
 
         const Log_address = this.handle_test_log_address(task_id, test_id)
 
         try {
-          fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output\n")
+          fs.appendFileSync(Log_address, "---- 4. Unread Test Output\n")
           fs.appendFileSync(Log_address, "4.1 Update Test output notification\n")
         } catch (err) {
           // console.log(err)
@@ -1935,7 +2068,7 @@ export default {
 
       let vm = this
       // Obtain output from assistors
-      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
 
       const payload = {
@@ -2017,15 +2150,15 @@ export default {
 
     unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time, unittest_callbacks){
       
-      log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 
       let time_interval = waiting_current_time.getTime() - waiting_start_time.getTime()
       // // console.log("time_interval", time_interval)
-      var leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
-      var leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
-      var minutes = Math.floor(leave2/(60*1000))  //间隔分钟
+      let leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
+      let leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
+      let minutes = Math.floor(leave2/(60*1000))  //间隔分钟
       
       if (minutes > 30){
         // // console.log('Waiting time interval exceeded')
@@ -2036,7 +2169,17 @@ export default {
       // // console.log("unread_test_output_max_round", JSON.parse(response.data.output[0]))
       // // console.log("max_round", max_round)
 
-      var row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
+      let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?'
+      let param = [vm.sharedState.user_id, 'test', test_id]
+      console.log('select_sentence', select_sentence)
+
+
+      vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
+      if (err) {
+        console.error(err);
+      }
+
+      // let row = vm.$db.prepare('SELECT * FROM User_Sponsor_Table WHERE user_id = ? AND test_indicator = ? AND test_id = ?').get(vm.sharedState.user_id, 'test', test_id);
 
       let test_file_path = row.test_file_path
       let test_target_column = row.test_target_column
@@ -2080,8 +2223,8 @@ export default {
         }
 
         try {
-          fs.appendFileSync(Log_address, "-------------------------- 4. Unread Test Output Done\n")
-          fs.appendFileSync(Log_address, "-------------------------- 4. Test Stage Done\n")
+          fs.appendFileSync(Log_address, "---- 4. Unread Test Output Done\n")
+          fs.appendFileSync(Log_address, "---- 4. Test Stage Done\n")
         } catch (err) {
           // console.log(err)
         }
@@ -2089,6 +2232,7 @@ export default {
         let unittest_parameters = generate_unittest_parameters()
         execute_unittest_list(unittest_callbacks, 3, "unread_test_output_unittest", unittest_parameters)
       }
+      })
     },
   },
 
@@ -2236,7 +2380,7 @@ export default {
       //       }
             
 
-      //       // console.log("--------------------------------------------------------- new polling")
+      //       // console.log("-------------- new polling")
           
 
       //       total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count

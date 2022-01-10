@@ -94,9 +94,9 @@
 <script>
 import { config } from 'process';
 import store from '../../store.js'
-import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log } from '../../utils.js'
+import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, sqlite3_run, change_db_param_to_string } from '../../utils.js'
 
-import { ex,fs,os,node_path,dialog,log } from '../../import.js'
+import { ex,fs,os,node_path,dialog,log } from '../../import_package.js'
 
 
 // const fs = window.fs ? window.fs : require('fs');
@@ -155,9 +155,96 @@ export default {
     }
   },
   methods: {
+
+     ceshi(unittest_callbacks){
+      let vm = this
+
+      
+      // let insert_sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_column", "train_data_column", "train_target_column", "task_mode", "model_name", "metric_name") VALUES 
+      //         (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`", "`+vm.task_mode+`", "`+vm.model_name+`", "`+vm.metric_name+`")`
+      let sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path",`+
+                      ` "train_id_column", "train_data_column", "train_target_column", "task_mode", "model_name", "metric_name") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      let param = [vm.task_name, vm.task_description, vm.sharedState.user_id, "train",
+                    vm.task_id, vm.train_file_path, vm.train_id_column, vm.train_data_column, 
+                    vm.train_target_column, vm.task_mode, vm.model_name, vm.metric_name]
+      // sqlite3_run(sentence, change_db_param_to_string(param))
+      //       .then(function(response) {
+      //          console.log('shuchu response', response)
+      //                       let unittest_parameters = generate_unittest_parameters(vm.train_file_path, vm.train_id_column, vm.train_data_column, vm.train_target_column)
+      //         execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
+
+      //         vm.$axios.get('/changshi/')
+      //           .then((response) => {
+      //             let res = response.data
+
+      //             let unittest_parameters = generate_unittest_parameters(res)
+      //             execute_unittest_list(unittest_callbacks, 1, "find_assistor_unittest", unittest_parameters)
+      //             // console.log("task_id))))))))))))))00", this.task_id)
+      //           })
+      //           .catch((error) => {
+      //             console.log(error)
+      //           })
+      //       }).catch(function(error) {
+      //         // 处理 getJSON 和 前一个回调函数运行时发生的错误
+      //         console.log('发生错误！', error);
+      //       });
+
+             
+
+
+            // })
+      vm.$db.run(sentence, change_db_param_to_string(param), function(err) {
+              if (err) {
+                return console.log(err.message);
+              }
+              // get the last insert id
+              console.log(`A row has been inserted with rowid`);
+
+              let unittest_parameters = generate_unittest_parameters(vm.train_file_path, vm.train_id_column, vm.train_data_column, vm.train_target_column)
+              execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
+
+              vm.$axios.get('/changshi/')
+                .then((response) => {
+                  let res = response.data
+
+                  let unittest_parameters = generate_unittest_parameters(res)
+                  execute_unittest_list(unittest_callbacks, 1, "find_assistor_unittest", unittest_parameters)
+                  // console.log("task_id))))))))))))))00", this.task_id)
+                })
+                .catch((error) => {
+                  console.log(error)
+                })
+
+
+                    });
+
+      // console.log("insert_sentence", insert_sentence) 
+      // vm.$db.run(insert_sentence, function(err){
+      // if (err){
+      //   console.log(err);
+      // }
+
+      // let unittest_parameters = generate_unittest_parameters(vm.train_file_path, vm.train_id_column, vm.train_data_column, vm.train_target_column)
+      // execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
+
+      // this.$axios.get('/changshi/')
+      //   .then((response) => {
+      //     let res = response.data
+
+      //     let unittest_parameters = generate_unittest_parameters(res)
+      //     execute_unittest_list(unittest_callbacks, 1, "find_assistor_unittest", unittest_parameters)
+      //     // console.log("task_id))))))))))))))00", this.task_id)
+      //   })
+      //   .catch((error) => {
+      //     console.log(error)
+      //   })
+
+      // // console.log('print row', row)
+      // })
+    },
     get_model_name() {
-      for (var i = 0; i < this.task_mode_list.length; i++) {
-        var obj = this.task_mode_list[i]
+      for (let i = 0; i < this.task_mode_list.length; i++) {
+        let obj = this.task_mode_list[i]
         if (this.task_mode == obj.name ) {
           this.model_name_list = obj.sub
         }
@@ -166,21 +253,21 @@ export default {
       this.metric_name=''
     },
     get_metric_name() {
-      for (var i = 0; i < this.model_name_list.length; i++) {
-        var obj = this.model_name_list[i]
+      for (let i = 0; i < this.model_name_list.length; i++) {
+        let obj = this.model_name_list[i]
         if (this.model_name == obj.name ) {
           this.metric_name_list = obj.sub
         }
       }
     },
-    get_train_id () {
+    get_train_id (unittest_callbacks) {
       // console.log("$$$$$$$$$$$$$$$^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
       this.$axios.get('/create_new_train_task/')
         .then((response) => {
           this.task_id = response.data.task_id
 
           let unittest_parameters = generate_unittest_parameters(this.task_id)
-          execute_unittest_list(arguments[arguments.length-1], 0, "find_assistor_unittest", unittest_parameters)
+          execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
           // console.log("task_id))))))))))))))00", this.task_id)
         })
         .catch((error) => {
@@ -323,13 +410,17 @@ export default {
       return true
     },
 
-    onSubmit (e) {
+   
+
+    onSubmit (unittest_callbacks) {
+
+      
       
       console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
-      log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
+      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
       Log('sponsor ceshi', 'info')
-      console.log('sponsor ceshi1')
+      console.log('sponsor ceshi1', unittest_callbacks)
       if (this.assistor_username_list == ""){
         dialog.showErrorBox('Please Type in the Assistor Username', 'Thank you very much')
       }else if (this.task_id == ""){
@@ -369,34 +460,52 @@ export default {
           console.log("true")
           
           console.log(vm.train_file_path)
-          const stmt = vm.$db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
-          ' ( @task_name, @task_description, @user_id, @test_indicator, @task_id, @test_id, @train_file_path,' +
-          ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-          ' @test_data_column, @test_target_column, @task_mode, @model_name, @metric_name)');
-             
-          stmt.run({
-            task_name: vm.task_name, 
-            task_description: vm.task_description, 
-            user_id: vm.sharedState.user_id, 
-            test_indicator: "train", 
-            task_id: vm.task_id,
-            test_id: '',
-            train_file_path: vm.train_file_path, 
-            train_id_column: vm.train_id_column, 
-            train_data_column: vm.train_data_column, 
-            train_target_column: vm.train_target_column, 
-            test_file_path: '',
-            test_id_column: '',
-            test_data_column: '',
-            test_target_column: '',
-            task_mode: vm.task_mode, 
-            model_name: vm.model_name,
-            metric_name: vm.metric_name
-          });
+
           
+          let sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path",`+
+                      ` "train_id_column", "train_data_column", "train_target_column", "task_mode", "model_name", "metric_name") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          let param = [vm.task_name, vm.task_description, vm.sharedState.user_id, "train",
+                    vm.task_id, vm.train_file_path, vm.train_id_column, vm.train_data_column, 
+                    vm.train_target_column, vm.task_mode, vm.model_name, vm.metric_name]
+          
+
+          // let insert_sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_column", "train_data_column", "train_target_column", "task_mode", "model_name", "metric_name") VALUES 
+          //     (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`", "`+vm.task_mode+`", "`+vm.model_name+`", "`+vm.metric_name+`")`
+
+          // console.log("insert_sentence", insert_sentence) 
+          vm.$db.run(sentence, change_db_param_to_string(param), function(err){
+            if (err){
+              console.log('err info',err);
+            }
+          // const stmt = vm.$db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
+          // ' ( @task_name, @task_description, @user_id, @test_indicator, @task_id, @test_id, @train_file_path,' +
+          // ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+          // ' @test_data_column, @test_target_column, @task_mode, @model_name, @metric_name)');
+             
+          // stmt.run({
+          //   task_name: vm.task_name, 
+          //   task_description: vm.task_description, 
+          //   user_id: vm.sharedState.user_id, 
+          //   test_indicator: "train", 
+          //   task_id: vm.task_id,
+          //   test_id: '',
+          //   train_file_path: vm.train_file_path, 
+          //   train_id_column: vm.train_id_column, 
+          //   train_data_column: vm.train_data_column, 
+          //   train_target_column: vm.train_target_column, 
+          //   test_file_path: '',
+          //   test_id_column: '',
+          //   test_data_column: '',
+          //   test_target_column: '',
+          //   task_mode: vm.task_mode, 
+          //   model_name: vm.model_name,
+          //   metric_name: vm.metric_name
+          // });
+          console.log('daozhele')
           // test if the sqlite db stores the aboving values
           let unittest_parameters = generate_unittest_parameters(vm.train_file_path, vm.train_id_column, vm.train_data_column, vm.train_target_column)
-          execute_unittest_list(arguments[arguments.length-1], 0, "find_assistor_unittest", unittest_parameters)
+          console.log('dachu3', unittest_parameters,unittest_callbacks)
+          execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
 
           // let match_id_address = vm.PathForm.train_id_path
           let hash_id_file_address = null;
@@ -462,7 +571,7 @@ export default {
             }
 
             let unittest_parameters = generate_unittest_parameters(response.data)
-            execute_unittest_list(arguments[arguments.length-1], 1, "find_assistor_unittest", unittest_parameters)
+            execute_unittest_list(unittest_callbacks, 1, "find_assistor_unittest", unittest_parameters)
 
             console.log("node_path_log", Log_address)
             if(!fs.existsSync(Log_address)){
@@ -473,38 +582,26 @@ export default {
             // handle success
             vm.$toasted.success(`Training Starts`, { icon: 'fingerprint' })
 
-            Log(generate_message_string("\nYou are SPONSOR\n"), 'warn')
-            Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'warn')
-            Log(generate_message_string("Training Stage Starts\n"), 'warn')
-            Log(generate_message_string("1.0 Find Assistor\n"), 'warn')
-            Log(generate_message_string("1.1 Sponsor calls for help\n"), 'warn')
-            Log(generate_message_string("1.2 Sponsor sends id file\n"), 'warn')
-            Log(generate_message_string("1.3 Find Assistor Done\n"), 'warn')
+            Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
+            Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'info')
+            Log(generate_message_string("Training Stage Starts\n"), 'info')
+            Log(generate_message_string("1.0 Find Assistor\n"), 'info')
+            Log(generate_message_string("1.1 Sponsor calls for help\n"), 'info')
+            Log(generate_message_string("1.2 Sponsor sends id file\n"), 'info')
+            Log(generate_message_string("1.3 Find Assistor Done\n"), 'info')
 
             try {
               fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
               fs.appendFileSync(Log_address, "Task ID: " + vm.task_id + "\n")
-              fs.appendFileSync(Log_address, "---------------------- Train Stage Starts\n")
-              fs.appendFileSync(Log_address, "---------------------- 1. Find assistor\n")
+              fs.appendFileSync(Log_address, "---- Train Stage Starts\n")
+              fs.appendFileSync(Log_address, "---- 1. Find assistor\n")
               fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
               fs.appendFileSync(Log_address, "1.2 Sponsor sends id file\n")
-              fs.appendFileSync(Log_address, "---------------------- 1. Find assistor Done\n")
+              fs.appendFileSync(Log_address, "---- 1. Find assistor Done\n")
             } catch (err) {
               console.log(err)
             }
-            
-            vm.task_id = ""
-            // vm.$router.push('/notifications')
-            vm.select_data=false
-          })
-          .catch((error) => {
-            // handle error
-            console.log(error)
-            // console.log(error.response.data)
-            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-          })
-
-          let make_train_local = null;
+            let make_train_local = null;
           try{   
             make_train_local = ex.execSync(vm.exe_position + ' make_train_local --root  ' + vm.root
                                     + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + vm.task_id 
@@ -526,9 +623,27 @@ export default {
           }catch(err){
             console.log(err)
           }
-
           unittest_parameters = generate_unittest_parameters()
-          execute_unittest_list(arguments[arguments.length-1], 2, "find_assistor_unittest", unittest_parameters)        // })          
+          execute_unittest_list(unittest_callbacks, 2, "find_assistor_unittest", unittest_parameters)        // })          
+          
+            vm.task_id = ""
+            // vm.$router.push('/notifications')
+            vm.select_data=false
+
+          })
+          .catch((error) => {
+            // handle error
+            console.log(error)
+            // console.log(error.response.data)
+            // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+          })
+
+          
+
+            
+          })
+          
+
           
         }
 

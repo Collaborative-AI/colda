@@ -3,13 +3,13 @@ window.ex = require("child_process");
 window.os = require('os');
 window.node_path = require('path');
 window.dialog = require('electron').remote.dialog;
-window.db = require('better-sqlite3');
-window.log = require('electron-log')
+// window.db = require('better-sqlite3');
+// window.log = require('electron-log')
 
 // log.transports.file.level = false; // 禁用写Log文件
 // log.transports.console.level = false; //禁用console输出
 // level: error, warn, info, verbose, debug
-// window.log.transports.file.resolvePath = () => window.node_path.join(__dirname, '../exp/logs/main.log');
+// window.// log.transports.file.resolvePath = () => window.node_path.join(__dirname, '../exp/logs/main.log');
 
 // console.log('log_path', window.node_path.join(__dirname, '../exp/logs/main.log'));
 window.log.transports.file.level = 'info';  //输出file等级设定

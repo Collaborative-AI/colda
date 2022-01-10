@@ -44,7 +44,7 @@ async function createWindow() {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
     console.log("process.env.WEBPACK_DEV_SERVER_URL", process.env.WEBPACK_DEV_SERVER_URL)
-    console.log('app get path', app.getAppPath(), path.join(app.getAppPath(), '../src/preload.js'))
+    // console.log('app get path', app.getAppPath(), path.join(app.getAppPath(), '../src/preload.js'))
     win.webContents.openDevTools();
     if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {

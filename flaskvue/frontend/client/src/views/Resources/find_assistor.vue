@@ -231,7 +231,7 @@ export default {
       vm.train_id_column = handle_input_column_string(vm.train_id_column, 'id', vm.ptitles.length)
       vm.train_target_column = handle_input_column_string(vm.train_target_column, 'target', vm.ptitles.length)
 
-      let interaction_indicator = check_interaction(vm.train_data_column, vm.train_id_column, vm.train_target_column)
+      let interaction_indicator = check_interaction(vm.train_id_column, vm.train_data_column, vm.train_target_column)
       if (vm.assistor_username_list == false){
         dialog.showErrorBox('Please Type in Username in corrent form', 'Thank you very much')
       } else if ( vm.train_data_column == false) {

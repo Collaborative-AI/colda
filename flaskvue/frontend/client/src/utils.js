@@ -1,6 +1,6 @@
 // const log = require('electron-log')
-import {db} from './db'
-console.log('dbdachu',db)
+// import {db} from './db'
+// console.log('dbdachu',db)
 // console = log
 
 export function generate_unittest_parameters(){
@@ -87,19 +87,19 @@ export function check_if_notification_is_null(notification, name){
 }
 
 
-export function sqlite3_run(sql, params) {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function (err) {
-      if (err) {
-        console.log('Error running sql ' + sql)
-        console.log(err)
-        reject(err)
-      } else {
-        resolve({ id: this.lastID })
-      }
-    })
-  })
-}
+// export function sqlite3_run(sql, params) {
+//   return new Promise((resolve, reject) => {
+//     db.run(sql, params, function (err) {
+//       if (err) {
+//         console.log('Error running sql ' + sql)
+//         console.log(err)
+//         reject(err)
+//       } else {
+//         resolve({ id: this.lastID })
+//       }
+//     })
+//   })
+// }
 
 export function handle_Algorithm_return_value(name, return_val, first_val, second_val) {
   console.log(name, return_val)
@@ -126,24 +126,19 @@ export function handle_assistor_username_list(assistor_username_string){
   // trim leading and trailing spaces
   assistor_username_string = assistor_username_string.trim()
 
-  // if string contains special symbol, return false
-  let special_symbol = RegExp(/[(\ )(\~)(\!)(\-)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\.)(\/)(\<)(\>)(\?)(\)]+/);  
-  if (special_symbol.test(assistor_username_string)) {
-    return false
-  }
-   
-  // if string does not contains ',', return false
-  let need_symbol = RegExp(/[(\,)]+/);  
-  if (!need_symbol.test(assistor_username_string)){
-    return false
-  }
-
   let new_assistor_username_list = assistor_username_string.split(",")
+  
   let return_assistor_username_list = []
   for (let i = 0; i < new_assistor_username_list.length; i++){
     let cur_username = new_assistor_username_list[i].trim()
+
+    // if username contains space, return false
+    if (cur_username.indexOf(' ') >= 0){
+      return false
+    }
     return_assistor_username_list.push(cur_username)
   }
+
   return return_assistor_username_list
 }
 
@@ -173,7 +168,7 @@ export function handle_input_column_string(input_string, kind, max_column_index)
       return false
     }
 
-    let cur_num = ParseInt(new_string)
+    let cur_num = parseInt(new_string)
     // if the index is smaller than 1 or larger than the max column index, return false
     if (cur_num < 1 || cur_num > max_column_index){
       return false
@@ -184,11 +179,12 @@ export function handle_input_column_string(input_string, kind, max_column_index)
   } else if (kind == 'data') {
 
       // if string contains special symbol, return false
-      let special_symbol = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);  
+      let special_symbol = RegExp(/[(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);  
       if (special_symbol.test(new_string)) {
+        console.log('wtf')
         return false
       }
-      
+
       // if string does not contains '-', return false
       let need_symbol = RegExp(/[(\-)]+/);  
       if (!need_symbol.test(new_string)){
@@ -196,7 +192,6 @@ export function handle_input_column_string(input_string, kind, max_column_index)
       }
 
       new_string = new_string.split('-')
-
       // if new string length is not 2, return false
       if (new_string.length != 2){
         return false
@@ -212,7 +207,7 @@ export function handle_input_column_string(input_string, kind, max_column_index)
         if (cur_string[0] == '0'){
           return false
         }
-        let cur_num = ParseInt(cur_string)
+        let cur_num = parseInt(cur_string)
         // if the index is out of range, return false
         if (cur_num < 1 || cur_num > max_column_index){
           return false
@@ -231,14 +226,26 @@ export function handle_input_column_string(input_string, kind, max_column_index)
 }
 
 export function check_interaction(id_column, data_column, target_column){
-  let id = ParseInt(id_column)
-  let target = ParseInt(target_column)
+  if (id_column == false || data_column == false || target_column == false){
+    return false
+  }
+
+  if (id_column == '' || data_column == '' || target_column == ''){
+    return false
+  }
+
+  if (id_column == undefined || data_column == undefined || target_column == undefined){
+    return false
+  }
+
+  let id = parseInt(id_column)
+  let target = parseInt(target_column)
 
   let data_list = data_column.split("-")
-  let first_data_index = ParseInt(data_list[0])
-  let second_data_index = ParseInt(data_list[1])
+  let first_data_index = parseInt(data_list[0])
+  let second_data_index = parseInt(data_list[1])
 
-  if (id >= first_data_index || second_data_index <= target){
+  if (id >= first_data_index || second_data_index >= target){
     return false
   }
   return true

@@ -28,13 +28,14 @@ def create_user():
       return bad_request('No data. Please import JSON data')
 
     message = {}
-    if 'username' not in data or not data.get('username', None):
+    if 'username' not in data or not data.get('username', None) or (' ' in data.get('username')):
         message['username'] = 'Please provide a valid username.'
     pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
-    if 'email' not in data or not re.match(pattern, data.get('email', None)):
+    if 'email' not in data or not re.match(pattern, data.get('email', None)) or (' ' in data.get('email')):
         message['email'] = 'Please provide a valid email address.'
-    if 'password' not in data or not data.get('password', None):
+    if 'password' not in data or not data.get('password', None) or (' ' in data.get('password')):
         message['password'] = 'Please provide a valid password.'
+        
     print("2")
     if User.query.filter_by(username=data.get('username', None)).first():
         message['username'] = 'Please use a different username.'

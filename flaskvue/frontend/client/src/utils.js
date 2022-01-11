@@ -251,3 +251,28 @@ export function check_interaction(id_column, data_column, target_column){
   return true
 }
 
+export function check_assistor_interaction(id_column, data_column){
+  if (id_column == false || data_column == false){
+    return false
+  }
+
+  if (id_column == '' || data_column == ''){
+    return false
+  }
+
+  if (id_column == undefined || data_column == undefined){
+    return false
+  }
+
+  let id = parseInt(id_column)
+
+  let data_list = data_column.split("-")
+  let first_data_index = parseInt(data_list[0])
+  let second_data_index = parseInt(data_list[1])
+
+  if (id >= first_data_index){
+    return false
+  }
+  return true
+}
+

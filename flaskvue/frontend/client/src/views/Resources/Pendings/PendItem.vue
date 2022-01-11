@@ -66,7 +66,7 @@
 import store from '../../../store'
 import db from '../../../db'
 import { ex,fs,os,node_path,dialog } from '../../../import_package.js'
-import { handle_Algorithm_return_value, change_db_param_to_string, generate_unittest_parameters, execute_unittest_list } from '../../../utils'
+import { handle_input_column_string, check_assistor_interaction, handle_Algorithm_return_value, change_db_param_to_string, generate_unittest_parameters, execute_unittest_list } from '../../../utils'
 
 // const fs = window.fs;
 // const ex = window.ex;
@@ -171,265 +171,317 @@ export default {
     },
 
     train_unread_request(unittest_callbacks){
-      let vm = this;
       console.log('jin train', vm.manual_file_path, vm.manual_id_column, vm.manual_data_column, vm.manual_target_column,)
 
-      let sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,` +
+      let vm = this;
+      let both_path_validation = true
+
+      vm.manual_data_column = handle_input_column_string(vm.manual_data_column, 'data', vm.ptitles.length)
+      vm.manual_id_column = handle_input_column_string(vm.manual_id_column, 'id', vm.ptitles.length)
+
+      let interaction_indicator = check_assistor_interaction(vm.manual_id_column, vm.manual_data_column)
+
+      if ( vm.manual_data_column == false) {
+        dialog.showErrorBox('Please Type in manual_data_column in corrent form', 'Thank you very much')
+      } else if ( vm.manual_id_column == false) {
+        dialog.showErrorBox('Please Type in manual_id_column in corrent form', 'Thank you very much')
+      } else if ( interaction_indicator == false){
+        dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
+      } else {
+
+        try {
+          fs.statSync(vm.manual_file_path);
+        } catch (err) {
+          dialog.showErrorBox('File Path not Correct', 'Please Select A Correct File Path')
+          console.log('Please Select A Correct File Path')
+          both_path_validation = false
+        }
+
+        if (both_path_validation == true){
+          let sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,` +
           ` train_id_column, train_data_column, train_target_column, test_file_path, test_id_column,` +
           ` test_data_column, test_target_column, mode, test_indicator, model_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      let param = [vm.sharedState.user_id, vm.task_id, '', '', '', '', '', vm.manual_file_path, vm.manual_id_column, vm.manual_data_column, 
-                  vm.manual_target_column, '', '', '', '', 'manual', 'train', vm.model_name]
+        
+          let param = [vm.sharedState.user_id, vm.task_id, '', '', '', '', '', vm.manual_file_path, vm.manual_id_column, vm.manual_data_column, 
+                      vm.manual_target_column, '', '', '', '', 'manual', 'train', vm.model_name]
 
-      vm.$db.run(sentence, change_db_param_to_string(param), function(err){
-        if (err){
-          console.log('err info',err);
-        }
-
-        let unittest_parameters = generate_unittest_parameters()
-        execute_unittest_list(unittest_callbacks, 1, "PendItem_unittest", unittest_parameters)
-        // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-        //     ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-        //     ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-        //     ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
-              
-        //     stmt.run({
-        //       user_id: vm.sharedState.user_id, 
-        //       task_id: vm.task_id,
-        //       test_id: '',
-        //       task_name: '', 
-        //       task_description: '', 
-        //       test_name: '',
-        //       test_description: '',
-        //       train_file_path: vm.manual_file_path, 
-        //       train_id_column: vm.manual_id_column, 
-        //       train_data_column: vm.manual_data_column, 
-        //       train_target_column: vm.manual_target_column, 
-        //       test_file_path: '',
-        //       test_id_column: '',
-        //       test_data_column: '',
-        //       test_target_column: '',
-        //       mode: 'manual',
-        //       test_indicator: 'train',
-        //       model_name: vm.model_name
-        //     });
-
-        console.log("2.1 Update Test request notification response")
-      
-        const delete_pending = {
-          task_id: vm.task_id,
-          test_id: vm.test_id,
-          test_indicator: vm.test_indicator
-        }
-        console.log('wokan4', this.test_indicator)
-
-        vm.$axios.post('/delete_pending/', delete_pending)
-          .then((response) => {
-            // handle success
-            console.log("delete_pending response", response.data)
-            let unittest_parameters = generate_unittest_parameters(response.data)
-            execute_unittest_list(unittest_callbacks, 2, "PendItem_unittest", unittest_parameters)
-
-            let task_id = vm.task_id
-            let hash_id_file_address = null;
-            let Log_address = null;
-            try{
-              console.log('asa', vm.manual_file_path, vm.manual_id_column)
-              hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
-                                      + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + vm.manual_file_path
-                                      + ' --id_idx ' + vm.manual_id_column, {encoding: 'utf8'})
-
-              hash_id_file_address = hash_id_file_address.split('?')
-              let indicator = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
-              Log_address = vm.handle_train_log_address(task_id)
-              if (indicator == false){
-                console.log("hash_id_file_address wrong")
-                fs.appendFileSync(Log_address, "hash_id_file_address wrong")
-                return 
-              }
-            }catch(err){
-                console.log(err)
+          vm.$db.run(sentence, change_db_param_to_string(param), function(err){
+            if (err){
+              console.log('err info',err);
             }
 
-            try {
-              fs.appendFileSync(Log_address, "\n You are Assistor\n")
-              fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
-              fs.appendFileSync(Log_address, "----2. Unread Request\n")
-              fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
-            } catch (err) {
-              console.log(err)
+            let unittest_parameters = generate_unittest_parameters()
+            execute_unittest_list(unittest_callbacks, 1, "PendItem_unittest", unittest_parameters)
+            // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+            //     ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+            //     ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+            //     ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+                  
+            //     stmt.run({
+            //       user_id: vm.sharedState.user_id, 
+            //       task_id: vm.task_id,
+            //       test_id: '',
+            //       task_name: '', 
+            //       task_description: '', 
+            //       test_name: '',
+            //       test_description: '',
+            //       train_file_path: vm.manual_file_path, 
+            //       train_id_column: vm.manual_id_column, 
+            //       train_data_column: vm.manual_data_column, 
+            //       train_target_column: vm.manual_target_column, 
+            //       test_file_path: '',
+            //       test_id_column: '',
+            //       test_data_column: '',
+            //       test_target_column: '',
+            //       mode: 'manual',
+            //       test_indicator: 'train',
+            //       model_name: vm.model_name
+            //     });
+
+            console.log("2.1 Update Test request notification response")
+          
+            const delete_pending = {
+              task_id: vm.task_id,
+              test_id: vm.test_id,
+              test_indicator: vm.test_indicator
             }
-            let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
-            
-            const match_assistor_id_data = {
-              task_id: task_id,
-              file: hash_id_file_data,
-            }
-            
-            vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
+            console.log('wokan4', this.test_indicator)
+
+            vm.$axios.post('/delete_pending/', delete_pending)
               .then((response) => {
                 // handle success
-                console.log("2.2 assistor uploads id file")
-                vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
-                
+                console.log("delete_pending response", response.data)
                 let unittest_parameters = generate_unittest_parameters(response.data)
-                execute_unittest_list(unittest_callbacks, 3, "PendItem_unittest", unittest_parameters)
-                
+                execute_unittest_list(unittest_callbacks, 2, "PendItem_unittest", unittest_parameters)
+
+                let task_id = vm.task_id
+                let hash_id_file_address = null;
+                let Log_address = null;
+                try{
+                  console.log('asa', vm.manual_file_path, vm.manual_id_column)
+                  hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
+                                          + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + vm.manual_file_path
+                                          + ' --id_idx ' + vm.manual_id_column, {encoding: 'utf8'})
+
+                  hash_id_file_address = hash_id_file_address.split('?')
+                  let indicator = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
+                  Log_address = vm.handle_train_log_address(task_id)
+                  if (indicator == false){
+                    console.log("hash_id_file_address wrong")
+                    fs.appendFileSync(Log_address, "hash_id_file_address wrong")
+                    return 
+                  }
+                }catch(err){
+                    console.log(err)
+                }
+
                 try {
-                  fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
-                  fs.appendFileSync(Log_address, "----2. Unread Request Done\n")
+                  fs.appendFileSync(Log_address, "\n You are Assistor\n")
+                  fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
+                  fs.appendFileSync(Log_address, "----2. Unread Request\n")
+                  fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
                 } catch (err) {
                   console.log(err)
                 }
+                let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+                
+                const match_assistor_id_data = {
+                  task_id: task_id,
+                  file: hash_id_file_data,
+                }
+                
+                vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
+                  .then((response) => {
+                    // handle success
+                    console.log("2.2 assistor uploads id file")
+                    vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
+                    
+                    let unittest_parameters = generate_unittest_parameters(response.data)
+                    execute_unittest_list(unittest_callbacks, 3, "PendItem_unittest", unittest_parameters)
+                    
+                    try {
+                      fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
+                      fs.appendFileSync(Log_address, "----2. Unread Request Done\n")
+                    } catch (err) {
+                      console.log(err)
+                    }
+
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+
+                  }) // axios match_assistor_id ends
 
               })
               .catch((error) => {
                 console.log(error)
-                // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+              }) // axios delete_pending
 
-              }) // axios match_assistor_id ends
-
-          })
-          .catch((error) => {
-            console.log(error)
-          }) // axios delete_pending
-
-      }) // db Insert Row to User_Assistor_Table
+          }) // db Insert Row to User_Assistor_Table
+        } // if both_path_validation == true
+      } // else 
     }, // function train_unread_request
 
     test_unread_request(unittest_callbacks){
       console.log('jin test')
-      let vm = this
 
-      let sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,` +
+      let vm = this
+      let both_path_validation = true
+
+      vm.manual_data_column = handle_input_column_string(vm.manual_data_column, 'data', vm.ptitles.length)
+      vm.manual_id_column = handle_input_column_string(vm.manual_id_column, 'id', vm.ptitles.length)
+
+      let interaction_indicator = check_assistor_interaction(vm.manual_id_column, vm.manual_data_column)
+
+       if ( vm.manual_data_column == false) {
+        dialog.showErrorBox('Please Type in manual_data_column in corrent form', 'Thank you very much')
+      } else if ( vm.manual_id_column == false) {
+        dialog.showErrorBox('Please Type in manual_id_column in corrent form', 'Thank you very much')
+      } else if ( interaction_indicator == false){
+        dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
+      } else {
+
+        try {
+          fs.statSync(vm.manual_file_path);
+        } catch (err) {
+          dialog.showErrorBox('File Path not Correct', 'Please Select A Correct File Path')
+          console.log('Please Select A Correct File Path')
+          both_path_validation = false
+        }
+
+        if (both_path_validation == true){
+
+          let sentence = `INSERT INTO User_Assistor_Table (user_id, task_id, test_id, task_name, task_description, test_name, test_description, train_file_path,` +
           ` train_id_column, train_data_column, train_target_column, test_file_path, test_id_column,` +
           ` test_data_column, test_target_column, mode, test_indicator, model_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      let param = [vm.sharedState.user_id, vm.task_id, vm.test_id, '', '', '', '', '', '', '', '', vm.manual_file_path, 
-                  vm.manual_id_column, vm.manual_data_column, vm.manual_target_column,'manual', 'test', vm.model_name]
+          let param = [vm.sharedState.user_id, vm.task_id, vm.test_id, '', '', '', '', '', '', '', '', vm.manual_file_path, 
+                      vm.manual_id_column, vm.manual_data_column, vm.manual_target_column,'manual', 'test', vm.model_name]
 
-      vm.$db.run(sentence, change_db_param_to_string(param), function(err){
-        if (err){
-          console.log('err info',err);
-        }
+          vm.$db.run(sentence, change_db_param_to_string(param), function(err){
+            if (err){
+              console.log('err info',err);
+            }
 
-        let unittest_parameters = generate_unittest_parameters()
-        execute_unittest_list(unittest_callbacks, 1, "PendItem_unittest", unittest_parameters)
-        // let insert_sentence = `INSERT INTO "User_Assistor_Table"("pending_test_file_path", "pending_test_id_column", "pending_test_data_column", "pending_test_target_column","user_id", "test_id") VALUES 
-        //         (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + vm.test_id + `")`
-        // console.log("insert_sentence", insert_sentence)
+            let unittest_parameters = generate_unittest_parameters()
+            execute_unittest_list(unittest_callbacks, 1, "PendItem_unittest", unittest_parameters)
+            // let insert_sentence = `INSERT INTO "User_Assistor_Table"("pending_test_file_path", "pending_test_id_column", "pending_test_data_column", "pending_test_target_column","user_id", "test_id") VALUES 
+            //         (`+`"`+vm.manual_file_path +`", "`+vm.manual_id_column+`", "`+vm.manual_data_column+`", "`+vm.manual_target_column+`", "`+vm.sharedState.user_id+ `", "` + vm.test_id + `")`
+            // console.log("insert_sentence", insert_sentence)
 
-        // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
-        //     ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
-        //     ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
-        //     ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
-              
-        //     stmt.run({
-        //       user_id: vm.sharedState.user_id, 
-        //       task_id: '',
-        //       test_id: vm.test_id,
-        //       task_name: '', 
-        //       task_description: '', 
-        //       test_name: '',
-        //       test_description: '',
-        //       train_file_path: '', 
-        //       train_id_column: '', 
-        //       train_data_column: '', 
-        //       train_target_column: '', 
-        //       test_file_path: vm.manual_file_path,
-        //       test_id_column: vm.manual_id_column,
-        //       test_data_column: vm.manual_data_column,
-        //       test_target_column: vm.manual_target_column,
-        //       mode: 'manual', 
-        //       test_indicator: 'test',
-        //       model_name: vm.model_name
-        //     });
-        
-        console.log("2.1 Update Test request notification response")
-        vm.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
-
-        const delete_pending = {
-          task_id: vm.task_id,
-          test_id: vm.test_id,
-          test_indicator: vm.test_indicator
-        }
-       console.log("222222")
-        vm.$axios.post('/delete_pending/', delete_pending)
-          .then((response) => {
-            // handle success
-            console.log("delete_pending response", response.data)
-            let unittest_parameters = generate_unittest_parameters(response.data)
-            execute_unittest_list(unittest_callbacks, 2, "PendItem_unittest", unittest_parameters)
+            // const stmt = vm.$db.prepare('INSERT INTO User_Assistor_Table VALUES' +
+            //     ' ( @user_id, @task_id, @test_id, @task_name, @task_description, @test_name, @test_description, @train_file_path,' +
+            //     ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+            //     ' @test_data_column, @test_target_column, @mode, @test_indicator, @model_name)');
+                  
+            //     stmt.run({
+            //       user_id: vm.sharedState.user_id, 
+            //       task_id: '',
+            //       test_id: vm.test_id,
+            //       task_name: '', 
+            //       task_description: '', 
+            //       test_name: '',
+            //       test_description: '',
+            //       train_file_path: '', 
+            //       train_id_column: '', 
+            //       train_data_column: '', 
+            //       train_target_column: '', 
+            //       test_file_path: vm.manual_file_path,
+            //       test_id_column: vm.manual_id_column,
+            //       test_data_column: vm.manual_data_column,
+            //       test_target_column: vm.manual_target_column,
+            //       mode: 'manual', 
+            //       test_indicator: 'test',
+            //       model_name: vm.model_name
+            //     });
             
-            let task_id = vm.task_id
-            let test_id = vm.test_id
-            let test_hash_id_file_address = null
-            let Log_address = null
-            try{
-              test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
-                                        + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id
-                                        + ' --mode test' + ' --test_id ' + test_id
-                                        + ' --dataset_path ' + vm.manual_file_path + ' --id_idx ' + vm.manual_id_column, {encoding: 'utf8'})
+            console.log("2.1 Update Test request notification response")
+            vm.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
-              test_hash_id_file_address = test_hash_id_file_address.split("?")
-              let indicator = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
-              Log_address = vm.handle_test_log_address(task_id, test_id)
-              if (indicator == false){
-                console.log("test_hash_id_file_address wrong")
-                fs.appendFileSync(Log_address, "test_hash_id_file_address wrong")
-                return 
-              }
-            }catch(err){
-              console.log(err)
+            const delete_pending = {
+              task_id: vm.task_id,
+              test_id: vm.test_id,
+              test_indicator: vm.test_indicator
             }
-
-            try {
-              fs.appendFileSync(Log_address, "\n You are Assistor\n")
-              fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
-              fs.appendFileSync(Log_address, "----Test Stage: 2.Unread Test Request\n")
-              fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
-              fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
-            } catch (err) {
-              console.log(err)
-            }
-
-            let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
-
-            const match_test_assistor_id_data = {
-              file: test_hash_id_file_data,
-              test_id: test_id,
-              task_id: task_id
-            }
-
-            vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
+            console.log("222222")
+            vm.$axios.post('/delete_pending/', delete_pending)
               .then((response) => {
                 // handle success
-                console.log("2.2 Test: assistor uploads id file")
-                vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
-                
+                console.log("delete_pending response", response.data)
                 let unittest_parameters = generate_unittest_parameters(response.data)
-                execute_unittest_list(unittest_callbacks, 3, "PendItem_unittest", unittest_parameters)
+                execute_unittest_list(unittest_callbacks, 2, "PendItem_unittest", unittest_parameters)
+                
+                let task_id = vm.task_id
+                let test_id = vm.test_id
+                let test_hash_id_file_address = null
+                let Log_address = null
+                try{
+                  test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
+                                            + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id
+                                            + ' --mode test' + ' --test_id ' + test_id
+                                            + ' --dataset_path ' + vm.manual_file_path + ' --id_idx ' + vm.manual_id_column, {encoding: 'utf8'})
+
+                  test_hash_id_file_address = test_hash_id_file_address.split("?")
+                  let indicator = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
+                  Log_address = vm.handle_test_log_address(task_id, test_id)
+                  if (indicator == false){
+                    console.log("test_hash_id_file_address wrong")
+                    fs.appendFileSync(Log_address, "test_hash_id_file_address wrong")
+                    return 
+                  }
+                }catch(err){
+                  console.log(err)
+                }
 
                 try {
-                  fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
-                  fs.appendFileSync(Log_address, "----2. Unread Test Request Done\n")
+                  fs.appendFileSync(Log_address, "\n You are Assistor\n")
+                  fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
+                  fs.appendFileSync(Log_address, "----Test Stage: 2.Unread Test Request\n")
+                  fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
+                  fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
                 } catch (err) {
                   console.log(err)
                 }
+
+                let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+
+                const match_test_assistor_id_data = {
+                  file: test_hash_id_file_data,
+                  test_id: test_id,
+                  task_id: task_id
+                }
+
+                vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
+                  .then((response) => {
+                    // handle success
+                    console.log("2.2 Test: assistor uploads id file")
+                    vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
+                    
+                    let unittest_parameters = generate_unittest_parameters(response.data)
+                    execute_unittest_list(unittest_callbacks, 3, "PendItem_unittest", unittest_parameters)
+
+                    try {
+                      fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
+                      fs.appendFileSync(Log_address, "----2. Unread Test Request Done\n")
+                    } catch (err) {
+                      console.log(err)
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
+                  }) // axios match_test_assistor_id
+
+
               })
               .catch((error) => {
                 console.log(error)
-                // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
-              }) // axios match_test_assistor_id
-
-
-          })
-          .catch((error) => {
-            console.log(error)
-          }) // axios delete_pending
-          
-      }) // db Insert row into User_Assistor_Table
-
+              }) // axios delete_pending
+              
+          }) // db Insert row into User_Assistor_Table
+        } // if both_path_validation == true
+      } // else
     }, // function test_unread_request ends
-
 
     Accept(unittest_callbacks){
       let vm = this

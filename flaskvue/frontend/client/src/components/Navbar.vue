@@ -112,7 +112,7 @@ export default {
       sharedState: store.state,
       unread_request_show: false,
       assistor_num: 0,
-      max_round: 3,
+      max_round: 2,
       root: '',
       exe_position: '',
       showView: true,
@@ -342,13 +342,15 @@ export default {
         const add_train_pending = {
           task_id: task_id,
         }
+        console.log('jinlai', add_train_pending)
       
         vm.$axios.post('/add_train_pending/', add_train_pending)
           .then((response) => {
             // handle success
-            Log(generate_message_string("add_train_pending response", response.data), 'debug')
-            let unittest_parameters = generate_unittest_parameters(response.data)
-            execute_unittest_list(unittest_callbacks, 1, "unread_request_unittest", unittest_parameters)
+            console.log('zz99',response)
+            // Log(generate_message_string("add_train_pending response", response.data), 'debug')
+            // let unittest_parameters = generate_unittest_parameters(response.data)
+            // execute_unittest_list(unittest_callbacks, 1, "unread_request_unittest", unittest_parameters)
           })
           .catch((error) => {
             // handle error
@@ -918,7 +920,7 @@ export default {
       if (indicator == false){
         console.log("recall unread_situation_assistor_train_part")
         setTimeout(function(){
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address,task_mode, model_name)
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks)
         }, 7000);
       }else{
         
@@ -1261,9 +1263,9 @@ export default {
       // When assistors train faster than sponsor and send their results, make_result might not find the sponsor's train results.
       // We need to recall the function
       if(indicator == false){
-        // console.log("recall unread_output_make_result_helper")
+        console.log("recall unread_output_make_result_helper")
         setTimeout(function(){
-          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address)
+          vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time, unittest_callbacks)
         }, 7000);
 
       }else{
@@ -1294,6 +1296,8 @@ export default {
             + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + (rounds+1)
             + ' --dataset_path ' + train_file_path + ' --target_idx ' + train_target_column
             + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
+
+          console.log('zz98', make_residual_multiple_paths)
 
           make_residual_multiple_paths = make_residual_multiple_paths.split("?")
           let indicator = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
@@ -2146,7 +2150,7 @@ export default {
       }
 
       if (indicator == false){
-        // console.log("recall unread_test_output_make_eval_helper")
+        console.log("recall unread_test_output_make_eval_helper")
         setTimeout(function(){
           vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time, unittest_callbacks)
         }, 7000);
@@ -2203,177 +2207,177 @@ export default {
     let getTime = window.performance;
     let startTime = getTime.now();
 
-    // $(function() {
-    //   let since = 0
-    //   let total_notifications_count = 0  // 总通知计数
-    //   let unread_request_count = 0  // 收到的新评论通知计数
-    //   let unread_match_id_count = 0  // 收到的新私信通知计数
-    //   let unread_situation_count = 0  // 新粉丝通知计数
-    //   let unread_output_count = 0  // 新的喜欢或赞的通知计数
-    //   let unread_messages_count = 0
-    //   let sender_random_id_list = []
-    //   let task_id_list = []
+    $(function() {
+      let since = 0
+      let total_notifications_count = 0  // 总通知计数
+      let unread_request_count = 0  // 收到的新评论通知计数
+      let unread_match_id_count = 0  // 收到的新私信通知计数
+      let unread_situation_count = 0  // 新粉丝通知计数
+      let unread_output_count = 0  // 新的喜欢或赞的通知计数
+      let unread_messages_count = 0
+      let sender_random_id_list = []
+      let task_id_list = []
       
-    //   let vm = this
+      let vm = this
 
-      // function polling() {
-      //   // console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
+      function polling() {
+        // console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
 
-      //   // db.select
-      //   // check result => None => change to setting page
+        // db.select
+        // check result => None => change to setting page
 
 
-      //   if (window.localStorage.getItem('Apollo-token')) {
-      //     // 如果用户已登录，才开始请求 API
-      //     const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
-      //     const user_id = payload.user_id
-      //     // const path = `/users/${user_id}/notifications/?since=${since}`
-      //     const path = `/users/${user_id}/notifications/`
-      //     // const path = ''
-      //     // console.log("since shua xin",since)
-      //     axios.get(path)
-      //       .then((response) => {
-      //         // handle success
+        if (window.localStorage.getItem('Apollo-token')) {
+          // 如果用户已登录，才开始请求 API
+          const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
+          const user_id = payload.user_id
+          // const path = `/users/${user_id}/notifications/?since=${since}`
+          const path = `/users/${user_id}/notifications/`
+          // const path = ''
+          // console.log("since shua xin",since)
+          axios.get(path)
+            .then((response) => {
+              // handle success
               
-      //         for (let res of response.data){
-      //           if (res.task_id_list.length != 0){
-      //             console.log("response.data", res)
-      //           }
-      //         }
-      //       for (let item of response.data){
-      //         // console.log('item', item, item.payload)
-      //         if (item.payload >= 1){
+              for (let res of response.data){
+                if (res.task_id_list.length != 0){
+                  console.log("response.data", res)
+                }
+              }
+            for (let item of response.data){
+              // console.log('item', item, item.payload)
+              if (item.payload >= 1){
 
       
-      //           console.log("++++++++++++++++++++++++=", response.data)
+                console.log("++++++++++++++++++++++++=", response.data)
 
-      //           const all_notifications = {
-      //             response_data: response.data
-      //           } 
+                const all_notifications = {
+                  response_data: response.data
+                } 
 
-      //           axios.post('/update_all_notifications/', all_notifications)
-      //           .then((response) => {
-      //             // train stage
-      //             let unread_request_notification = response.data["unread request"]
-      //             let unread_match_id_notification = response.data["unread match id"]
-      //             let unread_situation_notification = response.data["unread situation"]
-      //             let unread_output_notification = response.data["unread output"]
+                axios.post('/update_all_notifications/', all_notifications)
+                .then((response) => {
+                  // train stage
+                  let unread_request_notification = response.data["unread request"]
+                  let unread_match_id_notification = response.data["unread match id"]
+                  let unread_situation_notification = response.data["unread situation"]
+                  let unread_output_notification = response.data["unread output"]
 
-      //             // test stage
-      //             let unread_test_request_notification = response.data["unread test request"]
-      //             let unread_test_match_id_notification = response.data["unread test match id"]
-      //             let unread_test_output_notification = response.data["unread test output"]
-
-
-      //             console.log("unread_request_notification",unread_request_notification,
-      //               unread_request_notification["check_dict"])
-      //             console.log("unread_match_id_notification",unread_match_id_notification,
-      //               unread_match_id_notification["check_dict"])
-      //             console.log("unread_situation_notification",unread_situation_notification,
-      //               unread_situation_notification["check_dict"])
-      //             console.log("unread_output_notification",unread_output_notification,
-      //               unread_output_notification["check_dict"])
-
-      //             console.log("unread_test_request_notification",unread_test_request_notification,
-      //               unread_test_request_notification["check_dict"])
-      //             console.log("unread_test_match_id_notification",unread_test_match_id_notification,
-      //               unread_test_match_id_notification["check_dict"])
-      //             console.log("unread_test_output_notification",unread_test_output_notification,
-      //               unread_test_output_notification["check_dict"])
+                  // test stage
+                  let unread_test_request_notification = response.data["unread test request"]
+                  let unread_test_match_id_notification = response.data["unread test match id"]
+                  let unread_test_output_notification = response.data["unread test output"]
 
 
-      //             if (unread_request_notification["check_dict"] ){
-      //                 unread_request(unread_request_notification)
-      //             }
+                  console.log("unread_request_notification",unread_request_notification,
+                    unread_request_notification["check_dict"])
+                  console.log("unread_match_id_notification",unread_match_id_notification,
+                    unread_match_id_notification["check_dict"])
+                  console.log("unread_situation_notification",unread_situation_notification,
+                    unread_situation_notification["check_dict"])
+                  console.log("unread_output_notification",unread_output_notification,
+                    unread_output_notification["check_dict"])
 
-      //             if (unread_match_id_notification["check_dict"]){
-      //                 unread_match_id(unread_match_id_notification)
-      //             }
+                  console.log("unread_test_request_notification",unread_test_request_notification,
+                    unread_test_request_notification["check_dict"])
+                  console.log("unread_test_match_id_notification",unread_test_match_id_notification,
+                    unread_test_match_id_notification["check_dict"])
+                  console.log("unread_test_output_notification",unread_test_output_notification,
+                    unread_test_output_notification["check_dict"])
 
-      //             if (unread_situation_notification["check_dict"]){
-      //                 unread_situation(unread_situation_notification)
-      //             }
 
-      //             if (unread_output_notification["rounds_dict"]){
-      //                 unread_output(unread_output_notification)
-      //             }
+                  if (unread_request_notification["check_dict"] ){
+                      unread_request(unread_request_notification)
+                  }
 
-      //             if (unread_test_request_notification["check_dict"]){
-      //                 unread_test_request(unread_test_request_notification)
-      //             }
+                  if (unread_match_id_notification["check_dict"]){
+                      unread_match_id(unread_match_id_notification)
+                  }
 
-      //             if (unread_test_match_id_notification["check_dict"]){
-      //                 unread_test_match_id(unread_test_match_id_notification)
-      //             }
+                  if (unread_situation_notification["check_dict"]){
+                      unread_situation(unread_situation_notification)
+                  }
 
-      //             if (unread_test_output_notification["check_dict"]){
-      //                 unread_test_output(unread_test_output_notification)
-      //             }
-      //           })
-      //           .catch((error) => {
-      //             // handle error
-      //             console.log(error)
-      //           }) 
-      //           break
-      //         }
-      //       }
+                  if (unread_output_notification["rounds_dict"]){
+                      unread_output(unread_output_notification)
+                  }
+
+                  if (unread_test_request_notification["check_dict"]){
+                      unread_test_request(unread_test_request_notification)
+                  }
+
+                  if (unread_test_match_id_notification["check_dict"]){
+                      unread_test_match_id(unread_test_match_id_notification)
+                  }
+
+                  if (unread_test_output_notification["check_dict"]){
+                      unread_test_output(unread_test_output_notification)
+                  }
+                })
+                .catch((error) => {
+                  // handle error
+                  console.log(error)
+                }) 
+                break
+              }
+            }
             
 
-      //       // console.log("-------------- new polling")
+            // console.log("-------------- new polling")
           
 
-      //       total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count
-      //       // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标
-      //       $('#new_notifications_count').text(total_notifications_count)
-      //       $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');
+            total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count
+            // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标
+            $('#new_notifications_count').text(total_notifications_count)
+            $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');
           
-      //       // if (promise_list.length >= 1){
-      //       //   Promise.all(promise_list).then((resArr) => {
+            // if (promise_list.length >= 1){
+            //   Promise.all(promise_list).then((resArr) => {
                   
 
 
-      //         //   });
-      //         // }else{
-      //         //   setTimeout(function(){
-      //         //     console.log("polling again")
-      //         //     polling()
-      //         //   }, 15000)
-      //         // }
+              //   });
+              // }else{
+              //   setTimeout(function(){
+              //     console.log("polling again")
+              //     polling()
+              //   }, 15000)
+              // }
               
-      //         setTimeout(function(){
-      //           // console.log("polling again")
-      //           polling()
-      //         }, 5000)
+              setTimeout(function(){
+                // console.log("polling again")
+                polling()
+              }, 5000)
 
               
-      //       })
-      //       .catch((error) => {
+            })
+            .catch((error) => {
               
-      //         setTimeout(function(){
-      //           // console.log("polling again")
-      //           polling()
-      //         }, 5000)
-      //         // handle error
-      //         console.log(error)
-      //       })
-      //   }else{
-      //     setTimeout(function(){
-      //       polling()
-      //     }, 5000);
-      //   }
-      //   // console.log(`第${count}次结束 ${getTime.now() - startTime}`); // 显示开始时间
-      //   count += 1
-      // }
+              setTimeout(function(){
+                // console.log("polling again")
+                polling()
+              }, 5000)
+              // handle error
+              console.log(error)
+            })
+        }else{
+          setTimeout(function(){
+            polling()
+          }, 5000);
+        }
+        // console.log(`第${count}次结束 ${getTime.now() - startTime}`); // 显示开始时间
+        count += 1
+      }
 
-      // setTimeout(function(){
-      //   polling()
-      // }, 3000);
-    //   setTimeout(function(){
-    //       polling()
-    //     }, 7000);
-    //   // polling()
+      setTimeout(function(){
+        polling()
+      }, 3000);
+      setTimeout(function(){
+          polling()
+        }, 7000);
+      // polling()
      
-    // })
+    })
   }
  }
 // exports.default = Navbar

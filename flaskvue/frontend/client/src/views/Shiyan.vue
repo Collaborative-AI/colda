@@ -90,7 +90,7 @@
 const fs = window.fs;
 
 // const xlsx2json = window.require("node-xlsx");
-const join = window.node_path.join;
+// const join = window.node_path.join;
 const address = 'tem/' + 'b/'
 const os = window.os;
 // const ex = require("child_process").execFileSync;

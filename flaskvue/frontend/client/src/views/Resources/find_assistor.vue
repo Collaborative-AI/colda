@@ -231,7 +231,9 @@ export default {
       vm.train_id_column = handle_input_column_string(vm.train_id_column, 'id', vm.ptitles.length)
       vm.train_target_column = handle_input_column_string(vm.train_target_column, 'target', vm.ptitles.length)
 
+
       let interaction_indicator = check_interaction(vm.train_id_column, vm.train_data_column, vm.train_target_column)
+      let both_path_validation = false
       if (vm.assistor_username_list == false){
         dialog.showErrorBox('Please Type in Username in corrent form', 'Thank you very much')
       } else if ( vm.train_data_column == false) {
@@ -246,7 +248,7 @@ export default {
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
       }else{
         
-        let both_path_validation = true
+        both_path_validation = true
         // if (vm.PathForm.train_data_path == ""){
         //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
         // }
@@ -346,9 +348,9 @@ export default {
           let user_id = vm.sharedState.user_id
           const Log_address = node_path.join(vm.root.toString(), user_id.toString(), "task", vm.task_id.toString(), "train", "log.txt")
           
-          console.log(assistor_username_list,"assistor_username_list")
+          console.log(vm.assistor_username_list,"assistor_username_list")
           const find_assistor_data = {
-            assistor_username_list: assistor_username_list,
+            assistor_username_list: vm.assistor_username_list,
             id_file: hash_id_file_data,
             task_id: vm.task_id,
             task_name: vm.task_name,

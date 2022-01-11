@@ -31,15 +31,17 @@ def add_train_pending():
         return bad_request('task_id is required.')
 
     task_id = data['task_id']
+    print('task id shi', task_id)
 
-    # Retrieve task name and task description of thie unique task_id
+    # Retrieve task name and task description of this unique task_id
     query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
+    print('query shi', query)
     task_name = query.task_name
     task_mode = query.task_mode
     model_name = query.model_name
     metric_name = query.metric_name
     task_description = query.task_description
-    test_description = query.test_description
+    # test_description = query.test_description
 
     pending = Pending()
     pending.pending_assistor_id = g.current_user.id
@@ -49,7 +51,7 @@ def add_train_pending():
     pending.pending_model_name = model_name
     pending.pending_metric_name = metric_name
     pending.pending_task_description = task_description
-    pending.pending_test_description = test_description
+    # pending.pending_test_description = ''
     pending.pending_test_indicator = "train"
 
     print('kan1')

@@ -178,6 +178,7 @@ export default {
       vm.test_target_column = handle_input_column_string(vm.test_target_column, 'target', vm.ptitles.length)
 
       let interaction_indicator = check_interaction(vm.test_id_column, vm.test_data_column, vm.test_target_column)
+      let both_path_validation = false
       if ( vm.test_data_column == false) {
         dialog.showErrorBox('Please Type in test_data_column in corrent form', 'Thank you very much')
       } else if ( vm.test_id_column == false) {
@@ -189,7 +190,7 @@ export default {
       } else if (this.task_id == '' || this.task_name == '' || this.root == '' || this. exe_position == ''){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
       }else{
-         
+        both_path_validation = true
         try {
           fs.statSync(vm.test_file_path);
         } catch (err) {

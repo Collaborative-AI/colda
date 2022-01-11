@@ -81,7 +81,7 @@ import $ from 'jquery'
 import db from '../db'
 // // console.log('dbzzzz', db)
 import authority from '../authority'
-import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, check_if_notification_is_null, change_db_param_to_string } from '../utils.js'
+import { handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, check_if_notification_is_null, change_db_param_to_string } from '../utils.js'
 
 // import axios from '../http'
 
@@ -154,23 +154,6 @@ export default {
         // // console.log("log.txt created");
       }
       return Log_address
-    },
-
-    // Helper Function for checking algorithm return value
-    handle_Algorithm_return_value(name, return_val, first_val, second_val) {
-      console.log(name, return_val)
-      // check if return_val obeys the correct return value
-      if (first_val != null){
-        if (return_val[0] != first_val){
-          return false
-        }
-      }
-      if (second_val != null){
-         if (return_val[1] != second_val){
-           return false
-         }
-      }  
-      return true
     },
 
     unread_request(unread_request_notification, unittest_callbacks) {
@@ -293,7 +276,7 @@ export default {
                                       + ' --id_idx ' + default_id_column, {encoding: 'utf8'})
 
               hash_id_file_address = hash_id_file_address.split("?")
-              let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
+              let indicator = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
               Log_address = vm.handle_train_log_address(task_id)
               if (indicator == false){
                 // // console.log("hash_id_file_address wrong")
@@ -488,7 +471,7 @@ export default {
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
 
               save_match_id_file_pos = save_match_id_file_pos.split("?")
-              let indicator = vm.handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos, "200", "save_match_id")
+              let indicator = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos, "200", "save_match_id")
               if (indicator == false){
                 // console.log("save_match_id_file_pos wrong")
                 fs.appendFileSync(Log_address, "save_match_id_file_pos wrong")
@@ -519,7 +502,7 @@ export default {
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
 
               make_match_idx_done = make_match_idx_done.split("?")
-              let indicator = vm.handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
+              let indicator = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
               if (indicator == false){
                 // console.log("make_match_idx_done wrong")
                 fs.appendFileSync(Log_address, "make_match_idx_done wrong")
@@ -576,7 +559,7 @@ export default {
                 + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
 
               make_residual_multiple_paths = make_residual_multiple_paths.split("?")
-              let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
+              let indicator = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
               if (indicator == false){
                 // console.log("make_residual_multiple_paths wrong")
                 fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
@@ -702,7 +685,7 @@ export default {
               + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
             
             save_match_id_file_pos = save_match_id_file_pos.split("?")
-            let indicator = vm.handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos, "200", "save_match_id")
+            let indicator = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos, "200", "save_match_id")
             if (indicator == false){
               // console.log("save_match_id_file_pos wrong")
               fs.appendFileSync(Log_address, "save_match_id_file_pos wrong")
@@ -732,7 +715,7 @@ export default {
               + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id , {encoding: 'utf8'})
       
             make_match_idx_done = make_match_idx_done.split("?")
-            let indicator = vm.handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
+            let indicator = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
             if (indicator == false){
               // console.log("make_match_idx_done wrong")
               fs.appendFileSync(Log_address, "make_match_idx_done wrong")
@@ -863,7 +846,7 @@ export default {
           
           train_output = train_output.split("?")
           // // console.log('train_output1', train_output)
-          let indicator = vm.handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
+          let indicator = handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
 
           let unittest_parameters = generate_unittest_parameters(indicator)
           execute_unittest_list(unittest_callbacks, 2, "unread_situation_unittest", unittest_parameters)
@@ -924,7 +907,7 @@ export default {
 
         Assistor_train_output_path = Assistor_train_output_path.split("?")
         console.log('Assistor_train_output_path', Assistor_train_output_path)
-        indicator = vm.handle_Algorithm_return_value("Assistor_train_output_path", Assistor_train_output_path, "200", "make_train")
+        indicator = handle_Algorithm_return_value("Assistor_train_output_path", Assistor_train_output_path, "200", "make_train")
       }
       catch(err){
         console.log(err)
@@ -1025,7 +1008,7 @@ export default {
               + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
             
             save_residual_file_pos = save_residual_file_pos.split("?")
-            let indicator = vm.handle_Algorithm_return_value("save_residual_file_pos", save_residual_file_pos, "200", "save_residual")
+            let indicator = handle_Algorithm_return_value("save_residual_file_pos", save_residual_file_pos, "200", "save_residual")
 
             // Unittest
             let unittest_parameters = generate_unittest_parameters(indicator)
@@ -1177,7 +1160,7 @@ export default {
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
 
               save_output_pos = save_output_pos.split("?")
-              let indicator = vm.handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
+              let indicator = handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
 
               let unittest_parameters = generate_unittest_parameters(indicator)
               execute_unittest_list(unittest_callbacks, 1, "unread_output_unittest", unittest_parameters)
@@ -1269,7 +1252,7 @@ export default {
 
 
         make_result_done = make_result_done.split("?")
-        indicator = vm.handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
+        indicator = handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
 
       }catch(err){
         console.log(err)
@@ -1313,7 +1296,7 @@ export default {
             + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
 
           make_residual_multiple_paths = make_residual_multiple_paths.split("?")
-          let indicator = vm.handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
+          let indicator = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
           if (indicator == false){
             // console.log("make_residual_multiple_paths wrong")
             fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
@@ -1485,7 +1468,7 @@ export default {
                                           + ' --dataset_path ' + default_file_path + ' --id_idx ' + default_id_column, {encoding: 'utf8'})
 
                 test_hash_id_file_address = test_hash_id_file_address.split("?")
-                let indicator = vm.handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
+                let indicator = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
                 
                 unittest_parameters = generate_unittest_parameters(indicator)
                 execute_unittest_list(unittest_callbacks, 2, "unread_test_request_unittest", unittest_parameters)
@@ -1683,7 +1666,7 @@ export default {
                 + ' --task_id '+ task_id + ' --from_id ' + from_id  + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
               
               test_save_match_id_file_pos = test_save_match_id_file_pos.split("?")
-              let indicator = vm.handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos, "200", "save_match_id")
+              let indicator = handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos, "200", "save_match_id")
               if (indicator == false){
                 // console.log("test_save_match_id_file_pos wrong")
                 fs.appendFileSync(Log_address, "test_save_match_id_file_pos wrong")
@@ -1713,7 +1696,7 @@ export default {
                 + ' --task_id '+ task_id + ' --from_id ' + from_id  + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
 
               test_make_match_idx_done = test_make_match_idx_done.split("?")
-              let indicator = vm.handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
+              let indicator = handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
               if (indicator == false){
                 // console.log("test_make_match_idx_done wrong")
                 fs.appendFileSync(Log_address, "test_make_match_idx_done wrong")
@@ -1758,7 +1741,7 @@ export default {
               let unittest_parameters = generate_unittest_parameters(make_test_res)
               execute_unittest_list(unittest_callbacks, 3, "unread_test_match_id_unittest", unittest_parameters)
 
-              let indicator = vm.handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
+              let indicator = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
               if (indicator == false){
                 // console.log("test_done wrong")
                 fs.appendFileSync(Log_address, "test_done wrong")
@@ -1831,7 +1814,7 @@ export default {
               + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
 
             test_save_match_id_file_pos = test_save_match_id_file_pos.split("?")
-            let indicator = vm.handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos, "200", "save_match_id")
+            let indicator = handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos, "200", "save_match_id")
             if (indicator == false){
               // console.log("test_save_match_id_file_pos wrong")
               fs.appendFileSync(Log_address, "test_save_match_id_file_pos wrong")
@@ -1861,7 +1844,7 @@ export default {
               + ' --task_id '+ task_id + ' --from_id ' + from_id + ' --mode test' + ' --test_id ' + test_id, {encoding: 'utf8'})
 
             test_make_match_idx_done = test_make_match_idx_done.split("?")
-            let indicator = vm.handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
+            let indicator = handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
             if (indicator == false){
               // console.log("test_make_match_idx_done wrong")
               fs.appendFileSync(Log_address, "test_make_match_idx_done wrong")
@@ -1914,7 +1897,7 @@ export default {
                 let unittest_parameters = generate_unittest_parameters(make_test_assistor_res)
                 execute_unittest_list(unittest_callbacks, 4, "unread_test_match_id_unittest", unittest_parameters)
                 
-                let indicator = vm.handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
+                let indicator = handle_Algorithm_return_value("test_outputs_pos", test_outputs_pos, "200", "make_test")
                 if (indicator == false){
                   // console.log("test_outputs_pos wrong")
                   fs.appendFileSync(Log_address, "test_outputs_pos wrong")
@@ -2063,7 +2046,7 @@ export default {
                 // // console.log('test save output pos', test_save_output_pos)
                 test_save_output_pos = test_save_output_pos.split("?")
                 // // console.log('test_save_output_pos', test_save_output_pos)
-                let indicator = vm.handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
+                let indicator = handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
 
                 let unittest_parameters = generate_unittest_parameters(indicator)
                 execute_unittest_list(unittest_callbacks, 1, "unread_test_output_unittest", unittest_parameters)
@@ -2157,7 +2140,7 @@ export default {
         let unittest_parameters = generate_unittest_parameters(make_eval_res)
         execute_unittest_list(unittest_callbacks, 2, "unread_test_output_unittest", unittest_parameters)
 
-        indicator = vm.handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
+        indicator = handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
       }catch(err){
         console.log(err)
       }

@@ -76,14 +76,8 @@
       <option v-for="item in metric_name_list"  :key="item.index" :value="item.name">{{item.name}}</option>
     </select>
 
-
     </div>
     
-
-    
-    
-
-
     <button type="submit" @click="onSubmit()" class="btn btn-success">Initiate task</button>
     <!-- <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button> -->
   </div>
@@ -92,12 +86,9 @@
 
 
 <script>
-import { config } from 'process';
 import store from '../../store.js'
-import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, sqlite3_run, change_db_param_to_string } from '../../utils.js'
-
+import { check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, sqlite3_run, change_db_param_to_string } from '../../utils.js'
 import { ex,fs,os,node_path,dialog,log } from '../../import_package.js'
-
 
 // const fs = window.fs ? window.fs : require('fs');
 // const ex = window.ex ? window.ex : require('child_process');
@@ -155,93 +146,6 @@ export default {
     }
   },
   methods: {
-
-     ceshi(unittest_callbacks){
-      let vm = this
-
-      
-      // let insert_sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path", "train_id_column", "train_data_column", "train_target_column", "task_mode", "model_name", "metric_name") VALUES 
-      //         (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`", "`+vm.task_mode+`", "`+vm.model_name+`", "`+vm.metric_name+`")`
-      let sentence = `INSERT INTO "User_Sponsor_Table"("task_name", "task_description", "user_id", "test_indicator", "task_id", "train_file_path",`+
-                      ` "train_id_column", "train_data_column", "train_target_column", "task_mode", "model_name", "metric_name") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      let param = [vm.task_name, vm.task_description, vm.sharedState.user_id, "train",
-                    vm.task_id, vm.train_file_path, vm.train_id_column, vm.train_data_column, 
-                    vm.train_target_column, vm.task_mode, vm.model_name, vm.metric_name]
-      // sqlite3_run(sentence, change_db_param_to_string(param))
-      //       .then(function(response) {
-      //          console.log('shuchu response', response)
-      //                       let unittest_parameters = generate_unittest_parameters(vm.train_file_path, vm.train_id_column, vm.train_data_column, vm.train_target_column)
-      //         execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
-
-      //         vm.$axios.get('/changshi/')
-      //           .then((response) => {
-      //             let res = response.data
-
-      //             let unittest_parameters = generate_unittest_parameters(res)
-      //             execute_unittest_list(unittest_callbacks, 1, "find_assistor_unittest", unittest_parameters)
-      //             // console.log("task_id))))))))))))))00", this.task_id)
-      //           })
-      //           .catch((error) => {
-      //             console.log(error)
-      //           })
-      //       }).catch(function(error) {
-      //         // 处理 getJSON 和 前一个回调函数运行时发生的错误
-      //         console.log('发生错误！', error);
-      //       });
-
-             
-
-
-            // })
-      vm.$db.run(sentence, change_db_param_to_string(param), function(err) {
-              if (err) {
-                return console.log(err.message);
-              }
-              // get the last insert id
-              console.log(`A row has been inserted with rowid`);
-
-              let unittest_parameters = generate_unittest_parameters(vm.train_file_path, vm.train_id_column, vm.train_data_column, vm.train_target_column)
-              execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
-
-              vm.$axios.get('/changshi/')
-                .then((response) => {
-                  let res = response.data
-
-                  let unittest_parameters = generate_unittest_parameters(res)
-                  execute_unittest_list(unittest_callbacks, 1, "find_assistor_unittest", unittest_parameters)
-                  // console.log("task_id))))))))))))))00", this.task_id)
-                })
-                .catch((error) => {
-                  console.log(error)
-                })
-
-
-                    });
-
-      // console.log("insert_sentence", insert_sentence) 
-      // vm.$db.run(insert_sentence, function(err){
-      // if (err){
-      //   console.log(err);
-      // }
-
-      // let unittest_parameters = generate_unittest_parameters(vm.train_file_path, vm.train_id_column, vm.train_data_column, vm.train_target_column)
-      // execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
-
-      // this.$axios.get('/changshi/')
-      //   .then((response) => {
-      //     let res = response.data
-
-      //     let unittest_parameters = generate_unittest_parameters(res)
-      //     execute_unittest_list(unittest_callbacks, 1, "find_assistor_unittest", unittest_parameters)
-      //     // console.log("task_id))))))))))))))00", this.task_id)
-      //   })
-      //   .catch((error) => {
-      //     console.log(error)
-      //   })
-
-      // // console.log('print row', row)
-      // })
-    },
     get_model_name() {
       for (let i = 0; i < this.task_mode_list.length; i++) {
         let obj = this.task_mode_list[i]
@@ -252,6 +156,7 @@ export default {
       this.model_name=''
       this.metric_name=''
     },
+
     get_metric_name() {
       for (let i = 0; i < this.model_name_list.length; i++) {
         let obj = this.model_name_list[i]
@@ -260,20 +165,19 @@ export default {
         }
       }
     },
+
     get_train_id (unittest_callbacks) {
-      // console.log("$$$$$$$$$$$$$$$^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
       this.$axios.get('/create_new_train_task/')
         .then((response) => {
           this.task_id = response.data.task_id
-
           let unittest_parameters = generate_unittest_parameters(this.task_id)
           execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
-          // console.log("task_id))))))))))))))00", this.task_id)
         })
         .catch((error) => {
           console.log(error)
         })
     },
+
     get_train_file_path() {
       let vm=this
       let result = dialog.showOpenDialogSync({
@@ -285,10 +189,10 @@ export default {
         }]
       })
       console.log("get_train_file_path", result)
+
       if (result === undefined){
         dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
       }else{
-
         try {
           let path = result[0]
           fs.statSync(path);
@@ -299,13 +203,10 @@ export default {
               return
             }
             
-            // data = data.split("\r\n")
-            // for (let i of data) { data[i] = data[i].split(",") }
-            // vm.pdatas=data
-            // console.log('preview',vm.pdatas[0][0])
-            
             vm.pdatas = data.split("\n")
-            for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
+            for (let i in vm.pdatas) { 
+              vm.pdatas[i] = vm.pdatas[i].split(",")
+            } 
             vm.ptitles=vm.pdatas[0]
             vm.pdatas=vm.pdatas.slice(1,4)
             vm.select_data=true
@@ -318,110 +219,30 @@ export default {
 
       }
     },
-    get_train_data_path() {
-      let result = dialog.showOpenDialogSync({
-        properties: ['openFile'],
-        // sufix
-        filters: [{
-          name: 'Text', 
-          extensions: ['html', 'js', 'json', 'md', 'csv'] 
-        }]
-      })
-      console.log("get_train_data_path", result)
-      if (result === undefined){
-        dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
-      }else{
 
-        try {
-          let path = result[0]
-          fs.statSync(path);
-          this.PathForm.train_data_path = path
-        } catch (err) {
-          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Data File')
-          console.log('Please Select A Train Data File')
-        }  
-
-      }
-    },
-    get_train_id_path() {
-      let result = dialog.showOpenDialogSync({
-        properties: ['openFile'],
-        // sufix
-        filters: [{
-          name: 'Text', 
-          extensions: ['html', 'js', 'json', 'md', 'csv'] 
-        }]
-      })
-      console.log("get_train_id_path", result)
-      if (result === undefined){
-        dialog.showErrorBox('Data Path not Correct', 'Please Select A Train ID File')
-      }else{
-
-        try {
-          let path = result[0]
-          fs.statSync(path);
-          this.PathForm.train_id_path = path
-        } catch (err) {
-          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train ID File')
-          console.log('Please Select A Train ID File')
-        }  
-
-      }
-    },
-    get_train_target_path() {
-      let result = dialog.showOpenDialogSync({
-        properties: ['openFile'],
-        // sufix
-        filters: [{
-          name: 'Text', 
-          extensions: ['html', 'js', 'json', 'md', 'csv'] 
-        }]
-      })
-      console.log("get_train_Target_path", result)
-      if (result === undefined){
-        dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Target File')
-      }else{
-
-        try {
-          let path = result[0]
-          fs.statSync(path);
-          this.PathForm.train_target_path = path
-        } catch (err) {
-          dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Target File')
-          console.log('Please Select A Train Target File')
-        }  
-
-      }
-    },
-
-    handle_Algorithm_return_value(name, return_val, first_val, second_val) {
-      console.log(name, return_val)
-      // check if return_val obeys the correct return value
-      if (first_val != null){
-        if (return_val[0] != first_val){
-          return false
-        }
-      }
-      if (second_val != null){
-         if (return_val[1] != second_val){
-           return false
-         }
-      }  
-      return true
-    },
-
-   
-
+    
     onSubmit (unittest_callbacks) {
-      
+      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
       console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
-      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
-      Log('sponsor ceshi', 'info')
-      console.log('sponsor ceshi1', unittest_callbacks)
-      if (this.assistor_username_list == ""){
-        dialog.showErrorBox('Please Type in the Assistor Username', 'Thank you very much')
-      }else if (this.task_id == ""){
+      vm.assistor_username_list = handle_assistor_username_list(vm.assistor_username_list)
+
+      vm.train_data_column = handle_input_column_string(vm.train_data_column, 'data', vm.ptitles.length)
+      vm.train_id_column = handle_input_column_string(vm.train_id_column, 'id', vm.ptitles.length)
+      vm.train_target_column = handle_input_column_string(vm.train_target_column, 'target', vm.ptitles.length)
+
+      let interaction_indicator = check_interaction(vm.train_data_column, vm.train_id_column, vm.train_target_column)
+      if (vm.assistor_username_list == false){
+        dialog.showErrorBox('Please Type in Username in corrent form', 'Thank you very much')
+      } else if ( vm.train_data_column == false) {
+        dialog.showErrorBox('Please Type in train_data_column in corrent form', 'Thank you very much')
+      } else if ( vm.train_id_column == false) {
+        dialog.showErrorBox('Please Type in train_id_column in corrent form', 'Thank you very much')
+      } else if ( vm.train_target_column == false) {
+        dialog.showErrorBox('Please Type in train_target_column in corrent form', 'Thank you very much')
+      } else if ( interaction_indicator == false){
+        dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
+      } else if (this.task_id == ""){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
       }else{
         
@@ -436,22 +257,6 @@ export default {
           console.log('Please Select A Train Data File')
           both_path_validation = false
         }
-
-        // try {
-        //   fs.statSync(vm.PathForm.train_id_path);
-        // } catch (err) {
-        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Train ID File')
-        //   console.log('Please Select A Train ID File')
-        //   both_path_validation = false
-        // }
-
-        // try {
-        //   fs.statSync(vm.PathForm.train_target_path);
-        // } catch (err) {
-        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Train Target File')
-        //   console.log('Please Select A Train Target File')
-        //   both_path_validation = false
-        // }
         
         if(both_path_validation == true){
         
@@ -538,11 +343,9 @@ export default {
             console.log(err)
           }
           
-          
           let user_id = vm.sharedState.user_id
           const Log_address = node_path.join(vm.root.toString(), user_id.toString(), "task", vm.task_id.toString(), "train", "log.txt")
           
-          let assistor_username_list = vm.assistor_username_list.split(",")
           console.log(assistor_username_list,"assistor_username_list")
           const find_assistor_data = {
             assistor_username_list: assistor_username_list,
@@ -608,7 +411,7 @@ export default {
                                       + ' --model_name ' + vm.model_name + ' --metric_name ' + vm.metric_name, {encoding: 'utf8'})
 
               make_train_local = make_train_local.split("?")              
-              let indicator = vm.handle_Algorithm_return_value("make_train_local", make_train_local, "200", "make_train_local")
+              let indicator = handle_Algorithm_return_value("make_train_local", make_train_local, "200", "make_train_local")
 
               if (indicator == false){
                 console.log("make_train_local_done wrong")

@@ -100,3 +100,147 @@ export function sqlite3_run(sql, params) {
     })
   })
 }
+
+export function handle_Algorithm_return_value(name, return_val, first_val, second_val) {
+  console.log(name, return_val)
+  // check if return_val obeys the correct return value
+  if (first_val != null){
+    if (return_val[0] != first_val){
+      return false
+    }
+  }
+  if (second_val != null){
+     if (return_val[1] != second_val){
+       return false
+     }
+  }  
+  return true
+}
+
+export function handle_assistor_username_list(assistor_username_string){
+  
+  if (assistor_username_string == undefined || assistor_username_string == ''){
+    return false
+  }
+
+  // trim leading and trailing spaces
+  assistor_username_string = assistor_username_string.trim()
+
+  // if string contains special symbol, return false
+  let special_symbol = RegExp(/[(\ )(\~)(\!)(\-)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\.)(\/)(\<)(\>)(\?)(\)]+/);  
+  if (special_symbol.test(assistor_username_string)) {
+    return false
+  }
+   
+  // if string does not contains ',', return false
+  let need_symbol = RegExp(/[(\,)]+/);  
+  if (!need_symbol.test(assistor_username_string)){
+    return false
+  }
+
+  let new_assistor_username_list = assistor_username_string.split(",")
+  let return_assistor_username_list = []
+  for (let i = 0; i < new_assistor_username_list.length; i++){
+    let cur_username = new_assistor_username_list[i].trim()
+    return_assistor_username_list.push(cur_username)
+  }
+  return return_assistor_username_list
+}
+
+
+export function handle_input_column_string(input_string, kind, max_column_index){
+  // if input_string is null, return false
+  if (input_string == undefined || input_string == ''){
+    return false
+  }
+
+  // if input string length < 1, return false
+  if (input_string.length < 1){
+    return false
+  }
+
+  // trim leading and trailing spaces
+  let new_string = input_string.trim()
+
+  if (kind == 'target' || kind == 'id'){
+    // if the string is not Integer, return false
+    if (isNaN(new_string)) {
+      return false
+    }
+    
+    // if the string has leading 0, return false
+    if (new_string[0] == '0'){
+      return false
+    }
+
+    let cur_num = ParseInt(new_string)
+    // if the index is smaller than 1 or larger than the max column index, return false
+    if (cur_num < 1 || cur_num > max_column_index){
+      return false
+    }
+
+    return cur_num.toString()
+
+  } else if (kind == 'data') {
+
+      // if string contains special symbol, return false
+      let special_symbol = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);  
+      if (special_symbol.test(new_string)) {
+        return false
+      }
+      
+      // if string does not contains '-', return false
+      let need_symbol = RegExp(/[(\-)]+/);  
+      if (!need_symbol.test(new_string)){
+        return false
+      }
+
+      new_string = new_string.split('-')
+
+      // if new string length is not 2, return false
+      if (new_string.length != 2){
+        return false
+      }
+
+      let return_string = []
+      let prev_num = 0
+      for (let i = 0; i < new_string.length; i++){
+        // trim leading and trailing spaces
+        let cur_string = new_string[i].trim()
+
+        // if there is leading 0, return false
+        if (cur_string[0] == '0'){
+          return false
+        }
+        let cur_num = ParseInt(cur_string)
+        // if the index is out of range, return false
+        if (cur_num < 1 || cur_num > max_column_index){
+          return false
+        }
+        
+        // second index cannot be smaller than the first index
+        if (cur_num < prev_num){
+          return false
+        }
+        prev_num = cur_num
+        return_string.push(cur_string)
+      }
+      
+      return return_string.join('-')
+  }
+}
+
+export function check_interaction(id_column, data_column, target_column){
+  let id = ParseInt(id_column)
+  let target = ParseInt(target_column)
+
+  let data_list = data_column.split("-")
+  let first_data_index = ParseInt(data_list[0])
+  let second_data_index = ParseInt(data_list[1])
+
+  if (id >= first_data_index || second_data_index <= target){
+    return false
+  }
+  return true
+}
+

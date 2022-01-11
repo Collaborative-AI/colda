@@ -65,9 +65,9 @@
 <script>
 import store from '../../../store'
 import db from '../../../db'
-// import penditem from "../Penditem.vue"
 import { ex,fs,os,node_path,dialog } from '../../../import_package.js'
-import { change_db_param_to_string, generate_unittest_parameters, execute_unittest_list } from '../../../utils'
+import { handle_Algorithm_return_value, change_db_param_to_string, generate_unittest_parameters, execute_unittest_list } from '../../../utils'
+
 // const fs = window.fs;
 // const ex = window.ex;
 // const node_path = window.node_path;
@@ -146,23 +146,6 @@ export default {
           console.log('Please Select A Train Data File')
         }  
       }
-    },
-
-    // Helper Function for checking algorithm return value
-    handle_Algorithm_return_value(name, return_val, first_val, second_val) {
-      console.log(name, return_val)
-      // check if return_val obeys the correct return value
-      if (first_val != null){
-        if (return_val[0] != first_val){
-          return false
-        }
-      }
-      if (second_val != null){
-         if (return_val[1] != second_val){
-           return false
-         }
-      }  
-      return true
     },
 
     handle_train_log_address(task_id) {
@@ -255,9 +238,8 @@ export default {
                                       + ' --task_id ' + task_id + ' --mode train' + ' --dataset_path ' + vm.manual_file_path
                                       + ' --id_idx ' + vm.manual_id_column, {encoding: 'utf8'})
 
-
               hash_id_file_address = hash_id_file_address.split('?')
-              let indicator = vm.handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
+              let indicator = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
               Log_address = vm.handle_train_log_address(task_id)
               if (indicator == false){
                 console.log("hash_id_file_address wrong")
@@ -388,7 +370,7 @@ export default {
                                         + ' --dataset_path ' + vm.manual_file_path + ' --id_idx ' + vm.manual_id_column, {encoding: 'utf8'})
 
               test_hash_id_file_address = test_hash_id_file_address.split("?")
-              let indicator = vm.handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
+              let indicator = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
               Log_address = vm.handle_test_log_address(task_id, test_id)
               if (indicator == false){
                 console.log("test_hash_id_file_address wrong")

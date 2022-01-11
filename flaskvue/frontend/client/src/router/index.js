@@ -36,9 +36,9 @@ const FindTestAssistorHelper = () => import('../views/Resources/find_test_assist
 
 
 // const Plist = () => import('../views/Notifications/Pendings/Plist.vue')
-const Plist = () => import('../views/Resources/Messages/Pendings/Plist.vue')
+const Plist = () => import('../views/Resources/Pendings/Plist.vue')
 // const PendItem = () => import('../views/Notifications/Pendings/PendItem.vue')
-const PendItem = () => import('../views/Resources/Messages/Pendings/PendItem.vue')
+const PendItem = () => import('../views/Resources/Pendings/PendItem.vue')
 
 
 // User Notifications

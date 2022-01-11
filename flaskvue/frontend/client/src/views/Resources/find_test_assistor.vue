@@ -67,7 +67,7 @@
 <script>
 import store from '../../store'
 import db from '../../db'
-import { execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, change_db_param_to_string } from '../../utils.js'
+import {  check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, change_db_param_to_string } from '../../utils.js'
 
 import { ex,fs,os,node_path,dialog } from '../../import_package.js'
 
@@ -110,17 +110,15 @@ export default {
   },
   methods: {
     get_test_id (unittest_callbacks) {
-      // console.log("$$$$$$$$$$$$$$$^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", this.task_id)
+      
       this.$axios.get('/create_new_test_task/')
         .then((response) => {
           this.test_id = response.data.test_id
-          // console.log("task_id))))))))))))))00", this.task_id)
           let unittest_parameters = generate_unittest_parameters(this.test_id)
           execute_unittest_list(unittest_callbacks, 0, "find_test_assistor_unittest", unittest_parameters)
         })
         .catch((error) => {
           console.log(error)
-
         })
     },
     
@@ -155,7 +153,9 @@ export default {
             // console.log('preview',vm.pdatas[0][0])
             
             vm.pdatas = data.split("\n")
-            for (let i in vm.pdatas) { vm.pdatas[i] = vm.pdatas[i].split(",")} 
+            for (let i in vm.pdatas) { 
+              vm.pdatas[i] = vm.pdatas[i].split(",")
+            } 
             vm.ptitles=vm.pdatas[0]
             vm.pdatas=vm.pdatas.slice(1,4)
             vm.select_data=true
@@ -169,83 +169,27 @@ export default {
 
       }
     },
-    // get_test_id_path() {
-    //   let result = dialog.showOpenDialogSync({
-    //     properties: ['openFile'],
-    //     // sufix
-    //     filters: [{
-    //       name: 'Text', 
-    //       extensions: ['html', 'js', 'json', 'md', 'csv'] 
-    //     }]
-    //   })
-    //   console.log("get_test_id_path", result)
-    //   if (result === undefined){
-    //     dialog.showErrorBox('Data Path not Correct', 'Please Select A Test ID File')
-    //   }else{
-
-    //     try {
-    //       let path = result[0]
-    //       fs.statSync(path);
-    //       this.PathForm.test_id_path = path
-    //     } catch (err) {
-    //       dialog.showErrorBox('Data Path not Correct', 'Please Select A Test ID File')
-    //       console.log('Please Select A Test ID File')
-    //     }  
-
-    //   }
-    // },
-    // get_test_target_path() {
-    //   let result = dialog.showOpenDialogSync({
-    //     properties: ['openFile'],
-    //     // sufix
-    //     filters: [{
-    //       name: 'Text', 
-    //       extensions: ['html', 'js', 'json', 'md', 'csv'] 
-    //     }]
-    //   })
-    //   console.log("get_test_target_path", result)
-    //   if (result === undefined){
-    //     dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Target File')
-    //   }else{
-
-    //     try {
-    //       let path = result[0]
-    //       fs.statSync(path);
-    //       this.PathForm.test_target_path = path
-    //     } catch (err) {
-    //       dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Target File')
-    //       console.log('Please Select A Test Target File')
-    //     }  
-
-    //   }
-    // },
-
-    handle_Algorithm_return_value(name, return_val, first_val, second_val) {
-      console.log(name, return_val)
-      // check if return_val obeys the correct return value
-      if (first_val != null){
-        if (return_val[0] != first_val){
-          return false
-        }
-      }
-      if (second_val != null){
-         if (return_val[1] != second_val){
-           return false
-         }
-      }  
-      return true
-    },
 
     onSubmit (unittest_callbacks) {
       let vm = this;
-      if (this.task_id == ""){
+
+      vm.test_data_column = handle_input_column_string(vm.test_data_column, 'data', vm.ptitles.length)
+      vm.test_id_column = handle_input_column_string(vm.test_id_column, 'id', vm.ptitles.length)
+      vm.test_target_column = handle_input_column_string(vm.test_target_column, 'target', vm.ptitles.length)
+
+      let interaction_indicator = check_interaction(vm.test_data_column, vm.test_id_column, vm.test_target_column)
+      if ( vm.test_data_column == false) {
+        dialog.showErrorBox('Please Type in test_data_column in corrent form', 'Thank you very much')
+      } else if ( vm.test_id_column == false) {
+        dialog.showErrorBox('Please Type in test_id_column in corrent form', 'Thank you very much')
+      } else if ( vm.test_target_column == false) {
+        dialog.showErrorBox('Please Type in test_target_column in corrent form', 'Thank you very much')
+      } else if ( interaction_indicator == false){
+        dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
+      } else if (this.task_id == '' || this.task_name == '' || this.root == '' || this. exe_position == ''){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
       }else{
-        
-        let both_path_validation = true
-        // if (vm.PathForm.test_data_path == ""){
-        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Data File')
-        // }
+         
         try {
           fs.statSync(vm.test_file_path);
         } catch (err) {
@@ -253,22 +197,6 @@ export default {
           console.log('Please Select A Test Data File')
           both_path_validation = false
         }
-
-        // try {
-        //   fs.statSync(vm.test_id_path);
-        // } catch (err) {
-        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Test ID File')
-        //   console.log('Please Select A Test ID File')
-        //   both_path_validation = false
-        // }
-
-        // try {
-        //   fs.statSync(vm.PathForm.test_target_path);
-        // } catch (err) {
-        //   dialog.showErrorBox('Data Path not Correct', 'Please Select A Test Target File')
-        //   console.log('Please Select A Test Target File')
-        //   both_path_validation = false
-        // }
         
         if(both_path_validation == true){
           // db.serialize(function() {
@@ -328,7 +256,7 @@ export default {
 
               // const stmt = vm.$db.prepare('INSERT INTO User_Sponsor_Table VALUES' +
               // ' ( @task_name, @task_description, @user_id, @test_indicator, @task_id, @test_id, @train_file_path,' +
-              // ' @train_id_column, @train_data_column, @train_target_column, @test_file_path, @test_id_column,' +
+              // ' @test_id_column, @test_data_column, @test_target_column, @test_file_path, @test_id_column,' +
               // ' @test_data_column, @test_target_column, @task_mode, @model_name, @metric_name)');
                 
               // stmt.run({
@@ -339,9 +267,9 @@ export default {
               //   task_id: vm.task_id,
               //   test_id: vm.test_id,
               //   train_file_path: '', 
-              //   train_id_column: '', 
-              //   train_data_column: '', 
-              //   train_target_column: '', 
+              //   test_id_column: '', 
+              //   test_data_column: '', 
+              //   test_target_column: '', 
               //   test_file_path: vm.test_file_path,
               //   test_id_column: vm.test_id_column,
               //   test_data_column: vm.test_data_column,
@@ -447,7 +375,7 @@ export default {
 
                     make_test_local = make_test_local.split("?")
                     
-                    let indicator = vm.handle_Algorithm_return_value("make_test_local", make_test_local, "200", "make_test_local")
+                    let indicator = handle_Algorithm_return_value("make_test_local", make_test_local, "200", "make_test_local")
 
                     if (indicator == false){
                       console.log("make_test_local_done wrong")

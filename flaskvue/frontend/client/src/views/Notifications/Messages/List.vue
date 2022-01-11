@@ -166,6 +166,7 @@ export default {
     //       console.error(error)
     //     })
     // }
+
     getUserHistory (id) {
       let vm=this
       let page = 1
@@ -212,7 +213,14 @@ export default {
             //     // console.log(typeof(row))
             //   }
         
-        
+            const timer = setTimeout(() => {
+              vm.getUserHistory()
+            }, 15000)
+      
+            // destroy the setTimeout function when leave this page
+            vm.$once('hook:beforeDestroy', function () {
+                clearTimeout(timer)
+            })
         
             // })//end db.get
             // // console.log(vm.messages)

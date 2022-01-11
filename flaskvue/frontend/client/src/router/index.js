@@ -27,10 +27,10 @@ console.log("Home", Home)
 const Shiyan = () => import('../views/Shiyan.vue')
 
 // User Resources
-const Resource = () => import('../views/Resources/Resource.vue')
-const MessagesIndexResource = () => import('../views/Resources/Messages/Index.vue')
-const SentMessagesResource = () => import('../views/Resources/Messages/List.vue')
-const MessagesHistoryResource = () => import('../views/Resources/Messages/History.vue')
+// const Resource = () => import('../views/Resources/Resource.vue')
+// const MessagesIndexResource = () => import('../views/Resources/Messages/Index.vue')
+// const SentMessagesResource = () => import('../views/Resources/Messages/List.vue')
+// const MessagesHistoryResource = () => import('../views/Resources/Messages/History.vue')
 const FindAssistorHelper = () => import('../views/Resources/find_assistor.vue')
 const FindTestAssistorHelper = () => import('../views/Resources/find_test_assistor.vue')
 
@@ -140,40 +140,40 @@ const routes = [
       authority: ['user', 'admin'],
     }
   },
-  {
-    // User Resources
-    path: '/resource',
-    component: Resource,
-    meta: {
-      requiresAuth: true,
-      authority: ['user', 'admin'],
-    },
-    children: [
-        { 
-            path: '', 
-            component: MessagesIndexResource 
-        },
-        { 
-            path: 'messages', 
-            component: MessagesIndexResource,
-              children: [
-                  // 默认匹配，你给哪些人发送过私信
-                  { 
-                      path: '', 
-                      name: 'MessagesIndexResource', 
-                      component: SentMessagesResource 
-                  },
-                  // 与某个用户之间的全部历史对话记录
-                  { 
-                      path: 'history', 
-                      name: 'MessagesHistoryResource', 
-                      component: MessagesHistoryResource 
-                  }
-              ]
-          }
-        ],
+  // {
+  //   // User Resources
+  //   path: '/resource',
+  //   component: Resource,
+  //   meta: {
+  //     requiresAuth: true,
+  //     authority: ['user', 'admin'],
+  //   },
+  //   children: [
+  //       { 
+  //           path: '', 
+  //           component: MessagesIndexResource 
+  //       },
+  //       { 
+  //           path: 'messages', 
+  //           component: MessagesIndexResource,
+  //             children: [
+  //                 // 默认匹配，你给哪些人发送过私信
+  //                 { 
+  //                     path: '', 
+  //                     name: 'MessagesIndexResource', 
+  //                     component: SentMessagesResource 
+  //                 },
+  //                 // 与某个用户之间的全部历史对话记录
+  //                 { 
+  //                     path: 'history', 
+  //                     name: 'MessagesHistoryResource', 
+  //                     component: MessagesHistoryResource 
+  //                 }
+  //             ]
+  //         }
+  //       ],
       
-  },
+  // },
   {
     path: '/find_assistor',
     component: FindAssistorHelper,
@@ -307,6 +307,6 @@ router.beforeEach((to, from, next) => {
 
   
 // module.exports.router = router;
-export default router;
+export { routes, router }
 // console.log("router", router)
 // exports.default = router

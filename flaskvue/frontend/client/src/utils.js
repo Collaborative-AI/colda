@@ -15,6 +15,10 @@ export function change_db_param_to_string(db_parameters){
   let new_db_parameters = []
   for (let i = 0; i < db_parameters.length; i++){
     let db_param_i = db_parameters[i]
+    if (db_param_i == undefined){
+      console.log('db_sentence_param_wrond')
+    }
+    // console.log('db_param_i', db_param_i)
     if (db_param_i.length > 0){
       new_db_parameters.push(db_param_i.toString())
     }
@@ -26,7 +30,7 @@ export function change_db_param_to_string(db_parameters){
 }
 
 export function execute_unittest_list(unittest_list, index, indicator, unittest_parameters){
-  // console.log('unittest_list',unittest_list)
+  console.log('execute_unittest_list',unittest_list)
   if (Array.isArray(unittest_list)) {
     if (unittest_list.length > 1 && unittest_list[unittest_list.length-1] == indicator){
       unittest_list[index](unittest_parameters)

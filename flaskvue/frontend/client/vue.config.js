@@ -15,7 +15,7 @@ module.exports = {
     pluginOptions: {
       electronBuilder: {
         builderOptions: {
-          "productName": "Apollo",
+          "productName": "SynSpot",
           "appId": "com.apollothebest.app",
           "compression": "store",
           "win": {

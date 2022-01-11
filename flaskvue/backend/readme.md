@@ -78,3 +78,6 @@ database_name = 'apollo_aws_mysql_unittest'
 python manage.py runserver -d -h 127.0.0.1 -p 5000 -->
 
 <!-- gunicorn: gunicorn --worker-class eventlet -w 1 module:app -->
+
+11. 上服务器:
+    注掉create_unittest_user

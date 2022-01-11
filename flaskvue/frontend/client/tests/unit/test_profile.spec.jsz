@@ -10,6 +10,6 @@ afterAll(() => {
 });
 
 describe('test_profile', () => {
-  login_helper.check_login_second_user
+  login_helper.login_second_user
   profile_helper.onSubmit
 })

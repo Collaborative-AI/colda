@@ -174,6 +174,14 @@ function delete_db(){
   return axios.get('/delete_all_rows/')
 }
 
+// function create_unittest_user(username, password){
+//   const new_users = {
+//     username: username,
+//     password: password,
+//   }
+//   return axios.post('/create_unittest_user', new_users)
+// }
+
 
 
 

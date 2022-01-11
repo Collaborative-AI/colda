@@ -16,10 +16,11 @@ describe('test_find_assistor', () => {
   let sponsor_mode = 'regression'
   let assistor_username_list = 'xie2'
   let match_ratio = '1.0'
-  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
+  let default_mode = 'auto'
+  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio, default_mode)
 
   // logout_helper.logout()
-  login_helper.check_login_first_user()
+  login_helper.login_first_user()
   delete_db_helper.delete_db()
   find_assistor_helper.get_train_id()
 

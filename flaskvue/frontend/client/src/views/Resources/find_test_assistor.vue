@@ -481,17 +481,19 @@ export default {
   },
 
   created () {
-    console.log('ttt', this.$toasted)
-    console.log('fff', this.$route)
-    // console.log('565656', this.$route.query.from)
-    // this.task_id = this.$route.query.from;
-    // this.task_name = this.$route.query.from_task_name
+    console.log('find_test_assistor_created')
 
-    this.get_test_id();
+    // When unittesting, this.$route == undefined
+    if (this.$route != undefined){
+      this.task_id = this.$route.query.from;
+      this.task_name = this.$route.query.from_task_name
+      this.get_test_id();
+    }
 
     let new_root = store.changeroot()
     this.root = new_root.root;
     this.exe_position = new_root.exe_position
+
   }
 }
 </script>

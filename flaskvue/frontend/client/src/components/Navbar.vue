@@ -357,13 +357,15 @@ export default {
       } else if (vm.sharedState.mode == 'manual'){
         vm.sharedState.pending_num++;
         const add_train_pending = {
-            task_id: task_id,
-          }
-        
+          task_id: task_id,
+        }
+      
         vm.$axios.post('/add_train_pending/', add_train_pending)
           .then((response) => {
             // handle success
             Log(generate_message_string("add_train_pending response", response.data), 'debug')
+            let unittest_parameters = generate_unittest_parameters(response.data)
+            execute_unittest_list(unittest_callbacks, 1, "unread_request_unittest", unittest_parameters)
           })
           .catch((error) => {
             // handle error
@@ -1562,11 +1564,11 @@ export default {
               .then((response) => {
                 // handle success
                 // // console.log("add_test_pending response", response.data)
+                let unittest_parameters = generate_unittest_parameters(response.data)
+                execute_unittest_list(unittest_callbacks, 1, "unread_test_request_unittest", unittest_parameters)
               })
               .catch((error) => {
-                // handle error
                 console.log(error)
-                // // console.log(error.response.data)
                 // this.$toasted.error(error.response.data.message, { icon: 'fingerprint' })
               })
           }else{

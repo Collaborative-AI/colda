@@ -646,11 +646,17 @@ export default {
 
   },
   created () {
-    this.get_train_id();
+    console.log('find_assistor_created')
+
+    // When unittesting, this.$route == undefined
+    if (this.$route != undefined){
+      this.get_train_id();
+    }
+
     let new_root = store.changeroot()
     this.root = new_root.root;
     this.exe_position = new_root.exe_position
-    // console.log('dbadress',__dirname)
+
   },
   
 

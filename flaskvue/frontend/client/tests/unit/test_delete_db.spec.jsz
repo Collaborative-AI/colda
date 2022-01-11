@@ -20,7 +20,7 @@ describe('test_delete_db', () => {
 
 // }
   // Sponsor logins
-  login_helper.check_login_first_user
+  login_helper.login_first_user
   
   test('update_notification', (done) => {
     async function delete_all_row(){

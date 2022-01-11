@@ -33,15 +33,16 @@ describe('test_unread_test_match_id', () => {
   let max_round = 1
   let verify_algo = true
   let match_ratio = "1.0"
+  let default_mode = 'auto'
   let sponsor_mode = 'regression'
   let assistor_mode = 'regression'
   let assistor_username_list = 'xie2'
 
-  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio)
+  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio, default_mode)
 
   //  Sponsor logins
    
-   login_helper.check_login_first_user()
+   login_helper.login_first_user()
    delete_db_helper.delete_db()
    // Sponsor gets train id
    find_assistor_helper.get_train_id()
@@ -51,7 +52,7 @@ describe('test_unread_test_match_id', () => {
    logout_helper.logout()
  
    // Assistor logins
-   login_helper.check_login_second_user()
+   login_helper.login_second_user()
    // Assistor updates default_train_file_path, default_train_id_column, 
    // default_train_data_column
    profile_helper.onSubmit()
@@ -63,7 +64,7 @@ describe('test_unread_test_match_id', () => {
    logout_helper.logout()
  
    //assistor logins
-   login_helper.check_login_second_user()
+   login_helper.login_second_user()
    //assistor gets nofification
    notification_helper.update_notification()
    //sponsor runs unread match id
@@ -72,7 +73,7 @@ describe('test_unread_test_match_id', () => {
    logout_helper.logout()
  
    // sponsor logins
-   login_helper.check_login_first_user()
+   login_helper.login_first_user()
    // sponsor gets nofification
    notification_helper.update_notification()
    //sponsor runs unread match id
@@ -82,7 +83,7 @@ describe('test_unread_test_match_id', () => {
  
    for (let current_round = 1; current_round <= max_round; current_round++){
     // sponsor logins
-    login_helper.check_login_first_user()
+    login_helper.login_first_user()
     // sponsor gets nofification
     notification_helper.update_notification()
     //sponsor runs unread situation
@@ -91,7 +92,7 @@ describe('test_unread_test_match_id', () => {
     logout_helper.logout()
   
     //assistor logins
-    login_helper.check_login_second_user()
+    login_helper.login_second_user()
     //assistor gets nofification
     notification_helper.update_notification()
     //assistor runs unread situation
@@ -100,7 +101,7 @@ describe('test_unread_test_match_id', () => {
     logout_helper.logout()
   
     // sponsor logins
-    login_helper.check_login_first_user()
+    login_helper.login_first_user()
     // sponsor gets nofification
     notification_helper.update_notification()
     //  //sponsor runs unread situation
@@ -110,7 +111,7 @@ describe('test_unread_test_match_id', () => {
    }
 
   //  Sponsor logins
-   login_helper.check_login_first_user()
+   login_helper.login_first_user()
    // Sponsor gets test id
    find_test_assistor_helper.get_test_id()
    // Sponsor finds assistor
@@ -119,7 +120,7 @@ describe('test_unread_test_match_id', () => {
    logout_helper.logout()
 
   //  assistor logins
-   login_helper.check_login_second_user()
+   login_helper.login_second_user()
    //assistor updates nofifications
    notification_helper.update_notification()
    //unread request
@@ -128,7 +129,7 @@ describe('test_unread_test_match_id', () => {
    logout_helper.logout()
 
   //sponsor logins
-  login_helper.check_login_first_user()
+  login_helper.login_first_user()
   //sponsor updates notifications
   notification_helper.update_notification()
   //sponsor unread test match id
@@ -137,7 +138,7 @@ describe('test_unread_test_match_id', () => {
   logout_helper.logout()
 
   //assistor logins
-  login_helper.check_login_second_user()
+  login_helper.login_second_user()
   //assistor updates notifications
   notification_helper.update_notification()
   //assistor runs unread match id
@@ -146,7 +147,7 @@ describe('test_unread_test_match_id', () => {
   logout_helper.logout()
 
   // //sponsor logins
-  login_helper.check_login_first_user()
+  login_helper.login_first_user()
   //sponsor updates notifications
   notification_helper.update_notification()
   // //sponsor unread test output

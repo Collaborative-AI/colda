@@ -410,6 +410,7 @@ class Pending(PaginatedAPIMixin, db.Model):
     pending_metric_name = db.Column(db.String(120))
     pending_task_description = db.Column(db.String(500))
     pending_test_indicator = db.Column(db.String(10))
+    pending_test_description = db.Column(db.String(500))
 
     def to_dict(self):
         data = {
@@ -421,6 +422,7 @@ class Pending(PaginatedAPIMixin, db.Model):
             'pending_metric_name': self.pending_metric_name,
             'pending_task_description': self.pending_task_description,
             'pending_test_indicator': self.pending_test_indicator,
+            'pending_test_description': self.pending_test_description,
         } 
         return data
 

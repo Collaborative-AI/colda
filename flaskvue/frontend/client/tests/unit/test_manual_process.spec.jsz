@@ -25,7 +25,7 @@ describe('test_unread_request', () => {
   let assistor_mode = 'regression'
   let verify_algo = true
   let match_ratio = '1.0'
-  let default_mode = 'auto'
+  let default_mode = 'manual'
   let assistor_username_list = 'xie2'
 
   switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio, default_mode)
@@ -52,7 +52,10 @@ describe('test_unread_request', () => {
   notification_helper.update_notification()
   // console.log('rsee')
   unread_request_helper.unread_request()
+
   logout_helper.logout()
+
+  
  
 
 })

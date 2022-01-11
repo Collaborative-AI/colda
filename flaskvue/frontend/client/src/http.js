@@ -5,7 +5,8 @@
 // const axios = require('axios').default
 
 import Vue from 'vue';
-import router from './router';
+// import router from './router';
+import { router } from './router'
 import store from './store';
 import axios from 'axios'
 
@@ -51,7 +52,8 @@ axios.interceptors.response.use(function (response) {
   return response
 }, function (error) {
   // Do something with response error
-  if (error.response.status){
+  console.log('Error_https', error, 'status' in error.response)
+  if ('status' in error.response){
     switch  (error.response.status) {
       case 401:
         // 清除 Token 及 已认证 等状态

@@ -11,13 +11,13 @@ afterAll(() => {
 
 describe('test_login', () => {
   // console.log("676766767")
-  // train_helper_functions.login.check_login_first_user
+  // train_helper_functions.login.login_first_user
   console.log("676766767")
-  // train_helper_functions.login.check_login_second_user
-  // login_helper.check_login_first_user
-  // login_helper.check_login_second_user
-  login_helper.check_login_first_user()
+  // train_helper_functions.login.login_second_user
+  // login_helper.login_first_user
+  // login_helper.login_second_user
+  login_helper.login_first_user()
 
-  // login_helper.check_login_second_user()
+  // login_helper.login_second_user()
   
 })

@@ -1,8 +1,8 @@
-"""version1
+"""comment
 
-Revision ID: e845b195b9bf
+Revision ID: e7d9f1b2eb0f
 Revises: 
-Create Date: 2022-01-07 15:32:58.022151
+Create Date: 2022-01-10 23:56:42.054723
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e845b195b9bf'
+revision = 'e7d9f1b2eb0f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -121,6 +121,7 @@ def upgrade():
     sa.Column('pending_metric_name', sa.String(length=120), nullable=True),
     sa.Column('pending_task_description', sa.String(length=500), nullable=True),
     sa.Column('pending_test_indicator', sa.String(length=10), nullable=True),
+    sa.Column('pending_test_description', sa.String(length=500), nullable=True),
     sa.ForeignKeyConstraint(['pending_assistor_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

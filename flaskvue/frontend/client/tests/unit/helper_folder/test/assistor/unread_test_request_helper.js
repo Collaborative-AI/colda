@@ -19,7 +19,22 @@ function unread_test_request(){
         console.log(error)
       }
     }
-  
+    
+    let unread_test_request_2_Manual = (data) => {
+      try{
+        let add_test_pending_res = data[0]
+        
+        expect(add_test_pending_res).toEqual(
+          'add test pending successfully'
+        )
+
+        console.log(generate_unittest_log('unread_test_request'))
+        done()
+      }catch (error){
+        done(error)
+      }
+    }
+
     let unread_test_request_2 = (data) => {
       try{
         let test_id = data[0]
@@ -65,11 +80,14 @@ function unread_test_request(){
   
     let cur_parameters = [];
     cur_parameters.push(unread_test_request_1)
-    cur_parameters.push(unread_test_request_2)
-    cur_parameters.push(unread_test_request_3)
-    cur_parameters.push(unread_test_request_4)
+    if (unittest_parameters.default_mode == 'manual'){
+      cur_parameters.push(unread_test_request_2_Manual)
+    } else if (unittest_parameters.default_mode == 'auto'){
+      cur_parameters.push(unread_test_request_2)
+      cur_parameters.push(unread_test_request_3)
+      cur_parameters.push(unread_test_request_4)
+    }
     cur_parameters.push('unread_test_request_unittest')
-
     Navbar_wrapper.vm.unread_test_request(unittest_parameters.unread_test_request_notification, cur_parameters)
   })
 }

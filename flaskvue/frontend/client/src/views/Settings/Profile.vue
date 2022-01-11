@@ -247,7 +247,7 @@ export default {
           + ' WHERE user_id = ?'
 
           let param = [vm.default_file_path, vm.default_id_column, vm.default_data_column, '', vm.sharedState.mode, vm.default_model_name, vm.sharedState.user_id];
-
+          console.log('sentence', sentence, param)
           db.run(sentence, change_db_param_to_string(param), function(err) {
             if (err) {
               console.log(err);

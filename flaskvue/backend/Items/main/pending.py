@@ -39,6 +39,7 @@ def add_train_pending():
     model_name = query.model_name
     metric_name = query.metric_name
     task_description = query.task_description
+    test_description = query.test_description
 
     pending = Pending()
     pending.pending_assistor_id = g.current_user.id
@@ -48,6 +49,7 @@ def add_train_pending():
     pending.pending_model_name = model_name
     pending.pending_metric_name = metric_name
     pending.pending_task_description = task_description
+    pending.pending_test_description = test_description
     pending.pending_test_indicator = "train"
 
     print('kan1')
@@ -70,10 +72,8 @@ def add_test_pending():
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
     
-
     test_id = data['test_id']
     
-
     # Retrieve task name and task description of thie unique task_id
     query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
     test_name = query.test_name
@@ -91,7 +91,7 @@ def add_test_pending():
     pending.pending_task_mode = task_mode
     pending.pending_model_name = model_name
     pending.pending_metric_name = metric_name
-    pending.pending_task_description = test_description
+    pending.pending_test_description = test_description
     pending.pending_test_indicator = "test"
 
     print('kan1',pending.pending_test_indicator)
@@ -111,7 +111,9 @@ def get_all_pending():
     '''
 
     # Retrieve sponsor id of thie unique test_id
+    print('zzzget_all_pending', g.current_user.id)
     all_pending_items = Pending.query.filter(Pending.pending_assistor_id == g.current_user.id).all()
+    print('all_pending_items', all_pending_items)
     res = [item.to_dict() for item in all_pending_items]
 
     data = {"all_pending_items": res}

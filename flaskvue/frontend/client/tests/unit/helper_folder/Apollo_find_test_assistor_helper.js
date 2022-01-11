@@ -9,7 +9,7 @@ function get_test_id_helper(){
       try{
         let test_id = data[0]     
         unittest_parameters.test_id = test_id
-
+        unittest_parameters.multiple_test_ids[test_id] = 1
         console.log(generate_unittest_log('get_test_id_helper'))
         done()
       }catch (error){

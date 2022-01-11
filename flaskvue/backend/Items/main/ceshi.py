@@ -66,6 +66,54 @@ def ceshi(ID,value):
   print("data2", request.get_data())
   return "good"
 
+@main.route('/create_unittest_user/', methods=['POST'])
+def create_unittest_user():
+    data = request.get_json()
+    username = data['username']
+
+    if User.query.filter_by(username = username).first():
+        return 'repetition'
+
+    user = User()
+    user.from_dict(data, new_user=True)
+    user.confirmed = 'true'
+    db.session.add(user)
+    db.session.commit()
+
+    return 'gg'
+
+# @main.route('/ceshi', methods=['GET'])
+@main.route('/delete_unittest_db/', methods=['GET'])
+def delete_unittest_db():
+  
+  # Message, Matched, Notification
+  queries = Matched.query.all()
+  for row in queries:
+      db.session.delete(row)
+      db.session.commit()
+
+  Messages = Message.query.all()
+  for row in Messages:
+      db.session.delete(row)
+      db.session.commit()
+
+  Notifications = Notification.query.all()
+  for row in Notifications:
+      db.session.delete(row)
+      db.session.commit()
+
+  Pendings = Pending.query.all()
+  for row in Pendings:
+      db.session.delete(row)
+      db.session.commit()
+
+  Users = User.query.all()
+  for row in Users:
+      db.session.delete(row)
+      db.session.commit()
+
+  return "gg"
+
 # @main.route('/ceshi', methods=['GET'])
 @main.route('/delete_all_rows/', methods=['GET'])
 @token_auth.login_required
@@ -84,6 +132,11 @@ def delete_all_rows():
 
   Notifications = Notification.query.all()
   for row in Notifications:
+      db.session.delete(row)
+      db.session.commit()
+
+  Pendings = Pending.query.all()
+  for row in Pendings:
       db.session.delete(row)
       db.session.commit()
 

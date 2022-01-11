@@ -34,6 +34,21 @@ function unread_request(){
         console.log(error)
       }
     }
+
+    let unread_request_2_Manual = (data) => {
+      try{
+        let add_train_pending_res = data[0]
+
+        expect(add_train_pending_res).toEqual(
+          'add train pending successfully'
+        )
+  
+        console.log(generate_unittest_log('unread_request'))
+        done()
+      }catch (error){
+        console.log(error)
+      }
+    }
   
     let unread_request_3 = (data) => {
       try{
@@ -64,9 +79,13 @@ function unread_request(){
   
     let cur_parameters = [];
     cur_parameters.push(unread_request_1)
-    cur_parameters.push(unread_request_2)
-    cur_parameters.push(unread_request_3)
-    cur_parameters.push(unread_request_4)
+    if (unittest_parameters.default_mode == 'manual'){
+      cur_parameters.push(unread_request_2_Manual)
+    } else if (unittest_parameters.default_mode == 'auto'){
+      cur_parameters.push(unread_request_2)
+      cur_parameters.push(unread_request_3)
+      cur_parameters.push(unread_request_4)
+    }
     cur_parameters.push('unread_request_unittest')
 
     Navbar_wrapper.vm.unread_request(unittest_parameters.unread_request_notification, cur_parameters)    

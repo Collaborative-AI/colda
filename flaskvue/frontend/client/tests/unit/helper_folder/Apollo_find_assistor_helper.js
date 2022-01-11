@@ -8,8 +8,10 @@ function get_train_id_helper(){
     let get_train_id_helper_1 = (data) => {
       try{
         let task_id = data[0]
-        
+        console.log('sadasd', unittest_parameters.task_id, unittest_parameters.multiple_task_ids)
         unittest_parameters.task_id = task_id
+        unittest_parameters.multiple_task_ids[task_id] = 1
+        console.log(generate_unittest_log('get_train_id_helper'))
         done()
       }catch (error){
         done(error)

@@ -54,6 +54,8 @@ export default {
         passwordError: null
       },
       verification_res: false,
+      root: '',
+      exe_position: '',
     }
   },
   methods: {
@@ -117,6 +119,7 @@ export default {
           'password': this.loginForm.password
         }
       }).then((response) => {
+          console.log('4321', this.$route,this.exe_position)
           // handle success
           if (response.data == 'not verify email yet'){
             this.$router.push({path: '/resend', query: {'username': this.loginForm.username}})
@@ -130,12 +133,15 @@ export default {
             this.$toasted.success(`Welcome ${name}!`, { icon: 'fingerprint' })
             console.log("####")
             
-            // if (typeof this.$route.query.redirect == 'undefined') {
-            //   this.$router.push('/')
-            // } else {
-            //   this.$router.push(this.$route.query.redirect)
-            // }
-
+            if (this.$route != undefined){
+              if (typeof this.$route.query.redirect == 'undefined') {
+              this.$router.push('/')
+            } else {
+              this.$router.push(this.$route.query.redirect)
+            }
+            }
+            
+            console.log('chongfeng ')
             execute_unittest_list(unittest_callbacks, 0, "Login_unittest")
           }
           
@@ -151,6 +157,12 @@ export default {
           }
         })
     }
+  },
+  created() {
+    // let new_root = store.changeroot()
+    // this.root = new_root.root;
+    // this.exe_position = new_root.exe_position
+    // console.log('login_created', this.$route,  this.root, this.exe_position)
   }
 }
 </script>

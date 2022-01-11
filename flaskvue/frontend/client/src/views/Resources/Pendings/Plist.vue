@@ -21,6 +21,7 @@
                             <div class='small'>Metric Name: {{ pend.pending_metric_name }}</div>
 
                             <div class="small">Task Description:  {{ pend.pending_task_description }}</div>
+                            <div v-if="pend.pending_test_indicator == 'test'" class="small">Test Description:  {{ pend.pending_test_description }}</div>
                         </div>
                         <span class="ml-auto mb-auto">
                             <!-- <div class="btn-group">
@@ -42,7 +43,8 @@
                                                         model_name: pend.pending_model_name,
                                                         metric_name: pend.pending_metric_name,
                                                         test_id: pend.pending_test_id,  
-                                                        test_indicator: pend.pending_test_indicator } }">
+                                                        test_indicator: pend.pending_test_indicator,
+                                                        test_description: pend.pending_test_description } }">
                                 <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Details</button>
                               </router-link>
                             </div>
@@ -84,8 +86,9 @@
 
 <script>
 // import store from '../../../store.js'
-import store from '../../../../store.js'
-import db from '../../../../db'
+import store from '../../../store'
+import { generate_unittest_parameters, execute_unittest_list } from '../../../utils'
+// import db from '../../../db'
 // import { set } from 'vue/types/umd'
 // import penditem from "../Penditem.vue"
 
@@ -103,20 +106,22 @@ export default {
 
   methods: {
 
-    check_if_new_pending(){
+    check_if_new_pending(unittest_callbacks){
       let vm = this;
       console.log("----wowowowwo")
       // when the cur_pending_num in Plist page is not equals to the pending_num in store.js, it means we have new pending_page.
       // cal get_all_pending one more time
       if (vm.cur_pending_num != vm.sharedState.pending_num){
         vm.cur_pending_num = vm.sharedState.pending_num;
-
+        console.log("----miemiemie")
         vm.$axios.get('/get_all_pending/')
         .then((response) => {
           // handle success
           console.log("get_all_pending response", response.data)
-          vm.pending =  response.data.all_pending_items
-          console.log('wokan5',vm.pending)
+          vm.pending = response.data.all_pending_items
+
+          let unittest_parameters = generate_unittest_parameters(response.data)
+          execute_unittest_list(unittest_callbacks, 0, "plist_unittest", unittest_parameters)
         })
         .catch((error) => {
           // handle error
@@ -138,7 +143,10 @@ export default {
   },
 
 created () {
-    this.check_if_new_pending()
+    if (this.$route != undefined){
+      this.check_if_new_pending()
+    }
+    
   },
   
 }

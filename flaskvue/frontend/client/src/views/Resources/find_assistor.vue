@@ -247,8 +247,14 @@ export default {
         dialog.showErrorBox('Please Type in train_target_column in corrent form', 'Thank you very much')
       } else if ( interaction_indicator == false){
         dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
-      } else if (this.task_id == ""){
+      } else if ( vm.task_id == ""){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
+      } else if ( vm.task_mode == ""){
+        dialog.showErrorBox('Please select task mode')
+      } else if ( vm.model_name == ""){
+        dialog.showErrorBox('Please select model name')
+      } else if ( vm.metric_name == ""){
+        dialog.showErrorBox('Please select metric name')
       }else{
         
         both_path_validation = true
@@ -394,6 +400,9 @@ export default {
             Log(generate_message_string("1.1 Sponsor calls for help\n"), 'info')
             Log(generate_message_string("1.2 Sponsor sends id file\n"), 'info')
             Log(generate_message_string("1.3 Find Assistor Done\n"), 'info')
+
+            vm.$toasted.success(`Train: Finding Assistor Done`, { icon: 'fingerprint' })
+
 
             try {
               fs.appendFileSync(Log_address, "\n You are SPONSOR\n")

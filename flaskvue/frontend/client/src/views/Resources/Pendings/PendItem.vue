@@ -240,14 +240,14 @@ export default {
             //       model_name: vm.model_name
             //     });
 
-            console.log("2.1 Update Test request notification response")
+            console.log("2.1 Update request notification response")
           
             const delete_pending = {
               task_id: vm.task_id,
               test_id: vm.test_id,
               test_indicator: vm.test_indicator
             }
-            console.log('wokan4', this.test_indicator)
+            console.log('wokan4', vm.test_indicator)
 
             vm.$axios.post('/delete_pending/', delete_pending)
               .then((response) => {
@@ -544,12 +544,22 @@ export default {
       this.task_description = this.$route.params.task_description
       this.task_id = this.$route.params.task_id
       this.task_name = this.$route.params.task_name
-      this.task_mode = this.$route.params.task_name,
+      this.task_mode = this.$route.params.task_mode,
       this.model_name = this.$route.params.model_name,
       this.metric_name = this.$route.params.metric_name,
       this.test_id = this.$route.params.test_id
       this.test_indicator = this.$route.params.test_indicator
       this.test_description = this.$route.params.test_description
+
+      console.log('wudi', this.task_description,
+      this.task_id,
+      this.task_name,
+      this.task_mode,
+      this.model_name,
+      this.metric_name,
+      this.test_id,
+      this.test_indicator,
+      this.test_description,)
     }
 
     let new_root = store.changeroot()

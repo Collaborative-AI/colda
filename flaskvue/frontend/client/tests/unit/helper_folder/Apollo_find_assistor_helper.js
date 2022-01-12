@@ -103,7 +103,8 @@ function find_assistor(sponsor_mode, assistor_username_list){
                                    assistor_username_list: unittest_parameters.assistor_username_list,
                                    task_mode: unittest_parameters.task_mode,
                                    model_name: unittest_parameters.model_name,
-                                   metric_name: unittest_parameters.metric_name})
+                                   metric_name: unittest_parameters.metric_name,
+                                   ptitles: unittest_parameters.sponsor_ptitles})
                                    
     Find_Assistor_wrapper.vm.onSubmit(cur_parameters)
   })

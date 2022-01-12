@@ -223,8 +223,9 @@ export default {
     
     onSubmit (unittest_callbacks) {
       // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), this.task_id.toString(), 'log.txt');
-      console.log("this.root, this.exe_position", this.root, this.exe_position)
       let vm = this;
+      console.log("this.root, this.exe_position", vm.task_id, vm.assistor_username_list, vm.train_data_column, vm.train_id_column, vm.train_target_column)
+      
       vm.assistor_username_list = handle_assistor_username_list(vm.assistor_username_list)
 
       vm.train_data_column = handle_input_column_string(vm.train_data_column, 'data', vm.ptitles.length)
@@ -233,6 +234,8 @@ export default {
 
 
       let interaction_indicator = check_interaction(vm.train_id_column, vm.train_data_column, vm.train_target_column)
+      console.log("this.root, this.exe_position", vm.task_id, vm.assistor_username_list, vm.train_data_column, vm.train_id_column, vm.train_target_column)
+
       let both_path_validation = false
       if (vm.assistor_username_list == false){
         dialog.showErrorBox('Please Type in Username in corrent form', 'Thank you very much')

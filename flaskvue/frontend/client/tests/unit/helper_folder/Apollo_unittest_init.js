@@ -56,6 +56,10 @@ unittest_parameters.unread_test_request_notification = ''
 unittest_parameters.unread_test_match_id_notification = ''
 unittest_parameters.unread_test_output_notification = ''
 
+unittest_parameters.sponsor_ptitles = null
+unittest_parameters.assistor_ptitles = null
+
+
 // login.vue
 unittest_parameters.verification_res = true
 
@@ -119,12 +123,12 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
     let res = ''
 
     if (sponsor_mode == 'regression'){
-      res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-      // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     } else if (sponsor_mode == 'classification'){
-      res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-      // res = "/Users/xianjianxie/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      res = "/Users/xianjianxie/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     }
     return res
@@ -173,11 +177,17 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
     unittest_parameters.train_target_column = "9"
     unittest_parameters.test_data_column = "2-8"
     unittest_parameters.test_target_column = "9"
+    unittest_parameters.sponsor_ptitles = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    unittest_parameters.assistor_ptitles = [0, 0, 0, 0, 0, 0, 0, 0]
+
   } else if (total_participants == 3){
     unittest_parameters.train_data_column = "2-6"
     unittest_parameters.train_target_column = "7"
     unittest_parameters.test_data_column = "2-6"
     unittest_parameters.test_target_column = "7"
+    unittest_parameters.sponsor_ptitles = [0, 0, 0, 0, 0, 0, 0]
+    unittest_parameters.assistor_ptitles = [0, 0, 0, 0, 0, 0]
+
   }
   unittest_parameters.task_mode = sponsor_mode
 

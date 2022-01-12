@@ -76,7 +76,8 @@ function train_accept(){
                                 test_description: cur_task.pending_test_description,
                                 manual_file_path: unittest_parameters.default_file_path[user_id], 
                                 manual_id_column: unittest_parameters.default_id_column[user_id], 
-                                manual_data_column: unittest_parameters.default_data_column[user_id]})
+                                manual_data_column: unittest_parameters.default_data_column[user_id],
+                                ptitles: unittest_parameters.assistor_ptitles})
       PendItem_Wrapper.vm.Accept(cur_parameters)
     }
     unittest_parameters.manual_multiple_task = []  
@@ -158,7 +159,8 @@ function test_accept(){
                                   test_description: cur_task.pending_test_description,
                                   manual_file_path: unittest_parameters.default_file_path[user_id], 
                                   manual_id_column: unittest_parameters.default_id_column[user_id], 
-                                  manual_data_column: unittest_parameters.default_data_column[user_id]})
+                                  manual_data_column: unittest_parameters.default_data_column[user_id],
+                                  ptitles: unittest_parameters.assistor_ptitles})
         PendItem_Wrapper.vm.Accept(cur_parameters)
       }
     }   

@@ -42,7 +42,8 @@ function check_profile_onSubmit_db(default_mode){
                              default_id_column: unittest_parameters.default_id_column[user_id], 
                              default_data_column: unittest_parameters.default_data_column[user_id],
                              default_model_name: unittest_parameters.default_model_name[user_id],
-                             sharedState: {'mode': unittest_parameters.default_mode}  })
+                             sharedState: {'mode': unittest_parameters.default_mode},
+                             ptitles: unittest_parameters.assistor_ptitles  })
                              
     console.log('zzz997', unittest_parameters.default_mode, unittest_parameters.default_file_path[user_id],  unittest_parameters.default_id_column[user_id], unittest_parameters.default_data_column[user_id], unittest_parameters.default_model_name[user_id])
     console.log('zzz996', unittest_parameters.default_file_path, typeof(user_id),user_id)

@@ -124,7 +124,9 @@ export function handle_assistor_username_list(assistor_username_string){
   }
 
   // trim leading and trailing spaces
+  console.log('assistor user name', assistor_username_string)
   assistor_username_string = assistor_username_string.trim()
+  
 
   let new_assistor_username_list = assistor_username_string.split(",")
   

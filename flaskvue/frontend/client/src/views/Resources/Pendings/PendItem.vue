@@ -171,9 +171,11 @@ export default {
     },
 
     train_unread_request(unittest_callbacks){
-      console.log('jin train', vm.manual_file_path, vm.manual_id_column, vm.manual_data_column, vm.manual_target_column,)
 
       let vm = this;
+
+      console.log('jin train', vm.manual_file_path, vm.manual_id_column, vm.manual_data_column, vm.manual_target_column)
+
       let both_path_validation = true
 
       vm.manual_data_column = handle_input_column_string(vm.manual_data_column, 'data', vm.ptitles.length)

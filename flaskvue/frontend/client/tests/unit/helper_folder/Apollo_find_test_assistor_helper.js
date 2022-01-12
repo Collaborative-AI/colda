@@ -110,7 +110,8 @@ function find_test_assistor(){
                                         test_file_path: unittest_parameters.test_file_path,
                                         test_id_column: unittest_parameters.test_id_column,
                                         test_data_column: unittest_parameters.test_data_column,
-                                        test_target_column: unittest_parameters.test_target_column})
+                                        test_target_column: unittest_parameters.test_target_column,
+                                        ptitles: unittest_parameters.sponsor_ptitles})
                                    
     Find_Test_Assistor_Wrapper.vm.onSubmit(cur_parameters)
   })

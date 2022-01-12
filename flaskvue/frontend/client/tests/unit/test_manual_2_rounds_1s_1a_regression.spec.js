@@ -61,30 +61,30 @@ describe('test_find_assistor', () => {
 
   unread_request_helper.unread_request()
 
-  // plist_helper.get_all_pending_task()
+  plist_helper.get_all_pending_task()
 
-  // // PendItem_helper.reject()
-  // PendItem_helper.train_accept()
+  // PendItem_helper.reject()
+  PendItem_helper.train_accept()
 
-  // logout_helper.logout()
+  logout_helper.logout()
   
-  // //assistor logins
-  // login_helper.login_second_user()
-  // //assistor gets nofification
-  // notification_helper.update_notification()
-  // //sponsor runs unread match id
-  // unread_assistor_match_id_helper.unread_assistor_match_id()
-  // //assistor logouts
-  // logout_helper.logout()
+  //assistor logins
+  login_helper.login_second_user()
+  //assistor gets nofification
+  notification_helper.update_notification()
+  //sponsor runs unread match id
+  unread_assistor_match_id_helper.unread_assistor_match_id()
+  //assistor logouts
+  logout_helper.logout()
 
-  // //sponsor logins
-  // login_helper.login_first_user()
-  // //sponsor gets nofification
-  // notification_helper.update_notification()
-  // //sponsor runs unread match id
-  // unread_sponsor_match_id_helper.unread_sponsor_match_id()
-  // //sponsor logouts
-  // logout_helper.logout()
+  //sponsor logins
+  login_helper.login_first_user()
+  //sponsor gets nofification
+  notification_helper.update_notification()
+  //sponsor runs unread match id
+  unread_sponsor_match_id_helper.unread_sponsor_match_id()
+  //sponsor logouts
+  logout_helper.logout()
 
   // for (let current_round = 1; current_round <= max_round; current_round++){
   //   //sponsor logins
@@ -125,7 +125,7 @@ describe('test_find_assistor', () => {
   // // Sponsor logouts
   // logout_helper.logout()
 
-  // // assistor logins
+  // // // assistor logins
   // login_helper.login_second_user()
 
   // profile_helper.onSubmit()

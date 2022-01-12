@@ -42,17 +42,17 @@
     <!-- <div>{{pdatas[0]}}</div> -->
 
     <div class="form-group">
-      <label for="name">Input ID Column</label>
+      <label for="name">Input ID Column (eg. 1)</label>
       <input type="text" v-model="train_id_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input Data Column (eg. 3-6)</label>
+      <label for="name">Input Data Column (eg. 2-8)</label>
       <input type="text" v-model="train_data_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input Target Column</label>
+      <label for="name">Input Target Column (eg. 9)</label>
       <input type="text" v-model="train_target_column" class="form-control" id="name" placeholder="">
     </div>
 

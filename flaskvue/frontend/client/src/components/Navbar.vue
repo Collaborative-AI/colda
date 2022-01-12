@@ -323,7 +323,7 @@ export default {
                 Log(generate_message_string("2.2 Assistor uploads match id file\n"), 'info')
                 Log(generate_message_string("2.3 Unread Request Done\n"), 'info')
 
-                vm.$toasted.success(`Training Starts`, { icon: 'fingerprint' })
+                vm.$toasted.success( `Task`+ task_id + `Training Starts`, { icon: 'fingerprint' })
 
                 try {
                   fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
@@ -1543,7 +1543,7 @@ export default {
                   Log(generate_message_string("----2. Unread Test Request Done\n"), 'info')
 
                   // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
-                  vm.$toasted.success(`Testing Starts`, { icon: 'fingerprint' })
+                  vm.$toasted.success(`Task` + task_id + `Testing Starts`, { icon: 'fingerprint' })
                   try {
                     fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
                     fs.appendFileSync(Log_address, "----2. Unread Test Request Done\n")

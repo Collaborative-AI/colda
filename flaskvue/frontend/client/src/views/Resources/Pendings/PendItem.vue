@@ -259,6 +259,8 @@ export default {
                 let task_id = vm.task_id
                 let hash_id_file_address = null;
                 let Log_address = null;
+
+                vm.$toasted.success(`Assistor Accepts Task` + task_id, { icon: 'fingerprint' })
                 try{
                   console.log('asa', vm.manual_file_path, vm.manual_id_column)
                   hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id

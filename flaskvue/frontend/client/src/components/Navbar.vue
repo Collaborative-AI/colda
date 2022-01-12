@@ -2268,7 +2268,7 @@ export default {
               //   }
               // }
               for (let item of response.data){
-                console.log('item', item, item.payload)
+                // console.log('item', item, item.payload)
                 if (item.payload >= 1){
 
         

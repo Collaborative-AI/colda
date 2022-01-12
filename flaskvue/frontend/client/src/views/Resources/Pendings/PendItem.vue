@@ -286,7 +286,7 @@ export default {
                   console.log(err)
                 }
                 let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
-                
+                console.log('hash_id_file_data', hash_id_file_data)
                 const match_assistor_id_data = {
                   task_id: task_id,
                   file: hash_id_file_data,

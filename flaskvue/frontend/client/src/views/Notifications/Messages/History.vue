@@ -1297,7 +1297,7 @@ export default {
           break
         }
       }
-      console.log('dachu message', this.messages)
+      // console.log('dachu message', this.messages)
 
       // for (let i = 0; i < Log_content2.length; i++){
       //   this.messages2.push(Log_content2[i])

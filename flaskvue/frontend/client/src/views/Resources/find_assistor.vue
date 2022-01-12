@@ -440,7 +440,7 @@ export default {
               execute_unittest_list(unittest_callbacks, 2, "find_assistor_unittest", unittest_parameters)        // })          
               
                 vm.task_id = ""
-                // vm.$router.push('/notifications')
+                vm.$router.push('/notifications')
                 vm.select_data=false
 
               })

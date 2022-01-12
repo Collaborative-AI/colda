@@ -296,7 +296,7 @@ export default {
                   .then((response) => {
                     // handle success
                     console.log("2.2 assistor uploads id file")
-                    vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
+                    // vm.$toasted.success(`2.2 assistor uploads id file`, { icon: 'fingerprint' })
                     
                     let unittest_parameters = generate_unittest_parameters(response.data)
                     execute_unittest_list(unittest_callbacks, 3, "PendItem_unittest", unittest_parameters)
@@ -398,7 +398,7 @@ export default {
             //     });
             
             console.log("2.1 Update Test request notification response")
-            vm.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
+            // vm.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
             const delete_pending = {
               task_id: vm.task_id,
@@ -457,7 +457,7 @@ export default {
                   .then((response) => {
                     // handle success
                     console.log("2.2 Test: assistor uploads id file")
-                    vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
+                    // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
                     
                     let unittest_parameters = generate_unittest_parameters(response.data)
                     execute_unittest_list(unittest_callbacks, 3, "PendItem_unittest", unittest_parameters)
@@ -487,7 +487,7 @@ export default {
 
     Accept(unittest_callbacks){
       let vm = this
-      vm.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
+      // vm.$toasted.success("2.1 Update the request notification", { icon: 'fingerprint' })
       
       if (vm.test_indicator == 'train'){
         let unittest_parameters = generate_unittest_parameters()

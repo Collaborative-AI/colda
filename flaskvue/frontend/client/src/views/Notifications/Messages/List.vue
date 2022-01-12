@@ -85,6 +85,10 @@ import db from '../../../db'
 
 // const store = require('../../../store').default
 // const Pagination = require('../../../components/Pagination.vue').default
+
+
+
+
 export default {
   name: 'List',  // this is the name of the component
   components: {

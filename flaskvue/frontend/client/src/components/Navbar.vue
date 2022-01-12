@@ -7,7 +7,7 @@
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
 
                         <router-link to="/" class="g-text-underline--none--hover">
-                          <img src="../assets/a-logo2.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                          <img src="../assets/a-logo3.png" width="30" height="30" class="d-inline-block align-top" alt="">
                             
                         </router-link>
                         <li v-if="sharedState.is_authenticated" class="nav-item">
@@ -30,9 +30,9 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                       
-                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user'])"  class="nav-item">
+                        <!-- <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user'])"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
-                        </li>       
+                        </li>        -->
                         <!-- <button @click="test_axios()">123</button>              -->
                         <!-- <li class="nav-item">
                             <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Brand</span></a>
@@ -323,7 +323,7 @@ export default {
                 Log(generate_message_string("2.2 Assistor uploads match id file\n"), 'info')
                 Log(generate_message_string("2.3 Unread Request Done\n"), 'info')
 
-                vm.$toasted.success(`Train: Unread Request Done`, { icon: 'fingerprint' })
+                vm.$toasted.success(`Training Starts`, { icon: 'fingerprint' })
 
                 try {
                   fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
@@ -345,6 +345,7 @@ export default {
           task_id: task_id,
         }
         console.log('jinlai', add_train_pending)
+        vm.$toasted.success("Task Request Received", { icon: 'fingerprint' })
       
         vm.$axios.post('/add_train_pending/', add_train_pending)
           .then((response) => {
@@ -630,7 +631,7 @@ export default {
               Log(generate_message_string("3.7 Sponsor sends all situations" + "\n"), 'info')
               Log(generate_message_string("---- 3. Unread Match ID Done\n"), 'info')
 
-              vm.$toasted.success(`Train: Unread Match ID Done`, { icon: 'fingerprint' })
+              // vm.$toasted.success(`Train: Unread Match ID Done`, { icon: 'fingerprint' })
 
               try {
                 fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
@@ -737,7 +738,7 @@ export default {
           Log(generate_message_string("3.5 Assistor matches id to index\n"), 'info')
           Log(generate_message_string("---- 3. Unread Match ID Done\n"), 'info')
 
-          vm.$toasted.success(`Train: Unread Match ID Done`, { icon: 'fingerprint' })
+          // vm.$toasted.success(`Train: Unread Match ID Done`, { icon: 'fingerprint' })
 
 
           try {
@@ -874,7 +875,7 @@ export default {
         Log(generate_message_string("4.3 Sponsor round " + rounds + " training done." + "\n"), 'info')
         Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
 
-        vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
+        // vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
 
 
         try {
@@ -901,6 +902,8 @@ export default {
       console.log('unread_situation_assistor_train_part2')
       if (minutes > 30){
         console.log('Waiting time interval exceeded')
+        dialog.showErrorBox('Sorry, the test stopped due to slow computation', 'Sorry')
+
         return 
       }
       let Assistor_train_output_path = null;
@@ -929,7 +932,7 @@ export default {
         console.log("recall unread_situation_assistor_train_part")
         setTimeout(function(){
           vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks)
-        }, 7000);
+        }, 20000);
       }else{
         
         // // console.log('Assistor_train_output_path', Assistor_train_output_path)
@@ -962,7 +965,7 @@ export default {
           Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
           Log(generate_message_string("---- Train stage done\n"), 'info')
 
-          vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
+          // vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
           vm.$toasted.success(`Train Stage Done`, { icon: 'fingerprint' })
 
           // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
@@ -1250,6 +1253,8 @@ export default {
       
       if (minutes > 30){
         // // console.log('Waiting time interval exceeded')
+        dialog.showErrorBox('Sorry, the test stopped due to slow computation', 'Sorry')
+
         return 
       }
 
@@ -1277,7 +1282,7 @@ export default {
         console.log("recall unread_output_make_result_helper")
         setTimeout(function(){
           vm.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time, unittest_callbacks)
-        }, 7000);
+        }, 20000);
 
       }else{
         // // console.log("jinlaile")
@@ -1364,7 +1369,7 @@ export default {
             Log(generate_message_string("5.6 Sponsor updates situation done\n"), 'info')
             Log(generate_message_string("---- 5. Unread Output Done\n"), 'info')
 
-            vm.$toasted.success(`Train: Unread Output Done`, { icon: 'fingerprint' })
+            // vm.$toasted.success(`Train: Unread Output Done`, { icon: 'fingerprint' })
 
             try {
               fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
@@ -1538,7 +1543,7 @@ export default {
                   Log(generate_message_string("----2. Unread Test Request Done\n"), 'info')
 
                   // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
-                  vm.$toasted.success(`Test: Unread Request Done`, { icon: 'fingerprint' })
+                  vm.$toasted.success(`Testing Starts`, { icon: 'fingerprint' })
                   try {
                     fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
                     fs.appendFileSync(Log_address, "----2. Unread Test Request Done\n")
@@ -1773,7 +1778,7 @@ export default {
 
             // console.log("3.7 Test: Sponsor stores all test model results")
             // vm.$toasted.success("3.7 Test: Sponsor stores all test model results", { icon: 'fingerprint' })
-            vm.$toasted.success(`Test: Unread Match ID Done`, { icon: 'fingerprint' })
+            // vm.$toasted.success(`Test: Unread Match ID Done`, { icon: 'fingerprint' })
 
             try {
               fs.appendFileSync(Log_address, "3.7 Test: Sponsor stores all test model results\n")
@@ -1960,7 +1965,7 @@ export default {
 
                 // console.log("3.8 Test: assistor sends all test model results")
                 // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
-                vm.$toasted.success(`Test: Unread Match ID Done`, { icon: 'fingerprint' })
+                // vm.$toasted.success(`Test: Unread Match ID Done`, { icon: 'fingerprint' })
                 vm.$toasted.success(`Test Stage Done`, { icon: 'fingerprint' })
 
                 try {
@@ -2124,6 +2129,7 @@ export default {
       
       if (minutes > 30){
         // // console.log('Waiting time interval exceeded')
+        dialog.showErrorBox('Sorry, the test stopped due to slow computation', 'Sorry')
         return 
       }
 
@@ -2172,7 +2178,7 @@ export default {
         console.log("recall unread_test_output_make_eval_helper")
         setTimeout(function(){
           vm.unread_test_output_make_eval_helper(task_id, test_id, vm, Log_address, response, waiting_start_time, unittest_callbacks)
-        }, 7000);
+        }, 20000);
       }else{
         
 

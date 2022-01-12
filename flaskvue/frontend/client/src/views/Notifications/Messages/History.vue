@@ -6,14 +6,15 @@
 
   <div class="btn-group btn-group-toggle" data-toggle="buttons">
     <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option2" value="chart" v-model="page"> Chart
-  </label>
-  <label class="btn btn-secondary">
     <input type="radio" name="options" id="option1" value="log" v-model="page"> Log
   </label>
-  <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option3" value="log2" v-model="page"> Log2
+    <label class="btn btn-secondary">
+    <input type="radio" name="options" id="option2" value="chart" v-model="page"> Chart
   </label>
+  
+  <!-- <label class="btn btn-secondary">
+    <input type="radio" name="options" id="option3" value="log2" v-model="page"> Log2
+  </label> -->
 </div>
   <!-- 历史私信列表 -->
   <div v-if="page=='log'" class="card border-0 g-mb-15 my-5">
@@ -93,9 +94,13 @@
   <div v-if="task_mode == 'regression'" class="col-md-6">
     <div class="box box-aqua" id="chart-parent">
       <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
-        <mdb-line-chart id="chart"
+        <mdb-line-chart v-if="test_id!=null" id="chart"
           :data="lineChartData3"
           :options="lineChartOptions3"
+        ></mdb-line-chart>
+        <mdb-line-chart v-else id="chart"
+          :data="lineChartData3t"
+          :options="lineChartOptions3t"
         ></mdb-line-chart>
       </mdb-container>
     </div>
@@ -105,9 +110,13 @@
   <div v-if="task_mode == 'regression'"  class="col-md-6">
     <div class="box box-green" id="chart-parent">
       <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
-        <mdb-line-chart id="chart"
+        <mdb-line-chart v-if="test_id!=null" id="chart"
           :data="lineChartData"
           :options="lineChartOptions"
+        ></mdb-line-chart>
+        <mdb-line-chart v-else id="chart"
+          :data="lineChartDatat"
+          :options="lineChartOptionst"
         ></mdb-line-chart>
       </mdb-container>
     </div>
@@ -116,9 +125,13 @@
   <div v-if="task_mode == 'regression'" class="col-md-6">
     <div class="box box-aqua" id="chart-parent">
       <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
-        <mdb-line-chart id="chart"
+        <mdb-line-chart v-if="test_id!=null" id="chart"
           :data="lineChartData4"
           :options="lineChartOptions4"
+        ></mdb-line-chart>
+        <mdb-line-chart v-else id="chart"
+          :data="lineChartData4t"
+          :options="lineChartOptions4t"
         ></mdb-line-chart>
       </mdb-container>
     </div>
@@ -151,9 +164,13 @@
   <div v-if="task_mode == 'classification'" class="col-md-6">
     <div class="box box-green" id="chart-parent">
       <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
-        <mdb-line-chart id="chart"
+        <mdb-line-chart v-if="test_id!=null" id="chart"
           :data="lineChartData5"
           :options="lineChartOptions5"
+        ></mdb-line-chart>
+        <mdb-line-chart v-else id="chart"
+          :data="lineChartData5t"
+          :options="lineChartOptions5t"
         ></mdb-line-chart>
       </mdb-container>
     </div>
@@ -162,9 +179,13 @@
   <div v-if="task_mode == 'classification'" class="col-md-6">
     <div class="box box-green" id="chart-parent">
       <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
-        <mdb-line-chart id="chart"
+        <mdb-line-chart v-if="test_id!=null" id="chart"
           :data="lineChartData6"
           :options="lineChartOptions6"
+        ></mdb-line-chart>
+        <mdb-line-chart v-else id="chart"
+          :data="lineChartData6t"
+          :options="lineChartOptions6t"
         ></mdb-line-chart>
       </mdb-container>
     </div>
@@ -213,30 +234,32 @@ import { mdbLineChart, mdbContainer } from "mdbvue";
 var baseline_rmse = []
 var training_rmse = []
 var test_rmse = []
+var test_baseline_rmse = []
 
 var training_alpha = []
 
 var baseline_mad = []
 var training_mad = []
 var test_mad = []
+var test_baseline_mad = []
 
 var baseline_r2 = []
 var training_r2 = []
 var test_r2 = []
-// const baseline_rmse = []
-// const training_rmse = []
-// const training_alpha = []
-// const test_rmse = []
+var test_baseline_r2 = []
+
 
 var baseline_accuracy = []
 var training_accuracy = []
 var test_accuracy = []
+var test_baseline_accuracy = []
+
 var baseline_f1 = []
 var training_f1 = []
 var test_f1 = []
+var test_baseline_f1 = []
+
 var training_alpha2 = []
-
-
 
 
 export default {
@@ -269,7 +292,7 @@ export default {
       task_name: '',
       test_id: '',
       task_description: '',
-      page: 'chart',
+      page: 'log',
       test_num: '2',
       backend_log: "",
       task_mode: "",
@@ -303,11 +326,85 @@ export default {
               borderWidth: 0.8,
               data: test_rmse
             },
+            {
+              label: "Test Baseline RMSE",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(90,90,90,50)",
+              borderWidth: 0.8,
+              data: test_baseline_rmse
+            },
             
           ]
         },
         
         lineChartOptions: {
+          responsive: true,
+          maintainAspectRatio: false,
+          // bezierCurve: false,
+          // elements: {
+          //     line: {
+          //         tension: 0
+          //     }
+          // },
+          title: {
+                display: true,
+                text: 'RMSE vs. Round'
+            },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Round'
+                },
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'RMSE'
+                },
+              }
+            ]
+          }
+        },
+
+        lineChartDatat: {
+          labels: [
+            "0",
+            "1",
+            "2"
+          ],
+          datasets: [
+            {
+              label: "Baseline RMSE",
+              // backgroundColor: "rgba(255, 99, 132, 0.1)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 0.7,
+              data: baseline_rmse
+            },
+            {
+              label: "Training RMSE",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(151,187,205,1)",
+              borderWidth: 0.8,
+              data: training_rmse
+            },
+            
+            
+          ]
+        },
+        
+        lineChartOptionst: {
           responsive: true,
           maintainAspectRatio: false,
           // bezierCurve: false,
@@ -377,11 +474,84 @@ export default {
               borderWidth: 0.8,
               data: test_mad
             },
+             {
+              label: "Test Baseline MAD",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(90,90,90,50)",
+              borderWidth: 0.8,
+              data: test_baseline_mad
+            },
             
           ]
         },
         
         lineChartOptions3: {
+          responsive: true,
+          maintainAspectRatio: false,
+          // bezierCurve: false,
+          // elements: {
+          //     line: {
+          //         tension: 0
+          //     }
+          // },
+          title: {
+                display: true,
+                text: 'MAD vs. Round'
+            },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Round'
+                },
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'MAD'
+                },
+              }
+            ]
+          }
+        },
+
+        lineChartData3t: {
+          labels: [
+            "0",
+            "1",
+            "2"
+          ],
+          datasets: [
+            {
+              label: "Baseline MAD",
+              // backgroundColor: "rgba(255, 99, 132, 0.1)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 0.7,
+              data: baseline_mad
+            },
+            {
+              label: "Training MAD",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(151,187,205,1)",
+              borderWidth: 0.8,
+              data: training_mad
+            },
+            
+          ]
+        },
+        
+        lineChartOptions3t: {
           responsive: true,
           maintainAspectRatio: false,
           // bezierCurve: false,
@@ -451,11 +621,85 @@ export default {
               borderWidth: 0.8,
               data: test_r2
             },
+             {
+              label: "Test Baseline R2",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(90,90,90,50)",
+              borderWidth: 0.8,
+              data: test_baseline_r2
+            },
             
           ]
         },
         
         lineChartOptions4: {
+          responsive: true,
+          maintainAspectRatio: false,
+          // bezierCurve: false,
+          // elements: {
+          //     line: {
+          //         tension: 0
+          //     }
+          // },
+          title: {
+                display: true,
+                text: 'R2 vs. Round'
+            },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Round'
+                },
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'R2'
+                },
+              }
+            ]
+          }
+        },
+
+        lineChartData4t: {
+          labels: [
+            "0",
+            "1",
+            "2"
+          ],
+          datasets: [
+            {
+              label: "Baseline R2",
+              // backgroundColor: "rgba(255, 99, 132, 0.1)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 0.7,
+              data: baseline_r2
+            },
+            {
+              label: "Training R2",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(151,187,205,1)",
+              borderWidth: 0.8,
+              data: training_r2
+            },
+            
+            
+          ]
+        },
+        
+        lineChartOptions4t: {
           responsive: true,
           maintainAspectRatio: false,
           // bezierCurve: false,
@@ -524,11 +768,85 @@ export default {
               borderWidth: 0.8,
               data: test_accuracy
             },
+            {
+              label: "Test Baseline Accuracy",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(90,90,90,50)",
+              borderWidth: 0.8,
+              data: test_baseline_accuracy
+            },
             
           ]
         },
         
         lineChartOptions5: {
+          responsive: true,
+          maintainAspectRatio: false,
+          // bezierCurve: false,
+          // elements: {
+          //     line: {
+          //         tension: 0
+          //     }
+          // },
+          title: {
+                display: true,
+                text: 'Accuracy vs. Round'
+            },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Round'
+                },
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Accuracy'
+                },
+              }
+            ]
+          }
+        },
+
+        lineChartData5t: {
+          labels: [
+            "0",
+            "1",
+            "2"
+          ],
+          datasets: [
+            {
+              label: "Baseline Accuracy",
+              // backgroundColor: "rgba(255, 99, 132, 0.1)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 0.7,
+              data: baseline_accuracy
+            },
+            {
+              label: "Training Accuracy",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(151,187,205,1)",
+              borderWidth: 0.8,
+              data: training_accuracy
+            },
+            
+            
+          ]
+        },
+        
+        lineChartOptions5t: {
           responsive: true,
           maintainAspectRatio: false,
           // bezierCurve: false,
@@ -597,11 +915,85 @@ export default {
               borderWidth: 0.8,
               data: test_f1
             },
+            {
+              label: "Test Baseline F1",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(90,90,90,50)",
+              borderWidth: 0.8,
+              data: test_baseline_f1
+            },
             
           ]
         },
         
         lineChartOptions6: {
+          responsive: true,
+          maintainAspectRatio: false,
+          // bezierCurve: false,
+          // elements: {
+          //     line: {
+          //         tension: 0
+          //     }
+          // },
+          title: {
+                display: true,
+                text: 'F1 vs. Round'
+            },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Round'
+                },
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'F1'
+                },
+              }
+            ]
+          }
+        },
+
+        lineChartData6t: {
+          labels: [
+            "0",
+            "1",
+            "2"
+          ],
+          datasets: [
+            {
+              label: "Baseline F1",
+              // backgroundColor: "rgba(255, 99, 132, 0.1)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 0.7,
+              data: baseline_f1
+            },
+            {
+              label: "Training F1",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(151,187,205,1)",
+              borderWidth: 0.8,
+              data: training_f1
+            },
+            
+            
+          ]
+        },
+        
+        lineChartOptions6t: {
           responsive: true,
           maintainAspectRatio: false,
           // bezierCurve: false,
@@ -894,16 +1286,18 @@ export default {
       // Log_content2 = Log_content2.split("\n")
       this.messages = [];
       this.messages2 = []
+      console.log('dachu1', vm.test_id)
       
       for (let i = 0; i < Log_content.length; i++){
         this.messages.push(Log_content[i])
         // console.log('dai',Log_content[i])
         if (Log_content[i].search("Train stage done") != -1 && vm.test_id == null){
           // console.log('zaina',Log_content[i].search("Train stage done"))
-          // console.log('cheng')
+          console.log('cheng')
           break
         }
       }
+      console.log('dachu message', this.messages)
 
       // for (let i = 0; i < Log_content2.length; i++){
       //   this.messages2.push(Log_content2[i])
@@ -925,6 +1319,8 @@ export default {
         continue
       }
     }
+    // vm.$nextTick(vm.draw_chart())
+
     // console.log('this.task_mode', this.task_mode)
      
       // if (this.test_id == null){
@@ -992,6 +1388,9 @@ export default {
           
           
           vm.draw_chart()
+            // vm.$nextTick(vm.draw_chart())
+
+          
           
           
         })
@@ -1071,50 +1470,71 @@ export default {
             // for (let i in baseline_rmse){
             //   baseline_rmse[i] = rmse_list[0]
             // }
-            for(let i=0; i<rmse_list.length-1; i++){
+                          console.log('rmse list', rmse_list)
+
+            for(let i=0; i<4; i++){
+              console.log('dachu3',rmse_list)
               baseline_rmse[i] = rmse_list[0]
-              // vm.lineChartData.datasets[0].data[i] = rmse_list[0]
-              // vm.lineChartData.datasets[0].data.push(rmse_list[0])
-              // console.log('chakan', vm.lineChartData.datasets[0].data)
-              // console.log('chakan', vm.lineChartData.datasets[1].data)
               training_rmse[i] = rmse_list[i+1]
+              test_baseline_rmse[i] = rmse_list[rmse_list.length-4]
+              test_rmse[i] = rmse_list[rmse_list.length-3+i]
+              
               baseline_mad[i] = mad_list[0]
               training_mad[i] = mad_list[i+1]
+              test_baseline_mad[i] = mad_list[mad_list.length-4]
+              test_mad[i] = mad_list[mad_list.length-3+i]
+
               baseline_r2[i] = r2_list[0]
               training_r2[i] = r2_list[i+1]
+              test_baseline_r2[i] = r2_list[r2_list.length-4]
+              test_r2[i] = r2_list[r2_list.length-3+i]
 
             }
             for(let i=0; i<alpha_list.length; i++){
               training_alpha[i] = alpha_list[i]
             }
-            test_rmse = []
-            test_mad = []
-            test_r2 = []
-            if (vm.test_id != null){
-            test_rmse = rmse_list.slice(rmse_list.length-2,rmse_list.length)
-            // console.log('test_rmse',test_rmse)
-            test_mad = mad_list.slice(mad_list.length-2,mad_list.length)
-            // console.log('test_mad',test_mad)
-            test_r2 = r2_list.slice(r2_list.length-2,r2_list.length)
-            // console.log('test_r2',test_r2)
-            }
-
-            // console.log('training_alpha',training_alpha)
+            // test_rmse = []
+            // test_mad = []
+            // test_r2 = []
             
-            vm.lineChartData.datasets[0].data = baseline_rmse
-            vm.lineChartData.datasets[1].data = training_rmse
-            vm.lineChartData.datasets[2].data = test_rmse
+            // if (vm.test_id != null){
+            //   test_rmse = rmse_list.slice(rmse_list.length-3,rmse_list.length)
+            //   console.log('test_rmse',test_rmse)
+            //   test_mad = mad_list.slice(mad_list.length-3,mad_list.length)
+            //   // console.log('test_mad',test_mad)
+            //   test_r2 = r2_list.slice(r2_list.length-3,r2_list.length)
+            //   // console.log('test_r2',test_r2)
 
-            vm.lineChartData1.datasets[0].data = training_alpha
-            vm.lineChartData2.datasets[2].data = test_rmse
+            //   console.log('dachu5',rmse_list)
+            //   for(let i=0; i<rmse_list.length-1; i++){
+            //     console.log('dachu6',rmse_list)
+            //     test_baseline_rmse[i] = rmse_list[rmse_list.length-4]
+            //     test_baseline_mad[i] = mad_list[mad_list.length-4]
+            //     test_baseline_r2[i] = r2_list[r2_list.length-4]
+            //   }
+            //   console.log('test baseline', test_baseline_rmse, test_baseline_mad, test_baseline_r2)
+            //   }
+              
 
-            vm.lineChartData3.datasets[0].data = baseline_mad
-            vm.lineChartData3.datasets[1].data = training_mad
-            vm.lineChartData3.datasets[2].data = test_mad
+              // console.log('training_alpha',training_alpha)
+              
+              vm.lineChartData.datasets[0].data = baseline_rmse
+              vm.lineChartData.datasets[1].data = training_rmse
+              vm.lineChartData.datasets[2].data = test_rmse
+              vm.lineChartData.datasets[3].data = test_baseline_rmse
 
-            vm.lineChartData4.datasets[0].data = baseline_r2
-            vm.lineChartData4.datasets[1].data = training_r2
-            vm.lineChartData4.datasets[2].data = test_r2
+              vm.lineChartData1.datasets[0].data = training_alpha
+              // vm.lineChartData2.datasets[2].data = test_rmse
+
+              vm.lineChartData3.datasets[0].data = baseline_mad
+              vm.lineChartData3.datasets[1].data = training_mad
+              vm.lineChartData3.datasets[2].data = test_mad
+              vm.lineChartData3.datasets[3].data = test_baseline_mad
+
+              vm.lineChartData4.datasets[0].data = baseline_r2
+              vm.lineChartData4.datasets[1].data = training_r2
+              vm.lineChartData4.datasets[2].data = test_r2
+              vm.lineChartData4.datasets[3].data = test_baseline_r2
       }
       else if (this.task_mode == 'classification'){
 
@@ -1174,31 +1594,33 @@ export default {
             // for (let i in baseline_rmse){
             //   baseline_rmse[i] = rmse_list[0]
             // }
-            for(let i=0; i<accuracy_list.length-1; i++){
+            console.log('pp',accuracy_list)
+            for(let i=0; i<4; i++){
               baseline_accuracy[i] = accuracy_list[0]
-              // vm.lineChartData.datasets[0].data[i] = rmse_list[0]
-              // vm.lineChartData.datasets[0].data.push(rmse_list[0])
-              // console.log('chakan', vm.lineChartData.datasets[0].data)
-              // console.log('chakan', vm.lineChartData.datasets[1].data)
               training_accuracy[i] = accuracy_list[i+1]
+              test_baseline_accuracy[i] = accuracy_list[4]
+              test_accuracy[i] = accuracy_list[accuracy_list.length-3+i]
+
               baseline_f1[i] = f1_list[0]
               training_f1[i] = f1_list[i+1]
+              test_baseline_f1[i] = f1_list[4]
+              test_f1[i] = f1_list[f1_list.length-3+i]
              
 
             }
             for(let i=0; i<alpha_list.length; i++){
               training_alpha2[i] = alpha_list[i]
             }
-            test_accuracy = []
-            test_f1 = []
+            // test_accuracy = []
+            // test_f1 = []
             
-            if (vm.test_id != null){
-            test_accuracy = accuracy_list.slice(accuracy_list.length-2,accuracy_list.length)
-            // console.log('test_accuracy',test_accuracy)
-            test_f1 = f1_list.slice(f1_list.length-2,f1_list.length)
-            // console.log('test_f1',test_f1)
+            // if (vm.test_id != null){
+            // test_accuracy = accuracy_list.slice(accuracy_list.length-3,accuracy_list.length)
+            // // console.log('test_accuracy',test_accuracy)
+            // test_f1 = f1_list.slice(f1_list.length-3,f1_list.length)
+            // // console.log('test_f1',test_f1)
   
-            }
+            // }
 
             // console.log('training_alpha',training_alpha)
             
@@ -1305,6 +1727,35 @@ export default {
   },
   // beforeCreate
   created () {
+    // baseline_rmse = []
+    // training_rmse = []
+    // test_rmse = []
+    // test_baseline_rmse = []
+
+    // training_alpha = []
+
+    // baseline_mad = []
+    // training_mad = []
+    // test_mad = []
+    // test_baseline_mad = []
+
+    // baseline_r2 = []
+    // training_r2 = []
+    // test_r2 = []
+    // test_baseline_r2 = []
+
+    // baseline_accuracy = []
+    // training_accuracy = []
+    // test_accuracy = []
+    // test_baseline_accuracy = []
+
+    // baseline_f1 = []
+    // training_f1 = []
+    // test_f1 = []
+    // test_baseline_f1 = []
+
+    // training_alpha2 = []
+
     this.task_id = this.$route.query.from;
     this.task_name = this.$route.query.from_task_name
     this.test_id = this.$route.query.from_test_id
@@ -1324,7 +1775,9 @@ export default {
     this.checkSponsor(this.$route.query.from)
     this.get_backend_log(this.task_id)
     
-    this.$nextTick(this.draw_chart())
+    // this.$nextTick( () => this.draw_chart())
+    // this.draw_chart()
+    // this.$nextTick(this.draw_chart())
     
     // this.$nextTick(this.checkSponsor(this.$route.query.from))
     
@@ -1349,7 +1802,7 @@ export default {
   },
 
   mounted: function () {
-      //  this.$nextTick(this.draw_chart())
+      //  this.$nextTick(() => this.draw_chart())
             
             
   

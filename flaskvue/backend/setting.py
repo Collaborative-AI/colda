@@ -34,23 +34,6 @@ class Config(object):
     #     'sqlite:///' + os.path.join(basedir, 'app.db')
 
     # mysql
-<<<<<<< HEAD
-    # master username
-#     master_username = 'apollo'
-#     password = 'Aa1234567!'
-#     end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'
-#     # database name (created by create schema in mysql workbench)
-#     database_name = 'apollo_aws_mysql'
-#     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
-#     SQLALCHEMY_TRACK_MODIFICATIONS = False
-#     SQLALCHEMY_ENGINE_OPTIONS = {
-#     # "poolclass": QueuePool,
-#     "pool_size": 50,
-# }
-
-    # unittest
-=======
->>>>>>> 1201a080adb55e53e7b652b08423ee617bdc51bc
     master_username = 'apollo'
     password = 'Aa1234567!'
     end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'

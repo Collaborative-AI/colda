@@ -56,7 +56,7 @@ async function createWindow() {
     win.loadURL('app://./index.html')
     //win.loadURL(node_path.join(__dirname, '/index.html'))
     //win.loadURL('https://www.google.com/?hl=zh-cn')
-    // win.webContents.openDevTools();
+    win.webContents.openDevTools();
     console.log("h1")
   }
 }

@@ -213,8 +213,8 @@ export default {
           console.log("true")
           console.log(vm.test_file_path,vm.test_id_column,vm.test_target_column)
 
-          let select_sentence = 'SELECT * FROM User_Sponsor_Table WHERE user_id = ?' +
-                                 'AND test_indicator = ? AND task_id = ?'
+          let select_sentence = `SELECT * FROM User_Sponsor_Table WHERE user_id = ?` +
+                                 ` AND test_indicator = ? AND task_id = ?`
           let param = [vm.sharedState.user_id, 'train', vm.task_id]
           console.log('select_sentence', select_sentence)
 

@@ -77,7 +77,10 @@ def match_assistor_id():
     data_array_id = set()
     for i in range(len(data_array)):
         if data_array[i]:
-            data_array_id.add(data_array[i])
+            if data_array[i][-2] == '\\' and data_array[i][-1] == 'r':
+                data_array_id.add(data_array[i][:-2])
+            else:
+                data_array_id.add(data_array[i])
 
     db_array = json.loads(record.Matched_id_file)
     print('db_array', db_array)

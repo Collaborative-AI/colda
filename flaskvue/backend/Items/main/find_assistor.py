@@ -126,18 +126,23 @@ def find_assistor():
     log(generate_msg('1.1', 'sponsor find_assistor'), g.current_user.id, task_id)
 
     # If the user dont type in the task name, we give it a basic name
+    # a = json.loads(id_file)
+    # print('aa', a)
     id_file = id_file.split("\n")
     data_array_id = set()
     for i in range(len(id_file)):
         if id_file[i]: 
-            if id_file[i][-2] == '\\' and id_file[i][-1] == 'r':
+            print('ssss', id_file[i])
+            print('sss1s', id_file[i][-2])
+            print('sss2s', id_file[i][-1], id_file[i][-1] == '\r')
+            if id_file[i][-1] == '\r':
                 print('6666')
-                data_array_id.add(id_file[i][:-2])
+                data_array_id.add(id_file[i][:-1])
             else:
                 data_array_id.add(id_file[i])
     
     data_array_id = list(data_array_id)
-
+    print('zzz', data_array_id)
     
 
     log(generate_msg('1.2:', 'sponsor handles id data done'), g.current_user.id, task_id)
@@ -286,8 +291,8 @@ def find_test_assistor():
     id_file = id_file.split("\n")
     data_array_id = set()
     for i in range(len(id_file)):
-        if id_file[i][-2] == '\\' and id_file[i][-1] == 'r':
-            data_array_id.add(id_file[i][:-2])
+        if id_file[i][-1] == '\r':
+            data_array_id.add(id_file[i][:-1])
         else:
             data_array_id.add(id_file[i])
     

@@ -77,8 +77,8 @@ def match_assistor_id():
     data_array_id = set()
     for i in range(len(data_array)):
         if data_array[i]:
-            if data_array[i][-2] == '\\' and data_array[i][-1] == 'r':
-                data_array_id.add(data_array[i][:-2])
+            if data_array[i][-1] == '\r':
+                data_array_id.add(data_array[i][:-1])
             else:
                 data_array_id.add(data_array[i])
 

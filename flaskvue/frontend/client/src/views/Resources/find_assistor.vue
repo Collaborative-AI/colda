@@ -349,7 +349,7 @@ export default {
           let hash_id_file_data = null
           try{
             hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
-            // console.log("hash_id_file_data", hash_id_file_data)
+            console.log("hash_id_file_data", hash_id_file_data)
           } catch (err) {
             console.log(err)
           }

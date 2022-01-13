@@ -35,6 +35,7 @@ coverage = "*"
 pymysql = "*"
 cryptography = "*"
 flask-mail = "*"
+colorama = "*"
 
 [dev-packages]
 

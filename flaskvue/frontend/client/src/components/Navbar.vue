@@ -325,7 +325,7 @@ export default {
                 Log(generate_message_string("2.2 Assistor uploads match id file\n"), 'info')
                 Log(generate_message_string("2.3 Unread Request Done\n"), 'info')
 
-                vm.$toasted.success( `Training: Task `+ task_id + ` Starts`, { icon: 'fingerprint' })
+                vm.$toasted.success( `auto: Training Task `+ task_id + ` Starts`, { icon: 'fingerprint' })
 
                 try {
                   fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
@@ -347,8 +347,9 @@ export default {
           task_id: task_id,
         }
         console.log('jinlai', add_train_pending)
-        vm.$toasted.success("Training: Task " + task_id + " Request Received", { icon: 'fingerprint' })
-      
+        vm.$toasted.success("manual: Training Task " + task_id + " Request Received", { icon: 'fingerprint' })
+        vm.$toasted.success("Please go to pending page", { icon: 'fingerprint' })
+
         vm.$axios.post('/add_train_pending/', add_train_pending)
           .then((response) => {
             // handle success
@@ -968,8 +969,10 @@ export default {
           Log(generate_message_string("---- Train stage done\n"), 'info')
 
           // vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
-          vm.$toasted.success(`Training Stage Done`, { icon: 'fingerprint' })
-
+          if (rounds == vm.max_round){
+            vm.$toasted.success(`Training Stage Done`, { icon: 'fingerprint' })
+          }
+          
           // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
           try {
             fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
@@ -1304,8 +1307,8 @@ export default {
 
 
         if (rounds >= vm.max_round){
-          
           fs.appendFileSync(Log_address, "---- Train stage done\n");
+          vm.$toasted.success(`Training Task: ` + task_id +  ` Done`, { icon: 'fingerprint' })
         }else{        
 
         let make_residual_multiple_paths = null;
@@ -1372,7 +1375,7 @@ export default {
             Log(generate_message_string("---- 5. Unread Output Done\n"), 'info')
 
             // vm.$toasted.success(`Train: Unread Output Done`, { icon: 'fingerprint' })
-            vm.$toasted.success("Training Stage Done", { icon: 'fingerprint' })
+            
 
             try {
               fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
@@ -1548,7 +1551,8 @@ export default {
                   Log(generate_message_string("----2. Unread Test Request Done\n"), 'info')
 
                   // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
-                  vm.$toasted.success(`Task` + task_id + `Testing Starts`, { icon: 'fingerprint' })
+                  vm.$toasted.success(`Testing: Task ` + task_id + ` Testing Starts`, { icon: 'fingerprint' })
+
                   try {
                     fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
                     fs.appendFileSync(Log_address, "----2. Unread Test Request Done\n")
@@ -1571,7 +1575,7 @@ export default {
             const add_test_pending = {
                 test_id: test_id,
               }
-            vm.$toasted.success("Testing: Test " + test_id + "Received", { icon: 'fingerprint' })
+            
 
             vm.$axios.post('/add_test_pending/', add_test_pending)
               .then((response) => {
@@ -1579,6 +1583,9 @@ export default {
                 // // console.log("add_test_pending response", response.data)
                 let unittest_parameters = generate_unittest_parameters(response.data)
                 execute_unittest_list(unittest_callbacks, 1, "unread_test_request_unittest", unittest_parameters)
+
+                vm.$toasted.success("Testing: Test " + test_id + "Received", { icon: 'fingerprint' })
+                vm.$toasted.success(`Please go to Pending page`, { icon: 'fingerprint' })
               })
               .catch((error) => {
                 console.log(error)
@@ -2189,14 +2196,12 @@ export default {
         
 
         // console.log("4.4 Test: Sponsor evaluates output models done");
-        vm.$toasted.success("Testing Stage Done", { icon: 'fingerprint' })
+        
         try {
           fs.appendFileSync(Log_address, "4.4 Test: Sponsor evaluates output models done\n")
         } catch (err) {
           console.log(err)
         }
-
-        vm.$toasted.success("Testing Stage Done", { icon: 'fingerprint' })
 
 
         try {
@@ -2205,7 +2210,8 @@ export default {
         } catch (err) {
           console.log(err)
         }
-
+        vm.$toasted.success("Testing Stage Done", { icon: 'fingerprint' })
+        
         let unittest_parameters = generate_unittest_parameters()
         execute_unittest_list(unittest_callbacks, 3, "unread_test_output_unittest", unittest_parameters)
       }

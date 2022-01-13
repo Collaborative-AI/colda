@@ -392,7 +392,7 @@ export default {
               console.log("log.txt created");
             }
             // handle success
-            vm.$toasted.success(`Training Starts`, { icon: 'fingerprint' })
+            vm.$toasted.success(`Training task: ` + vm.task_id + ` Starts`, { icon: 'fingerprint' })
 
             Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
             Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'info')
@@ -402,7 +402,7 @@ export default {
             Log(generate_message_string("1.2 Sponsor sends id file\n"), 'info')
             Log(generate_message_string("1.3 Find Assistor Done\n"), 'info')
 
-            vm.$toasted.success(`Training: Finding Assistor Done`, { icon: 'fingerprint' })
+            // vm.$toasted.success(`Training: Finding Assistor Done`, { icon: 'fingerprint' })
 
 
             try {

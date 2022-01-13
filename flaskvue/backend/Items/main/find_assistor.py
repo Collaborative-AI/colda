@@ -130,9 +130,15 @@ def find_assistor():
     data_array_id = set()
     for i in range(len(id_file)):
         if id_file[i]: 
-            data_array_id.add(id_file[i])
+            if id_file[i][-2] == '\\' and id_file[i][-1] == 'r':
+                print('6666')
+                data_array_id.add(id_file[i][:-2])
+            else:
+                data_array_id.add(id_file[i])
     
     data_array_id = list(data_array_id)
+
+    
 
     log(generate_msg('1.2:', 'sponsor handles id data done'), g.current_user.id, task_id)
 
@@ -280,7 +286,9 @@ def find_test_assistor():
     id_file = id_file.split("\n")
     data_array_id = set()
     for i in range(len(id_file)):
-        if id_file[i]: 
+        if id_file[i][-2] == '\\' and id_file[i][-1] == 'r':
+            data_array_id.add(id_file[i][:-2])
+        else:
             data_array_id.add(id_file[i])
     
     data_array_id = list(data_array_id)

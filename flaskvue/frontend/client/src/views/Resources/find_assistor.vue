@@ -401,7 +401,7 @@ export default {
             Log(generate_message_string("1.2 Sponsor sends id file\n"), 'info')
             Log(generate_message_string("1.3 Find Assistor Done\n"), 'info')
 
-            vm.$toasted.success(`Train: Finding Assistor Done`, { icon: 'fingerprint' })
+            vm.$toasted.success(`Training: Finding Assistor Done`, { icon: 'fingerprint' })
 
 
             try {

@@ -353,7 +353,7 @@ export default {
                   Log(generate_message_string("1.2 Test: Sponsor sends id file\n"), 'info')
                   Log(generate_message_string("1.3 Test: Find Test Assistor Done\n"), 'info')
 
-                  vm.$toasted.success(`Test: Find Assistor Done`, { icon: 'fingerprint' })
+                  vm.$toasted.success(`Testing: Find Assistor Done`, { icon: 'fingerprint' })
 
                   try {
                     fs.appendFileSync(Log_address, "\n You are SPONSOR\n")

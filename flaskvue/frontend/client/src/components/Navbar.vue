@@ -30,9 +30,9 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                       
-                        <!-- <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user'])"  class="nav-item">
+                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user'])"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
-                        </li>        -->
+                        </li>       
                         <!-- <button @click="test_axios()">123</button>              -->
                         <!-- <li class="nav-item">
                             <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Brand</span></a>
@@ -136,7 +136,7 @@ export default {
 
     handle_train_log_address(task_id) {
       const Log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
-      // // console.log("train_node_path_log", Log_address)
+      console.log("train_node_path_log", Log_address)
       if(!fs.existsSync(Log_address)){
         // // console.log("creating log.txt");
         fs.openSync(Log_address, "w");
@@ -307,6 +307,8 @@ export default {
             // Read the data from designated position
             let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
 
+            console.log('hashidfile', hash_id_file_data, hash_id_file_address)
+
             const match_assistor_id_data = {
               task_id: task_id,
               file: hash_id_file_data,
@@ -323,7 +325,7 @@ export default {
                 Log(generate_message_string("2.2 Assistor uploads match id file\n"), 'info')
                 Log(generate_message_string("2.3 Unread Request Done\n"), 'info')
 
-                vm.$toasted.success( `Task`+ task_id + `Training Starts`, { icon: 'fingerprint' })
+                vm.$toasted.success( `Training: Task `+ task_id + ` Starts`, { icon: 'fingerprint' })
 
                 try {
                   fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
@@ -345,7 +347,7 @@ export default {
           task_id: task_id,
         }
         console.log('jinlai', add_train_pending)
-        vm.$toasted.success("Task Request Received", { icon: 'fingerprint' })
+        vm.$toasted.success("Training: Task " + task_id + " Request Received", { icon: 'fingerprint' })
       
         vm.$axios.post('/add_train_pending/', add_train_pending)
           .then((response) => {
@@ -966,7 +968,7 @@ export default {
           Log(generate_message_string("---- Train stage done\n"), 'info')
 
           // vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
-          vm.$toasted.success(`Train Stage Done`, { icon: 'fingerprint' })
+          vm.$toasted.success(`Training Stage Done`, { icon: 'fingerprint' })
 
           // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
           try {
@@ -1302,7 +1304,7 @@ export default {
 
 
         if (rounds >= vm.max_round){
-          vm.$toasted.success("Training Done", { icon: 'fingerprint' })
+          
           fs.appendFileSync(Log_address, "---- Train stage done\n");
         }else{        
 
@@ -1370,10 +1372,12 @@ export default {
             Log(generate_message_string("---- 5. Unread Output Done\n"), 'info')
 
             // vm.$toasted.success(`Train: Unread Output Done`, { icon: 'fingerprint' })
+            vm.$toasted.success("Training Stage Done", { icon: 'fingerprint' })
 
             try {
               fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
               fs.appendFileSync(Log_address, "---- 5. Unread Output Done\n")
+
             } catch (err) {
               console.log(err)
             }
@@ -1482,6 +1486,7 @@ export default {
 
               let unittest_parameters = generate_unittest_parameters(test_id, vm.sharedState.mode)
               execute_unittest_list(unittest_callbacks, 1, "unread_test_request_unittest", unittest_parameters)
+              vm.$toasted.success("Testing: Test " + test_id + "Starts", { icon: 'fingerprint' })
 
               try{
 
@@ -1566,7 +1571,8 @@ export default {
             const add_test_pending = {
                 test_id: test_id,
               }
-            
+            vm.$toasted.success("Testing: Test " + test_id + "Received", { icon: 'fingerprint' })
+
             vm.$axios.post('/add_test_pending/', add_test_pending)
               .then((response) => {
                 // handle success
@@ -1966,7 +1972,7 @@ export default {
                 // console.log("3.8 Test: assistor sends all test model results")
                 // vm.$toasted.success("3.8 Test: assistor sends all test model results", { icon: 'fingerprint' })
                 // vm.$toasted.success(`Test: Unread Match ID Done`, { icon: 'fingerprint' })
-                vm.$toasted.success(`Test Stage Done`, { icon: 'fingerprint' })
+                vm.$toasted.success(`Testing Stage Done`, { icon: 'fingerprint' })
 
                 try {
                   fs.appendFileSync(Log_address, "3.8 Test: assistor sends all test model results\n")
@@ -2190,6 +2196,7 @@ export default {
           console.log(err)
         }
 
+        vm.$toasted.success("Testing Stage Done", { icon: 'fingerprint' })
 
 
         try {

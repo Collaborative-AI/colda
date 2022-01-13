@@ -81,6 +81,7 @@ def match_assistor_id():
 
     db_array = json.loads(record.Matched_id_file)
     print('db_array', db_array)
+    print('data_array_id', data_array_id)
     same_id_keys = list(data_array_id & set(db_array))
     print('same_id_keys', same_id_keys)
 

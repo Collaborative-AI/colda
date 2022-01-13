@@ -175,11 +175,9 @@ export default {
       let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
       execute_unittest_list(unittest_callbacks, 0, "unread_request_unittest", unittest_parameters)
 
-
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?' 
       let param = [vm.sharedState.user_id]
       console.log('select_sentence', select_sentence)
-
 
       vm.$db.get(select_sentence, change_db_param_to_string(param), (err, row) => {
         if (err) {
@@ -306,7 +304,7 @@ export default {
 
             // Read the data from designated position
             let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
-
+            hash_id_file_data = hash_id_file_data.split(/[\r\n]+/)
             console.log('hashidfile', hash_id_file_data, hash_id_file_address)
 
             const match_assistor_id_data = {
@@ -1532,6 +1530,7 @@ export default {
               }
 
               let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+              test_hash_id_file_data = test_hash_id_file_data.split(/[\r\n]+/)
 
               const match_test_assistor_id_data = {
                 file: test_hash_id_file_data,

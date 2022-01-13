@@ -291,8 +291,9 @@ export default {
                   console.log(err)
                 }
                 let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
-
+                hash_id_file_data = hash_id_file_data.split(/[\r\n]+/)
                 console.log('hash_id_file_data', hash_id_file_data)
+
                 const match_assistor_id_data = {
                   task_id: task_id,
                   file: hash_id_file_data,
@@ -456,6 +457,7 @@ export default {
                 }
 
                 let test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+                test_hash_id_file_data = test_hash_id_file_data.split(/[\r\n]+/)
 
                 const match_test_assistor_id_data = {
                   file: test_hash_id_file_data,

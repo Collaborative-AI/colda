@@ -315,6 +315,7 @@ export default {
               let test_hash_id_file_data = null
               try{
                 test_hash_id_file_data = fs.readFileSync(test_hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+                test_hash_id_file_data = test_hash_id_file_data.split(/[\r\n]+/)
               } catch(err){
                 console.log(err)
               }

@@ -55,7 +55,7 @@ describe('test_unread_test_match_id', () => {
    login_helper.login_second_user()
    // Assistor updates default_train_file_path, default_train_id_column, 
    // default_train_data_column
-   profile_helper.onSubmit()
+   profile_helper.onSubmit(default_mode)
    //assistor gets notification
    notification_helper.update_notification()
    //assistor runs unread request

@@ -82,10 +82,10 @@ def match_assistor_id():
     #         else:
     #             data_array_id.add(data_array[i])
 
-    data_array_id = data_array
+    data_array_id = set(data_array)
     db_array = json.loads(record.Matched_id_file)
-    # print('db_array', db_array)
-    # print('data_array_id', data_array_id)
+    # print('db_array', type(db_array), db_array)
+    # print('data_array_id', type(data_array_id), data_array_id)
     same_id_keys = list(data_array_id & set(db_array))
     # print('same_id_keys', same_id_keys)
 
@@ -181,7 +181,7 @@ def match_test_assistor_id():
     #         else:
     #             data_array_id.add(data_array[i])
 
-    data_array_id = data_array
+    data_array_id = set(data_array)
     db_array = json.loads(record.Matched_id_file)
     same_id_keys = list(data_array_id & set(db_array))
    

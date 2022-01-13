@@ -141,9 +141,10 @@ def find_assistor():
     #         else:
     #             data_array_id.add(id_file[i])
     
-    data_array_id = set(id_file)
+    print(type(id_file))
+    data_array_id = id_file
     # print(data_array_id)
-    print('zzz', data_array_id)
+    # print('zzz', data_array_id, type(data_array_id))
     
 
     log(generate_msg('1.2:', 'sponsor handles id data done'), g.current_user.id, task_id)
@@ -299,7 +300,7 @@ def find_test_assistor():
     #             data_array_id.add(id_file[i])
     
     # data_array_id = list(data_array_id)
-    data_array_id = set(id_file)
+    data_array_id = id_file
 
     log(generate_msg('Test 1.2', 'sponsor handles id data done'), g.current_user.id, task_id, test_id)
     # # extract ID

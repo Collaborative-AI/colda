@@ -123,13 +123,13 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
     let res = ''
 
     if (sponsor_mode == 'regression'){
-      // res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-      res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//BostonHousing_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
+      res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//BostonHousing_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     } else if (sponsor_mode == 'classification'){
-      // res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-      res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//Wine_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
+      res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//Wine_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     }

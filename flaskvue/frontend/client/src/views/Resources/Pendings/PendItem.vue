@@ -259,6 +259,10 @@ export default {
                 let task_id = vm.task_id
                 let hash_id_file_address = null;
                 let Log_address = null;
+
+                vm.$toasted.success(`Training: Assistor Accepts Task ` + task_id, { icon: 'fingerprint' })
+                vm.$toasted.success( `Training Starts`, { icon: 'fingerprint' })
+
                 try{
                   console.log('asa', vm.manual_file_path, vm.manual_id_column)
                   hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id
@@ -266,6 +270,7 @@ export default {
                                           + ' --id_idx ' + vm.manual_id_column, {encoding: 'utf8'})
 
                   hash_id_file_address = hash_id_file_address.split('?')
+
                   let indicator = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
                   Log_address = vm.handle_train_log_address(task_id)
                   if (indicator == false){
@@ -286,6 +291,7 @@ export default {
                   console.log(err)
                 }
                 let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
+
                 console.log('hash_id_file_data', hash_id_file_data)
                 const match_assistor_id_data = {
                   task_id: task_id,
@@ -417,6 +423,10 @@ export default {
                 let test_id = vm.test_id
                 let test_hash_id_file_address = null
                 let Log_address = null
+                vm.$toasted.success(`Testing: Assistor Accepts Test` + test_id, { icon: 'fingerprint' })
+                vm.$toasted.success( `Testing Starts`, { icon: 'fingerprint' })
+
+
                 try{
                   test_hash_id_file_address = ex.execSync(vm.exe_position + ' make_hash --root ' + vm.root 
                                             + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id

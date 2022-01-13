@@ -34,17 +34,17 @@
     </table>
     </div>
     <div class="form-group">
-      <label for="name">Input ID column </label>
+      <label for="name">Input ID column (eg. 1)</label>
       <input type="text" v-model="test_id_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input data column (eg. 3-6)</label>
+      <label for="name">Input data column (eg. 2-8)</label>
       <input type="text" v-model="test_data_column" class="form-control" id="name" placeholder="">
     </div>
 
     <div class="form-group">
-      <label for="name">Input target column</label>
+      <label for="name">Input target column (eg. 9)</label>
       <input type="text" v-model="test_target_column" class="form-control" id="name" placeholder="">
     </div>
     
@@ -353,7 +353,7 @@ export default {
                   Log(generate_message_string("1.2 Test: Sponsor sends id file\n"), 'info')
                   Log(generate_message_string("1.3 Test: Find Test Assistor Done\n"), 'info')
 
-                  vm.$toasted.success(`Test: Find Assistor Done`, { icon: 'fingerprint' })
+                  vm.$toasted.success(`Testing: Find Assistor Done`, { icon: 'fingerprint' })
 
                   try {
                     fs.appendFileSync(Log_address, "\n You are SPONSOR\n")

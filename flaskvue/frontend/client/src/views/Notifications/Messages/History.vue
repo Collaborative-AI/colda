@@ -1275,8 +1275,39 @@ export default {
     getLog(task_id) {
       let vm = this
       const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
-      let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
-      Log_content = Log_content.split("\n")
+      if(fs.existsSync(train_log_address)){
+        let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
+        Log_content = Log_content.split("\n")
+        this.messages = [];
+        this.messages2 = []
+        console.log('dachu1', vm.test_id)
+        
+        for (let i = 0; i < Log_content.length; i++){
+          this.messages.push(Log_content[i])
+          // console.log('dai',Log_content[i])
+          if (Log_content[i].search("Train stage done") != -1 && vm.test_id == null){
+            // console.log('zaina',Log_content[i].search("Train stage done"))
+            console.log('cheng')
+            break
+          }
+        }
+
+        for (let message of this.messages){        
+          if (message.search("RMSE:") != -1){
+            this.task_mode = 'regression'
+            break
+          }
+          else if (message.search("F1") != -1)
+          {
+            this.task_mode = 'classification'
+            break
+          }
+          else{
+            continue
+          }
+        }
+      }
+      
       // $log('root address', this.root) 
       // vm.$log.pretty('title','pretty print','danger')
       // const train_log_address2 = node_path.join(this.root.toString(), 'logs', vm.sharedState.user_id.toString(), this.task_id.toString(),'log.txt');
@@ -1284,19 +1315,7 @@ export default {
 
       // let Log_content2 = fs.readFileSync(train_log_address2, {encoding:'utf8', flag:'r'});
       // Log_content2 = Log_content2.split("\n")
-      this.messages = [];
-      this.messages2 = []
-      console.log('dachu1', vm.test_id)
       
-      for (let i = 0; i < Log_content.length; i++){
-        this.messages.push(Log_content[i])
-        // console.log('dai',Log_content[i])
-        if (Log_content[i].search("Train stage done") != -1 && vm.test_id == null){
-          // console.log('zaina',Log_content[i].search("Train stage done"))
-          console.log('cheng')
-          break
-        }
-      }
       // console.log('dachu message', this.messages)
 
       // for (let i = 0; i < Log_content2.length; i++){
@@ -1305,20 +1324,7 @@ export default {
       // }
 
 
-      for (let message of this.messages){        
-      if (message.search("RMSE:") != -1){
-        this.task_mode = 'regression'
-        break
-      }
-      else if (message.search("F1") != -1)
-      {
-        this.task_mode = 'classification'
-        break
-      }
-      else{
-        continue
-      }
-    }
+     
     // vm.$nextTick(vm.draw_chart())
 
     // console.log('this.task_mode', this.task_mode)
@@ -1372,21 +1378,25 @@ export default {
 
         this.$axios.post('/get_test_history_id/', payload)
         .then((response) => {
-
+          console.log('zz77',response)
           let test_id_list = response.data.test_id_list;
+          
           for (let i = 0; i < test_id_list.length; i++){
             const test_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id_list[i] + '/log.txt'
-            let test_log_content = fs.readFileSync(test_log_address, {encoding:'utf8', flag:'r'});
-            test_log_content = test_log_content.split("\n")
-            for (let i = 0; i < test_log_content.length; i++){
-              if (vm.test_id == null){
-                break
+            console.log('zz76',test_log_address)
+            if(fs.existsSync(test_log_address)){
+              console.log('zz75',test_log_address)
+
+              let test_log_content = fs.readFileSync(test_log_address, {encoding:'utf8', flag:'r'});
+              test_log_content = test_log_content.split("\n")
+              for (let i = 0; i < test_log_content.length; i++){
+                if (vm.test_id == null){
+                  break
+                }
+                this.messages.push(test_log_content[i])
+                }
               }
-              this.messages.push(test_log_content[i])
-              }
-            }
-          
-          
+          }
           vm.draw_chart()
             // vm.$nextTick(vm.draw_chart())
 

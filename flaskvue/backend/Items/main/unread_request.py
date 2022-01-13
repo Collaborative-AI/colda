@@ -83,10 +83,10 @@ def match_assistor_id():
                 data_array_id.add(data_array[i])
 
     db_array = json.loads(record.Matched_id_file)
-    print('db_array', db_array)
-    print('data_array_id', data_array_id)
+    # print('db_array', db_array)
+    # print('data_array_id', data_array_id)
     same_id_keys = list(data_array_id & set(db_array))
-    print('same_id_keys', same_id_keys)
+    # print('same_id_keys', same_id_keys)
 
     all_cur_task_matches = Matched.query.filter(Matched.assistor_id_pair != sponsor_id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
     id_file_upload = 0

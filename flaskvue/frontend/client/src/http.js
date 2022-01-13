@@ -15,7 +15,8 @@ axios.defaults.timeout = 5000  // 超时时间
 // axios.defaults.baseURL = 'http://127.0.0.1:5000'
 // axios.defaults.baseURL = 'http://18.177.149.248'
 // axios.defaults.baseURL = 'http://172.31.20.107'
-axios.defaults.baseURL = 'http://3.129.5.87'
+// axios.defaults.baseURL = 'http://3.129.5.87'
+axios.defaults.baseURL = 'http://18.191.230.167'
 
 
 // axios.defaults.transformRequest = [ function(data) {
@@ -57,7 +58,7 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
   // Do something with response error
   console.log('Error_https', error)
-  if ('response' in error){
+  if ('response' in error && error.response != undefined){
     console.log('status' in error.response)
     if ('status' in error.response){
       switch  (error.response.status) {

@@ -132,17 +132,17 @@ def find_assistor():
     data_array_id = set()
     for i in range(len(id_file)):
         if id_file[i]: 
-            print('ssss', id_file[i])
-            print('sss1s', id_file[i][-2])
-            print('sss2s', id_file[i][-1], id_file[i][-1] == '\r')
+            # print('ssss', id_file[i])
+            # print('sss1s', id_file[i][-2])
+            # print('sss2s', id_file[i][-1], id_file[i][-1] == '\r')
             if id_file[i][-1] == '\r':
-                print('6666')
+                # print('6666')
                 data_array_id.add(id_file[i][:-1])
             else:
                 data_array_id.add(id_file[i])
     
     data_array_id = list(data_array_id)
-    print('zzz', data_array_id)
+    # print('zzz', data_array_id)
     
 
     log(generate_msg('1.2:', 'sponsor handles id data done'), g.current_user.id, task_id)

@@ -56,7 +56,7 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
   // Do something with response error
   console.log('Error_https', error)
-  if ('response' in error){
+  if ('response' in error && error.response != undefined){
     console.log('status' in error.response)
     if ('status' in error.response){
       switch  (error.response.status) {

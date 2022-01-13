@@ -249,6 +249,7 @@ export default {
         dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
       } else if ( vm.task_id == ""){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
+        vm.get_train_id()
       } else if ( vm.task_mode == ""){
         dialog.showErrorBox('Please select task mode')
       } else if ( vm.model_name == ""){
@@ -467,6 +468,7 @@ export default {
 
     // When unittesting, this.$route == undefined
     if (this.$route != undefined){
+      console.log('542523')
       this.get_train_id();
     }
 

@@ -188,8 +188,11 @@ export default {
       } else if ( interaction_indicator == false){
         dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
       } else if (this.task_id == '' || this.task_name == '' || this.root == '' || this. exe_position == ''){
+        dialog.showErrorBox('Please re-enter the page', 'We apologize for the latency')
+      } else if (this.test_id == ''){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
-      }else{
+        vm.get_test_id()
+      } else {
         both_path_validation = true
         try {
           fs.statSync(vm.test_file_path);

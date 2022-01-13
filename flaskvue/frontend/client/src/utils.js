@@ -118,16 +118,19 @@ export function handle_Algorithm_return_value(name, return_val, first_val, secon
 }
 
 export function handle_assistor_username_list(assistor_username_string){
-  
+  console.log('assistor_username_string', assistor_username_string)
   if (assistor_username_string == undefined || assistor_username_string == ''){
     return false
   }
 
+  if (!assistor_username_string instanceof String){
+    return assistor_username_string
+  }
+  
   // trim leading and trailing spaces
   console.log('assistor user name', assistor_username_string)
   assistor_username_string = assistor_username_string.trim()
   
-
   let new_assistor_username_list = assistor_username_string.split(",")
   
   let return_assistor_username_list = []

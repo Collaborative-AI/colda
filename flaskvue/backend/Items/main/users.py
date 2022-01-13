@@ -411,7 +411,7 @@ def get_user_notifications(id):
         Notification.timestamp > since).order_by(Notification.timestamp.asc())
     
     return_notification = [n.to_dict() for n in notifications]
-    print("#########", return_notification)
+    # print("#########", return_notification)
 
     # for row in notifications:
     #     print(row)

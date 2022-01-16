@@ -67,7 +67,7 @@
 <script>
 import store from '../../store'
 import db from '../../db'
-import {  check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, change_db_param_to_string } from '../../utils.js'
+import {  handle_file_path, check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, change_db_param_to_string } from '../../utils.js'
 
 import { ex,fs,os,node_path,dialog } from '../../import_package.js'
 
@@ -139,6 +139,12 @@ export default {
 
         try {
           let path = result[0]
+
+          if (handle_file_path(path) == false){
+            dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
+            return
+          }
+
           fs.statSync(path);
           this.test_file_path = path
           fs.readFile(path, 'utf8' , (err, data) => {
@@ -173,17 +179,17 @@ export default {
     onSubmit (unittest_callbacks) {
       let vm = this;
 
-      vm.test_data_column = handle_input_column_string(vm.test_data_column, 'data', vm.ptitles.length)
-      vm.test_id_column = handle_input_column_string(vm.test_id_column, 'id', vm.ptitles.length)
-      vm.test_target_column = handle_input_column_string(vm.test_target_column, 'target', vm.ptitles.length)
+      let handle_data_column_res = handle_input_column_string(vm.test_data_column, 'data', vm.ptitles.length)
+      let handle_id_column_res = handle_input_column_string(vm.test_id_column, 'id', vm.ptitles.length)
+      let handle_target_column_res = handle_input_column_string(vm.test_target_column, 'target', vm.ptitles.length)
 
       let interaction_indicator = check_interaction(vm.test_id_column, vm.test_data_column, vm.test_target_column)
       let both_path_validation = false
-      if ( vm.test_data_column == false) {
+      if ( handle_data_column_res == false) {
         dialog.showErrorBox('Please Type in test_data_column in corrent form', 'Thank you very much')
-      } else if ( vm.test_id_column == false) {
+      } else if ( handle_id_column_res == false) {
         dialog.showErrorBox('Please Type in test_id_column in corrent form', 'Thank you very much')
-      } else if ( vm.test_target_column == false) {
+      } else if ( handle_target_column_res == false) {
         dialog.showErrorBox('Please Type in test_target_column in corrent form', 'Thank you very much')
       } else if ( interaction_indicator == false){
         dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
@@ -192,6 +198,8 @@ export default {
       } else if (this.test_id == ''){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
         vm.get_test_id()
+      } else if (handle_file_path(vm.test_file_pat) == false){
+        dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
       } else {
         both_path_validation = true
         try {

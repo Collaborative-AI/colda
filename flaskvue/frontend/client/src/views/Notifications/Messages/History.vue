@@ -1306,6 +1306,16 @@ export default {
             continue
           }
         }
+
+        const timer = setTimeout(() => {
+          vm.getLog(task_id)
+        }, 10000)
+  
+        // destroy the setTimeout function when leave this page
+        vm.$once('hook:beforeDestroy', function () {
+            clearTimeout(timer)
+        })
+
       }
       
       // $log('root address', this.root) 

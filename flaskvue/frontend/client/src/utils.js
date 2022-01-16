@@ -117,6 +117,18 @@ export function handle_Algorithm_return_value(name, return_val, first_val, secon
   return true
 }
 
+export function handle_file_path(file_path){
+  if (file_path == undefined || file_path == ''){
+    return false
+  }
+
+  file_path.trim()
+  if (file_path.indexOf(' ') >= 0){
+    return false
+  }
+  return true
+}
+
 export function handle_assistor_username_list(assistor_username_string){
   console.log('assistor_username_string', assistor_username_string)
   if (assistor_username_string == undefined || assistor_username_string == ''){

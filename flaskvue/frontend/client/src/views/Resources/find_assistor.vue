@@ -87,7 +87,7 @@
 
 <script>
 import store from '../../store.js'
-import { check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, sqlite3_run, change_db_param_to_string } from '../../utils.js'
+import { handle_file_path, check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, sqlite3_run, change_db_param_to_string } from '../../utils.js'
 import { ex,fs,os,node_path,dialog,log } from '../../import_package.js'
 
 // const fs = window.fs ? window.fs : require('fs');
@@ -195,6 +195,12 @@ export default {
       }else{
         try {
           let path = result[0]
+
+          if (handle_file_path(path) == false){
+            dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
+            return
+          }
+
           fs.statSync(path);
           this.train_file_path = path
           fs.readFile(path, 'utf8' , (err, data) => {
@@ -226,24 +232,23 @@ export default {
       let vm = this;
       console.log("this.root, this.exe_position", vm.task_id, vm.assistor_username_list, vm.train_data_column, vm.train_id_column, vm.train_target_column)
       
-      vm.assistor_username_list = handle_assistor_username_list(vm.assistor_username_list)
+      let handle_assistor_username_list_res = handle_assistor_username_list(vm.assistor_username_list)
 
-      vm.train_data_column = handle_input_column_string(vm.train_data_column, 'data', vm.ptitles.length)
-      vm.train_id_column = handle_input_column_string(vm.train_id_column, 'id', vm.ptitles.length)
-      vm.train_target_column = handle_input_column_string(vm.train_target_column, 'target', vm.ptitles.length)
-
+      let handle_data_column_res = handle_input_column_string(vm.train_data_column, 'data', vm.ptitles.length)
+      let handle_id_column_res = handle_input_column_string(vm.train_id_column, 'id', vm.ptitles.length)
+      let handle_target_column_res = handle_input_column_string(vm.train_target_column, 'target', vm.ptitles.length)
 
       let interaction_indicator = check_interaction(vm.train_id_column, vm.train_data_column, vm.train_target_column)
       console.log("this.root, this.exe_position", vm.task_id, vm.assistor_username_list, vm.train_data_column, vm.train_id_column, vm.train_target_column)
 
       let both_path_validation = false
-      if (vm.assistor_username_list == false){
+      if (handle_assistor_username_list_res == false){
         dialog.showErrorBox('Please Type in Username in corrent form', 'Thank you very much')
-      } else if ( vm.train_data_column == false) {
+      } else if ( handle_data_column_res == false) {
         dialog.showErrorBox('Please Type in train_data_column in corrent form', 'Thank you very much')
-      } else if ( vm.train_id_column == false) {
+      } else if ( handle_id_column_res == false) {
         dialog.showErrorBox('Please Type in train_id_column in corrent form', 'Thank you very much')
-      } else if ( vm.train_target_column == false) {
+      } else if ( handle_target_column_res == false) {
         dialog.showErrorBox('Please Type in train_target_column in corrent form', 'Thank you very much')
       } else if ( interaction_indicator == false){
         dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
@@ -256,7 +261,9 @@ export default {
         dialog.showErrorBox('Please select model name')
       } else if ( vm.metric_name == ""){
         dialog.showErrorBox('Please select metric name')
-      }else{
+      } else if (handle_file_path(vm.train_file_path) == false){
+        dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
+      } else{
         
         both_path_validation = true
         // if (vm.PathForm.train_data_path == ""){

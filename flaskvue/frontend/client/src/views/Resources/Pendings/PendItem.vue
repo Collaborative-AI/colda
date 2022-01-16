@@ -66,7 +66,7 @@
 import store from '../../../store'
 import db from '../../../db'
 import { ex,fs,os,node_path,dialog } from '../../../import_package.js'
-import { handle_input_column_string, check_assistor_interaction, handle_Algorithm_return_value, change_db_param_to_string, generate_unittest_parameters, execute_unittest_list } from '../../../utils'
+import { handle_file_path, handle_input_column_string, check_assistor_interaction, handle_Algorithm_return_value, change_db_param_to_string, generate_unittest_parameters, execute_unittest_list } from '../../../utils'
 
 // const fs = window.fs;
 // const ex = window.ex;
@@ -121,6 +121,12 @@ export default {
       }else{
         try {
           let path = result[0]
+
+          if (handle_file_path(path) == false){
+            dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
+            return
+          }
+
           fs.statSync(path);
           vm.manual_file_path = path
           fs.readFile(path, 'utf8' , (err, data) => {
@@ -178,17 +184,19 @@ export default {
 
       let both_path_validation = true
 
-      vm.manual_data_column = handle_input_column_string(vm.manual_data_column, 'data', vm.ptitles.length)
-      vm.manual_id_column = handle_input_column_string(vm.manual_id_column, 'id', vm.ptitles.length)
+      let handle_data_column_res = handle_input_column_string(vm.manual_data_column, 'data', vm.ptitles.length)
+      let handle_id_column_res = handle_input_column_string(vm.manual_id_column, 'id', vm.ptitles.length)
 
       let interaction_indicator = check_assistor_interaction(vm.manual_id_column, vm.manual_data_column)
 
-      if ( vm.manual_data_column == false) {
+      if ( handle_data_column_res == false) {
         dialog.showErrorBox('Please Type in manual_data_column in corrent form', 'Thank you very much')
-      } else if ( vm.manual_id_column == false) {
+      } else if ( handle_id_column_res == false) {
         dialog.showErrorBox('Please Type in manual_id_column in corrent form', 'Thank you very much')
       } else if ( interaction_indicator == false){
         dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
+      } else if (handle_file_path(vm.manual_file_path) == false){
+        dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
       } else {
 
         try {
@@ -338,17 +346,19 @@ export default {
       let vm = this
       let both_path_validation = true
 
-      vm.manual_data_column = handle_input_column_string(vm.manual_data_column, 'data', vm.ptitles.length)
-      vm.manual_id_column = handle_input_column_string(vm.manual_id_column, 'id', vm.ptitles.length)
+      let handle_data_column_res = handle_input_column_string(vm.manual_data_column, 'data', vm.ptitles.length)
+      let handle_id_column_res = handle_input_column_string(vm.manual_id_column, 'id', vm.ptitles.length)
 
       let interaction_indicator = check_assistor_interaction(vm.manual_id_column, vm.manual_data_column)
 
-       if ( vm.manual_data_column == false) {
+       if ( handle_data_column_res == false) {
         dialog.showErrorBox('Please Type in manual_data_column in corrent form', 'Thank you very much')
-      } else if ( vm.manual_id_column == false) {
+      } else if ( handle_id_column_res == false) {
         dialog.showErrorBox('Please Type in manual_id_column in corrent form', 'Thank you very much')
       } else if ( interaction_indicator == false){
         dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')
+      } else if (handle_file_path(vm.manual_file_path) == false){
+        dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
       } else {
 
         try {

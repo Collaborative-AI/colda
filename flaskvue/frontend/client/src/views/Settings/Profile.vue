@@ -81,7 +81,7 @@ import { ex,fs,os,node_path,dialog } from '../../import_package.js'
 // const db = require('../../db').default
 import store from '../../store'
 import db from '../../db'
-import { handle_input_column_string, check_assistor_interaction, execute_unittest_list, generate_unittest_parameters, change_db_param_to_string } from '../../utils.js'
+import { handle_file_path, handle_input_column_string, check_assistor_interaction, execute_unittest_list, generate_unittest_parameters, change_db_param_to_string, handle_Algorithm_return_value } from '../../utils.js'
 
 export default {
   name: 'Profile',  //this is the name of the component
@@ -117,6 +117,12 @@ export default {
 
         try {
           let path = result[0]
+
+          if (handle_file_path(path) == false){
+            dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
+            return
+          }
+
           fs.statSync(path);
           
           this.default_file_path = path
@@ -176,9 +182,15 @@ export default {
 
       let vm = this;
       let both_path_validation = true
+      let path = vm.default_file_path
+
+      if (handle_file_path(path) == false){
+        dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
+        return
+      }
 
       try {
-        let path = vm.default_file_path
+        
         console.log('path', path)
         fs.statSync(path);
 
@@ -196,14 +208,14 @@ export default {
           console.log('preview',vm.pdatas[0])
 
           console.log('sss', vm.default_data_column, vm.default_id_column, vm.ptitles.length)
-          vm.default_data_column = handle_input_column_string(vm.default_data_column, 'data', vm.ptitles.length)
-          vm.default_id_column = handle_input_column_string(vm.default_id_column, 'id', vm.ptitles.length)
+          let handle_data_column_res = handle_input_column_string(vm.default_data_column, 'data', vm.ptitles.length)
+          let handle_id_column_res = handle_input_column_string(vm.default_id_column, 'id', vm.ptitles.length)
 
           let interaction_indicator = check_assistor_interaction(vm.default_id_column, vm.default_data_column)
 
-          if ( vm.default_data_column == false) {
+          if ( handle_data_column_res == false) {
             dialog.showErrorBox('Please Type in data_column in corrent form', 'Thank you very much')
-          } else if ( vm.default_id_column == false) {
+          } else if ( handle_id_column_res == false) {
             dialog.showErrorBox('Please Type in id_column in corrent form', 'Thank you very much')
           } else if ( interaction_indicator == false){
             dialog.showErrorBox('Please follow the form: id, data, target (no interaction)', 'Thank you very much')

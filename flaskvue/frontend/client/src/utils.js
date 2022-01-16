@@ -136,6 +136,7 @@ export function handle_assistor_username_list(assistor_username_string){
   }
 
   if (!assistor_username_string instanceof String){
+    console.log('zz8')
     return assistor_username_string
   }
   

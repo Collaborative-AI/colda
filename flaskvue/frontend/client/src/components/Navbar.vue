@@ -30,7 +30,7 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                       
-                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user'])"  class="nav-item">
+                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user']) && sharedState.user_id<=2"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
                         </li>       
                         <!-- <button @click="test_axios()">123</button>              -->

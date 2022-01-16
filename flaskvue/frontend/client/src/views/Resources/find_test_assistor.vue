@@ -198,7 +198,7 @@ export default {
       } else if (this.test_id == ''){
         dialog.showErrorBox('Please Type in the Paths Again', 'We apologize for the latency')
         vm.get_test_id()
-      } else if (handle_file_path(vm.test_file_pat) == false){
+      } else if (handle_file_path(vm.test_file_path) == false){
         dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
       } else {
         both_path_validation = true

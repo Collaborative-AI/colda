@@ -368,7 +368,7 @@ export default {
           
           console.log(vm.assistor_username_list,"assistor_username_list")
           const find_assistor_data = {
-            assistor_username_list: vm.assistor_username_list,
+            assistor_username_list: handle_assistor_username_list_res,
             id_file: hash_id_file_data,
             task_id: vm.task_id,
             task_name: vm.task_name,
@@ -381,7 +381,7 @@ export default {
 
           vm.$axios.post('/find_assistor', find_assistor_data)
           .then((response) => {
-            // console.log('response!!', response.data)
+            console.log('response!!', response.data)
             if (response.data == "wrong username"){
               // console.log("Username Wrong", response)
               console.log('user_name_wrong')

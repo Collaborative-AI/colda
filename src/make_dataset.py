@@ -25,8 +25,8 @@ def main():
     path = os.path.join(root, control)
     if os.path.exists(path):
         shutil.rmtree(path)
-    feature_split = split_dataset(data_name, num_users)
     train_dataset, test_dataset = make_data(data_name)
+    feature_split = split_dataset(data_name, num_users)
     train_id, train_data, train_target = train_dataset.iloc[:, 0], train_dataset.iloc[:, 1:-1], \
                                          train_dataset.iloc[:, -1]
     test_id, test_data, test_target = test_dataset.iloc[:, 0], test_dataset.iloc[:, 1:-1], test_dataset.iloc[:, -1]
@@ -84,13 +84,13 @@ def main():
 
 def split_dataset(data_name, num_users):
     data_shape = {'Blob': [10], 'Iris': [4], 'Diabetes': [10], 'BostonHousing': [13], 'Wine': [13],
-                  'BreastCancer': [30]}
+                  'BreastCancer': [30], 'LendingClubSmall': [18]}
     num_features = data_shape[data_name][-1]
     feature_split = list(np.array_split(np.random.permutation(num_features), num_users))
     return feature_split
 
 
-def make_data(data_name):
+def make_data(data_name, normalize=True):
     if data_name == 'Blob':
         from sklearn.datasets import make_blobs
         n_samples, n_features = 100, 10
@@ -174,8 +174,28 @@ def make_data(data_name):
         test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
         train_dataset.insert(0, 'ID', train_dataset_index)
         test_dataset.insert(0, 'ID', test_dataset_index)
+    elif data_name == 'LendingClubSmall':
+        dataset = pd.read_csv('./data/raw/LendingClubSmall/loan_data.csv')
+        dataset = pd.get_dummies(dataset, columns=['purpose'], drop_first=True)
+        target = dataset.pop('not.fully.paid')
+        dataset.insert(len(dataset.columns), 'not.fully.paid', target)
+        perm = np.random.permutation(len(dataset))
+        split_idx = int(len(perm) * 0.8)
+        train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
+        test_dataset = dataset.iloc[perm[split_idx:]].reset_index(drop=True)
+        train_dataset_index = train_dataset.index.to_numpy()
+        test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
+        train_dataset.insert(0, 'ID', train_dataset_index)
+        test_dataset.insert(0, 'ID', test_dataset_index)
     else:
         raise ValueError('Not valid data name')
+    if normalize:
+        from sklearn.preprocessing import Normalizer
+        train_data = train_dataset.iloc[:, 2:-1].to_numpy()
+        test_data = test_dataset.iloc[:, 2:-1].to_numpy()
+        normalizer = Normalizer().fit(train_data)
+        train_dataset.iloc[:, 2:-1] = normalizer.transform(train_data)
+        test_dataset.iloc[:, 2:-1] = normalizer.transform(test_data)
     return train_dataset, test_dataset
 
 

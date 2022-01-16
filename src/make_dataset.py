@@ -5,6 +5,10 @@ import shutil
 import pandas as pd
 from utils import makedir_exist_ok, save
 
+# python make_dataset.py --root ./data --data_name BostonHousing --task_id 123 --num_users 1 --match_rate 1
+# python make_dataset.py --root ./data --data_name BostonHousing --task_id 123 --num_users 2 --match_rate 1
+# python make_dataset.py --root ./data --data_name BostonHousing --task_id 123 --num_users 2 --match_rate 0.5
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', default=None, type=str)
 parser.add_argument('--data_name', default=None, type=str)

@@ -44,7 +44,7 @@ def main():
         test_data = test_dataset[:, data_i_idx]
         test_target = test_dataset[:, target_i_idx]
         model = Model(task_mode, model_name)
-        model.fit(train_data, train_target)
+        model.fit(train_data, train_target.reshape(-1))
         train_output = model.predict(train_data)
         test_output = model.predict(test_data)
         metric = Metric(task_mode, metric_name)

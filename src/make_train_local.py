@@ -21,7 +21,7 @@ def make_train_local(args):
     data = dataset[:, data_idx]
     target = dataset[:, target_idx]
     model = Model(task_mode, model_name)
-    model.fit(data, target)
+    model.fit(data, target.reshape(-1))
     save(model, os.path.join(root, self_id, 'task', task_id, 'train', 'local', 'model.pkl'))
     output = model.predict(data)
     metric = Metric(task_mode, metric_name)

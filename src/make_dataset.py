@@ -5,9 +5,9 @@ import shutil
 import pandas as pd
 from utils import makedir_exist_ok, save
 
-# python make_dataset.py --root ./data --data_name BostonHousing --task_id 123 --num_users 1 --match_rate 1
-# python make_dataset.py --root ./data --data_name BostonHousing --task_id 123 --num_users 2 --match_rate 1
-# python make_dataset.py --root ./data --data_name BostonHousing --task_id 123 --num_users 2 --match_rate 0.5
+# python make_dataset.py --root ./data/processed/KCHousing --data_name KCHousing --task_id 123 --num_users 1 --match_rate 1 --normalize 1
+# python make_dataset.py --root ./data/processed/KCHousing --data_name KCHousing --task_id 123 --num_users 2 --match_rate 1 --normalize 1
+# python make_dataset.py --root ./data/processed/KCHousing --data_name KCHousing --task_id 123 --num_users 2 --match_rate 0.5 --normalize 1
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', default=None, type=str)
@@ -15,6 +15,7 @@ parser.add_argument('--data_name', default=None, type=str)
 parser.add_argument('--num_users', default=None, type=int)
 parser.add_argument('--task_id', default=None, type=int)
 parser.add_argument('--match_rate', default=None, type=float)
+parser.add_argument('--normalize', default=None, type=int)
 args = vars(parser.parse_args())
 
 
@@ -24,13 +25,14 @@ def main():
     num_users = args['num_users']
     task_id = args['task_id']
     match_rate = args['match_rate']
+    normalize = args['normalize']
     np.random.seed(task_id)
     control = '_'.join([data_name, str(num_users), str(task_id), str(match_rate)])
     path = os.path.join(root, control)
     if os.path.exists(path):
         shutil.rmtree(path)
-    train_dataset, test_dataset = make_data(data_name)
     feature_split = split_dataset(data_name, num_users)
+    train_dataset, test_dataset = make_data(data_name, normalize)
     train_id, train_data, train_target = train_dataset.iloc[:, 0], train_dataset.iloc[:, 1:-1], \
                                          train_dataset.iloc[:, -1]
     test_id, test_data, test_target = test_dataset.iloc[:, 0], test_dataset.iloc[:, 1:-1], test_dataset.iloc[:, -1]
@@ -88,13 +90,13 @@ def main():
 
 def split_dataset(data_name, num_users):
     data_shape = {'Blob': [10], 'Iris': [4], 'Diabetes': [10], 'BostonHousing': [13], 'Wine': [13],
-                  'BreastCancer': [30], 'LendingClubSmall': [18]}
+                  'BreastCancer': [30], 'KCHousing': [18], 'CreditCard': [29], 'MedicalInsurance': [6]}
     num_features = data_shape[data_name][-1]
     feature_split = list(np.array_split(np.random.permutation(num_features), num_users))
     return feature_split
 
 
-def make_data(data_name, normalize=True):
+def make_data(data_name, normalize):
     if data_name == 'Blob':
         from sklearn.datasets import make_blobs
         n_samples, n_features = 100, 10
@@ -178,11 +180,43 @@ def make_data(data_name, normalize=True):
         test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
         train_dataset.insert(0, 'ID', train_dataset_index)
         test_dataset.insert(0, 'ID', test_dataset_index)
-    elif data_name == 'LendingClubSmall':
-        dataset = pd.read_csv('./data/raw/LendingClubSmall/loan_data.csv')
-        dataset = pd.get_dummies(dataset, columns=['purpose'], drop_first=True)
-        target = dataset.pop('not.fully.paid')
-        dataset.insert(len(dataset.columns), 'not.fully.paid', target)
+    elif data_name == 'KCHousing':
+        # https://www.kaggle.com/harlfoxem/housesalesprediction
+        dataset = pd.read_csv('./data/raw/KCHousing/kc_house_data.csv')
+        dataset = dataset.drop(['id', 'date'], axis=1)
+        target = dataset.pop('price')
+        dataset.insert(len(dataset.columns), 'price', target.astype(np.int64))
+        perm = np.random.permutation(len(dataset))
+        split_idx = int(len(perm) * 0.8)
+        train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
+        test_dataset = dataset.iloc[perm[split_idx:]].reset_index(drop=True)
+        train_dataset_index = train_dataset.index.to_numpy()
+        test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
+        train_dataset.insert(0, 'ID', train_dataset_index)
+        test_dataset.insert(0, 'ID', test_dataset_index)
+    elif data_name == 'CreditCard':
+        # https://www.kaggle.com/mlg-ulb/creditcardfraud
+        dataset = pd.read_csv('./data/raw/CreditCard/creditcard.csv')
+        dataset = dataset.drop(['Time'], axis=1)
+        negative = dataset[dataset['Class'] == 0].index.to_numpy()
+        positive = dataset[dataset['Class'] == 1].index.to_numpy()
+        undersample = np.random.choice(negative, len(positive), replace=False)
+        dataset = dataset.loc[np.concatenate([undersample, positive])].reset_index(drop=True)
+        perm = np.random.permutation(len(dataset))
+        split_idx = int(len(perm) * 0.8)
+        train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
+        test_dataset = dataset.iloc[perm[split_idx:]].reset_index(drop=True)
+        train_dataset_index = train_dataset.index.to_numpy()
+        test_dataset_index = test_dataset.index.to_numpy() + len(train_dataset_index)
+        train_dataset.insert(0, 'ID', train_dataset_index)
+        test_dataset.insert(0, 'ID', test_dataset_index)
+    elif data_name == 'MedicalInsurance':
+        from sklearn.preprocessing import OrdinalEncoder
+        # https://www.kaggle.com/mirichoi0218/insurance
+        dataset = pd.read_csv('./data/raw/MedicalInsurance/insurance.csv')
+        categorical_data = dataset[['sex', 'smoker', 'region']]
+        categorical_transform = OrdinalEncoder()
+        dataset[['sex', 'smoker', 'region']] = categorical_transform.fit_transform(categorical_data.to_numpy())
         perm = np.random.permutation(len(dataset))
         split_idx = int(len(perm) * 0.8)
         train_dataset = dataset.iloc[perm[:split_idx]].reset_index(drop=True)
@@ -194,12 +228,12 @@ def make_data(data_name, normalize=True):
     else:
         raise ValueError('Not valid data name')
     if normalize:
-        from sklearn.preprocessing import Normalizer
-        train_data = train_dataset.iloc[:, 2:-1].to_numpy()
-        test_data = test_dataset.iloc[:, 2:-1].to_numpy()
-        normalizer = Normalizer().fit(train_data)
-        train_dataset.iloc[:, 2:-1] = normalizer.transform(train_data)
-        test_dataset.iloc[:, 2:-1] = normalizer.transform(test_data)
+        from sklearn.preprocessing import StandardScaler
+        train_data = train_dataset.iloc[:, 1:-1].to_numpy()
+        test_data = test_dataset.iloc[:, 1:-1].to_numpy()
+        normalizer = StandardScaler().fit(train_data)
+        train_dataset.iloc[:, 1:-1] = normalizer.transform(train_data)
+        test_dataset.iloc[:, 1:-1] = normalizer.transform(test_data)
     return train_dataset, test_dataset
 
 

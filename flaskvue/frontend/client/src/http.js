@@ -12,8 +12,8 @@ import axios from 'axios'
 
 // 基础配置
 axios.defaults.timeout = 5000  // 超时时间
-// axios.defaults.baseURL = 'http://127.0.0.1:5000'
-axios.defaults.baseURL = 'http://3.145.140.55'
+axios.defaults.baseURL = 'http://127.0.0.1:5000'
+// axios.defaults.baseURL = 'http://3.145.140.55'
 
 
 
@@ -41,7 +41,7 @@ axios.interceptors.request.use(function (config) {
     // return Qs.stringify(config.data.file, {arrayFormat: 'repeat'})
     
   
-  console.log("config", config)
+  // console.log("config", config)
   return config
 }, function (error) {
   // Do something with request error
@@ -51,7 +51,7 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
   // Do something with response data
-  console.log("axios response", response)
+  // console.log("axios response", response)
   return response
 }, function (error) {
   // Do something with response error

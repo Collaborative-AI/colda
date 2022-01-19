@@ -358,7 +358,7 @@ export default {
           try{
             hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
             hash_id_file_data = hash_id_file_data.split(/[\r\n]+/)
-            console.log("hash_id_file_data", hash_id_file_data)
+            // console.log("hash_id_file_data", hash_id_file_data)
           } catch (err) {
             console.log(err)
           }

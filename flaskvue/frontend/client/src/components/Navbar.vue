@@ -305,7 +305,7 @@ export default {
             // Read the data from designated position
             let hash_id_file_data = fs.readFileSync(hash_id_file_address[2], {encoding:'utf8', flag:'r'});
             hash_id_file_data = hash_id_file_data.split(/[\r\n]+/)
-            console.log('hashidfile', hash_id_file_data, hash_id_file_address)
+            // console.log('hashidfile', hash_id_file_data, hash_id_file_address)
 
             const match_assistor_id_data = {
               task_id: task_id,

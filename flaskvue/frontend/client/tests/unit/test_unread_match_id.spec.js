@@ -26,8 +26,10 @@ describe('test_unread_match_id', () => {
   let match_ratio = '1.0'
   let default_mode = 'auto'
   let assistor_username_list = 'xie2'
+  // let data_file = 'CreditCard'
+  let data_file = 'KCHousing'
 
-  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio, default_mode)
+  switch_default_values_helper.switch_default(sponsor_mode, assistor_username_list, match_ratio, default_mode, data_file)
 
   login_helper.login_first_user()
 
@@ -50,21 +52,21 @@ describe('test_unread_match_id', () => {
   logout_helper.logout()
   // assistor logins
   
-  login_helper.login_second_user()
-  //assistor gets nofification
-  notification_helper.update_notification()
-  //sponsor runs unread match id
-  unread_assistor_match_id_helper.unread_assistor_match_id()
-  logout_helper.logout()
+  // login_helper.login_second_user()
+  // //assistor gets nofification
+  // notification_helper.update_notification()
+  // //sponsor runs unread match id
+  // unread_assistor_match_id_helper.unread_assistor_match_id()
+  // logout_helper.logout()
 
   
-  //sponsor logins
-  login_helper.login_first_user()
-  // sponsor gets nofification
-  notification_helper.update_notification()
-  //sponsor runs unread match id
-  unread_sponsor_match_id_helper.unread_sponsor_match_id()
-  logout_helper.logout()
+  // //sponsor logins
+  // login_helper.login_first_user()
+  // // sponsor gets nofification
+  // notification_helper.update_notification()
+  // //sponsor runs unread match id
+  // unread_sponsor_match_id_helper.unread_sponsor_match_id()
+  // logout_helper.logout()
   
 })
 

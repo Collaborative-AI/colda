@@ -143,6 +143,7 @@ def find_assistor():
     
     print(type(id_file))
     data_array_id = id_file
+    data_array_id = json.dumps(data_array_id)
     # print(data_array_id)
     # print('zzz', data_array_id, type(data_array_id))
     
@@ -183,7 +184,7 @@ def find_assistor():
         assistor_random_id = str(uuid.uuid4())
         matched.assistor_random_id_pair = assistor_random_id
 
-        matched.Matched_id_file = json.dumps(data_array_id)
+        matched.Matched_id_file = data_array_id
         matched.test_indicator = "train"
         matched.Terminate = "false"
 
@@ -214,7 +215,7 @@ def find_assistor():
     matched.metric_name = metric_name
     matched.sponsor_random_id = sponsor_random_id
     matched.assistor_random_id_pair = sponsor_random_id
-    matched.Matched_id_file = json.dumps(data_array_id)
+    matched.Matched_id_file = data_array_id
     matched.test_indicator = "train"
     matched.Terminate = "false"
     db.session.add(matched) 
@@ -301,7 +302,7 @@ def find_test_assistor():
     
     # data_array_id = list(data_array_id)
     data_array_id = id_file
-
+    data_array_id = json.dumps(data_array_id)
     log(generate_msg('Test 1.2', 'sponsor handles id data done'), g.current_user.id, task_id, test_id)
     # # extract ID
     # data_array_id = set()
@@ -342,7 +343,7 @@ def find_test_assistor():
         assistor_random_id = str(uuid.uuid4())
         matched.assistor_random_id_pair = assistor_random_id
 
-        matched.Matched_id_file = json.dumps(data_array_id)
+        matched.Matched_id_file = data_array_id
         matched.test_indicator = "test"
         matched.test_id = test_id
 
@@ -373,7 +374,7 @@ def find_test_assistor():
     matched.test_description = test_description
     matched.sponsor_random_id = sponsor_random_id
     matched.assistor_random_id_pair = sponsor_random_id
-    matched.Matched_id_file = json.dumps(data_array_id)
+    matched.Matched_id_file = data_array_id
     matched.test_indicator = "test"
     matched.test_id = test_id
     matched.Terminate = "false"

@@ -19,6 +19,8 @@ class TestRequest:
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         self.Database_class_instance = Database_class.get_Database_class_instance()
 
+        self.test_indicator = 'test'
+        self.skip_header_default = 1
         self.base_url = self.Network_instance.get_base_url()
 
     @classmethod
@@ -54,30 +56,6 @@ class TestRequest:
 
     def __get_test_id(self):
 
-        save_match_id_file_pos = save_match_id(root, user_id, task_id, "train", None, from_id)
-        save_match_id_file_pos = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos,
-                                                                "200", "save_match_id")
-        # write file
-        # print("cur_match_id_file", type(cur_match_id_file), cur_match_id_file, )
-        # cur_match_id_file =
-        np.savetxt(save_match_id_file_pos[2], cur_match_id_file, delimiter=",", fmt="%s")
-        msg = ["3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"]
-        log_helper(msg, root, user_id, task_id)
-
-
-
-        url = self.base_url + '/match_assistor_id/'
-        data = {
-            "task_id": task_id,
-            "file": hash_id_file_data
-        }
-        match_assistor_id_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-        # add log
-        msg = ["2.2 assistor uploads id file\n"]
-        msg.append("--------------------------2. Unread Request Done\n")
-        log_helper(msg, root, user_id, task_id)
-
-
         """
         Get new Test id for this test
 
@@ -101,8 +79,8 @@ class TestRequest:
 
         return new_test_id
 
-    def __find_test_assistor(self, task_id: str, task_name: str, test_name: str, task_mode: str,
-                            model_name: str, metric_name: str, testing_data_path: str, testing_id_path: str, test_description: str):
+    def __find_test_assistor(self, task_id: str, task_mode: str, model_name: str, metric_name: str, test_file_path: str,
+                            test_id_column: str, test_data_column: str, test_target_column: str, test_name: str=None, test_description: str=None):
 
         """
         start testing with all assistors of the task
@@ -131,14 +109,12 @@ class TestRequest:
         root = self.PersonalInformation_instance.get_root()
 
         # store information in db
-        session = Session()
-        user_chosen_path = User_Chosen_Path()
-        user_chosen_path = assign_value_to_user_chosen_path_instance(user_chosen_path, user_id, "train", task_id, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description)
-        session.add(user_chosen_path)
-        session.commit()
+        self.Database_class_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_id=test_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
+                                                            test_name=test_name, test_description=test_description, test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column,
+                                                            test_target_column=test_target_column)
 
         # call make_hash in Algorithm module
-        test_hash_id_file_address = make_hash(root, user_id, task_id, "train", None, train_file_path, train_id_column)
+        test_hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, dataset_path=test_file_path, id_idx=test_id_column, skip_header=self.skip_header_default)
         test_hash_id_file_address = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
         
         # read file => array data type from np.genfromtxt
@@ -153,18 +129,18 @@ class TestRequest:
 
         data = {
             "task_id": task_id,
-            'task_name': task_name,
             'test_id': test_id,
             'test_name': test_name,
+            'test_description': test_description,
             'task_mode': task_mode,
             'model_name': model_name,
             'metric_name': metric_name,
-            'test_description': test_description,
             'id_file': test_hash_id_file_data,
         }
 
         print(data)
         find_test_assistor_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
+        find_test_assistor_res = json.loads(find_test_assistor_res.text)
         print("find_test_assistor_res", find_test_assistor_res)
 
         return
@@ -184,23 +160,18 @@ class TestRequest:
             KeyError - raises an exception
         """
 
-        default_mode = self.PersonalInformation_instance.get_default_mode()
-        if default_mode == "Manual":
+        # obtain some important information
+        user_id = self.PersonalInformation_instance.get_user_id()
+        root = self.PersonalInformation_instance.get_root()
+        token = self.Network_instance.get_token()
+
+        user_id, default_mode, default_file_path, default_id_column, default_data_column, default_model_name = self.Database_class_instance.get_User_Default_Table()
+        if default_mode == "manual":
             # Insert to DB
             pass
 
-        elif default_mode == "Auto":
+        elif default_mode == "auto":
             # get default path
-
-            session = Session()
-            query = session.query(User_Default_Path).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
-            default_file_path = query.default_file_path
-            default_id_column = query.default_id_column
-            default_data_column = query.default_data_column
-            default_target_column = query.default_target_column
-            default_mode = query.default_mode
-            default_model_name = query.default_model_name
-
             
             cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
             test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
@@ -211,7 +182,7 @@ class TestRequest:
                 # Insert default into User_Assistor_Table
                 
                 # call make_hash in Algorithm module
-                test_hash_id_file_address = make_hash(root, user_id, task_id, "train", None, train_file_path, train_id_column)
+                test_hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, dataset_path=default_file_path, id_idx=default_id_column, skip_header=self.skip_header_default)
                 test_hash_id_file_address = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
                 
                 # read file => array data type from np.genfromtxt
@@ -228,10 +199,11 @@ class TestRequest:
                     "test_id": test_id,
                 }
                 match_test_assistor_id_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
+                match_test_assistor_id_res = json.loads(match_test_assistor_id_res.text)
                 print("match_test_assistor_id_res", match_test_assistor_id_res)
 
-        elif default_mode == "auto":
-            pass
+        else:
+            print('default_mode wrong')
 
         return
 
@@ -304,7 +276,8 @@ class TestRequest:
             cur_match_id_file = "\n".join(cur_match_id_file)
 
             # call save_match_id
-            test_save_match_id_file_pos = save_match_id(root, user_id, task_id, "train", None, from_id)
+            test_save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
+                                                    test_id=test_id, from_id=from_id)
             test_save_match_id_file_pos = handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos,
                                                                    "200", "save_match_id")
 
@@ -314,21 +287,16 @@ class TestRequest:
             log_helper(msg, root, user_id, task_id)
 
             # call make_match_idx
-            test_make_match_idx_done = make_match_idx(root, user_id, task_id, "train", None, from_id)
+            test_make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, from_id=from_id)
             test_make_match_idx_done = handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
 
         # Get information from User Sponsor Table
-        session = Session()
-        query = session.query(User_Sponsor_Table).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
-
-        test_file_path = query.train_file_path
-        test_data_column = query.train_target_column
+        task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
         print("test_file_path", test_file_path, test_data_column)
 
         # call make_test
-        test_done = make_test(root, user_id, task_id, "train", None, from_id)
-        test_save_test_donematch_id_file_pos = handle_Algorithm_return_value("test_done", test_done,
-                                                                   "200", "save_match_id")
+        test_done = make_test(root=root, self_id=user_id, tsak_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
+        test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
 
 
         return
@@ -369,7 +337,8 @@ class TestRequest:
         cur_match_id_file = "\n".join(cur_match_id_file)
 
         # call test_save_match_id
-        test_save_match_id_file_pos = save_match_id(root, user_id, task_id, "train", None, from_id)
+        test_save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
+                                                    test_id=test_id, from_id=from_id)
         test_save_match_id_file_pos = handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos,
                                                                 "200", "save_match_id")
 
@@ -379,7 +348,7 @@ class TestRequest:
         log_helper(msg, root, user_id, task_id)
 
         # call make_match_idx
-        test_make_match_idx_done = make_match_idx(root, user_id, task_id, "train", None, from_id)
+        test_make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, from_id=from_id)
         test_make_match_idx_done = handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
 
         msg = ["3.5 Assistor matches id to index\n"]
@@ -388,15 +357,11 @@ class TestRequest:
         log_helper(msg, root, user_id, task_id)
 
         # select select_default_test_data_path from db
-        session = Session()
-        query = session.query(User_Assistor_Table).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
-        default_train_file_path = query.default_train_file_path
-        default_train_id_column = query.default_train_id_column
+        mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column = self.Database_class_instance.get_User_Assistor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
 
         # call make test
-        test_done = make_test(root, user_id, task_id, "train", None, from_id)
-        test_done = handle_Algorithm_return_value("test_done", test_done,
-                                                                   "200", "save_match_id")
+        test_done = make_test(root=root, self_id=user_id, tsak_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
+        test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
 
         all_test_output = []
         make_test_lists = test_done[3:]
@@ -413,7 +378,7 @@ class TestRequest:
         }
         assistor_send_test_output_res = requests.post(url, data=data,
                                                             headers={'Authorization': 'Bearer ' + token})
-        assistor_send_test_output_res = json.loads(assistor_send_test_output_res)
+        assistor_send_test_output_res = json.loads(assistor_send_test_output_res.text)
         print("assistor_send_test_output_res", assistor_send_test_output_res)
 
         return
@@ -438,10 +403,8 @@ class TestRequest:
         test_id_to_task_id = unread_test_output_notification["test_id_to_task_id"]
 
         for test_id in cur_unread_test_output_Testid_dict:
-
             task_id = test_id_to_task_id[test_id]
             self.unread_test_output_singleTask(task_id, task_id)
-
 
         return
 
@@ -488,7 +451,7 @@ class TestRequest:
                 cur_output = multiple_outputs_from_one_assistor[j]
 
                 # call save_output
-                test_save_output_pos = save_output(root, user_id, task_id, "train", None, rounds, from_id)
+                test_save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, model=self.test_indicator, test_id=test_id, round=(j+1), from_id=from_id)
                 test_save_output_pos = handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
                 np.savetxt(test_save_output_pos[2], cur_output, delimiter=",", fmt="%s")
                 
@@ -513,16 +476,16 @@ class TestRequest:
             KeyError - raises an exception
         """
 
+        # obtain some important information
+        user_id = self.PersonalInformation_instance.get_user_id()
+        root = self.PersonalInformation_instance.get_root()
+        token = self.Network_instance.get_token()
+
         # select data from sponsor table
-        session = Session()
-        query = session.query(User_Sponsor_Table).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
-        test_file_path = query.test_file_path
-        test_target_column = query.test_target_column
-        task_mode = query.task_mode
-        metric_name = query.metric_name
+        task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
 
         # call make_eval
-        eval_done = make_eval(root, user_id, task_id, "train", None, from_id)
-        eval_done = handle_Algorithm_return_value("eval_done", eval_done, "200", "save_match_id")
+        eval_done = make_eval(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, dataset_path=test_file_path, target=test_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name, task_path)
+        eval_done = handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
 
         return

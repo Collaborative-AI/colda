@@ -25,6 +25,18 @@ Session = sessionmaker(bind=engine)
 
 def assign_value_to_user_chosen_path_instance(instance, user_id, test_indicator, task_id, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description):
 
+        # self.maxRound = maxRound
+        # session = Session()
+        # user_chosen_path = User_Chosen_Path()
+        # user_chosen_path = assign_value_to_user_chosen_path_instance(user_chosen_path, user_id, "train", task_id, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description)
+        # session.add(user_chosen_path)
+        # session.commit()
+
+        # session = Session()
+        # query = session.query(User_Default_Path).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
+        # default_train_file_path = query.default_train_file_path
+        # default_train_id_column = query.default_train_id_column
+
     if test_indicator == "train":
         instance.user_id = user_id
         instance.test_indicator = test_indicator

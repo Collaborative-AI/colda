@@ -1,3 +1,4 @@
+from unittest import skip
 import numpy as np
 import requests
 import json
@@ -24,6 +25,9 @@ class TrainRequest():
 
         self.base_url = self.Network_instance.get_base_url()
         self.maxRound = None
+        self.skip_header_default = 1
+        self.initial_round = 1
+        self.test_indicator = 'train'
         # self.exe_position = self.PersonalInformation_instance.get_exe_position()
         # self.root = self.PersonalInformation_instance.get_root()
 
@@ -86,7 +90,7 @@ class TrainRequest():
         return new_task_id
 
 
-    def __find_assistor(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_name: str=None, task_description: str=None):
+    def __find_assistor(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str=None, task_description: str=None):
         
         """
         start task with all assistors
@@ -113,16 +117,12 @@ class TrainRequest():
         task_id = self.__get_train_id()
         root = self.PersonalInformation_instance.get_root()
 
-        # store id_column, data_column, target_column into database
-        self.maxRound = maxRound
-        session = Session()
-        user_chosen_path = User_Chosen_Path()
-        user_chosen_path = assign_value_to_user_chosen_path_instance(user_chosen_path, user_id, "train", task_id, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description)
-        session.add(user_chosen_path)
-        session.commit()
+        self.Database_class_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
+                                                            task_name=task_name, task_description=task_description, train_file_path=train_file_path, train_id_column=train_id_column, train_data_column=train_data_column,
+                                                            train_target_column=train_target_column)
 
         # call make_hash in Algorithm module
-        hash_id_file_address = make_hash(root, user_id, task_id, "train", None, train_file_path, train_id_column)
+        hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, dataset_path=train_file_path, id_idx=train_id_column, skip_header=self.skip_header_default)
         hash_id_file_address = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
 
         # read file => array data type from np.genfromtxt
@@ -180,15 +180,11 @@ class TrainRequest():
         for task_id in cur_unread_request_Taskid_dict:
             if default_mode == "Auto":
                 
-                session = Session()
-                query = session.query(User_Default_Path).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
-                default_train_file_path = query.default_train_file_path
-                default_train_id_column = query.default_train_id_column
+                user_id, default_mode, default_file_path, default_id_column, default_data_column, default_model_name = self.Database_class_instance.get_User_Default_Table(user_id)n
 
-                hash_id_file_address = make_hash(root, user_id, task_id, "train", None, default_train_file_path,
-                                                default_train_id_column)
-                hash_id_file_address = handle_Algorithm_return_value("train_make_hash", hash_id_file_address,
-                                                                   "200", "make_hash")
+                hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
+                                                test_id=None, dataset_path=default_file_path, id_idx=default_id_column, skip_header=self.skip_header_default)
+                hash_id_file_address = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
 
                 hash_id_file_data = np.genfromtxt(hash_id_file_address[2], delimiter=',', dtype=np.str_)
                 hash_id_file_data = "\n".join(hash_id_file_data)
@@ -208,6 +204,8 @@ class TrainRequest():
                     "file": hash_id_file_data
                 }
                 match_assistor_id_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+                match_assistor_id_res = json.loads(match_assistor_id_res.text)
+                print('match_assistor_id_res', match_assistor_id_res)
                 # add log
                 msg = ["2.2 assistor uploads id file\n"]
                 msg.append("--------------------------2. Unread Request Done\n")
@@ -217,7 +215,6 @@ class TrainRequest():
                 pass
             else:
                 print('unread request: wrong mode')
-
         return
 
     def unread_match_id(self, unread_match_id_notification: dict):
@@ -285,23 +282,25 @@ class TrainRequest():
             "task_id": task_id,
         }
         sponsor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-        print("sponsor_get_match_id_file_res", json.loads(sponsor_get_match_id_file_res.text))
+        sponsor_get_match_id_file_res = json.loads(sponsor_get_match_id_file_res.text)
+        print("sponsor_get_match_id_file_res", sponsor_get_match_id_file_res)
 
         msg = ["3.3 Sponsor gets matched id file\n"]
         log_helper(msg, root, user_id, task_id)
 
-        match_id_file_list = json.loads(sponsor_get_match_id_file_res.text)["match_id_file"]
+        match_id_file_list = sponsor_get_match_id_file_res["match_id_file"]
         print("match_id_file_list", match_id_file_list)
-        assistor_random_id_pair_list = json.loads(sponsor_get_match_id_file_res.text)["assistor_random_id_pair"]
+        assistor_random_id_pair_list = sponsor_get_match_id_file_res["assistor_random_id_pair"]
 
         for i in range(len(match_id_file_list)):
             from_id = assistor_random_id_pair_list[i]
             # need to json load each item again to gain list
             cur_match_id_file = json.loads(match_id_file_list[i])
-            cur_match_id_file = "\n".join(cur_match_id_file)
+            # cur_match_id_file = "\n".join(cur_match_id_file)
 
             # call save_match_id
-            save_match_id_file_pos = save_match_id(root, user_id, task_id, "train", None, from_id)
+            save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
+                                                    test_id=None, from_id=from_id)
             save_match_id_file_pos = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos,
                                                                    "200", "save_match_id")
 
@@ -311,22 +310,18 @@ class TrainRequest():
             log_helper(msg, root, user_id, task_id)
 
             # call make_match_idx
-            make_match_idx_done = make_match_idx(root, user_id, task_id, "train", None, from_id)
+            make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
             make_match_idx_done = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
 
             msg = ["3.5 Sponsor matches id to index\n"]
             log_helper(msg, root, user_id, task_id)
 
         # get train target column
-        session = Session()
-        query = session.query(User_Chosen_Path).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
-
-        train_file_path = query.train_file_path
-        train_target_column = query.train_target_column
+        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
         print("train_file_path", train_file_path, train_target_column)
 
         # call make residual
-        make_residual_multiple_paths = make_residual(root, user_id, task_id, 0, train_file_path, train_target_column)
+        make_residual_multiple_paths = make_residual(root=root, self_id=user_id, task_id=task_id, round=self.initial_round, dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default)
         make_residual_multiple_paths = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
 
         msg = ["3.6 Sponsor makes residual finished\n"]
@@ -353,7 +348,8 @@ class TrainRequest():
             "residual_list": all_residual_data
         }
         send_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-        print("send_situation_res", json.loads(send_situation_res.text))
+        send_situation_res = json.loads(send_situation_res.text)
+        print("send_situation_res", send_situation_res)
 
         msg = ["3.7 Sponsor sends all situations" + "\n", "-------------------------- 3. Unread Match ID Done\n"]
         log_helper(msg, root, user_id, task_id)
@@ -386,18 +382,18 @@ class TrainRequest():
             "task_id": task_id,
         }
         assistor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        assistor_get_match_id_file_res = json.loads(assistor_get_match_id_file_res.text)
+        print("assistor_get_match_id_file_res", assistor_get_match_id_file_res)
         msg = ["3.3 Assistor gets matched id file\n"]
         log_helper(msg, root, user_id, task_id)
 
         # handle the response from request
-        assistor_get_match_id_file_res = json.loads(assistor_get_match_id_file_res.text)
-        print("assistor_get_match_id_file_res", assistor_get_match_id_file_res)
         cur_match_id_file = assistor_get_match_id_file_res["match_id_file"][0]
         cur_match_id_file = "\n".join(cur_match_id_file)
         from_id = assistor_get_match_id_file_res["sponsor_random_id"]
 
         # call save_match_id to get the designated position to save the match_id file
-        save_match_id_file_pos = save_match_id(root, user_id, task_id, "train", None, from_id)
+        save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
         save_match_id_file_pos = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos,
                                                                 "200", "save_match_id")
 
@@ -407,7 +403,7 @@ class TrainRequest():
         log_helper(msg, root, user_id, task_id)
 
         # call make_match_idx
-        make_match_idx_done = make_match_idx(root, user_id, task_id, "train", None, from_id)
+        make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
         make_match_idx_done = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
 
         msg = ["3.5 Assistor matches id to index\n"]
@@ -478,14 +474,10 @@ class TrainRequest():
         log_helper(msg, root, user_id, task_id)
 
         # get train_data_path from db
-        session = Session()
-        query = session.query(User_Chosen_Path).filter_by(user_id=user_id, test_indicator="train",
-                                                          task_id=task_id).first()
-        train_file_path = query.train_file_path
-        train_data_column = query.train_data_column
+        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
 
         # call make train
-        train_output = make_train(root, user_id, task_id, None, rounds, train_file_path, train_data_column)
+        train_output = make_train(root=root, self_id=user_id, task_id=task_id, round=rounds, dataset_path=train_file_path, data_idx=train_data_column, skip_header=self.skip_header_default, task_mode=task_mode, model_name=model_name)
         train_output = handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
 
         msg = ["4.3 Sponsor round " + str(rounds) + " training done." + "\n", "-------------------------- 4. Unread Situation Done\n"]
@@ -493,7 +485,7 @@ class TrainRequest():
 
         return
 
-    def unread_situation_assistor_train_part(self, task_id: str, rounds: int, from_id: str, train_file_path: str, train_data_column: str):
+    def unread_situation_assistor_train_part(self, task_id: str, rounds: int, from_id: str, train_file_path: str, train_data_column: str, task_mode: str, model_name: str):
         
         """
         Handle the timing issue of unread situation of assistor.
@@ -517,14 +509,14 @@ class TrainRequest():
         root = self.PersonalInformation_instance.get_root()
         
         # train the model and get output
-        train_output = make_train(root, user_id, task_id, None, rounds, train_file_path, train_data_column)
+        train_output = make_train(root=root, self_id=user_id, task_id=task_id, round=rounds, dataset_path=train_file_path, data_idx=train_data_column, skip_header=self.skip_header_default, task_mode=task_mode, model_name=model_name)
         train_output = handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
 
         msg = ["4.4 Assistor round " + rounds + " training done." + "\n"]
         log_helper(msg, root, user_id, task_id)
         
         # read the file from designated position
-        Assistor_train_output_data = np.savetxt(train_output[2], delimiter=",", fmt="%s")
+        Assistor_train_output_data = np.genfromtxt(train_output[2], delimiter=",", dtype=np.str_)
 
         # initiate a request to send output
         url = self.base_url + "/send_output/"
@@ -574,15 +566,15 @@ class TrainRequest():
             "rounds": rounds
         }
         assistor_get_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-
-        # handle response from above request
         assistor_get_situation_res = json.loads(assistor_get_situation_res.text)
         print("assistor_get_situation_res", assistor_get_situation_res)
+
+        # handle response from above request
         cur_situation_file = json.loads(assistor_get_situation_res["situation"])
-        from_id = json.loads(assistor_get_situation_res.text)["sender_random_id"]
+        from_id = assistor_get_situation_res["sender_random_id"]
 
         # call save_residual
-        save_residual_pos = save_residual(root, user_id, task_id, rounds)
+        save_residual_pos = save_residual(root=root, self_id=user_id, task_id=task_id, round=rounds)
         save_residual_pos = handle_Algorithm_return_value("save_residual_pos", save_residual_pos,
                                                                 "200", "save_residual")
 
@@ -592,8 +584,8 @@ class TrainRequest():
         log_helper(msg, root, user_id, task_id)
 
         # select train_data_path
-        default_train_file_path, _, default_train_data_column = self.PersonalInformation_instance.get_default_path()
-        self.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column)
+        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column = self.Database_class_instance.get_User_Assistor_Table()
+        self.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, task_mode, model_name)
         
         return
 
@@ -654,19 +646,20 @@ class TrainRequest():
             "rounds": rounds
         }
         sponsor_get_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-        print("sponsor_get_output_res", json.loads(sponsor_get_output_res.text))
+        sponsor_get_output_res = json.loads(sponsor_get_output_res.text)
+        print("sponsor_get_output_res", sponsor_get_output_res)
 
         msg = ["5.2 Sponsor gets output model\n"]
         log_helper(msg, root, user_id, task_id)
 
-        output = json.loads(sponsor_get_output_res.text)["output"]
-        sender_random_ids_list = json.loads(sponsor_get_output_res.text)["sender_random_ids_list"]
+        output = sponsor_get_output_res["output"]
+        sender_random_ids_list = sponsor_get_output_res["sender_random_ids_list"]
 
         for i in range(len(output)):
             from_id = sender_random_ids_list[i]
             print("from_id", from_id)
             # call save_output
-            save_output_pos = save_output(root, user_id, task_id, "train", None, rounds, from_id)
+            save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, round=rounds, from_id=from_id)
             save_output_pos = handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
 
             # write file
@@ -676,18 +669,14 @@ class TrainRequest():
             msg = ["5.3 Sponsor saves Output model\n"]
             log_helper(msg, root, user_id, task_id)
 
-            # get train_file_path, train_target_column from db
-            session = Session()
-            query = session.query(User_Chosen_Path).filter_by(user_id=user_id, test_indicator="train",
-                                                              task_id=task_id).first()
-            train_file_path = query.train_file_path
-            train_target_column = query.train_target_column
+            # get train_file_path, train_target_column from User_Sponsor_Table
+            task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
 
-            self.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column)
+            self.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, task_mode, metric_name)
 
         return
 
-    def unread_output_make_result_helper(self, task_id: str, rounds: int, train_file_path: str, train_target_column: str):
+    def unread_output_make_result_helper(self, task_id: str, rounds: int, train_file_path: str, train_target_column: str, task_mode: str, metric_name: str):
         """
         Helper Function. Dealing with the order issue
 
@@ -708,19 +697,19 @@ class TrainRequest():
         root = self.PersonalInformation_instance.get_root()
 
         # call make_result
-        make_result_done = make_result(root, user_id, task_id, rounds, train_file_path, train_target_column)
+        make_result_done = make_result(root=root, self_id=user_id, task_id=task_id, round=rounds, dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
         make_result_done = handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
 
         msg = ["5.4 Sponsor makes result done." + "\n"]
         log_helper(msg, root, user_id, task_id)
 
-        if rounds+1 >= self.maxRound:
+        if rounds >= self.maxRound:
             msg = ["---------------------- Train Stage Ends\n"]
             log_helper(msg, root, user_id, task_id)
             return
         else:
             # call make_residual
-            make_residual_multiple_paths = make_residual(root, user_id, task_id, rounds+1, train_file_path, train_target_column)
+            make_residual_multiple_paths = make_residual(root=root, self_id=user_id, task_id=task_id, round=0, dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default)
             make_residual_multiple_paths = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
 
             msg = ["5.5 Sponsor makes residual finished\n"]
@@ -747,7 +736,8 @@ class TrainRequest():
                 "residual_list": all_residual_data
             }
             send_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-            print("send_situation_res", json.loads(send_situation_res.text))
+            send_situation_res = json.loads(send_situation_res.text)
+            print("send_situation_res", send_situation_res)
 
             msg = ["5.6 Sponsor updates situation done\n", "-------------------------- 5. Unread Output Done\n"]
             log_helper(msg, root, user_id, task_id)

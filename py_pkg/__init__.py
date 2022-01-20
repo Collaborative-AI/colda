@@ -15,6 +15,7 @@ from Authorization import Authorization
 from TrainRequest import TrainRequest, PersonalInformation
 from TestRequest import TestRequest
 from Get_Notification import Get_Notification
+from Database_class import Database_class
 import threading
 
 # import jwt
@@ -59,10 +60,13 @@ def userLogout():
 
     return
 
-def set_default_data_path(default_train_file_path: str, default_train_id_column: str, default_train_data_column: str):
+def set_default_data_path(default_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None):
     PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
-    PersonalInformation_instance.set_Default_Path()
-
+    user_id = PersonalInformation_instance.get_user_id()
+    Database_class_instance = Database_class.get_Database_class_instance()
+    Database_class_instance.store_User_Default_Table(user_id=user_id, default_mode=default_mode, default_model_name=default_model_name,
+                                                    default_file_path=default_file_path, default_id_column=default_id_column, default_data_column=default_data_column)
+    return 
 
 def get_online_user(username: list):
     pass

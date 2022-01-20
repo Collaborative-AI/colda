@@ -1,28 +1,37 @@
 import numpy as np
 import os
-from algo_utils import log, parse_idx
+import json
+import collections
+from utils import log, parse_idx
+from metrics import Metric
 
+def make_eval(root, self_id, task_id, test_id, round, dataset_path, target_idx, skip_header, task_mode, metric_name, task_path):
 
-def make_eval(root, self_id, task_id, test_id, round, dataset_path, target_idx):
-    # root = args['root']
-    # self_id = args['self_id']
-    # task_id = args['task_id']
-    # test_id = args['test_id']
-    # round = args['round']
-    # dataset_path = args['dataset_path']
-    # target_idx = args['target_idx']
     task_path = os.path.join(root, self_id, 'task', task_id)
-    result = np.genfromtxt(os.path.join(task_path, 'train', 'round', '0', 'init.csv'), delimiter=',')
-    result = result.reshape(-1)
+    result = np.genfromtxt(os.path.join(task_path, 'train', 'round', '0', 'result.csv'), delimiter=',')
+    if len(result.shape) == 0:
+        result = result.reshape(-1)
+    if len(result.shape) == 1:
+        result = result.reshape(1, -1)
     if dataset_path is not None and target_idx is not None:
-        dataset = np.genfromtxt(dataset_path, delimiter=',')
+        dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
         target_idx = parse_idx(target_idx)
         target = dataset[:, target_idx]
-        loss = np.sqrt(((target - result) ** 2).mean())
-        msg = 'Test Round: init, RMSE: {}'.format(loss)
+        metric = Metric(task_mode, metric_name)
+        result = result.repeat(target.shape[0], axis=0)
+        eval = metric.eval(result, target)
+        msg = 'Test Round: 0, {}'.format(eval)
         log(msg, root, self_id, task_id, test_id)
     result_path = []
-    for i in range(round + 1):
+    for i in range(1, round + 1):
+        sponsor_test_result_path = os.path.join(task_path, 'test', test_id, 'round', str(i), 'output',
+                                                '{}.csv'.format(self_id))
+        if not os.path.exists(sponsor_test_result_path):
+            print("300?make_eval sponsor cannot find test output file")
+            return
+    
+    make_eval_res = collections.defaultdict(dict)
+    for i in range(1, round + 1):
         output_path_i = os.path.join(task_path, 'test', test_id, 'round', str(i), 'output')
         output_i = np.genfromtxt(os.path.join(output_path_i, '{}.csv'.format(self_id)), delimiter=',')
         output_i = output_i.reshape(output_i.shape[0], -1)
@@ -45,8 +54,13 @@ def make_eval(root, self_id, task_id, test_id, round, dataset_path, target_idx):
         result_path.append(result_path_i)
         np.savetxt(result_path_i, result, delimiter=",")
         if dataset_path is not None and target_idx is not None:
-            loss = np.sqrt(((target - result) ** 2).mean())
-            msg = 'Test Round: {}, RMSE: {}'.format(i, loss)
+            metric = Metric(task_mode, metric_name)
+            eval, eval_dict = metric.eval(result, target)
+            make_eval_res[i] = eval_dict
+            msg = 'Test Round: {}, {}'.format(i, eval)
             log(msg, root, self_id, task_id, test_id)
+
     result_path = '?'.join(result_path)
-    return '200?make_eval?{}'.format(result_path)
+    make_eval_res = json.dumps(make_eval_res)
+    print('200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res = make_eval_res, result_path = result_path), end='')
+    return

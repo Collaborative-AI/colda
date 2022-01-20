@@ -333,10 +333,10 @@ export default {
                 task_name: vm.task_name,
                 test_id: vm.test_id, 
                 test_name: vm.test_name,
+                test_description: vm.test_description,
                 task_mode: vm.task_mode,
                 model_name: vm.model_name,
                 metric_name: vm.metric_name,
-                test_description: vm.test_description,
                 id_file: test_hash_id_file_data
               }
               

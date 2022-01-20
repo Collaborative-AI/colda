@@ -215,7 +215,7 @@ console.log('position', __dirname)
 // // let db = new sqlite3.Database('Apollo_Client_db');
 
 db.serialize(function() {
-  db.run("CREATE TABLE IF NOT EXISTS User_Default_Table (user_id                    int,  \
+  db.run("CREATE TABLE IF NOT EXISTS User_Default_Table (   user_id                    int,  \
                                                             default_file_path          text, \
                                                             default_id_column          text, \
                                                             default_data_column        text, \
@@ -223,42 +223,42 @@ db.serialize(function() {
                                                             default_mode               text, \
                                                             default_model_name         text)");
 
-  db.run("CREATE TABLE IF NOT EXISTS User_Sponsor_Table (task_name               text, \
-                                                             task_description        text, \
-                                                             user_id                 int,  \
-                                                             test_indicator          text, \
-                                                             task_id                 text, \
-                                                             test_id                 text, \
-                                                             train_file_path         text, \
-                                                            train_id_column         text, \
-                                                             train_data_column       text, \
-                                                             train_target_column     text,\
-                                                             test_file_path          text, \
-                                                             test_id_column          text, \
-                                                             test_data_column        text, \
-                                                             test_target_column      text, \
-                                                             task_mode               text, \
-                                                             model_name              text, \
-                                                             metric_name             text)");
+  db.run("CREATE TABLE IF NOT EXISTS User_Sponsor_Table (   user_id                   int, \
+                                                            task_id                   text, \
+                                                            test_id                   text, \
+                                                            task_name                 text, \
+                                                            task_description          text, \
+                                                            test_name                 text, \
+                                                            test_description,         text, \
+                                                            test_indictor,            text, \
+                                                            train_file_path           text, \
+                                                            train_id_column           text, \
+                                                            train_data_column         text, \
+                                                            train_target_column       text,\
+                                                            test_file_path            text, \
+                                                            test_id_column            text, \
+                                                            test_data_column          text, \
+                                                            test_target_column        text, \
+                                                            task_mode                 text, \
+                                                            model_name                text, \
+                                                            metric_name               text)");
 // user manual
-    db.run("CREATE TABLE IF NOT EXISTS User_Assistor_Table (   user_id                    int, \
-                                                                     task_id                    text,\
-                                                                     test_id                    text,\
-                                                                     task_name                  text,\
-                                                                     task_description           text,\
-                                                                     test_name                  text,\
-                                                                     test_description           text,\
-                                                                     train_file_path            text, \
-                                                                     train_id_column            text, \
-                                                                     train_data_column          text, \
-                                                                     train_target_column        text, \
-                                                                     test_file_path             text, \
-                                                                     test_id_column             text, \
-                                                                     test_data_column           text, \
-                                                                     test_target_column         text, \
-                                                                     mode                       text, \
-                                                                     test_indicator             text, \
-                                                                     model_name                 text)");
+    db.run("CREATE TABLE IF NOT EXISTS User_Assistor_Table (    user_id                    int, \
+                                                                task_id                    text,\
+                                                                test_id                    text,\
+                                                                task_name                  text,\
+                                                                task_description           text,\
+                                                                test_name                  text,\
+                                                                test_description           text,\
+                                                                test_indicator             text, \
+                                                                train_file_path            text, \
+                                                                train_id_column            text, \
+                                                                train_data_column          text, \
+                                                                test_file_path             text, \
+                                                                test_id_column             text, \
+                                                                test_data_column           text, \
+                                                                mode                       text, \
+                                                                model_name                 text)");
 
 
    

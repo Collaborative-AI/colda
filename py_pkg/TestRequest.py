@@ -4,6 +4,7 @@ import numpy as np
 
 from Network import Network
 from PersonalInformation import PersonalInformation
+from Database_class import Database_class
 
 from Algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
@@ -16,6 +17,8 @@ class TestRequest:
     def __init__(self):
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
+        self.Database_class_instance = Database_class.get_Database_class_instance()
+
         self.base_url = self.Network_instance.get_base_url()
 
     @classmethod

@@ -11,7 +11,6 @@ to be used as a cookie-cutter for developing new Python packages.
 # import sys
 # sys.path.append(basedir)
 
-import numpy as np
 from Authorization import Authorization
 from TrainRequest import TrainRequest, PersonalInformation
 from TestRequest import TestRequest

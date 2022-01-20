@@ -112,7 +112,7 @@ class PersonalInformation:
 
         if self.__default_mode == None:
             # get message from database
-            self.__default_mode = "passive"
+            self.__default_mode = "manual"
         return self.__default_mode
 
 
@@ -121,7 +121,7 @@ class PersonalInformation:
         Change the default mode.
 
         Parameters:
-         mode - String. Must in ["passive", "active", "auto"]
+         mode - String. Must in ["auto", "manual"]
 
         Returns:
          None

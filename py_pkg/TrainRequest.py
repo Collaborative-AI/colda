@@ -169,6 +169,7 @@ class TrainRequest():
         user_id = self.PersonalInformation_instance.get_user_id()
         root = self.PersonalInformation_instance.get_root()
         token = self.Network_instance.get_token()
+        
         default_mode = self.PersonalInformation_instance.get_default_mode()
         cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
         cur_unread_request_info_dict = unread_request_notification["info_dict"]
@@ -178,7 +179,6 @@ class TrainRequest():
                 
                 session = Session()
                 query = session.query(User_Default_Path).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
-
                 default_train_file_path = query.default_train_file_path
                 default_train_id_column = query.default_train_id_column
 
@@ -186,6 +186,10 @@ class TrainRequest():
                                                 default_train_id_column)
                 hash_id_file_address = handle_Algorithm_return_value("train_make_hash", hash_id_file_address,
                                                                    "200", "make_hash")
+
+                hash_id_file_data = np.genfromtxt(hash_id_file_address[2], delimiter=',', dtype=np.str_)
+                hash_id_file_data = "\n".join(hash_id_file_data)
+                print("hash_id_file_data", hash_id_file_data, type(hash_id_file_data))
 
                 # add log
                 msg = ["\n You are Assistor\n"]
@@ -291,7 +295,7 @@ class TrainRequest():
             from_id = assistor_random_id_pair_list[i]
             # need to json load each item again to gain list
             cur_match_id_file = json.loads(match_id_file_list[i])
-            # cur_match_id_file = "\n".join(cur_match_id_file)
+            cur_match_id_file = "\n".join(cur_match_id_file)
 
             # call save_match_id
             save_match_id_file_pos = save_match_id(root, user_id, task_id, "train", None, from_id)
@@ -299,8 +303,6 @@ class TrainRequest():
                                                                    "200", "save_match_id")
 
             # write file
-            # print("cur_match_id_file", type(cur_match_id_file), cur_match_id_file, )
-            # cur_match_id_file =
             np.savetxt(save_match_id_file_pos[2], cur_match_id_file, delimiter=",", fmt="%s")
             msg = ["3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"]
             log_helper(msg, root, user_id, task_id)

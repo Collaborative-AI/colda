@@ -13,6 +13,7 @@
 # a.set(5)
 # print(a.get())
 
-a = ["5"]
-print("?".join(a))
+print(bin(5))
 
+# 3个class  (单例)
+# 每个class用task_id或者test_id当key， dictofdict

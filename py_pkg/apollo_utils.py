@@ -22,7 +22,8 @@ def log_helper(msg, root, user_id, task_id):
 
 def handle_Algorithm_return_value(name, return_val, first_val, second_val):
     """
-    Check the return value returned by the Algorithm
+    Check if the return value returned by the Algorithm equals to the correct value, e.x. 
+    return_val[0] == first_val ('200'), return_val[1] == second_val ('make_train')
 
     Parameters:
      name - String. The name of current return_val
@@ -36,6 +37,7 @@ def handle_Algorithm_return_value(name, return_val, first_val, second_val):
     Raises:
      KeyError - raises an exception
     """
+
     return_val = return_val.split("?")
     print(name, return_val)
     # check if return_val obeys the correct return value
@@ -43,3 +45,23 @@ def handle_Algorithm_return_value(name, return_val, first_val, second_val):
         raise RuntimeError('testError')
 
     return return_val
+
+def handle_base64_padding(base64_string):
+    """
+    If the length of the base64 string is not multiple of 3, add '=' or '==' behind
+
+    Parameters:
+        base64_string - String. part of token
+
+    Returns:
+        base64_string - String. Processed String
+
+    Raises:
+        KeyError - raises an exception
+    """
+    print('length', len(base64_string))
+    num = len(base64_string)%4
+    if num != 0:
+        base64_string = base64_string + '=' * (4-num)
+    print('length_after', len(base64_string))
+    return base64_string

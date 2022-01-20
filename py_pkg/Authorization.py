@@ -4,6 +4,7 @@ import base64
 # import jwt
 from Network import Network
 from PersonalInformation import PersonalInformation
+from apollo_utils import handle_base64_padding
 # from Get_Notification import
 
 # from urllib.request import quote, unquote
@@ -45,25 +46,25 @@ class Authorization():
         """
 
         url = self.base_url + "/tokens"
+        print('url', url, username, password)
         token_response = requests.post(url, auth=(username, password))
+        print('token_response', token_response)
         token_response_text = json.loads(token_response.text)
 
-        token = token_response_text["token"]
-        # print("token", token)
+        token = token_response_text["token"]        
+        # split token (token has 3 parts)
+        temp = token.split('.')
+        # add padding to base64 string
+        temp[1] = handle_base64_padding(temp[1])
+        # get user_id
+        user_id = str(json.loads(base64.b64decode(temp[1]))['user_id'])
+        print('login user_id', user_id)
+
+        # set token
         self.Network_instance.set_token(token)
+        # set user_id
+        self.PersonalInformation_instance.set_user_id(user_id)
 
-        # hard code temporarily
-        self.PersonalInformation_instance.set_user_id("1")
-
-        # # a = jwt.decode(token, options={"verify_signature": False})
-        # # print("a", a)
-        # a = jwt.decode(token, options={"verify_signature": False})
-        # print("a",a)
-        # split = token.split(".")
-        # print("split", split)
-        #
-        # name = "javascript"
-        #
         # # 编码
         # c = base64.b64encode(name.encode())
         # print(c, type(c), type(split[1]))

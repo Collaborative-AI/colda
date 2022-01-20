@@ -4,8 +4,9 @@ class Network():
 
     def __init__(self):
         self.__token = None
-        self.__baseURL = 'http://3.15.30.244'
+        # self.__baseURL = 'http://3.15.30.244'
         # self.__baseURL = 'http://localhost:5000'
+        self.__baseURL = 'http://127.0.0.1:5000'
 
     @classmethod
     def get_Network_instance(cls):
@@ -43,7 +44,8 @@ class Network():
          KeyError - raises an exception
         """
         self.__token = token
-        print("new_token", self.__token)
+        # print("new_token", self.__token)
+        return 
 
     def get_token(self):
         """
@@ -58,5 +60,5 @@ class Network():
         Raises:
          KeyError - raises an exception
         """
-        print("zz", self.__token)
+        # print("zz", self.__token)
         return self.__token

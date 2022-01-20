@@ -81,9 +81,9 @@ def get_pending_requests():
     pass
 #
 
-userLogin("testa", "123")
+userLogin("xie2", "Xie2@123")
 # set_default_data_path("/Users/qile/Documents/data/BostonHousing/2/123/0.5/0/train/data.csv", "1", "2")
-callForTrain(2, [2], "/Users/qile/Documents/data/combine.csv", "1", "2-7", "8")
+# callForTrain(2, [2], "/Users/qile/Documents/data/combine.csv", "1", "2-7", "8")
 
 
 

@@ -8,7 +8,7 @@ import subprocess
 from Network import Network
 from PersonalInformation import PersonalInformation
 
-from Algorithm import make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, log
+from Algorithm import make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
 from Error import check_Algorithm_return_value
 from apollo_utils import log_helper, handle_Algorithm_return_value
@@ -32,41 +32,45 @@ class TrainRequest():
         return cls.__TrainRequest_instance
 
 
-    def handleTrainRequest(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_name: str=None, task_description: str=None):
+    def handleTrainRequest(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, 
+                            train_target_column: str, task_name: str=None, task_description: str=None):
+        
         """
         Parameters:
-         maxRound - Integer. Maximum training round
-         username - List. The List of assistors
-         train_file_path - String. Input path address of training data path
-         train_id_column - String. ID column of Input File
-         train_data_column - String. Data column of Input File
-         train_target_column - String. Target column of Input File
-         task_name - String. Default is None
-         task_description - String. Default is None
+            maxRound - Integer. Maximum training round
+            username - List. The List of assistors
+            train_file_path - String. Input path address of training data path
+            train_id_column - String. ID column of Input File
+            train_data_column - String. Data column of Input File
+            train_target_column - String. Target column of Input File
+            task_name - String. Default is None
+            task_description - String. Default is None
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
         self.__find_assistor(maxRound, assistors, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description)
         return
 
     def __get_train_id(self):
+        
         """
         Get new Task id for this task
 
         Parameters:
-         None
+            None
 
         Returns:
-         new_task_id - String. The new task id of new task
+            new_task_id - String. The new task id of new task
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
+
         url = self.base_url + "/create_new_train_task/"
         token = self.Network_instance.get_token()
         get_train_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
@@ -80,24 +84,25 @@ class TrainRequest():
 
 
     def __find_assistor(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_name: str=None, task_description: str=None):
+        
         """
         start task with all assistors
 
         Parameters:
-         maxRound - Integer. Maximum training round
-         username - List. The List of assistors
-         train_file_path - String. Input path address of training data path
-         train_id_column - String. ID column of Input File
-         train_data_column - String. Data column of Input File
-         train_target_column - String. Target column of Input File
-         task_name - String. Default is None
-         task_description - String. Default is None
+            maxRound - Integer. Maximum training round
+            username - List. The List of assistors
+            train_file_path - String. Input path address of training data path
+            train_id_column - String. ID column of Input File
+            train_data_column - String. Data column of Input File
+            train_target_column - String. Target column of Input File
+            task_name - String. Default is None
+            task_description - String. Default is None
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
         # obtain some important information
@@ -128,9 +133,11 @@ class TrainRequest():
         token = self.Network_instance.get_token()
 
         data = {
-            "assistor_id_list": assistors,
-            "task_id": task_id,
+            "assistor_username_list": assistors,
             "id_file": hash_id_file_data,
+            "task_id": task_id,
+            "task_name": task_name,
+            "task_description": task_description
         }
 
         find_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
@@ -144,65 +151,81 @@ class TrainRequest():
         return
 
     def unread_request(self, unread_request_notification: dict):
+
         """
         Handle the unread request for three default mode: ["passive", "active", "auto"]
 
         Parameters:
-         unread_request_notification - Dictionary.
+            unread_request_notification - Dictionary.
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
         # obtain some important information
         user_id = self.PersonalInformation_instance.get_user_id()
-        task_id = self.__get_train_id()
         root = self.PersonalInformation_instance.get_root()
-
+        token = self.Network_instance.get_token()
         default_mode = self.PersonalInformation_instance.get_default_mode()
-        if default_mode == "active":
-            # Insert to DB
-            pass
+        cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
+        cur_unread_request_info_dict = unread_request_notification["info_dict"]
 
-        elif default_mode == "passive":
-            # get default path
+        for task_id in cur_unread_request_Taskid_dict:
+            if default_mode == "Auto":
+                
+                session = Session()
+                query = session.query(User_Default_Path).filter_by(user_id=user_id, test_indicator="train", task_id=task_id).first()
 
-            cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
-            for task_id in cur_unread_request_Taskid_dict:
-                # hash_id_file_dat = make hash
+                default_train_file_path = query.default_train_file_path
+                default_train_id_column = query.default_train_id_column
 
-                url = self.base_url + "/match_assistor_id/"
-                token = self.Network_instance.get_token()
-                task_id = task_id
+                hash_id_file_address = make_hash(root, user_id, task_id, "train", None, default_train_file_path,
+                                                default_train_id_column)
+                hash_id_file_address = handle_Algorithm_return_value("train_make_hash", hash_id_file_address,
+                                                                   "200", "make_hash")
+
+                # add log
+                msg = ["\n You are Assistor\n"]
+                msg.append("Task ID: " + task_id + "\n")
+                msg.append("----------------------2. Unread Request\n")
+                msg.append("2.1 Update the request notification\n")
+                log_helper(msg, root, user_id, task_id)
+
                 hash_id_file_data = None
-                file = hash_id_file_data
+                url = self.base_url + '/match_assistor_id/'
                 data = {
                     "task_id": task_id,
-                    "file": hash_id_file_data,
+                    "file": hash_id_file_data
                 }
                 match_assistor_id_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-                print("match_assistor_id_res", match_assistor_id_res)
+                # add log
+                msg = ["2.2 assistor uploads id file\n"]
+                msg.append("--------------------------2. Unread Request Done\n")
+                log_helper(msg, root, user_id, task_id)
 
-        elif default_mode == "auto":
-            pass
+            elif default_mode == "Manual":
+                pass
+            else:
+                print('unread request: wrong mode')
 
         return
 
     def unread_match_id(self, unread_match_id_notification: dict):
+
         """
         Handle the unread_match_id. Two situations needed to be considered: sponsor and assistor
 
         Parameters:
-         unread_match_id_notification - Dictionary.
+            unread_match_id_notification - Dictionary.
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
         # obtain some important information
@@ -236,15 +259,16 @@ class TrainRequest():
         Handle the unread_match_id of sponsor.
 
         Parameters:
-         task_id - String.
+            task_id - String.
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
+        # obtain some information
         user_id = self.PersonalInformation_instance.get_user_id()
         token = self.Network_instance.get_token()
         root = self.PersonalInformation_instance.get_root()
@@ -332,49 +356,75 @@ class TrainRequest():
         return
 
     def unread_match_id_assistor(self, task_id: str):
+
         """
         Handle the unread_match_id of assistor.
 
         Parameters:
-         task_id - String.
+            task_id - String.
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
+
+        # obtain basic information
         user_id = self.PersonalInformation_instance.get_user_id()
-        url = self.base_url + "/users/" + user_id + "/match_id_file"
         token = self.Network_instance.get_token()
+        root = self.PersonalInformation_instance.get_root()
+
+        # initiate a request
+        url = self.base_url + "/users/" + user_id + "/match_id_file"
         data = {
             "task_id": task_id,
         }
         assistor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-        print("assistor_get_match_id_file_res", assistor_get_match_id_file_res)
-        cur_match_id_file = json.loads(assistor_get_match_id_file_res.text)["match_id_file"][0]
-        cur_match_id_file = "\n".join(cur_match_id_file)
-        from_id = json.loads(assistor_get_match_id_file_res.text)["sponsor_random_id"]
+        msg = ["3.3 Assistor gets matched id file\n"]
+        log_helper(msg, root, user_id, task_id)
 
-        # call save_match_id
-        # save_match_id_file_pos
+        # handle the response from request
+        assistor_get_match_id_file_res = json.loads(assistor_get_match_id_file_res.text)
+        print("assistor_get_match_id_file_res", assistor_get_match_id_file_res)
+        cur_match_id_file = assistor_get_match_id_file_res["match_id_file"][0]
+        cur_match_id_file = "\n".join(cur_match_id_file)
+        from_id = assistor_get_match_id_file_res["sponsor_random_id"]
+
+        # call save_match_id to get the designated position to save the match_id file
+        save_match_id_file_pos = save_match_id(root, user_id, task_id, "train", None, from_id)
+        save_match_id_file_pos = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos,
+                                                                "200", "save_match_id")
+
+        # save match id file to designated position
+        np.savetxt(save_match_id_file_pos[2], cur_match_id_file, delimiter=",", fmt="%s")
+        msg = ["3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"]
+        log_helper(msg, root, user_id, task_id)
 
         # call make_match_idx
+        make_match_idx_done = make_match_idx(root, user_id, task_id, "train", None, from_id)
+        make_match_idx_done = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
+
+        msg = ["3.5 Assistor matches id to index\n"]
+        log_helper(msg, root, user_id, task_id)
+        msg = ["-------------------------- 3. Unread Match ID Done\n"]
+        log_helper(msg, root, user_id, task_id)
 
         return
 
     def unread_situation(self, unread_situation_notification: dict):
+
         """
         Handle the unread_situation. Two situations needed to be considered: sponsor and assistor
 
         Parameters:
-         unread_situation_notification - Dictionary.
+            unread_situation_notification - Dictionary.
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
         user_id = self.PersonalInformation_instance.get_user_id()
@@ -405,16 +455,17 @@ class TrainRequest():
         Handle the unread situation of sponsor.
 
         Parameters:
-         task_id - String. The task needed to be handled.
-         rounds - Integer. Current round.
+            task_id - String. The task needed to be handled.
+            rounds - Integer. Current round.
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
+        # obtain basic information
         user_id = self.PersonalInformation_instance.get_user_id()
         root = self.PersonalInformation_instance.get_root()
 
@@ -437,36 +488,56 @@ class TrainRequest():
 
         return
 
-    def unread_situation_assistor_train_part(self, task_id: str, rounds: int, from_id: str, default_train_file_path: str, default_train_data_column: str):
+    def unread_situation_assistor_train_part(self, task_id: str, rounds: int, from_id: str, train_file_path: str, train_data_column: str):
+        
         """
         Handle the timing issue of unread situation of assistor.
 
         Parameters:
-         task_id - String. The task needed to be handled.
-         rounds - Integer. Current round.
-         default_train_file_path - String. The file path of train file
-         default_train_data_column - String. The selected data column of train file
+            task_id - String. The task needed to be handled.
+            rounds - Integer. Current round.
+            train_file_path - String. The file path of train file
+            train_data_column - String. The selected data column of train file
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
-        # call make_train
-
-        Assistor_train_output_data = None
-
-        url = self.base_url + "/send_output/"
+        # obtain basic information
+        user_id = self.PersonalInformation_instance.get_user_id()
         token = self.Network_instance.get_token()
+        root = self.PersonalInformation_instance.get_root()
+        
+        # train the model and get output
+        train_output = make_train(root, user_id, task_id, None, rounds, train_file_path, train_data_column)
+        train_output = handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
+
+        msg = ["4.4 Assistor round " + rounds + " training done." + "\n"]
+        log_helper(msg, root, user_id, task_id)
+        
+        # read the file from designated position
+        Assistor_train_output_data = np.savetxt(train_output[2], delimiter=",", fmt="%s")
+
+        # initiate a request to send output
+        url = self.base_url + "/send_output/"
         data = {
             "task_id": task_id,
             "output": Assistor_train_output_data
         }
         assistor_send_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        assistor_send_output_res = json.loads(assistor_send_output_res.text)
         print("assistor_send_output_res", assistor_send_output_res)
 
+        msg = ["4.5 Assistor sends output\n"]
+        log_helper(msg, root, user_id, task_id)
+        msg = ["-------------------------- 4. Unread Situation Done\n"]
+        log_helper(msg, root, user_id, task_id)
+        msg = ["-------------------------- Train stage done\n"]
+        log_helper(msg, root, user_id, task_id)
+        
         return
 
 
@@ -476,35 +547,49 @@ class TrainRequest():
         Handle the unread situation of assistor.
 
         Parameters:
-         task_id - String. The task needed to be handled.
-         rounds - Integer. Current round.
+            task_id - String. The task needed to be handled.
+            rounds - Integer. Current round.
 
         Returns:
-         None
+            None
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
-        # make train
+        # obtain basic information
         user_id = self.PersonalInformation_instance.get_user_id()
-        url = self.base_url + "/users/" + user_id + "/situation_file"
         token = self.Network_instance.get_token()
+        root = self.PersonalInformation_instance.get_root()
+
+        # initiate a request
+        url = self.base_url + "/users/" + user_id + "/situation_file"
         data = {
             "task_id": task_id,
             "rounds": rounds
         }
         assistor_get_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+
+        # handle response from above request
+        assistor_get_situation_res = json.loads(assistor_get_situation_res.text)
         print("assistor_get_situation_res", assistor_get_situation_res)
-        cur_situation_file = json.loads(assistor_get_situation_res.text)["situation"]
+        cur_situation_file = json.loads(assistor_get_situation_res["situation"])
         from_id = json.loads(assistor_get_situation_res.text)["sender_random_id"]
 
         # call save_residual
+        save_residual_pos = save_residual(root, user_id, task_id, rounds)
+        save_residual_pos = handle_Algorithm_return_value("save_residual_pos", save_residual_pos,
+                                                                "200", "save_residual")
+
+        # save match id file to designated position
+        np.savetxt(save_residual_pos[2], cur_situation_file, delimiter=",", fmt="%s")
+        msg = ["4.3 Assistor Saved Residual File!\n"]
+        log_helper(msg, root, user_id, task_id)
 
         # select train_data_path
         default_train_file_path, _, default_train_data_column = self.PersonalInformation_instance.get_default_path()
-
         self.unread_situation_assistor_train_part(task_id, rounds, from_id, default_train_file_path, default_train_data_column)
+        
         return
 
 

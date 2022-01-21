@@ -441,8 +441,8 @@ class Message(PaginatedAPIMixin, db.Model):
     assistor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     task_id = db.Column(db.String(120), index=True)
     rounds = db.Column(db.Integer)
-    situation = db.Column(db.Text)
-    output = db.Column(db.Text, nullable=True)
+    situation = db.Column(db.Text(10000000))
+    output = db.Column(db.Text(10000000), nullable=True)
     test_indicator = db.Column(db.String(10))
     test_id = db.Column(db.String(120), index=True)
     Sponsor_situation_training_done = db.Column(db.String(120), nullable=True)
@@ -481,9 +481,9 @@ class Notification(PaginatedAPIMixin, db.Model):
     # category of notification
     name = db.Column(db.String(128), index=True)
     timestamp = db.Column(db.Float, index=True, default=time)
-    payload_json = db.Column(db.Text)
-    sender_random_id_list = db.Column(db.Text)
-    task_id_list = db.Column(db.Text)
+    payload_json = db.Column(db.Text(10000000))
+    sender_random_id_list = db.Column(db.Text(10000000))
+    task_id_list = db.Column(db.Text(10000000))
 
     # sender_random_id = db.Column(db.Integer)
     # task_id = db.Column(db.String(120), index=True)
@@ -556,7 +556,7 @@ class Matched(PaginatedAPIMixin, db.Model):
     sponsor_id = db.Column(db.Integer)
     assistor_id_pair = db.Column(db.Integer)
 
-    Matched_id_file =  db.Column(db.Text, nullable=True)
+    Matched_id_file =  db.Column(db.Text(10000000), nullable=True)
     matched_done = db.Column(db.Integer, nullable=True)
     Assistor_matched_written_done = db.Column(db.String(120), nullable=True)
     sponsor_random_id = db.Column(db.String(120))

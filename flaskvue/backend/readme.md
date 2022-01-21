@@ -1,4 +1,4 @@
-1. First time launch:
+pip1. First time launch:
     1. cd into backend
     2. pip install pipenv
     3. pipenv install

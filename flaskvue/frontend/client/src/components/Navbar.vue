@@ -90,6 +90,7 @@ import { handle_Algorithm_return_value, execute_unittest_list, generate_unittest
 // If we run npm run electron:serve, window.ex would have the object
 // else we are running unittest, we will require directly
 import { ex,fs,os,node_path,dialog, log } from '../import_package.js'
+// console.log = log.log
 
 // const ex = window.ex ? window.ex : require('child_process');
 // const fs = window.fs ? window.fs : require('fs');
@@ -335,7 +336,7 @@ export default {
               .catch((error) => {
                 // handle error
                 console.log(error)
-                this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
+                // this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
               }) // axios
           }) // db insert into assistor table
         }) //db.get default table
@@ -359,7 +360,7 @@ export default {
           .catch((error) => {
             // handle error
             console.log(error)
-            this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
+            // this.$toasted.error('Task' + task_id.toString() + 'occurs error at stage 1', { icon: 'fingerprint' })
           })
       } else{
         // // console.log("unread request: mode run")

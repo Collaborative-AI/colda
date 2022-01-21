@@ -69,9 +69,14 @@ unittest_parameters.task_description = "best test"
 unittest_parameters.train_file_path = null
 // unittest_parameters.train_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/0/train/dataset.csv"
 // unittest_parameters.train_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
+
+// unittest_parameters.train_id_column = "1"
+// unittest_parameters.train_data_column = "2-8"
+// unittest_parameters.train_target_column = "9"//bostonhousing,wine
+
 unittest_parameters.train_id_column = "1"
-unittest_parameters.train_data_column = "2-8"
-unittest_parameters.train_target_column = "9"
+unittest_parameters.train_data_column = "2-10"
+unittest_parameters.train_target_column = "11"//kchousing
 
 unittest_parameters.test_description = 'best test'
 unittest_parameters.test_file_path = null
@@ -79,21 +84,26 @@ unittest_parameters.test_file_path = null
 
 // unittest_parameters.test_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
 
+// unittest_parameters.test_id_column = "1"
+// unittest_parameters.test_data_column = "2-8"
+// unittest_parameters.test_target_column = "9"//bostonhousing,wine
+
 unittest_parameters.test_id_column = "1"
-unittest_parameters.test_data_column = "2-8"
-unittest_parameters.test_target_column = "9"
+unittest_parameters.test_data_column = "2-10"
+unittest_parameters.test_target_column = "11"
 
 unittest_parameters.assistor_username_list = 'xie2'
 unittest_parameters.task_mode = 'regression'
 unittest_parameters.model_name = 'linear'
-// unittest_parameters.metric_name = 'MAD_RMSE_R2'
-unittest_parameters.metric_name = 'Accuracy_F1'
+unittest_parameters.metric_name = 'MAD_RMSE_R2'
+// unittest_parameters.metric_name = 'Accuracy_F1'
 // profile.vue
 unittest_parameters.default_file_path = null
 // unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/1/all/dataset.csv"
 // unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
 unittest_parameters.default_id_column = "1"
-unittest_parameters.default_data_column = "2-7"
+// unittest_parameters.default_data_column = "2-7"//bostonhousing, wine
+unittest_parameters.default_data_column = "2-10"//kchousing
 unittest_parameters.default_mode = null
 unittest_parameters.default_model_name = null
 
@@ -123,14 +133,17 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
     let res = ''
 
     if (sponsor_mode == 'regression'){
-      res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
       // res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//BostonHousing_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/xianjianxie/Documents/Apollo_Data/processed/BostonHousing/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      res = "/Users/xianjianxie/Documents/Apollo_Data/processed/KCHousing/KCHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     } else if (sponsor_mode == 'classification'){
-      res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
       // res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//Wine_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     }
     return res
@@ -142,7 +155,8 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
 
   function generate_default_data_column(){
     if (total_participants == 2){
-      return '2-7'
+      // return '2-7'// bostonhousing,wine
+      return '2-10'// kchousing
     } else if (total_participants == 3){
       return '2-5'
     }

@@ -1307,14 +1307,14 @@ export default {
           }
         }
 
-        const timer = setTimeout(() => {
-          vm.getLog(task_id)
-        }, 10000)
+        // const timer = setTimeout(() => {
+        //   vm.getLog(task_id)
+        // }, 10000)
   
-        // destroy the setTimeout function when leave this page
-        vm.$once('hook:beforeDestroy', function () {
-            clearTimeout(timer)
-        })
+        // // destroy the setTimeout function when leave this page
+        // vm.$once('hook:beforeDestroy', function () {
+        //     clearTimeout(timer)
+        // })
 
       }
       

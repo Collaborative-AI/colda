@@ -4,6 +4,7 @@ let ex = null
 let os = null
 let node_path = null
 let dialog = null
+// let log = null
 let log = console.log
 let sqlite3 = null
 
@@ -19,8 +20,8 @@ if (window.require != undefined){
   node_path = window.require('path');
   dialog = window.require('electron').remote.dialog;
   console.log('ss', dialog)
-  // log = window.require('electron-log')
-  console.log('wudi', log)
+  log = window.require('electron-log')
+  // console.log('wudi', log)
 } else {
   console.log('dabao2')
   // Database = require('better-sqlite3')
@@ -31,7 +32,7 @@ if (window.require != undefined){
   node_path = require('path');
   // console.log('ssss', require('electron'))
   // dialog = require('electron').remote.dialog;
-  // log = require('electron-log')
+  log = require('electron-log')
 
   
 }

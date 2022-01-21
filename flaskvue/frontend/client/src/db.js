@@ -230,9 +230,9 @@ db.serialize(function() {
                                                              task_id                 text, \
                                                              test_id                 text, \
                                                              train_file_path         text, \
-                                                            train_id_column         text, \
+                                                             train_id_column         text, \
                                                              train_data_column       text, \
-                                                             train_target_column     text,\
+                                                             train_target_column     text, \
                                                              test_file_path          text, \
                                                              test_id_column          text, \
                                                              test_data_column        text, \

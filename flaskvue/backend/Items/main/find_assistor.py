@@ -112,10 +112,12 @@ def find_assistor():
     model_name = data['model_name']
     metric_name = data['metric_name']
     task_description = data['task_description']
+
     
     assistor_id_list = []
     for username in assistor_username_list:
         user = User.query.filter_by(username=username).first()
+
         if user is None:
             return jsonify("wrong username")
         print("user.id", username, user.id)

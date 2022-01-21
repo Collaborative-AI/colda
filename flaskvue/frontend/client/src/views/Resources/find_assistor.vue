@@ -126,7 +126,7 @@ export default {
             [
               {
                   name: "linear",
-                  sub: [{ name: "Accuracy_F1" }],
+                  sub: [{ name: "Accuracy_F1_AUCROC" }],
               },
             ],   
         },

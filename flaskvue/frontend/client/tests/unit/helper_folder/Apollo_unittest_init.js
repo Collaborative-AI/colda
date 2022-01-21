@@ -124,7 +124,7 @@ function generate_unittest_log(test_name){
 }
 
 
-function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_mode){
+function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_mode, data_file){
   let total_participants = assistor_num + 1
   total_participants = total_participants.toString()
   console.log('assistor_num', total_participants)
@@ -133,14 +133,22 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
     let res = ''
 
     if (sponsor_mode == 'regression'){
+<<<<<<< HEAD
       // res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+=======
+      res = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+>>>>>>> 832ad3d0a2ae59cc2f7c746a9aa1e78fefd2d343
       // res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//BostonHousing_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/processed/BostonHousing/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
       res = "/Users/xianjianxie/Documents/Apollo_Data/processed/KCHousing/KCHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     } else if (sponsor_mode == 'classification'){
+<<<<<<< HEAD
       // res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+=======
+      res = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+>>>>>>> 832ad3d0a2ae59cc2f7c746a9aa1e78fefd2d343
       // res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//Wine_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
@@ -177,7 +185,7 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
   for (let i = 2; i < assistor_num+2; i++){
     let path_user_id = (i-1).toString()
     let cur_user_id = i.toString()
-    default_file_path_object[cur_user_id] = generate_data_path(path_user_id, "all")
+    default_file_path_object[cur_user_id] = generate_data_path("1", "all")
     default_id_column_object[cur_user_id] = generate_default_id_column()
     default_data_column_object[cur_user_id] = generate_default_data_column()
     default_model_name_object[cur_user_id] = generate_default_model_name()

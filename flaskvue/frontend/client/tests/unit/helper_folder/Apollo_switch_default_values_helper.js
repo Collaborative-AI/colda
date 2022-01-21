@@ -3,12 +3,12 @@ import { generate_parameters, retrieve_User_Sponsor_Table_record } from './Apoll
 
 jest.setTimeout(10000);
 
-function switch_default(sponsor_mode, assistor_username_list, match_ratio, default_mode){
+function switch_default(sponsor_mode, assistor_username_list, match_ratio, default_mode, data_file){
   test('switch_dataset',()=>{  
 
     let assistor_num = assistor_username_list.split(",").length
     
-    switch_default_values(sponsor_mode, assistor_num, match_ratio, default_mode)
+    switch_default_values(sponsor_mode, assistor_num, match_ratio, default_mode, data_file)
     console.log('zzzz', unittest_parameters)
     console.log(generate_unittest_log("switch_dataset"))
   })

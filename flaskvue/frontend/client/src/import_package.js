@@ -20,7 +20,7 @@ if (window.require != undefined){
   node_path = window.require('path');
   dialog = window.require('electron').remote.dialog;
   console.log('ss', dialog)
-  log = window.require('electron-log')
+  // log = window.require('electron-log')
   // console.log('wudi', log)
 } else {
   console.log('dabao2')
@@ -32,7 +32,7 @@ if (window.require != undefined){
   node_path = require('path');
   // console.log('ssss', require('electron'))
   // dialog = require('electron').remote.dialog;
-  log = require('electron-log')
+  // log = require('electron-log')
 
   
 }

@@ -189,7 +189,22 @@
         ></mdb-line-chart>
       </mdb-container>
     </div>
-  </div>   
+  </div> 
+    <!-- aucroc -->
+  <div v-if="task_mode == 'classification'" class="col-md-6">
+    <div class="box box-green" id="chart-parent">
+      <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
+        <mdb-line-chart v-if="test_id!=null" id="chart"
+          :data="lineChartData8"
+          :options="lineChartOptions8"
+        ></mdb-line-chart>
+        <mdb-line-chart v-else id="chart"
+          :data="lineChartData8t"
+          :options="lineChartOptions8t"
+        ></mdb-line-chart>
+      </mdb-container>
+    </div>
+  </div> 
 <!-- alpha -->
   <div v-if="task_mode == 'classification'" class="col-md-6">
     <div class="box box-green" id="chart-parent">
@@ -258,6 +273,11 @@ var baseline_f1 = []
 var training_f1 = []
 var test_f1 = []
 var test_baseline_f1 = []
+
+var baseline_aucroc = []
+var training_aucroc = []
+var test_aucroc = []
+var test_baseline_aucroc = []
 
 var training_alpha2 = []
 
@@ -1097,6 +1117,153 @@ export default {
           }
         },
 
+        lineChartData8: {
+          labels: [
+            "0",
+            "1",
+            "2"
+          ],
+          datasets: [
+            {
+              label: "Baseline AUCROC",
+              // backgroundColor: "rgba(255, 99, 132, 0.1)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 0.7,
+              data: baseline_aucroc
+            },
+            {
+              label: "Training AUCROC",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(151,187,205,1)",
+              borderWidth: 0.8,
+              data: training_aucroc
+            },
+            {
+              label: "Test AUCROC",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(3,3,205,1)",
+              borderWidth: 0.8,
+              data: test_aucroc
+            },
+            {
+              label: "Test Baseline AUCROC",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(90,90,90,50)",
+              borderWidth: 0.8,
+              data: test_baseline_aucroc
+            },
+            
+          ]
+        },
+        
+        lineChartOptions8: {
+          responsive: true,
+          maintainAspectRatio: false,
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
+          title: {
+                display: true,
+                text: 'AUCROC vs. Round'
+            },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Round'
+                },
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'AUCROC'
+                },
+              }
+            ]
+          }
+        },
+
+        lineChartData8t: {
+          labels: [
+            "0",
+            "1",
+            "2"
+          ],
+          datasets: [
+            {
+              label: "Baseline AUCROC",
+              // backgroundColor: "rgba(255, 99, 132, 0.1)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 0.7,
+              data: baseline_aucroc
+            },
+            {
+              label: "Training AUCROC",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(151,187,205,1)",
+              borderWidth: 0.8,
+              data: training_aucroc
+            },
+            
+            
+          ]
+        },
+        
+        lineChartOptions8t: {
+          responsive: true,
+          maintainAspectRatio: false,
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
+          title: {
+                display: true,
+                text: 'AUCROC vs. Round'
+            },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Round'
+                },
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'AUCROC'
+                },
+              }
+            ]
+          }
+        },
+
         
 
 
@@ -1448,7 +1615,7 @@ export default {
                 continue
               }
               // console.log('content', message)
-              let rmse = message.slice(message.search("RMSE")+6,message.search("RMSE")+11)
+              let rmse = message.slice(message.search("RMSE")+6,message.search("RMSE")+12)
               // console.log('rmse_num', message.slice(message.search("RMSE")+6,message.search("RMSE")+11))
               rmse_list[rmse_list.length] = rmse
             }
@@ -1458,7 +1625,7 @@ export default {
                 continue
               }
               // console.log('content', message)
-              let alpha = message.slice(message.search("Alpha:")+8,message.search("Alpha:")+13)
+              let alpha = message.slice(message.search("Alpha:")+8,message.search("Alpha:")+14)
               // console.log('alpha_num', message.slice(message.search("Alpha:")+8,message.search("Alpha:")+13))
               alpha_list[alpha_list.length] = alpha
             }
@@ -1469,7 +1636,7 @@ export default {
               }
               // console.log('content', message)
               // console.log('che',message)
-              let mad = message.slice(message.search("MAD:")+5,message.search("MAD:")+10)
+              let mad = message.slice(message.search("MAD:")+5,message.search("MAD:")+11)
               // console.log('dachu',mad)
               // console.log('mad_num', message.slice(message.search("MAD:")+5,message.search("MAD:")+10))
               mad_list[mad_list.length] = mad
@@ -1482,10 +1649,10 @@ export default {
               r2_list[r2_list.length] = r2
             }
             // console.log('messages',this.messages)
-            // console.log('rmse_list',rmse_list)
+            console.log('rmse_list',rmse_list)
             // console.log('alpha_list',alpha_list)
-            // console.log('mad_list', mad_list )
-            // console.log('r2_list', r2_list)
+            console.log('mad_list', mad_list )
+            console.log('r2_list', r2_list)
             // console.log('mad_list', mad_list)
             // for (let i in baseline_rmse){
             //   baseline_rmse[i] = rmse_list[0]
@@ -1561,6 +1728,7 @@ export default {
         // console.log('messages2',this.messages)
             const accuracy_list=[]
             const f1_list = []
+            const aucroc_list = []
             const alpha_list =[]
               
             // console.log('messages',this.messages)
@@ -1604,10 +1772,23 @@ export default {
               // console.log('f1_num', message.slice(message.search("F1:")+4,message.search("F1:")+9))
               f1_list[f1_list.length] = f1
             }
+            for (let message of this.messages){
+              if (message.search("AUCROC:") == -1){
+                continue
+              }
+              // console.log('content', message)
+              // console.log('che',message)
+              let aucroc = message.slice(message.search("AUCROC:")+8,message.search("AUCROC:")+13)
+              // console.log('zz67',aucroc)
+              // console.log('aucroc_num', message.slice(message.search("F1:")+4,message.search("F1:")+9))
+              aucroc_list[aucroc_list.length] = aucroc
+              
+            }
             
             // console.log('messages',this.messages)
             // console.log('accuracy_list',accuracy_list)
             // console.log('f1_list', f1_list )
+            // console.log('aucroclist',aucroc_list)
             // console.log('alpha_list',alpha_list)
             
             // console.log('mad_list', mad_list)
@@ -1625,6 +1806,11 @@ export default {
               training_f1[i] = f1_list[i+1]
               test_baseline_f1[i] = f1_list[4]
               test_f1[i] = f1_list[f1_list.length-3+i]
+
+              baseline_aucroc[i] = aucroc_list[0]
+              training_aucroc[i] = aucroc_list[i+1]
+              test_baseline_aucroc[i] = aucroc_list[4]
+              test_aucroc[i] = aucroc_list[aucroc_list.length-3+i]
              
 
             }
@@ -1651,6 +1837,12 @@ export default {
             vm.lineChartData6.datasets[0].data = baseline_f1
             vm.lineChartData6.datasets[1].data = training_f1
             vm.lineChartData6.datasets[2].data = test_f1
+
+            vm.lineChartData8.datasets[0].data = baseline_aucroc
+            vm.lineChartData8.datasets[1].data = training_aucroc
+            vm.lineChartData8.datasets[2].data = test_aucroc
+
+
 
 
             vm.lineChartData7.datasets[0].data = training_alpha2

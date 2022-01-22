@@ -252,9 +252,11 @@ db.serialize(function() {
                                                                 train_file_path            text, \
                                                                 train_id_column            text, \
                                                                 train_data_column          text, \
+                                                                train_target_column        text, \
                                                                 test_file_path             text, \
                                                                 test_id_column             text, \
                                                                 test_data_column           text, \
+                                                                test_target_column         text, \
                                                                 mode                       text, \
                                                                 model_name                 text)");
 

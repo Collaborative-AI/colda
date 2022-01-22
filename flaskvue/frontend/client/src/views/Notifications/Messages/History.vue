@@ -160,7 +160,7 @@
     </div>
   </div>   
 
-
+<!-- accurracy -->
   <div v-if="task_mode == 'classification'" class="col-md-6">
     <div class="box box-green" id="chart-parent">
       <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
@@ -175,7 +175,7 @@
       </mdb-container>
     </div>
   </div>   
-
+<!-- f1 -->
   <div v-if="task_mode == 'classification'" class="col-md-6">
     <div class="box box-green" id="chart-parent">
       <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
@@ -190,7 +190,7 @@
       </mdb-container>
     </div>
   </div>   
-
+<!-- alpha -->
   <div v-if="task_mode == 'classification'" class="col-md-6">
     <div class="box box-green" id="chart-parent">
       <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
@@ -340,12 +340,12 @@ export default {
         lineChartOptions: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'RMSE vs. Round'
@@ -407,12 +407,12 @@ export default {
         lineChartOptionst: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'RMSE vs. Round'
@@ -488,12 +488,12 @@ export default {
         lineChartOptions3: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'MAD vs. Round'
@@ -554,12 +554,12 @@ export default {
         lineChartOptions3t: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'MAD vs. Round'
@@ -635,12 +635,12 @@ export default {
         lineChartOptions4: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'R2 vs. Round'
@@ -702,12 +702,12 @@ export default {
         lineChartOptions4t: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'R2 vs. Round'
@@ -782,12 +782,12 @@ export default {
         lineChartOptions5: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'Accuracy vs. Round'
@@ -849,12 +849,12 @@ export default {
         lineChartOptions5t: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'Accuracy vs. Round'
@@ -929,12 +929,12 @@ export default {
         lineChartOptions6: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'F1 vs. Round'
@@ -996,12 +996,12 @@ export default {
         lineChartOptions6t: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'F1 vs. Round'
@@ -1059,12 +1059,12 @@ export default {
         lineChartOptions7: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'Asisted Learning Rate vs. Round'
@@ -1126,12 +1126,12 @@ export default {
         lineChartOptions1: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'Asisted Learning Rate vs. Round'
@@ -1198,12 +1198,12 @@ export default {
         lineChartOptions2: {
           responsive: true,
           maintainAspectRatio: false,
-          // bezierCurve: false,
-          // elements: {
-          //     line: {
-          //         tension: 0
-          //     }
-          // },
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
           title: {
                 display: true,
                 text: 'RMSE vs. Round'

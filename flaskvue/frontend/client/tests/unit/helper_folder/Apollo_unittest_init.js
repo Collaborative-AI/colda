@@ -133,22 +133,14 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
     let res = ''
 
     if (sponsor_mode == 'regression'){
-<<<<<<< HEAD
       // res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-=======
-      res = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
->>>>>>> 832ad3d0a2ae59cc2f7c746a9aa1e78fefd2d343
       // res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//BostonHousing_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/processed/BostonHousing/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
       res = "/Users/xianjianxie/Documents/Apollo_Data/processed/KCHousing/KCHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     } else if (sponsor_mode == 'classification'){
-<<<<<<< HEAD
       // res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-=======
-      res = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
->>>>>>> 832ad3d0a2ae59cc2f7c746a9aa1e78fefd2d343
       // res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//Wine_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"

@@ -481,9 +481,9 @@ class Notification(PaginatedAPIMixin, db.Model):
     # category of notification
     name = db.Column(db.String(128), index=True)
     timestamp = db.Column(db.Float, index=True, default=time)
-    payload_json = db.Column(db.Text(10000000))
-    sender_random_id_list = db.Column(db.Text(10000000))
-    task_id_list = db.Column(db.Text(10000000))
+    payload_json = db.Column(db.Text)
+    sender_random_id_list = db.Column(db.Text)
+    task_id_list = db.Column(db.Text)
 
     # sender_random_id = db.Column(db.Integer)
     # task_id = db.Column(db.String(120), index=True)

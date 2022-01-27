@@ -1,5 +1,5 @@
-from Error import check_Algorithm_return_value
-from Algorithm import log
+from .Error import check_Algorithm_return_value
+from py_pkg.Algorithm import log
 
 def log_helper(msg, root, user_id, task_id):
     """
@@ -42,7 +42,7 @@ def handle_Algorithm_return_value(name, return_val, first_val, second_val):
     print(name, return_val)
     # check if return_val obeys the correct return value
     if not check_Algorithm_return_value(return_val, first_val, second_val):
-        raise RuntimeError('testError')
+        raise RuntimeError('pythonError')
 
     return return_val
 

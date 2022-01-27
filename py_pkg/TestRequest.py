@@ -2,14 +2,15 @@ import requests
 import json
 import numpy as np
 
-from Network import Network
-from PersonalInformation import PersonalInformation
-from Database_class import Database_class
+from .Network import Network
+from .PersonalInformation import PersonalInformation
+from .Database_class import Database_class
+from .Error import check_Algorithm_return_value
+from .apollo_utils import log_helper, handle_Algorithm_return_value
 
-from Algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
-from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
-from Error import check_Algorithm_return_value
-from apollo_utils import log_helper, handle_Algorithm_return_value
+from py_pkg.Algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
+# from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
+
 
 class TestRequest:
     __TestRequest_instance = None
@@ -485,7 +486,7 @@ class TestRequest:
         task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
 
         # call make_eval
-        eval_done = make_eval(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, dataset_path=test_file_path, target=test_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name, task_path)
+        eval_done = make_eval(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, dataset_path=test_file_path, target=test_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
         eval_done = handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
 
         return

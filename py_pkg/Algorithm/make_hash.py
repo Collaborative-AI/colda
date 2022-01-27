@@ -5,7 +5,7 @@ from utils import makedir_exist_ok, parse_idx
 
 
 def make_hash(root, self_id, task_id, mode, test_id, dataset_path, id_idx, skip_header):
-
+    print('sdfasdfsdfsf')
     dataset = np.genfromtxt(dataset_path, delimiter=',', dtype=np.str_, skip_header=skip_header)
     id_idx = parse_idx(id_idx)
     id = dataset[:, id_idx]
@@ -34,10 +34,10 @@ def make_hash(root, self_id, task_id, mode, test_id, dataset_path, id_idx, skip_
         makedir_exist_ok(log_path)
         open(os.path.join(log_path, "log.txt"), "a")
     else:
-        print('300?make_hash?not valid mode', end='')
-        return
-    print('200?make_hash?{}'.format(hash_id_path), end='')
-    return
+        return '300?make_hash?not valid mode'
+        
+    return '200?make_hash?{}'.format(hash_id_path)
+
 
 
 def hash(input):

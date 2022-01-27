@@ -1,5 +1,6 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
+print('zzz', basedir)
 import sys
 sys.path.append(basedir)
 
@@ -13,6 +14,6 @@ from save_residual import save_residual
 from make_train import make_train
 from save_output import save_output
 from make_result import make_result
-from make_test import make_test
+from make_test_1 import make_test
 from make_eval import make_eval
 from algo_utils import makedir_exist_ok, save, load, log, parse_idx

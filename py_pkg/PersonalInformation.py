@@ -84,7 +84,9 @@ class PersonalInformation:
         Raises:
          KeyError - raises an exception
         """
-
+        
+        if mode not in {'auto', 'manual'}:
+            raise Exception("Sorry, default mode wrong")
         self.__default_mode = mode
         return
 

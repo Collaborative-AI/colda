@@ -10,12 +10,21 @@ to be used as a cookie-cutter for developing new Python packages.
 # print("--", basedir)
 # import sys
 # sys.path.append(basedir)
+import py_pkg.Algorithm
+from .TrainRequest import TrainRequest, PersonalInformation
+from .TestRequest import TestRequest
+from .Authorization import Authorization
+from .Get_Notification import Get_Notification
+from .Database_class import Database_class
 
-from Authorization import Authorization
-from TrainRequest import TrainRequest, PersonalInformation
-from TestRequest import TestRequest
-from Get_Notification import Get_Notification
-from Database_class import Database_class
+
+# from Algorithm import log
+# from .Network import Network
+# from py_pkg import TrainRequest, PersonalInformation
+# from py_pkg import Authorization
+# from py_pkg import TestRequest
+# from py_pkg import Get_Notification
+# from py_pkg import Database_class
 import threading
 
 # import jwt
@@ -84,7 +93,7 @@ def get_pending_requests():
     pass
 #
 
-userLogin("xie2", "Xie2@123")
+# userLogin("xie2", "Xie2@123")
 # set_default_data_path("/Users/qile/Documents/data/BostonHousing/2/123/0.5/0/train/data.csv", "1", "2")
 # callForTrain(2, [2], "/Users/qile/Documents/data/combine.csv", "1", "2-7", "8")
 

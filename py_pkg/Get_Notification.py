@@ -1,5 +1,5 @@
-from TrainRequest import TrainRequest, Network, PersonalInformation
-from TestRequest import TestRequest
+from .TrainRequest import TrainRequest, Network, PersonalInformation
+from .TestRequest import TestRequest
 import json
 import requests
 import threading

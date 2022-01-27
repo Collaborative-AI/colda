@@ -2,9 +2,9 @@ import requests
 import json
 import base64
 # import jwt
-from Network import Network
-from PersonalInformation import PersonalInformation
-from apollo_utils import handle_base64_padding
+from .Network import Network
+from .PersonalInformation import PersonalInformation
+from .apollo_utils import handle_base64_padding
 # from Get_Notification import
 
 # from urllib.request import quote, unquote
@@ -47,7 +47,11 @@ class Authorization():
 
         url = self.base_url + "/tokens"
         print('url', url, username, password)
-        token_response = requests.post(url, auth=(username, password))
+        try:
+            token_response = requests.post(url, auth=(username, password))
+        except RuntimeError:
+            print('create_new_train_task wrong')
+       
         print('token_response', token_response)
         token_response_text = json.loads(token_response.text)
 
@@ -85,7 +89,7 @@ class Authorization():
         #
         # return new_task_id
 
-        return None
+        return 'userLogin Successfully'
 
 
     def userLogout(self):

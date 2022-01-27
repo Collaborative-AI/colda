@@ -6,14 +6,16 @@ import os
 import argparse
 import subprocess
 
-from Network import Network
-from PersonalInformation import PersonalInformation
-from Database_class import Database_class
+from .Network import Network
+from .PersonalInformation import PersonalInformation
+from .Database_class import Database_class
+from .apollo_utils import log_helper, handle_Algorithm_return_value
+from .Error import check_Algorithm_return_value
 
-from Algorithm import make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
-from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
-from Error import check_Algorithm_return_value
-from apollo_utils import log_helper, handle_Algorithm_return_value
+from py_pkg.Algorithm import make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
+# from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
+
+
 
 class TrainRequest():
     __TrainRequest_instance = None
@@ -40,7 +42,7 @@ class TrainRequest():
 
 
     def handleTrainRequest(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, 
-                            train_target_column: str, task_name: str=None, task_description: str=None):
+                            train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str=None, task_description: str=None):
         
         """
         Parameters:
@@ -60,8 +62,10 @@ class TrainRequest():
             KeyError - raises an exception
         """
 
-        self.__find_assistor(maxRound, assistors, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description)
-        return
+        if self.__find_assistor(maxRound=maxRound, assistors=assistors, train_file_path=train_file_path, train_id_column=train_id_column, 
+                            train_data_column=train_data_column, train_target_column=train_target_column, task_mode=task_mode,
+                            model_name=model_name, metric_name=metric_name, task_name=task_name, task_description=task_description):
+            return 'handleTrainRequest successfully'
 
     def __get_train_id(self):
         
@@ -80,7 +84,11 @@ class TrainRequest():
 
         url = self.base_url + "/create_new_train_task/"
         token = self.Network_instance.get_token()
-        get_train_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
+        try:
+            get_train_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
+        except RuntimeError:
+            print('create_new_train_task wrong')
+
         get_train_id_response_text = json.loads(get_train_id_response.text)
         print("get_train_id_response", get_train_id_response_text)
 
@@ -117,18 +125,24 @@ class TrainRequest():
         task_id = self.__get_train_id()
         root = self.PersonalInformation_instance.get_root()
 
-        self.Database_class_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
+        store_User_Sponsor_Table_res = self.Database_class_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
                                                             task_name=task_name, task_description=task_description, train_file_path=train_file_path, train_id_column=train_id_column, train_data_column=train_data_column,
                                                             train_target_column=train_target_column)
+        assert store_User_Sponsor_Table_res == 'User_Sponsor_Table stores successfully'
 
         # call make_hash in Algorithm module
         hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, dataset_path=train_file_path, id_idx=train_id_column, skip_header=self.skip_header_default)
+        print('hash_id_file_address', hash_id_file_address)
+        assert hash_id_file_address is not None
         hash_id_file_address = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
 
         # read file => array data type from np.genfromtxt
         # we need string type with \n between ids.
         hash_id_file_data = np.genfromtxt(hash_id_file_address[2], delimiter=',', dtype=np.str_)
+        print('hash_id_file_data', hash_id_file_data)
+        assert hash_id_file_data is not None
         hash_id_file_data = "\n".join(hash_id_file_data)
+        assert len(hash_id_file_data) >= 1
         print("hash_id_file_data", hash_id_file_data, type(hash_id_file_data))
 
         # call find_assistor in server
@@ -136,22 +150,28 @@ class TrainRequest():
         token = self.Network_instance.get_token()
 
         data = {
-            "assistor_username_list": assistors,
             "id_file": hash_id_file_data,
             "task_id": task_id,
             "task_name": task_name,
+            "task_mode": task_mode,
+            "model_name": model_name,
+            "metric_name": metric_name,
+            "assistor_username_list": assistors,   
             "task_description": task_description
         }
 
-        find_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-        print("find_assistor_res", find_assistor_res, json.loads(find_assistor_res.text))
+        try:
+            find_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+            # print("find_assistor_res", find_assistor_res, json.loads(find_assistor_res.text))
+        except RuntimeError:
+            print('find_assistor wrong')
 
         # Record the history to log file
         msg = ["\n You are SPONSOR\n", "Task ID: " + task_id + "\n", "---------------------- Train Stage Starts\n",
                "---------------------- 1. Find assistor\n", "1.1 Sponsor calls for help\n", "1.2 Sponsor sends id file\n"]
         log_helper(msg, root, user_id, task_id)
 
-        return
+        return True
 
     def unread_request(self, unread_request_notification: dict):
 
@@ -180,7 +200,7 @@ class TrainRequest():
         for task_id in cur_unread_request_Taskid_dict:
             if default_mode == "Auto":
                 
-                user_id, default_mode, default_file_path, default_id_column, default_data_column, default_model_name = self.Database_class_instance.get_User_Default_Table(user_id)n
+                user_id, default_mode, default_file_path, default_id_column, default_data_column, default_model_name = self.Database_class_instance.get_User_Default_Table(user_id)
 
                 hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
                                                 test_id=None, dataset_path=default_file_path, id_idx=default_id_column, skip_header=self.skip_header_default)

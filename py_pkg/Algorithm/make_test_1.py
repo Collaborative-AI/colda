@@ -30,5 +30,5 @@ def make_test(root, self_id, task_id, test_id, round, from_id, dataset_path, dat
         output_path.append(output_path_i)
     output_path = '?'.join(output_path)
     make_test_res = json.dumps(make_test_res)
-    print('200?make_test?{make_test_res}?{output_path}'.format(make_test_res = make_test_res, output_path = output_path), end='')
-    return
+    return '200?make_test?{make_test_res}?{output_path}'.format(make_test_res = make_test_res, output_path = output_path)
+    

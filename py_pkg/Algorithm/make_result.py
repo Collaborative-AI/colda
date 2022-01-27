@@ -22,8 +22,8 @@ def make_result(root, self_id, task_id, round, dataset_path, target_idx, skip_he
         if from_id_i != self_id:
             output_i_path = os.path.join(output_path, output_files[i])
             if not os.path.exists(output_i_path):
-                print("300?make_result sponsor cannot find train output file")
-                return
+                return "300?make_result sponsor cannot find train output file"
+                
             output_i = np.genfromtxt(os.path.join(output_path, output_files[i]), delimiter=',')
             output_i = output_i.reshape(output_i.shape[0], -1)
             self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, '{}.csv'.format(from_id_i)),
@@ -48,8 +48,7 @@ def make_result(root, self_id, task_id, round, dataset_path, target_idx, skip_he
     eval = metric.eval(result, target)
     msg = 'Train Round: {}, {}, Alpha: {}'.format(round, eval, alpha.item())
     log(msg, root, self_id, task_id)
-    print('200?make_result?complete', end='')
-    return
+    return '200?make_result?complete'
 
 
 def result_func(alpha, task_mode, history, output, target):

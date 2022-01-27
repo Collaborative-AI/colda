@@ -30,5 +30,4 @@ def make_train(root, self_id, task_id, from_id, round, dataset_path, data_idx, s
     makedir_exist_ok(output_path)
     output_path = os.path.join(output_path, '{}.csv'.format(self_id))
     np.savetxt(output_path, output, delimiter=",")
-    print('200?make_train?{}'.format(output_path), end='')
-    return
+    return '200?make_train?{}'.format(output_path)

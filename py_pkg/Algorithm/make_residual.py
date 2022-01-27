@@ -38,8 +38,7 @@ def make_residual(root, self_id, task_id, round, dataset_path, target_idx, skip_
         np.savetxt(assistor_residual_path_i, residual[self_from_idx_i,], delimiter=",")
         assistor_residual_path.append(assistor_residual_path_i)
     assistor_residual_path = '?'.join(assistor_residual_path)
-    print('200?make_residual?{}'.format(assistor_residual_path), end='')
-    return
+    return '200?make_residual?{}'.format(assistor_residual_path)
 
 
 def make_init(task_mode, target):

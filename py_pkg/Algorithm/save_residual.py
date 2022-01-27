@@ -8,5 +8,4 @@ def save_residual(root, self_id, task_id, round):
     makedir_exist_ok(residual_path)
     open(os.path.join(residual_path, '{}.csv'.format(self_id)), "a")
     residual_path = os.path.join(residual_path, '{}.csv'.format(self_id))
-    print('200?save_residual?{}'.format(residual_path), end='')
-    return
+    return '200?save_residual?{}'.format(residual_path)

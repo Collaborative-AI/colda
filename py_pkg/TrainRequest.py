@@ -1,3 +1,4 @@
+from gettext import find
 from unittest import skip
 import numpy as np
 import requests
@@ -87,13 +88,13 @@ class TrainRequest():
         try:
             get_train_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
         except RuntimeError:
-            print('create_new_train_task wrong')
+            print('get_train_id_response wrong')
 
         get_train_id_response_text = json.loads(get_train_id_response.text)
-        print("get_train_id_response", get_train_id_response_text)
+        assert 'task_id' in get_train_id_response_text
 
         new_task_id = get_train_id_response_text["task_id"]
-        print("new_task_id", new_task_id)
+        assert new_task_id is not None
 
         return new_task_id
 
@@ -132,18 +133,15 @@ class TrainRequest():
 
         # call make_hash in Algorithm module
         hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, dataset_path=train_file_path, id_idx=train_id_column, skip_header=self.skip_header_default)
-        print('hash_id_file_address', hash_id_file_address)
         assert hash_id_file_address is not None
         hash_id_file_address = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
+        assert hash_id_file_address is not None
 
         # read file => array data type from np.genfromtxt
         # we need string type with \n between ids.
         hash_id_file_data = np.genfromtxt(hash_id_file_address[2], delimiter=',', dtype=np.str_)
-        print('hash_id_file_data', hash_id_file_data)
         assert hash_id_file_data is not None
-        hash_id_file_data = "\n".join(hash_id_file_data)
-        assert len(hash_id_file_data) >= 1
-        print("hash_id_file_data", hash_id_file_data, type(hash_id_file_data))
+        hash_id_file_data = list(hash_id_file_data)
 
         # call find_assistor in server
         url = self.base_url + "/find_assistor/"
@@ -159,12 +157,15 @@ class TrainRequest():
             "assistor_username_list": assistors,   
             "task_description": task_description
         }
-
         try:
             find_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
-            # print("find_assistor_res", find_assistor_res, json.loads(find_assistor_res.text))
+            assert find_assistor_res is not None
+            print('sss', find_assistor_res)
+            find_assistor_res = json.loads(find_assistor_res.text)
+            print('sssss', find_assistor_res)
+            assert find_assistor_res['task_id'] == task_id
         except RuntimeError:
-            print('find_assistor wrong')
+            print('find_assistor_res wrong')
 
         # Record the history to log file
         msg = ["\n You are SPONSOR\n", "Task ID: " + task_id + "\n", "---------------------- Train Stage Starts\n",
@@ -190,25 +191,34 @@ class TrainRequest():
 
         # obtain some important information
         user_id = self.PersonalInformation_instance.get_user_id()
+        assert user_id is not None
         root = self.PersonalInformation_instance.get_root()
+        assert root is not None
         token = self.Network_instance.get_token()
+        assert token is not None
         
         default_mode = self.PersonalInformation_instance.get_default_mode()
+        print('default_mode', default_mode)
         cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
         cur_unread_request_info_dict = unread_request_notification["info_dict"]
 
         for task_id in cur_unread_request_Taskid_dict:
-            if default_mode == "Auto":
+            if default_mode == "auto":
                 
-                user_id, default_mode, default_file_path, default_id_column, default_data_column, default_model_name = self.Database_class_instance.get_User_Default_Table(user_id)
+                user_id, default_mode, default_model_name, default_file_path, default_id_column, default_data_column = self.Database_class_instance.get_User_Default_Table(user_id)
 
                 hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
                                                 test_id=None, dataset_path=default_file_path, id_idx=default_id_column, skip_header=self.skip_header_default)
+                assert hash_id_file_address is not None
                 hash_id_file_address = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
+                print('hash_id_file_address', hash_id_file_address)
+                assert hash_id_file_address is not None
 
                 hash_id_file_data = np.genfromtxt(hash_id_file_address[2], delimiter=',', dtype=np.str_)
-                hash_id_file_data = "\n".join(hash_id_file_data)
-                print("hash_id_file_data", hash_id_file_data, type(hash_id_file_data))
+                assert hash_id_file_data is not None
+                hash_id_file_data = list(hash_id_file_data)
+                # hash_id_file_data = "\n".join(hash_id_file_data)
+                # assert len(hash_id_file_data) == 1
 
                 # add log
                 msg = ["\n You are Assistor\n"]
@@ -216,26 +226,33 @@ class TrainRequest():
                 msg.append("----------------------2. Unread Request\n")
                 msg.append("2.1 Update the request notification\n")
                 log_helper(msg, root, user_id, task_id)
-
-                hash_id_file_data = None
+                print('zzzzz')
                 url = self.base_url + '/match_assistor_id/'
+                print('url', url)
                 data = {
                     "task_id": task_id,
                     "file": hash_id_file_data
                 }
-                match_assistor_id_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+                print('data', data)
+                try:
+                    match_assistor_id_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+                    print('match_assistor_id_res', match_assistor_id_res)
+                except RuntimeError:
+                    print('match_assistor_id_res wrong')
                 match_assistor_id_res = json.loads(match_assistor_id_res.text)
+                assert match_assistor_id_res is not None
                 print('match_assistor_id_res', match_assistor_id_res)
+                assert match_assistor_id_res['stored'] == 'assistor match id stored'
                 # add log
                 msg = ["2.2 assistor uploads id file\n"]
                 msg.append("--------------------------2. Unread Request Done\n")
                 log_helper(msg, root, user_id, task_id)
 
-            elif default_mode == "Manual":
+            elif default_mode == "manual":
                 pass
             else:
                 print('unread request: wrong mode')
-        return
+        return 'unread_request successfully'
 
     def unread_match_id(self, unread_match_id_notification: dict):
 
@@ -301,8 +318,13 @@ class TrainRequest():
         data = {
             "task_id": task_id,
         }
-        sponsor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        try:
+            sponsor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        except RuntimeError:
+            print('sponsor_get_match_id_file_res wrong')
+
         sponsor_get_match_id_file_res = json.loads(sponsor_get_match_id_file_res.text)
+        assert sponsor_get_match_id_file_res is not None
         print("sponsor_get_match_id_file_res", sponsor_get_match_id_file_res)
 
         msg = ["3.3 Sponsor gets matched id file\n"]
@@ -321,8 +343,10 @@ class TrainRequest():
             # call save_match_id
             save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
                                                     test_id=None, from_id=from_id)
+            assert save_match_id_file_pos is not None
             save_match_id_file_pos = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos,
                                                                    "200", "save_match_id")
+            assert save_match_id_file_pos is not None
 
             # write file
             np.savetxt(save_match_id_file_pos[2], cur_match_id_file, delimiter=",", fmt="%s")
@@ -331,7 +355,9 @@ class TrainRequest():
 
             # call make_match_idx
             make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
+            assert make_match_idx_done is not None
             make_match_idx_done = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
+            assert make_match_idx_done is not None
 
             msg = ["3.5 Sponsor matches id to index\n"]
             log_helper(msg, root, user_id, task_id)
@@ -342,7 +368,9 @@ class TrainRequest():
 
         # call make residual
         make_residual_multiple_paths = make_residual(root=root, self_id=user_id, task_id=task_id, round=self.initial_round, dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default)
+        assert make_residual_multiple_paths is not None
         make_residual_multiple_paths = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
+        assert make_residual_multiple_paths is not None
 
         msg = ["3.6 Sponsor makes residual finished\n"]
         log_helper(msg, root, user_id, task_id)
@@ -367,14 +395,19 @@ class TrainRequest():
             "assistor_random_id_list": assistor_random_id_list,
             "residual_list": all_residual_data
         }
-        send_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        try:
+            send_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        except RuntimeError:
+            print('send_situation_res wrong')
+
         send_situation_res = json.loads(send_situation_res.text)
+        assert send_situation_res is not None
         print("send_situation_res", send_situation_res)
 
         msg = ["3.7 Sponsor sends all situations" + "\n", "-------------------------- 3. Unread Match ID Done\n"]
         log_helper(msg, root, user_id, task_id)
 
-        return
+        return 'unread_match_id_sponsor successfully'
 
     def unread_match_id_assistor(self, task_id: str):
 
@@ -401,8 +434,12 @@ class TrainRequest():
         data = {
             "task_id": task_id,
         }
-        assistor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        try:
+            assistor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        except RuntimeError:
+            print('assistor_get_match_id_file_res wrong')
         assistor_get_match_id_file_res = json.loads(assistor_get_match_id_file_res.text)
+        assert assistor_get_match_id_file_res is not None
         print("assistor_get_match_id_file_res", assistor_get_match_id_file_res)
         msg = ["3.3 Assistor gets matched id file\n"]
         log_helper(msg, root, user_id, task_id)
@@ -414,8 +451,10 @@ class TrainRequest():
 
         # call save_match_id to get the designated position to save the match_id file
         save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
+        assert save_match_id_file_pos is not None
         save_match_id_file_pos = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos,
                                                                 "200", "save_match_id")
+        assert save_match_id_file_pos is not None
 
         # save match id file to designated position
         np.savetxt(save_match_id_file_pos[2], cur_match_id_file, delimiter=",", fmt="%s")
@@ -424,14 +463,16 @@ class TrainRequest():
 
         # call make_match_idx
         make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
+        assert make_match_idx_done is not None
         make_match_idx_done = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
+        assert make_match_idx_done is not None
 
         msg = ["3.5 Assistor matches id to index\n"]
         log_helper(msg, root, user_id, task_id)
         msg = ["-------------------------- 3. Unread Match ID Done\n"]
         log_helper(msg, root, user_id, task_id)
 
-        return
+        return 'unread_match_id_assistor successfully'
 
     def unread_situation(self, unread_situation_notification: dict):
 
@@ -498,12 +539,14 @@ class TrainRequest():
 
         # call make train
         train_output = make_train(root=root, self_id=user_id, task_id=task_id, round=rounds, dataset_path=train_file_path, data_idx=train_data_column, skip_header=self.skip_header_default, task_mode=task_mode, model_name=model_name)
+        assert train_output is not None
         train_output = handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
+        assert train_output is not None
 
         msg = ["4.3 Sponsor round " + str(rounds) + " training done." + "\n", "-------------------------- 4. Unread Situation Done\n"]
         log_helper(msg, root, user_id, task_id)
 
-        return
+        return 'unread_situation_sponsor successfully'
 
     def unread_situation_assistor_train_part(self, task_id: str, rounds: int, from_id: str, train_file_path: str, train_data_column: str, task_mode: str, model_name: str):
         
@@ -530,21 +573,26 @@ class TrainRequest():
         
         # train the model and get output
         train_output = make_train(root=root, self_id=user_id, task_id=task_id, round=rounds, dataset_path=train_file_path, data_idx=train_data_column, skip_header=self.skip_header_default, task_mode=task_mode, model_name=model_name)
+        assert train_output is not None
         train_output = handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
+        assert train_output is not None
 
         msg = ["4.4 Assistor round " + rounds + " training done." + "\n"]
         log_helper(msg, root, user_id, task_id)
         
         # read the file from designated position
         Assistor_train_output_data = np.genfromtxt(train_output[2], delimiter=",", dtype=np.str_)
-
+        Assistor_train_output_data = list(Assistor_train_output_data)    
         # initiate a request to send output
         url = self.base_url + "/send_output/"
         data = {
             "task_id": task_id,
             "output": Assistor_train_output_data
         }
-        assistor_send_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        try:
+            assistor_send_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        except RuntimeError:
+            print('assistor_send_output_res wrong')
         assistor_send_output_res = json.loads(assistor_send_output_res.text)
         print("assistor_send_output_res", assistor_send_output_res)
 
@@ -555,7 +603,7 @@ class TrainRequest():
         msg = ["-------------------------- Train stage done\n"]
         log_helper(msg, root, user_id, task_id)
         
-        return
+        return 'unread_situation_sponsor successfully'
 
 
     def unread_situation_assistor(self, task_id: str, rounds: int):
@@ -585,7 +633,10 @@ class TrainRequest():
             "task_id": task_id,
             "rounds": rounds
         }
-        assistor_get_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        try:
+            assistor_get_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        except RuntimeError:
+            print('assistor_get_situation_res wrong')
         assistor_get_situation_res = json.loads(assistor_get_situation_res.text)
         print("assistor_get_situation_res", assistor_get_situation_res)
 
@@ -595,8 +646,10 @@ class TrainRequest():
 
         # call save_residual
         save_residual_pos = save_residual(root=root, self_id=user_id, task_id=task_id, round=rounds)
+        assert save_residual_pos is not None
         save_residual_pos = handle_Algorithm_return_value("save_residual_pos", save_residual_pos,
                                                                 "200", "save_residual")
+        assert save_residual_pos is not None
 
         # save match id file to designated position
         np.savetxt(save_residual_pos[2], cur_situation_file, delimiter=",", fmt="%s")
@@ -607,7 +660,7 @@ class TrainRequest():
         task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column = self.Database_class_instance.get_User_Assistor_Table()
         self.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, task_mode, model_name)
         
-        return
+        return 'unread_situation_assistor successfully'
 
 
     def unread_output(self, unread_output_notification: dict):
@@ -665,7 +718,10 @@ class TrainRequest():
             "task_id": task_id,
             "rounds": rounds
         }
-        sponsor_get_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        try:
+            sponsor_get_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+        except RuntimeError:
+            print('sponsor_get_output_res wrong')
         sponsor_get_output_res = json.loads(sponsor_get_output_res.text)
         print("sponsor_get_output_res", sponsor_get_output_res)
 
@@ -680,7 +736,9 @@ class TrainRequest():
             print("from_id", from_id)
             # call save_output
             save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, round=rounds, from_id=from_id)
+            assert save_output_pos is not None
             save_output_pos = handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
+            assert save_output_pos is not None
 
             # write file
             cur_output = json.loads(output[i]).split("\n")
@@ -718,7 +776,9 @@ class TrainRequest():
 
         # call make_result
         make_result_done = make_result(root=root, self_id=user_id, task_id=task_id, round=rounds, dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
+        assert make_result_done is not None
         make_result_done = handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
+        assert make_result_done is not None
 
         msg = ["5.4 Sponsor makes result done." + "\n"]
         log_helper(msg, root, user_id, task_id)
@@ -730,7 +790,9 @@ class TrainRequest():
         else:
             # call make_residual
             make_residual_multiple_paths = make_residual(root=root, self_id=user_id, task_id=task_id, round=0, dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default)
+            assert make_residual_multiple_paths is not None
             make_residual_multiple_paths = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
+            assert make_residual_multiple_paths is not None
 
             msg = ["5.5 Sponsor makes residual finished\n"]
             log_helper(msg, root, user_id, task_id)
@@ -755,14 +817,18 @@ class TrainRequest():
                 "assistor_random_id_list": assistor_random_id_list,
                 "residual_list": all_residual_data
             }
-            send_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+            try:
+                send_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+            except RuntimeError:
+                print('send_situation_res wrong')
+
             send_situation_res = json.loads(send_situation_res.text)
             print("send_situation_res", send_situation_res)
 
             msg = ["5.6 Sponsor updates situation done\n", "-------------------------- 5. Unread Output Done\n"]
             log_helper(msg, root, user_id, task_id)
 
-            return
+            return 'unread_output successfully'
 
     def unread_train_stop(self, unread_train_stop_notification: dict):
         """

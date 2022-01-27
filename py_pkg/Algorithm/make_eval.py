@@ -27,8 +27,7 @@ def make_eval(root, self_id, task_id, test_id, round, dataset_path, target_idx, 
         sponsor_test_result_path = os.path.join(task_path, 'test', test_id, 'round', str(i), 'output',
                                                 '{}.csv'.format(self_id))
         if not os.path.exists(sponsor_test_result_path):
-            print("300?make_eval sponsor cannot find test output file")
-            return
+            return "300?make_eval sponsor cannot find test output file"
     
     make_eval_res = collections.defaultdict(dict)
     for i in range(1, round + 1):
@@ -62,5 +61,4 @@ def make_eval(root, self_id, task_id, test_id, round, dataset_path, target_idx, 
 
     result_path = '?'.join(result_path)
     make_eval_res = json.dumps(make_eval_res)
-    print('200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res = make_eval_res, result_path = result_path), end='')
-    return
+    return '200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res = make_eval_res, result_path = result_path)

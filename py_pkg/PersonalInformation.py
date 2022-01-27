@@ -67,7 +67,7 @@ class PersonalInformation:
 
         if self.__default_mode == None:
             # get message from database
-            self.__default_mode = "manual"
+            self.__default_mode = "auto"
         return self.__default_mode
 
 

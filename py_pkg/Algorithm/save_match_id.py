@@ -16,5 +16,4 @@ def save_match_id(root, self_id, task_id, mode, test_id, from_id):
         print('300?save_match_id?not valid mode', end='')
         return
     match_id_path = os.path.join(match_id_path, '{}.csv'.format(from_id))
-    print('200?save_match_id?{}'.format(match_id_path), end='')
-    return
+    return '200?save_match_id?{}'.format(match_id_path)

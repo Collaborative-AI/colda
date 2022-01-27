@@ -16,5 +16,4 @@ def make_test_local(root,self_id, task_id, test_id, dataset_path, data_idx, targ
     eval = metric.eval(output, target)
     msg = 'Test Local Client: {}, {}'.format(self_id, eval)
     log(msg, root, self_id, task_id, test_id)
-    print('200?make_test_local?complete', end='')
-    return
+    return '200?make_test_local?complete'

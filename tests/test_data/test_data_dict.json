@@ -6,5 +6,12 @@
         {"price": 10000, "supply": 5, "demand": 3},
         {"price": 11000, "supply": 6, "demand": 2},
         {"price": 12000, "supply": 6, "demand": 1}
+    ],
+
+    "testing_data": [
+        {"first_user_username": "xie1"}
+        
     ]
+
+        
 }

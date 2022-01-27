@@ -102,8 +102,11 @@ class Get_Notification():
         url = self.base_url + "/users/" + user_id + "/notifications/"
         token = self.Network_instance.get_token()
         print("get notification url", url)
-        short_polling_res = requests.get(url, headers={'Authorization': 'Bearer ' + token})
-        print("short_polling_res", short_polling_res)
+        try:
+            short_polling_res = requests.get(url, headers={'Authorization': 'Bearer ' + token})
+            print("short_polling_res", short_polling_res)
+        except RuntimeError:
+            print('short_polling_res wrong')
 
         response_data = json.loads(short_polling_res.text)
         print("response_data", response_data, type(response_data))
@@ -114,16 +117,26 @@ class Get_Notification():
                 data = {
                     "response_data": response_data
                 }
-                update_all_notifications_res = requests.post(url, json=data,
+                try:
+                    update_all_notifications_res = requests.post(url, json=data,
                                                              headers={'Authorization': 'Bearer ' + token})
+                except RuntimeError:
+                    print('short_polling_res wrong')
+
                 print("update_all_notifications", update_all_notifications_res)
                 update_all_notifications_data = json.loads(update_all_notifications_res.text)
+                assert update_all_notifications_data is not None
                 print("update_all_notifications", update_all_notifications_data)
-                self.__update_notification(update_all_notifications_data)
-                break
 
-        timer = threading.Timer(10, self.getNotification)
-        timer.start()
+                # for running, comment back
+                # self.__update_notification(update_all_notifications_data)
+                # break
+
+                # for unittest
+                return update_all_notifications_data
+
+        # timer = threading.Timer(10, self.getNotification)
+        # timer.start()
         return
 
 # get_notification_instance = Get_Notification.get_Get_notification_instance()

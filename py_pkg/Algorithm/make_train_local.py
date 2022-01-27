@@ -19,5 +19,4 @@ def make_train_local(root, self_id, task_id, dataset_path, data_idx, target_idx,
     eval = metric.eval(output, target)
     msg = 'Train Local Client: {}, {}'.format(self_id, eval)
     log(msg, root, self_id, task_id)
-    print('200?make_train_local?complete', end='')
-    return
+    return '200?make_train_local?complete'

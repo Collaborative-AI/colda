@@ -72,6 +72,7 @@ def userLogout():
 def set_default_data_path(default_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None):
     PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
     user_id = PersonalInformation_instance.get_user_id()
+    PersonalInformation_instance.set_default_mode(default_mode)
     Database_class_instance = Database_class.get_Database_class_instance()
     Database_class_instance.store_User_Default_Table(user_id=user_id, default_mode=default_mode, default_model_name=default_model_name,
                                                     default_file_path=default_file_path, default_id_column=default_id_column, default_data_column=default_data_column)

@@ -15,13 +15,9 @@ def make_match_idx(root, self_id, task_id, mode, test_id, from_id):
         self_from_matched_idx_path = os.path.join(root, self_id, 'task', task_id, mode, test_id, 'matched_idx')
     else:
         return '300?make_match_idx?not valid mode'
-    print('6666')
     self_id_data = np.genfromtxt(self_id_path, delimiter=',', dtype=np.str_)
-    print('66660.1', self_id_path, from_id_path)
     from_id_data = np.genfromtxt(from_id_path, delimiter=',', dtype=np.str_)
-    print('66660.5')
     _, self_from_matched_idx, _ = np.intersect1d(self_id_data, from_id_data, return_indices=True)
-    print('66661')
     makedir_exist_ok(self_from_matched_idx_path)
     np.savetxt(os.path.join(self_from_matched_idx_path, '{}.csv'.format(from_id)), self_from_matched_idx,
                delimiter=",")

@@ -27,7 +27,7 @@ class TrainRequest():
         self.Database_class_instance = Database_class.get_Database_class_instance()
 
         self.base_url = self.Network_instance.get_base_url()
-        self.maxRound = 2
+        self.maxRound = 1
         self.skip_header_default = 1
         self.initial_round = 1
         self.test_indicator = 'train'
@@ -42,6 +42,18 @@ class TrainRequest():
 
         return cls.__TrainRequest_instance
 
+    def __obtain_important_information(self, get_train_id):
+        user_id = self.PersonalInformation_instance.get_user_id()
+        assert user_id is not None
+        root = self.PersonalInformation_instance.get_root()
+        assert root is not None
+        token = self.Network_instance.get_token()
+        assert token is not None
+
+        task_id = None
+        if get_train_id:
+            task_id = self.__get_train_id()
+        return user_id, root, token, task_id
 
     def handleTrainRequest(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, 
                             train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str=None, task_description: str=None):
@@ -64,23 +76,9 @@ class TrainRequest():
             KeyError - raises an exception
         """
 
-        if self.__find_assistor(maxRound=maxRound, assistors=assistors, train_file_path=train_file_path, train_id_column=train_id_column, 
+        return self.__find_assistor(maxRound=maxRound, assistors=assistors, train_file_path=train_file_path, train_id_column=train_id_column, 
                             train_data_column=train_data_column, train_target_column=train_target_column, task_mode=task_mode,
-                            model_name=model_name, metric_name=metric_name, task_name=task_name, task_description=task_description):
-            return 'handleTrainRequest successfully'
-
-    def __obtain_important_information(self, get_train_id):
-        user_id = self.PersonalInformation_instance.get_user_id()
-        assert user_id is not None
-        root = self.PersonalInformation_instance.get_root()
-        assert root is not None
-        token = self.Network_instance.get_token()
-        assert token is not None
-
-        task_id = None
-        if get_train_id:
-            task_id = self.__get_train_id()
-        return user_id, root, token, task_id
+                            model_name=model_name, metric_name=metric_name, task_name=task_name, task_description=task_description)
 
     def __get_train_id(self):
         
@@ -171,11 +169,6 @@ class TrainRequest():
             find_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             find_assistor_res = load_json_data(json_data=find_assistor_res, json_data_name='find_assistor_res',
                                                 testing_key_value_pair=[('task_id', task_id)])
-            # assert find_assistor_res is not None
-            # print('sss', find_assistor_res)
-            # find_assistor_res = load_json_data(find_assistor_res.text)
-            # print('sssss', find_assistor_res)
-            # assert find_assistor_res['task_id'] == task_id
         except RuntimeError:
             print('find_assistor_res wrong')
 
@@ -184,7 +177,7 @@ class TrainRequest():
                "---------------------- 1. Find assistor\n", "1.1 Sponsor calls for help\n", "1.2 Sponsor sends id file\n"]
         log_helper(msg, root, user_id, task_id)
 
-        return True
+        return ('handleTrainRequest successfully', task_id)
 
     def unread_request(self, unread_request_notification: dict):
 
@@ -323,9 +316,9 @@ class TrainRequest():
         msg = ["3.3 Sponsor gets matched id file\n"]
         log_helper(msg, root, user_id, task_id)
 
-        match_id_file_list = sponsor_get_match_id_file_res["match_id_file"]
+        match_id_file_list = load_json_data(sponsor_get_match_id_file_res["match_id_file"], 'sponsor_get_match_id_file_res["match_id_file"]')
         print("match_id_file_list", match_id_file_list)
-        assistor_random_id_pair_list = sponsor_get_match_id_file_res["assistor_random_id_pair"]
+        assistor_random_id_pair_list = load_json_data(sponsor_get_match_id_file_res["assistor_random_id_pair"], 'sponsor_get_match_id_file_res["assistor_random_id_pair"]')
 
         for i in range(len(match_id_file_list)):
             from_id = assistor_random_id_pair_list[i]
@@ -434,9 +427,9 @@ class TrainRequest():
         msg = ["3.3 Assistor gets matched id file\n"]
         log_helper(msg, root, user_id, task_id)
 
-        # handle the response from request
-        cur_match_id_file = assistor_get_match_id_file_res["match_id_file"][0]
-        from_id = assistor_get_match_id_file_res["sponsor_random_id"][0]
+        # handle the response from request, assistor only has one match_id_file. Use [0] to get directly.
+        cur_match_id_file = load_json_data(assistor_get_match_id_file_res["match_id_file"][0], 'assistor_get_match_id_file_res["match_id_file"][0]')
+        from_id = load_json_data(assistor_get_match_id_file_res["sponsor_random_id"][0], 'assistor_get_match_id_file_res["sponsor_random_id"][0]')
 
         # call save_match_id to get the designated position to save the match_id file
         save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
@@ -621,8 +614,8 @@ class TrainRequest():
             print('assistor_get_situation_res wrong')
 
         # handle response from above request
-        cur_situation_file = assistor_get_situation_res["situation"]
-        from_id = assistor_get_situation_res["sender_random_id"]
+        cur_situation_file = load_json_data(assistor_get_situation_res["situation"], 'assistor_get_situation_res["situation"]')
+        from_id = load_json_data(assistor_get_situation_res["sender_random_id"], 'assistor_get_situation_res["sender_random_id"]')
 
         # call save_residual
         save_residual_pos = save_residual(root=root, self_id=user_id, task_id=task_id, round=rounds)
@@ -707,8 +700,8 @@ class TrainRequest():
         msg = ["5.2 Sponsor gets output model\n"]
         log_helper(msg, root, user_id, task_id)
 
-        output = sponsor_get_output_res["output"]
-        sender_random_ids_list = sponsor_get_output_res["sender_random_ids_list"]
+        output = load_json_data(sponsor_get_output_res["output"], 'sponsor_get_output_res["output"]')
+        sender_random_ids_list = load_json_data(sponsor_get_output_res["sender_random_ids_list"], 'sponsor_get_output_res["sender_random_ids_list"]')
 
         for i in range(len(output)):
             from_id = sender_random_ids_list[i]
@@ -763,7 +756,7 @@ class TrainRequest():
         log_helper(msg, root, user_id, task_id)
 
         if rounds >= self.maxRound:
-            msg = ["---------------------- Train Stage Ends\n"]
+            msg = ["---- Train Stage Ends\n"]
             log_helper(msg, root, user_id, task_id)
             return
         else:

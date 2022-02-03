@@ -21,6 +21,15 @@ def log_helper(msg, root, user_id, task_id):
         log(item, root, user_id, task_id)
 
 def check_json_format(content):
+    if isinstance(content, list):
+        return False
+    elif isinstance(content, int):
+        return False
+    elif isinstance(content, tuple):
+        return False    
+    elif isinstance(content, dict):
+        return False
+
     try:
         print('sss')
         json.loads(content)
@@ -45,7 +54,7 @@ def load_json_data(json_data, json_data_name, testing_key_value_pair=None):
     if testing_key_value_pair:
         for item in testing_key_value_pair:
             key, value = item[0], item[1]
-            print('key_value', key, value)
+            print('key_value', key, value,json_data, type(json_data) )
             assert key in json_data.keys()
             if value:
                 assert json_data[key] == value
@@ -64,10 +73,9 @@ def load_file(file_address):
 
 def save_file(file_address, file_content):
     try:
-        if not isinstance(file_content, list):
-            if check_json_format(file_content):
-                print('gggg')
-                file_content = load_json_data(file_content, 'file_content')
+        if check_json_format(file_content):
+            print('gggg')
+            file_content = load_json_data(file_content, 'file_content')
 
         print('55555')
         assert isinstance(file_content, list) == True

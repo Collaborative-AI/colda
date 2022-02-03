@@ -6,7 +6,7 @@ from .Network import Network
 from .PersonalInformation import PersonalInformation
 from .Database_class import Database_class
 from .Error import check_Algorithm_return_value
-from .apollo_utils import log_helper, handle_Algorithm_return_value
+from .apollo_utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
 
 from py_pkg.Algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 # from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
@@ -20,9 +20,9 @@ class TestRequest:
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         self.Database_class_instance = Database_class.get_Database_class_instance()
 
-        self.test_indicator = 'test'
-        self.skip_header_default = 1
         self.base_url = self.Network_instance.get_base_url()
+        self.skip_header_default = 1
+        self.test_indicator = 'test'
 
     @classmethod
     def get_TestRequest_instance(cls):
@@ -31,9 +31,21 @@ class TestRequest:
 
         return cls.__TestRequest_instance
 
+    def __obtain_important_information(self, get_test_id):
+        user_id = self.PersonalInformation_instance.get_user_id()
+        assert user_id is not None
+        root = self.PersonalInformation_instance.get_root()
+        assert root is not None
+        token = self.Network_instance.get_token()
+        assert token is not None
 
-    def handleTestRequest(self, task_id: str, task_name: str, test_name: str, task_mode: str,
-                        model_name: str, metric_name: str, testing_data_path: str):
+        test_id = None
+        if get_test_id:
+            test_id = self.__get_test_id()
+        return user_id, root, token, test_id
+
+    def handleTestRequest(self, task_id: str, test_file_path: str, test_id_column: str, test_data_column: str, 
+                            test_target_column: str, test_name: str=None, test_description: str=None):
 
         """
         Parameters:
@@ -51,9 +63,15 @@ class TestRequest:
         Raises:
             KeyError - raises an exception
         """
+        user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
+        print('handleTestRequest', task_id)
+        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator='train')
+        # retrieve mode from user_sponsor_db
+        self.__find_test_assistor(task_id=task_id, task_name=task_name, task_description=task_description, task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
+                                  test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column, test_target_column=test_target_column, test_name=test_name,
+                                  test_description=test_description)
+        return 'handleTestRequest successfully'
 
-        self.__find_test_assistor(task_id, task_name, test_name, task_mode, model_name, metric_name, testing_data_path)
-        return
 
     def __get_test_id(self):
 
@@ -74,17 +92,16 @@ class TestRequest:
         token = self.Network_instance.get_token()
         try:
             get_test_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
+            get_test_id_response = load_json_data(json_data=get_test_id_response, json_data_name='get_test_id_response', 
+                                                    testing_key_value_pair=[('test_id', None)])
         except RuntimeError:
             print('get_test_id_response wrong')
-        get_test_id_response = json.loads(get_test_id_response.text)
-        print("get_test_id_response", get_test_id_response)
 
         new_test_id = get_test_id_response["test_id"]
-
         return new_test_id
 
-    def __find_test_assistor(self, task_id: str, task_mode: str, model_name: str, metric_name: str, test_file_path: str,
-                            test_id_column: str, test_data_column: str, test_target_column: str, test_name: str=None, test_description: str=None):
+    def __find_test_assistor(self, task_id: str, task_name: str, task_description: str, task_mode: str, model_name: str, metric_name: str, test_file_path: str, test_id_column: str, test_data_column: str, 
+                            test_target_column: str, test_name: str=None, test_description: str=None):
 
         """
         start testing with all assistors of the task
@@ -108,14 +125,14 @@ class TestRequest:
         """
 
         # obtain some important information
-        user_id = self.PersonalInformation_instance.get_user_id()
-        test_id = self.__get_test_id()
-        root = self.PersonalInformation_instance.get_root()
+        user_id, root, token, test_id = self.__obtain_important_information(get_test_id=True)
 
         # store information in db
-        self.Database_class_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_id=test_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
-                                                            test_name=test_name, test_description=test_description, test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column,
+        store_User_Sponsor_Table_res = self.Database_class_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
+                                                            test_id=test_id, task_name=task_name, task_description=task_description, test_name=test_name, test_description=test_description, train_file_path=None, 
+                                                            train_id_column=None, train_data_column=None, train_target_column=None, test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column,
                                                             test_target_column=test_target_column)
+        assert store_User_Sponsor_Table_res == 'User_Sponsor_Table stores successfully'
 
         # call make_hash in Algorithm module
         test_hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, dataset_path=test_file_path, id_idx=test_id_column, skip_header=self.skip_header_default)
@@ -125,17 +142,13 @@ class TestRequest:
 
         # read file => array data type from np.genfromtxt
         # we need string type with \n between ids.
-        test_hash_id_file_data = np.genfromtxt(test_hash_id_file_address[2], delimiter=',', dtype=np.str_)
-        assert test_hash_id_file_data is not None
-        test_hash_id_file_data = list(test_hash_id_file_data)
-        print("test_hash_id_file_data", test_hash_id_file_data, type(test_hash_id_file_data))
+        test_hash_id_file_data = load_file(test_hash_id_file_address[2])
 
         # call find assistor in server
         url = self.base_url + "/find_test_assistor/"
-        token = self.Network_instance.get_token()
-
         data = {
             "task_id": task_id,
+            "task_name": task_name,
             'test_id': test_id,
             'test_name': test_name,
             'test_description': test_description,
@@ -144,14 +157,12 @@ class TestRequest:
             'metric_name': metric_name,
             'id_file': test_hash_id_file_data,
         }
-
-        print(data)
         try:
-            find_test_assistor_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
+            find_test_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+            find_test_assistor_res = load_json_data(json_data=find_test_assistor_res, json_data_name='find_test_assistor_res', 
+                                                    testing_key_value_pair=[('task_id', None), ('assistor_num', None), ('test_id', None)])
         except RuntimeError:
             print('find_test_assistor_res wrong')
-        find_test_assistor_res = json.loads(find_test_assistor_res.text)
-        print("find_test_assistor_res", find_test_assistor_res)
 
         return
 
@@ -171,11 +182,10 @@ class TestRequest:
         """
 
         # obtain some important information
-        user_id = self.PersonalInformation_instance.get_user_id()
-        root = self.PersonalInformation_instance.get_root()
-        token = self.Network_instance.get_token()
+        user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
 
-        user_id, default_mode, default_file_path, default_id_column, default_data_column, default_model_name = self.Database_class_instance.get_User_Default_Table()
+        user_id, default_mode, default_task_mode, default_model_name, default_file_path, default_id_column, default_data_column = self.Database_class_instance.get_User_Default_Table(user_id)
+        print('zhei', user_id, default_mode, default_task_mode, default_file_path, default_id_column, default_data_column, default_model_name)
         if default_mode == "manual":
             # Insert to DB
             pass
@@ -190,37 +200,38 @@ class TestRequest:
                 task_id = test_id_to_task_id[test_id]
 
                 # Insert default into User_Assistor_Table
-                
+                store_User_Assistor_Table_res = self.Database_class_instance.store_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, mode=default_mode, task_mode=default_task_mode, model_name=default_model_name, 
+                                                            test_id=test_id, task_name=None, task_description=None, test_name=None, test_description=None, train_file_path=None, 
+                                                            train_id_column=None, train_data_column=None, test_file_path=default_file_path, test_id_column=default_id_column, test_data_column=default_data_column)
+                assert store_User_Assistor_Table_res == 'User_Assistor_Table stores successfully'
+
                 # call make_hash in Algorithm module
                 test_hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, dataset_path=default_file_path, id_idx=default_id_column, skip_header=self.skip_header_default)
+                print('sssss')
                 assert test_hash_id_file_address is not None
                 test_hash_id_file_address = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
                 assert test_hash_id_file_address is not None
 
                 # read file => array data type from np.genfromtxt
                 # we need string type with \n between ids.
-                test_hash_id_file_data = np.genfromtxt(test_hash_id_file_address[2], delimiter=',', dtype=np.str_)
-                assert test_hash_id_file_data is not None
-                test_hash_id_file_data = list(test_hash_id_file_data)
+                test_hash_id_file_data = load_file(test_hash_id_file_address[2])
 
                 url = self.base_url + "/match_test_assistor_id/"
-                token = self.Network_instance.get_token()
                 data = {
                     "file": test_hash_id_file_data,
                     'task_id': task_id,
                     "test_id": test_id,
                 }
                 try:
-                    match_test_assistor_id_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
+                    match_test_assistor_id_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+                    match_test_assistor_id_res = load_json_data(json_data=match_test_assistor_id_res, json_data_name='match_test_assistor_id_res', 
+                                                    testing_key_value_pair=[('test_id', None), ('stored', 'assistor test match id stored')])
                 except RuntimeError:
                     print('match_test_assistor_id_res wrong')
-                match_test_assistor_id_res = json.loads(match_test_assistor_id_res.text)
-                print("match_test_assistor_id_res", match_test_assistor_id_res)
-
         else:
             print('default_mode wrong')
 
-        return
+        return 'unread_test_request done'
 
     def unread_test_match_id(self, unread_test_match_id_notification: dict):
         """
@@ -250,7 +261,7 @@ class TestRequest:
             elif check_sponsor == 0:
                 self.unread_test_match_id_assistor(task_id, test_id, cur_max_round)
 
-        return
+        return 'unread_test_match_id done'
 
     def unread_test_match_id_sponsor(self, task_id: str, test_id: str, cur_max_round: int):
 
@@ -270,29 +281,27 @@ class TestRequest:
         """
 
         # obtain some information
-        token = self.Network_instance.get_token()
-        root = self.PersonalInformation_instance.get_root()
-        user_id = self.PersonalInformation_instance.get_user_id()
+        user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
         
         # initiate a request to get test_match_id_file
         url = self.base_url + "/users/" + user_id + "/test_match_id_file"
         data = {
+            "task_id": task_id,
             "test_id": test_id,
         }
         try:
-            sponsor_get_test_match_id_file_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
+            sponsor_get_test_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+            sponsor_get_test_match_id_file_res = load_json_data(json_data=sponsor_get_test_match_id_file_res, json_data_name='sponsor_get_test_match_id_file_res', 
+                                                    testing_key_value_pair=[('match_id_file', None), ('assistor_random_id_pair', None)])
         except RuntimeError:
             print('sponsor_get_test_match_id_file_res wrong')
-
-        sponsor_get_test_match_id_file_res = json.loads(sponsor_get_test_match_id_file_res.text)
     
-        match_id_file_list = sponsor_get_test_match_id_file_res["match_id_file"]
-        assistor_random_id_pair_list = sponsor_get_test_match_id_file_res["assistor_random_id_pair"]
+        match_id_file_list = load_json_data(sponsor_get_test_match_id_file_res["match_id_file"], 'sponsor_get_test_match_id_file_res["match_id_file"]')
+        assistor_random_id_pair_list = load_json_data(sponsor_get_test_match_id_file_res["assistor_random_id_pair"], 'sponsor_get_test_match_id_file_res["assistor_random_id_pair"]')
 
         for i in range(len(match_id_file_list)):
             from_id = assistor_random_id_pair_list[i]
-            cur_match_id_file = json.loads(match_id_file_list[i])
-            cur_match_id_file = "\n".join(cur_match_id_file)
+            cur_match_id_file = match_id_file_list[i]
 
             # call save_match_id
             test_save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
@@ -303,7 +312,7 @@ class TestRequest:
             assert test_save_match_id_file_pos is not None
 
             # write file
-            np.savetxt(test_save_match_id_file_pos[2], cur_match_id_file, delimiter=",", fmt="%s")
+            save_file(test_save_match_id_file_pos[2], cur_match_id_file)
             msg = ["Test: 3.4 Sponsor Saved Matched id File at " + test_save_match_id_file_pos[2] + "\n"]
             log_helper(msg, root, user_id, task_id)
 
@@ -318,7 +327,7 @@ class TestRequest:
         print("test_file_path", test_file_path, test_data_column)
 
         # call make_test
-        test_done = make_test(root=root, self_id=user_id, tsak_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
+        test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
         assert test_done is not None
         test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
         assert test_done is not None
@@ -343,9 +352,7 @@ class TestRequest:
         """
 
         # obtain basic information
-        user_id = self.PersonalInformation_instance.get_user_id()
-        token = self.Network_instance.get_token()
-        root = self.PersonalInformation_instance.get_root()
+        user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
 
         url = self.base_url + "/users/" + user_id + "/test_match_id_file"
         data = {
@@ -353,15 +360,14 @@ class TestRequest:
             "test_id": test_id,
         }
         try:
-            assistor_get_test_match_id_file_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
+            assistor_get_test_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+            assistor_get_test_match_id_file_res = load_json_data(json_data=assistor_get_test_match_id_file_res, json_data_name='assistor_get_test_match_id_file_res', 
+                                                    testing_key_value_pair=[('match_id_file', None), ('sponsor_random_id', None)])
         except RuntimeError:
             print('assistor_get_test_match_id_file_res wrong')
-        assistor_get_test_match_id_file_res = json.loads(assistor_get_test_match_id_file_res.text)
-        print("assistor_get_test_match_id_file_res", assistor_get_test_match_id_file_res)
   
-        from_id = assistor_get_test_match_id_file_res["sponsor_random_id"]
-        cur_match_id_file = assistor_get_test_match_id_file_res["match_id_file"][0]
-        cur_match_id_file = "\n".join(cur_match_id_file)
+        from_id = load_json_data(assistor_get_test_match_id_file_res["sponsor_random_id"][0], 'assistor_get_test_match_id_file_res["sponsor_random_id"][0]')
+        cur_match_id_file = load_json_data(assistor_get_test_match_id_file_res["match_id_file"][0], 'assistor_get_test_match_id_file_res["match_id_file"][0]')
 
         # call test_save_match_id
         test_save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
@@ -372,7 +378,7 @@ class TestRequest:
         assert test_save_match_id_file_pos is not None
 
         # save match id file to designated position
-        np.savetxt(test_save_match_id_file_pos[2], cur_match_id_file, delimiter=",", fmt="%s")
+        save_file(test_save_match_id_file_pos[2], cur_match_id_file)
         msg = ["3.4 Assistor Saved Matched id File at " + test_save_match_id_file_pos[2] + "\n"]
         log_helper(msg, root, user_id, task_id)
 
@@ -388,10 +394,10 @@ class TestRequest:
         log_helper(msg, root, user_id, task_id)
 
         # select select_default_test_data_path from db
-        mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column = self.Database_class_instance.get_User_Assistor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
+        mode, task_mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column = self.Database_class_instance.get_User_Assistor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
 
         # call make test
-        test_done = make_test(root=root, self_id=user_id, tsak_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
+        test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
         assert test_done is not None
         test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
         assert test_done is not None
@@ -400,7 +406,7 @@ class TestRequest:
         make_test_lists = test_done[3:]
 
         for i in range(len(make_test_lists)):
-            data = np.genfromtext(make_test_lists[i], delimiter=',', dtype=np.str_)
+            data = load_file(make_test_lists[i])
             all_test_output.append(data)
 
         url = self.base_url + "/send_test_output/"
@@ -410,13 +416,11 @@ class TestRequest:
             "task_id": task_id,
         }
         try:
-            assistor_send_test_output_res = requests.post(url, data=data,
-                                                            headers={'Authorization': 'Bearer ' + token})
+            assistor_send_test_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+            assistor_send_test_output_res = load_json_data(json_data=assistor_send_test_output_res, json_data_name='assistor_send_test_output_res', 
+                                                        testing_key_value_pair=[('send_test_output', 'send test output successfully')])
         except RuntimeError:
             print('assistor_send_test_output_res wrong')
-
-        assistor_send_test_output_res = json.loads(assistor_send_test_output_res.text)
-        print("assistor_send_test_output_res", assistor_send_test_output_res)
 
         return
 
@@ -441,9 +445,9 @@ class TestRequest:
 
         for test_id in cur_unread_test_output_Testid_dict:
             task_id = test_id_to_task_id[test_id]
-            self.unread_test_output_singleTask(task_id, task_id)
+            self.unread_test_output_singleTask(task_id, test_id)
 
-        return
+        return 'unread_test_output done'
 
     def unread_test_output_singleTask(self, task_id: str, test_id: str):
 
@@ -462,9 +466,7 @@ class TestRequest:
         """
 
         # obtain some important information
-        user_id = self.PersonalInformation_instance.get_user_id()
-        root = self.PersonalInformation_instance.get_root()
-        token = self.Network_instance.get_token()
+        user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
 
         url = self.base_url + "/test_output/"
         data = {
@@ -472,31 +474,36 @@ class TestRequest:
             "test_id": test_id,
         }
         try:
-            sponsor_get_test_output_res = requests.post(url, data=data, headers={'Authorization': 'Bearer ' + token})
+            sponsor_get_test_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
+            sponsor_get_test_output_res = load_json_data(json_data=sponsor_get_test_output_res, json_data_name='sponsor_get_test_output_res', 
+                                                    testing_key_value_pair=[('output', None), ('sender_random_ids_list', None)])
         except RuntimeError:
             print('sponsor_get_test_output_res wrong')
-        sponsor_get_test_output_res = json.loads(sponsor_get_test_output_res.text)
-        print("sponsor_get_test_output_res", sponsor_get_test_output_res)
-        output = sponsor_get_test_output_res["output"]
-        sender_random_ids_list = sponsor_get_test_output_res["sender_random_ids_list"]
+
+        output = load_json_data(sponsor_get_test_output_res["output"], 'sponsor_get_test_output_res["output"]')
+        print('asss', output)
+        sender_random_ids_list = load_json_data(sponsor_get_test_output_res["sender_random_ids_list"], 'sponsor_get_test_output_res["sender_random_ids_list"]')
 
         # iterate the match_id_file
         # List[List[List]] structure: [[[data from one assistor],[data from one assistor]],[[data from another assistor],[data from another assistor]]]
+        max_round = 1
         for i in range(len(output)):
             from_id = sender_random_ids_list[i]
-            multiple_outputs_from_one_assistor = json.loads(output[i])
+            multiple_outputs_from_one_assistor = load_json_data(json_data=output[i], json_data_name='output[i]')
+            max_round = max(len(multiple_outputs_from_one_assistor), max_round)
 
             for j in range(len(multiple_outputs_from_one_assistor)):
                 cur_output = multiple_outputs_from_one_assistor[j]
 
                 # call save_output
-                test_save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, model=self.test_indicator, test_id=test_id, round=(j+1), from_id=from_id)
+                test_save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, round=(j+1), from_id=from_id)
                 assert test_save_output_pos is not None
                 test_save_output_pos = handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
                 assert test_save_output_pos is not None
-                np.savetxt(test_save_output_pos[2], cur_output, delimiter=",", fmt="%s")
+                save_file(test_save_output_pos[2], cur_output)
                 
-        max_round = len(output[0])
+        # max_round = len(output[0])
+        print('max_round', max_round)
         self.unread_test_output_make_eval_helper(task_id, test_id, max_round)
 
         return
@@ -518,15 +525,13 @@ class TestRequest:
         """
 
         # obtain some important information
-        user_id = self.PersonalInformation_instance.get_user_id()
-        root = self.PersonalInformation_instance.get_root()
-        token = self.Network_instance.get_token()
+        user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
 
         # select data from sponsor table
         task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
 
         # call make_eval
-        eval_done = make_eval(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, dataset_path=test_file_path, target=test_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
+        eval_done = make_eval(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, dataset_path=test_file_path, target_idx=test_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name, task_path=None)
         assert eval_done is not None
         eval_done = handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
         assert eval_done is not None

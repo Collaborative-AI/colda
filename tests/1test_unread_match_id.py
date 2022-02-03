@@ -11,7 +11,7 @@ import requests
 from copy import deepcopy
 from . import set_default_data_path
 from . import testing_data
-from .train_helper_function import Train_helper_function
+from .Train_helper_function import Train_helper_function
 
 import pytest
 

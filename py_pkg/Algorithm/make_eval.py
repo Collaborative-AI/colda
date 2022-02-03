@@ -27,6 +27,7 @@ def make_eval(root, self_id, task_id, test_id, round, dataset_path, target_idx, 
         sponsor_test_result_path = os.path.join(task_path, 'test', test_id, 'round', str(i), 'output',
                                                 '{}.csv'.format(self_id))
         if not os.path.exists(sponsor_test_result_path):
+            print('testss', i, sponsor_test_result_path)
             return "300?make_eval sponsor cannot find test output file"
     
     make_eval_res = collections.defaultdict(dict)

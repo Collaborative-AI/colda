@@ -43,13 +43,13 @@ class Train_helper_function:
         return _default_get_notification.getNotification()
 
     def handleTrainRequest_helper(self):
-        
         handleTrainRequest_res = _default_trainRequest.handleTrainRequest(maxRound=testing_data['maxRound'], assistors=testing_data['assistors'], train_file_path=testing_data['train_file_path'],
                              train_id_column=testing_data['train_id_column'], train_data_column=testing_data['train_data_column'], train_target_column=testing_data['train_target_column'], 
                              task_mode= testing_data['task_mode'], model_name=testing_data['model_name'], metric_name=testing_data['metric_name'], 
                              task_name=testing_data['task_name'], task_description=testing_data['task_description'])
-        assert handleTrainRequest_res == 'handleTrainRequest successfully'
-    
+        assert handleTrainRequest_res[0] == 'handleTrainRequest successfully'
+        return handleTrainRequest_res[1]
+        
     def unread_request_helper(self, unread_request_notification):
         unread_request_res = _default_trainRequest.unread_request(unread_request_notification)
         assert unread_request_res == 'unread_request successfully'

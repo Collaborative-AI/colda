@@ -8,7 +8,7 @@ supply and demand curves.
 import json
 from typing import Any, Dict, List
 from copy import deepcopy
-from .train_helper_function import Train_helper_function
+from .Train_helper_function import Train_helper_function
 import pytest
 
 class Test_handleTrainRequest(Train_helper_function):

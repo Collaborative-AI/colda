@@ -12,16 +12,17 @@ from copy import deepcopy
 from . import set_default_data_path
 from . import testing_data
 from .Train_helper_function import Train_helper_function
+from .Test_helper_function import Test_helper_function
 
 import pytest
 
-class Test_unread_request(Train_helper_function):
+class Test_unread_test_request(Train_helper_function, Test_helper_function):
 
-    def test_unread_request(self):
+    def test_unread_test_request(self):
         
         self.first_user_login()
         self.clean_db()
-        self.handleTrainRequest_helper()
+        task_id = self.handleTrainRequest_helper()
 
         # unread_request
         self.second_user_login()
@@ -48,7 +49,7 @@ class Test_unread_request(Train_helper_function):
         self.unread_match_id_sponsor_helper(update_all_notifications_data["unread match id"])
 
         # unread_sponsor_situation
-        for i in range(2):
+        for i in range(1):
             self.first_user_login()
             update_all_notifications_data = self.get_Notification()
             assert "unread situation" in update_all_notifications_data
@@ -68,4 +69,28 @@ class Test_unread_request(Train_helper_function):
             assert "unread output" in update_all_notifications_data
             self.unread_output(update_all_notifications_data["unread output"])
 
+        # test stage
+        self.first_user_login()
+        self.handleTestRequest_helper(task_id)
 
+        # unread_test_request
+        self.second_user_login()
+        set_default_data_path(default_mode=testing_data['default_mode'], default_task_mode=testing_data['default_task_mode'], default_model_name=testing_data['default_model_name'], default_file_path=testing_data['default_file_path'],
+                            default_id_column=testing_data['default_id_column'], default_data_column=testing_data['default_data_column'])
+        update_all_notifications_data = self.get_Notification()
+        assert "unread test request" in update_all_notifications_data.keys()
+        self.unread_test_request_helper(update_all_notifications_data["unread test request"])
+
+        # unread_test_match_id_sponsor
+        self.first_user_login()
+        update_all_notifications_data = self.get_Notification()
+        assert "unread test match id" in update_all_notifications_data.keys()
+        self.unread_test_match_id_sponsor_helper(update_all_notifications_data["unread test match id"])
+
+        # unread_test_match_id_assistor
+        self.second_user_login()
+        set_default_data_path(default_mode=testing_data['default_mode'], default_task_mode=testing_data['default_task_mode'], default_model_name=testing_data['default_model_name'], default_file_path=testing_data['default_file_path'],
+                            default_id_column=testing_data['default_id_column'], default_data_column=testing_data['default_data_column'])
+        update_all_notifications_data = self.get_Notification()
+        assert "unread test match id" in update_all_notifications_data.keys()
+        self.unread_test_match_id_assistor_helper(update_all_notifications_data["unread test match id"])

@@ -84,7 +84,10 @@ class Database_class():
             print('User_Sponsor_Table stores false')
         return 'User_Sponsor_Table stores successfully'
     
-    def get_User_Sponsor_Table(self, user_id: str, task_id: str, test_indicator: str, test_id: str=None):
+    def get_User_Sponsor_Table(self, user_id: str, test_indicator: str, task_id: str=None, test_id: str=None):
+
+        if not task_id and not test_id:
+            raise RuntimeError('Use task_id or test_id to retrieve User_Sponsor_Table')
 
         key = None
         if test_indicator == 'train':
@@ -92,27 +95,30 @@ class Database_class():
         elif test_indicator == 'test':
             key = (user_id, test_id, test_indicator)
 
-        user_id = self.temp_database[key]['User_Sponsor_Table']['user_id']
-        task_id = self.temp_database[key]['User_Sponsor_Table']['task_id']
-        test_id = self.temp_database[key]['User_Sponsor_Table']['test_id']
-        task_name = self.temp_database[key]['User_Sponsor_Table']['task_name']
-        task_description = self.temp_database[key]['User_Sponsor_Table']['task_description']
-        test_name = self.temp_database[key]['User_Sponsor_Table']['test_name']
-        test_description = self.temp_database[key]['User_Sponsor_Table']['test_description']
-        test_indicator = self.temp_database[key]['User_Sponsor_Table']['test_indicator']
+        try:
+            user_id = self.temp_database[key]['User_Sponsor_Table']['user_id']
+            task_id = self.temp_database[key]['User_Sponsor_Table']['task_id']
+            test_id = self.temp_database[key]['User_Sponsor_Table']['test_id']
+            task_name = self.temp_database[key]['User_Sponsor_Table']['task_name']
+            task_description = self.temp_database[key]['User_Sponsor_Table']['task_description']
+            test_name = self.temp_database[key]['User_Sponsor_Table']['test_name']
+            test_description = self.temp_database[key]['User_Sponsor_Table']['test_description']
+            test_indicator = self.temp_database[key]['User_Sponsor_Table']['test_indicator']
 
-        train_file_path = self.temp_database[key]['User_Sponsor_Table']['train_file_path']
-        train_id_column = self.temp_database[key]['User_Sponsor_Table']['train_id_column']
-        train_data_column = self.temp_database[key]['User_Sponsor_Table']['train_data_column']
-        train_target_column = self.temp_database[key]['User_Sponsor_Table']['train_target_column']
-        test_file_path = self.temp_database[key]['User_Sponsor_Table']['test_file_path']
-        test_id_column = self.temp_database[key]['User_Sponsor_Table']['test_id_column']
-        test_data_column = self.temp_database[key]['User_Sponsor_Table']['test_data_column']
-        test_target_column = self.temp_database[key]['User_Sponsor_Table']['test_target_column']
+            train_file_path = self.temp_database[key]['User_Sponsor_Table']['train_file_path']
+            train_id_column = self.temp_database[key]['User_Sponsor_Table']['train_id_column']
+            train_data_column = self.temp_database[key]['User_Sponsor_Table']['train_data_column']
+            train_target_column = self.temp_database[key]['User_Sponsor_Table']['train_target_column']
+            test_file_path = self.temp_database[key]['User_Sponsor_Table']['test_file_path']
+            test_id_column = self.temp_database[key]['User_Sponsor_Table']['test_id_column']
+            test_data_column = self.temp_database[key]['User_Sponsor_Table']['test_data_column']
+            test_target_column = self.temp_database[key]['User_Sponsor_Table']['test_target_column']
 
-        task_mode = self.temp_database[key]['User_Sponsor_Table']['task_mode']
-        model_name = self.temp_database[key]['User_Sponsor_Table']['model_name']
-        metric_name = self.temp_database[key]['User_Sponsor_Table']['metric_name']
+            task_mode = self.temp_database[key]['User_Sponsor_Table']['task_mode']
+            model_name = self.temp_database[key]['User_Sponsor_Table']['model_name']
+            metric_name = self.temp_database[key]['User_Sponsor_Table']['metric_name']
+        except RuntimeError:
+            print('get User_Sponsor_Table false')
 
         if test_indicator == 'train':
             return task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column
@@ -156,7 +162,10 @@ class Database_class():
             print('User_Assistor_Table stores false')
         return 'User_Assistor_Table stores successfully'
     
-    def get_User_Assistor_Table(self, user_id: str, task_id: str, test_indicator: str, test_id: str=None):
+    def get_User_Assistor_Table(self, user_id: str, test_indicator: str, task_id: str=None, test_id: str=None):
+        
+        if not task_id and not test_id:
+            raise RuntimeError('Use task_id or test_id to retrieve User_Assistor_Table')
 
         key = None
         if test_indicator == 'train':
@@ -168,25 +177,28 @@ class Database_class():
             print(self.temp_database[key])
         else:
             print('gigi')
-        user_id = self.temp_database[key]['User_Assistor_Table']['user_id']
-        task_id = self.temp_database[key]['User_Assistor_Table']['task_id']
-        test_id = self.temp_database[key]['User_Assistor_Table']['test_id']
-        task_name = self.temp_database[key]['User_Assistor_Table']['task_name']
-        task_description = self.temp_database[key]['User_Assistor_Table']['task_description']
-        test_name = self.temp_database[key]['User_Assistor_Table']['test_name']
-        test_description = self.temp_database[key]['User_Assistor_Table']['test_description']
-        test_indicator = self.temp_database[key]['User_Assistor_Table']['test_indicator']
+        try:
+            user_id = self.temp_database[key]['User_Assistor_Table']['user_id']
+            task_id = self.temp_database[key]['User_Assistor_Table']['task_id']
+            test_id = self.temp_database[key]['User_Assistor_Table']['test_id']
+            task_name = self.temp_database[key]['User_Assistor_Table']['task_name']
+            task_description = self.temp_database[key]['User_Assistor_Table']['task_description']
+            test_name = self.temp_database[key]['User_Assistor_Table']['test_name']
+            test_description = self.temp_database[key]['User_Assistor_Table']['test_description']
+            test_indicator = self.temp_database[key]['User_Assistor_Table']['test_indicator']
 
-        train_file_path = self.temp_database[key]['User_Assistor_Table']['train_file_path']
-        train_id_column = self.temp_database[key]['User_Assistor_Table']['train_id_column']
-        train_data_column = self.temp_database[key]['User_Assistor_Table']['train_data_column']
-        test_file_path = self.temp_database[key]['User_Assistor_Table']['test_file_path']
-        test_id_column = self.temp_database[key]['User_Assistor_Table']['test_id_column']
-        test_data_column = self.temp_database[key]['User_Assistor_Table']['test_data_column']
+            train_file_path = self.temp_database[key]['User_Assistor_Table']['train_file_path']
+            train_id_column = self.temp_database[key]['User_Assistor_Table']['train_id_column']
+            train_data_column = self.temp_database[key]['User_Assistor_Table']['train_data_column']
+            test_file_path = self.temp_database[key]['User_Assistor_Table']['test_file_path']
+            test_id_column = self.temp_database[key]['User_Assistor_Table']['test_id_column']
+            test_data_column = self.temp_database[key]['User_Assistor_Table']['test_data_column']
 
-        mode = self.temp_database[key]['User_Assistor_Table']['mode']
-        task_mode = self.temp_database[key]['User_Assistor_Table']['task_mode']
-        model_name = self.temp_database[key]['User_Assistor_Table']['model_name']
+            mode = self.temp_database[key]['User_Assistor_Table']['mode']
+            task_mode = self.temp_database[key]['User_Assistor_Table']['task_mode']
+            model_name = self.temp_database[key]['User_Assistor_Table']['model_name']
+        except RuntimeError:
+            print('get User_Assistor_Table false')
 
         if test_indicator == 'train':
             return mode, task_mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column

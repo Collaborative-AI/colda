@@ -15,15 +15,15 @@ class Database_class():
 
         return cls.__Database_class_instance
 
-    def store_User_Default_Table(self, user_id: str, default_mode: str, default_model_name: str, default_file_path: str=None, 
+    def store_User_Default_Table(self, user_id: str, default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, 
                                     default_id_column: str=None, default_data_column: str=None):
 
         if user_id not in self.temp_database:
             self.temp_database[user_id] = collections.defaultdict(dict)
-
         try:
             self.temp_database[user_id]['User_Default_Table']['user_id'] = user_id
             self.temp_database[user_id]['User_Default_Table']['default_mode'] = default_mode
+            self.temp_database[user_id]['User_Default_Table']['default_task_mode'] = default_task_mode
             self.temp_database[user_id]['User_Default_Table']['default_model_name'] = default_model_name
             self.temp_database[user_id]['User_Default_Table']['default_file_path'] = default_file_path
             self.temp_database[user_id]['User_Default_Table']['default_id_column'] = default_id_column
@@ -37,12 +37,13 @@ class Database_class():
 
         user_id = self.temp_database[user_id]['User_Default_Table']['user_id']
         default_mode = self.temp_database[user_id]['User_Default_Table']['default_mode']
+        default_task_mode = self.temp_database[user_id]['User_Default_Table']['default_task_mode']
         default_model_name = self.temp_database[user_id]['User_Default_Table']['default_model_name']
         default_file_path = self.temp_database[user_id]['User_Default_Table']['default_file_path']
         default_id_column = self.temp_database[user_id]['User_Default_Table']['default_id_column']
         default_data_column = self.temp_database[user_id]['User_Default_Table']['default_data_column'] 
 
-        return user_id, default_mode, default_model_name, default_file_path, default_id_column, default_data_column
+        return user_id, default_mode, default_task_mode, default_model_name, default_file_path, default_id_column, default_data_column
 
     def store_User_Sponsor_Table(self, user_id: str, task_id: str, test_indicator: str, task_mode: str, model_name: str, metric_name: str, test_id: str=None, 
                                 task_name: str=None, task_description: str=None, test_name: str=None, test_description=None, train_file_path: str=None, train_id_column: str=None, train_data_column: str=None, 
@@ -118,7 +119,7 @@ class Database_class():
         elif test_indicator == 'test':
             return task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column
 
-    def store_User_Assistor_Table(self, user_id: str, task_id: str, test_indicator: str, mode: str, model_name: str, test_id: str=None, 
+    def store_User_Assistor_Table(self, user_id: str, task_id: str, test_indicator: str, mode: str, task_mode: str, model_name: str, test_id: str=None, 
                                 task_name: str=None, task_description: str=None, test_name: str=None, test_description: str=None, train_file_path: str=None, train_id_column: str=None, train_data_column: str=None, 
                                 test_file_path: str=None, test_id_column: str=None, test_data_column: str=None):
         
@@ -149,6 +150,7 @@ class Database_class():
             self.temp_database[key]['User_Assistor_Table']['test_data_column'] = test_data_column
 
             self.temp_database[key]['User_Assistor_Table']['mode'] = mode
+            self.temp_database[key]['User_Assistor_Table']['task_mode'] = task_mode
             self.temp_database[key]['User_Assistor_Table']['model_name'] = model_name
         except RuntimeError:
             print('User_Assistor_Table stores false')
@@ -161,7 +163,11 @@ class Database_class():
             key = (user_id, task_id, test_indicator)
         elif test_indicator == 'test':
             key = (user_id, test_id, test_indicator)
-
+        print('key', key)
+        if key in self.temp_database:
+            print(self.temp_database[key])
+        else:
+            print('gigi')
         user_id = self.temp_database[key]['User_Assistor_Table']['user_id']
         task_id = self.temp_database[key]['User_Assistor_Table']['task_id']
         test_id = self.temp_database[key]['User_Assistor_Table']['test_id']
@@ -179,11 +185,12 @@ class Database_class():
         test_data_column = self.temp_database[key]['User_Assistor_Table']['test_data_column']
 
         mode = self.temp_database[key]['User_Assistor_Table']['mode']
+        task_mode = self.temp_database[key]['User_Assistor_Table']['task_mode']
         model_name = self.temp_database[key]['User_Assistor_Table']['model_name']
 
         if test_indicator == 'train':
-            return mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column
+            return mode, task_mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column
         elif test_indicator == 'test':
-            return mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column
+            return mode, task_mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column
 
 

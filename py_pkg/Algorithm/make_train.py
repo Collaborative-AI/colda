@@ -3,7 +3,7 @@ import os
 from utils import save, makedir_exist_ok, parse_idx
 from models import Model
 
-def make_train(root, self_id, task_id, from_id, round, dataset_path, data_idx, skip_header, task_mode, model_name):
+def make_train(root, self_id, task_id, round, dataset_path, data_idx, skip_header, task_mode, model_name, from_id=None):
 
     dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     data_idx = parse_idx(data_idx)

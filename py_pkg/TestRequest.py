@@ -126,7 +126,8 @@ class TestRequest:
         # read file => array data type from np.genfromtxt
         # we need string type with \n between ids.
         test_hash_id_file_data = np.genfromtxt(test_hash_id_file_address[2], delimiter=',', dtype=np.str_)
-        test_hash_id_file_data = "\n".join(test_hash_id_file_data)
+        assert test_hash_id_file_data is not None
+        test_hash_id_file_data = list(test_hash_id_file_data)
         print("test_hash_id_file_data", test_hash_id_file_data, type(test_hash_id_file_data))
 
         # call find assistor in server
@@ -199,8 +200,8 @@ class TestRequest:
                 # read file => array data type from np.genfromtxt
                 # we need string type with \n between ids.
                 test_hash_id_file_data = np.genfromtxt(test_hash_id_file_address[2], delimiter=',', dtype=np.str_)
-                test_hash_id_file_data = "\n".join(test_hash_id_file_data)
-                print("test_hash_id_file_data", test_hash_id_file_data, type(test_hash_id_file_data))
+                assert test_hash_id_file_data is not None
+                test_hash_id_file_data = list(test_hash_id_file_data)
 
                 url = self.base_url + "/match_test_assistor_id/"
                 token = self.Network_instance.get_token()

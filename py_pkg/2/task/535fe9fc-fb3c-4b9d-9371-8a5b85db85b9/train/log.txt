@@ -1,0 +1,33 @@
+
+ You are Assistor
+
+Task ID: 535fe9fc-fb3c-4b9d-9371-8a5b85db85b9
+
+----2. Unread Request
+
+2.1 Update the request notification
+
+2.2 assistor uploads id file
+
+----2. Unread Request Done
+
+----3. Unread Match ID
+
+3.1 Update the match id notification
+
+3.2 Unread_match_id_assistor
+
+3.3 Assistor gets matched id file
+
+3.4 Assistor Saved Matched id File at /Users/qile/Documents/Apollo_Package/Package/py_pkg/2/task/535fe9fc-fb3c-4b9d-9371-8a5b85db85b9/train/id/aabab6a6-19a2-458c-8ffc-bfc30200da8b.csv
+
+3.5 Assistor matches id to index
+
+---- 3. Unread Match ID Done
+
+-------------------------- 4. Unread Situation
+
+4.1 Update the situation notification
+
+4.3 Assistor Saved Residual File!
+

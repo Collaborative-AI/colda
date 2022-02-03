@@ -22,3 +22,7 @@ private(__), public, protected(_) in python.
 
 --
 1. Package:
+
+
+unittest:
+1. run command: pytest

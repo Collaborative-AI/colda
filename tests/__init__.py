@@ -51,15 +51,16 @@ testing_data['task_name'] = 'ceshi111'
 testing_data['task_description'] = 'lihaideceshi'
 
 testing_data['default_mode'] = 'auto'
-testing_data['default_model_name'] = 'regression'
+testing_data['default_task_mode'] = 'regression'
+testing_data['default_model_name'] = 'linear'
 
 total_participants = '2'
 match_ratio = '1.0'
 user_id = '1'
 folder_indicator = 'all'
-if testing_data['default_model_name'] == 'regression':
+if testing_data['default_task_mode'] == 'regression':
     testing_data['default_file_path'] = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-elif testing_data['default_model_name'] == 'classification':
+elif testing_data['default_task_mode'] == 'classification':
     testing_data['default_file_path'] = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
 testing_data['default_id_column'] = '1'

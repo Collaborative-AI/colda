@@ -56,20 +56,21 @@ class Train_helper_function:
 
     def unread_match_id_sponsor_helper(self, unread_match_id_notification):
         unread_match_id_sponsor_res = _default_trainRequest.unread_match_id(unread_match_id_notification)   
-        assert unread_match_id_sponsor_res == 'unread_match_id_sponsor successfully'
+        assert unread_match_id_sponsor_res == 'unread match id done'
     
     def unread_match_id_assistor_helper(self, unread_match_id_notification):
         unread_match_id_assistor_res = _default_trainRequest.unread_match_id(unread_match_id_notification)   
-        assert unread_match_id_assistor_res == 'unread_match_id_assistor successfully'
+        print('unread_match_id_assistor_res', unread_match_id_assistor_res)
+        assert unread_match_id_assistor_res == 'unread match id done'
     
     def unread_situation_sponsor_helper(self, unread_situation_notification):
         unread_situation_sponsor_res = _default_trainRequest.unread_situation(unread_situation_notification)   
-        assert unread_situation_sponsor_res == 'unread_situation_sponsor successfully'
+        assert unread_situation_sponsor_res == 'unread situation done'
     
     def unread_situation_assistor_helper(self, unread_situation_notification):
         unread_situation_assistor_res = _default_trainRequest.unread_situation(unread_situation_notification)   
-        assert unread_situation_assistor_res == 'unread_situation_assistor successfully'
+        assert unread_situation_assistor_res == 'unread situation done'
     
     def unread_output(self, unread_output_notification):
         unread_output_res = _default_trainRequest.unread_output(unread_output_notification)   
-        assert unread_output_res == 'unread_output successfully'
+        assert unread_output_res == 'unread output done'

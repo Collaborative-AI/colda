@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>README &mdash; Synspot_Package 0.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="tests package" href="tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Synspot_Package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">README</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Synspot_Package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>README</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/README.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="readme">
+<h1>README<a class="headerlink" href="#readme" title="Permalink to this headline"></a></h1>
+<p># The ‘Synspot’ package
+This package aims to help various entities assist each other in supervised learning tasks without sharing data, models, and objective function.</p>
+<p># A Quick Setup Guide</p>
+<p>## Getting Started</p>
+<p>1. <strong>Install the ‘Synspot’ package using pip</strong>
+&gt; python -m pip install Synspot</p>
+<p>2. <strong>Import the Model and Experiment API classes</strong>
+&gt; import Synspot</p>
+<p>## Using the package
+1. <strong>Register</strong>
+&gt; <a href="#id1"><span class="problematic" id="id2">**</span></a>userRegister**(username, email, password)
+&gt;
+&gt;&gt; Password Requirements:
+&gt;&gt;   1. At least 8 characters. At most 25 characters
+&gt;&gt;   2. A mixture of both uppercase and lowercase letters
+&gt;&gt;   3. A mixture of letters and numbers
+&gt;&gt;   4. Inclusion of at least one special character, e.g., ! &#64; # ? ]</p>
+<p>2. <strong>Login</strong>
+&gt; <a href="#id3"><span class="problematic" id="id4">**</span></a>userLogin**(username, password)</p>
+<p>3. <strong>Set default information</strong>
+&gt; <a href="#id5"><span class="problematic" id="id6">**</span></a>set_default_data_path**(default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None)
+&gt;
+&gt;&gt; Parameters:
+&gt;&gt;    - default_mode - String. auto or manual
+&gt;&gt;    - default_model_name - String. Specific model, such as LinearRegression, DecisionTree.
+&gt;&gt;    - default_file_path - String. File position of dataset using for training and testing
+&gt;&gt;    - default_id_column - String. Data column of default dataset
+&gt;&gt;    - default_data_column - String. Target column of default dataset</p>
+<p>4. <strong>Start Training</strong>
+&gt; <a href="#id7"><span class="problematic" id="id8">**</span></a>callForTrain**(maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str=None, task_description: str=None)
+&gt;
+&gt;&gt; Parameters:
+&gt;&gt;    - maxRound - Integer. Maximum training round
+&gt;&gt;    - assistors - List. The List of assistors’ usernames
+&gt;&gt;    - train_file_path - String. Input path address of training data path
+&gt;&gt;    - train_id_column - String. ID column of Input File
+&gt;&gt;    - train_data_column - String. Data column of Input File
+&gt;&gt;    - train_target_column - String. Target column of Input File
+&gt;&gt;    - task_mode - String. Classification or Regression
+&gt;&gt;    - model_name - String. Specific model, such as LinearRegression, DecisionTree.
+&gt;&gt;    - metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.
+&gt;&gt;    - task_name - None or String. The name of current task.
+&gt;&gt;    - task_description - None or String. The description of current task</p>
+<p>5. <strong>Start Testing</strong>
+&gt; <a href="#id9"><span class="problematic" id="id10">**</span></a>callForTest**(task_id: str, test_file_path: str, test_id_column: str, test_data_column: str, test_target_column: str, test_name: str=None, test_description: str=None):
+&gt;
+&gt;&gt; Parameters:
+&gt;&gt;    - task_id - String. The task that the user wanted to test
+&gt;&gt;    - test_file_path - String. Input path address of testing data path
+&gt;&gt;    - test_id_column - String. ID column of Input File
+&gt;&gt;    - test_data_column - String. Data column of Input File
+&gt;&gt;    - test_target_column - String. Target column of Input File
+&gt;&gt;    - test_name - None or String. The name of current test
+&gt;&gt;    - test_description - None or String. The description of current test</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.html" class="btn btn-neutral float-left" title="tests package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, ss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -9,7 +9,7 @@ import json
 from typing import Any, Dict, List
 from copy import deepcopy
 
-from py_pkg.Database_class import Database_class
+from Synspot.Database_class import Database_class
 import pytest
 
 class TestDatabase_class:

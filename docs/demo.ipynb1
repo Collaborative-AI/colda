@@ -1,0 +1,111 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Jupyter Notebook Demo\n",
+    "========"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Install"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# !python -m pip install Synspot\n",
+    "import Synspot"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Login"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "userLogin(username='xie1', password='Xie1@123')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Set default information"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "set_default_data_path(default_mode='auto', default_task_mode='regression', default_model_name='linear', default_file_path=None,\n",
+    "                            default_id_column=, default_data_column=)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Call for train"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "callForTrain(maxRound=2, assistors=['xie2'], train_file_path=None,\n",
+    "                             train_id_column='1', train_data_column='2-8', train_target_column='9', \n",
+    "                             task_mode='regression', model_name='linear', metric_name='MAD_RMSE_R2', \n",
+    "                             task_name='demo_training', task_description='Synspot Demo Training')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Call for test"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "callForTest(task_id=task_id, test_file_path=None,test_id_column='1', test_data_column='2-8', test_target_column='9',  \n",
+    "            test_name='demo_testing', test_description='Synspot Demo Testing')"
+   ]
+  }
+ ],
+ "metadata": {
+  "language_info": {
+   "name": "python"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

@@ -2,15 +2,15 @@
 tests
 ~~~~~
 
-Test suite for the py_pkg package.
+Test suite for the Synspot package.
 """
-from py_pkg.TrainRequest import TrainRequest
-from py_pkg.TestRequest import TestRequest
-from py_pkg.Authorization import Authorization
-from py_pkg.Get_Notification import Get_Notification
-from py_pkg.PersonalInformation import PersonalInformation
-from py_pkg.Network import Network
-from py_pkg import set_default_data_path
+from Synspot.TrainRequest import TrainRequest
+from Synspot.TestRequest import TestRequest
+from Synspot.Authorization import Authorization
+from Synspot.Get_Notification import Get_Notification
+from Synspot.PersonalInformation import PersonalInformation
+from Synspot.Network import Network
+from Synspot import set_default_data_path
 
 _default_authorization = Authorization.get_Authorization_instance()
 _default_trainRequest = TrainRequest.get_TrainRequest_instance()
@@ -29,6 +29,10 @@ testing_data['first_user_username'] = 'xie1'
 testing_data['first_user_password'] = 'Xie1@123'
 testing_data['second_user_username'] = 'xie2'
 testing_data['second_user_password'] = 'Xie2@123'
+
+testing_data['test_register_username'] = 'leqq'
+testing_data['test_register_email'] = 'lq109945190@gmail.com'
+testing_data['test_register_password'] = 'leq1'
 
 testing_data['sponsor_mode'] = 'regression'
 data_file = 'BostonHousing'

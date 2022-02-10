@@ -18,6 +18,8 @@ recommonmark = "*"
 sphinx-rtd-theme = "*"
 pandas = "*"
 pytorch-sphinx-theme = "*"
+nbsphinx = "*"
+ipykernel = "*"
 
 [dev-packages]
 "flake8" = "*"

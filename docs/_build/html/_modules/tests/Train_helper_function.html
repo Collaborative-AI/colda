@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.Train_helper_function &mdash; Synspot_Package 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Synspot_Package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Synspot_Package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+          <li><a href="../tests.html">tests</a> &raquo;</li>
+      <li>tests.Train_helper_function</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.Train_helper_function</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">tests.test_curves.py</span>
+<span class="sd">~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">Test suite for the curves.py module that handles everything to do with</span>
+<span class="sd">supply and demand curves.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">testing_data</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_default_trainRequest</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_default_authorization</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_default_get_notification</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_default_PersonalInformation</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_default_Network</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<div class="viewcode-block" id="Train_helper_function"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function">[docs]</a><span class="k">class</span> <span class="nc">Train_helper_function</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Train_helper_function.clean_db"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.clean_db">[docs]</a>    <span class="k">def</span> <span class="nf">clean_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">_default_Network</span><span class="o">.</span><span class="n">get_base_url</span><span class="p">()</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/delete_all_rows/&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">delete_db_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;delete_db_res wrong&#39;</span><span class="p">)</span></div>
+        
+
+<div class="viewcode-block" id="Train_helper_function.first_user_login"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.first_user_login">[docs]</a>    <span class="k">def</span> <span class="nf">first_user_login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">userLogin_res</span> <span class="o">=</span> <span class="n">_default_authorization</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;first_user_username&#39;</span><span class="p">],</span> <span class="n">password</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;first_user_password&#39;</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">userLogin_res</span> <span class="o">==</span> <span class="s1">&#39;userLogin Successfully&#39;</span>
+        <span class="k">return</span></div>
+    
+<div class="viewcode-block" id="Train_helper_function.second_user_login"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.second_user_login">[docs]</a>    <span class="k">def</span> <span class="nf">second_user_login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">userLogin_res</span> <span class="o">=</span> <span class="n">_default_authorization</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;second_user_username&#39;</span><span class="p">],</span> <span class="n">password</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;second_user_password&#39;</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">userLogin_res</span> <span class="o">==</span> <span class="s1">&#39;userLogin Successfully&#39;</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="Train_helper_function.get_Notification"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.get_Notification">[docs]</a>    <span class="k">def</span> <span class="nf">get_Notification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_default_get_notification</span><span class="o">.</span><span class="n">getNotification</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Train_helper_function.handleTrainRequest_helper"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.handleTrainRequest_helper">[docs]</a>    <span class="k">def</span> <span class="nf">handleTrainRequest_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">handleTrainRequest_res</span> <span class="o">=</span> <span class="n">_default_trainRequest</span><span class="o">.</span><span class="n">handleTrainRequest</span><span class="p">(</span><span class="n">maxRound</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;maxRound&#39;</span><span class="p">],</span> <span class="n">assistors</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;assistors&#39;</span><span class="p">],</span> <span class="n">train_file_path</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;train_file_path&#39;</span><span class="p">],</span>
+                             <span class="n">train_id_column</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;train_id_column&#39;</span><span class="p">],</span> <span class="n">train_data_column</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;train_data_column&#39;</span><span class="p">],</span> <span class="n">train_target_column</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;train_target_column&#39;</span><span class="p">],</span> 
+                             <span class="n">task_mode</span><span class="o">=</span> <span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;task_mode&#39;</span><span class="p">],</span> <span class="n">model_name</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;model_name&#39;</span><span class="p">],</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;metric_name&#39;</span><span class="p">],</span> 
+                             <span class="n">task_name</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;task_name&#39;</span><span class="p">],</span> <span class="n">task_description</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;task_description&#39;</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">handleTrainRequest_res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;handleTrainRequest successfully&#39;</span>
+        <span class="k">return</span> <span class="n">handleTrainRequest_res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+        
+<div class="viewcode-block" id="Train_helper_function.unread_request_helper"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.unread_request_helper">[docs]</a>    <span class="k">def</span> <span class="nf">unread_request_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_request_notification</span><span class="p">):</span>
+        <span class="n">unread_request_res</span> <span class="o">=</span> <span class="n">_default_trainRequest</span><span class="o">.</span><span class="n">unread_request</span><span class="p">(</span><span class="n">unread_request_notification</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">unread_request_res</span> <span class="o">==</span> <span class="s1">&#39;unread_request successfully&#39;</span></div>
+
+<div class="viewcode-block" id="Train_helper_function.unread_match_id_sponsor_helper"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.unread_match_id_sponsor_helper">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id_sponsor_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_match_id_notification</span><span class="p">):</span>
+        <span class="n">unread_match_id_sponsor_res</span> <span class="o">=</span> <span class="n">_default_trainRequest</span><span class="o">.</span><span class="n">unread_match_id</span><span class="p">(</span><span class="n">unread_match_id_notification</span><span class="p">)</span>   
+        <span class="k">assert</span> <span class="n">unread_match_id_sponsor_res</span> <span class="o">==</span> <span class="s1">&#39;unread match id done&#39;</span></div>
+    
+<div class="viewcode-block" id="Train_helper_function.unread_match_id_assistor_helper"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.unread_match_id_assistor_helper">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id_assistor_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_match_id_notification</span><span class="p">):</span>
+        <span class="n">unread_match_id_assistor_res</span> <span class="o">=</span> <span class="n">_default_trainRequest</span><span class="o">.</span><span class="n">unread_match_id</span><span class="p">(</span><span class="n">unread_match_id_notification</span><span class="p">)</span>   
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;unread_match_id_assistor_res&#39;</span><span class="p">,</span> <span class="n">unread_match_id_assistor_res</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">unread_match_id_assistor_res</span> <span class="o">==</span> <span class="s1">&#39;unread match id done&#39;</span></div>
+    
+<div class="viewcode-block" id="Train_helper_function.unread_situation_sponsor_helper"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.unread_situation_sponsor_helper">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation_sponsor_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_situation_notification</span><span class="p">):</span>
+        <span class="n">unread_situation_sponsor_res</span> <span class="o">=</span> <span class="n">_default_trainRequest</span><span class="o">.</span><span class="n">unread_situation</span><span class="p">(</span><span class="n">unread_situation_notification</span><span class="p">)</span>   
+        <span class="k">assert</span> <span class="n">unread_situation_sponsor_res</span> <span class="o">==</span> <span class="s1">&#39;unread situation done&#39;</span></div>
+    
+<div class="viewcode-block" id="Train_helper_function.unread_situation_assistor_helper"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.unread_situation_assistor_helper">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation_assistor_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_situation_notification</span><span class="p">):</span>
+        <span class="n">unread_situation_assistor_res</span> <span class="o">=</span> <span class="n">_default_trainRequest</span><span class="o">.</span><span class="n">unread_situation</span><span class="p">(</span><span class="n">unread_situation_notification</span><span class="p">)</span>   
+        <span class="k">assert</span> <span class="n">unread_situation_assistor_res</span> <span class="o">==</span> <span class="s1">&#39;unread situation done&#39;</span></div>
+    
+<div class="viewcode-block" id="Train_helper_function.unread_output"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.unread_output">[docs]</a>    <span class="k">def</span> <span class="nf">unread_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_output_notification</span><span class="p">):</span>
+        <span class="n">unread_output_res</span> <span class="o">=</span> <span class="n">_default_trainRequest</span><span class="o">.</span><span class="n">unread_output</span><span class="p">(</span><span class="n">unread_output_notification</span><span class="p">)</span>   
+        <span class="k">assert</span> <span class="n">unread_output_res</span> <span class="o">==</span> <span class="s1">&#39;unread output done&#39;</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, ss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

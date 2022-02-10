@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synspot.PersonalInformation &mdash; Synspot_Package 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Synspot_Package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Synspot_Package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+          <li><a href="../Synspot.html">Synspot</a> &raquo;</li>
+      <li>Synspot.PersonalInformation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Synspot.PersonalInformation</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># from Database import Session, User_Default_Path, assign_value_to_user_default_path_instance</span>
+
+<div class="viewcode-block" id="PersonalInformation"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation">[docs]</a><span class="k">class</span> <span class="nc">PersonalInformation</span><span class="p">:</span>
+    <span class="n">__PersonalInformation_instance</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__user_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__exe_position</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="PersonalInformation.get_PersonalInformation_instance"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.get_PersonalInformation_instance">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_PersonalInformation_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__PersonalInformation_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">__PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__PersonalInformation_instance</span></div>
+
+<div class="viewcode-block" id="PersonalInformation.get_user_id"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.get_user_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the user id of current user. The user id is set to None at first.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">         None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">         The user id of current user.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__user_id</span></div>
+
+<div class="viewcode-block" id="PersonalInformation.set_user_id"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.set_user_id">[docs]</a>    <span class="k">def</span> <span class="nf">set_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the user_id.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">         user_id - String.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">         None</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="PersonalInformation.get_default_mode"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.get_default_mode">[docs]</a>    <span class="k">def</span> <span class="nf">get_default_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the default mode set by user from DB. The default mode is set to active at first.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">         None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">         The default mode set by user.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># get message from database</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span></div>
+
+
+<div class="viewcode-block" id="PersonalInformation.set_default_mode"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.set_default_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_default_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the default mode.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">         mode - String. Must in [&quot;auto&quot;, &quot;manual&quot;]</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">         None</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;manual&#39;</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Sorry, default mode wrong&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="PersonalInformation.get_root"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.get_root">[docs]</a>    <span class="k">def</span> <span class="nf">get_root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the root path of intermediate data storage</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">         None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">         The root path of intermediate data storage.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__root</span></div>
+
+
+<div class="viewcode-block" id="PersonalInformation.set_root"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.set_root">[docs]</a>    <span class="k">def</span> <span class="nf">set_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the root path of intermediate data storage to new root</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">         root - String. Must be valid</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">         None</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__root</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="PersonalInformation.get_exe_position"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.get_exe_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_exe_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the path of the Algorithm entry point</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">         None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">         None</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exe_position</span></div>
+
+<div class="viewcode-block" id="PersonalInformation.logout"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.logout">[docs]</a>    <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle user logout by setting the __default_mode and __user_id to None</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__user_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Logout procedure wrong&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, ss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

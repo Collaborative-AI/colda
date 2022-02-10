@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synspot.Database &mdash; Synspot_Package 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Synspot_Package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Synspot_Package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+          <li><a href="../Synspot.html">Synspot</a> &raquo;</li>
+      <li>Synspot.Database</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Synspot.Database</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">basedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basedir</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># create database connection</span>
+<span class="n">basedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="c1"># The object created by sqlite by default can only be used by the thread that created the object</span>
+<span class="c1"># , and sqlalchemy is multi-threaded, so we need to specify check_same_thread=False to make</span>
+<span class="c1">#  the created object available to any thread</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="s1">&#39;app_package.db&#39;</span><span class="p">))</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="s1">&#39;app_package.db&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;?check_same_thread=False&#39;</span><span class="p">,</span> <span class="n">echo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Create File and initialize databases</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">checkfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="c1"># engine是2.2中创建的连接</span>
+<span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<div class="viewcode-block" id="assign_value_to_user_chosen_path_instance"><a class="viewcode-back" href="../../Synspot.Database.html#Synspot.Database.assign_value_to_user_chosen_path_instance">[docs]</a><span class="k">def</span> <span class="nf">assign_value_to_user_chosen_path_instance</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">):</span>
+
+        <span class="c1"># self.maxRound = maxRound</span>
+        <span class="c1"># session = Session()</span>
+        <span class="c1"># user_chosen_path = User_Chosen_Path()</span>
+        <span class="c1"># user_chosen_path = assign_value_to_user_chosen_path_instance(user_chosen_path, user_id, &quot;train&quot;, task_id, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description)</span>
+        <span class="c1"># session.add(user_chosen_path)</span>
+        <span class="c1"># session.commit()</span>
+
+        <span class="c1"># session = Session()</span>
+        <span class="c1"># query = session.query(User_Default_Path).filter_by(user_id=user_id, test_indicator=&quot;train&quot;, task_id=task_id).first()</span>
+        <span class="c1"># default_train_file_path = query.default_train_file_path</span>
+        <span class="c1"># default_train_id_column = query.default_train_id_column</span>
+
+    <span class="k">if</span> <span class="n">test_indicator</span> <span class="o">==</span> <span class="s2">&quot;train&quot;</span><span class="p">:</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">test_indicator</span> <span class="o">=</span> <span class="n">test_indicator</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">task_id</span> <span class="o">=</span> <span class="n">task_id</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">train_file_path</span> <span class="o">=</span> <span class="n">train_file_path</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">train_id_column</span> <span class="o">=</span> <span class="n">train_id_column</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">train_data_column</span> <span class="o">=</span> <span class="n">train_data_column</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">train_target_column</span> <span class="o">=</span> <span class="n">train_target_column</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">task_name</span> <span class="o">=</span> <span class="n">task_name</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">task_description</span> <span class="o">=</span> <span class="n">task_description</span>
+
+    <span class="k">elif</span> <span class="n">test_indicator</span> <span class="o">==</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">instance</span></div>
+
+
+
+<div class="viewcode-block" id="assign_value_to_user_default_path_instance"><a class="viewcode-back" href="../../Synspot.Database.html#Synspot.Database.assign_value_to_user_default_path_instance">[docs]</a><span class="k">def</span> <span class="nf">assign_value_to_user_default_path_instance</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">default_train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+    <span class="n">instance</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+    <span class="n">instance</span><span class="o">.</span><span class="n">default_train_file_path</span> <span class="o">=</span> <span class="n">default_train_file_path</span>
+    <span class="n">instance</span><span class="o">.</span><span class="n">default_train_id_column</span> <span class="o">=</span> <span class="n">default_train_id_column</span>
+    <span class="n">instance</span><span class="o">.</span><span class="n">default_train_data_column</span> <span class="o">=</span> <span class="n">default_train_data_column</span>
+
+    <span class="k">return</span> <span class="n">instance</span></div>
+
+
+<div class="viewcode-block" id="assign_value_to_user_pending_page_instance"><a class="viewcode-back" href="../../Synspot.Database.html#Synspot.Database.assign_value_to_user_pending_page_instance">[docs]</a><span class="k">def</span> <span class="nf">assign_value_to_user_pending_page_instance</span><span class="p">():</span>
+    <span class="k">return</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, ss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

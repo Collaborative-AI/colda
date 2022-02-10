@@ -9,7 +9,7 @@ import json
 from typing import Any, Dict, List
 from copy import deepcopy
 
-from py_pkg.Network import Network
+from Synspot.Network import Network
 import pytest
 
 class TestNetwork:

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synspot.Algorithm package &mdash; Synspot_Package 0.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Synspot.Database package" href="Synspot.Database.html" />
+    <link rel="prev" title="Synspot package" href="Synspot.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Synspot_Package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Synspot.html">Synspot package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="Synspot.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Synspot.Algorithm package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Synspot.Database.html">Synspot.Database package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.Authorization">Synspot.Authorization module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.Database_class">Synspot.Database_class module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.Error">Synspot.Error module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.Get_Notification">Synspot.Get_Notification module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.Network">Synspot.Network module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.PersonalInformation">Synspot.PersonalInformation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.StopRequest">Synspot.StopRequest module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.SynSpot_utils">Synspot.SynSpot_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.TestRequest">Synspot.TestRequest module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.TrainRequest">Synspot.TrainRequest module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot.ceshi">Synspot.ceshi module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Synspot.html#module-Synspot">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">README</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Synspot_Package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">Package</a> &raquo;</li>
+          <li><a href="Synspot.html">Synspot package</a> &raquo;</li>
+      <li>Synspot.Algorithm package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Synspot.Algorithm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="synspot-algorithm-package">
+<h1>Synspot.Algorithm package<a class="headerlink" href="#synspot-algorithm-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-Synspot.Algorithm.algo_utils">
+<span id="synspot-algorithm-algo-utils-module"></span><h2>Synspot.Algorithm.algo_utils module<a class="headerlink" href="#module-Synspot.Algorithm.algo_utils" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.algo_utils.load">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.algo_utils.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pickle'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/algo_utils.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.algo_utils.load" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.algo_utils.log">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.algo_utils.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/algo_utils.html#log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.algo_utils.log" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.algo_utils.makedir_exist_ok">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.algo_utils.</span></span><span class="sig-name descname"><span class="pre">makedir_exist_ok</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/algo_utils.html#makedir_exist_ok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.algo_utils.makedir_exist_ok" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.algo_utils.parse_idx">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.algo_utils.</span></span><span class="sig-name descname"><span class="pre">parse_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/algo_utils.html#parse_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.algo_utils.parse_idx" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.algo_utils.save">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.algo_utils.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pickle'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/algo_utils.html#save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.algo_utils.save" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="synspot-algorithm-hello-world-module">
+<h2>Synspot.Algorithm.hello_world module<a class="headerlink" href="#synspot-algorithm-hello-world-module" title="Permalink to this headline"></a></h2>
+</section>
+<section id="synspot-algorithm-make-dataset-module">
+<h2>Synspot.Algorithm.make_dataset module<a class="headerlink" href="#synspot-algorithm-make-dataset-module" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-Synspot.Algorithm.make_eval">
+<span id="synspot-algorithm-make-eval-module"></span><h2>Synspot.Algorithm.make_eval module<a class="headerlink" href="#module-Synspot.Algorithm.make_eval" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_eval.make_eval">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_eval.</span></span><span class="sig-name descname"><span class="pre">make_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_eval.html#make_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_eval.make_eval" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.make_hash">
+<span id="synspot-algorithm-make-hash-module"></span><h2>Synspot.Algorithm.make_hash module<a class="headerlink" href="#module-Synspot.Algorithm.make_hash" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_hash.hash">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_hash.</span></span><span class="sig-name descname"><span class="pre">hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_hash.html#hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_hash.hash" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_hash.make_hash">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_hash.</span></span><span class="sig-name descname"><span class="pre">make_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_hash.html#make_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_hash.make_hash" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.make_match_idx">
+<span id="synspot-algorithm-make-match-idx-module"></span><h2>Synspot.Algorithm.make_match_idx module<a class="headerlink" href="#module-Synspot.Algorithm.make_match_idx" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_match_idx.make_match_idx">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_match_idx.</span></span><span class="sig-name descname"><span class="pre">make_match_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_match_idx.html#make_match_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_match_idx.make_match_idx" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.make_residual">
+<span id="synspot-algorithm-make-residual-module"></span><h2>Synspot.Algorithm.make_residual module<a class="headerlink" href="#module-Synspot.Algorithm.make_residual" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_residual.compute_residual">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_residual.</span></span><span class="sig-name descname"><span class="pre">compute_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_residual.html#compute_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_residual.compute_residual" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_residual.make_init">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_residual.</span></span><span class="sig-name descname"><span class="pre">make_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_residual.html#make_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_residual.make_init" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_residual.make_residual">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_residual.</span></span><span class="sig-name descname"><span class="pre">make_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_residual.html#make_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_residual.make_residual" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.make_result">
+<span id="synspot-algorithm-make-result-module"></span><h2>Synspot.Algorithm.make_result module<a class="headerlink" href="#module-Synspot.Algorithm.make_result" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_result.make_result">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_result.</span></span><span class="sig-name descname"><span class="pre">make_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_result.html#make_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_result.make_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_result.result_func">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_result.</span></span><span class="sig-name descname"><span class="pre">result_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_result.html#result_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_result.result_func" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.make_test">
+<span id="synspot-algorithm-make-test-module"></span><h2>Synspot.Algorithm.make_test module<a class="headerlink" href="#module-Synspot.Algorithm.make_test" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_test.make_test">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_test.</span></span><span class="sig-name descname"><span class="pre">make_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_test.html#make_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_test.make_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.make_test_local">
+<span id="synspot-algorithm-make-test-local-module"></span><h2>Synspot.Algorithm.make_test_local module<a class="headerlink" href="#module-Synspot.Algorithm.make_test_local" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_test_local.make_test_local">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_test_local.</span></span><span class="sig-name descname"><span class="pre">make_test_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_test_local.html#make_test_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_test_local.make_test_local" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.make_train">
+<span id="synspot-algorithm-make-train-module"></span><h2>Synspot.Algorithm.make_train module<a class="headerlink" href="#module-Synspot.Algorithm.make_train" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_train.make_train">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_train.</span></span><span class="sig-name descname"><span class="pre">make_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_train.html#make_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_train.make_train" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.make_train_local">
+<span id="synspot-algorithm-make-train-local-module"></span><h2>Synspot.Algorithm.make_train_local module<a class="headerlink" href="#module-Synspot.Algorithm.make_train_local" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.make_train_local.make_train_local">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.make_train_local.</span></span><span class="sig-name descname"><span class="pre">make_train_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/make_train_local.html#make_train_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.make_train_local.make_train_local" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.metrics">
+<span id="synspot-algorithm-metrics-module"></span><h2>Synspot.Algorithm.metrics module<a class="headerlink" href="#module-Synspot.Algorithm.metrics" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.metrics.AUCROC">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.metrics.</span></span><span class="sig-name descname"><span class="pre">AUCROC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/metrics.html#AUCROC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.metrics.AUCROC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.metrics.Accuracy">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.metrics.</span></span><span class="sig-name descname"><span class="pre">Accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/metrics.html#Accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.metrics.Accuracy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.metrics.F1">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.metrics.</span></span><span class="sig-name descname"><span class="pre">F1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/metrics.html#F1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.metrics.F1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.metrics.MAD">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.metrics.</span></span><span class="sig-name descname"><span class="pre">MAD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/metrics.html#MAD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.metrics.MAD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Synspot.Algorithm.metrics.Metric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.metrics.</span></span><span class="sig-name descname"><span class="pre">Metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/metrics.html#Metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.metrics.Metric" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Algorithm.metrics.Metric.eval">
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/metrics.html#Metric.eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.metrics.Metric.eval" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Algorithm.metrics.Metric.make_metric">
+<span class="sig-name descname"><span class="pre">make_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/metrics.html#Metric.make_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.metrics.Metric.make_metric" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.metrics.R2">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.metrics.</span></span><span class="sig-name descname"><span class="pre">R2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/metrics.html#R2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.metrics.R2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.metrics.RMSE">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.metrics.</span></span><span class="sig-name descname"><span class="pre">RMSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/metrics.html#RMSE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.metrics.RMSE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.models">
+<span id="synspot-algorithm-models-module"></span><h2>Synspot.Algorithm.models module<a class="headerlink" href="#module-Synspot.Algorithm.models" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Synspot.Algorithm.models.Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.models.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/models.html#Model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.models.Model" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Algorithm.models.Model.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/models.html#Model.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.models.Model.fit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Algorithm.models.Model.make_model">
+<span class="sig-name descname"><span class="pre">make_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/models.html#Model.make_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.models.Model.make_model" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Algorithm.models.Model.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/models.html#Model.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.models.Model.predict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="synspot-algorithm-run-module">
+<h2>Synspot.Algorithm.run module<a class="headerlink" href="#synspot-algorithm-run-module" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-Synspot.Algorithm.save_match_id">
+<span id="synspot-algorithm-save-match-id-module"></span><h2>Synspot.Algorithm.save_match_id module<a class="headerlink" href="#module-Synspot.Algorithm.save_match_id" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.save_match_id.save_match_id">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.save_match_id.</span></span><span class="sig-name descname"><span class="pre">save_match_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/save_match_id.html#save_match_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.save_match_id.save_match_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.save_output">
+<span id="synspot-algorithm-save-output-module"></span><h2>Synspot.Algorithm.save_output module<a class="headerlink" href="#module-Synspot.Algorithm.save_output" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.save_output.save_output">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.save_output.</span></span><span class="sig-name descname"><span class="pre">save_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/save_output.html#save_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.save_output.save_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.save_residual">
+<span id="synspot-algorithm-save-residual-module"></span><h2>Synspot.Algorithm.save_residual module<a class="headerlink" href="#module-Synspot.Algorithm.save_residual" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.save_residual.save_residual">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.save_residual.</span></span><span class="sig-name descname"><span class="pre">save_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/save_residual.html#save_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.save_residual.save_residual" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm.test">
+<span id="synspot-algorithm-test-module"></span><h2>Synspot.Algorithm.test module<a class="headerlink" href="#module-Synspot.Algorithm.test" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-Synspot.Algorithm.utils">
+<span id="synspot-algorithm-utils-module"></span><h2>Synspot.Algorithm.utils module<a class="headerlink" href="#module-Synspot.Algorithm.utils" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.utils.load">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pickle'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/utils.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.utils.load" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.utils.log">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/utils.html#log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.utils.log" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.utils.makedir_exist_ok">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">makedir_exist_ok</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/utils.html#makedir_exist_ok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.utils.makedir_exist_ok" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.utils.parse_idx">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">parse_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/utils.html#parse_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.utils.parse_idx" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.utils.save">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pickle'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/utils.html#save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.utils.save" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.Algorithm.utils.softmax">
+<span class="sig-prename descclassname"><span class="pre">Synspot.Algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Algorithm/utils.html#softmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Algorithm.utils.softmax" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the softmax of each element along an axis of X.</p>
+<p>X: ND-Array. Probably should be floats.
+theta (optional): float parameter, used as a multiplier</p>
+<blockquote>
+<div><p>prior to exponentiation. Default = 1.0</p>
+</div></blockquote>
+<dl class="simple">
+<dt>axis (optional): axis to compute values along. Default is the</dt><dd><p>first non-singleton axis.</p>
+</dd>
+</dl>
+<p>Returns an array the same size as X. The result will sum to 1
+along the specified axis.</p>
+</dd></dl>
+
+</section>
+<section id="module-Synspot.Algorithm">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Synspot.Algorithm" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Synspot.html" class="btn btn-neutral float-left" title="Synspot package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Synspot.Database.html" class="btn btn-neutral float-right" title="Synspot.Database package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, ss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

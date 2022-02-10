@@ -9,7 +9,7 @@ import json
 from typing import Any, Dict, List
 from copy import deepcopy
 
-from py_pkg.PersonalInformation import PersonalInformation
+from Synspot.PersonalInformation import PersonalInformation
 import pytest
 
 class TestPersonalInformation:

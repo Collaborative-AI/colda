@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synspot &mdash; Synspot_Package 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Synspot_Package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">README</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Synspot_Package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>Synspot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Synspot</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Synspot</span>
+<span class="sd">~~~~~~</span>
+
+<span class="sd">The Synspot package - a Python package template project that is intended</span>
+<span class="sd">to be used as a cookie-cutter for developing new Python packages.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># import os</span>
+<span class="c1"># basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), &#39;Algorithm&#39;)</span>
+<span class="c1"># print(&quot;--&quot;, basedir)</span>
+<span class="c1"># import sys</span>
+<span class="c1"># sys.path.append(basedir)</span>
+<span class="kn">import</span> <span class="nn">Synspot.Algorithm</span>
+<span class="kn">from</span> <span class="nn">.TrainRequest</span> <span class="kn">import</span> <span class="n">TrainRequest</span><span class="p">,</span> <span class="n">PersonalInformation</span>
+<span class="kn">from</span> <span class="nn">.TestRequest</span> <span class="kn">import</span> <span class="n">TestRequest</span>
+<span class="kn">from</span> <span class="nn">.Authorization</span> <span class="kn">import</span> <span class="n">Authorization</span>
+<span class="kn">from</span> <span class="nn">.Get_Notification</span> <span class="kn">import</span> <span class="n">Get_Notification</span>
+<span class="kn">from</span> <span class="nn">.Database_class</span> <span class="kn">import</span> <span class="n">Database_class</span>
+<span class="kn">from</span> <span class="nn">.Network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">.PersonalInformation</span> <span class="kn">import</span> <span class="n">PersonalInformation</span>
+
+<span class="c1"># from Algorithm import log</span>
+<span class="c1"># from .Network import Network</span>
+<span class="c1"># from Synspot import TrainRequest, PersonalInformation</span>
+<span class="c1"># from Synspot import Authorization</span>
+<span class="c1"># from Synspot import TestRequest</span>
+<span class="c1"># from Synspot import Get_Notification</span>
+<span class="c1"># from Synspot import Database_class</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="c1"># import jwt</span>
+<span class="n">_default_authorization</span> <span class="o">=</span> <span class="n">Authorization</span><span class="o">.</span><span class="n">get_Authorization_instance</span><span class="p">()</span>
+<span class="n">_default_trainRequest</span> <span class="o">=</span> <span class="n">TrainRequest</span><span class="o">.</span><span class="n">get_TrainRequest_instance</span><span class="p">()</span>
+<span class="n">_default_testRequest</span> <span class="o">=</span> <span class="n">TestRequest</span><span class="o">.</span><span class="n">get_TestRequest_instance</span><span class="p">()</span>
+<span class="n">_default_get_notification</span> <span class="o">=</span> <span class="n">Get_Notification</span><span class="o">.</span><span class="n">get_Get_notification_instance</span><span class="p">()</span>
+<span class="n">_default_network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
+<span class="n">_default_personalinformation</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
+
+<div class="viewcode-block" id="callForTrain"><a class="viewcode-back" href="../Synspot.html#Synspot.callForTrain">[docs]</a><span class="k">def</span> <span class="nf">callForTrain</span><span class="p">(</span><span class="n">maxRound</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">assistors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                            <span class="n">train_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">trainRequest_instance</span> <span class="o">=</span> <span class="n">_default_trainRequest</span><span class="o">.</span><span class="n">get_TrainRequest_instance</span><span class="p">()</span>
+    <span class="n">trainRequest_instance</span><span class="o">.</span><span class="n">handleTrainRequest</span><span class="p">(</span><span class="n">maxRound</span><span class="o">=</span><span class="n">maxRound</span><span class="p">,</span> <span class="n">assistors</span><span class="o">=</span><span class="n">assistors</span><span class="p">,</span> <span class="n">train_file_path</span><span class="o">=</span><span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="o">=</span><span class="n">train_id_column</span><span class="p">,</span> 
+                            <span class="n">train_data_column</span><span class="o">=</span><span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span><span class="o">=</span><span class="n">train_target_column</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> 
+                            <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="o">=</span><span class="n">task_description</span><span class="p">)</span>
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="callForTest"><a class="viewcode-back" href="../Synspot.html#Synspot.callForTest">[docs]</a><span class="k">def</span> <span class="nf">callForTest</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                            <span class="n">test_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">testRequest_instance</span> <span class="o">=</span> <span class="n">_default_testRequest</span><span class="o">.</span><span class="n">get_TestRequest_instance</span><span class="p">()</span>
+    <span class="n">testRequest_instance</span><span class="o">.</span><span class="n">handleTestRequest</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_file_path</span><span class="o">=</span><span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="o">=</span><span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="o">=</span><span class="n">test_data_column</span><span class="p">,</span> 
+                            <span class="n">test_target_column</span><span class="o">=</span><span class="n">test_target_column</span><span class="p">,</span> <span class="n">test_name</span><span class="o">=</span><span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="o">=</span><span class="n">test_description</span><span class="p">)</span>
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="userRegister"><a class="viewcode-back" href="../Synspot.html#Synspot.userRegister">[docs]</a><span class="k">def</span> <span class="nf">userRegister</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">_default_authorization</span><span class="o">.</span><span class="n">userRegister</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="userLogin"><a class="viewcode-back" href="../Synspot.html#Synspot.userLogin">[docs]</a><span class="k">def</span> <span class="nf">userLogin</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">_default_authorization</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="n">_default_get_notification</span><span class="o">.</span><span class="n">getNotification</span><span class="p">()</span>
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="userLogout"><a class="viewcode-back" href="../Synspot.html#Synspot.userLogout">[docs]</a><span class="k">def</span> <span class="nf">userLogout</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle user logout</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        RuntimeError - raises an exception</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_default_authorization</span><span class="o">.</span><span class="n">userLogout</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="set_default_data_path"><a class="viewcode-back" href="../Synspot.html#Synspot.set_default_data_path">[docs]</a><span class="k">def</span> <span class="nf">set_default_data_path</span><span class="p">(</span><span class="n">default_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">user_id</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Please Login first&#39;</span>
+    <span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">set_default_mode</span><span class="p">(</span><span class="n">default_mode</span><span class="p">)</span>
+    <span class="n">Database_class_instance</span> <span class="o">=</span> <span class="n">Database_class</span><span class="o">.</span><span class="n">get_Database_class_instance</span><span class="p">()</span>
+    <span class="n">Database_class_instance</span><span class="o">.</span><span class="n">store_User_Default_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">default_mode</span><span class="o">=</span><span class="n">default_mode</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="o">=</span><span class="n">default_task_mode</span><span class="p">,</span> <span class="n">default_model_name</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span>
+                                                    <span class="n">default_file_path</span><span class="o">=</span><span class="n">default_file_path</span><span class="p">,</span> <span class="n">default_id_column</span><span class="o">=</span><span class="n">default_id_column</span><span class="p">,</span> <span class="n">default_data_column</span><span class="o">=</span><span class="n">default_data_column</span><span class="p">)</span>
+    <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="get_online_user"><a class="viewcode-back" href="../Synspot.html#Synspot.get_online_user">[docs]</a><span class="k">def</span> <span class="nf">get_online_user</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="get_all_training_tasks"><a class="viewcode-back" href="../Synspot.html#Synspot.get_all_training_tasks">[docs]</a><span class="k">def</span> <span class="nf">get_all_training_tasks</span><span class="p">():</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="get_all_testing_tasks"><a class="viewcode-back" href="../Synspot.html#Synspot.get_all_testing_tasks">[docs]</a><span class="k">def</span> <span class="nf">get_all_testing_tasks</span><span class="p">():</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="get_pending_requests"><a class="viewcode-back" href="../Synspot.html#Synspot.get_pending_requests">[docs]</a><span class="k">def</span> <span class="nf">get_pending_requests</span><span class="p">():</span>
+    <span class="k">pass</span></div>
+<span class="c1">#</span>
+
+<span class="c1"># userLogin(&quot;xie2&quot;, &quot;Xie2@123&quot;)</span>
+<span class="c1"># set_default_data_path(&quot;/Users/qile/Documents/data/BostonHousing/2/123/0.5/0/train/data.csv&quot;, &quot;1&quot;, &quot;2&quot;)</span>
+<span class="c1"># callForTrain(2, [2], &quot;/Users/qile/Documents/data/combine.csv&quot;, &quot;1&quot;, &quot;2-7&quot;, &quot;8&quot;)</span>
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, ss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

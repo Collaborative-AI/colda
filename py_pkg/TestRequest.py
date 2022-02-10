@@ -6,11 +6,14 @@ from .Network import Network
 from .PersonalInformation import PersonalInformation
 from .Database_class import Database_class
 from .Error import check_Algorithm_return_value
-from .apollo_utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
+from .SynSpot_utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
 
 from py_pkg.Algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 # from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
 
+class check_sponsor_class:
+    sponsor = 1
+    assistor = 0
 
 class TestRequest:
     __TestRequest_instance = None
@@ -186,15 +189,16 @@ class TestRequest:
 
         user_id, default_mode, default_task_mode, default_model_name, default_file_path, default_id_column, default_data_column = self.Database_class_instance.get_User_Default_Table(user_id)
         print('zhei', user_id, default_mode, default_task_mode, default_file_path, default_id_column, default_data_column, default_model_name)
+
+        cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
+        test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
+
         if default_mode == "manual":
             # Insert to DB
             pass
 
         elif default_mode == "auto":
             # get default path
-            
-            cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
-            test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
 
             for test_id in cur_unread_test_request_Testid_dict:
                 task_id = test_id_to_task_id[test_id]
@@ -233,7 +237,7 @@ class TestRequest:
 
         return 'unread_test_request done'
 
-    def unread_test_match_id(self, unread_test_match_id_notification: dict):
+    def unread_test_match_id(self, unread_test_match_id_notification: dict, unittest_callbacks=None):
         """
         Handle the unread_test_match_id. Two situations needed to be considered: sponsor and assistor
 
@@ -254,16 +258,16 @@ class TestRequest:
         for test_id in cur_unread_test_match_id_Testid_dict:
             task_id = test_id_to_task_id[test_id]
             check_sponsor = cur_unread_test_match_id_Testid_dict[test_id]
-            cur_max_round = max_rounds_dict[test_id]
+            max_round = max_rounds_dict[test_id]
 
-            if check_sponsor == 1:
-                self.unread_test_match_id_sponsor(task_id, test_id, cur_max_round)
-            elif check_sponsor == 0:
-                self.unread_test_match_id_assistor(task_id, test_id, cur_max_round)
+            if check_sponsor == check_sponsor_class.sponsor:
+                self.unread_test_match_id_sponsor(task_id, test_id, max_round, unittest_callbacks)
+            elif check_sponsor == check_sponsor_class.assistor:
+                self.unread_test_match_id_assistor(task_id, test_id, max_round, unittest_callbacks)
 
         return 'unread_test_match_id done'
 
-    def unread_test_match_id_sponsor(self, task_id: str, test_id: str, cur_max_round: int):
+    def unread_test_match_id_sponsor(self, task_id: str, test_id: str, max_round: int, unittest_callbacks):
 
         """
         Handle the unread_test_match_id of sponsor.
@@ -293,12 +297,13 @@ class TestRequest:
             sponsor_get_test_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             sponsor_get_test_match_id_file_res = load_json_data(json_data=sponsor_get_test_match_id_file_res, json_data_name='sponsor_get_test_match_id_file_res', 
                                                     testing_key_value_pair=[('match_id_file', None), ('assistor_random_id_pair', None)])
+            print('sponsor_get_test_match_id_file_res', sponsor_get_test_match_id_file_res)
         except RuntimeError:
             print('sponsor_get_test_match_id_file_res wrong')
     
         match_id_file_list = load_json_data(sponsor_get_test_match_id_file_res["match_id_file"], 'sponsor_get_test_match_id_file_res["match_id_file"]')
         assistor_random_id_pair_list = load_json_data(sponsor_get_test_match_id_file_res["assistor_random_id_pair"], 'sponsor_get_test_match_id_file_res["assistor_random_id_pair"]')
-
+        print('match_id_file_list', match_id_file_list, type(match_id_file_list), len(match_id_file_list))
         for i in range(len(match_id_file_list)):
             from_id = assistor_random_id_pair_list[i]
             cur_match_id_file = match_id_file_list[i]
@@ -321,20 +326,25 @@ class TestRequest:
             assert test_make_match_idx_done is not None
             test_make_match_idx_done = handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
             assert test_make_match_idx_done is not None
-
+            print('from_id', from_id, cur_match_id_file)
         # Get information from User Sponsor Table
         task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
         print("test_file_path", test_file_path, test_data_column)
 
         # call make_test
-        test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
+        print('max_round', max_round)
+        print('make_test', root, user_id, task_id, test_id, max_round, from_id, test_file_path, test_data_column, self.skip_header_default)
+        test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, from_id=None, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
         assert test_done is not None
         test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
         assert test_done is not None
+        # print('test_done', test_done)
+        if unittest_callbacks:
+            assert unittest_callbacks(load_json_data(test_done[2], 'test_done[2]')) == True
 
         return
 
-    def unread_test_match_id_assistor(self, task_id: str, test_id: str, cur_max_round: int):
+    def unread_test_match_id_assistor(self, task_id: str, test_id: str, cur_max_round: int, unittest_callbacks):
 
         """
         Handle the unread_test_match_id of assistor.
@@ -402,8 +412,11 @@ class TestRequest:
         test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
         assert test_done is not None
 
+        if unittest_callbacks:
+            assert unittest_callbacks(load_json_data(test_done[2], 'test_done[2]')) == True
+
         all_test_output = []
-        make_test_lists = test_done[3:]
+        make_test_lists = test_done[3:4]
 
         for i in range(len(make_test_lists)):
             data = load_file(make_test_lists[i])
@@ -425,7 +438,7 @@ class TestRequest:
         return
 
 
-    def unread_test_output(self, unread_test_output_notification: dict):
+    def unread_test_output(self, unread_test_output_notification: dict, unittest_callbacks=None):
 
         """
         Handle the unread_test_output.
@@ -445,11 +458,11 @@ class TestRequest:
 
         for test_id in cur_unread_test_output_Testid_dict:
             task_id = test_id_to_task_id[test_id]
-            self.unread_test_output_singleTask(task_id, test_id)
+            self.unread_test_output_singleTask(task_id, test_id, unittest_callbacks)
 
         return 'unread_test_output done'
 
-    def unread_test_output_singleTask(self, task_id: str, test_id: str):
+    def unread_test_output_singleTask(self, task_id: str, test_id: str, unittest_callbacks):
 
         """
         Handle the single task of unread output.
@@ -504,11 +517,11 @@ class TestRequest:
                 
         # max_round = len(output[0])
         print('max_round', max_round)
-        self.unread_test_output_make_eval_helper(task_id, test_id, max_round)
+        self.unread_test_output_make_eval_helper(task_id, test_id, max_round, unittest_callbacks)
 
         return
 
-    def unread_test_output_make_eval_helper(self, task_id: str, test_id: str, max_round: int):
+    def unread_test_output_make_eval_helper(self, task_id: str, test_id: str, max_round: int, unittest_callbacks):
         """
         Helper Function. Dealing with the order issue
 
@@ -536,4 +549,5 @@ class TestRequest:
         eval_done = handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
         assert eval_done is not None
 
-        return
+        if unittest_callbacks:
+            assert unittest_callbacks(load_json_data(eval_done[2], 'eval_done[2]')) == True

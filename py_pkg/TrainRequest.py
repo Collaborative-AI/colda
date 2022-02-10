@@ -10,13 +10,15 @@ import subprocess
 from .Network import Network
 from .PersonalInformation import PersonalInformation
 from .Database_class import Database_class
-from .apollo_utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
+from .SynSpot_utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
 from .Error import check_Algorithm_return_value
 
 from py_pkg.Algorithm import make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 # from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
 
-
+class check_sponsor_class:
+    sponsor = 1
+    assistor = 0
 
 class TrainRequest():
     __TrainRequest_instance = None
@@ -27,7 +29,7 @@ class TrainRequest():
         self.Database_class_instance = Database_class.get_Database_class_instance()
 
         self.base_url = self.Network_instance.get_base_url()
-        self.maxRound = 1
+        self.maxRound = 2
         self.skip_header_default = 1
         self.initial_round = 1
         self.test_indicator = 'train'
@@ -271,12 +273,12 @@ class TrainRequest():
             log_helper(msg, root, user_id, task_id)
 
             check_sponsor = cur_unread_match_id_Taskid_dict[task_id]
-            if check_sponsor == 1:
+            if check_sponsor == check_sponsor_class.sponsor:
                 msg = ["3.2 Unread_match_id_sponsor\n"]
                 log_helper(msg, root, user_id, task_id)
 
                 self.unread_match_id_sponsor(task_id)
-            elif check_sponsor == 0:
+            elif check_sponsor == check_sponsor_class.assistor:
                 msg = ["3.2 Unread_match_id_assistor\n"]
                 log_helper(msg, root, user_id, task_id)
 
@@ -484,9 +486,9 @@ class TrainRequest():
             check_sponsor = cur_unread_match_id_Taskid_dict[task_id]
             rounds = cur_unread_situation_Rounds_dict[task_id]
 
-            if check_sponsor == 1:
+            if check_sponsor == check_sponsor_class.sponsor:
                 self.unread_situation_sponsor(task_id, rounds)
-            elif check_sponsor == 0:
+            elif check_sponsor == check_sponsor_class.assistor:
                 self.unread_situation_assistor(task_id, rounds)
 
         return 'unread situation done'

@@ -4,7 +4,7 @@ import base64
 # import jwt
 from .Network import Network
 from .PersonalInformation import PersonalInformation
-from .apollo_utils import handle_base64_padding
+from .SynSpot_utils import handle_base64_padding
 # from Get_Notification import
 
 # from urllib.request import quote, unquote
@@ -35,14 +35,14 @@ class Authorization():
         Get Token through HTTP Authorization's Basic Auth when first time login. Update __token in Network class
 
         Parameters:
-         username - String. The username of current user
-         password - String. The password of current user
+            username - String. The username of current user
+            password - String. The password of current user
 
         Returns:
-         None
+            res - String. 'userLogin Successfully'
 
         Raises:
-         KeyError - raises an exception
+            KeyError - raises an exception
         """
 
         url = self.base_url + "/tokens"
@@ -88,8 +88,9 @@ class Authorization():
         # new_task_id = get_train_id_response_text["task_id"]
         #
         # return new_task_id
-
-        return 'userLogin Successfully'
+        
+        res = 'userLogin Successfully'
+        return res
 
 
     def userLogout(self):

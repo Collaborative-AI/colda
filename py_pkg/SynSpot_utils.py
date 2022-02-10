@@ -40,7 +40,7 @@ def check_json_format(content):
 
 def load_json_data(json_data, json_data_name, testing_key_value_pair=None):
     assert json_data is not None
-    print('load_json_data', json_data_name, json_data)
+    print('load_json_data', json_data_name)
 
     if hasattr(json_data, 'text'):
         json_data = json_data.text
@@ -54,7 +54,7 @@ def load_json_data(json_data, json_data_name, testing_key_value_pair=None):
     if testing_key_value_pair:
         for item in testing_key_value_pair:
             key, value = item[0], item[1]
-            print('key_value', key, value,json_data, type(json_data) )
+            print('key_value', key, value)
             assert key in json_data.keys()
             if value:
                 assert json_data[key] == value

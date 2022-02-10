@@ -268,3 +268,11 @@ Briefly, this instructs the Travis build server to:
     - push it to PyPI.org using my PyPI account credentials.
 
 Note that we provide Travis with an encrypted password, that was made using the Travis command line tool (downloaded using HomeBrew on OS X). For more details on this and PyPI deployment more generally see the [Travis CI documentation](https://docs.travis-ci.com/user/deployment/pypi/#stq=&stp=0).
+
+
+1. Debug
+2. Encrypt Algo Code
+
+1. Quickstart
+2. Automated Generated Documentation
+3. Jupyter Notebook

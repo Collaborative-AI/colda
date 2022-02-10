@@ -49,7 +49,7 @@ class Test_unread_test_match_id(Train_helper_function, Test_helper_function):
         self.unread_match_id_sponsor_helper(update_all_notifications_data["unread match id"])
 
         # unread_sponsor_situation
-        for i in range(1):
+        for i in range(testing_data['max_round']):
             self.first_user_login()
             update_all_notifications_data = self.get_Notification()
             assert "unread situation" in update_all_notifications_data
@@ -85,7 +85,7 @@ class Test_unread_test_match_id(Train_helper_function, Test_helper_function):
         self.first_user_login()
         update_all_notifications_data = self.get_Notification()
         assert "unread test match id" in update_all_notifications_data.keys()
-        self.unread_test_match_id_sponsor_helper(update_all_notifications_data["unread test match id"])
+        self.unread_test_match_id_sponsor_helper(update_all_notifications_data["unread test match id"], training_type='regression_1s_1a', testing_stage='unread_test_sponsor_match_id')
 
         # unread_test_match_id_assistor
         self.second_user_login()
@@ -93,4 +93,4 @@ class Test_unread_test_match_id(Train_helper_function, Test_helper_function):
                             default_id_column=testing_data['default_id_column'], default_data_column=testing_data['default_data_column'])
         update_all_notifications_data = self.get_Notification()
         assert "unread test match id" in update_all_notifications_data.keys()
-        self.unread_test_match_id_assistor_helper(update_all_notifications_data["unread test match id"])
+        self.unread_test_match_id_assistor_helper(update_all_notifications_data["unread test match id"], training_type='regression_1s_1a', testing_stage='unread_test_assistor_match_id')

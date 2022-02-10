@@ -27,11 +27,11 @@ setup(
     packages=['py_pkg'],
     include_package_data=True,
     python_requires=">=3.7.*",
-    install_requires=['numpy', 'requests'],
+    install_requires=['numpy', 'requests', 'scikit-learn'],
     license=about['__license__'],
     zip_safe=False,
     entry_points={
-        'console_scripts': ['py-package-template=py_pkg.entry_points:main'],
+        'console_scripts': ['py-package-template=py_pkg.__init__'],
     },
     classifiers=[
         'Development Status :: 4 - Beta',

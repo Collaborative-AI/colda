@@ -4,12 +4,12 @@ python make_dataset.py --root ./data/processed/BostonHousing --data_name BostonH
 python make_dataset.py --root ./data/processed/BostonHousing --data_name BostonHousing --task_id 123 --num_users 3 --match_rate 0.5 --normalize 1
 
 # baseline
-python baseline.py --root ./data/processed/BostonHousing --data_name BostonHousing --task_id 123 --num_users 3 --match_rate 1 --task_mode regression --model_name linear --metric_name MAD_RMSE_R2
-python baseline.py --root ./data/processed/BostonHousing --data_name BostonHousing --task_id 123 --num_users 3 --match_rate 0.5 --task_mode regression --model_name linear --metric_name MAD_RMSE_R2
+python baseline.py --root ./data/processed/BostonHousing --data_name BostonHousing --task_id 123 --num_users 3 --match_rate 1 --task_mode regression --model_name linear --metric_name Loss_MAD_RMSE_R2
+python baseline.py --root ./data/processed/BostonHousing --data_name BostonHousing --task_id 123 --num_users 3 --match_rate 0.5 --task_mode regression --model_name linear --metric_name Loss_MAD_RMSE_R2
 
 # local
-python run.py make_train_local --root ./exp --self_id 0 --task_id regression_1s_2a --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --data_idx 2-6 --target_idx 7 --task_mode regression --model_name linear --metric_name MAD_RMSE_R2
-python run.py make_test_local --root ./exp --self_id 0 --task_id regression_1s_2a --test_id def --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/test/dataset.csv --data_idx 2-6 --target_idx 7 --task_mode regression --metric_name MAD_RMSE_R2
+python run.py make_train_local --root ./exp --self_id 0 --task_id regression_1s_2a --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --data_idx 2-6 --target_idx 7 --task_mode regression --model_name linear --metric_name Loss_MAD_RMSE_R2
+python run.py make_test_local --root ./exp --self_id 0 --task_id regression_1s_2a --test_id def --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/test/dataset.csv --data_idx 2-6 --target_idx 7 --task_mode regression --metric_name Loss_MAD_RMSE_R2
 
 # default
 # hash id
@@ -38,7 +38,7 @@ python run.py make_match_idx --root ./exp --self_id 2 --task_id regression_1s_2a
 
 # round 1
 # make residual
-python run.py make_residual --root ./exp --self_id 0 --task_id regression_1s_2a --round 1 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --target_idx 7 --task_mode regression --metric_name MAD_RMSE_R2
+python run.py make_residual --root ./exp --self_id 0 --task_id regression_1s_2a --round 1 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --target_idx 7 --task_mode regression --metric_name Loss_MAD_RMSE_R2
 
 python run.py save_residual --root ./exp --self_id 1 --task_id regression_1s_2a --round 1
 python run.py save_residual --root ./exp --self_id 2 --task_id regression_1s_2a --round 1
@@ -58,11 +58,11 @@ python run.py save_output --root ./exp --self_id 0 --task_id regression_1s_2a --
 python save_output_exe.py --root ./exp --self_id 0 --task_id regression_1s_2a --mode train --from_id 1 --round 1
 python save_output_exe.py --root ./exp --self_id 0 --task_id regression_1s_2a --mode train --from_id 2 --round 1
 
-python run.py make_result --root ./exp --self_id 0 --task_id regression_1s_2a --round 1 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --target_idx 7 --task_mode regression --metric_name MAD_RMSE_R2
+python run.py make_result --root ./exp --self_id 0 --task_id regression_1s_2a --round 1 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --target_idx 7 --task_mode regression --metric_name Loss_MAD_RMSE_R2
 
 # round 2
 # make residual
-python run.py make_residual --root ./exp --self_id 0 --task_id regression_1s_2a --round 2 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --target_idx 7 --task_mode regression --metric_name MAD_RMSE_R2
+python run.py make_residual --root ./exp --self_id 0 --task_id regression_1s_2a --round 2 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --target_idx 7 --task_mode regression --metric_name Loss_MAD_RMSE_R2
 
 python run.py save_residual --root ./exp --self_id 1 --task_id regression_1s_2a --round 2
 python run.py save_residual --root ./exp --self_id 2 --task_id regression_1s_2a --round 2
@@ -82,7 +82,7 @@ python run.py save_output --root ./exp --self_id 0 --task_id regression_1s_2a --
 python save_output_exe.py --root ./exp --self_id 0 --task_id regression_1s_2a --mode train --from_id 1 --round 2
 python save_output_exe.py --root ./exp --self_id 0 --task_id regression_1s_2a --mode train --from_id 2 --round 2
 
-python run.py make_result --root ./exp --self_id 0 --task_id regression_1s_2a --round 2 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --target_idx 7 --task_mode regression --metric_name MAD_RMSE_R2
+python run.py make_result --root ./exp --self_id 0 --task_id regression_1s_2a --round 2 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/train/dataset.csv --target_idx 7 --task_mode regression --metric_name Loss_MAD_RMSE_R2
 
 # Test
 # hash id
@@ -121,7 +121,7 @@ python save_output_exe.py --root ./exp --self_id 0 --task_id regression_1s_2a --
 python save_output_exe.py --root ./exp --self_id 0 --task_id regression_1s_2a --mode test --test_id def --from_id 2 --round 2
 
 # eval
-python run.py make_eval --root ./exp --self_id 0 --task_id regression_1s_2a --test_id def --round 2 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/test/dataset.csv --target_idx 7 --task_mode regression --metric_name MAD_RMSE_R2
+python run.py make_eval --root ./exp --self_id 0 --task_id regression_1s_2a --test_id def --round 2 --dataset_path ./data/processed/BostonHousing/BostonHousing_3_123_1.0/0/test/dataset.csv --target_idx 7 --task_mode regression --metric_name Loss_MAD_RMSE_R2
 
 echo "$(cat ./exp/0/task/regression_1s_2a/train/log.txt)"
 echo "$(cat ./exp/0/task/regression_1s_2a/test/def/log.txt)"

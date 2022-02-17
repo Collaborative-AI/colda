@@ -20,10 +20,10 @@ tests.Train\_helper\_function module
    :undoc-members:
    :show-inheritance:
 
-tests.test\_Authorization module
---------------------------------
+tests.test\_database\_helper\_function module
+---------------------------------------------
 
-.. automodule:: tests.test_Authorization
+.. automodule:: tests.test_database_helper_function
    :members:
    :undoc-members:
    :show-inheritance:

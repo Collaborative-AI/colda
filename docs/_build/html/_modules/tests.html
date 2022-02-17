@@ -39,6 +39,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -70,15 +72,19 @@
 <span class="sd">tests</span>
 <span class="sd">~~~~~</span>
 
-<span class="sd">Test suite for the Synspot package.</span>
+<span class="sd">Test suite for the synspot package.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
 <span class="kn">from</span> <span class="nn">Synspot.TrainRequest</span> <span class="kn">import</span> <span class="n">TrainRequest</span>
 <span class="kn">from</span> <span class="nn">Synspot.TestRequest</span> <span class="kn">import</span> <span class="n">TestRequest</span>
 <span class="kn">from</span> <span class="nn">Synspot.Authorization</span> <span class="kn">import</span> <span class="n">Authorization</span>
 <span class="kn">from</span> <span class="nn">Synspot.Get_Notification</span> <span class="kn">import</span> <span class="n">Get_Notification</span>
 <span class="kn">from</span> <span class="nn">Synspot.PersonalInformation</span> <span class="kn">import</span> <span class="n">PersonalInformation</span>
 <span class="kn">from</span> <span class="nn">Synspot.Network</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">Synspot</span> <span class="kn">import</span> <span class="n">set_default_data_path</span>
+<span class="kn">from</span> <span class="nn">Synspot</span> <span class="kn">import</span> <span class="n">set_default_data_path</span><span class="p">,</span> <span class="n">get_all_task_id_as_sponsor</span><span class="p">,</span> <span class="n">get_all_test_id_as_sponsor</span><span class="p">,</span> <span class="n">get_all_task_id_as_assistor</span><span class="p">,</span> <span class="n">get_all_test_id_as_assistor</span>
+<span class="kn">from</span> <span class="nn">Synspot</span> <span class="kn">import</span> <span class="n">get_all_task_id</span><span class="p">,</span> <span class="n">get_all_test_id</span>
 
 <span class="n">_default_authorization</span> <span class="o">=</span> <span class="n">Authorization</span><span class="o">.</span><span class="n">get_Authorization_instance</span><span class="p">()</span>
 <span class="n">_default_trainRequest</span> <span class="o">=</span> <span class="n">TrainRequest</span><span class="o">.</span><span class="n">get_TrainRequest_instance</span><span class="p">()</span>
@@ -88,8 +94,6 @@
 <span class="n">_default_Network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
 <span class="c1"># _default_testRequest = TestRequest.get_TestRequest_instance()</span>
 <span class="c1"># _default_get_notification = Get_Notification.get_Get_notification_instance()</span>
-
-
 
 <span class="n">testing_data</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;max_round&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
@@ -154,75 +158,131 @@
 <span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;default_data_column&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2-7&#39;</span>
 
 
+<div class="viewcode-block" id="Strategy"><a class="viewcode-back" href="../tests.html#tests.Strategy">[docs]</a><span class="k">class</span> <span class="nc">Strategy</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Strategy interface declares operations common to all supported versions</span>
+<span class="sd">    of some algorithm.</span>
 
-<div class="viewcode-block" id="unread_test_sponsor_match_id_regression_regression_1s_1a"><a class="viewcode-back" href="../tests.html#tests.unread_test_sponsor_match_id_regression_regression_1s_1a">[docs]</a><span class="k">def</span> <span class="nf">unread_test_sponsor_match_id_regression_regression_1s_1a</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="n">test_array</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">15.62146</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.63978</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.17975</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.77626</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.13779</span><span class="p">,</span> <span class="mf">1.60417</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.76595</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.91224</span><span class="p">]</span>
-    <span class="n">test_array_index</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-        <span class="n">cur_list</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cur_list</span><span class="p">)):</span>
-            <span class="n">cur_number</span> <span class="o">=</span> <span class="n">cur_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-            <span class="n">cur_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">cur_number</span><span class="p">,</span> <span class="s1">&#39;.5f&#39;</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1s_1a&#39;</span><span class="p">,</span> <span class="n">cur_number</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">cur_number</span><span class="p">),</span> <span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">],</span> <span class="nb">type</span><span class="p">(</span><span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">]))</span>
-            <span class="k">if</span> <span class="n">cur_number</span> <span class="o">!=</span> <span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-            <span class="n">test_array_index</span> <span class="o">+=</span> <span class="mi">1</span>
-    
-    <span class="k">return</span> <span class="kc">True</span></div>
-       
-<div class="viewcode-block" id="unread_test_assistor_match_id_regression_regression_1s_1a"><a class="viewcode-back" href="../tests.html#tests.unread_test_assistor_match_id_regression_regression_1s_1a">[docs]</a><span class="k">def</span> <span class="nf">unread_test_assistor_match_id_regression_regression_1s_1a</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="n">test_array</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.93492</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.96598</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.51288</span><span class="p">,</span> <span class="mf">6.83615</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.52504</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75834</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.23748</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.11017</span><span class="p">]</span>
-    <span class="n">test_array_index</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-        <span class="n">cur_list</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cur_list</span><span class="p">)):</span>
-            <span class="n">cur_number</span> <span class="o">=</span> <span class="n">cur_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-            <span class="n">cur_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">cur_number</span><span class="p">,</span> <span class="s1">&#39;.5f&#39;</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1s_1a_assistor&#39;</span><span class="p">,</span> <span class="n">cur_number</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">cur_number</span><span class="p">),</span> <span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">],</span> <span class="nb">type</span><span class="p">(</span><span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">]))</span>
-            <span class="k">if</span> <span class="n">cur_number</span> <span class="o">!=</span> <span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-            <span class="n">test_array_index</span> <span class="o">+=</span> <span class="mi">1</span>
-    
-    <span class="k">return</span> <span class="kc">True</span></div>
-    
-<div class="viewcode-block" id="unread_test_output_regression_regression_1s_1a"><a class="viewcode-back" href="../tests.html#tests.unread_test_output_regression_regression_1s_1a">[docs]</a><span class="k">def</span> <span class="nf">unread_test_output_regression_regression_1s_1a</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="sd">    The Context uses this interface to call the algorithm defined by Concrete</span>
+<span class="sd">    Strategies.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">test_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;MAD&quot;</span><span class="p">:</span> <span class="mf">3.54763</span><span class="p">,</span>
-            <span class="s2">&quot;RMSE&quot;</span><span class="p">:</span> <span class="mf">5.21270</span><span class="p">,</span>
-            <span class="s2">&quot;R2&quot;</span><span class="p">:</span> <span class="mf">0.46997</span><span class="p">,</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;MAD&quot;</span><span class="p">:</span> <span class="mf">3.54221</span><span class="p">,</span>
-            <span class="s2">&quot;RMSE&quot;</span><span class="p">:</span> <span class="mf">5.19744</span><span class="p">,</span>
-            <span class="s2">&quot;R2&quot;</span><span class="p">:</span> <span class="mf">0.45141</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+<div class="viewcode-block" id="Strategy.unread_test_output_test"><a class="viewcode-back" href="../tests.html#tests.Strategy.unread_test_output_test">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">unread_test_output_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
     
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-        <span class="n">cur_running_res</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="n">cur_testing_dict</span> <span class="o">=</span> <span class="n">test_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">sub_key</span> <span class="ow">in</span> <span class="n">cur_running_res</span><span class="p">:</span>
-            <span class="n">cur_number</span> <span class="o">=</span> <span class="n">cur_running_res</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span>
-            <span class="n">cur_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">cur_number</span><span class="p">,</span> <span class="s1">&#39;.5f&#39;</span><span class="p">))</span>
-            <span class="n">cur_testing_number</span> <span class="o">=</span> <span class="n">cur_testing_dict</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span>
-            <span class="n">cur_testing_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">cur_testing_number</span><span class="p">,</span> <span class="s1">&#39;.5f&#39;</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1s_1a&#39;</span><span class="p">,</span> <span class="n">cur_number</span><span class="p">,</span> <span class="n">cur_testing_number</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">cur_number</span> <span class="o">!=</span> <span class="n">cur_testing_number</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
+<div class="viewcode-block" id="Strategy.unread_test_sponsor_match_id_test"><a class="viewcode-back" href="../tests.html#tests.Strategy.unread_test_sponsor_match_id_test">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">unread_test_sponsor_match_id_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
     
-    <span class="k">return</span> <span class="kc">True</span></div>
+<div class="viewcode-block" id="Strategy.unread_test_assistor_match_id_test"><a class="viewcode-back" href="../tests.html#tests.Strategy.unread_test_assistor_match_id_test">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">unread_test_assistor_match_id_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Concrete Strategies implement the algorithm while following the base Strategy</span>
+<span class="sd">interface. The interface makes them interchangeable in the Context.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="choose_unittest_callback"><a class="viewcode-back" href="../tests.html#tests.choose_unittest_callback">[docs]</a><span class="k">def</span> <span class="nf">choose_unittest_callback</span><span class="p">(</span><span class="n">training_type</span><span class="p">,</span> <span class="n">testing_stage</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">training_type</span> <span class="o">==</span> <span class="s1">&#39;regression_1s_1a&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">testing_stage</span> <span class="o">==</span> <span class="s1">&#39;unread_test_output&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">unread_test_output_regression_regression_1s_1a</span>
-        <span class="k">elif</span> <span class="n">testing_stage</span> <span class="o">==</span> <span class="s1">&#39;unread_test_sponsor_match_id&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">unread_test_sponsor_match_id_regression_regression_1s_1a</span>
-        <span class="k">elif</span> <span class="n">testing_stage</span> <span class="o">==</span> <span class="s1">&#39;unread_test_assistor_match_id&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">unread_test_assistor_match_id_regression_regression_1s_1a</span></div>
+<div class="viewcode-block" id="Regression_1s_1a"><a class="viewcode-back" href="../tests.html#tests.Regression_1s_1a">[docs]</a><span class="k">class</span> <span class="nc">Regression_1s_1a</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
+<div class="viewcode-block" id="Regression_1s_1a.unread_test_output_test"><a class="viewcode-back" href="../tests.html#tests.Regression_1s_1a.unread_test_output_test">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_output_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">unread_test_output_regression_regression_1s_1a</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="n">test_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;MAD&quot;</span><span class="p">:</span> <span class="mf">3.54763</span><span class="p">,</span>
+                    <span class="s2">&quot;RMSE&quot;</span><span class="p">:</span> <span class="mf">5.21270</span><span class="p">,</span>
+                    <span class="s2">&quot;R2&quot;</span><span class="p">:</span> <span class="mf">0.46997</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;MAD&quot;</span><span class="p">:</span> <span class="mf">3.54221</span><span class="p">,</span>
+                    <span class="s2">&quot;RMSE&quot;</span><span class="p">:</span> <span class="mf">5.19744</span><span class="p">,</span>
+                    <span class="s2">&quot;R2&quot;</span><span class="p">:</span> <span class="mf">0.45141</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">cur_running_res</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">cur_testing_dict</span> <span class="o">=</span> <span class="n">test_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">sub_key</span> <span class="ow">in</span> <span class="n">cur_running_res</span><span class="p">:</span>
+                    <span class="n">cur_number</span> <span class="o">=</span> <span class="n">cur_running_res</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span>
+                    <span class="n">cur_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">cur_number</span><span class="p">,</span> <span class="s1">&#39;.5f&#39;</span><span class="p">))</span>
+                    <span class="n">cur_testing_number</span> <span class="o">=</span> <span class="n">cur_testing_dict</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span>
+                    <span class="n">cur_testing_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">cur_testing_number</span><span class="p">,</span> <span class="s1">&#39;.5f&#39;</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1s_1a&#39;</span><span class="p">,</span> <span class="n">cur_number</span><span class="p">,</span> <span class="n">cur_testing_number</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">cur_number</span> <span class="o">!=</span> <span class="n">cur_testing_number</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">unread_test_output_regression_regression_1s_1a</span></div>
+    
+<div class="viewcode-block" id="Regression_1s_1a.unread_test_sponsor_match_id_test"><a class="viewcode-back" href="../tests.html#tests.Regression_1s_1a.unread_test_sponsor_match_id_test">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_sponsor_match_id_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">unread_test_sponsor_match_id_regression_regression_1s_1a</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="n">test_array</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">15.62146</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.63978</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.17975</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.77626</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.13779</span><span class="p">,</span> <span class="mf">1.60417</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.76595</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.91224</span><span class="p">]</span>
+            <span class="n">test_array_index</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">cur_list</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cur_list</span><span class="p">)):</span>
+                    <span class="n">cur_number</span> <span class="o">=</span> <span class="n">cur_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="n">cur_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">cur_number</span><span class="p">,</span> <span class="s1">&#39;.5f&#39;</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1s_1a&#39;</span><span class="p">,</span> <span class="n">cur_number</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">cur_number</span><span class="p">),</span> <span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">],</span> <span class="nb">type</span><span class="p">(</span><span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">]))</span>
+                    <span class="k">if</span> <span class="n">cur_number</span> <span class="o">!=</span> <span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">]:</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                    <span class="n">test_array_index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">unread_test_sponsor_match_id_regression_regression_1s_1a</span></div>
+
+<div class="viewcode-block" id="Regression_1s_1a.unread_test_assistor_match_id_test"><a class="viewcode-back" href="../tests.html#tests.Regression_1s_1a.unread_test_assistor_match_id_test">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_assistor_match_id_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">unread_test_assistor_match_id_regression_regression_1s_1a</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="n">test_array</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.93492</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.96598</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.51288</span><span class="p">,</span> <span class="mf">6.83615</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.52504</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.75834</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.23748</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.11017</span><span class="p">]</span>
+            <span class="n">test_array_index</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">cur_list</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cur_list</span><span class="p">)):</span>
+                    <span class="n">cur_number</span> <span class="o">=</span> <span class="n">cur_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="n">cur_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">cur_number</span><span class="p">,</span> <span class="s1">&#39;.5f&#39;</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1s_1a_assistor&#39;</span><span class="p">,</span> <span class="n">cur_number</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">cur_number</span><span class="p">),</span> <span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">],</span> <span class="nb">type</span><span class="p">(</span><span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">]))</span>
+                    <span class="k">if</span> <span class="n">cur_number</span> <span class="o">!=</span> <span class="n">test_array</span><span class="p">[</span><span class="n">test_array_index</span><span class="p">]:</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                    <span class="n">test_array_index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">unread_test_assistor_match_id_regression_regression_1s_1a</span></div></div>
+
+<div class="viewcode-block" id="unittest_strategy_interface"><a class="viewcode-back" href="../tests.html#tests.unittest_strategy_interface">[docs]</a><span class="k">class</span> <span class="nc">unittest_strategy_interface</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Context defines the interface of interest to clients.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unittest_strategy</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">unittest_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Strategy</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Context maintains a reference to one of the Strategy objects. The</span>
+<span class="sd">        Context does not know the concrete class of a strategy. It should work</span>
+<span class="sd">        with all strategies via the Strategy interface.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unittest_strategy</span>
+
+    <span class="nd">@unittest_strategy</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">unittest_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unittest_strategy</span><span class="p">:</span> <span class="n">Strategy</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Usually, the Context allows replacing a Strategy object at runtime.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unittest_strategy</span> <span class="o">=</span> <span class="n">unittest_strategy</span>
+
+<div class="viewcode-block" id="unittest_strategy_interface.get_unread_test_sponsor_match_id_test"><a class="viewcode-back" href="../tests.html#tests.unittest_strategy_interface.get_unread_test_sponsor_match_id_test">[docs]</a>    <span class="k">def</span> <span class="nf">get_unread_test_sponsor_match_id_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unittest_strategy</span><span class="o">.</span><span class="n">unread_test_sponsor_match_id_test</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="unittest_strategy_interface.get_unread_test_assistor_match_id_test"><a class="viewcode-back" href="../tests.html#tests.unittest_strategy_interface.get_unread_test_assistor_match_id_test">[docs]</a>    <span class="k">def</span> <span class="nf">get_unread_test_assistor_match_id_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unittest_strategy</span><span class="o">.</span><span class="n">unread_test_assistor_match_id_test</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="unittest_strategy_interface.get_unread_test_output_test"><a class="viewcode-back" href="../tests.html#tests.unittest_strategy_interface.get_unread_test_output_test">[docs]</a>    <span class="k">def</span> <span class="nf">get_unread_test_output_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unittest_strategy</span><span class="o">.</span><span class="n">unread_test_output_test</span><span class="p">()</span></div></div>
+    
+    
+
 
 
 

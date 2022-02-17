@@ -10,7 +10,7 @@ from .Database_class import Database_class
 from .Error import check_Algorithm_return_value
 from .SynSpot_utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
 
-from Synspot.Algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
+from .Algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 # from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
 
 class check_sponsor_class:
@@ -90,11 +90,9 @@ class TestRequest:
         print('handleTestRequest', task_id)
         task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator='train')
         # retrieve mode from user_sponsor_db
-        self.__find_test_assistor(task_id=task_id, task_name=task_name, task_description=task_description, task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
+        return self.__find_test_assistor(task_id=task_id, task_name=task_name, task_description=task_description, task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
                                   test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column, test_target_column=test_target_column, test_name=test_name,
                                   test_description=test_description)
-        return 'handleTestRequest successfully'
-
 
     def __get_test_id(self):
 
@@ -190,7 +188,8 @@ class TestRequest:
         except:
             print('find_test_assistor_res wrong')
 
-        return
+        print('Sponsor: Testing test_id: ', test_id, ' is running')
+        return ('handleTestRequest successfully', test_id)
 
     def unread_test_request(self, unread_test_request_notification: dict):
 
@@ -258,6 +257,7 @@ class TestRequest:
         else:
             print('default_mode wrong')
 
+        print('Assistor: Testing test_id: ', test_id, ' is running')
         return 'unread_test_request done'
 
     def unread_test_match_id(self, unread_test_match_id_notification: dict, unittest_callbacks=None):
@@ -365,6 +365,7 @@ class TestRequest:
         if unittest_callbacks:
             assert unittest_callbacks(load_json_data(test_done[2], 'test_done[2]')) == True
 
+        print('Sponsor: Testing test_id: ', test_id, ' is running')
         return
 
     def unread_test_match_id_assistor(self, task_id: str, test_id: str, cur_max_round: int, unittest_callbacks):
@@ -458,6 +459,7 @@ class TestRequest:
         except:
             print('assistor_send_test_output_res wrong')
 
+        print('Assistor: Testing test_id: ', test_id, ' is running')
         return
 
 
@@ -482,7 +484,9 @@ class TestRequest:
         for test_id in cur_unread_test_output_Testid_dict:
             task_id = test_id_to_task_id[test_id]
             self.unread_test_output_singleTask(task_id, test_id, unittest_callbacks)
-
+            print('Sponsor: Testing test_id: ', test_id, ' is running')
+            print('Sponsor: Testing test_id: ', test_id, ' done')
+            
         return 'unread_test_output done'
 
     def unread_test_output_singleTask(self, task_id: str, test_id: str, unittest_callbacks):

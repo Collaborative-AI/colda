@@ -29,6 +29,14 @@ Synspot.Database\_class module
    :undoc-members:
    :show-inheritance:
 
+Synspot.Database\_class\_helper module
+--------------------------------------
+
+.. automodule:: Synspot.Database_class_helper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Synspot.Error module
 --------------------
 

@@ -15,7 +15,7 @@ from .Database_class import Database_class
 from .SynSpot_utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
 from .Error import check_Algorithm_return_value
 
-from Synspot.Algorithm import make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
+from .Algorithm import make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 # from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
 
 class check_sponsor_class:
@@ -205,6 +205,8 @@ class TrainRequest():
                "---------------------- 1. Find assistor\n", "1.1 Sponsor calls for help\n", "1.2 Sponsor sends id file\n"]
         log_helper(msg, root, user_id, task_id)
 
+        print('Training task_id: ', task_id)
+        print('Sponsor: Training task_id: ', task_id, ' is running')
         return ('handleTrainRequest successfully', task_id)
 
 
@@ -273,6 +275,8 @@ class TrainRequest():
                 pass
             else:
                 print('unread request: wrong mode')
+
+        print('Assistor: Training task_id: ', task_id, ' is running')
         return 'unread_request successfully'
 
     def unread_match_id(self, unread_match_id_notification: dict):
@@ -421,6 +425,7 @@ class TrainRequest():
         msg = ["3.7 Sponsor sends all situations" + "\n", "-------------------------- 3. Unread Match ID Done\n"]
         log_helper(msg, root, user_id, task_id)
 
+        print('Sponsor: Training task_id: ', task_id, ' is running')
         return 'unread_match_id_sponsor successfully'
 
     def unread_match_id_assistor(self, task_id: str):
@@ -482,6 +487,7 @@ class TrainRequest():
         msg = ["3.5 Assistor matches id to index\n", "---- 3. Unread Match ID Done\n"]
         log_helper(msg, root, user_id, task_id)
 
+        print('Assistor: Training task_id: ', task_id, ' is running')
         return 'unread_match_id_assistor successfully'
 
     def unread_situation(self, unread_situation_notification: dict):
@@ -555,6 +561,7 @@ class TrainRequest():
         msg = ["4.3 Sponsor round " + str(rounds) + " training done." + "\n", "-------------------------- 4. Unread Situation Done\n"]
         log_helper(msg, root, user_id, task_id)
 
+        print('Sponsor: Training task_id: ', task_id, ' is running')
         return 'unread_situation_sponsor successfully'
 
     def unread_situation_assistor_train_part(self, task_id: str, rounds: int, from_id: str, train_file_path: str, train_data_column: str, task_mode: str, model_name: str, waiting_start_time: float):
@@ -615,6 +622,7 @@ class TrainRequest():
             msg = ["4.5 Assistor sends output\n", "---- 4. Unread Situation Done\n", "---- Train stage done\n"]
             log_helper(msg, root, user_id, task_id)
             
+            print('Assistor: Training task_id: ', task_id, ' is running')
             return 'unread_situation_sponsor successfully'
 
 
@@ -702,7 +710,7 @@ class TrainRequest():
 
             rounds = cur_unread_output_Rounds_dict[task_id]
             self.unread_output_singleTask(task_id, rounds)
-
+            
         return 'unread output done'
 
     def unread_output_singleTask(self, task_id: str, rounds: int):
@@ -807,8 +815,10 @@ class TrainRequest():
             if rounds >= self.maxRound:
                 msg = ["---- Train Stage Ends\n"]
                 log_helper(msg, root, user_id, task_id)
+                print('Sponsor: Training task_id: ', task_id, ' ends')
                 return
             else:
+
                 # call make_residual
                 make_residual_multiple_paths = make_residual(root=root, self_id=user_id, task_id=task_id, round=(rounds+1), dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
                 assert make_residual_multiple_paths is not None
@@ -849,7 +859,8 @@ class TrainRequest():
 
                 msg = ["5.6 Sponsor updates situation done\n", "-------------------------- 5. Unread Output Done\n"]
                 log_helper(msg, root, user_id, task_id)
-
+                
+                print('Sponsor: Training task_id: ', task_id, ' is running')
                 return 'unread_output successfully'
 
     def unread_train_stop(self, unread_train_stop_notification: dict):

@@ -39,6 +39,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -84,7 +86,7 @@
 <span class="kn">from</span> <span class="nn">.SynSpot_utils</span> <span class="kn">import</span> <span class="n">log_helper</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">save_file</span><span class="p">,</span> <span class="n">handle_Algorithm_return_value</span>
 <span class="kn">from</span> <span class="nn">.Error</span> <span class="kn">import</span> <span class="n">check_Algorithm_return_value</span>
 
-<span class="kn">from</span> <span class="nn">Synspot.Algorithm</span> <span class="kn">import</span> <span class="n">make_hash</span><span class="p">,</span> <span class="n">save_match_id</span><span class="p">,</span> <span class="n">make_match_idx</span><span class="p">,</span> <span class="n">make_residual</span><span class="p">,</span> <span class="n">make_train</span><span class="p">,</span> <span class="n">save_output</span><span class="p">,</span> <span class="n">make_result</span><span class="p">,</span> <span class="n">save_residual</span><span class="p">,</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">.Algorithm</span> <span class="kn">import</span> <span class="n">make_hash</span><span class="p">,</span> <span class="n">save_match_id</span><span class="p">,</span> <span class="n">make_match_idx</span><span class="p">,</span> <span class="n">make_residual</span><span class="p">,</span> <span class="n">make_train</span><span class="p">,</span> <span class="n">save_output</span><span class="p">,</span> <span class="n">make_result</span><span class="p">,</span> <span class="n">save_residual</span><span class="p">,</span> <span class="n">log</span>
 <span class="c1"># from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance</span>
 
 <div class="viewcode-block" id="check_sponsor_class"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.check_sponsor_class">[docs]</a><span class="k">class</span> <span class="nc">check_sponsor_class</span><span class="p">:</span>
@@ -99,7 +101,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span> <span class="o">=</span> <span class="n">Database_class</span><span class="o">.</span><span class="n">get_Database_class_instance</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">get_base_url</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">base_url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxRound</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">skip_header_default</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initial_round</span> <span class="o">=</span> <span class="mi">1</span>
@@ -132,11 +134,11 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">()</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">user_id</span>
         <span class="k">assert</span> <span class="n">user_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">root</span>
         <span class="k">assert</span> <span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">get_token</span><span class="p">()</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">token</span>
         <span class="k">assert</span> <span class="n">token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
         <span class="n">task_id</span> <span class="o">=</span> <span class="kc">None</span>
@@ -190,10 +192,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/create_new_train_task/&quot;</span>
-        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">get_token</span><span class="p">()</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">token</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">get_train_id_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;get_train_id_response wrong&#39;</span><span class="p">)</span>
 
         <span class="n">get_train_id_response_text</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">get_train_id_response</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;get_train_id_response&#39;</span><span class="p">,</span> 
@@ -266,7 +268,7 @@
             <span class="n">find_assistor_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">find_assistor_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">find_assistor_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;find_assistor_res&#39;</span><span class="p">,</span>
                                                 <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;task_id&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;find_assistor_res wrong&#39;</span><span class="p">)</span>
 
         <span class="c1"># Record the history to log file</span>
@@ -274,6 +276,8 @@
                <span class="s2">&quot;---------------------- 1. Find assistor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;1.1 Sponsor calls for help</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;1.2 Sponsor sends id file</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;handleTrainRequest successfully&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
 
@@ -295,7 +299,7 @@
         <span class="c1"># obtain some important information</span>
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_train_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         
-        <span class="n">default_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">get_default_mode</span><span class="p">()</span>
+        <span class="n">default_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">default_mode</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;default_mode&#39;</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">)</span>
         <span class="n">cur_unread_request_Taskid_dict</span> <span class="o">=</span> <span class="n">unread_request_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
         <span class="n">cur_unread_request_info_dict</span> <span class="o">=</span> <span class="n">unread_request_notification</span><span class="p">[</span><span class="s2">&quot;info_dict&quot;</span><span class="p">]</span>
@@ -332,7 +336,7 @@
                     <span class="n">match_assistor_id_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
                     <span class="n">match_assistor_id_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">match_assistor_id_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;match_assistor_id_res&#39;</span><span class="p">,</span> 
                                                             <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;stored&#39;</span><span class="p">,</span> <span class="s1">&#39;assistor match id stored&#39;</span><span class="p">)])</span>
-                <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="k">except</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;match_assistor_id_res wrong&#39;</span><span class="p">)</span>
 
                 <span class="c1"># add log</span>
@@ -342,6 +346,8 @@
                 <span class="k">pass</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;unread request: wrong mode&#39;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_request successfully&#39;</span></div>
 
 <div class="viewcode-block" id="TrainRequest.unread_match_id"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_match_id_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -408,7 +414,7 @@
             <span class="n">sponsor_get_match_id_file_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">sponsor_get_match_id_file_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">sponsor_get_match_id_file_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;sponsor_get_match_id_file_res&#39;</span><span class="p">,</span> 
                                                             <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;match_id_file&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;assistor_random_id_pair&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sponsor_get_match_id_file_res wrong&#39;</span><span class="p">)</span>
 
         <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;3.3 Sponsor gets matched id file</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
@@ -484,12 +490,13 @@
             <span class="n">send_situation_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">send_situation_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">send_situation_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;send_situation_res&#39;</span><span class="p">,</span> 
                                                 <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;send situation successfully!&#39;</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;send_situation_res wrong&#39;</span><span class="p">)</span>
 
         <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;3.7 Sponsor sends all situations&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;-------------------------- 3. Unread Match ID Done</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_match_id_sponsor successfully&#39;</span></div>
 
 <div class="viewcode-block" id="TrainRequest.unread_match_id_assistor"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_match_id_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -519,7 +526,7 @@
             <span class="n">assistor_get_match_id_file_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">assistor_get_match_id_file_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">assistor_get_match_id_file_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;assistor_get_match_id_file_res&#39;</span><span class="p">,</span> 
                                                             <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;match_id_file&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;sponsor_random_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;assistor_get_match_id_file_res wrong&#39;</span><span class="p">)</span>
 
         <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;3.3 Assistor gets matched id file</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
@@ -551,6 +558,7 @@
         <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;3.5 Assistor matches id to index</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;---- 3. Unread Match ID Done</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_match_id_assistor successfully&#39;</span></div>
 
 <div class="viewcode-block" id="TrainRequest.unread_situation"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_situation">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_situation_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -624,6 +632,7 @@
         <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;4.3 Sponsor round &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rounds</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; training done.&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;-------------------------- 4. Unread Situation Done</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
         <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_situation_sponsor successfully&#39;</span></div>
 
 <div class="viewcode-block" id="TrainRequest.unread_situation_assistor_train_part"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_situation_assistor_train_part">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation_assistor_train_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">from_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">waiting_start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -678,12 +687,13 @@
                 <span class="n">assistor_send_output_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
                 <span class="n">assistor_send_output_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">assistor_send_output_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;assistor_send_output_res&#39;</span><span class="p">,</span> 
                                                                 <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;send_output&#39;</span><span class="p">,</span> <span class="s1">&#39;send output successfully&#39;</span><span class="p">)])</span>
-            <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="k">except</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;assistor_send_output_res wrong&#39;</span><span class="p">)</span>
 
             <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;4.5 Assistor sends output</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;---- 4. Unread Situation Done</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;---- Train stage done</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
             <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
             
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;unread_situation_sponsor successfully&#39;</span></div>
 
 
@@ -716,7 +726,7 @@
             <span class="n">assistor_get_situation_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">assistor_get_situation_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">assistor_get_situation_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;assistor_get_situation_res&#39;</span><span class="p">,</span> 
                                                             <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;situation&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;sender_random_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;assistor_get_situation_res wrong&#39;</span><span class="p">)</span>
 
         <span class="c1"># handle response from above request</span>
@@ -771,7 +781,8 @@
 
             <span class="n">rounds</span> <span class="o">=</span> <span class="n">cur_unread_output_Rounds_dict</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unread_output_singleTask</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
-
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
+            
         <span class="k">return</span> <span class="s1">&#39;unread output done&#39;</span></div>
 
 <div class="viewcode-block" id="TrainRequest.unread_output_singleTask"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_output_singleTask">[docs]</a>    <span class="k">def</span> <span class="nf">unread_output_singleTask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
@@ -801,7 +812,7 @@
             <span class="n">sponsor_get_output_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">sponsor_get_output_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">sponsor_get_output_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;sponsor_get_output_res&#39;</span><span class="p">,</span> 
                                                     <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;output&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;sender_random_ids_list&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sponsor_get_output_res wrong&#39;</span><span class="p">)</span>
 
         <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;5.2 Sponsor gets output model</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
@@ -913,7 +924,7 @@
                     <span class="n">send_situation_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
                     <span class="n">send_situation_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">send_situation_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;send_situation_res&#39;</span><span class="p">,</span> 
                                                         <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;send situation successfully!&#39;</span><span class="p">)])</span>
-                <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="k">except</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;send_situation_res wrong&#39;</span><span class="p">)</span>
 
                 <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;5.6 Sponsor updates situation done</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;-------------------------- 5. Unread Output Done</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>

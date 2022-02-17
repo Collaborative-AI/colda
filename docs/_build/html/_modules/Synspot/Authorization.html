@@ -39,6 +39,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -87,10 +89,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span> <span class="o">=</span> <span class="n">Database_class</span><span class="o">.</span><span class="n">get_Database_class_instance</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">get_base_url</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">base_url</span>
 
     <span class="k">def</span> <span class="nf">__obtain_important_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">root</span>
         <span class="k">assert</span> <span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
         <span class="k">return</span> <span class="n">root</span>
@@ -119,12 +121,12 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">user_register_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">user_register_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;user_register_res&#39;</span><span class="p">)</span>
                 <span class="n">res</span> <span class="o">=</span> <span class="n">user_register_res</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> 
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;user_register_res&#39;</span><span class="p">,</span> <span class="n">user_register_res</span><span class="p">)</span>
-            
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Register Instruction&#39;</span><span class="p">,</span> <span class="n">user_register_res</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;user_register_res wrong&#39;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">res</span></div>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="Authorization.userLogin"><a class="viewcode-back" href="../../Synspot.html#Synspot.Authorization.Authorization.userLogin">[docs]</a>    <span class="k">def</span> <span class="nf">userLogin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -147,8 +149,9 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">token_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;create_new_train_task wrong&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
        
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;token_response&#39;</span><span class="p">,</span> <span class="n">token_response</span><span class="p">)</span>
         <span class="n">token_response_text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">token_response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -162,11 +165,10 @@
         <span class="n">user_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]))[</span><span class="s1">&#39;user_id&#39;</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;login user_id&#39;</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">set_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">set_user_id</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
         
-        <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39;userLogin Successfully&#39;</span>
-        <span class="k">return</span> <span class="n">res</span></div>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="Authorization.userLogout"><a class="viewcode-back" href="../../Synspot.html#Synspot.Authorization.Authorization.userLogout">[docs]</a>    <span class="k">def</span> <span class="nf">userLogout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

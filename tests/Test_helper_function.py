@@ -28,7 +28,8 @@ class Test_helper_function:
                              test_id_column=testing_data['test_id_column'], test_data_column=testing_data['test_data_column'], test_target_column=testing_data['test_target_column'],  
                              test_name=testing_data['test_name'], test_description=testing_data['test_description'])
         print('zheli?')
-        assert handleTestRequest_res == 'handleTestRequest successfully'
+        assert handleTestRequest_res[0] == 'handleTestRequest successfully'
+        return handleTestRequest_res[1]
     
     def unread_test_request_helper(self, unread_test_request_notification):
         unread_test_request_res = _default_testRequest.unread_test_request(unread_test_request_notification)

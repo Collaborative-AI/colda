@@ -50,12 +50,12 @@ class Authorization():
             else:
                 user_register_res = load_json_data(json_data=user_register_res, json_data_name='user_register_res')
                 res = user_register_res['message'] 
-                print('user_register_res', user_register_res)
-            
+                print('Register Instruction', user_register_res)
+                return False
         except:
             print('user_register_res wrong')
 
-        return res
+        return True
 
 
     def userLogin(self, username: str, password: str):
@@ -80,6 +80,7 @@ class Authorization():
             token_response = requests.post(url, auth=(username, password))
         except:
             print('create_new_train_task wrong')
+            return False
        
         print('token_response', token_response)
         token_response_text = json.loads(token_response.text)
@@ -96,8 +97,7 @@ class Authorization():
         self.Network_instance.token = token
         self.PersonalInformation_instance.user_id = user_id
         
-        res = 'userLogin Successfully'
-        return res
+        return True
 
     def userLogout(self):
         """

@@ -2,7 +2,7 @@
 tests
 ~~~~~
 
-Test suite for the Synspot package.
+Test suite for the synspot package.
 """
 from typing import List
 from abc import ABC, abstractmethod
@@ -13,7 +13,8 @@ from Synspot.Authorization import Authorization
 from Synspot.Get_Notification import Get_Notification
 from Synspot.PersonalInformation import PersonalInformation
 from Synspot.Network import Network
-from Synspot import set_default_data_path
+from Synspot import set_default_data_path, get_all_task_id_as_sponsor, get_all_test_id_as_sponsor, get_all_task_id_as_assistor, get_all_test_id_as_assistor
+from Synspot import get_all_task_id, get_all_test_id
 
 _default_authorization = Authorization.get_Authorization_instance()
 _default_trainRequest = TrainRequest.get_TrainRequest_instance()

@@ -9,7 +9,7 @@ class Get_Notification():
     __Get_Notification_instance = None
 
     def __init__(self):
-        self.__stop_indicator = False
+        self.__stop_indicator = None
 
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
@@ -96,8 +96,10 @@ class Get_Notification():
         Raises:
          KeyError - raises an exception
         """
-
+        if self.__stop_indicator == None:
+            self.__stop_indicator = False
         user_id = self.PersonalInformation_instance.user_id
+        print('ggg',self.base_url,user_id)
         url = self.base_url + "/users/" + user_id + "/notifications/"
         token = self.Network_instance.token
         print("get notification url", url)
@@ -108,7 +110,7 @@ class Get_Notification():
             print('short_polling_res wrong')
 
         response_data = json.loads(short_polling_res.text)
-        print("response_data", response_data, type(response_data))
+        # print("response_data", response_data, type(response_data))
 
         for item in response_data:
             if item['payload'] >= 1:
@@ -122,24 +124,27 @@ class Get_Notification():
                 except:
                     print('short_polling_res wrong')
 
-                print("update_all_notifications", update_all_notifications_res)
+                # print("update_all_notifications", update_all_notifications_res)
                 update_all_notifications_data = json.loads(update_all_notifications_res.text)
                 assert update_all_notifications_data is not None
-                print("update_all_notifications", update_all_notifications_data)
+                # print("update_all_notifications", update_all_notifications_data)
 
                 # for running, comment back
-                # self.__update_notification(update_all_notifications_data)
-                # break
+                self.__update_notification(update_all_notifications_data)
+                break
 
                 # for unittest
-                return update_all_notifications_data
-
-        timer = threading.Timer(10, self.start_Collaboration)
+                # return update_all_notifications_data
+        
+        # for running, comment back
         if not self.__stop_indicator:
+            print('lihjai a ')
+            timer = threading.Timer(10, self.start_Collaboration)
             timer.start()
         return
 
     def end_Collaboration(self):
         self.__stop_indicator = True
-        return 
+        time.sleep(15)
+        return True
 

@@ -39,6 +39,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -87,7 +89,8 @@
 
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__PersonalInformation_instance</span></div>
 
-<div class="viewcode-block" id="PersonalInformation.get_user_id"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.get_user_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        get the user id of current user. The user id is set to None at first.</span>
 
@@ -101,9 +104,10 @@
 <span class="sd">         KeyError - raises an exception</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__user_id</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__user_id</span>
 
-<div class="viewcode-block" id="PersonalInformation.set_user_id"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.set_user_id">[docs]</a>    <span class="k">def</span> <span class="nf">set_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="nd">@user_id</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Change the user_id.</span>
 
@@ -118,9 +122,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__user_id</span> <span class="o">=</span> <span class="n">user_id</span>
-        <span class="k">return</span></div>
+        <span class="k">return</span>
 
-<div class="viewcode-block" id="PersonalInformation.get_default_mode"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.get_default_mode">[docs]</a>    <span class="k">def</span> <span class="nf">get_default_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">default_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        get the default mode set by user from DB. The default mode is set to active at first.</span>
 
@@ -137,10 +142,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># get message from database</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span>
 
-
-<div class="viewcode-block" id="PersonalInformation.set_default_mode"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.set_default_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_default_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="nd">@default_mode</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">default_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Change the default mode.</span>
 
@@ -157,9 +162,10 @@
         <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;manual&#39;</span><span class="p">}:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Sorry, default mode wrong&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">=</span> <span class="n">mode</span>
-        <span class="k">return</span></div>
+        <span class="k">return</span>
 
-<div class="viewcode-block" id="PersonalInformation.get_root"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.get_root">[docs]</a>    <span class="k">def</span> <span class="nf">get_root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the root path of intermediate data storage</span>
 
@@ -173,10 +179,10 @@
 <span class="sd">         KeyError - raises an exception</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__root</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__root</span>
 
-
-<div class="viewcode-block" id="PersonalInformation.set_root"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.set_root">[docs]</a>    <span class="k">def</span> <span class="nf">set_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="nd">@root</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the root path of intermediate data storage to new root</span>
 
@@ -191,9 +197,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__root</span> <span class="o">=</span> <span class="n">root</span>
-        <span class="k">return</span></div>
+        <span class="k">return</span>
 
-<div class="viewcode-block" id="PersonalInformation.get_exe_position"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.get_exe_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_exe_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">exe_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the path of the Algorithm entry point</span>
 
@@ -207,7 +214,7 @@
 <span class="sd">         KeyError - raises an exception</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exe_position</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exe_position</span>
 
 <div class="viewcode-block" id="PersonalInformation.logout"><a class="viewcode-back" href="../../Synspot.html#Synspot.PersonalInformation.PersonalInformation.logout">[docs]</a>    <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -225,7 +232,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__user_id</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Logout procedure wrong&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 

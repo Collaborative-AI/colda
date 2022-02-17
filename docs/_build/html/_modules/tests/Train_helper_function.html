@@ -39,6 +39,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -90,26 +92,25 @@
 <div class="viewcode-block" id="Train_helper_function"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function">[docs]</a><span class="k">class</span> <span class="nc">Train_helper_function</span><span class="p">:</span>
 
 <div class="viewcode-block" id="Train_helper_function.clean_db"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.clean_db">[docs]</a>    <span class="k">def</span> <span class="nf">clean_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">base_url</span> <span class="o">=</span> <span class="n">_default_Network</span><span class="o">.</span><span class="n">get_base_url</span><span class="p">()</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">_default_Network</span><span class="o">.</span><span class="n">base_url</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/delete_all_rows/&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">delete_db_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;delete_db_res wrong&#39;</span><span class="p">)</span></div>
         
-
 <div class="viewcode-block" id="Train_helper_function.first_user_login"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.first_user_login">[docs]</a>    <span class="k">def</span> <span class="nf">first_user_login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">userLogin_res</span> <span class="o">=</span> <span class="n">_default_authorization</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;first_user_username&#39;</span><span class="p">],</span> <span class="n">password</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;first_user_password&#39;</span><span class="p">])</span>
-        <span class="k">assert</span> <span class="n">userLogin_res</span> <span class="o">==</span> <span class="s1">&#39;userLogin Successfully&#39;</span>
+        <span class="k">assert</span> <span class="n">userLogin_res</span> <span class="o">==</span> <span class="kc">True</span>
         <span class="k">return</span></div>
     
 <div class="viewcode-block" id="Train_helper_function.second_user_login"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.second_user_login">[docs]</a>    <span class="k">def</span> <span class="nf">second_user_login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">userLogin_res</span> <span class="o">=</span> <span class="n">_default_authorization</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;second_user_username&#39;</span><span class="p">],</span> <span class="n">password</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;second_user_password&#39;</span><span class="p">])</span>
-        <span class="k">assert</span> <span class="n">userLogin_res</span> <span class="o">==</span> <span class="s1">&#39;userLogin Successfully&#39;</span>
+        <span class="k">assert</span> <span class="n">userLogin_res</span> <span class="o">==</span> <span class="kc">True</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="Train_helper_function.get_Notification"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.get_Notification">[docs]</a>    <span class="k">def</span> <span class="nf">get_Notification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_default_get_notification</span><span class="o">.</span><span class="n">getNotification</span><span class="p">()</span></div>
+<div class="viewcode-block" id="Train_helper_function.start_Collaboration"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.start_Collaboration">[docs]</a>    <span class="k">def</span> <span class="nf">start_Collaboration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_default_get_notification</span><span class="o">.</span><span class="n">start_Collaboration</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Train_helper_function.handleTrainRequest_helper"><a class="viewcode-back" href="../../tests.html#tests.Train_helper_function.Train_helper_function.handleTrainRequest_helper">[docs]</a>    <span class="k">def</span> <span class="nf">handleTrainRequest_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">handleTrainRequest_res</span> <span class="o">=</span> <span class="n">_default_trainRequest</span><span class="o">.</span><span class="n">handleTrainRequest</span><span class="p">(</span><span class="n">maxRound</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;maxRound&#39;</span><span class="p">],</span> <span class="n">assistors</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;assistors&#39;</span><span class="p">],</span> <span class="n">train_file_path</span><span class="o">=</span><span class="n">testing_data</span><span class="p">[</span><span class="s1">&#39;train_file_path&#39;</span><span class="p">],</span>

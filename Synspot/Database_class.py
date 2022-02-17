@@ -14,10 +14,6 @@ class Database_class():
 
         return cls.__Database_class_instance
 
-    def store_database(self, path):
-
-        return 
-
     def __obtain_user_id(self):
         PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         user_id = PersonalInformation_instance.user_id
@@ -26,46 +22,52 @@ class Database_class():
 
     def get_all_task_id_as_sponsor(self):
         user_id = self.__obtain_user_id()
+        print(user_id)
         res = []
         for key in self.__temp_database:
-            key_user_id, _, key_test_indicator = key[0], key[1], key[2]
-            if key_user_id == user_id and key_test_indicator == 'train':
-                if 'User_Sponsor_Table' in self.__temp_database[key]:
-                    key_task_id = key[2]
-                    res.append(key_task_id)
+            print('keyjj', key)
+            if len(key) >= 3:
+                key_user_id, _, key_test_indicator = key[0], key[1], key[2]
+                if key_user_id == user_id and key_test_indicator == 'train':
+                    if 'User_Sponsor_Table' in self.__temp_database[key]:
+                        key_task_id = key[1]
+                        res.append(key_task_id)
         return res
     
     def get_all_test_id_as_sponsor(self):
         user_id = self.__obtain_user_id()
         res = []
         for key in self.__temp_database:
-            key_user_id, _, key_test_indicator = key[0], key[1], key[2]
-            if key_user_id == user_id and key_test_indicator == 'test':
-                if 'User_Sponsor_Table' in self.__temp_database[key]:
-                    key_test_id = key[2]
-                    res.append(key_test_id)
+            if len(key) >= 3:
+                key_user_id, _, key_test_indicator = key[0], key[1], key[2]
+                if key_user_id == user_id and key_test_indicator == 'test':
+                    if 'User_Sponsor_Table' in self.__temp_database[key]:
+                        key_test_id = key[1]
+                        res.append(key_test_id)
         return res
 
     def get_all_task_id_as_assistor(self):
         user_id = self.__obtain_user_id()
         res = []
         for key in self.__temp_database:
-            key_user_id, _, key_test_indicator = key[0], key[1], key[2]
-            if key_user_id == user_id and key_test_indicator == 'train':
-                if 'User_Assistor_Table' in self.__temp_database[key]:
-                    key_task_id = key[2]
-                    res.append(key_task_id)
+            if len(key) >= 3:
+                key_user_id, _, key_test_indicator = key[0], key[1], key[2]
+                if key_user_id == user_id and key_test_indicator == 'train':
+                    if 'User_Assistor_Table' in self.__temp_database[key]:
+                        key_task_id = key[1]
+                        res.append(key_task_id)
         return res
 
     def get_all_test_id_as_assistor(self):
         user_id = self.__obtain_user_id()
         res = []
         for key in self.__temp_database:
-            key_user_id, _, key_test_indicator = key[0], key[1], key[2]
-            if key_user_id == user_id and key_test_indicator == 'test':
-                if 'User_Assistor_Table' in self.__temp_database[key]:
-                    key_test_id = key[2]
-                    res.append(key_test_id)
+            if len(key) >= 3:
+                key_user_id, _, key_test_indicator = key[0], key[1], key[2]
+                if key_user_id == user_id and key_test_indicator == 'test':
+                    if 'User_Assistor_Table' in self.__temp_database[key]:
+                        key_test_id = key[1]
+                        res.append(key_test_id)
         return res
 
     def store_User_Default_Table(self, user_id: str, default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, 
@@ -83,8 +85,9 @@ class Database_class():
             self.__temp_database[user_id]['User_Default_Table']['default_data_column'] = default_data_column
         except:
             print('User_Default_Table stores false')
+            return False
 
-        return 'User_Default_Table stores successfully'
+        return True
 
     def get_User_Default_Table(self, user_id: str):
 

@@ -7,7 +7,7 @@ Flow for Automated Documentation:
     import os
     import sys
     sys.path.insert(0, os.path.abspath('..'))
-5. Change extions=['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc', 'nbsphinx']
+5. Change extions=['sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc', 'nbsphinx', 'recommonmark']
 6. Add (to support md): import recommonmark
         from recommonmark.transform import AutoStructify
         source_parsers = {

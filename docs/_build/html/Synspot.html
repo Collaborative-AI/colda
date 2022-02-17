@@ -50,6 +50,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-Synspot.Authorization">Synspot.Authorization module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-Synspot.Database_class">Synspot.Database_class module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-Synspot.Database_class_helper">Synspot.Database_class_helper module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-Synspot.Error">Synspot.Error module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-Synspot.Get_Notification">Synspot.Get_Notification module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-Synspot.Network">Synspot.Network module</a></li>
@@ -60,7 +61,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-Synspot.TrainRequest">Synspot.TrainRequest module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-Synspot.ceshi">Synspot.ceshi module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-Synspot">Module contents</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#synspot">Synspot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#synspot">synspot</a></li>
 </ul>
 </li>
 </ul>
@@ -70,6 +71,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="README.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -240,6 +243,26 @@ PersonalInformation, and Database_class.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Database_class.Database_class.get_all_task_id_as_assistor">
+<span class="sig-name descname"><span class="pre">get_all_task_id_as_assistor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class.html#Database_class.get_all_task_id_as_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class.Database_class.get_all_task_id_as_assistor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Database_class.Database_class.get_all_task_id_as_sponsor">
+<span class="sig-name descname"><span class="pre">get_all_task_id_as_sponsor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class.html#Database_class.get_all_task_id_as_sponsor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class.Database_class.get_all_task_id_as_sponsor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Database_class.Database_class.get_all_test_id_as_assistor">
+<span class="sig-name descname"><span class="pre">get_all_test_id_as_assistor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class.html#Database_class.get_all_test_id_as_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class.Database_class.get_all_test_id_as_assistor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Database_class.Database_class.get_all_test_id_as_sponsor">
+<span class="sig-name descname"><span class="pre">get_all_test_id_as_sponsor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class.html#Database_class.get_all_test_id_as_sponsor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class.Database_class.get_all_test_id_as_sponsor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Synspot.Database_class.Database_class.logout">
 <span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class.html#Database_class.logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class.Database_class.logout" title="Permalink to this definition"></a></dt>
 <dd><p>Handle user logout by setting the __temp_database to collections.defaultdict(dict)</p>
@@ -271,6 +294,77 @@ PersonalInformation, and Database_class.</p>
 </dd></dl>
 
 </section>
+<section id="module-Synspot.Database_class_helper">
+<span id="synspot-database-class-helper-module"></span><h2>Synspot.Database_class_helper module<a class="headerlink" href="#module-Synspot.Database_class_helper" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.Strategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.Database_class_helper.</span></span><span class="sig-name descname"><span class="pre">Strategy</span></span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#Strategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.Strategy" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>The Strategy interface declares operations common to all supported versions
+of some algorithm.</p>
+<p>The Context uses this interface to call the algorithm defined by Concrete
+Strategies.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.Strategy.search_database">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Database_class_instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#Strategy.search_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.Strategy.search_database" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.database_strategy_interface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.Database_class_helper.</span></span><span class="sig-name descname"><span class="pre">database_strategy_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_strategy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#Synspot.Database_class_helper.Strategy" title="Synspot.Database_class_helper.Strategy"><span class="pre">Synspot.Database_class_helper.Strategy</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#database_strategy_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.database_strategy_interface" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Context defines the interface of interest to clients.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.database_strategy_interface.database_strategy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">database_strategy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#Synspot.Database_class_helper.Strategy" title="Synspot.Database_class_helper.Strategy"><span class="pre">Synspot.Database_class_helper.Strategy</span></a></em><a class="headerlink" href="#Synspot.Database_class_helper.database_strategy_interface.database_strategy" title="Permalink to this definition"></a></dt>
+<dd><p>The Context maintains a reference to one of the Strategy objects. The
+Context does not know the concrete class of a strategy. It should work
+with all strategies via the Strategy interface.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.database_strategy_interface.execute_strategy">
+<span class="sig-name descname"><span class="pre">execute_strategy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#database_strategy_interface.execute_strategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.database_strategy_interface.execute_strategy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.get_all_task_id_as_assistor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.Database_class_helper.</span></span><span class="sig-name descname"><span class="pre">get_all_task_id_as_assistor</span></span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#get_all_task_id_as_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.get_all_task_id_as_assistor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Synspot.Database_class_helper.Strategy" title="Synspot.Database_class_helper.Strategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Synspot.Database_class_helper.Strategy</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.get_all_task_id_as_assistor.search_database">
+<span class="sig-name descname"><span class="pre">search_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Database_class_instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#get_all_task_id_as_assistor.search_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.get_all_task_id_as_assistor.search_database" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.get_all_task_id_as_sponsor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.Database_class_helper.</span></span><span class="sig-name descname"><span class="pre">get_all_task_id_as_sponsor</span></span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#get_all_task_id_as_sponsor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.get_all_task_id_as_sponsor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Synspot.Database_class_helper.Strategy" title="Synspot.Database_class_helper.Strategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Synspot.Database_class_helper.Strategy</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.get_all_task_id_as_sponsor.search_database">
+<span class="sig-name descname"><span class="pre">search_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Database_class_instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#get_all_task_id_as_sponsor.search_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.get_all_task_id_as_sponsor.search_database" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.get_all_test_id_as_sponsor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.Database_class_helper.</span></span><span class="sig-name descname"><span class="pre">get_all_test_id_as_sponsor</span></span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#get_all_test_id_as_sponsor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.get_all_test_id_as_sponsor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Synspot.Database_class_helper.Strategy" title="Synspot.Database_class_helper.Strategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Synspot.Database_class_helper.Strategy</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Database_class_helper.get_all_test_id_as_sponsor.search_database">
+<span class="sig-name descname"><span class="pre">search_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Database_class_instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Database_class_helper.html#get_all_test_id_as_sponsor.search_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Database_class_helper.get_all_test_id_as_sponsor.search_database" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-Synspot.Error">
 <span id="synspot-error-module"></span><h2>Synspot.Error module<a class="headerlink" href="#module-Synspot.Error" title="Permalink to this headline"></a></h2>
 <dl class="py function">
@@ -295,8 +389,18 @@ second_val - String. The second val needs to check.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.Get_Notification.</span></span><span class="sig-name descname"><span class="pre">Get_Notification</span></span><a class="reference internal" href="_modules/Synspot/Get_Notification.html#Get_Notification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Get_Notification.Get_Notification" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="Synspot.Get_Notification.Get_Notification.getNotification">
-<span class="sig-name descname"><span class="pre">getNotification</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Get_Notification.html#Get_Notification.getNotification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Get_Notification.Get_Notification.getNotification" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Synspot.Get_Notification.Get_Notification.end_Collaboration">
+<span class="sig-name descname"><span class="pre">end_Collaboration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Get_Notification.html#Get_Notification.end_Collaboration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Get_Notification.Get_Notification.end_Collaboration" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Get_Notification.Get_Notification.get_Get_notification_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_Get_notification_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Get_Notification.html#Get_Notification.get_Get_notification_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Get_Notification.Get_Notification.get_Get_notification_instance" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Synspot.Get_Notification.Get_Notification.start_Collaboration">
+<span class="sig-name descname"><span class="pre">start_Collaboration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Get_Notification.html#Get_Notification.start_Collaboration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Get_Notification.Get_Notification.start_Collaboration" title="Permalink to this definition"></a></dt>
 <dd><p>Short Polling for new Notifications</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><p>None</p>
@@ -308,11 +412,6 @@ second_val - String. The second val needs to check.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.Get_Notification.Get_Notification.get_Get_notification_instance">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_Get_notification_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Get_Notification.html#Get_Notification.get_Get_notification_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Get_Notification.Get_Notification.get_Get_notification_instance" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
@@ -322,14 +421,9 @@ second_val - String. The second val needs to check.</p>
 <dt class="sig sig-object py" id="Synspot.Network.Network">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.Network.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><a class="reference internal" href="_modules/Synspot/Network.html#Network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Network.Network" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.Network.Network.get_Network_instance">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_Network_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Network.html#Network.get_Network_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Network.Network.get_Network_instance" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.Network.Network.get_base_url">
-<span class="sig-name descname"><span class="pre">get_base_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Network.html#Network.get_base_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Network.Network.get_base_url" title="Permalink to this definition"></a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="Synspot.Network.Network.base_url">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">base_url</span></span><a class="headerlink" href="#Synspot.Network.Network.base_url" title="Permalink to this definition"></a></dt>
 <dd><p>Get base url that is the ipv4 address of AWS server and return base url</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><p>None</p>
@@ -342,18 +436,9 @@ second_val - String. The second val needs to check.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Synspot.Network.Network.get_token">
-<span class="sig-name descname"><span class="pre">get_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Network.html#Network.get_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Network.Network.get_token" title="Permalink to this definition"></a></dt>
-<dd><p>Return the token</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>None</p>
-</dd>
-<dt>Returns:</dt><dd><p>token - string.</p>
-</dd>
-<dt>Raises:</dt><dd><p>KeyError - raises an exception</p>
-</dd>
-</dl>
-</dd></dl>
+<dt class="sig sig-object py" id="Synspot.Network.Network.get_Network_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_Network_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Network.html#Network.get_Network_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Network.Network.get_Network_instance" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Synspot.Network.Network.logout">
@@ -369,14 +454,14 @@ second_val - String. The second val needs to check.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.Network.Network.set_token">
-<span class="sig-name descname"><span class="pre">set_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/Network.html#Network.set_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.Network.Network.set_token" title="Permalink to this definition"></a></dt>
-<dd><p>Set token to new token</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="Synspot.Network.Network.token">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#Synspot.Network.Network.token" title="Permalink to this definition"></a></dt>
+<dd><p>Return the token</p>
 <dl class="simple">
-<dt>Parameters:</dt><dd><p>token - string. Token sent by the server</p>
+<dt>Parameters:</dt><dd><p>None</p>
 </dd>
-<dt>Returns:</dt><dd><p>None</p>
+<dt>Returns:</dt><dd><p>token - string.</p>
 </dd>
 <dt>Raises:</dt><dd><p>KeyError - raises an exception</p>
 </dd>
@@ -392,14 +477,9 @@ second_val - String. The second val needs to check.</p>
 <dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Synspot.PersonalInformation.</span></span><span class="sig-name descname"><span class="pre">PersonalInformation</span></span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.get_PersonalInformation_instance">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_PersonalInformation_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation.get_PersonalInformation_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.get_PersonalInformation_instance" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.get_default_mode">
-<span class="sig-name descname"><span class="pre">get_default_mode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation.get_default_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.get_default_mode" title="Permalink to this definition"></a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.default_mode">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_mode</span></span><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.default_mode" title="Permalink to this definition"></a></dt>
 <dd><p>get the default mode set by user from DB. The default mode is set to active at first.</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><p>None</p>
@@ -411,9 +491,9 @@ second_val - String. The second val needs to check.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.get_exe_position">
-<span class="sig-name descname"><span class="pre">get_exe_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation.get_exe_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.get_exe_position" title="Permalink to this definition"></a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.exe_position">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exe_position</span></span><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.exe_position" title="Permalink to this definition"></a></dt>
 <dd><p>Get the path of the Algorithm entry point</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><p>None</p>
@@ -426,32 +506,9 @@ second_val - String. The second val needs to check.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.get_root">
-<span class="sig-name descname"><span class="pre">get_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation.get_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.get_root" title="Permalink to this definition"></a></dt>
-<dd><p>Get the root path of intermediate data storage</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>None</p>
-</dd>
-<dt>Returns:</dt><dd><p>The root path of intermediate data storage.</p>
-</dd>
-<dt>Raises:</dt><dd><p>KeyError - raises an exception</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.get_user_id">
-<span class="sig-name descname"><span class="pre">get_user_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation.get_user_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.get_user_id" title="Permalink to this definition"></a></dt>
-<dd><p>get the user id of current user. The user id is set to None at first.</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>None</p>
-</dd>
-<dt>Returns:</dt><dd><p>The user id of current user.</p>
-</dd>
-<dt>Raises:</dt><dd><p>KeyError - raises an exception</p>
-</dd>
-</dl>
-</dd></dl>
+<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.get_PersonalInformation_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_PersonalInformation_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation.get_PersonalInformation_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.get_PersonalInformation_instance" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.logout">
@@ -467,42 +524,28 @@ second_val - String. The second val needs to check.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.set_default_mode">
-<span class="sig-name descname"><span class="pre">set_default_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation.set_default_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.set_default_mode" title="Permalink to this definition"></a></dt>
-<dd><p>Change the default mode.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.root">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root</span></span><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.root" title="Permalink to this definition"></a></dt>
+<dd><p>Get the root path of intermediate data storage</p>
 <dl class="simple">
-<dt>Parameters:</dt><dd><p>mode - String. Must in [“auto”, “manual”]</p>
+<dt>Parameters:</dt><dd><p>None</p>
 </dd>
-<dt>Returns:</dt><dd><p>None</p>
+<dt>Returns:</dt><dd><p>The root path of intermediate data storage.</p>
 </dd>
 <dt>Raises:</dt><dd><p>KeyError - raises an exception</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.set_root">
-<span class="sig-name descname"><span class="pre">set_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation.set_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.set_root" title="Permalink to this definition"></a></dt>
-<dd><p>Set the root path of intermediate data storage to new root</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.user_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.user_id" title="Permalink to this definition"></a></dt>
+<dd><p>get the user id of current user. The user id is set to None at first.</p>
 <dl class="simple">
-<dt>Parameters:</dt><dd><p>root - String. Must be valid</p>
+<dt>Parameters:</dt><dd><p>None</p>
 </dd>
-<dt>Returns:</dt><dd><p>None</p>
-</dd>
-<dt>Raises:</dt><dd><p>KeyError - raises an exception</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="Synspot.PersonalInformation.PersonalInformation.set_user_id">
-<span class="sig-name descname"><span class="pre">set_user_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot/PersonalInformation.html#PersonalInformation.set_user_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.PersonalInformation.PersonalInformation.set_user_id" title="Permalink to this definition"></a></dt>
-<dd><p>Change the user_id.</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>user_id - String.</p>
-</dd>
-<dt>Returns:</dt><dd><p>None</p>
+<dt>Returns:</dt><dd><p>The user id of current user.</p>
 </dd>
 <dt>Raises:</dt><dd><p>KeyError - raises an exception</p>
 </dd>
@@ -997,8 +1040,8 @@ rounds - Integer. Current round.</p>
 <section id="module-Synspot">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Synspot" title="Permalink to this headline"></a></h2>
 <section id="synspot">
-<h3>Synspot<a class="headerlink" href="#synspot" title="Permalink to this headline"></a></h3>
-<p>The Synspot package - a Python package template project that is intended
+<h3>synspot<a class="headerlink" href="#synspot" title="Permalink to this headline"></a></h3>
+<p>The synspot package - a Python package template project that is intended
 to be used as a cookie-cutter for developing new Python packages.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="Synspot.callForTest">
@@ -1011,13 +1054,38 @@ to be used as a cookie-cutter for developing new Python packages.</p>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="Synspot.get_all_testing_tasks">
-<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">get_all_testing_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#get_all_testing_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.get_all_testing_tasks" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Synspot.end_Collaboration">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">end_Collaboration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#end_Collaboration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.end_Collaboration" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="Synspot.get_all_training_tasks">
-<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">get_all_training_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#get_all_training_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.get_all_training_tasks" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Synspot.get_all_task_id">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">get_all_task_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#get_all_task_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.get_all_task_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.get_all_task_id_as_assistor">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">get_all_task_id_as_assistor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#get_all_task_id_as_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.get_all_task_id_as_assistor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.get_all_task_id_as_sponsor">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">get_all_task_id_as_sponsor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#get_all_task_id_as_sponsor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.get_all_task_id_as_sponsor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.get_all_test_id">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">get_all_test_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#get_all_test_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.get_all_test_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.get_all_test_id_as_assistor">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">get_all_test_id_as_assistor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#get_all_test_id_as_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.get_all_test_id_as_assistor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.get_all_test_id_as_sponsor">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">get_all_test_id_as_sponsor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#get_all_test_id_as_sponsor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.get_all_test_id_as_sponsor" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -1033,6 +1101,21 @@ to be used as a cookie-cutter for developing new Python packages.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="Synspot.set_default_data_path">
 <span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">set_default_data_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#set_default_data_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.set_default_data_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.start_Collaboration">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">start_Collaboration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#start_Collaboration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.start_Collaboration" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.store_database">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">store_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pickle'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#store_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.store_database" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Synspot.test_function">
+<span class="sig-prename descclassname"><span class="pre">Synspot.</span></span><span class="sig-name descname"><span class="pre">test_function</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Synspot.html#test_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Synspot.test_function" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">

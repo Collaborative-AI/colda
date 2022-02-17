@@ -39,6 +39,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -71,7 +73,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">.Error</span> <span class="kn">import</span> <span class="n">check_Algorithm_return_value</span>
-<span class="kn">from</span> <span class="nn">Synspot.Algorithm</span> <span class="kn">import</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">.Algorithm</span> <span class="kn">import</span> <span class="n">log</span>
 
 <div class="viewcode-block" id="log_helper"><a class="viewcode-back" href="../../Synspot.html#Synspot.SynSpot_utils.log_helper">[docs]</a><span class="k">def</span> <span class="nf">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -103,7 +105,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sss&#39;</span><span class="p">)</span>
         <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sss1&#39;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+    <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span></div>
 

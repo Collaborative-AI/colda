@@ -30,12 +30,12 @@ class Train_helper_function:
         
     def first_user_login(self):
         userLogin_res = _default_authorization.userLogin(username=testing_data['first_user_username'], password=testing_data['first_user_password'])
-        assert userLogin_res == 'userLogin Successfully'
+        assert userLogin_res == True
         return
     
     def second_user_login(self):
         userLogin_res = _default_authorization.userLogin(username=testing_data['second_user_username'], password=testing_data['second_user_password'])
-        assert userLogin_res == 'userLogin Successfully'
+        assert userLogin_res == True
         return
 
     def start_Collaboration(self):

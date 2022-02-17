@@ -41,6 +41,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#a-quick-setup-guide">A Quick Setup Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-package">Using the package</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -93,60 +99,108 @@
 </style>
 <section id="readme">
 <h1>README<a class="headerlink" href="#readme" title="Permalink to this headline"></a></h1>
-<p># The ‘Synspot’ package
-This package aims to help various entities assist each other in supervised learning tasks without sharing data, models, and objective function.</p>
-<p># A Quick Setup Guide</p>
-<p>## Getting Started</p>
-<p>1. <strong>Install the ‘Synspot’ package using pip</strong>
-&gt; python -m pip install Synspot</p>
-<p>2. <strong>Import the Model and Experiment API classes</strong>
-&gt; import Synspot</p>
-<p>## Using the package
-1. <strong>Register</strong>
-&gt; <a href="#id1"><span class="problematic" id="id2">**</span></a>userRegister**(username, email, password)
-&gt;
-&gt;&gt; Password Requirements:
-&gt;&gt;   1. At least 8 characters. At most 25 characters
-&gt;&gt;   2. A mixture of both uppercase and lowercase letters
-&gt;&gt;   3. A mixture of letters and numbers
-&gt;&gt;   4. Inclusion of at least one special character, e.g., ! &#64; # ? ]</p>
-<p>2. <strong>Login</strong>
-&gt; <a href="#id3"><span class="problematic" id="id4">**</span></a>userLogin**(username, password)</p>
-<p>3. <strong>Set default information</strong>
-&gt; <a href="#id5"><span class="problematic" id="id6">**</span></a>set_default_data_path**(default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None)
-&gt;
-&gt;&gt; Parameters:
-&gt;&gt;    - default_mode - String. auto or manual
-&gt;&gt;    - default_model_name - String. Specific model, such as LinearRegression, DecisionTree.
-&gt;&gt;    - default_file_path - String. File position of dataset using for training and testing
-&gt;&gt;    - default_id_column - String. Data column of default dataset
-&gt;&gt;    - default_data_column - String. Target column of default dataset</p>
-<p>4. <strong>Start Training</strong>
-&gt; <a href="#id7"><span class="problematic" id="id8">**</span></a>callForTrain**(maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str=None, task_description: str=None)
-&gt;
-&gt;&gt; Parameters:
-&gt;&gt;    - maxRound - Integer. Maximum training round
-&gt;&gt;    - assistors - List. The List of assistors’ usernames
-&gt;&gt;    - train_file_path - String. Input path address of training data path
-&gt;&gt;    - train_id_column - String. ID column of Input File
-&gt;&gt;    - train_data_column - String. Data column of Input File
-&gt;&gt;    - train_target_column - String. Target column of Input File
-&gt;&gt;    - task_mode - String. Classification or Regression
-&gt;&gt;    - model_name - String. Specific model, such as LinearRegression, DecisionTree.
-&gt;&gt;    - metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.
-&gt;&gt;    - task_name - None or String. The name of current task.
-&gt;&gt;    - task_description - None or String. The description of current task</p>
-<p>5. <strong>Start Testing</strong>
-&gt; <a href="#id9"><span class="problematic" id="id10">**</span></a>callForTest**(task_id: str, test_file_path: str, test_id_column: str, test_data_column: str, test_target_column: str, test_name: str=None, test_description: str=None):
-&gt;
-&gt;&gt; Parameters:
-&gt;&gt;    - task_id - String. The task that the user wanted to test
-&gt;&gt;    - test_file_path - String. Input path address of testing data path
-&gt;&gt;    - test_id_column - String. ID column of Input File
-&gt;&gt;    - test_data_column - String. Data column of Input File
-&gt;&gt;    - test_target_column - String. Target column of Input File
-&gt;&gt;    - test_name - None or String. The name of current test
-&gt;&gt;    - test_description - None or String. The description of current test</p>
+</section>
+<section id="the-synspot-package">
+<h1>The ‘Synspot’ package<a class="headerlink" href="#the-synspot-package" title="Permalink to this headline"></a></h1>
+<p>This package aims to help various entities assist each other in supervised learning tasks without sharing data, models, and objective function.</p>
+</section>
+<section id="a-quick-setup-guide">
+<h1>A Quick Setup Guide<a class="headerlink" href="#a-quick-setup-guide" title="Permalink to this headline"></a></h1>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p><strong>Install the ‘Synspot’ package using pip</strong></p></li>
+</ol>
+<blockquote>
+<div><p>python -m pip install Synspot</p>
+</div></blockquote>
+<ol class="simple">
+<li><p><strong>Import the Model and Experiment API classes</strong></p></li>
+</ol>
+<blockquote>
+<div><p>import Synspot</p>
+</div></blockquote>
+</section>
+<section id="using-the-package">
+<h2>Using the package<a class="headerlink" href="#using-the-package" title="Permalink to this headline"></a></h2>
+<ol class="simple">
+<li><p><strong>Register</strong></p></li>
+</ol>
+<blockquote>
+<div><p><strong>userRegister</strong>(username, email, password)</p>
+<blockquote>
+<div><p>Password Requirements:</p>
+<ol class="simple">
+<li><p>At least 8 characters. At most 25 characters</p></li>
+<li><p>A mixture of both uppercase and lowercase letters</p></li>
+<li><p>A mixture of letters and numbers</p></li>
+<li><p>Inclusion of at least one special character, e.g., ! &#64; # ? ]</p></li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+<ol class="simple">
+<li><p><strong>Login</strong></p></li>
+</ol>
+<blockquote>
+<div><p><strong>userLogin</strong>(username, password)</p>
+</div></blockquote>
+<ol class="simple">
+<li><p><strong>Set default information</strong></p></li>
+</ol>
+<blockquote>
+<div><p><strong>set_default_data_path</strong>(default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None)</p>
+<blockquote>
+<div><p>Parameters:</p>
+<ul class="simple">
+<li><p>default_mode - String. auto or manual</p></li>
+<li><p>default_model_name - String. Specific model, such as LinearRegression, DecisionTree.</p></li>
+<li><p>default_file_path - String. File position of dataset using for training and testing</p></li>
+<li><p>default_id_column - String. Data column of default dataset</p></li>
+<li><p>default_data_column - String. Target column of default dataset</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<ol class="simple">
+<li><p><strong>Start Training</strong></p></li>
+</ol>
+<blockquote>
+<div><p><strong>callForTrain</strong>(maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str=None, task_description: str=None)</p>
+<blockquote>
+<div><p>Parameters:</p>
+<ul class="simple">
+<li><p>maxRound - Integer. Maximum training round</p></li>
+<li><p>assistors - List. The List of assistors’ usernames</p></li>
+<li><p>train_file_path - String. Input path address of training data path</p></li>
+<li><p>train_id_column - String. ID column of Input File</p></li>
+<li><p>train_data_column - String. Data column of Input File</p></li>
+<li><p>train_target_column - String. Target column of Input File</p></li>
+<li><p>task_mode - String. Classification or Regression</p></li>
+<li><p>model_name - String. Specific model, such as LinearRegression, DecisionTree.</p></li>
+<li><p>metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.</p></li>
+<li><p>task_name - None or String. The name of current task.</p></li>
+<li><p>task_description - None or String. The description of current task</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<ol class="simple">
+<li><p><strong>Start Testing</strong></p></li>
+</ol>
+<blockquote>
+<div><p><strong>callForTest</strong>(task_id: str, test_file_path: str, test_id_column: str, test_data_column: str, test_target_column: str, test_name: str=None, test_description: str=None):</p>
+<blockquote>
+<div><p>Parameters:</p>
+<ul class="simple">
+<li><p>task_id - String. The task that the user wanted to test</p></li>
+<li><p>test_file_path - String. Input path address of testing data path</p></li>
+<li><p>test_id_column - String. ID column of Input File</p></li>
+<li><p>test_data_column - String. Data column of Input File</p></li>
+<li><p>test_target_column - String. Target column of Input File</p></li>
+<li><p>test_name - None or String. The name of current test</p></li>
+<li><p>test_description - None or String. The description of current test</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</section>
 </section>
 
 

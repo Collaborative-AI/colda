@@ -39,6 +39,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -79,7 +81,7 @@
 <span class="kn">from</span> <span class="nn">.Error</span> <span class="kn">import</span> <span class="n">check_Algorithm_return_value</span>
 <span class="kn">from</span> <span class="nn">.SynSpot_utils</span> <span class="kn">import</span> <span class="n">log_helper</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">save_file</span><span class="p">,</span> <span class="n">handle_Algorithm_return_value</span>
 
-<span class="kn">from</span> <span class="nn">Synspot.Algorithm</span> <span class="kn">import</span> <span class="n">make_eval</span><span class="p">,</span> <span class="n">make_test</span><span class="p">,</span> <span class="n">make_hash</span><span class="p">,</span> <span class="n">save_match_id</span><span class="p">,</span> <span class="n">make_match_idx</span><span class="p">,</span> <span class="n">make_residual</span><span class="p">,</span> <span class="n">make_train</span><span class="p">,</span> <span class="n">save_output</span><span class="p">,</span> <span class="n">make_result</span><span class="p">,</span> <span class="n">save_residual</span><span class="p">,</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">.Algorithm</span> <span class="kn">import</span> <span class="n">make_eval</span><span class="p">,</span> <span class="n">make_test</span><span class="p">,</span> <span class="n">make_hash</span><span class="p">,</span> <span class="n">save_match_id</span><span class="p">,</span> <span class="n">make_match_idx</span><span class="p">,</span> <span class="n">make_residual</span><span class="p">,</span> <span class="n">make_train</span><span class="p">,</span> <span class="n">save_output</span><span class="p">,</span> <span class="n">make_result</span><span class="p">,</span> <span class="n">save_residual</span><span class="p">,</span> <span class="n">log</span>
 <span class="c1"># from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance</span>
 
 <div class="viewcode-block" id="check_sponsor_class"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.check_sponsor_class">[docs]</a><span class="k">class</span> <span class="nc">check_sponsor_class</span><span class="p">:</span>
@@ -94,7 +96,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span> <span class="o">=</span> <span class="n">Database_class</span><span class="o">.</span><span class="n">get_Database_class_instance</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">get_base_url</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">base_url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">skip_header_default</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span> <span class="o">=</span> <span class="s1">&#39;test&#39;</span>
 
@@ -122,11 +124,11 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">()</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">user_id</span>
         <span class="k">assert</span> <span class="n">user_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">root</span>
         <span class="k">assert</span> <span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">get_token</span><span class="p">()</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">token</span>
         <span class="k">assert</span> <span class="n">token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
         <span class="n">test_id</span> <span class="o">=</span> <span class="kc">None</span>
@@ -159,11 +161,9 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;handleTestRequest&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
         <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
         <span class="c1"># retrieve mode from user_sponsor_db</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__find_test_assistor</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="o">=</span><span class="n">task_description</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_test_assistor</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="o">=</span><span class="n">task_description</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span> 
                                   <span class="n">test_file_path</span><span class="o">=</span><span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="o">=</span><span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="o">=</span><span class="n">test_data_column</span><span class="p">,</span> <span class="n">test_target_column</span><span class="o">=</span><span class="n">test_target_column</span><span class="p">,</span> <span class="n">test_name</span><span class="o">=</span><span class="n">test_name</span><span class="p">,</span>
-                                  <span class="n">test_description</span><span class="o">=</span><span class="n">test_description</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;handleTestRequest successfully&#39;</span></div>
-
+                                  <span class="n">test_description</span><span class="o">=</span><span class="n">test_description</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__get_test_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -181,12 +181,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/create_new_test_task/&quot;</span>
-        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">get_token</span><span class="p">()</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">token</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">get_test_id_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">get_test_id_response</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">get_test_id_response</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;get_test_id_response&#39;</span><span class="p">,</span> 
                                                     <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;test_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;get_test_id_response wrong&#39;</span><span class="p">)</span>
 
         <span class="n">new_test_id</span> <span class="o">=</span> <span class="n">get_test_id_response</span><span class="p">[</span><span class="s2">&quot;test_id&quot;</span><span class="p">]</span>
@@ -256,10 +256,11 @@
             <span class="n">find_test_assistor_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">find_test_assistor_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">find_test_assistor_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;find_test_assistor_res&#39;</span><span class="p">,</span> 
                                                     <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;task_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;assistor_num&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;test_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;find_test_assistor_res wrong&#39;</span><span class="p">)</span>
 
-        <span class="k">return</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;handleTestRequest successfully&#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TestRequest.unread_test_request"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_request">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_request_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 
@@ -322,11 +323,12 @@
                     <span class="n">match_test_assistor_id_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
                     <span class="n">match_test_assistor_id_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">match_test_assistor_id_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;match_test_assistor_id_res&#39;</span><span class="p">,</span> 
                                                     <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;test_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;stored&#39;</span><span class="p">,</span> <span class="s1">&#39;assistor test match id stored&#39;</span><span class="p">)])</span>
-                <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="k">except</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;match_test_assistor_id_res wrong&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;default_mode wrong&#39;</span><span class="p">)</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_test_request done&#39;</span></div>
 
 <div class="viewcode-block" id="TestRequest.unread_test_match_id"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_match_id_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -390,7 +392,7 @@
             <span class="n">sponsor_get_test_match_id_file_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">sponsor_get_test_match_id_file_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;sponsor_get_test_match_id_file_res&#39;</span><span class="p">,</span> 
                                                     <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;match_id_file&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;assistor_random_id_pair&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sponsor_get_test_match_id_file_res&#39;</span><span class="p">,</span> <span class="n">sponsor_get_test_match_id_file_res</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sponsor_get_test_match_id_file_res wrong&#39;</span><span class="p">)</span>
     
         <span class="n">match_id_file_list</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">sponsor_get_test_match_id_file_res</span><span class="p">[</span><span class="s2">&quot;match_id_file&quot;</span><span class="p">],</span> <span class="s1">&#39;sponsor_get_test_match_id_file_res[&quot;match_id_file&quot;]&#39;</span><span class="p">)</span>
@@ -434,6 +436,7 @@
         <span class="k">if</span> <span class="n">unittest_callbacks</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">unittest_callbacks</span><span class="p">(</span><span class="n">load_json_data</span><span class="p">(</span><span class="n">test_done</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;test_done[2]&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="kc">True</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="TestRequest.unread_test_match_id_assistor"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_match_id_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cur_max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
@@ -465,7 +468,7 @@
             <span class="n">assistor_get_test_match_id_file_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">assistor_get_test_match_id_file_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">assistor_get_test_match_id_file_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;assistor_get_test_match_id_file_res&#39;</span><span class="p">,</span> 
                                                     <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;match_id_file&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;sponsor_random_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;assistor_get_test_match_id_file_res wrong&#39;</span><span class="p">)</span>
   
         <span class="n">from_id</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">assistor_get_test_match_id_file_res</span><span class="p">[</span><span class="s2">&quot;sponsor_random_id&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;assistor_get_test_match_id_file_res[&quot;sponsor_random_id&quot;][0]&#39;</span><span class="p">)</span>
@@ -524,9 +527,10 @@
             <span class="n">assistor_send_test_output_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">assistor_send_test_output_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">assistor_send_test_output_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;assistor_send_test_output_res&#39;</span><span class="p">,</span> 
                                                         <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;send_test_output&#39;</span><span class="p">,</span> <span class="s1">&#39;send test output successfully&#39;</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;assistor_send_test_output_res wrong&#39;</span><span class="p">)</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 
@@ -551,7 +555,8 @@
         <span class="k">for</span> <span class="n">test_id</span> <span class="ow">in</span> <span class="n">cur_unread_test_output_Testid_dict</span><span class="p">:</span>
             <span class="n">task_id</span> <span class="o">=</span> <span class="n">test_id_to_task_id</span><span class="p">[</span><span class="n">test_id</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unread_test_output_singleTask</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">)</span>
-
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
+            
         <span class="k">return</span> <span class="s1">&#39;unread_test_output done&#39;</span></div>
 
 <div class="viewcode-block" id="TestRequest.unread_test_output_singleTask"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_output_singleTask">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_output_singleTask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
@@ -582,7 +587,7 @@
             <span class="n">sponsor_get_test_output_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="n">sponsor_get_test_output_res</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">sponsor_get_test_output_res</span><span class="p">,</span> <span class="n">json_data_name</span><span class="o">=</span><span class="s1">&#39;sponsor_get_test_output_res&#39;</span><span class="p">,</span> 
                                                     <span class="n">testing_key_value_pair</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;output&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;sender_random_ids_list&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sponsor_get_test_output_res wrong&#39;</span><span class="p">)</span>
 
         <span class="n">output</span> <span class="o">=</span> <span class="n">load_json_data</span><span class="p">(</span><span class="n">sponsor_get_test_output_res</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">],</span> <span class="s1">&#39;sponsor_get_test_output_res[&quot;output&quot;]&#39;</span><span class="p">)</span>

@@ -39,6 +39,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -78,15 +80,14 @@
     <span class="n">__Get_Notification_instance</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__stop_indicator</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">get_base_url</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">base_url</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">default_trainRequest</span> <span class="o">=</span> <span class="n">TrainRequest</span><span class="o">.</span><span class="n">get_TrainRequest_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_testRequest</span> <span class="o">=</span> <span class="n">TestRequest</span><span class="o">.</span><span class="n">get_TestRequest_instance</span><span class="p">()</span>
-        <span class="c1"># while True:</span>
-        <span class="c1">#     schedule.run_pending()</span>
-        <span class="c1">#     time.sleep(10)</span>
 
 <div class="viewcode-block" id="Get_Notification.get_Get_notification_instance"><a class="viewcode-back" href="../../Synspot.html#Synspot.Get_Notification.Get_Notification.get_Get_notification_instance">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_Get_notification_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -152,7 +153,7 @@
         <span class="k">return</span>
 
 
-<div class="viewcode-block" id="Get_Notification.getNotification"><a class="viewcode-back" href="../../Synspot.html#Synspot.Get_Notification.Get_Notification.getNotification">[docs]</a>    <span class="k">def</span> <span class="nf">getNotification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Get_Notification.start_Collaboration"><a class="viewcode-back" href="../../Synspot.html#Synspot.Get_Notification.Get_Notification.start_Collaboration">[docs]</a>    <span class="k">def</span> <span class="nf">start_Collaboration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Short Polling for new Notifications</span>
@@ -166,15 +167,15 @@
 <span class="sd">        Raises:</span>
 <span class="sd">         KeyError - raises an exception</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__stop_indicator</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">user_id</span>
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/users/&quot;</span> <span class="o">+</span> <span class="n">user_id</span> <span class="o">+</span> <span class="s2">&quot;/notifications/&quot;</span>
-        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">get_token</span><span class="p">()</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">token</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;get notification url&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">short_polling_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;short_polling_res&quot;</span><span class="p">,</span> <span class="n">short_polling_res</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;short_polling_res wrong&#39;</span><span class="p">)</span>
 
         <span class="n">response_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">short_polling_res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -189,7 +190,7 @@
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">update_all_notifications_res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
                                                              <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">token</span><span class="p">})</span>
-                <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+                <span class="k">except</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;short_polling_res wrong&#39;</span><span class="p">)</span>
 
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;update_all_notifications&quot;</span><span class="p">,</span> <span class="n">update_all_notifications_res</span><span class="p">)</span>
@@ -204,12 +205,15 @@
                 <span class="c1"># for unittest</span>
                 <span class="k">return</span> <span class="n">update_all_notifications_data</span>
 
-        <span class="c1"># timer = threading.Timer(10, self.getNotification)</span>
-        <span class="c1"># timer.start()</span>
-        <span class="k">return</span></div></div>
+        <span class="c1"># timer = threading.Timer(10, self.start_Collaboration)</span>
+        <span class="c1"># if not self.__stop_indicator:</span>
+        <span class="c1">#     timer.start()</span>
+        <span class="k">return</span></div>
 
-<span class="c1"># get_notification_instance = Get_Notification.get_Get_notification_instance()</span>
-<span class="c1"># schedule.every(5).seconds.do(get_notification_instance.getNotification())</span>
+<div class="viewcode-block" id="Get_Notification.end_Collaboration"><a class="viewcode-back" href="../../Synspot.html#Synspot.Get_Notification.Get_Notification.end_Collaboration">[docs]</a>    <span class="k">def</span> <span class="nf">end_Collaboration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__stop_indicator</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> </div></div>
+
 </pre></div>
 
            </div>

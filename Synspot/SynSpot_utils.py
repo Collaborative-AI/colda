@@ -2,7 +2,7 @@ import json
 import numpy as np
 
 from .Error import check_Algorithm_return_value
-from Synspot.Algorithm import log
+from .Algorithm import log
 
 def log_helper(msg, root, user_id, task_id):
     """

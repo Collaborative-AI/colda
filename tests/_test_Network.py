@@ -21,7 +21,7 @@ class TestNetwork:
         Network_instance = self.get_instance()
         token = 'ceshi'
         Network_instance.set_token(token)
-        assert Network_instance.get_token() == token
+        assert Network_instance.token == token
 
 
 

@@ -15,7 +15,8 @@ class Network():
 
         return cls.__Network_instance
 
-    def get_base_url(self):
+    @property
+    def base_url(self):
         """
         Get base url that is the ipv4 address of AWS server and return base url
 
@@ -30,7 +31,25 @@ class Network():
         """
         return self.__baseURL
 
-    def set_token(self, token: str):
+    @property
+    def token(self):
+        """
+        Return the token
+
+        Parameters:
+         None
+
+        Returns:
+         token - string.
+
+        Raises:
+         KeyError - raises an exception
+        """
+        # print("zz", self.__token)
+        return self.__token
+
+    @token.setter
+    def token(self, token: str):
         """
         Set token to new token
 
@@ -47,22 +66,6 @@ class Network():
         # print("new_token", self.__token)
         return 
 
-    def get_token(self):
-        """
-        Return the token
-
-        Parameters:
-         None
-
-        Returns:
-         token - string.
-
-        Raises:
-         KeyError - raises an exception
-        """
-        # print("zz", self.__token)
-        return self.__token
-
     def logout(self):
         """
         Handle user logout by setting the __token to None
@@ -78,6 +81,6 @@ class Network():
         """
         try:
             self.__token = None
-        except RuntimeError:
+        except:
             print('Logout procedure wrong')
         

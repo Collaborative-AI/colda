@@ -25,7 +25,7 @@ class TestRequest:
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         self.Database_class_instance = Database_class.get_Database_class_instance()
 
-        self.base_url = self.Network_instance.get_base_url()
+        self.base_url = self.Network_instance.base_url
         self.skip_header_default = 1
         self.test_indicator = 'test'
 
@@ -53,11 +53,11 @@ class TestRequest:
         Raises:
             None
         """
-        user_id = self.PersonalInformation_instance.get_user_id()
+        user_id = self.PersonalInformation_instance.user_id
         assert user_id is not None
-        root = self.PersonalInformation_instance.get_root()
+        root = self.PersonalInformation_instance.root
         assert root is not None
-        token = self.Network_instance.get_token()
+        token = self.Network_instance.token
         assert token is not None
 
         test_id = None
@@ -112,12 +112,12 @@ class TestRequest:
         """
 
         url = self.base_url + "/create_new_test_task/"
-        token = self.Network_instance.get_token()
+        token = self.Network_instance.token
         try:
             get_test_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
             get_test_id_response = load_json_data(json_data=get_test_id_response, json_data_name='get_test_id_response', 
                                                     testing_key_value_pair=[('test_id', None)])
-        except RuntimeError:
+        except:
             print('get_test_id_response wrong')
 
         new_test_id = get_test_id_response["test_id"]
@@ -187,7 +187,7 @@ class TestRequest:
             find_test_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             find_test_assistor_res = load_json_data(json_data=find_test_assistor_res, json_data_name='find_test_assistor_res', 
                                                     testing_key_value_pair=[('task_id', None), ('assistor_num', None), ('test_id', None)])
-        except RuntimeError:
+        except:
             print('find_test_assistor_res wrong')
 
         return
@@ -253,7 +253,7 @@ class TestRequest:
                     match_test_assistor_id_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
                     match_test_assistor_id_res = load_json_data(json_data=match_test_assistor_id_res, json_data_name='match_test_assistor_id_res', 
                                                     testing_key_value_pair=[('test_id', None), ('stored', 'assistor test match id stored')])
-                except RuntimeError:
+                except:
                     print('match_test_assistor_id_res wrong')
         else:
             print('default_mode wrong')
@@ -321,7 +321,7 @@ class TestRequest:
             sponsor_get_test_match_id_file_res = load_json_data(json_data=sponsor_get_test_match_id_file_res, json_data_name='sponsor_get_test_match_id_file_res', 
                                                     testing_key_value_pair=[('match_id_file', None), ('assistor_random_id_pair', None)])
             print('sponsor_get_test_match_id_file_res', sponsor_get_test_match_id_file_res)
-        except RuntimeError:
+        except:
             print('sponsor_get_test_match_id_file_res wrong')
     
         match_id_file_list = load_json_data(sponsor_get_test_match_id_file_res["match_id_file"], 'sponsor_get_test_match_id_file_res["match_id_file"]')
@@ -396,7 +396,7 @@ class TestRequest:
             assistor_get_test_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             assistor_get_test_match_id_file_res = load_json_data(json_data=assistor_get_test_match_id_file_res, json_data_name='assistor_get_test_match_id_file_res', 
                                                     testing_key_value_pair=[('match_id_file', None), ('sponsor_random_id', None)])
-        except RuntimeError:
+        except:
             print('assistor_get_test_match_id_file_res wrong')
   
         from_id = load_json_data(assistor_get_test_match_id_file_res["sponsor_random_id"][0], 'assistor_get_test_match_id_file_res["sponsor_random_id"][0]')
@@ -455,7 +455,7 @@ class TestRequest:
             assistor_send_test_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             assistor_send_test_output_res = load_json_data(json_data=assistor_send_test_output_res, json_data_name='assistor_send_test_output_res', 
                                                         testing_key_value_pair=[('send_test_output', 'send test output successfully')])
-        except RuntimeError:
+        except:
             print('assistor_send_test_output_res wrong')
 
         return
@@ -513,7 +513,7 @@ class TestRequest:
             sponsor_get_test_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             sponsor_get_test_output_res = load_json_data(json_data=sponsor_get_test_output_res, json_data_name='sponsor_get_test_output_res', 
                                                     testing_key_value_pair=[('output', None), ('sender_random_ids_list', None)])
-        except RuntimeError:
+        except:
             print('sponsor_get_test_output_res wrong')
 
         output = load_json_data(sponsor_get_test_output_res["output"], 'sponsor_get_test_output_res["output"]')

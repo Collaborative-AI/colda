@@ -10,15 +10,18 @@ to be used as a cookie-cutter for developing new Python packages.
 # print("--", basedir)
 # import sys
 # sys.path.append(basedir)
+import os
+import errno
+import pickle
 import Synspot.Algorithm
-from .TrainRequest import TrainRequest, PersonalInformation
+from .TrainRequest import TrainRequest
 from .TestRequest import TestRequest
 from .Authorization import Authorization
 from .Get_Notification import Get_Notification
 from .Database_class import Database_class
 from .Network import Network
 from .PersonalInformation import PersonalInformation
-
+# from .Database_class_helper import database_strategy_interface
 # from Algorithm import log
 # from .Network import Network
 # from Synspot import TrainRequest, PersonalInformation
@@ -35,6 +38,7 @@ _default_testRequest = TestRequest.get_TestRequest_instance()
 _default_get_notification = Get_Notification.get_Get_notification_instance()
 _default_network = Network.get_Network_instance()
 _default_personalinformation = PersonalInformation.get_PersonalInformation_instance()
+_default_database_class = Database_class.get_Database_class_instance()
 
 def callForTrain(maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, 
                             train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str=None, task_description: str=None):
@@ -55,9 +59,17 @@ def userRegister(username: str, email: str, password: str):
     _default_authorization.userRegister(username, password)
     return
 
+def start_Collaboration():
+    _default_get_notification.start_Collaboration()
+    return
+
+def end_Collaboration():
+    _default_get_notification.end_Collaboration()
+    return
+
 def userLogin(username: str, password: str):
     _default_authorization.userLogin(username, password)
-    _default_get_notification.getNotification()
+    start_Collaboration()
     return
 
 def userLogout():
@@ -77,30 +89,73 @@ def userLogout():
 
 def set_default_data_path(default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None):
     PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
-    user_id = PersonalInformation_instance.get_user_id()
+    user_id = PersonalInformation_instance.user_id
     if user_id == None:
         return 'Please Login first'
-    PersonalInformation_instance.set_default_mode(default_mode)
-    Database_class_instance = Database_class.get_Database_class_instance()
-    Database_class_instance.store_User_Default_Table(user_id=user_id, default_mode=default_mode, default_task_mode=default_task_mode, default_model_name=default_model_name,
+    PersonalInformation_instance.default_mode = default_mode
+    _default_database_class.store_User_Default_Table(user_id=user_id, default_mode=default_mode, default_task_mode=default_task_mode, default_model_name=default_model_name,
                                                     default_file_path=default_file_path, default_id_column=default_id_column, default_data_column=default_data_column)
     return 
 
-def get_online_user(username: list):
-    pass
+def get_all_task_id_as_sponsor():
+    try:
+        res = _default_database_class.get_all_task_id_as_sponsor()
+    except:
+        print('get_all_task_id_as_sponsor wrong')
+    else:
+        return res
+    
+def get_all_test_id_as_sponsor():
+    try:
+        res = _default_database_class.get_all_test_id_as_sponsor()
+    except:
+        print('get_all_test_id_as_sponsor wrong')
+    else:
+        return res
 
+def get_all_task_id_as_assistor():
+    try:
+        res = _default_database_class.get_all_task_id_as_assistor()
+    except:
+        print('get_all_task_id_as_assistor wrong')
+    else:
+        return res
 
-def get_all_training_tasks():
-    pass
+def get_all_test_id_as_assistor():
+    try:
+        res = _default_database_class.get_all_test_id_as_assistor()
+    except:
+        print('get_all_test_id_as_assistor wrong')
+    else:
+        return res
 
+def get_all_task_id():
+    return get_all_task_id_as_sponsor() + get_all_task_id_as_assistor()
 
-def get_all_testing_tasks():
-    pass
+def get_all_test_id():
+    return get_all_test_id_as_sponsor() + get_all_test_id_as_assistor()
 
+def store_database(input, path, mode='pickle'):
+    dirname = os.path.dirname(path)
+    try:
+        os.makedirs(path)
+    except OSError as e:
+        if e.errno == errno.EEXIST:
+            pass
+        else:
+            raise
+    if mode == 'pickle':
+        pickle.dump(input, open(path, 'wb'))
+    else:
+        raise ValueError('Not valid save mode')
+    return
 
 def get_pending_requests():
     pass
-#
+
+    
+def get_online_user(username: list):
+    pass
 
 # userLogin("xie2", "Xie2@123")
 # set_default_data_path("/Users/qile/Documents/data/BostonHousing/2/123/0.5/0/train/data.csv", "1", "2")

@@ -16,7 +16,8 @@ from . import _default_get_notification
 from . import _default_PersonalInformation
 from . import _default_Network
 
-from . import choose_unittest_callback
+from . import unittest_strategy_interface
+_default_unittest_strategy_interface = unittest_strategy_interface()
 
 import pytest
 
@@ -33,15 +34,18 @@ class Test_helper_function:
         unread_test_request_res = _default_testRequest.unread_test_request(unread_test_request_notification)
         assert unread_test_request_res == 'unread_test_request done'
 
-    def unread_test_match_id_sponsor_helper(self, unread_test_match_id_notification, training_type, testing_stage):
-        unread_test_match_id_sponsor_res = _default_testRequest.unread_test_match_id(unread_test_match_id_notification, choose_unittest_callback(training_type, testing_stage))   
+    def unread_test_match_id_sponsor_helper(self, unread_test_match_id_notification, unittest_strategy):
+        _default_unittest_strategy_interface.unittest_strategy = unittest_strategy
+        unread_test_match_id_sponsor_res = _default_testRequest.unread_test_match_id(unread_test_match_id_notification, _default_unittest_strategy_interface.get_unread_test_sponsor_match_id_test())   
         assert unread_test_match_id_sponsor_res == 'unread_test_match_id done'
     
-    def unread_test_match_id_assistor_helper(self, unread_test_match_id_notification, training_type, testing_stage):
-        unread_test_match_id_assistor_res = _default_testRequest.unread_test_match_id(unread_test_match_id_notification, choose_unittest_callback(training_type, testing_stage))   
+    def unread_test_match_id_assistor_helper(self, unread_test_match_id_notification, unittest_strategy):
+        _default_unittest_strategy_interface.unittest_strategy = unittest_strategy
+        unread_test_match_id_assistor_res = _default_testRequest.unread_test_match_id(unread_test_match_id_notification, _default_unittest_strategy_interface.get_unread_test_assistor_match_id_test())   
         print('unread_test_match_id_assistor_res', unread_test_match_id_assistor_res)
         assert unread_test_match_id_assistor_res == 'unread_test_match_id done'
     
-    def unread_test_output(self, unread_test_output_notification, training_type, testing_stage):
-        unread_test_output_res = _default_testRequest.unread_test_output(unread_test_output_notification, choose_unittest_callback(training_type, testing_stage))   
+    def unread_test_output(self, unread_test_output_notification, unittest_strategy):
+        _default_unittest_strategy_interface.unittest_strategy = unittest_strategy
+        unread_test_output_res = _default_testRequest.unread_test_output(unread_test_output_notification, _default_unittest_strategy_interface.get_unread_test_output_test())   
         assert unread_test_output_res == 'unread_test_output done'

@@ -18,7 +18,8 @@ class PersonalInformation:
 
         return cls.__PersonalInformation_instance
 
-    def get_user_id(self):
+    @property
+    def user_id(self):
         """
         get the user id of current user. The user id is set to None at first.
 
@@ -34,7 +35,8 @@ class PersonalInformation:
 
         return self.__user_id
 
-    def set_user_id(self, user_id: str):
+    @user_id.setter
+    def user_id(self, user_id: str):
         """
         Change the user_id.
 
@@ -51,7 +53,8 @@ class PersonalInformation:
         self.__user_id = user_id
         return
 
-    def get_default_mode(self):
+    @property
+    def default_mode(self):
         """
         get the default mode set by user from DB. The default mode is set to active at first.
 
@@ -70,8 +73,8 @@ class PersonalInformation:
             self.__default_mode = "auto"
         return self.__default_mode
 
-
-    def set_default_mode(self, mode: str):
+    @default_mode.setter
+    def default_mode(self, mode: str):
         """
         Change the default mode.
 
@@ -90,7 +93,8 @@ class PersonalInformation:
         self.__default_mode = mode
         return
 
-    def get_root(self):
+    @property
+    def root(self):
         """
         Get the root path of intermediate data storage
 
@@ -106,8 +110,8 @@ class PersonalInformation:
 
         return self.__root
 
-
-    def set_root(self, root: str):
+    @root.setter
+    def root(self, root: str):
         """
         Set the root path of intermediate data storage to new root
 
@@ -124,7 +128,8 @@ class PersonalInformation:
         self.__root = root
         return
 
-    def get_exe_position(self):
+    @property
+    def exe_position(self):
         """
         Get the path of the Algorithm entry point
 
@@ -156,5 +161,5 @@ class PersonalInformation:
         try:
             self.__default_mode = None
             self.__user_id = None
-        except RuntimeError:
+        except:
             print('Logout procedure wrong')

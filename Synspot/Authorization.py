@@ -18,10 +18,10 @@ class Authorization():
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         self.Database_class_instance = Database_class.get_Database_class_instance()
-        self.base_url = self.Network_instance.get_base_url()
+        self.base_url = self.Network_instance.base_url
 
     def __obtain_important_information(self):
-        root = self.PersonalInformation_instance.get_root()
+        root = self.PersonalInformation_instance.root
         assert root is not None
 
         return root
@@ -52,7 +52,7 @@ class Authorization():
                 res = user_register_res['message'] 
                 print('user_register_res', user_register_res)
             
-        except RuntimeError:
+        except:
             print('user_register_res wrong')
 
         return res
@@ -78,7 +78,7 @@ class Authorization():
         print('url', url, username, password)
         try:
             token_response = requests.post(url, auth=(username, password))
-        except RuntimeError:
+        except:
             print('create_new_train_task wrong')
        
         print('token_response', token_response)
@@ -93,8 +93,8 @@ class Authorization():
         user_id = str(json.loads(base64.b64decode(temp[1]))['user_id'])
         print('login user_id', user_id)
 
-        self.Network_instance.set_token(token)
-        self.PersonalInformation_instance.set_user_id(user_id)
+        self.Network_instance.token = token
+        self.PersonalInformation_instance.user_id = user_id
         
         res = 'userLogin Successfully'
         return res

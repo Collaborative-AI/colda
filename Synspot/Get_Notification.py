@@ -9,15 +9,14 @@ class Get_Notification():
     __Get_Notification_instance = None
 
     def __init__(self):
+        self.__stop_indicator = False
+
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
-        self.base_url = self.Network_instance.get_base_url()
+        self.base_url = self.Network_instance.base_url
 
         self.default_trainRequest = TrainRequest.get_TrainRequest_instance()
         self.default_testRequest = TestRequest.get_TestRequest_instance()
-        # while True:
-        #     schedule.run_pending()
-        #     time.sleep(10)
 
     @classmethod
     def get_Get_notification_instance(cls):
@@ -83,7 +82,7 @@ class Get_Notification():
         return
 
 
-    def getNotification(self):
+    def start_Collaboration(self):
 
         """
         Short Polling for new Notifications
@@ -98,14 +97,14 @@ class Get_Notification():
          KeyError - raises an exception
         """
 
-        user_id = self.PersonalInformation_instance.get_user_id()
+        user_id = self.PersonalInformation_instance.user_id
         url = self.base_url + "/users/" + user_id + "/notifications/"
-        token = self.Network_instance.get_token()
+        token = self.Network_instance.token
         print("get notification url", url)
         try:
             short_polling_res = requests.get(url, headers={'Authorization': 'Bearer ' + token})
             print("short_polling_res", short_polling_res)
-        except RuntimeError:
+        except:
             print('short_polling_res wrong')
 
         response_data = json.loads(short_polling_res.text)
@@ -120,7 +119,7 @@ class Get_Notification():
                 try:
                     update_all_notifications_res = requests.post(url, json=data,
                                                              headers={'Authorization': 'Bearer ' + token})
-                except RuntimeError:
+                except:
                     print('short_polling_res wrong')
 
                 print("update_all_notifications", update_all_notifications_res)
@@ -135,9 +134,12 @@ class Get_Notification():
                 # for unittest
                 return update_all_notifications_data
 
-        # timer = threading.Timer(10, self.getNotification)
-        # timer.start()
+        timer = threading.Timer(10, self.start_Collaboration)
+        if not self.__stop_indicator:
+            timer.start()
         return
 
-# get_notification_instance = Get_Notification.get_Get_notification_instance()
-# schedule.every(5).seconds.do(get_notification_instance.getNotification())
+    def end_Collaboration(self):
+        self.__stop_indicator = True
+        return 
+

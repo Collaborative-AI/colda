@@ -30,14 +30,14 @@ class TrainRequest():
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         self.Database_class_instance = Database_class.get_Database_class_instance()
 
-        self.base_url = self.Network_instance.get_base_url()
+        self.base_url = self.Network_instance.base_url
         self.maxRound = 2
         self.skip_header_default = 1
         self.initial_round = 1
         self.test_indicator = 'train'
         # self.assistor_task_mode = 'regression'
-        # self.exe_position = self.PersonalInformation_instance.get_exe_position()
-        # self.root = self.PersonalInformation_instance.get_root()
+        # self.exe_position = self.PersonalInformation_instance.exe_position
+        # self.root = self.PersonalInformation_instance.root
 
     @classmethod
     def get_TrainRequest_instance(cls):
@@ -63,11 +63,11 @@ class TrainRequest():
         Raises:
             None
         """
-        user_id = self.PersonalInformation_instance.get_user_id()
+        user_id = self.PersonalInformation_instance.user_id
         assert user_id is not None
-        root = self.PersonalInformation_instance.get_root()
+        root = self.PersonalInformation_instance.root
         assert root is not None
-        token = self.Network_instance.get_token()
+        token = self.Network_instance.token
         assert token is not None
 
         task_id = None
@@ -121,10 +121,10 @@ class TrainRequest():
         """
 
         url = self.base_url + "/create_new_train_task/"
-        token = self.Network_instance.get_token()
+        token = self.Network_instance.token
         try:
             get_train_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
-        except RuntimeError:
+        except:
             print('get_train_id_response wrong')
 
         get_train_id_response_text = load_json_data(json_data=get_train_id_response, json_data_name='get_train_id_response', 
@@ -197,7 +197,7 @@ class TrainRequest():
             find_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             find_assistor_res = load_json_data(json_data=find_assistor_res, json_data_name='find_assistor_res',
                                                 testing_key_value_pair=[('task_id', task_id)])
-        except RuntimeError:
+        except:
             print('find_assistor_res wrong')
 
         # Record the history to log file
@@ -226,7 +226,7 @@ class TrainRequest():
         # obtain some important information
         user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
         
-        default_mode = self.PersonalInformation_instance.get_default_mode()
+        default_mode = self.PersonalInformation_instance.default_mode
         print('default_mode', default_mode)
         cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
         cur_unread_request_info_dict = unread_request_notification["info_dict"]
@@ -263,7 +263,7 @@ class TrainRequest():
                     match_assistor_id_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
                     match_assistor_id_res = load_json_data(json_data=match_assistor_id_res, json_data_name='match_assistor_id_res', 
                                                             testing_key_value_pair=[('stored', 'assistor match id stored')])
-                except RuntimeError:
+                except:
                     print('match_assistor_id_res wrong')
 
                 # add log
@@ -339,7 +339,7 @@ class TrainRequest():
             sponsor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             sponsor_get_match_id_file_res = load_json_data(json_data=sponsor_get_match_id_file_res, json_data_name='sponsor_get_match_id_file_res', 
                                                             testing_key_value_pair=[('match_id_file', None), ('assistor_random_id_pair', None)])
-        except RuntimeError:
+        except:
             print('sponsor_get_match_id_file_res wrong')
 
         msg = ["3.3 Sponsor gets matched id file\n"]
@@ -415,7 +415,7 @@ class TrainRequest():
             send_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             send_situation_res = load_json_data(json_data=send_situation_res, json_data_name='send_situation_res', 
                                                 testing_key_value_pair=[('message', 'send situation successfully!')])
-        except RuntimeError:
+        except:
             print('send_situation_res wrong')
 
         msg = ["3.7 Sponsor sends all situations" + "\n", "-------------------------- 3. Unread Match ID Done\n"]
@@ -450,7 +450,7 @@ class TrainRequest():
             assistor_get_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             assistor_get_match_id_file_res = load_json_data(json_data=assistor_get_match_id_file_res, json_data_name='assistor_get_match_id_file_res', 
                                                             testing_key_value_pair=[('match_id_file', None), ('sponsor_random_id', None)])
-        except RuntimeError:
+        except:
             print('assistor_get_match_id_file_res wrong')
 
         msg = ["3.3 Assistor gets matched id file\n"]
@@ -609,7 +609,7 @@ class TrainRequest():
                 assistor_send_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
                 assistor_send_output_res = load_json_data(json_data=assistor_send_output_res, json_data_name='assistor_send_output_res', 
                                                                 testing_key_value_pair=[('send_output', 'send output successfully')])
-            except RuntimeError:
+            except:
                 print('assistor_send_output_res wrong')
 
             msg = ["4.5 Assistor sends output\n", "---- 4. Unread Situation Done\n", "---- Train stage done\n"]
@@ -647,7 +647,7 @@ class TrainRequest():
             assistor_get_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             assistor_get_situation_res = load_json_data(json_data=assistor_get_situation_res, json_data_name='assistor_get_situation_res', 
                                                             testing_key_value_pair=[('situation', None), ('sender_random_id', None)])
-        except RuntimeError:
+        except:
             print('assistor_get_situation_res wrong')
 
         # handle response from above request
@@ -732,7 +732,7 @@ class TrainRequest():
             sponsor_get_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             sponsor_get_output_res = load_json_data(json_data=sponsor_get_output_res, json_data_name='sponsor_get_output_res', 
                                                     testing_key_value_pair=[('output', None), ('sender_random_ids_list', None)])
-        except RuntimeError:
+        except:
             print('sponsor_get_output_res wrong')
 
         msg = ["5.2 Sponsor gets output model\n"]
@@ -844,7 +844,7 @@ class TrainRequest():
                     send_situation_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
                     send_situation_res = load_json_data(json_data=send_situation_res, json_data_name='send_situation_res', 
                                                         testing_key_value_pair=[('message', 'send situation successfully!')])
-                except RuntimeError:
+                except:
                     print('send_situation_res wrong')
 
                 msg = ["5.6 Sponsor updates situation done\n", "-------------------------- 5. Unread Output Done\n"]

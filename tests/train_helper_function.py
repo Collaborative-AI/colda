@@ -21,14 +21,13 @@ import pytest
 class Train_helper_function:
 
     def clean_db(self):
-        base_url = _default_Network.get_base_url()
+        base_url = _default_Network.base_url
         url = base_url + "/delete_all_rows/"
         try:
             delete_db_res = requests.get(url)
-        except RuntimeError:
+        except:
             print('delete_db_res wrong')
         
-
     def first_user_login(self):
         userLogin_res = _default_authorization.userLogin(username=testing_data['first_user_username'], password=testing_data['first_user_password'])
         assert userLogin_res == 'userLogin Successfully'
@@ -39,8 +38,8 @@ class Train_helper_function:
         assert userLogin_res == 'userLogin Successfully'
         return
 
-    def get_Notification(self):
-        return _default_get_notification.getNotification()
+    def start_Collaboration(self):
+        return _default_get_notification.start_Collaboration()
 
     def handleTrainRequest_helper(self):
         handleTrainRequest_res = _default_trainRequest.handleTrainRequest(maxRound=testing_data['maxRound'], assistors=testing_data['assistors'], train_file_path=testing_data['train_file_path'],

@@ -20,24 +20,24 @@ class TestPersonalInformation:
     def test_set_user_id(self):
         PersonalInformation_instance = self.get_instance()
         user_id = 'ceshi'
-        PersonalInformation_instance.set_user_id(user_id)
-        assert PersonalInformation_instance.get_user_id() == user_id
+        PersonalInformation_instance.user_id = user_id
+        assert PersonalInformation_instance.user_id == user_id
 
     def test_default_mode(self):
         PersonalInformation_instance = self.get_instance()
-        default_mode = PersonalInformation_instance.get_default_mode()
+        default_mode = PersonalInformation_instance.default_mode
         assert default_mode == 'manual'
 
     def test_set_wrong_default_mode(self):
         PersonalInformation_instance = self.get_instance()
         with pytest.raises(Exception):
-            mode = 'zz'
-            PersonalInformation_instance.set_default_mode(mode)
+            default_mode = 'zz'
+            PersonalInformation_instance.default_mode = default_mode
     
     def test_set_default_mode(self):
         PersonalInformation_instance = self.get_instance()
-        mode = 'auto'
-        PersonalInformation_instance.set_default_mode(mode)
-        assert PersonalInformation_instance.get_default_mode() == mode
+        default_mode = 'auto'
+        PersonalInformation_instance.default_mode = default_mode
+        assert PersonalInformation_instance.default_mode == default_mode
 
     

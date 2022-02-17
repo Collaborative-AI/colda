@@ -1,4 +1,5 @@
 import collections
+from .PersonalInformation import PersonalInformation
 
 class Database_class():
     __Database_class_instance = None
@@ -13,6 +14,60 @@ class Database_class():
 
         return cls.__Database_class_instance
 
+    def store_database(self, path):
+
+        return 
+
+    def __obtain_user_id(self):
+        PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
+        user_id = PersonalInformation_instance.user_id
+        assert user_id is not None
+        return user_id
+
+    def get_all_task_id_as_sponsor(self):
+        user_id = self.__obtain_user_id()
+        res = []
+        for key in self.__temp_database:
+            key_user_id, _, key_test_indicator = key[0], key[1], key[2]
+            if key_user_id == user_id and key_test_indicator == 'train':
+                if 'User_Sponsor_Table' in self.__temp_database[key]:
+                    key_task_id = key[2]
+                    res.append(key_task_id)
+        return res
+    
+    def get_all_test_id_as_sponsor(self):
+        user_id = self.__obtain_user_id()
+        res = []
+        for key in self.__temp_database:
+            key_user_id, _, key_test_indicator = key[0], key[1], key[2]
+            if key_user_id == user_id and key_test_indicator == 'test':
+                if 'User_Sponsor_Table' in self.__temp_database[key]:
+                    key_test_id = key[2]
+                    res.append(key_test_id)
+        return res
+
+    def get_all_task_id_as_assistor(self):
+        user_id = self.__obtain_user_id()
+        res = []
+        for key in self.__temp_database:
+            key_user_id, _, key_test_indicator = key[0], key[1], key[2]
+            if key_user_id == user_id and key_test_indicator == 'train':
+                if 'User_Assistor_Table' in self.__temp_database[key]:
+                    key_task_id = key[2]
+                    res.append(key_task_id)
+        return res
+
+    def get_all_test_id_as_assistor(self):
+        user_id = self.__obtain_user_id()
+        res = []
+        for key in self.__temp_database:
+            key_user_id, _, key_test_indicator = key[0], key[1], key[2]
+            if key_user_id == user_id and key_test_indicator == 'test':
+                if 'User_Assistor_Table' in self.__temp_database[key]:
+                    key_test_id = key[2]
+                    res.append(key_test_id)
+        return res
+
     def store_User_Default_Table(self, user_id: str, default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, 
                                     default_id_column: str=None, default_data_column: str=None):
 
@@ -26,7 +81,7 @@ class Database_class():
             self.__temp_database[user_id]['User_Default_Table']['default_file_path'] = default_file_path
             self.__temp_database[user_id]['User_Default_Table']['default_id_column'] = default_id_column
             self.__temp_database[user_id]['User_Default_Table']['default_data_column'] = default_data_column
-        except RuntimeError:
+        except:
             print('User_Default_Table stores false')
 
         return 'User_Default_Table stores successfully'
@@ -78,7 +133,7 @@ class Database_class():
             self.__temp_database[key]['User_Sponsor_Table']['task_mode'] = task_mode
             self.__temp_database[key]['User_Sponsor_Table']['model_name'] = model_name
             self.__temp_database[key]['User_Sponsor_Table']['metric_name'] = metric_name
-        except RuntimeError:
+        except:
             print('User_Sponsor_Table stores false')
         return 'User_Sponsor_Table stores successfully'
     
@@ -115,7 +170,7 @@ class Database_class():
             task_mode = self.__temp_database[key]['User_Sponsor_Table']['task_mode']
             model_name = self.__temp_database[key]['User_Sponsor_Table']['model_name']
             metric_name = self.__temp_database[key]['User_Sponsor_Table']['metric_name']
-        except RuntimeError:
+        except:
             print('get User_Sponsor_Table false')
 
         if test_indicator == 'train':
@@ -156,7 +211,7 @@ class Database_class():
             self.__temp_database[key]['User_Assistor_Table']['mode'] = mode
             self.__temp_database[key]['User_Assistor_Table']['task_mode'] = task_mode
             self.__temp_database[key]['User_Assistor_Table']['model_name'] = model_name
-        except RuntimeError:
+        except:
             print('User_Assistor_Table stores false')
         return 'User_Assistor_Table stores successfully'
     
@@ -195,7 +250,7 @@ class Database_class():
             mode = self.__temp_database[key]['User_Assistor_Table']['mode']
             task_mode = self.__temp_database[key]['User_Assistor_Table']['task_mode']
             model_name = self.__temp_database[key]['User_Assistor_Table']['model_name']
-        except RuntimeError:
+        except:
             print('get User_Assistor_Table false')
 
         if test_indicator == 'train':
@@ -218,5 +273,5 @@ class Database_class():
         """
         try:
             self.__temp_database = collections.defaultdict(dict)
-        except RuntimeError:
+        except:
             print('Logout procedure wrong')

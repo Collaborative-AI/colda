@@ -34,7 +34,7 @@ def check_json_format(content):
         print('sss')
         json.loads(content)
         print('sss1')
-    except ValueError:
+    except:
         return False
     return True
 

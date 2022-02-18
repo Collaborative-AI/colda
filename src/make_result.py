@@ -15,6 +15,7 @@ def make_result(args):
     skip_header = args['skip_header']
     task_mode = args['task_mode']
     metric_name = args['metric_name']
+    assistance_rate_mode = args['assistance_rate_mode']
     dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
     target_idx = parse_idx(target_idx)
     target = dataset[:, target_idx]
@@ -46,9 +47,12 @@ def make_result(args):
         if len(result.shape) == 1:
             result = result.reshape(1, -1)
     result = result.reshape(result.shape[0], -1)
-    alpha = np.ones(1)
-    func_ = minimize(result_func, alpha, (task_mode, result, output, target))
-    alpha = func_.x
+    if assistance_rate_mode == 'optim':
+        alpha = np.ones(1)
+        func_ = minimize(result_func, alpha, (task_mode, result, output, target))
+        alpha = func_.x
+    else:
+        alpha = np.array([float(assistance_rate_mode)])
     np.savetxt(os.path.join(round_path, str(round), 'alpha.csv'), alpha, delimiter=",")
     result = result + alpha * output
     np.savetxt(os.path.join(round_path, str(round), 'result.csv'), result, delimiter=",")

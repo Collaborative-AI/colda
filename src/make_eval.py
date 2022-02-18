@@ -59,6 +59,7 @@ def make_eval(args):
         output_i = output_i / count_i
         alpha = np.genfromtxt(os.path.join(task_path, 'train', 'round', str(i), 'alpha.csv'), delimiter=',')
         result = result + alpha * output_i
+        print(alpha)
         result_path_i = os.path.join(task_path, 'test', test_id, 'round', str(i), 'result.csv')
         result_path.append(result_path_i)
         np.savetxt(result_path_i, result, delimiter=",")

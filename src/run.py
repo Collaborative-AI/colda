@@ -29,6 +29,7 @@ parser.add_argument('--skip_header', default=1, type=int)
 parser.add_argument('--task_mode', default=None, type=str)
 parser.add_argument('--model_name', default=None, type=str)
 parser.add_argument('--metric_name', default=None, type=str)
+parser.add_argument('--assistance_rate_mode', default='optim', type=str)
 args = vars(parser.parse_args())
 
 

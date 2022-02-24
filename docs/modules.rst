@@ -1,9 +1,0 @@
-Package
-=======
-
-.. toctree::
-   :maxdepth: 4
-
-   Synspot
-   setup
-   tests

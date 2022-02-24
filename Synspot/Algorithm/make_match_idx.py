@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from utils import makedir_exist_ok
+from synspot.algorithm.utils import makedir_exist_ok
 
 
 def make_match_idx(root, self_id, task_id, mode, test_id, from_id):

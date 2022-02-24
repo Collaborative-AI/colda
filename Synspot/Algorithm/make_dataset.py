@@ -3,7 +3,8 @@ import numpy as np
 import os
 import shutil
 import pandas as pd
-from utils import makedir_exist_ok, save
+import synspot
+from synspot.algorithm.utils import makedir_exist_ok, save
 
 # python make_dataset.py --root ./data/processed/KCHousing --data_name KCHousing --task_id 123 --num_users 1 --match_rate 1 --normalize 1
 # python make_dataset.py --root ./data/processed/KCHousing --data_name KCHousing --task_id 123 --num_users 2 --match_rate 1 --normalize 1

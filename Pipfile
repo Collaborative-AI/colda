@@ -20,6 +20,11 @@ pandas = "*"
 pytorch-sphinx-theme = "*"
 nbsphinx = "*"
 ipykernel = "*"
+sphinx-copybutton = "*"
+sphinx = "*"
+sphinx-issues = "*"
+sphinx-removed-in = "*"
+sphinxext-opengraph = "*"
 
 [dev-packages]
 "flake8" = "*"
@@ -30,4 +35,4 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.7"

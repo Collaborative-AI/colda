@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+<meta property="og:title" content="Image file formats" />
+  
+<meta property="og:type" content="website" />
+  
+<meta property="og:url" content="handbook/image-file-formats.html" />
+  
+<meta property="og:description" content="The Python Imaging Library supports a wide variety of raster file formats. Over 30 different file formats can be identified and read by the library. Write support is less extensive, but most common..." />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image file formats &mdash; Synspot 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/styles.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/dark.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/light.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/js/script.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Text anchors" href="text-anchors.html" />
+    <link rel="prev" title="Appendices" href="appendices.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Synspot
+            <img src="../_static/Synspot.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="appendices.html">Appendices</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Image file formats</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fully-supported-formats">Fully supported formats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#read-only-formats">Read-only formats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#write-only-formats">Write-only formats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#identify-only-formats">Identify-only formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="text-anchors.html">Text anchors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html">Writing Your Own Image Plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html#decoders">Decoders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html#writing-your-own-file-decoder-in-c">Writing Your Own File Decoder in C</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html#writing-your-own-file-decoder-in-python">Writing Your Own File Decoder in Python</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Synspot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Handbook</a> &raquo;</li>
+          <li><a href="appendices.html">Appendices</a> &raquo;</li>
+      <li>Image file formats</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/handbook/image-file-formats.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="image-file-formats">
+<span id="id1"></span><h1><a class="toc-backref" href="#id4">Image file formats</a><a class="headerlink" href="#image-file-formats" title="Permalink to this headline">¶</a></h1>
+<p>The Python Imaging Library supports a wide variety of raster file formats.
+Over 30 different file formats can be identified and read by the library.
+Write support is less extensive, but most common interchange and presentation
+formats are supported.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> function identifies files from their
+contents, not their names, but the <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method
+looks at the name to determine which format to use, unless the format is given
+explicitly.</p>
+<p>When an image is opened from a file, only that instance of the image is considered to
+have the format. Copies of the image will contain data loaded from the file, but not
+the file itself, meaning that it can no longer be considered to be in the original
+format. So if <code class="xref py py-meth docutils literal notranslate"><span class="pre">copy()</span></code> is called on an image, or another method
+internally creates a copy of the image, the <code class="docutils literal notranslate"><span class="pre">fp</span></code> (file pointer), along with any
+methods and attributes specific to a format. The <code class="xref py py-attr docutils literal notranslate"><span class="pre">format</span></code>
+attribute will be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<section id="fully-supported-formats">
+<h2><a class="toc-backref" href="#id5">Fully supported formats</a><a class="headerlink" href="#fully-supported-formats" title="Permalink to this headline">¶</a></h2>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#image-file-formats" id="id4">Image file formats</a></p>
+<ul>
+<li><p><a class="reference internal" href="#fully-supported-formats" id="id5">Fully supported formats</a></p>
+<ul>
+<li><p><a class="reference internal" href="#bmp" id="id6">BMP</a></p></li>
+<li><p><a class="reference internal" href="#dds" id="id7">DDS</a></p></li>
+<li><p><a class="reference internal" href="#dib" id="id8">DIB</a></p></li>
+<li><p><a class="reference internal" href="#eps" id="id9">EPS</a></p></li>
+<li><p><a class="reference internal" href="#gif" id="id10">GIF</a></p>
+<ul>
+<li><p><a class="reference internal" href="#reading-sequences" id="id11">Reading sequences</a></p></li>
+<li><p><a class="reference internal" href="#saving" id="id12">Saving</a></p></li>
+<li><p><a class="reference internal" href="#reading-local-images" id="id13">Reading local images</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#icns" id="id14">ICNS</a></p></li>
+<li><p><a class="reference internal" href="#ico" id="id15">ICO</a></p></li>
+<li><p><a class="reference internal" href="#im" id="id16">IM</a></p></li>
+<li><p><a class="reference internal" href="#jpeg" id="id17">JPEG</a></p></li>
+<li><p><a class="reference internal" href="#jpeg-2000" id="id18">JPEG 2000</a></p></li>
+<li><p><a class="reference internal" href="#msp" id="id19">MSP</a></p></li>
+<li><p><a class="reference internal" href="#pcx" id="id20">PCX</a></p></li>
+<li><p><a class="reference internal" href="#png" id="id21">PNG</a></p>
+<ul>
+<li><p><a class="reference internal" href="#apng-sequences" id="id22">APNG sequences</a></p></li>
+<li><p><a class="reference internal" href="#apng-saving" id="id23">Saving</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#ppm" id="id24">PPM</a></p></li>
+<li><p><a class="reference internal" href="#sgi" id="id25">SGI</a></p></li>
+<li><p><a class="reference internal" href="#spider" id="id26">SPIDER</a></p>
+<ul>
+<li><p><a class="reference internal" href="#writing-files-in-spider-format" id="id27">Writing files in SPIDER format</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tga" id="id28">TGA</a></p></li>
+<li><p><a class="reference internal" href="#tiff" id="id29">TIFF</a></p>
+<ul>
+<li><p><a class="reference internal" href="#reading-multi-frame-tiff-images" id="id30">Reading Multi-frame TIFF Images</a></p></li>
+<li><p><a class="reference internal" href="#saving-tiff-images" id="id31">Saving Tiff Images</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#webp" id="id32">WebP</a></p>
+<ul>
+<li><p><a class="reference internal" href="#saving-sequences" id="id33">Saving sequences</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#xbm" id="id34">XBM</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#read-only-formats" id="id35">Read-only formats</a></p>
+<ul>
+<li><p><a class="reference internal" href="#blp" id="id36">BLP</a></p></li>
+<li><p><a class="reference internal" href="#cur" id="id37">CUR</a></p></li>
+<li><p><a class="reference internal" href="#dcx" id="id38">DCX</a></p></li>
+<li><p><a class="reference internal" href="#fits" id="id39">FITS</a></p></li>
+<li><p><a class="reference internal" href="#fli-flc" id="id40">FLI, FLC</a></p></li>
+<li><p><a class="reference internal" href="#fpx" id="id41">FPX</a></p></li>
+<li><p><a class="reference internal" href="#ftex" id="id42">FTEX</a></p></li>
+<li><p><a class="reference internal" href="#gbr" id="id43">GBR</a></p></li>
+<li><p><a class="reference internal" href="#gd" id="id44">GD</a></p></li>
+<li><p><a class="reference internal" href="#imt" id="id45">IMT</a></p></li>
+<li><p><a class="reference internal" href="#iptc-naa" id="id46">IPTC/NAA</a></p></li>
+<li><p><a class="reference internal" href="#mcidas" id="id47">MCIDAS</a></p></li>
+<li><p><a class="reference internal" href="#mic" id="id48">MIC</a></p></li>
+<li><p><a class="reference internal" href="#mpo" id="id49">MPO</a></p></li>
+<li><p><a class="reference internal" href="#pcd" id="id50">PCD</a></p></li>
+<li><p><a class="reference internal" href="#pixar" id="id51">PIXAR</a></p></li>
+<li><p><a class="reference internal" href="#psd" id="id52">PSD</a></p></li>
+<li><p><a class="reference internal" href="#wal" id="id53">WAL</a></p></li>
+<li><p><a class="reference internal" href="#wmf" id="id54">WMF</a></p></li>
+<li><p><a class="reference internal" href="#xpm" id="id55">XPM</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#write-only-formats" id="id56">Write-only formats</a></p>
+<ul>
+<li><p><a class="reference internal" href="#palm" id="id57">PALM</a></p></li>
+<li><p><a class="reference internal" href="#pdf" id="id58">PDF</a></p></li>
+<li><p><a class="reference internal" href="#xv-thumbnails" id="id59">XV Thumbnails</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#identify-only-formats" id="id60">Identify-only formats</a></p>
+<ul>
+<li><p><a class="reference internal" href="#bufr" id="id61">BUFR</a></p></li>
+<li><p><a class="reference internal" href="#grib" id="id62">GRIB</a></p></li>
+<li><p><a class="reference internal" href="#hdf5" id="id63">HDF5</a></p></li>
+<li><p><a class="reference internal" href="#mpeg" id="id64">MPEG</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="bmp">
+<h3><a class="toc-backref" href="#id6">BMP</a><a class="headerlink" href="#bmp" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes Windows and OS/2 BMP files containing <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">RGB</span></code> data. 16-colour images are read as <code class="docutils literal notranslate"><span class="pre">P</span></code> images. Run-length encoding
+is not supported.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
+<dl class="simple">
+<dt><strong>compression</strong></dt><dd><p>Set to <code class="docutils literal notranslate"><span class="pre">bmp_rle</span></code> if the file is run-length encoded.</p>
+</dd>
+</dl>
+</section>
+<section id="dds">
+<h3><a class="toc-backref" href="#id7">DDS</a><a class="headerlink" href="#dds" title="Permalink to this headline">¶</a></h3>
+<p>DDS is a popular container texture format used in video games and natively supported
+by DirectX. Uncompressed RGB and RGBA can be read, and (since 8.3.0) written. DXT1,
+DXT3 (since 3.4.0) and DXT5 pixel formats can be read, only in <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> mode.</p>
+</section>
+<section id="dib">
+<h3><a class="toc-backref" href="#id8">DIB</a><a class="headerlink" href="#dib" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes DIB files. DIB files are similar to BMP files, so see
+above for more information.</p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">New in version 6.0.0.</span></p>
+</div>
+</div></blockquote>
+</section>
+<section id="eps">
+<h3><a class="toc-backref" href="#id9">EPS</a><a class="headerlink" href="#eps" title="Permalink to this headline">¶</a></h3>
+<p>Pillow identifies EPS files containing image data, and can read files that
+contain embedded raster images (ImageData descriptors). If Ghostscript is
+available, other EPS files can be read as well. The EPS driver can also write
+EPS images. The EPS driver can read EPS images in <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">LAB</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB</span></code> and
+<code class="docutils literal notranslate"><span class="pre">CMYK</span></code> mode, but Ghostscript may convert the images to <code class="docutils literal notranslate"><span class="pre">RGB</span></code> mode rather
+than leaving them in the original color space. The EPS driver can write images
+in <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB</span></code> and <code class="docutils literal notranslate"><span class="pre">CMYK</span></code> modes.</p>
+<p>If Ghostscript is available, you can call the <code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code>
+method with the following parameters to affect how Ghostscript renders the EPS</p>
+<dl>
+<dt><strong>scale</strong></dt><dd><p>Affects the scale of the resultant rasterized image. If the EPS suggests
+that the image be rendered at 100px x 100px, setting this parameter to
+2 will make the Ghostscript render a 200px x 200px image instead. The
+relative position of the bounding box is maintained:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">im</span><span class="o">.</span><span class="n">size</span>  <span class="c1"># (100,100)</span>
+<span class="n">im</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">im</span><span class="o">.</span><span class="n">size</span>  <span class="c1"># (200,200)</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong>transparency</strong></dt><dd><p>If true, generates an RGBA image with a transparent background, instead of
+the default behaviour of an RGB image with a white background.</p>
+</dd>
+</dl>
+</section>
+<section id="gif">
+<h3><a class="toc-backref" href="#id10">GIF</a><a class="headerlink" href="#gif" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads GIF87a and GIF89a versions of the GIF file format. The library
+writes run-length encoded files in GIF87a by default, unless GIF89a features
+are used or GIF89a is already in use.</p>
+<p>GIF files are initially read as grayscale (<code class="docutils literal notranslate"><span class="pre">L</span></code>) or palette mode (<code class="docutils literal notranslate"><span class="pre">P</span></code>)
+images, but seeking to later frames in an image will change the mode to either
+<code class="docutils literal notranslate"><span class="pre">RGB</span></code> or <code class="docutils literal notranslate"><span class="pre">RGBA</span></code>, depending on whether the first frame had transparency.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
+<dl class="simple">
+<dt><strong>background</strong></dt><dd><p>Default background color (a palette color index).</p>
+</dd>
+<dt><strong>transparency</strong></dt><dd><p>Transparency color index. This key is omitted if the image is not
+transparent.</p>
+</dd>
+<dt><strong>version</strong></dt><dd><p>Version (either <code class="docutils literal notranslate"><span class="pre">GIF87a</span></code> or <code class="docutils literal notranslate"><span class="pre">GIF89a</span></code>).</p>
+</dd>
+<dt><strong>duration</strong></dt><dd><p>May not be present. The time to display the current frame
+of the GIF, in milliseconds.</p>
+</dd>
+<dt><strong>loop</strong></dt><dd><p>May not be present. The number of times the GIF should loop. 0 means that
+it will loop forever.</p>
+</dd>
+<dt><strong>comment</strong></dt><dd><p>May not be present. A comment about the image.</p>
+</dd>
+<dt><strong>extension</strong></dt><dd><p>May not be present. Contains application specific information.</p>
+</dd>
+</dl>
+<section id="reading-sequences">
+<h4><a class="toc-backref" href="#id11">Reading sequences</a><a class="headerlink" href="#reading-sequences" title="Permalink to this headline">¶</a></h4>
+<p>The GIF loader supports the <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code> methods. You can combine these methods
+to seek to the next frame (<code class="docutils literal notranslate"><span class="pre">im.seek(im.tell()</span> <span class="pre">+</span> <span class="pre">1)</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">im.seek()</span></code> raises an <code class="xref py py-exc docutils literal notranslate"><span class="pre">EOFError</span></code> if you try to seek after the last frame.</p>
+</section>
+<section id="saving">
+<h4><a class="toc-backref" href="#id12">Saving</a><a class="headerlink" href="#saving" title="Permalink to this headline">¶</a></h4>
+<p>When calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> to write a GIF file, the
+following options are available:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">save_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">append_images</span><span class="o">=</span><span class="p">[</span><span class="n">im1</span><span class="p">,</span> <span class="n">im2</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl>
+<dt><strong>save_all</strong></dt><dd><p>If present and true, all frames of the image will be saved. If
+not, then only the first frame of a multiframe image will be saved.</p>
+</dd>
+<dt><strong>append_images</strong></dt><dd><p>A list of images to append as additional frames. Each of the
+images in the list can be single or multiframe images.
+This is currently supported for GIF, PDF, PNG, TIFF, and WebP.</p>
+<p>It is also supported for ICO and ICNS. If images are passed in of relevant
+sizes, they will be used instead of scaling down the main image.</p>
+</dd>
+<dt><strong>include_color_table</strong></dt><dd><p>Whether or not to include local color table.</p>
+</dd>
+<dt><strong>interlace</strong></dt><dd><p>Whether or not the image is interlaced. By default, it is, unless the image
+is less than 16 pixels in width or height.</p>
+</dd>
+<dt><strong>disposal</strong></dt><dd><p>Indicates the way in which the graphic is to be treated after being displayed.</p>
+<ul class="simple">
+<li><p>0 - No disposal specified.</p></li>
+<li><p>1 - Do not dispose.</p></li>
+<li><p>2 - Restore to background color.</p></li>
+<li><p>3 - Restore to previous content.</p></li>
+</ul>
+<blockquote>
+<div><p>Pass a single integer for a constant disposal, or a list or tuple
+to set the disposal for each frame separately.</p>
+</div></blockquote>
+</dd>
+<dt><strong>palette</strong></dt><dd><p>Use the specified palette for the saved image. The palette should
+be a bytes or bytearray object containing the palette entries in
+RGBRGB… form. It should be no more than 768 bytes. Alternately,
+the palette can be passed in as an
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PIL.ImagePalette.ImagePalette</span></code> object.</p>
+</dd>
+<dt><strong>optimize</strong></dt><dd><p>If present and true, attempt to compress the palette by
+eliminating unused colors. This is only useful if the palette can
+be compressed to the next smaller power of 2 elements.</p>
+</dd>
+</dl>
+<p>Note that if the image you are saving comes from an existing GIF, it may have
+the following properties in its <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> dictionary.
+For these options, if you do not pass them in, they will default to
+their <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> values.</p>
+<dl class="simple">
+<dt><strong>transparency</strong></dt><dd><p>Transparency color index.</p>
+</dd>
+<dt><strong>duration</strong></dt><dd><p>The display duration of each frame of the multiframe gif, in
+milliseconds. Pass a single integer for a constant duration, or a
+list or tuple to set the duration for each frame separately.</p>
+</dd>
+<dt><strong>loop</strong></dt><dd><p>Integer number of times the GIF should loop. 0 means that it will loop
+forever. By default, the image will not loop.</p>
+</dd>
+<dt><strong>comment</strong></dt><dd><p>A comment about the image.</p>
+</dd>
+</dl>
+</section>
+<section id="reading-local-images">
+<h4><a class="toc-backref" href="#id13">Reading local images</a><a class="headerlink" href="#reading-local-images" title="Permalink to this headline">¶</a></h4>
+<p>The GIF loader creates an image memory the same size as the GIF file’s <em>logical
+screen size</em>, and pastes the actual pixel data (the <em>local image</em>) into this
+image. If you only want the actual pixel rectangle, you can manipulate the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code> and <code class="xref py py-attr docutils literal notranslate"><span class="pre">tile</span></code>
+attributes before loading the file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">im</span><span class="o">.</span><span class="n">tile</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gif&quot;</span><span class="p">:</span>
+    <span class="c1"># only read the first &quot;local image&quot; from this GIF file</span>
+    <span class="n">tag</span><span class="p">,</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">offset</span><span class="p">,</span> <span class="n">extra</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">tile</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">im</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span>
+    <span class="n">im</span><span class="o">.</span><span class="n">tile</span> <span class="o">=</span> <span class="p">[(</span><span class="n">tag</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">extra</span><span class="p">)]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="icns">
+<h3><a class="toc-backref" href="#id14">ICNS</a><a class="headerlink" href="#icns" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes macOS <code class="docutils literal notranslate"><span class="pre">.icns</span></code> files.  By default, the
+largest available icon is read, though you can override this by setting the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code> property before calling
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code>.  The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method
+sets the following <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> property:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Prior to version 8.3.0, Pillow could only write ICNS files on macOS.</p>
+</div>
+<dl class="simple">
+<dt><strong>sizes</strong></dt><dd><p>A list of supported sizes found in this icon file; these are a
+3-tuple, <code class="docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height,</span> <span class="pre">scale)</span></code>, where <code class="docutils literal notranslate"><span class="pre">scale</span></code> is 2 for a retina
+icon and 1 for a standard icon.  You <em>are</em> permitted to use this 3-tuple
+format for the <code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code> property if you set it
+before calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code>; after loading, the size
+will be reset to a 2-tuple containing pixel dimensions (so, e.g. if you
+ask for <code class="docutils literal notranslate"><span class="pre">(512,</span> <span class="pre">512,</span> <span class="pre">2)</span></code>, the final value of
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code> will be <code class="docutils literal notranslate"><span class="pre">(1024,</span> <span class="pre">1024)</span></code>).</p>
+</dd>
+</dl>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method can take the following keyword arguments:</p>
+<dl>
+<dt><strong>append_images</strong></dt><dd><p>A list of images to replace the scaled down versions of the image.
+The order of the images does not matter, as their use is determined by
+the size of each image.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.1.0.</span></p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="ico">
+<h3><a class="toc-backref" href="#id15">ICO</a><a class="headerlink" href="#ico" title="Permalink to this headline">¶</a></h3>
+<p>ICO is used to store icons on Windows. The largest available icon is read.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method supports the following options:</p>
+<dl class="simple">
+<dt><strong>sizes</strong></dt><dd><p>A list of sizes including in this ico file; these are a 2-tuple,
+<code class="docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height)</span></code>; Default to <code class="docutils literal notranslate"><span class="pre">[(16,</span> <span class="pre">16),</span> <span class="pre">(24,</span> <span class="pre">24),</span> <span class="pre">(32,</span> <span class="pre">32),</span> <span class="pre">(48,</span> <span class="pre">48),</span>
+<span class="pre">(64,</span> <span class="pre">64),</span> <span class="pre">(128,</span> <span class="pre">128),</span> <span class="pre">(256,</span> <span class="pre">256)]</span></code>. Any sizes bigger than the original
+size or 256 will be ignored.</p>
+</dd>
+</dl>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method can take the following keyword arguments:</p>
+<dl>
+<dt><strong>append_images</strong></dt><dd><p>A list of images to replace the scaled down versions of the image.
+The order of the images does not matter, as their use is determined by
+the size of each image.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 8.1.0.</span></p>
+</div>
+</dd>
+<dt><strong>bitmap_format</strong></dt><dd><p>By default, the image data will be saved in PNG format. With a bitmap format of
+“bmp”, image data will be saved in BMP format instead.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 8.3.0.</span></p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="im">
+<h3><a class="toc-backref" href="#id16">IM</a><a class="headerlink" href="#im" title="Permalink to this headline">¶</a></h3>
+<p>IM is a format used by LabEye and other applications based on the IFUNC image
+processing library. The library reads and writes most uncompressed interchange
+versions of this format.</p>
+<p>IM is the only format that can store all internal Pillow formats.</p>
+</section>
+<section id="jpeg">
+<h3><a class="toc-backref" href="#id17">JPEG</a><a class="headerlink" href="#jpeg" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads JPEG, JFIF, and Adobe JPEG files containing <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">CMYK</span></code> data. It writes standard and progressive JFIF files.</p>
+<p>Using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">draft()</span></code> method, you can speed things up by
+converting <code class="docutils literal notranslate"><span class="pre">RGB</span></code> images to <code class="docutils literal notranslate"><span class="pre">L</span></code>, and resize images to 1/2, 1/4 or 1/8 of
+their original size while loading them.</p>
+<p>By default Pillow doesn’t allow loading of truncated JPEG files, set
+<code class="xref py py-data docutils literal notranslate"><span class="pre">ImageFile.LOAD_TRUNCATED_IMAGES</span></code> to override this.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method may set the following
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties if available:</p>
+<dl>
+<dt><strong>jfif</strong></dt><dd><p>JFIF application marker found. If the file is not a JFIF file, this key is
+not present.</p>
+</dd>
+<dt><strong>jfif_version</strong></dt><dd><p>A tuple representing the jfif version, (major version, minor version).</p>
+</dd>
+<dt><strong>jfif_density</strong></dt><dd><p>A tuple representing the pixel density of the image, in units specified
+by jfif_unit.</p>
+</dd>
+<dt><strong>jfif_unit</strong></dt><dd><p>Units for the jfif_density:</p>
+<ul class="simple">
+<li><p>0 - No Units</p></li>
+<li><p>1 - Pixels per Inch</p></li>
+<li><p>2 - Pixels per Centimeter</p></li>
+</ul>
+</dd>
+<dt><strong>dpi</strong></dt><dd><p>A tuple representing the reported pixel density in pixels per inch, if
+the file is a jfif file and the units are in inches.</p>
+</dd>
+<dt><strong>adobe</strong></dt><dd><p>Adobe application marker found. If the file is not an Adobe JPEG file, this
+key is not present.</p>
+</dd>
+<dt><strong>adobe_transform</strong></dt><dd><p>Vendor Specific Tag.</p>
+</dd>
+<dt><strong>progression</strong></dt><dd><p>Indicates that this is a progressive JPEG file.</p>
+</dd>
+<dt><strong>icc_profile</strong></dt><dd><p>The ICC color profile for the image.</p>
+</dd>
+<dt><strong>exif</strong></dt><dd><p>Raw EXIF data from the image.</p>
+</dd>
+<dt><strong>comment</strong></dt><dd><p>A comment about the image.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 7.1.0.</span></p>
+</div>
+</dd>
+</dl>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method supports the following options:</p>
+<dl>
+<dt><strong>quality</strong></dt><dd><p>The image quality, on a scale from 0 (worst) to 95 (best). The default is
+75. Values above 95 should be avoided; 100 disables portions of the JPEG
+compression algorithm, and results in large files with hardly any gain in
+image quality.</p>
+</dd>
+<dt><strong>optimize</strong></dt><dd><p>If present and true, indicates that the encoder should make an extra pass
+over the image in order to select optimal encoder settings.</p>
+</dd>
+<dt><strong>progressive</strong></dt><dd><p>If present and true, indicates that this image should be stored as a
+progressive JPEG file.</p>
+</dd>
+<dt><strong>dpi</strong></dt><dd><p>A tuple of integers representing the pixel density, <code class="docutils literal notranslate"><span class="pre">(x,y)</span></code>.</p>
+</dd>
+<dt><strong>icc_profile</strong></dt><dd><p>If present and true, the image is stored with the provided ICC profile.
+If this parameter is not provided, the image will be saved with no profile
+attached. To preserve the existing profile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="n">icc_profile</span><span class="o">=</span><span class="n">im</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;icc_profile&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong>exif</strong></dt><dd><p>If present, the image will be stored with the provided raw EXIF data.</p>
+</dd>
+<dt><strong>subsampling</strong></dt><dd><p>If present, sets the subsampling for the encoder.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">keep</span></code>: Only valid for JPEG files, will retain the original image setting.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4:4:4</span></code>, <code class="docutils literal notranslate"><span class="pre">4:2:2</span></code>, <code class="docutils literal notranslate"><span class="pre">4:2:0</span></code>: Specific sampling values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: equivalent to <code class="docutils literal notranslate"><span class="pre">4:4:4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: equivalent to <code class="docutils literal notranslate"><span class="pre">4:2:2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code>: equivalent to <code class="docutils literal notranslate"><span class="pre">4:2:0</span></code></p></li>
+</ul>
+<p>If absent, the setting will be determined by libjpeg or libjpeg-turbo.</p>
+</dd>
+<dt><strong>qtables</strong></dt><dd><p>If present, sets the qtables for the encoder. This is listed as an
+advanced option for wizards in the JPEG documentation. Use with
+caution. <code class="docutils literal notranslate"><span class="pre">qtables</span></code> can be one of several types of values:</p>
+<ul class="simple">
+<li><p>a string, naming a preset, e.g. <code class="docutils literal notranslate"><span class="pre">keep</span></code>, <code class="docutils literal notranslate"><span class="pre">web_low</span></code>, or <code class="docutils literal notranslate"><span class="pre">web_high</span></code></p></li>
+<li><p>a list, tuple, or dictionary (with integer keys =
+range(len(keys))) of lists of 64 integers. There must be
+between 2 and 4 tables.</p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.5.0.</span></p>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To enable JPEG support, you need to build and install the IJG JPEG library
+before building the Python Imaging Library. See the distribution README for
+details.</p>
+</div>
+</section>
+<section id="jpeg-2000">
+<h3><a class="toc-backref" href="#id18">JPEG 2000</a><a class="headerlink" href="#jpeg-2000" title="Permalink to this headline">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.4.0.</span></p>
+</div>
+<p>Pillow reads and writes JPEG 2000 files containing <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">LA</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB</span></code> or
+<code class="docutils literal notranslate"><span class="pre">RGBA</span></code> data.  It can also read files containing <code class="docutils literal notranslate"><span class="pre">YCbCr</span></code> data, which it
+converts on read into <code class="docutils literal notranslate"><span class="pre">RGB</span></code> or <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> depending on whether or not there is
+an alpha channel.  Pillow supports JPEG 2000 raw codestreams (<code class="docutils literal notranslate"><span class="pre">.j2k</span></code> files),
+as well as boxed JPEG 2000 files (<code class="docutils literal notranslate"><span class="pre">.j2p</span></code> or <code class="docutils literal notranslate"><span class="pre">.jpx</span></code> files).  Pillow does
+<em>not</em> support files whose components have different sampling frequencies.</p>
+<p>When loading, if you set the <code class="docutils literal notranslate"><span class="pre">mode</span></code> on the image prior to the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code> method being invoked, you can ask Pillow to
+convert the image to either <code class="docutils literal notranslate"><span class="pre">RGB</span></code> or <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> rather than choosing for
+itself.  It is also possible to set <code class="docutils literal notranslate"><span class="pre">reduce</span></code> to the number of resolutions to
+discard (each one reduces the size of the resulting image by a factor of 2),
+and <code class="docutils literal notranslate"><span class="pre">layers</span></code> to specify the number of quality layers to load.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method supports the following options:</p>
+<dl class="simple">
+<dt><strong>offset</strong></dt><dd><p>The image offset, as a tuple of integers, e.g. (16, 16)</p>
+</dd>
+<dt><strong>tile_offset</strong></dt><dd><p>The tile offset, again as a 2-tuple of integers.</p>
+</dd>
+<dt><strong>tile_size</strong></dt><dd><p>The tile size as a 2-tuple.  If not specified, or if set to None, the
+image will be saved without tiling.</p>
+</dd>
+<dt><strong>quality_mode</strong></dt><dd><p>Either <code class="docutils literal notranslate"><span class="pre">&quot;rates&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;dB&quot;</span></code> depending on the units you want to use to
+specify image quality.</p>
+</dd>
+<dt><strong>quality_layers</strong></dt><dd><p>A sequence of numbers, each of which represents either an approximate size
+reduction (if quality mode is <code class="docutils literal notranslate"><span class="pre">&quot;rates&quot;</span></code>) or a signal to noise ratio value
+in decibels.  If not specified, defaults to a single layer of full quality.</p>
+</dd>
+<dt><strong>num_resolutions</strong></dt><dd><p>The number of different image resolutions to be stored (which corresponds
+to the number of Discrete Wavelet Transform decompositions plus one).</p>
+</dd>
+<dt><strong>codeblock_size</strong></dt><dd><p>The code-block size as a 2-tuple.  Minimum size is 4 x 4, maximum is 1024 x
+1024, with the additional restriction that no code-block may have more
+than 4096 coefficients (i.e. the product of the two numbers must be no
+greater than 4096).</p>
+</dd>
+<dt><strong>precinct_size</strong></dt><dd><p>The precinct size as a 2-tuple.  Must be a power of two along both axes,
+and must be greater than the code-block size.</p>
+</dd>
+<dt><strong>irreversible</strong></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use the lossy Irreversible Color Transformation
+followed by DWT 9-7.  Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>, which means to use the
+Reversible Color Transformation with DWT 5-3.</p>
+</dd>
+<dt><strong>progression</strong></dt><dd><p>Controls the progression order; must be one of <code class="docutils literal notranslate"><span class="pre">&quot;LRCP&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;RLCP&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;RPCL&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;PCRL&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;CPRL&quot;</span></code>.  The letters stand for Component,
+Position, Resolution and Layer respectively and control the order of
+encoding, the idea being that e.g. an image encoded using LRCP mode can
+have its quality layers decoded as they arrive at the decoder, while one
+encoded using RLCP mode will have increasing resolutions decoded as they
+arrive, and so on.</p>
+</dd>
+<dt><strong>cinema_mode</strong></dt><dd><p>Set the encoder to produce output compliant with the digital cinema
+specifications.  The options here are <code class="docutils literal notranslate"><span class="pre">&quot;no&quot;</span></code> (the default),
+<code class="docutils literal notranslate"><span class="pre">&quot;cinema2k-24&quot;</span></code> for 24fps 2K, <code class="docutils literal notranslate"><span class="pre">&quot;cinema2k-48&quot;</span></code> for 48fps 2K, and
+<code class="docutils literal notranslate"><span class="pre">&quot;cinema4k-24&quot;</span></code> for 24fps 4K.  Note that for compliant 2K files,
+<em>at least one</em> of your image dimensions must match 2048 x 1080, while
+for compliant 4K files, <em>at least one</em> of the dimensions must match
+4096 x 2160.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To enable JPEG 2000 support, you need to build and install the OpenJPEG
+library, version 2.0.0 or higher, before building the Python Imaging
+Library.</p>
+<p>Windows users can install the OpenJPEG binaries available on the
+OpenJPEG website, but must add them to their PATH in order to use Pillow (if
+you fail to do this, you will get errors about not being able to load the
+<code class="docutils literal notranslate"><span class="pre">_imaging</span></code> DLL).</p>
+</div>
+</section>
+<section id="msp">
+<h3><a class="toc-backref" href="#id19">MSP</a><a class="headerlink" href="#msp" title="Permalink to this headline">¶</a></h3>
+<p>Pillow identifies and reads MSP files from Windows 1 and 2. The library writes
+uncompressed (Windows 1) versions of this format.</p>
+</section>
+<section id="pcx">
+<h3><a class="toc-backref" href="#id20">PCX</a><a class="headerlink" href="#pcx" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes PCX files containing <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>, or <code class="docutils literal notranslate"><span class="pre">RGB</span></code> data.</p>
+</section>
+<section id="png">
+<h3><a class="toc-backref" href="#id21">PNG</a><a class="headerlink" href="#png" title="Permalink to this headline">¶</a></h3>
+<p>Pillow identifies, reads, and writes PNG files containing <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">LA</span></code>,
+<code class="docutils literal notranslate"><span class="pre">I</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB</span></code> or <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> data. Interlaced files are supported as of
+v1.1.7.</p>
+<p>As of Pillow 6.0, EXIF data can be read from PNG images. However, unlike other
+image formats, EXIF data is not guaranteed to be present in
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> until <code class="xref py py-meth docutils literal notranslate"><span class="pre">load()</span></code> has been
+called.</p>
+<p>By default Pillow doesn’t allow loading of truncated PNG files, set
+<code class="xref py py-data docutils literal notranslate"><span class="pre">ImageFile.LOAD_TRUNCATED_IMAGES</span></code> to override this.</p>
+<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">open()</span></code> function sets the following
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties, when appropriate:</p>
+<dl>
+<dt><strong>chromaticity</strong></dt><dd><p>The chromaticity points, as an 8 tuple of floats. (<code class="docutils literal notranslate"><span class="pre">White</span> <span class="pre">Point</span>
+<span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">White</span> <span class="pre">Point</span> <span class="pre">Y</span></code>, <code class="docutils literal notranslate"><span class="pre">Red</span> <span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">Red</span> <span class="pre">Y</span></code>, <code class="docutils literal notranslate"><span class="pre">Green</span> <span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">Green</span>
+<span class="pre">Y</span></code>, <code class="docutils literal notranslate"><span class="pre">Blue</span> <span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">Blue</span> <span class="pre">Y</span></code>)</p>
+</dd>
+<dt><strong>gamma</strong></dt><dd><p>Gamma, given as a floating point number.</p>
+</dd>
+<dt><strong>srgb</strong></dt><dd><p>The sRGB rendering intent as an integer.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0 Perceptual</p></li>
+<li><p>1 Relative Colorimetric</p></li>
+<li><p>2 Saturation</p></li>
+<li><p>3 Absolute Colorimetric</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt><strong>transparency</strong></dt><dd><p>For <code class="docutils literal notranslate"><span class="pre">P</span></code> images: Either the palette index for full transparent pixels,
+or a byte string with alpha values for each palette entry.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">I</span></code> and <code class="docutils literal notranslate"><span class="pre">RGB</span></code> images, the color that represents
+full transparent pixels in this image.</p>
+<p>This key is omitted if the image is not a transparent palette image.</p>
+</dd>
+</dl>
+<p id="png-text"><code class="docutils literal notranslate"><span class="pre">open</span></code> also sets <code class="docutils literal notranslate"><span class="pre">Image.text</span></code> to a dictionary of the values of the
+<code class="docutils literal notranslate"><span class="pre">tEXt</span></code>, <code class="docutils literal notranslate"><span class="pre">zTXt</span></code>, and <code class="docutils literal notranslate"><span class="pre">iTXt</span></code> chunks of the PNG image. Individual
+compressed chunks are limited to a decompressed size of
+<code class="xref py py-data docutils literal notranslate"><span class="pre">PngImagePlugin.MAX_TEXT_CHUNK</span></code>, by default 1MB, to prevent
+decompression bombs. Additionally, the total size of all of the text
+chunks is limited to <code class="xref py py-data docutils literal notranslate"><span class="pre">PngImagePlugin.MAX_TEXT_MEMORY</span></code>, defaulting to
+64MB.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method supports the following options:</p>
+<dl>
+<dt><strong>optimize</strong></dt><dd><p>If present and true, instructs the PNG writer to make the output file as
+small as possible. This includes extra processing in order to find optimal
+encoder settings.</p>
+</dd>
+<dt><strong>transparency</strong></dt><dd><p>For <code class="docutils literal notranslate"><span class="pre">P</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">I</span></code>, and <code class="docutils literal notranslate"><span class="pre">RGB</span></code> images, this option controls
+what color from the image to mark as transparent.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">P</span></code> images, this can be a either the palette index,
+or a byte string with alpha values for each palette entry.</p>
+</dd>
+<dt><strong>dpi</strong></dt><dd><p>A tuple of two numbers corresponding to the desired dpi in each direction.</p>
+</dd>
+<dt><strong>pnginfo</strong></dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">PIL.PngImagePlugin.PngInfo</span></code> instance containing chunks.</p>
+</dd>
+<dt><strong>compress_level</strong></dt><dd><p>ZLIB compression level, a number between 0 and 9: 1 gives best speed,
+9 gives best compression, 0 gives no compression at all. Default is 6.
+When <code class="docutils literal notranslate"><span class="pre">optimize</span></code> option is True <code class="docutils literal notranslate"><span class="pre">compress_level</span></code> has no effect
+(it is set to 9 regardless of a value passed).</p>
+</dd>
+<dt><strong>icc_profile</strong></dt><dd><p>The ICC Profile to include in the saved file.</p>
+</dd>
+<dt><strong>exif</strong></dt><dd><p>The exif data to include in the saved file.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 6.0.0.</span></p>
+</div>
+</dd>
+<dt><strong>bits (experimental)</strong></dt><dd><p>For <code class="docutils literal notranslate"><span class="pre">P</span></code> images, this option controls how many bits to store. If omitted,
+the PNG writer uses 8 bits (256 colors).</p>
+</dd>
+<dt><strong>dictionary (experimental)</strong></dt><dd><p>Set the ZLIB encoder dictionary.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To enable PNG support, you need to build and install the ZLIB compression
+library before building the Python Imaging Library. See the
+<a class="reference internal" href="../installation.html"><span class="doc">installation documentation</span></a> for details.</p>
+</div>
+<section id="apng-sequences">
+<span id="id2"></span><h4><a class="toc-backref" href="#id22">APNG sequences</a><a class="headerlink" href="#apng-sequences" title="Permalink to this headline">¶</a></h4>
+<p>The PNG loader includes limited support for reading and writing Animated Portable
+Network Graphics (APNG) files.
+When an APNG file is loaded, <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_format_mimetype()</span></code>
+will return <code class="docutils literal notranslate"><span class="pre">&quot;image/apng&quot;</span></code>. The value of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">is_animated</span></code>
+property will be <code class="docutils literal notranslate"><span class="pre">True</span></code> when the <code class="xref py py-attr docutils literal notranslate"><span class="pre">n_frames</span></code> property is
+greater than 1. For APNG files, the <code class="docutils literal notranslate"><span class="pre">n_frames</span></code> property depends on both the animation
+frame count as well as the presence or absence of a default image. See the
+<code class="docutils literal notranslate"><span class="pre">default_image</span></code> property documentation below for more details.
+The <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code> methods
+are supported.</p>
+<p><code class="docutils literal notranslate"><span class="pre">im.seek()</span></code> raises an <code class="xref py py-exc docutils literal notranslate"><span class="pre">EOFError</span></code> if you try to seek after the last frame.</p>
+<p>These <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties will be set for APNG frames,
+where applicable:</p>
+<dl>
+<dt><strong>default_image</strong></dt><dd><p>Specifies whether or not this APNG file contains a separate default image,
+which is not a part of the actual APNG animation.</p>
+<p>When an APNG file contains a default image, the initially loaded image (i.e.
+the result of <code class="docutils literal notranslate"><span class="pre">seek(0)</span></code>) will be the default image.
+To account for the presence of the default image, the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">n_frames</span></code> property will be set to <code class="docutils literal notranslate"><span class="pre">frame_count</span> <span class="pre">+</span> <span class="pre">1</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">frame_count</span></code> is the actual APNG animation frame count.
+To load the first APNG animation frame, <code class="docutils literal notranslate"><span class="pre">seek(1)</span></code> must be called.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> - The APNG contains default image, which is not an animation frame.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> - The APNG does not contain a default image. The <code class="docutils literal notranslate"><span class="pre">n_frames</span></code> property
+will be set to the actual APNG animation frame count.
+The initially loaded image (i.e. <code class="docutils literal notranslate"><span class="pre">seek(0)</span></code>) will be the first APNG animation
+frame.</p></li>
+</ul>
+</dd>
+<dt><strong>loop</strong></dt><dd><p>The number of times to loop this APNG, 0 indicates infinite looping.</p>
+</dd>
+<dt><strong>duration</strong></dt><dd><p>The time to display this APNG frame (in milliseconds).</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The APNG loader returns images the same size as the APNG file’s logical screen size.
+The returned image contains the pixel data for a given frame, after applying
+any APNG frame disposal and frame blend operations (i.e. it contains what a web
+browser would render for this frame - the composite of all previous frames and this
+frame).</p>
+<p>Any APNG file containing sequence errors is treated as an invalid image. The APNG
+loader will not attempt to repair and reorder files containing sequence errors.</p>
+</div>
+</section>
+<section id="apng-saving">
+<span id="id3"></span><h4><a class="toc-backref" href="#id23">Saving</a><a class="headerlink" href="#apng-saving" title="Permalink to this headline">¶</a></h4>
+<p>When calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code>, by default only a single frame PNG file
+will be saved. To save an APNG file (including a single frame APNG), the <code class="docutils literal notranslate"><span class="pre">save_all</span></code>
+parameter must be set to <code class="docutils literal notranslate"><span class="pre">True</span></code>. The following parameters can also be set:</p>
+<dl class="simple">
+<dt><strong>default_image</strong></dt><dd><p>Boolean value, specifying whether or not the base image is a default image.
+If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the base image will be used as the default image, and the first image
+from the <code class="docutils literal notranslate"><span class="pre">append_images</span></code> sequence will be the first APNG animation frame.
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the base image will be used as the first APNG animation frame.
+Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt><strong>append_images</strong></dt><dd><p>A list or tuple of images to append as additional frames. Each of the
+images in the list can be single or multiframe images. The size of each frame
+should match the size of the base image. Also note that if a frame’s mode does
+not match that of the base image, the frame will be converted to the base image
+mode.</p>
+</dd>
+<dt><strong>loop</strong></dt><dd><p>Integer number of times to loop this APNG, 0 indicates infinite looping.
+Defaults to 0.</p>
+</dd>
+<dt><strong>duration</strong></dt><dd><p>Integer (or list or tuple of integers) length of time to display this APNG frame
+(in milliseconds).
+Defaults to 0.</p>
+</dd>
+<dt><strong>disposal</strong></dt><dd><p>An integer (or list or tuple of integers) specifying the APNG disposal
+operation to be used for this frame before rendering the next frame.
+Defaults to 0.</p>
+<ul class="simple">
+<li><p>0 (<code class="xref py py-data docutils literal notranslate"><span class="pre">OP_NONE</span></code>, default) -
+No disposal is done on this frame before rendering the next frame.</p></li>
+<li><p>1 (<code class="xref py py-data docutils literal notranslate"><span class="pre">PIL.PngImagePlugin.Disposal.OP_BACKGROUND</span></code>) -
+This frame’s modified region is cleared to fully transparent black before
+rendering the next frame.</p></li>
+<li><p>2 (<code class="xref py py-data docutils literal notranslate"><span class="pre">OP_PREVIOUS</span></code>) -
+This frame’s modified region is reverted to the previous frame’s contents before
+rendering the next frame.</p></li>
+</ul>
+</dd>
+<dt><strong>blend</strong></dt><dd><p>An integer (or list or tuple of integers) specifying the APNG blend
+operation to be used for this frame before rendering the next frame.
+Defaults to 0.</p>
+<ul class="simple">
+<li><p>0 (<code class="xref py py-data docutils literal notranslate"><span class="pre">OP_SOURCE</span></code>) -
+All color components of this frame, including alpha, overwrite the previous output
+image contents.</p></li>
+<li><p>1 (<code class="xref py py-data docutils literal notranslate"><span class="pre">OP_OVER</span></code>) -
+This frame should be alpha composited with the previous output image contents.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">duration</span></code>, <code class="docutils literal notranslate"><span class="pre">disposal</span></code> and <code class="docutils literal notranslate"><span class="pre">blend</span></code> parameters can be set to lists or tuples to
+specify values for each individual frame in the animation. The length of the list or tuple
+must be identical to the total number of actual frames in the APNG animation.
+If the APNG contains a default image (i.e. <code class="docutils literal notranslate"><span class="pre">default_image</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>),
+these list or tuple parameters should not include an entry for the default image.</p>
+</div>
+</section>
+</section>
+<section id="ppm">
+<h3><a class="toc-backref" href="#id24">PPM</a><a class="headerlink" href="#ppm" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes PBM, PGM, PPM and PNM files containing <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code> or
+<code class="docutils literal notranslate"><span class="pre">RGB</span></code> data.</p>
+</section>
+<section id="sgi">
+<h3><a class="toc-backref" href="#id25">SGI</a><a class="headerlink" href="#sgi" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes uncompressed <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB</span></code>, and <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> files.</p>
+</section>
+<section id="spider">
+<h3><a class="toc-backref" href="#id26">SPIDER</a><a class="headerlink" href="#spider" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes SPIDER image files of 32-bit floating point data
+(“F;32F”).</p>
+<p>Pillow also reads SPIDER stack files containing sequences of SPIDER images. The
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code> methods are supported, and
+random access is allowed.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following attributes:</p>
+<dl class="simple">
+<dt><strong>format</strong></dt><dd><p>Set to <code class="docutils literal notranslate"><span class="pre">SPIDER</span></code></p>
+</dd>
+<dt><strong>istack</strong></dt><dd><p>Set to 1 if the file is an image stack, else 0.</p>
+</dd>
+<dt><strong>n_frames</strong></dt><dd><p>Set to the number of images in the stack.</p>
+</dd>
+</dl>
+<p>A convenience method, <code class="xref py py-meth docutils literal notranslate"><span class="pre">convert2byte()</span></code>,
+is provided for converting floating point data to byte data (mode <code class="docutils literal notranslate"><span class="pre">L</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;image001.spi&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">convert2byte</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="writing-files-in-spider-format">
+<h4><a class="toc-backref" href="#id27">Writing files in SPIDER format</a><a class="headerlink" href="#writing-files-in-spider-format" title="Permalink to this headline">¶</a></h4>
+<p>The extension of SPIDER files may be any 3 alphanumeric characters. Therefore
+the output format must be specified explicitly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;newimage.spi&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;SPIDER&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more information about the SPIDER image processing package, see the
+<a class="reference external" href="https://spider.wadsworth.org/spider_doc/spider/docs/spider.html">SPIDER homepage</a> at <a class="reference external" href="https://www.wadsworth.org/">Wadsworth Center</a>.</p>
+</section>
+</section>
+<section id="tga">
+<h3><a class="toc-backref" href="#id28">TGA</a><a class="headerlink" href="#tga" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes TGA images containing <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">LA</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>,
+<code class="docutils literal notranslate"><span class="pre">RGB</span></code>, and <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> data. Pillow can read and write both uncompressed and
+run-length encoded TGAs.</p>
+</section>
+<section id="tiff">
+<h3><a class="toc-backref" href="#id29">TIFF</a><a class="headerlink" href="#tiff" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes TIFF files. It can read both striped and tiled
+images, pixel and plane interleaved multi-band images. If you have
+libtiff and its headers installed, Pillow can read and write many kinds
+of compressed TIFF files. If not, Pillow will only read and write
+uncompressed files.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Beginning in version 5.0.0, Pillow requires libtiff to read or
+write compressed files. Prior to that release, Pillow had buggy
+support for reading Packbits, LZW and JPEG compressed TIFFs
+without using libtiff.</p>
+</div>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
+<dl>
+<dt><strong>compression</strong></dt><dd><p>Compression mode.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.0.0.</span></p>
+</div>
+</dd>
+<dt><strong>dpi</strong></dt><dd><p>Image resolution as an <code class="docutils literal notranslate"><span class="pre">(xdpi,</span> <span class="pre">ydpi)</span></code> tuple, where applicable. You can use
+the <code class="xref py py-attr docutils literal notranslate"><span class="pre">tag</span></code> attribute to get more
+detailed information about the image resolution.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.5.</span></p>
+</div>
+</dd>
+<dt><strong>resolution</strong></dt><dd><p>Image resolution as an <code class="docutils literal notranslate"><span class="pre">(xres,</span> <span class="pre">yres)</span></code> tuple, where applicable. This is a
+measurement in whichever unit is specified by the file.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.5.</span></p>
+</div>
+</dd>
+</dl>
+<p>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">tag_v2</span></code> attribute contains a
+dictionary of TIFF metadata. The keys are numerical indexes from
+<code class="xref py py-data docutils literal notranslate"><span class="pre">TiffTags.TAGS_V2</span></code>.  Values are strings or numbers for single
+items, multiple values are returned in a tuple of values. Rational
+numbers are returned as a <code class="xref py py-class docutils literal notranslate"><span class="pre">IFDRational</span></code>
+object.</p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">New in version 3.0.0.</span></p>
+</div>
+</div></blockquote>
+<p>For compatibility with legacy code, the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">tag</span></code> attribute contains a dictionary
+of decoded TIFF fields as returned prior to version 3.0.0.  Values are
+returned as either strings or tuples of numeric values. Rational
+numbers are returned as a tuple of <code class="docutils literal notranslate"><span class="pre">(numerator,</span> <span class="pre">denominator)</span></code>.</p>
+<blockquote>
+<div><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.0.0.</span></p>
+</div>
+</div></blockquote>
+<section id="reading-multi-frame-tiff-images">
+<h4><a class="toc-backref" href="#id30">Reading Multi-frame TIFF Images</a><a class="headerlink" href="#reading-multi-frame-tiff-images" title="Permalink to this headline">¶</a></h4>
+<p>The TIFF loader supports the <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code> methods, taking and returning frame numbers
+within the image file. You can combine these methods to seek to the next frame
+(<code class="docutils literal notranslate"><span class="pre">im.seek(im.tell()</span> <span class="pre">+</span> <span class="pre">1)</span></code>). Frames are numbered from 0 to <code class="docutils literal notranslate"><span class="pre">im.n_frames</span> <span class="pre">-</span> <span class="pre">1</span></code>,
+and can be accessed in any order.</p>
+<p><code class="docutils literal notranslate"><span class="pre">im.seek()</span></code> raises an <code class="xref py py-exc docutils literal notranslate"><span class="pre">EOFError</span></code> if you try to seek after the
+last frame.</p>
+</section>
+<section id="saving-tiff-images">
+<h4><a class="toc-backref" href="#id31">Saving Tiff Images</a><a class="headerlink" href="#saving-tiff-images" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method can take the following keyword arguments:</p>
+<dl>
+<dt><strong>save_all</strong></dt><dd><p>If true, Pillow will save all frames of the image to a multiframe tiff document.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 3.4.0.</span></p>
+</div>
+</dd>
+<dt><strong>append_images</strong></dt><dd><p>A list of images to append as additional frames. Each of the
+images in the list can be single or multiframe images. Note however, that for
+correct results, all the appended images should have the same
+<code class="docutils literal notranslate"><span class="pre">encoderinfo</span></code> and <code class="docutils literal notranslate"><span class="pre">encoderconfig</span></code> properties.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 4.2.0.</span></p>
+</div>
+</dd>
+<dt><strong>tiffinfo</strong></dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageFileDirectory_v2</span></code> object or dict
+object containing tiff tags and values. The TIFF field type is
+autodetected for Numeric and string values, any other types
+require using an <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageFileDirectory_v2</span></code>
+object and setting the type in
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">tagtype</span></code> with
+the appropriate numerical value from
+<code class="xref py py-data docutils literal notranslate"><span class="pre">TiffTags.TYPES</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.3.0.</span></p>
+</div>
+<p>Metadata values that are of the rational type should be passed in
+using a <code class="xref py py-class docutils literal notranslate"><span class="pre">IFDRational</span></code> object.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 3.1.0.</span></p>
+</div>
+<p>For compatibility with legacy code, a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ImageFileDirectory_v1</span></code> object may
+be passed in this field. However, this is deprecated.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.4.0.</span></p>
+</div>
+<p>Previous versions only supported some tags when writing using
+libtiff. The supported list is found in
+<code class="xref py py-data docutils literal notranslate"><span class="pre">TiffTags.LIBTIFF_CORE</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 6.1.0.</span></p>
+</div>
+<p>Added support for signed types (e.g. <code class="docutils literal notranslate"><span class="pre">TIFF_SIGNED_LONG</span></code>) and multiple values.
+Multiple values for a single tag must be to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ImageFileDirectory_v2</span></code> as a tuple and
+require a matching type in
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">tagtype</span></code> tagtype.</p>
+</dd>
+<dt><strong>exif</strong></dt><dd><p>Alternate keyword to “tiffinfo”, for consistency with other formats.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 8.4.0.</span></p>
+</div>
+</dd>
+<dt><strong>compression</strong></dt><dd><p>A string containing the desired compression method for the
+file. (valid only with libtiff installed) Valid compression
+methods are: <code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;group3&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;group4&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;jpeg&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;lzma&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;packbits&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tiff_adobe_deflate&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tiff_ccitt&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tiff_lzw&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;tiff_raw_16&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tiff_sgilog&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tiff_sgilog24&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tiff_thunderscan&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;webp&quot;`,</span> <span class="pre">``&quot;zstd&quot;</span></code></p>
+</dd>
+<dt><strong>quality</strong></dt><dd><p>The image quality for JPEG compression, on a scale from 0 (worst) to 100
+(best). The default is 75.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 6.1.0.</span></p>
+</div>
+</dd>
+</dl>
+<p>These arguments to set the tiff header fields are an alternative to
+using the general tags available through tiffinfo.</p>
+<p><strong>description</strong></p>
+<p><strong>software</strong></p>
+<p><strong>date_time</strong></p>
+<p><strong>artist</strong></p>
+<dl class="simple">
+<dt><strong>copyright</strong></dt><dd><p>Strings</p>
+</dd>
+<dt><strong>icc_profile</strong></dt><dd><p>The ICC Profile to include in the saved file.</p>
+</dd>
+<dt><strong>resolution_unit</strong></dt><dd><p>An integer. 1 for no unit, 2 for inches and 3 for centimeters.</p>
+</dd>
+<dt><strong>resolution</strong></dt><dd><p>Either an integer or a float, used for both the x and y resolution.</p>
+</dd>
+<dt><strong>x_resolution</strong></dt><dd><p>Either an integer or a float.</p>
+</dd>
+<dt><strong>y_resolution</strong></dt><dd><p>Either an integer or a float.</p>
+</dd>
+<dt><strong>dpi</strong></dt><dd><p>A tuple of (x_resolution, y_resolution), with inches as the resolution
+unit. For consistency with other image formats, the x and y resolutions
+of the dpi will be rounded to the nearest integer.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="webp">
+<h3><a class="toc-backref" href="#id32">WebP</a><a class="headerlink" href="#webp" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes WebP files. The specifics of Pillow’s capabilities with
+this format are currently undocumented.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method supports the following options:</p>
+<dl class="simple">
+<dt><strong>lossless</strong></dt><dd><p>If present and true, instructs the WebP writer to use lossless compression.</p>
+</dd>
+<dt><strong>quality</strong></dt><dd><p>Integer, 1-100, Defaults to 80. For lossy, 0 gives the smallest
+size and 100 the largest. For lossless, this parameter is the amount
+of effort put into the compression: 0 is the fastest, but gives larger
+files compared to the slowest, but best, 100.</p>
+</dd>
+<dt><strong>method</strong></dt><dd><p>Quality/speed trade-off (0=fast, 6=slower-better). Defaults to 4.</p>
+</dd>
+<dt><strong>icc_profile</strong></dt><dd><p>The ICC Profile to include in the saved file. Only supported if
+the system WebP library was built with webpmux support.</p>
+</dd>
+<dt><strong>exif</strong></dt><dd><p>The exif data to include in the saved file. Only supported if
+the system WebP library was built with webpmux support.</p>
+</dd>
+</dl>
+<section id="saving-sequences">
+<h4><a class="toc-backref" href="#id33">Saving sequences</a><a class="headerlink" href="#saving-sequences" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Support for animated WebP files will only be enabled if the system WebP
+library is v0.5.0 or later. You can check webp animation support at
+runtime by calling <code class="docutils literal notranslate"><span class="pre">features.check(&quot;webp_anim&quot;)</span></code>.</p>
+</div>
+<p>When calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> to write a WebP file, by default
+only the first frame of a multiframe image will be saved. If the <code class="docutils literal notranslate"><span class="pre">save_all</span></code>
+argument is present and true, then all frames will be saved, and the following
+options will also be available.</p>
+<dl class="simple">
+<dt><strong>append_images</strong></dt><dd><p>A list of images to append as additional frames. Each of the
+images in the list can be single or multiframe images.</p>
+</dd>
+<dt><strong>duration</strong></dt><dd><p>The display duration of each frame, in milliseconds. Pass a single
+integer for a constant duration, or a list or tuple to set the
+duration for each frame separately.</p>
+</dd>
+<dt><strong>loop</strong></dt><dd><p>Number of times to repeat the animation. Defaults to [0 = infinite].</p>
+</dd>
+<dt><strong>background</strong></dt><dd><p>Background color of the canvas, as an RGBA tuple with values in
+the range of (0-255).</p>
+</dd>
+<dt><strong>minimize_size</strong></dt><dd><p>If true, minimize the output size (slow). Implicitly disables
+key-frame insertion.</p>
+</dd>
+<dt><strong>kmin, kmax</strong></dt><dd><p>Minimum and maximum distance between consecutive key frames in
+the output. The library may insert some key frames as needed
+to satisfy this criteria. Note that these conditions should
+hold: kmax &gt; kmin and kmin &gt;= kmax / 2 + 1. Also, if kmax &lt;= 0,
+then key-frame insertion is disabled; and if kmax == 1, then all
+frames will be key-frames (kmin value does not matter for these
+special cases).</p>
+</dd>
+<dt><strong>allow_mixed</strong></dt><dd><p>If true, use mixed compression mode; the encoder heuristically
+chooses between lossy and lossless for each frame.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="xbm">
+<h3><a class="toc-backref" href="#id34">XBM</a><a class="headerlink" href="#xbm" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads and writes X bitmap files (mode <code class="docutils literal notranslate"><span class="pre">1</span></code>).</p>
+</section>
+</section>
+<section id="read-only-formats">
+<h2><a class="toc-backref" href="#id35">Read-only formats</a><a class="headerlink" href="#read-only-formats" title="Permalink to this headline">¶</a></h2>
+<section id="blp">
+<h3><a class="toc-backref" href="#id36">BLP</a><a class="headerlink" href="#blp" title="Permalink to this headline">¶</a></h3>
+<p>BLP is the Blizzard Mipmap Format, a texture format used in World of
+Warcraft. Pillow supports reading <code class="docutils literal notranslate"><span class="pre">JPEG</span></code> Compressed or raw <code class="docutils literal notranslate"><span class="pre">BLP1</span></code>
+images, and all types of <code class="docutils literal notranslate"><span class="pre">BLP2</span></code> images.</p>
+</section>
+<section id="cur">
+<h3><a class="toc-backref" href="#id37">CUR</a><a class="headerlink" href="#cur" title="Permalink to this headline">¶</a></h3>
+<p>CUR is used to store cursors on Windows. The CUR decoder reads the largest
+available cursor. Animated cursors are not supported.</p>
+</section>
+<section id="dcx">
+<h3><a class="toc-backref" href="#id38">DCX</a><a class="headerlink" href="#dcx" title="Permalink to this headline">¶</a></h3>
+<p>DCX is a container file format for PCX files, defined by Intel. The DCX format
+is commonly used in fax applications. The DCX decoder can read files containing
+<code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>, or <code class="docutils literal notranslate"><span class="pre">RGB</span></code> data.</p>
+<p>When the file is opened, only the first image is read. You can use
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> or <code class="xref py py-mod docutils literal notranslate"><span class="pre">ImageSequence</span></code> to read other images.</p>
+</section>
+<section id="fits">
+<h3><a class="toc-backref" href="#id39">FITS</a><a class="headerlink" href="#fits" title="Permalink to this headline">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 9.1.0.</span></p>
+</div>
+<p>Pillow identifies and reads FITS files, commonly used for astronomy.</p>
+</section>
+<section id="fli-flc">
+<h3><a class="toc-backref" href="#id40">FLI, FLC</a><a class="headerlink" href="#fli-flc" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads Autodesk FLI and FLC animations.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
+<dl class="simple">
+<dt><strong>duration</strong></dt><dd><p>The delay (in milliseconds) between each frame.</p>
+</dd>
+</dl>
+</section>
+<section id="fpx">
+<h3><a class="toc-backref" href="#id41">FPX</a><a class="headerlink" href="#fpx" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads Kodak FlashPix files. In the current version, only the highest
+resolution image is read from the file, and the viewing transform is not taken
+into account.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To enable full FlashPix support, you need to build and install the IJG JPEG
+library before building the Python Imaging Library. See the distribution
+README for details.</p>
+</div>
+</section>
+<section id="ftex">
+<h3><a class="toc-backref" href="#id42">FTEX</a><a class="headerlink" href="#ftex" title="Permalink to this headline">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 3.2.0.</span></p>
+</div>
+<p>The FTEX decoder reads textures used for 3D objects in
+Independence War 2: Edge Of Chaos. The plugin reads a single texture
+per file, in the compressed and uncompressed formats.</p>
+</section>
+<section id="gbr">
+<h3><a class="toc-backref" href="#id43">GBR</a><a class="headerlink" href="#gbr" title="Permalink to this headline">¶</a></h3>
+<p>The GBR decoder reads GIMP brush files, version 1 and 2.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
+<dl class="simple">
+<dt><strong>comment</strong></dt><dd><p>The brush name.</p>
+</dd>
+<dt><strong>spacing</strong></dt><dd><p>The spacing between the brushes, in pixels. Version 2 only.</p>
+</dd>
+</dl>
+</section>
+<section id="gd">
+<h3><a class="toc-backref" href="#id44">GD</a><a class="headerlink" href="#gd" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads uncompressed GD2 files. Note that you must use
+<code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.GdImageFile.open()</span></code> to read such a file.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
+<dl class="simple">
+<dt><strong>transparency</strong></dt><dd><p>Transparency color index. This key is omitted if the image is not
+transparent.</p>
+</dd>
+</dl>
+</section>
+<section id="imt">
+<h3><a class="toc-backref" href="#id45">IMT</a><a class="headerlink" href="#imt" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads Image Tools images containing <code class="docutils literal notranslate"><span class="pre">L</span></code> data.</p>
+</section>
+<section id="iptc-naa">
+<h3><a class="toc-backref" href="#id46">IPTC/NAA</a><a class="headerlink" href="#iptc-naa" title="Permalink to this headline">¶</a></h3>
+<p>Pillow provides limited read support for IPTC/NAA newsphoto files.</p>
+</section>
+<section id="mcidas">
+<h3><a class="toc-backref" href="#id47">MCIDAS</a><a class="headerlink" href="#mcidas" title="Permalink to this headline">¶</a></h3>
+<p>Pillow identifies and reads 8-bit McIdas area files.</p>
+</section>
+<section id="mic">
+<h3><a class="toc-backref" href="#id48">MIC</a><a class="headerlink" href="#mic" title="Permalink to this headline">¶</a></h3>
+<p>Pillow identifies and reads Microsoft Image Composer (MIC) files. When opened,
+the first sprite in the file is loaded. You can use <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code> to read other sprites from the file.</p>
+<p>Note that there may be an embedded gamma of 2.2 in MIC files.</p>
+</section>
+<section id="mpo">
+<h3><a class="toc-backref" href="#id49">MPO</a><a class="headerlink" href="#mpo" title="Permalink to this headline">¶</a></h3>
+<p>Pillow identifies and reads Multi Picture Object (MPO) files, loading the primary
+image when first opened. The <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code>
+methods may be used to read other pictures from the file. The pictures are
+zero-indexed and random access is supported.</p>
+</section>
+<section id="pcd">
+<h3><a class="toc-backref" href="#id50">PCD</a><a class="headerlink" href="#pcd" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads PhotoCD files containing <code class="docutils literal notranslate"><span class="pre">RGB</span></code> data. This only reads the 768x512
+resolution image from the file. Higher resolutions are encoded in a proprietary
+encoding.</p>
+</section>
+<section id="pixar">
+<h3><a class="toc-backref" href="#id51">PIXAR</a><a class="headerlink" href="#pixar" title="Permalink to this headline">¶</a></h3>
+<p>Pillow provides limited support for PIXAR raster files. The library can
+identify and read “dumped” RGB files.</p>
+<p>The format code is <code class="docutils literal notranslate"><span class="pre">PIXAR</span></code>.</p>
+</section>
+<section id="psd">
+<h3><a class="toc-backref" href="#id52">PSD</a><a class="headerlink" href="#psd" title="Permalink to this headline">¶</a></h3>
+<p>Pillow identifies and reads PSD files written by Adobe Photoshop 2.5 and 3.0.</p>
+</section>
+<section id="wal">
+<h3><a class="toc-backref" href="#id53">WAL</a><a class="headerlink" href="#wal" title="Permalink to this headline">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.4.</span></p>
+</div>
+<p>Pillow reads Quake2 WAL texture files.</p>
+<p>Note that this file format cannot be automatically identified, so you must use
+the open function in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">WalImageFile</span></code> module to read files in
+this format.</p>
+<p>By default, a Quake2 standard palette is attached to the texture. To override
+the palette, use the putpalette method.</p>
+</section>
+<section id="wmf">
+<h3><a class="toc-backref" href="#id54">WMF</a><a class="headerlink" href="#wmf" title="Permalink to this headline">¶</a></h3>
+<p>Pillow can identify WMF files.</p>
+<p>On Windows, it can read WMF files. By default, it will load the image at 72
+dpi. To load it at another resolution:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;drawing.wmf&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">im</span><span class="p">:</span>
+    <span class="n">im</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">144</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To add other read or write support, use
+<code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.WmfImagePlugin.register_handler()</span></code> to register a WMF handler.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">WmfImagePlugin</span>
+
+
+<span class="k">class</span> <span class="nc">WmfHandler</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">):</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="k">return</span> <span class="n">image</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="o">...</span>
+
+
+<span class="n">wmf_handler</span> <span class="o">=</span> <span class="n">WmfHandler</span><span class="p">()</span>
+
+<span class="n">WmfImagePlugin</span><span class="o">.</span><span class="n">register_handler</span><span class="p">(</span><span class="n">wmf_handler</span><span class="p">)</span>
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;sample.wmf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="xpm">
+<h3><a class="toc-backref" href="#id55">XPM</a><a class="headerlink" href="#xpm" title="Permalink to this headline">¶</a></h3>
+<p>Pillow reads X pixmap files (mode <code class="docutils literal notranslate"><span class="pre">P</span></code>) with 256 colors or less.</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
+<dl class="simple">
+<dt><strong>transparency</strong></dt><dd><p>Transparency color index. This key is omitted if the image is not
+transparent.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="write-only-formats">
+<h2><a class="toc-backref" href="#id56">Write-only formats</a><a class="headerlink" href="#write-only-formats" title="Permalink to this headline">¶</a></h2>
+<section id="palm">
+<h3><a class="toc-backref" href="#id57">PALM</a><a class="headerlink" href="#palm" title="Permalink to this headline">¶</a></h3>
+<p>Pillow provides write-only support for PALM pixmap files.</p>
+<p>The format code is <code class="docutils literal notranslate"><span class="pre">Palm</span></code>, the extension is <code class="docutils literal notranslate"><span class="pre">.palm</span></code>.</p>
+</section>
+<section id="pdf">
+<h3><a class="toc-backref" href="#id58">PDF</a><a class="headerlink" href="#pdf" title="Permalink to this headline">¶</a></h3>
+<p>Pillow can write PDF (Acrobat) images. Such images are written as binary PDF 1.4
+files, using either JPEG or HEX encoding depending on the image mode (and
+whether JPEG support is available or not).</p>
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method can take the following keyword arguments:</p>
+<dl>
+<dt><strong>save_all</strong></dt><dd><p>If a multiframe image is used, by default, only the first image will be saved.
+To save all frames, each frame to a separate page of the PDF, the <code class="docutils literal notranslate"><span class="pre">save_all</span></code>
+parameter must be present and set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 3.0.0.</span></p>
+</div>
+</dd>
+<dt><strong>append_images</strong></dt><dd><p>A list of <code class="xref py py-class docutils literal notranslate"><span class="pre">PIL.Image.Image</span></code> objects to append as additional pages. Each
+of the images in the list can be single or multiframe images. The <code class="docutils literal notranslate"><span class="pre">save_all</span></code>
+parameter must be present and set to <code class="docutils literal notranslate"><span class="pre">True</span></code> in conjunction with
+<code class="docutils literal notranslate"><span class="pre">append_images</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 4.2.0.</span></p>
+</div>
+</dd>
+<dt><strong>append</strong></dt><dd><p>Set to True to append pages to an existing PDF file. If the file doesn’t
+exist, an <code class="xref py py-exc docutils literal notranslate"><span class="pre">OSError</span></code> will be raised.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.1.0.</span></p>
+</div>
+</dd>
+<dt><strong>resolution</strong></dt><dd><p>Image resolution in DPI. This, together with the number of pixels in the
+image, will determine the physical dimensions of the page that will be
+saved in the PDF.</p>
+</dd>
+<dt><strong>title</strong></dt><dd><p>The document’s title. If not appending to an existing PDF file, this will
+default to the filename.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.1.0.</span></p>
+</div>
+</dd>
+<dt><strong>author</strong></dt><dd><p>The name of the person who created the document.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.1.0.</span></p>
+</div>
+</dd>
+<dt><strong>subject</strong></dt><dd><p>The subject of the document.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.1.0.</span></p>
+</div>
+</dd>
+<dt><strong>keywords</strong></dt><dd><p>Keywords associated with the document.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.1.0.</span></p>
+</div>
+</dd>
+<dt><strong>creator</strong></dt><dd><p>If the document was converted to PDF from another format, the name of the
+conforming product that created the original document from which it was
+converted.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.1.0.</span></p>
+</div>
+</dd>
+<dt><strong>producer</strong></dt><dd><p>If the document was converted to PDF from another format, the name of the
+conforming product that converted it to PDF.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.1.0.</span></p>
+</div>
+</dd>
+<dt><strong>creationDate</strong></dt><dd><p>The creation date of the document. If not appending to an existing PDF
+file, this will default to the current time.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.3.0.</span></p>
+</div>
+</dd>
+<dt><strong>modDate</strong></dt><dd><p>The modification date of the document. If not appending to an existing PDF
+file, this will default to the current time.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 5.3.0.</span></p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="xv-thumbnails">
+<h3><a class="toc-backref" href="#id59">XV Thumbnails</a><a class="headerlink" href="#xv-thumbnails" title="Permalink to this headline">¶</a></h3>
+<p>Pillow can read XV thumbnail files.</p>
+</section>
+</section>
+<section id="identify-only-formats">
+<h2><a class="toc-backref" href="#id60">Identify-only formats</a><a class="headerlink" href="#identify-only-formats" title="Permalink to this headline">¶</a></h2>
+<section id="bufr">
+<h3><a class="toc-backref" href="#id61">BUFR</a><a class="headerlink" href="#bufr" title="Permalink to this headline">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.3.</span></p>
+</div>
+<p>Pillow provides a stub driver for BUFR files.</p>
+<p>To add read or write support to your application, use
+<code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.BufrStubImagePlugin.register_handler()</span></code>.</p>
+</section>
+<section id="grib">
+<h3><a class="toc-backref" href="#id62">GRIB</a><a class="headerlink" href="#grib" title="Permalink to this headline">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.5.</span></p>
+</div>
+<p>Pillow provides a stub driver for GRIB files.</p>
+<p>The driver requires the file to start with a GRIB header. If you have files
+with embedded GRIB data, or files with multiple GRIB fields, your application
+has to seek to the header before passing the file handle to Pillow.</p>
+<p>To add read or write support to your application, use
+<code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.GribStubImagePlugin.register_handler()</span></code>.</p>
+</section>
+<section id="hdf5">
+<h3><a class="toc-backref" href="#id63">HDF5</a><a class="headerlink" href="#hdf5" title="Permalink to this headline">¶</a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.5.</span></p>
+</div>
+<p>Pillow provides a stub driver for HDF5 files.</p>
+<p>To add read or write support to your application, use
+<code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.Hdf5StubImagePlugin.register_handler()</span></code>.</p>
+</section>
+<section id="mpeg">
+<h3><a class="toc-backref" href="#id64">MPEG</a><a class="headerlink" href="#mpeg" title="Permalink to this headline">¶</a></h3>
+<p>Pillow identifies MPEG files.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="appendices.html" class="btn btn-neutral float-left" title="Appendices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="text-anchors.html" class="btn btn-neutral float-right" title="Text anchors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

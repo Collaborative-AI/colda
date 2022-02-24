@@ -12,7 +12,7 @@ from copy import deepcopy
 from . import testing_data
 from . import _default_trainRequest
 from . import _default_authorization
-from . import _default_get_notification
+from . import _default_getNotification
 from . import _default_PersonalInformation
 from . import _default_Network
 
@@ -39,7 +39,7 @@ class Train_helper_function:
         return
 
     def start_Collaboration(self):
-        return _default_get_notification.start_Collaboration()
+        return _default_getNotification.start_Collaboration()
 
     def handleTrainRequest_helper(self):
         handleTrainRequest_res = _default_trainRequest.handleTrainRequest(maxRound=testing_data['maxRound'], assistors=testing_data['assistors'], train_file_path=testing_data['train_file_path'],

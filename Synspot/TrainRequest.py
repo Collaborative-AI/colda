@@ -9,13 +9,13 @@ import time
 import argparse
 import subprocess
 
-from .Network import Network
-from .PersonalInformation import PersonalInformation
-from .Database_class import Database_class
-from .SynSpot_utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
-from .Error import check_Algorithm_return_value
+from synspot.network import Network
+from synspot.personalinformation import PersonalInformation
+from synspot.database import Database
+from .utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
+from .error import check_Algorithm_return_value
 
-from .Algorithm import make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
+from .algorithm import make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 # from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
 
 class check_sponsor_class:
@@ -28,7 +28,7 @@ class TrainRequest():
     def __init__(self):
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
-        self.Database_class_instance = Database_class.get_Database_class_instance()
+        self.Database_instance = Database.get_Database_instance()
 
         self.base_url = self.Network_instance.base_url
         self.maxRound = 2
@@ -50,18 +50,11 @@ class TrainRequest():
         """
         Obtain the information we need: user_id, root, token, task_id
 
-        Parameters:
-            get_train_id - Boolean. Indicate if we need to get the new train id
+        :param get_train_id: Boolean. Indicate if we need to get the new train id
 
-        Returns:
-            user_id - String. The user_id of current user
-            root - String. The root of storing intermediate information
-            token - String. Token we need for verification
-            task_id - None or String. If get_train_id is True, return String.
-                If get_train_id is False, return None
+        :returns: A tuple of ``(user_id, root, token, task_id)``
 
-        Raises:
-            None
+        :exception OSError: Placeholder.
         """
         user_id = self.PersonalInformation_instance.user_id
         assert user_id is not None
@@ -79,28 +72,30 @@ class TrainRequest():
                             train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str, task_description: str):
         
         """
-        Call __find_assistor for further execution
+        Call __find_assistor ``for further`` execution
 
-        Parameters:
-            maxRound - Integer. Maximum training round
-            assistors - List. The List of assistors' usernames
-            train_file_path - String. Input path address of training data path
-            train_id_column - String. ID column of Input File
-            train_data_column - String. Data column of Input File
-            train_target_column - String. Target column of Input File
-            task_mode - String. Classification or Regression
-            model_name - String. Specific model, such as LinearRegression, DecisionTree.
-            metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.
-            task_name - None or String. The name of current task.
-            task_description - None or String. The description of current task
+        .. note:: This method is experimental.
 
-        Returns:
-            None
+        .. warning:: This method is experimental.
 
-        Raises:
-            None
+        :param maxRound: :py:exc:`Integer`. Maximum training round
+        :param assistors: List. The List of ``assistors'`` usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: None
+            
+        :exception OSError: Placeholder.
+
         """
-
+           
         return self.__find_assistor(maxRound=maxRound, assistors=assistors, train_file_path=train_file_path, train_id_column=train_id_column, 
                             train_data_column=train_data_column, train_target_column=train_target_column, task_mode=task_mode,
                             model_name=model_name, metric_name=metric_name, task_name=task_name, task_description=task_description)
@@ -110,14 +105,9 @@ class TrainRequest():
         """
         Get new Task id for this task
 
-        Parameters:
-            None
+        :returns: new_task_id. String. The new task id of new task
 
-        Returns:
-            new_task_id - String. The new task id of new task
-
-        Raises:
-            RuntimeError - raises an exception
+        :exception OSError: 
         """
 
         url = self.base_url + "/create_new_train_task/"
@@ -141,30 +131,27 @@ class TrainRequest():
         """
         start task with all assistors
 
-        Parameters:
-            maxRound - Integer. Maximum training round
-            assistors - List. The List of assistors' usernames
-            train_file_path - String. Input path address of training data path
-            train_id_column - String. ID column of Input File
-            train_data_column - String. Data column of Input File
-            train_target_column - String. Target column of Input File
-            task_mode - String. Classification or Regression
-            model_name - String. Specific model, such as LinearRegression, DecisionTree.
-            metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.
-            task_name - None or String. The name of current task.
-            task_description - None or String. The description of current task
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
 
-        Returns:
-            Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
 
-        Raises:
-            RuntimeError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain some important information
         user_id, root, token, task_id = self.__obtain_important_information(get_train_id=True)
 
-        store_User_Sponsor_Table_res = self.Database_class_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
+        store_User_Sponsor_Table_res = self.Database_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
                                                             task_name=task_name, task_description=task_description, train_file_path=train_file_path, train_id_column=train_id_column, train_data_column=train_data_column,
                                                             train_target_column=train_target_column)
         assert store_User_Sponsor_Table_res == 'User_Sponsor_Table stores successfully'
@@ -215,14 +202,11 @@ class TrainRequest():
         """
         Handle the unread request for three default mode: ["passive", "active", "auto"]
 
-        Parameters:
-            unread_request_notification - Dictionary.
+        :param unread_request_notification: Dictionary.
 
-        Returns:
-            String. 'unread_request successfully'
+        :returns: String. 'unread_request successfully'
 
-        Raises:
-            RuntimeError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain some important information
@@ -236,9 +220,9 @@ class TrainRequest():
         for task_id in cur_unread_request_Taskid_dict:
             if default_mode == "auto":
                 
-                user_id, default_mode, default_task_mode, default_model_name, default_file_path, default_id_column, default_data_column = self.Database_class_instance.get_User_Default_Table(user_id)
+                user_id, default_mode, default_task_mode, default_model_name, default_file_path, default_id_column, default_data_column = self.Database_instance.get_User_Default_Table(user_id)
                 
-                store_User_Assistor_Table_res = self.Database_class_instance.store_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, mode=default_mode, task_mode=default_task_mode, model_name=default_model_name, 
+                store_User_Assistor_Table_res = self.Database_instance.store_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, mode=default_mode, task_mode=default_task_mode, model_name=default_model_name, 
                                                             test_id=None, task_name=None, task_description=None, test_name=None, test_description=None, train_file_path=default_file_path, 
                                                             train_id_column=default_id_column, train_data_column=default_data_column, test_file_path=None, test_id_column=None, test_data_column=None)
                 assert store_User_Assistor_Table_res == 'User_Assistor_Table stores successfully'
@@ -284,14 +268,11 @@ class TrainRequest():
         """
         Handle the unread_match_id. Consider sponsor and assistor, different functions will be called
 
-        Parameters:
-            unread_match_id_notification - Dictionary.
+        :param unread_match_id_notification: Dictionary.
 
-        Returns:
-            String. 'unread match id done'
+        :returns: String. 'unread match id done'
 
-        Raises:
-            None
+        :exception OSError: Placeholder.
         """
 
         # obtain some important information
@@ -322,14 +303,11 @@ class TrainRequest():
         """
         Handle the unread_match_id of sponsor.
 
-        Parameters:
-            task_id - String.
+        :param task_id: String.
 
-        Returns:
-            String. 'unread_match_id_sponsor successfully'
+        :returns: String. 'unread_match_id_sponsor successfully'
 
-        Raises:
-            RuntimeError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain some information
@@ -383,7 +361,7 @@ class TrainRequest():
             log_helper(msg, root, user_id, task_id)
 
         # get train target column
-        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
+        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
         print("train_file_path", train_file_path, train_target_column)
 
         # call make residual
@@ -433,14 +411,11 @@ class TrainRequest():
         """
         Handle the unread_match_id of assistor.
 
-        Parameters:
-            task_id - String.
+        :param task_id: String.
 
-        Returns:
-            String. 'unread_match_id_assistor successfully'
+        :returns: String. 'unread_match_id_assistor successfully'
 
-        Raises:
-            RuntimeError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain basic information
@@ -495,14 +470,11 @@ class TrainRequest():
         """
         Handle the unread_situation. Two situations needed to be considered: sponsor and assistor
 
-        Parameters:
-            unread_situation_notification - Dictionary.
+        :param unread_situation_notification: Dictionary.
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain important information
@@ -532,15 +504,12 @@ class TrainRequest():
         """
         Handle the unread situation of sponsor.
 
-        Parameters:
-            task_id - String. The task needed to be handled.
-            rounds - Integer. Current round.
+        :param task_id: String. The task needed to be handled.
+        :param rounds: Integer. Current round.
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain basic information
@@ -550,7 +519,7 @@ class TrainRequest():
         log_helper(msg, root, user_id, task_id)
 
         # get train_data_path from db
-        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
+        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
 
         # call make train
         train_output = make_train(root=root, self_id=user_id, task_id=task_id, round=rounds, dataset_path=train_file_path, data_idx=train_data_column, skip_header=self.skip_header_default, task_mode=task_mode, model_name=model_name)
@@ -569,17 +538,14 @@ class TrainRequest():
         """
         Handle the timing issue of unread situation of assistor.
 
-        Parameters:
-            task_id - String. The task needed to be handled.
-            rounds - Integer. Current round.
-            train_file_path - String. The file path of train file
-            train_data_column - String. The selected data column of train file
+        :param task_id: String. The task needed to be handled.
+        :param rounds: Integer. Current round.
+        :param train_file_path: String. The file path of train file
+        :param train_data_column: String. The selected data column of train file
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
         waiting_current_time = time.time()
         time_interval = waiting_current_time - waiting_start_time
@@ -631,15 +597,12 @@ class TrainRequest():
         """
         Handle the unread situation of assistor.
 
-        Parameters:
-            task_id - String. The task needed to be handled.
-            rounds - Integer. Current round.
+        :param task_id: String. The task needed to be handled.
+        :param rounds: Integer. Current round.
+ 
+        :returns: None
 
-        Returns:
-            None
-
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain basic information
@@ -676,7 +639,7 @@ class TrainRequest():
         log_helper(msg, root, user_id, task_id)
 
         # select train_data_path
-        mode, task_mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column = self.Database_class_instance.get_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
+        mode, task_mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column = self.Database_instance.get_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
         print('get assistor table', mode, task_mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column)
         waiting_start_time = time.time()
         self.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, task_mode, model_name, waiting_start_time)
@@ -689,14 +652,11 @@ class TrainRequest():
         """
         Handle the unread_output.
 
-        Parameters:
-         unread_output_notification - Dictionary.
+        :param unread_output_notification: Dictionary.
 
-        Returns:
-         None
+        :returns: None
 
-        Raises:
-         KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
@@ -718,15 +678,12 @@ class TrainRequest():
         """
         Handle the single task of unread output.
 
-        Parameters:
-         task_id - String. Task id of current task
-         rounds - Integer. Current Round
+        :param task_id: String. Task id of current task
+        :param rounds: Integer. Current Round
 
-        Returns:
-         None
+        :returns: None
 
-        Raises:
-         KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
         print("unread_output_singleTask", rounds)
         user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
@@ -768,7 +725,7 @@ class TrainRequest():
             log_helper(msg, root, user_id, task_id)
 
             # get train_file_path, train_target_column from User_Sponsor_Table
-            task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
+            task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
             print('zzzz', task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column)
             waiting_start_time = time.time()
             self.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, task_mode, metric_name, waiting_start_time)
@@ -779,17 +736,14 @@ class TrainRequest():
         """
         Helper Function. Dealing with the order issue
 
-        Parameters:
-         task_id - String. Task id of current task
-         rounds - Integer. Current Round
-         train_file_path - String. The file path of train file
-         train_target_column - String. The selected data column of train file
+        :param task_id: String. Task id of current task
+        :param rounds: Integer. Current Round
+        :param train_file_path: String. The file path of train file
+        :param train_target_column: String. The selected data column of train file
 
-        Returns:
-         None
+        :returns: None
 
-        Raises:
-         KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
         waiting_current_time = time.time()
         time_interval = waiting_current_time - waiting_start_time
@@ -867,14 +821,11 @@ class TrainRequest():
         """
         Stop Train and delete related files
 
-        Parameters:
-         unread_train_stop_notification - Dictionary.
+        :param unread_train_stop_notification: Dictionary.
 
-        Returns:
-         None
+        :returns: None
 
-        Raises:
-         KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         return

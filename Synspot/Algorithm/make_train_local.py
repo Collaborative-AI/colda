@@ -1,8 +1,9 @@
 import numpy as np
 import os
-from utils import save, log, parse_idx
-from models import Model
-from metrics import Metric
+import synspot
+from synspot.algorithm.utils import save, log, parse_idx
+from synspot.algorithm.models import Model
+from synspot.algorithm.metrics import Metric
 
 def make_train_local(root, self_id, task_id, dataset_path, data_idx, target_idx, skip_header, task_mode, model_name, metric_name):
 
@@ -19,4 +20,5 @@ def make_train_local(root, self_id, task_id, dataset_path, data_idx, target_idx,
     eval = metric.eval(output, target)
     msg = 'Train Local Client: {}, {}'.format(self_id, eval)
     log(msg, root, self_id, task_id)
+
     return '200?make_train_local?complete'

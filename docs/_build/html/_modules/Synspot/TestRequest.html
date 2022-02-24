@@ -3,9 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Synspot.TestRequest &mdash; Synspot_Package 0.0.0 documentation</title>
+  <title>synspot.TestRequest &mdash; Synspot 0.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/styles.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/dark.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/light.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,8 +18,12 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/js/script.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -25,7 +33,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> Synspot_Package
+            <a href="../../index.html" class="icon icon-home"> Synspot
+            <img src="../../_static/Synspot.jpg" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -35,12 +44,13 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deprecations.html">Deprecations and removals</a></li>
 </ul>
 
         </div>
@@ -49,7 +59,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Synspot_Package</a>
+          <a href="../../index.html">Synspot</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -58,8 +68,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../index.html">Module code</a> &raquo;</li>
-          <li><a href="../Synspot.html">Synspot</a> &raquo;</li>
-      <li>Synspot.TestRequest</li>
+      <li>synspot.TestRequest</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -68,61 +77,54 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for Synspot.TestRequest</h1><div class="highlight"><pre>
+  <h1>Source code for synspot.TestRequest</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.Network</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">.PersonalInformation</span> <span class="kn">import</span> <span class="n">PersonalInformation</span>
-<span class="kn">from</span> <span class="nn">.Database_class</span> <span class="kn">import</span> <span class="n">Database_class</span>
-<span class="kn">from</span> <span class="nn">.Error</span> <span class="kn">import</span> <span class="n">check_Algorithm_return_value</span>
-<span class="kn">from</span> <span class="nn">.SynSpot_utils</span> <span class="kn">import</span> <span class="n">log_helper</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">save_file</span><span class="p">,</span> <span class="n">handle_Algorithm_return_value</span>
+<span class="kn">from</span> <span class="nn">synspot.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">synspot.personalinformation</span> <span class="kn">import</span> <span class="n">PersonalInformation</span>
+<span class="kn">from</span> <span class="nn">synspot.database</span> <span class="kn">import</span> <span class="n">Database</span>
+<span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">check_Algorithm_return_value</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">log_helper</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">save_file</span><span class="p">,</span> <span class="n">handle_Algorithm_return_value</span>
 
-<span class="kn">from</span> <span class="nn">.Algorithm</span> <span class="kn">import</span> <span class="n">make_eval</span><span class="p">,</span> <span class="n">make_test</span><span class="p">,</span> <span class="n">make_hash</span><span class="p">,</span> <span class="n">save_match_id</span><span class="p">,</span> <span class="n">make_match_idx</span><span class="p">,</span> <span class="n">make_residual</span><span class="p">,</span> <span class="n">make_train</span><span class="p">,</span> <span class="n">save_output</span><span class="p">,</span> <span class="n">make_result</span><span class="p">,</span> <span class="n">save_residual</span><span class="p">,</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">.algorithm</span> <span class="kn">import</span> <span class="n">make_eval</span><span class="p">,</span> <span class="n">make_test</span><span class="p">,</span> <span class="n">make_hash</span><span class="p">,</span> <span class="n">save_match_id</span><span class="p">,</span> <span class="n">make_match_idx</span><span class="p">,</span> <span class="n">make_residual</span><span class="p">,</span> <span class="n">make_train</span><span class="p">,</span> <span class="n">save_output</span><span class="p">,</span> <span class="n">make_result</span><span class="p">,</span> <span class="n">save_residual</span><span class="p">,</span> <span class="n">log</span>
 <span class="c1"># from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance</span>
 
-<div class="viewcode-block" id="check_sponsor_class"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.check_sponsor_class">[docs]</a><span class="k">class</span> <span class="nc">check_sponsor_class</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">check_sponsor_class</span><span class="p">:</span>
     <span class="n">sponsor</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">assistor</span> <span class="o">=</span> <span class="mi">0</span></div>
+    <span class="n">assistor</span> <span class="o">=</span> <span class="mi">0</span>
 
-<div class="viewcode-block" id="TestRequest"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest">[docs]</a><span class="k">class</span> <span class="nc">TestRequest</span><span class="p">:</span>
+<div class="viewcode-block" id="TestRequest"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest">[docs]</a><span class="k">class</span> <span class="nc">TestRequest</span><span class="p">:</span>
     <span class="n">__TestRequest_instance</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span> <span class="o">=</span> <span class="n">Database_class</span><span class="o">.</span><span class="n">get_Database_class_instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="n">get_Database_instance</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">base_url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">skip_header_default</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span> <span class="o">=</span> <span class="s1">&#39;test&#39;</span>
 
-<div class="viewcode-block" id="TestRequest.get_TestRequest_instance"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.get_TestRequest_instance">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_TestRequest_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__TestRequest_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">__TestRequest_instance</span> <span class="o">=</span> <span class="n">TestRequest</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__TestRequest_instance</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__TestRequest_instance</span>
 
     <span class="k">def</span> <span class="nf">__obtain_important_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_test_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Obtain the information we need: user_id, root, token, task_id</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            get_train_id - Boolean. Indicate if we need to get the new train id</span>
+<span class="sd">        :param get_train_id: Boolean. Indicate if we need to get the new train id</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            user_id - String. The user_id of current user</span>
-<span class="sd">            root - String. The root of storing intermediate information</span>
-<span class="sd">            token - String. Token we need for verification</span>
-<span class="sd">            task_id - None or String. If get_train_id is True, return String.</span>
-<span class="sd">                If get_train_id is False, return None</span>
+<span class="sd">        :returns: A tuple of ``(user_id, root, token, task_id)``</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            None</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">user_id</span>
         <span class="k">assert</span> <span class="n">user_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -136,30 +138,27 @@
             <span class="n">test_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_test_id</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">test_id</span>
 
-<div class="viewcode-block" id="TestRequest.handleTestRequest"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.handleTestRequest">[docs]</a>    <span class="k">def</span> <span class="nf">handleTestRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+<div class="viewcode-block" id="TestRequest.handleTestRequest"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.handleTestRequest">[docs]</a>    <span class="k">def</span> <span class="nf">handleTestRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
                             <span class="n">test_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_description</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Call __find_test_assistor for further execution</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String. The task that the user wanted to test</span>
-<span class="sd">            test_file_path - String. Input path address of testing data path</span>
-<span class="sd">            test_id_column - String. ID column of Input File</span>
-<span class="sd">            test_data_column - String. Data column of Input File</span>
-<span class="sd">            test_target_column - String. Target column of Input File</span>
-<span class="sd">            test_name - None or String. The name of current test</span>
-<span class="sd">            test_description - None or String. The description of current test</span>
+<span class="sd">        :param task_id: String. The task that the user wanted to test</span>
+<span class="sd">        :param test_file_path: String. Input path address of testing data path</span>
+<span class="sd">        :param test_id_column: String. ID column of Input File</span>
+<span class="sd">        :param test_data_column: String. Data column of Input File</span>
+<span class="sd">        :param test_target_column: String. Target column of Input File</span>
+<span class="sd">        :param test_name: None or String. The name of current test</span>
+<span class="sd">        :param test_description: None or String. The description of current test</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            String. &#39;handleTestRequest successfully&#39;</span>
+<span class="sd">        :returns: String. &#39;handleTestRequest successfully&#39;</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            None</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_test_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;handleTestRequest&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
-        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
         <span class="c1"># retrieve mode from user_sponsor_db</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_test_assistor</span><span class="p">(</span><span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="o">=</span><span class="n">task_description</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span> 
                                   <span class="n">test_file_path</span><span class="o">=</span><span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="o">=</span><span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="o">=</span><span class="n">test_data_column</span><span class="p">,</span> <span class="n">test_target_column</span><span class="o">=</span><span class="n">test_target_column</span><span class="p">,</span> <span class="n">test_name</span><span class="o">=</span><span class="n">test_name</span><span class="p">,</span>
@@ -170,14 +169,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get new Test id for this test</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: new_test_id - String. The new test id of new task</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            new_test_id - String. The new test id of new task</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/create_new_test_task/&quot;</span>
@@ -198,32 +192,29 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        start testing with all assistors of the task</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String. The task that the user wanted to test</span>
-<span class="sd">            task_name - String. The name of the task that the user wanted to test</span>
-<span class="sd">            task_description - String. The description of the task that the user wanted to test</span>
-<span class="sd">            task_mode - String. Classification or Regression</span>
-<span class="sd">            model_name - String. Specific model, such as LinearRegression, DecisionTree.</span>
-<span class="sd">            metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.</span>
-<span class="sd">            test_file_path - String. Input path address of testing data path</span>
-<span class="sd">            test_id_column - String. ID column of Input File</span>
-<span class="sd">            test_data_column - String. Data column of Input File</span>
-<span class="sd">            test_target_column - String. Target column of Input File</span>
-<span class="sd">            test_name - None or String. The name of current test</span>
-<span class="sd">            test_description - None or String. The description of current test</span>
+<span class="sd">        :param task_id: String. The task that the user wanted to test</span>
+<span class="sd">        :param task_name: String. The name of the task that the user wanted to test</span>
+<span class="sd">        :param task_description: String. The description of the task that the user wanted to test</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param test_file_path: String. Input path address of testing data path</span>
+<span class="sd">        :param test_id_column: String. ID column of Input File</span>
+<span class="sd">        :param test_data_column: String. Data column of Input File</span>
+<span class="sd">        :param test_target_column: String. Target column of Input File</span>
+<span class="sd">        :param test_name: None or String. The name of current test</span>
+<span class="sd">        :param test_description: None or String. The description of current test</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain some important information</span>
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">test_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_test_id</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># store information in db</span>
-        <span class="n">store_User_Sponsor_Table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">store_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span>
+        <span class="n">store_User_Sponsor_Table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">store_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span>
                                                             <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="o">=</span><span class="n">task_description</span><span class="p">,</span> <span class="n">test_name</span><span class="o">=</span><span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="o">=</span><span class="n">test_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                                                             <span class="n">train_id_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_data_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_target_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_file_path</span><span class="o">=</span><span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="o">=</span><span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="o">=</span><span class="n">test_data_column</span><span class="p">,</span>
                                                             <span class="n">test_target_column</span><span class="o">=</span><span class="n">test_target_column</span><span class="p">)</span>
@@ -262,25 +253,22 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;handleTestRequest successfully&#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TestRequest.unread_test_request"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_request">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_request_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_request"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_request">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_request_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread test request for three default mode: [&quot;passive&quot;, &quot;active&quot;, &quot;auto&quot;]</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            unread_test_request_notification - Dictionary.</span>
+<span class="sd">        :param unread_test_request_notification: Dictionary.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain some important information</span>
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_test_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">user_id</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">,</span> <span class="n">default_id_column</span><span class="p">,</span> <span class="n">default_data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Default_Table</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">user_id</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">,</span> <span class="n">default_id_column</span><span class="p">,</span> <span class="n">default_data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Default_Table</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;zhei&#39;</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">,</span> <span class="n">default_id_column</span><span class="p">,</span> <span class="n">default_data_column</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">)</span>
 
         <span class="n">cur_unread_test_request_Testid_dict</span> <span class="o">=</span> <span class="n">unread_test_request_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
@@ -297,7 +285,7 @@
                 <span class="n">task_id</span> <span class="o">=</span> <span class="n">test_id_to_task_id</span><span class="p">[</span><span class="n">test_id</span><span class="p">]</span>
 
                 <span class="c1"># Insert default into User_Assistor_Table</span>
-                <span class="n">store_User_Assistor_Table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">store_User_Assistor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">default_mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">default_task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> 
+                <span class="n">store_User_Assistor_Table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">store_User_Assistor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">default_mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">default_task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> 
                                                             <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                                                             <span class="n">train_id_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_data_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_file_path</span><span class="o">=</span><span class="n">default_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="o">=</span><span class="n">default_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="o">=</span><span class="n">default_data_column</span><span class="p">)</span>
                 <span class="k">assert</span> <span class="n">store_User_Assistor_Table_res</span> <span class="o">==</span> <span class="s1">&#39;User_Assistor_Table stores successfully&#39;</span>
@@ -331,18 +319,15 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_test_request done&#39;</span></div>
 
-<div class="viewcode-block" id="TestRequest.unread_test_match_id"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_match_id_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_match_id"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_match_id_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread_test_match_id. Two situations needed to be considered: sponsor and assistor</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            unread_test_match_id_notification - Dictionary.</span>
+<span class="sd">        :param unread_test_match_id_notification: Dictionary.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">cur_unread_test_match_id_Testid_dict</span> <span class="o">=</span> <span class="n">unread_test_match_id_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
@@ -361,21 +346,18 @@
 
         <span class="k">return</span> <span class="s1">&#39;unread_test_match_id done&#39;</span></div>
 
-<div class="viewcode-block" id="TestRequest.unread_test_match_id_sponsor"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_match_id_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_match_id_sponsor"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_match_id_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread_test_match_id of sponsor.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String.</span>
-<span class="sd">            test_id - String.</span>
-<span class="sd">            cur_max_round - Integer.</span>
+<span class="sd">        :param task_id: String.</span>
+<span class="sd">        :param test_id: String.</span>
+<span class="sd">        :param cur_max_round: Integer.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain some information</span>
@@ -422,7 +404,7 @@
             <span class="k">assert</span> <span class="n">test_make_match_idx_done</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;from_id&#39;</span><span class="p">,</span> <span class="n">from_id</span><span class="p">,</span> <span class="n">cur_match_id_file</span><span class="p">)</span>
         <span class="c1"># Get information from User Sponsor Table</span>
-        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">,</span> <span class="n">test_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
+        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">,</span> <span class="n">test_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;test_file_path&quot;</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">)</span>
 
         <span class="c1"># call make_test</span>
@@ -439,21 +421,18 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="TestRequest.unread_test_match_id_assistor"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_match_id_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cur_max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_match_id_assistor"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_match_id_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cur_max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread_test_match_id of assistor.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String.</span>
-<span class="sd">            test_id - String.</span>
-<span class="sd">            cur_max_round - Integer.</span>
+<span class="sd">        :param task_id: String.</span>
+<span class="sd">        :param test_id: String.</span>
+<span class="sd">        :param cur_max_round: Integer.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain basic information</span>
@@ -499,7 +478,7 @@
         <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
         <span class="c1"># select select_default_test_data_path from db</span>
-        <span class="n">mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Assistor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
+        <span class="n">mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Assistor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
 
         <span class="c1"># call make test</span>
         <span class="n">test_done</span> <span class="o">=</span> <span class="n">make_test</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="nb">round</span><span class="o">=</span><span class="n">cur_max_round</span><span class="p">,</span> <span class="n">from_id</span><span class="o">=</span><span class="n">from_id</span><span class="p">,</span> <span class="n">dataset_path</span><span class="o">=</span><span class="n">test_file_path</span><span class="p">,</span> <span class="n">data_idx</span><span class="o">=</span><span class="n">test_data_column</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">skip_header_default</span><span class="p">)</span>
@@ -534,19 +513,16 @@
         <span class="k">return</span></div>
 
 
-<div class="viewcode-block" id="TestRequest.unread_test_output"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_output">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_output_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_output"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_output">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_output_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread_test_output.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            unread_test_output_notification - Dictionary.</span>
+<span class="sd">        :param unread_test_output_notification: Dictionary.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">cur_unread_test_output_Testid_dict</span> <span class="o">=</span> <span class="n">unread_test_output_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
@@ -556,23 +532,21 @@
             <span class="n">task_id</span> <span class="o">=</span> <span class="n">test_id_to_task_id</span><span class="p">[</span><span class="n">test_id</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unread_test_output_singleTask</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; done&#39;</span><span class="p">)</span>
             
         <span class="k">return</span> <span class="s1">&#39;unread_test_output done&#39;</span></div>
 
-<div class="viewcode-block" id="TestRequest.unread_test_output_singleTask"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_output_singleTask">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_output_singleTask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_output_singleTask"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_output_singleTask">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_output_singleTask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the single task of unread output.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String. Task id of current task</span>
-<span class="sd">            test_id - Strubg. Test id of current test</span>
+<span class="sd">        :param task_id: String. Task id of current task</span>
+<span class="sd">        :param test_id: Strubg. Test id of current test</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain some important information</span>
@@ -619,20 +593,17 @@
 
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="TestRequest.unread_test_output_make_eval_helper"><a class="viewcode-back" href="../../Synspot.html#Synspot.TestRequest.TestRequest.unread_test_output_make_eval_helper">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_output_make_eval_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">waiting_start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_output_make_eval_helper"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_output_make_eval_helper">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_output_make_eval_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">waiting_start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper Function. Dealing with the order issue</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String. Task id of current task</span>
-<span class="sd">            test_id - Strubg. Test id of current test</span>
-<span class="sd">            max_round - Integer. The max_round of train task of current test</span>
+<span class="sd">        :param task_id: String. Task id of current task</span>
+<span class="sd">        :param test_id: Strubg. Test id of current test</span>
+<span class="sd">        :param max_round: Integer. The max_round of train task of current test</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">waiting_current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -644,7 +615,7 @@
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_test_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="c1"># select data from sponsor table</span>
-        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">,</span> <span class="n">test_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
+        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">,</span> <span class="n">test_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
 
         <span class="c1"># call make_eval</span>
         <span class="n">eval_done</span> <span class="o">=</span> <span class="n">make_eval</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="n">test_id</span><span class="p">,</span> <span class="nb">round</span><span class="o">=</span><span class="n">max_round</span><span class="p">,</span> <span class="n">dataset_path</span><span class="o">=</span><span class="n">test_file_path</span><span class="p">,</span> <span class="n">target_idx</span><span class="o">=</span><span class="n">test_target_column</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">skip_header_default</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span> <span class="n">task_path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -668,7 +639,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, ss.</p>
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

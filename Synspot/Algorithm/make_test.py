@@ -2,7 +2,7 @@ import numpy as np
 import os
 import json
 import collections
-from utils import load, makedir_exist_ok, parse_idx
+from synspot.algorithm.utils import load, makedir_exist_ok, parse_idx
 import json
 
 

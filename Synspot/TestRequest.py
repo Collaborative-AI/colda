@@ -4,13 +4,13 @@ import time
 import threading
 import numpy as np
 
-from .Network import Network
-from .PersonalInformation import PersonalInformation
-from .Database_class import Database_class
-from .Error import check_Algorithm_return_value
-from .SynSpot_utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
+from synspot.network import Network
+from synspot.personalinformation import PersonalInformation
+from synspot.database import Database
+from .error import check_Algorithm_return_value
+from .utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
 
-from .Algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
+from .algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 # from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
 
 class check_sponsor_class:
@@ -23,7 +23,7 @@ class TestRequest:
     def __init__(self):
         self.Network_instance = Network.get_Network_instance()
         self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
-        self.Database_class_instance = Database_class.get_Database_class_instance()
+        self.Database_instance = Database.get_Database_instance()
 
         self.base_url = self.Network_instance.base_url
         self.skip_header_default = 1
@@ -40,18 +40,11 @@ class TestRequest:
         """
         Obtain the information we need: user_id, root, token, task_id
 
-        Parameters:
-            get_train_id - Boolean. Indicate if we need to get the new train id
+        :param get_train_id: Boolean. Indicate if we need to get the new train id
 
-        Returns:
-            user_id - String. The user_id of current user
-            root - String. The root of storing intermediate information
-            token - String. Token we need for verification
-            task_id - None or String. If get_train_id is True, return String.
-                If get_train_id is False, return None
+        :returns: A tuple of ``(user_id, root, token, task_id)``
 
-        Raises:
-            None
+        :exception OSError: Placeholder.
         """
         user_id = self.PersonalInformation_instance.user_id
         assert user_id is not None
@@ -71,24 +64,21 @@ class TestRequest:
         """
         Call __find_test_assistor for further execution
 
-        Parameters:
-            task_id - String. The task that the user wanted to test
-            test_file_path - String. Input path address of testing data path
-            test_id_column - String. ID column of Input File
-            test_data_column - String. Data column of Input File
-            test_target_column - String. Target column of Input File
-            test_name - None or String. The name of current test
-            test_description - None or String. The description of current test
+        :param task_id: String. The task that the user wanted to test
+        :param test_file_path: String. Input path address of testing data path
+        :param test_id_column: String. ID column of Input File
+        :param test_data_column: String. Data column of Input File
+        :param test_target_column: String. Target column of Input File
+        :param test_name: None or String. The name of current test
+        :param test_description: None or String. The description of current test
 
-        Returns:
-            String. 'handleTestRequest successfully'
+        :returns: String. 'handleTestRequest successfully'
 
-        Raises:
-            None
+        :exception OSError: Placeholder.
         """
         user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
         print('handleTestRequest', task_id)
-        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator='train')
+        task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator='train')
         # retrieve mode from user_sponsor_db
         return self.__find_test_assistor(task_id=task_id, task_name=task_name, task_description=task_description, task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
                                   test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column, test_target_column=test_target_column, test_name=test_name,
@@ -99,14 +89,9 @@ class TestRequest:
         """
         Get new Test id for this test
 
-        Parameters:
-            None
+        :returns: new_test_id - String. The new test id of new task
 
-        Returns:
-            new_test_id - String. The new test id of new task
-
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         url = self.base_url + "/create_new_test_task/"
@@ -127,32 +112,29 @@ class TestRequest:
         """
         start testing with all assistors of the task
 
-        Parameters:
-            task_id - String. The task that the user wanted to test
-            task_name - String. The name of the task that the user wanted to test
-            task_description - String. The description of the task that the user wanted to test
-            task_mode - String. Classification or Regression
-            model_name - String. Specific model, such as LinearRegression, DecisionTree.
-            metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.
-            test_file_path - String. Input path address of testing data path
-            test_id_column - String. ID column of Input File
-            test_data_column - String. Data column of Input File
-            test_target_column - String. Target column of Input File
-            test_name - None or String. The name of current test
-            test_description - None or String. The description of current test
+        :param task_id: String. The task that the user wanted to test
+        :param task_name: String. The name of the task that the user wanted to test
+        :param task_description: String. The description of the task that the user wanted to test
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param test_file_path: String. Input path address of testing data path
+        :param test_id_column: String. ID column of Input File
+        :param test_data_column: String. Data column of Input File
+        :param test_target_column: String. Target column of Input File
+        :param test_name: None or String. The name of current test
+        :param test_description: None or String. The description of current test
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain some important information
         user_id, root, token, test_id = self.__obtain_important_information(get_test_id=True)
 
         # store information in db
-        store_User_Sponsor_Table_res = self.Database_class_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
+        store_User_Sponsor_Table_res = self.Database_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
                                                             test_id=test_id, task_name=task_name, task_description=task_description, test_name=test_name, test_description=test_description, train_file_path=None, 
                                                             train_id_column=None, train_data_column=None, train_target_column=None, test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column,
                                                             test_target_column=test_target_column)
@@ -196,20 +178,17 @@ class TestRequest:
         """
         Handle the unread test request for three default mode: ["passive", "active", "auto"]
 
-        Parameters:
-            unread_test_request_notification - Dictionary.
+        :param unread_test_request_notification: Dictionary.
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain some important information
         user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
 
-        user_id, default_mode, default_task_mode, default_model_name, default_file_path, default_id_column, default_data_column = self.Database_class_instance.get_User_Default_Table(user_id)
+        user_id, default_mode, default_task_mode, default_model_name, default_file_path, default_id_column, default_data_column = self.Database_instance.get_User_Default_Table(user_id)
         print('zhei', user_id, default_mode, default_task_mode, default_file_path, default_id_column, default_data_column, default_model_name)
 
         cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
@@ -226,7 +205,7 @@ class TestRequest:
                 task_id = test_id_to_task_id[test_id]
 
                 # Insert default into User_Assistor_Table
-                store_User_Assistor_Table_res = self.Database_class_instance.store_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, mode=default_mode, task_mode=default_task_mode, model_name=default_model_name, 
+                store_User_Assistor_Table_res = self.Database_instance.store_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, mode=default_mode, task_mode=default_task_mode, model_name=default_model_name, 
                                                             test_id=test_id, task_name=None, task_description=None, test_name=None, test_description=None, train_file_path=None, 
                                                             train_id_column=None, train_data_column=None, test_file_path=default_file_path, test_id_column=default_id_column, test_data_column=default_data_column)
                 assert store_User_Assistor_Table_res == 'User_Assistor_Table stores successfully'
@@ -264,14 +243,11 @@ class TestRequest:
         """
         Handle the unread_test_match_id. Two situations needed to be considered: sponsor and assistor
 
-        Parameters:
-            unread_test_match_id_notification - Dictionary.
+        :param unread_test_match_id_notification: Dictionary.
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         cur_unread_test_match_id_Testid_dict = unread_test_match_id_notification["check_dict"]
@@ -295,16 +271,13 @@ class TestRequest:
         """
         Handle the unread_test_match_id of sponsor.
 
-        Parameters:
-            task_id - String.
-            test_id - String.
-            cur_max_round - Integer.
+        :param task_id: String.
+        :param test_id: String.
+        :param cur_max_round: Integer.
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain some information
@@ -351,7 +324,7 @@ class TestRequest:
             assert test_make_match_idx_done is not None
             print('from_id', from_id, cur_match_id_file)
         # Get information from User Sponsor Table
-        task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
+        task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
         print("test_file_path", test_file_path, test_data_column)
 
         # call make_test
@@ -373,16 +346,13 @@ class TestRequest:
         """
         Handle the unread_test_match_id of assistor.
 
-        Parameters:
-            task_id - String.
-            test_id - String.
-            cur_max_round - Integer.
+        :param task_id: String.
+        :param test_id: String.
+        :param cur_max_round: Integer.
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain basic information
@@ -428,7 +398,7 @@ class TestRequest:
         log_helper(msg, root, user_id, task_id)
 
         # select select_default_test_data_path from db
-        mode, task_mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column = self.Database_class_instance.get_User_Assistor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
+        mode, task_mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column = self.Database_instance.get_User_Assistor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
 
         # call make test
         test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
@@ -468,14 +438,11 @@ class TestRequest:
         """
         Handle the unread_test_output.
 
-        Parameters:
-            unread_test_output_notification - Dictionary.
+        :param unread_test_output_notification: Dictionary.
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         cur_unread_test_output_Testid_dict = unread_test_output_notification["check_dict"]
@@ -494,15 +461,12 @@ class TestRequest:
         """
         Handle the single task of unread output.
 
-        Parameters:
-            task_id - String. Task id of current task
-            test_id - Strubg. Test id of current test
+        :param task_id: String. Task id of current task
+        :param test_id: Strubg. Test id of current test
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         # obtain some important information
@@ -553,16 +517,13 @@ class TestRequest:
         """
         Helper Function. Dealing with the order issue
 
-        Parameters:
-            task_id - String. Task id of current task
-            test_id - Strubg. Test id of current test
-            max_round - Integer. The max_round of train task of current test
+        :param task_id: String. Task id of current task
+        :param test_id: Strubg. Test id of current test
+        :param max_round: Integer. The max_round of train task of current test
 
-        Returns:
-            None
+        :returns: None
 
-        Raises:
-            KeyError - raises an exception
+        :exception OSError: Placeholder.
         """
 
         waiting_current_time = time.time()
@@ -574,7 +535,7 @@ class TestRequest:
         user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
 
         # select data from sponsor table
-        task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_class_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
+        task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
 
         # call make_eval
         eval_done = make_eval(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, dataset_path=test_file_path, target_idx=test_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name, task_path=None)

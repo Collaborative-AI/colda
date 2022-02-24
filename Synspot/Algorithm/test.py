@@ -1,6 +1,6 @@
 import argparse
 import numpy as np
-from utils import parse_idx
+from synspot.algorithm.utils import parse_idx
 
 # parser = argparse.ArgumentParser()
 # parser.add_argument('--root', default=None, type=str)

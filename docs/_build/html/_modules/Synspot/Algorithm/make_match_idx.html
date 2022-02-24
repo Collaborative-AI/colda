@@ -3,9 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Synspot.Algorithm.make_match_idx &mdash; Synspot_Package 0.0.0 documentation</title>
+  <title>synspot.algorithm.make_match_idx &mdash; Synspot 0.0.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/styles.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/dark.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/light.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,8 +18,12 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+        <script src="../../../_static/js/script.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -25,7 +33,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Synspot_Package
+            <a href="../../../index.html" class="icon icon-home"> Synspot
+            <img src="../../../_static/Synspot.jpg" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -35,12 +44,13 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../README.html">README</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releasenotes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../deprecations.html">Deprecations and removals</a></li>
 </ul>
 
         </div>
@@ -49,7 +59,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">Synspot_Package</a>
+          <a href="../../../index.html">Synspot</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -58,8 +68,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-          <li><a href="../../Synspot.html">Synspot</a> &raquo;</li>
-      <li>Synspot.Algorithm.make_match_idx</li>
+      <li>synspot.algorithm.make_match_idx</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -68,13 +77,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for Synspot.Algorithm.make_match_idx</h1><div class="highlight"><pre>
+  <h1>Source code for synspot.algorithm.make_match_idx</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">makedir_exist_ok</span>
+<span class="kn">from</span> <span class="nn">synspot.algorithm.utils</span> <span class="kn">import</span> <span class="n">makedir_exist_ok</span>
 
 
-<div class="viewcode-block" id="make_match_idx"><a class="viewcode-back" href="../../../Synspot.Algorithm.html#Synspot.Algorithm.make_match_idx.make_match_idx">[docs]</a><span class="k">def</span> <span class="nf">make_match_idx</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">):</span>
+<div class="viewcode-block" id="make_match_idx"><a class="viewcode-back" href="../../../reference/algorithm.html#synspot.algorithm.make_match_idx">[docs]</a><span class="k">def</span> <span class="nf">make_match_idx</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">):</span>
 
     <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
         <span class="n">self_id_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.csv&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">self_id</span><span class="p">))</span>
@@ -103,7 +112,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, ss.</p>
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

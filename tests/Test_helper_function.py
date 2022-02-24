@@ -12,7 +12,7 @@ from copy import deepcopy
 from . import testing_data
 from . import _default_testRequest
 from . import _default_authorization
-from . import _default_get_notification
+from . import _default_getNotification
 from . import _default_PersonalInformation
 from . import _default_Network
 

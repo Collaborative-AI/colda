@@ -3,9 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Synspot.TrainRequest &mdash; Synspot_Package 0.0.0 documentation</title>
+  <title>synspot.TrainRequest &mdash; Synspot 0.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/styles.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/dark.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/light.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,8 +18,12 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+        <script src="../../_static/js/script.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -25,7 +33,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> Synspot_Package
+            <a href="../../index.html" class="icon icon-home"> Synspot
+            <img src="../../_static/Synspot.jpg" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -35,12 +44,13 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html#the-synspot-package">The ‘Synspot’ package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../README.html#a-quick-setup-guide">A Quick Setup Guide</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deprecations.html">Deprecations and removals</a></li>
 </ul>
 
         </div>
@@ -49,7 +59,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Synspot_Package</a>
+          <a href="../../index.html">Synspot</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -58,8 +68,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../index.html">Module code</a> &raquo;</li>
-          <li><a href="../Synspot.html">Synspot</a> &raquo;</li>
-      <li>Synspot.TrainRequest</li>
+      <li>synspot.TrainRequest</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -68,7 +77,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for Synspot.TrainRequest</h1><div class="highlight"><pre>
+  <h1>Source code for synspot.TrainRequest</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">gettext</span> <span class="kn">import</span> <span class="n">find</span>
 <span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">skip</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -80,26 +89,26 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 
-<span class="kn">from</span> <span class="nn">.Network</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">.PersonalInformation</span> <span class="kn">import</span> <span class="n">PersonalInformation</span>
-<span class="kn">from</span> <span class="nn">.Database_class</span> <span class="kn">import</span> <span class="n">Database_class</span>
-<span class="kn">from</span> <span class="nn">.SynSpot_utils</span> <span class="kn">import</span> <span class="n">log_helper</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">save_file</span><span class="p">,</span> <span class="n">handle_Algorithm_return_value</span>
-<span class="kn">from</span> <span class="nn">.Error</span> <span class="kn">import</span> <span class="n">check_Algorithm_return_value</span>
+<span class="kn">from</span> <span class="nn">synspot.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">synspot.personalinformation</span> <span class="kn">import</span> <span class="n">PersonalInformation</span>
+<span class="kn">from</span> <span class="nn">synspot.database</span> <span class="kn">import</span> <span class="n">Database</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">log_helper</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">save_file</span><span class="p">,</span> <span class="n">handle_Algorithm_return_value</span>
+<span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">check_Algorithm_return_value</span>
 
-<span class="kn">from</span> <span class="nn">.Algorithm</span> <span class="kn">import</span> <span class="n">make_hash</span><span class="p">,</span> <span class="n">save_match_id</span><span class="p">,</span> <span class="n">make_match_idx</span><span class="p">,</span> <span class="n">make_residual</span><span class="p">,</span> <span class="n">make_train</span><span class="p">,</span> <span class="n">save_output</span><span class="p">,</span> <span class="n">make_result</span><span class="p">,</span> <span class="n">save_residual</span><span class="p">,</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">.algorithm</span> <span class="kn">import</span> <span class="n">make_hash</span><span class="p">,</span> <span class="n">save_match_id</span><span class="p">,</span> <span class="n">make_match_idx</span><span class="p">,</span> <span class="n">make_residual</span><span class="p">,</span> <span class="n">make_train</span><span class="p">,</span> <span class="n">save_output</span><span class="p">,</span> <span class="n">make_result</span><span class="p">,</span> <span class="n">save_residual</span><span class="p">,</span> <span class="n">log</span>
 <span class="c1"># from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance</span>
 
-<div class="viewcode-block" id="check_sponsor_class"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.check_sponsor_class">[docs]</a><span class="k">class</span> <span class="nc">check_sponsor_class</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">check_sponsor_class</span><span class="p">:</span>
     <span class="n">sponsor</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">assistor</span> <span class="o">=</span> <span class="mi">0</span></div>
+    <span class="n">assistor</span> <span class="o">=</span> <span class="mi">0</span>
 
-<div class="viewcode-block" id="TrainRequest"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest">[docs]</a><span class="k">class</span> <span class="nc">TrainRequest</span><span class="p">():</span>
+<div class="viewcode-block" id="TrainRequest"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest">[docs]</a><span class="k">class</span> <span class="nc">TrainRequest</span><span class="p">():</span>
     <span class="n">__TrainRequest_instance</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span> <span class="o">=</span> <span class="n">Database_class</span><span class="o">.</span><span class="n">get_Database_class_instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="n">get_Database_instance</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">base_url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maxRound</span> <span class="o">=</span> <span class="mi">2</span>
@@ -110,29 +119,22 @@
         <span class="c1"># self.exe_position = self.PersonalInformation_instance.exe_position</span>
         <span class="c1"># self.root = self.PersonalInformation_instance.root</span>
 
-<div class="viewcode-block" id="TrainRequest.get_TrainRequest_instance"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.get_TrainRequest_instance">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_TrainRequest_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__TrainRequest_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">__TrainRequest_instance</span> <span class="o">=</span> <span class="n">TrainRequest</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__TrainRequest_instance</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__TrainRequest_instance</span>
 
     <span class="k">def</span> <span class="nf">__obtain_important_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_train_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Obtain the information we need: user_id, root, token, task_id</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            get_train_id - Boolean. Indicate if we need to get the new train id</span>
+<span class="sd">        :param get_train_id: Boolean. Indicate if we need to get the new train id</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            user_id - String. The user_id of current user</span>
-<span class="sd">            root - String. The root of storing intermediate information</span>
-<span class="sd">            token - String. Token we need for verification</span>
-<span class="sd">            task_id - None or String. If get_train_id is True, return String.</span>
-<span class="sd">                If get_train_id is False, return None</span>
+<span class="sd">        :returns: A tuple of ``(user_id, root, token, task_id)``</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            None</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">user_id</span>
         <span class="k">assert</span> <span class="n">user_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -146,32 +148,34 @@
             <span class="n">task_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_train_id</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">task_id</span>
 
-<div class="viewcode-block" id="TrainRequest.handleTrainRequest"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.handleTrainRequest">[docs]</a>    <span class="k">def</span> <span class="nf">handleTrainRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxRound</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">assistors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+<div class="viewcode-block" id="TrainRequest.handleTrainRequest"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.handleTrainRequest">[docs]</a>    <span class="k">def</span> <span class="nf">handleTrainRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxRound</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">assistors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
                             <span class="n">train_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_description</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Call __find_assistor for further execution</span>
+<span class="sd">        Call __find_assistor ``for further`` execution</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            maxRound - Integer. Maximum training round</span>
-<span class="sd">            assistors - List. The List of assistors&#39; usernames</span>
-<span class="sd">            train_file_path - String. Input path address of training data path</span>
-<span class="sd">            train_id_column - String. ID column of Input File</span>
-<span class="sd">            train_data_column - String. Data column of Input File</span>
-<span class="sd">            train_target_column - String. Target column of Input File</span>
-<span class="sd">            task_mode - String. Classification or Regression</span>
-<span class="sd">            model_name - String. Specific model, such as LinearRegression, DecisionTree.</span>
-<span class="sd">            metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.</span>
-<span class="sd">            task_name - None or String. The name of current task.</span>
-<span class="sd">            task_description - None or String. The description of current task</span>
+<span class="sd">        .. note:: This method is experimental.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        .. warning:: This method is experimental.</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            None</span>
+<span class="sd">        :param maxRound: :py:exc:`Integer`. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of ``assistors&#39;`` usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: None</span>
+<span class="sd">            </span>
+<span class="sd">        :exception OSError: Placeholder.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-
+           
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_assistor</span><span class="p">(</span><span class="n">maxRound</span><span class="o">=</span><span class="n">maxRound</span><span class="p">,</span> <span class="n">assistors</span><span class="o">=</span><span class="n">assistors</span><span class="p">,</span> <span class="n">train_file_path</span><span class="o">=</span><span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="o">=</span><span class="n">train_id_column</span><span class="p">,</span> 
                             <span class="n">train_data_column</span><span class="o">=</span><span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span><span class="o">=</span><span class="n">train_target_column</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span>
                             <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="o">=</span><span class="n">task_description</span><span class="p">)</span></div>
@@ -181,14 +185,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get new Task id for this task</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: new_task_id. String. The new task id of new task</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            new_task_id - String. The new task id of new task</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            RuntimeError - raises an exception</span>
+<span class="sd">        :exception OSError: </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/create_new_train_task/&quot;</span>
@@ -212,30 +211,27 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        start task with all assistors</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            maxRound - Integer. Maximum training round</span>
-<span class="sd">            assistors - List. The List of assistors&#39; usernames</span>
-<span class="sd">            train_file_path - String. Input path address of training data path</span>
-<span class="sd">            train_id_column - String. ID column of Input File</span>
-<span class="sd">            train_data_column - String. Data column of Input File</span>
-<span class="sd">            train_target_column - String. Target column of Input File</span>
-<span class="sd">            task_mode - String. Classification or Regression</span>
-<span class="sd">            model_name - String. Specific model, such as LinearRegression, DecisionTree.</span>
-<span class="sd">            metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.</span>
-<span class="sd">            task_name - None or String. The name of current task.</span>
-<span class="sd">            task_description - None or String. The description of current task</span>
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            RuntimeError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain some important information</span>
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">task_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_train_id</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">store_User_Sponsor_Table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">store_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span>
+        <span class="n">store_User_Sponsor_Table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">store_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span>
                                                             <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="o">=</span><span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="o">=</span><span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="o">=</span><span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="o">=</span><span class="n">train_data_column</span><span class="p">,</span>
                                                             <span class="n">train_target_column</span><span class="o">=</span><span class="n">train_target_column</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">store_User_Sponsor_Table_res</span> <span class="o">==</span> <span class="s1">&#39;User_Sponsor_Table stores successfully&#39;</span>
@@ -281,19 +277,16 @@
         <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;handleTrainRequest successfully&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="TrainRequest.unread_request"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_request">[docs]</a>    <span class="k">def</span> <span class="nf">unread_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_request_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_request"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_request">[docs]</a>    <span class="k">def</span> <span class="nf">unread_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_request_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread request for three default mode: [&quot;passive&quot;, &quot;active&quot;, &quot;auto&quot;]</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            unread_request_notification - Dictionary.</span>
+<span class="sd">        :param unread_request_notification: Dictionary.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            String. &#39;unread_request successfully&#39;</span>
+<span class="sd">        :returns: String. &#39;unread_request successfully&#39;</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            RuntimeError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain some important information</span>
@@ -307,9 +300,9 @@
         <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">cur_unread_request_Taskid_dict</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">default_mode</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
                 
-                <span class="n">user_id</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">,</span> <span class="n">default_id_column</span><span class="p">,</span> <span class="n">default_data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Default_Table</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+                <span class="n">user_id</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">,</span> <span class="n">default_id_column</span><span class="p">,</span> <span class="n">default_data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Default_Table</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
                 
-                <span class="n">store_User_Assistor_Table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">store_User_Assistor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">default_mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">default_task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> 
+                <span class="n">store_User_Assistor_Table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">store_User_Assistor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">default_mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">default_task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> 
                                                             <span class="n">test_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_file_path</span><span class="o">=</span><span class="n">default_file_path</span><span class="p">,</span> 
                                                             <span class="n">train_id_column</span><span class="o">=</span><span class="n">default_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="o">=</span><span class="n">default_data_column</span><span class="p">,</span> <span class="n">test_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_id_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_data_column</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
                 <span class="k">assert</span> <span class="n">store_User_Assistor_Table_res</span> <span class="o">==</span> <span class="s1">&#39;User_Assistor_Table stores successfully&#39;</span>
@@ -350,19 +343,16 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_request successfully&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_match_id"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_match_id_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_match_id"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_match_id_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread_match_id. Consider sponsor and assistor, different functions will be called</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            unread_match_id_notification - Dictionary.</span>
+<span class="sd">        :param unread_match_id_notification: Dictionary.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            String. &#39;unread match id done&#39;</span>
+<span class="sd">        :returns: String. &#39;unread match id done&#39;</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            None</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain some important information</span>
@@ -388,19 +378,16 @@
 
         <span class="k">return</span> <span class="s1">&#39;unread match id done&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_match_id_sponsor"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_match_id_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_match_id_sponsor"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_match_id_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread_match_id of sponsor.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String.</span>
+<span class="sd">        :param task_id: String.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            String. &#39;unread_match_id_sponsor successfully&#39;</span>
+<span class="sd">        :returns: String. &#39;unread_match_id_sponsor successfully&#39;</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            RuntimeError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain some information</span>
@@ -454,7 +441,7 @@
             <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
         <span class="c1"># get train target column</span>
-        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
+        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;train_file_path&quot;</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_target_column</span><span class="p">)</span>
 
         <span class="c1"># call make residual</span>
@@ -499,19 +486,16 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_match_id_sponsor successfully&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_match_id_assistor"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_match_id_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_match_id_assistor"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_match_id_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread_match_id of assistor.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String.</span>
+<span class="sd">        :param task_id: String.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            String. &#39;unread_match_id_assistor successfully&#39;</span>
+<span class="sd">        :returns: String. &#39;unread_match_id_assistor successfully&#39;</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            RuntimeError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain basic information</span>
@@ -561,19 +545,16 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_match_id_assistor successfully&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_situation"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_situation">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_situation_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_situation"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_situation">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_situation_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread_situation. Two situations needed to be considered: sponsor and assistor</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            unread_situation_notification - Dictionary.</span>
+<span class="sd">        :param unread_situation_notification: Dictionary.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain important information</span>
@@ -598,20 +579,17 @@
         <span class="k">return</span> <span class="s1">&#39;unread situation done&#39;</span></div>
 
 
-<div class="viewcode-block" id="TrainRequest.unread_situation_sponsor"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_situation_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_situation_sponsor"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_situation_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread situation of sponsor.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String. The task needed to be handled.</span>
-<span class="sd">            rounds - Integer. Current round.</span>
+<span class="sd">        :param task_id: String. The task needed to be handled.</span>
+<span class="sd">        :param rounds: Integer. Current round.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain basic information</span>
@@ -621,7 +599,7 @@
         <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
         <span class="c1"># get train_data_path from db</span>
-        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
+        <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
 
         <span class="c1"># call make train</span>
         <span class="n">train_output</span> <span class="o">=</span> <span class="n">make_train</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="nb">round</span><span class="o">=</span><span class="n">rounds</span><span class="p">,</span> <span class="n">dataset_path</span><span class="o">=</span><span class="n">train_file_path</span><span class="p">,</span> <span class="n">data_idx</span><span class="o">=</span><span class="n">train_data_column</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">skip_header_default</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
@@ -635,22 +613,19 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_situation_sponsor successfully&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_situation_assistor_train_part"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_situation_assistor_train_part">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation_assistor_train_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">from_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">waiting_start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_situation_assistor_train_part"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_situation_assistor_train_part">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation_assistor_train_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">from_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">waiting_start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the timing issue of unread situation of assistor.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String. The task needed to be handled.</span>
-<span class="sd">            rounds - Integer. Current round.</span>
-<span class="sd">            train_file_path - String. The file path of train file</span>
-<span class="sd">            train_data_column - String. The selected data column of train file</span>
+<span class="sd">        :param task_id: String. The task needed to be handled.</span>
+<span class="sd">        :param rounds: Integer. Current round.</span>
+<span class="sd">        :param train_file_path: String. The file path of train file</span>
+<span class="sd">        :param train_data_column: String. The selected data column of train file</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">waiting_current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">time_interval</span> <span class="o">=</span> <span class="n">waiting_current_time</span> <span class="o">-</span> <span class="n">waiting_start_time</span>
@@ -697,20 +672,17 @@
             <span class="k">return</span> <span class="s1">&#39;unread_situation_sponsor successfully&#39;</span></div>
 
 
-<div class="viewcode-block" id="TrainRequest.unread_situation_assistor"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_situation_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_situation_assistor"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_situation_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread situation of assistor.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            task_id - String. The task needed to be handled.</span>
-<span class="sd">            rounds - Integer. Current round.</span>
+<span class="sd">        :param task_id: String. The task needed to be handled.</span>
+<span class="sd">        :param rounds: Integer. Current round.</span>
+<span class="sd"> </span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># obtain basic information</span>
@@ -747,7 +719,7 @@
         <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
         <span class="c1"># select train_data_path</span>
-        <span class="n">mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Assistor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
+        <span class="n">mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Assistor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;get assistor table&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">)</span>
         <span class="n">waiting_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unread_situation_assistor_train_part</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">rounds</span><span class="p">,</span> <span class="n">from_id</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">waiting_start_time</span><span class="p">)</span>
@@ -755,19 +727,16 @@
         <span class="k">return</span> <span class="s1">&#39;unread_situation_assistor successfully&#39;</span></div>
 
 
-<div class="viewcode-block" id="TrainRequest.unread_output"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_output">[docs]</a>    <span class="k">def</span> <span class="nf">unread_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_output_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_output"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_output">[docs]</a>    <span class="k">def</span> <span class="nf">unread_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_output_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the unread_output.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">         unread_output_notification - Dictionary.</span>
+<span class="sd">        :param unread_output_notification: Dictionary.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">         None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_train_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -781,24 +750,20 @@
 
             <span class="n">rounds</span> <span class="o">=</span> <span class="n">cur_unread_output_Rounds_dict</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unread_output_singleTask</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
             
         <span class="k">return</span> <span class="s1">&#39;unread output done&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_output_singleTask"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_output_singleTask">[docs]</a>    <span class="k">def</span> <span class="nf">unread_output_singleTask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_output_singleTask"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_output_singleTask">[docs]</a>    <span class="k">def</span> <span class="nf">unread_output_singleTask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle the single task of unread output.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">         task_id - String. Task id of current task</span>
-<span class="sd">         rounds - Integer. Current Round</span>
+<span class="sd">        :param task_id: String. Task id of current task</span>
+<span class="sd">        :param rounds: Integer. Current Round</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">         None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_output_singleTask&quot;</span><span class="p">,</span> <span class="n">rounds</span><span class="p">)</span>
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_train_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -840,28 +805,25 @@
             <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
             <span class="c1"># get train_file_path, train_target_column from User_Sponsor_Table</span>
-            <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_class_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
+            <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span><span class="o">.</span><span class="n">get_User_Sponsor_Table</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_indicator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;zzzz&#39;</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span><span class="p">)</span>
             <span class="n">waiting_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unread_output_make_result_helper</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">rounds</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_target_column</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">waiting_start_time</span><span class="p">)</span>
 
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_output_make_result_helper"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_output_make_result_helper">[docs]</a>    <span class="k">def</span> <span class="nf">unread_output_make_result_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">waiting_start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_output_make_result_helper"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_output_make_result_helper">[docs]</a>    <span class="k">def</span> <span class="nf">unread_output_make_result_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">waiting_start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper Function. Dealing with the order issue</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">         task_id - String. Task id of current task</span>
-<span class="sd">         rounds - Integer. Current Round</span>
-<span class="sd">         train_file_path - String. The file path of train file</span>
-<span class="sd">         train_target_column - String. The selected data column of train file</span>
+<span class="sd">        :param task_id: String. Task id of current task</span>
+<span class="sd">        :param rounds: Integer. Current Round</span>
+<span class="sd">        :param train_file_path: String. The file path of train file</span>
+<span class="sd">        :param train_target_column: String. The selected data column of train file</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">         None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">waiting_current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">time_interval</span> <span class="o">=</span> <span class="n">waiting_current_time</span> <span class="o">-</span> <span class="n">waiting_start_time</span>
@@ -887,8 +849,10 @@
             <span class="k">if</span> <span class="n">rounds</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxRound</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;---- Train Stage Ends</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
                 <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; ends&#39;</span><span class="p">)</span>
                 <span class="k">return</span>
             <span class="k">else</span><span class="p">:</span>
+
                 <span class="c1"># call make_residual</span>
                 <span class="n">make_residual_multiple_paths</span> <span class="o">=</span> <span class="n">make_residual</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="o">=</span><span class="n">task_id</span><span class="p">,</span> <span class="nb">round</span><span class="o">=</span><span class="p">(</span><span class="n">rounds</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dataset_path</span><span class="o">=</span><span class="n">train_file_path</span><span class="p">,</span> <span class="n">target_idx</span><span class="o">=</span><span class="n">train_target_column</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">skip_header_default</span><span class="p">,</span> <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">)</span>
                 <span class="k">assert</span> <span class="n">make_residual_multiple_paths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -929,21 +893,19 @@
 
                 <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;5.6 Sponsor updates situation done</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;-------------------------- 5. Unread Output Done</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
                 <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
-
+                
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="s1">&#39;unread_output successfully&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_train_stop"><a class="viewcode-back" href="../../Synspot.html#Synspot.TrainRequest.TrainRequest.unread_train_stop">[docs]</a>    <span class="k">def</span> <span class="nf">unread_train_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_train_stop_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_train_stop"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_train_stop">[docs]</a>    <span class="k">def</span> <span class="nf">unread_train_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_train_stop_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Stop Train and delete related files</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">         unread_train_stop_notification - Dictionary.</span>
+<span class="sd">        :param unread_train_stop_notification: Dictionary.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">         None</span>
+<span class="sd">        :returns: None</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">         KeyError - raises an exception</span>
+<span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span></div></div>
@@ -962,7 +924,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, ss.</p>
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

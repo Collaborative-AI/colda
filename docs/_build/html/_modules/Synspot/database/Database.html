@@ -100,7 +100,28 @@
         <span class="k">assert</span> <span class="n">user_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">user_id</span>
 
-    <span class="k">def</span> <span class="nf">get_all_task_id_as_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.get_all_task_id_as_sponsor"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.get_all_task_id_as_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_task_id_as_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_user_id</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
@@ -112,9 +133,30 @@
                     <span class="k">if</span> <span class="s1">&#39;User_Sponsor_Table&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
                         <span class="n">key_task_id</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                         <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_task_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="n">res</span></div>
     
-    <span class="k">def</span> <span class="nf">get_all_test_id_as_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.get_all_test_id_as_sponsor"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.get_all_test_id_as_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_test_id_as_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_user_id</span><span class="p">()</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">:</span>
@@ -124,9 +166,30 @@
                     <span class="k">if</span> <span class="s1">&#39;User_Sponsor_Table&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
                         <span class="n">key_test_id</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                         <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_test_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="n">res</span></div>
 
-    <span class="k">def</span> <span class="nf">get_all_task_id_as_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.get_all_task_id_as_assistor"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.get_all_task_id_as_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_task_id_as_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_user_id</span><span class="p">()</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">:</span>
@@ -136,9 +199,30 @@
                     <span class="k">if</span> <span class="s1">&#39;User_Assistor_Table&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
                         <span class="n">key_task_id</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                         <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_task_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="n">res</span></div>
 
-    <span class="k">def</span> <span class="nf">get_all_test_id_as_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.get_all_test_id_as_assistor"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.get_all_test_id_as_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_test_id_as_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_user_id</span><span class="p">()</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">:</span>
@@ -148,10 +232,30 @@
                     <span class="k">if</span> <span class="s1">&#39;User_Assistor_Table&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
                         <span class="n">key_test_id</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                         <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_test_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="n">res</span></div>
 
-    <span class="k">def</span> <span class="nf">store_User_Default_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+<div class="viewcode-block" id="Database.store_User_Default_Table"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.store_User_Default_Table">[docs]</a>    <span class="k">def</span> <span class="nf">store_User_Default_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                                     <span class="n">default_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">user_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
@@ -167,9 +271,29 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;User_Default_Table stores false&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">get_User_Default_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.get_User_Default_Table"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.get_User_Default_Table">[docs]</a>    <span class="k">def</span> <span class="nf">get_User_Default_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;User_Default_Table&#39;</span><span class="p">][</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
         <span class="n">default_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;User_Default_Table&#39;</span><span class="p">][</span><span class="s1">&#39;default_mode&#39;</span><span class="p">]</span>
@@ -179,12 +303,32 @@
         <span class="n">default_id_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;User_Default_Table&#39;</span><span class="p">][</span><span class="s1">&#39;default_id_column&#39;</span><span class="p">]</span>
         <span class="n">default_data_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">user_id</span><span class="p">][</span><span class="s1">&#39;User_Default_Table&#39;</span><span class="p">][</span><span class="s1">&#39;default_data_column&#39;</span><span class="p">]</span> 
 
-        <span class="k">return</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">,</span> <span class="n">default_id_column</span><span class="p">,</span> <span class="n">default_data_column</span>
+        <span class="k">return</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">,</span> <span class="n">default_task_mode</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">,</span> <span class="n">default_file_path</span><span class="p">,</span> <span class="n">default_id_column</span><span class="p">,</span> <span class="n">default_data_column</span></div>
 
-    <span class="k">def</span> <span class="nf">store_User_Sponsor_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+<div class="viewcode-block" id="Database.store_User_Sponsor_Table"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.store_User_Sponsor_Table">[docs]</a>    <span class="k">def</span> <span class="nf">store_User_Sponsor_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                                 <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                                 <span class="n">train_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">test_indicator</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
@@ -218,9 +362,29 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;User_Sponsor_Table&#39;</span><span class="p">][</span><span class="s1">&#39;metric_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_name</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;User_Sponsor_Table stores false&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;User_Sponsor_Table stores successfully&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;User_Sponsor_Table stores successfully&#39;</span></div>
     
-    <span class="k">def</span> <span class="nf">get_User_Sponsor_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.get_User_Sponsor_Table"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.get_User_Sponsor_Table">[docs]</a>    <span class="k">def</span> <span class="nf">get_User_Sponsor_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">task_id</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">test_id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Use task_id or test_id to retrieve User_Sponsor_Table&#39;</span><span class="p">)</span>
@@ -259,12 +423,32 @@
         <span class="k">if</span> <span class="n">test_indicator</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">,</span> <span class="n">train_target_column</span>
         <span class="k">elif</span> <span class="n">test_indicator</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">,</span> <span class="n">test_target_column</span>
+            <span class="k">return</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">,</span> <span class="n">test_target_column</span></div>
 
-    <span class="k">def</span> <span class="nf">store_User_Assistor_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+<div class="viewcode-block" id="Database.store_User_Assistor_Table"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.store_User_Assistor_Table">[docs]</a>    <span class="k">def</span> <span class="nf">store_User_Assistor_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                                 <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                                 <span class="n">test_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">test_indicator</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
@@ -296,10 +480,30 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;User_Assistor_Table&#39;</span><span class="p">][</span><span class="s1">&#39;model_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_name</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;User_Assistor_Table stores false&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;User_Assistor_Table stores successfully&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;User_Assistor_Table stores successfully&#39;</span></div>
     
-    <span class="k">def</span> <span class="nf">get_User_Assistor_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.get_User_Assistor_Table"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.get_User_Assistor_Table">[docs]</a>    <span class="k">def</span> <span class="nf">get_User_Assistor_Table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        start task with all assistors</span>
+
+<span class="sd">        :param maxRound: Integer. Maximum training round</span>
+<span class="sd">        :param assistors: List. The List of assistors&#39; usernames</span>
+<span class="sd">        :param train_file_path: String. Input path address of training data path</span>
+<span class="sd">        :param train_id_column: String. ID column of Input File</span>
+<span class="sd">        :param train_data_column: String. Data column of Input File</span>
+<span class="sd">        :param train_target_column: String. Target column of Input File</span>
+<span class="sd">        :param task_mode: String. Classification or Regression</span>
+<span class="sd">        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.</span>
+<span class="sd">        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.</span>
+<span class="sd">        :param task_name: None or String. The name of current task.</span>
+<span class="sd">        :param task_description: None or String. The description of current task</span>
+
+<span class="sd">        :returns: Tuple. Contains a string &#39;handleTrainRequest successfully&#39; and the task id</span>
+
+<span class="sd">        :exception OSError: Placeholder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">task_id</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">test_id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Use task_id or test_id to retrieve User_Assistor_Table&#39;</span><span class="p">)</span>
 
@@ -339,7 +543,7 @@
         <span class="k">if</span> <span class="n">test_indicator</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">task_description</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">,</span> <span class="n">train_data_column</span>
         <span class="k">elif</span> <span class="n">test_indicator</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span>
+            <span class="k">return</span> <span class="n">mode</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">test_description</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">,</span> <span class="n">test_data_column</span></div>
 
 <div class="viewcode-block" id="Database.logout"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.logout">[docs]</a>    <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

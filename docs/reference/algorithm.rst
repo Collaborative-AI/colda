@@ -12,40 +12,23 @@ images.
 Examples
 --------
 
-Open, rotate, and display an image (using the default viewer)
+Train and save the model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following script loads an image, rotates it 45 degrees, and displays it
-using an external viewer (usually xv on Unix, and the Paint program on
-Windows).
+The following script generates a model based on the task_mode and model_name, then train the model
+and save the model at the desginated position.
 
 .. code-block:: python
 
-    from PIL import Image
-    with Image.open("hopper.jpg") as im:
-        im.rotate(45).show()
+    from synspot import algorithm
+    model = Model(task_mode, model_name)
+    model.fit(data, target)
+    save(model, os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'model.pkl'))
 
-Create thumbnails
-^^^^^^^^^^^^^^^^^
+.. warning:: This method is experimental.
 
-The following script creates nice thumbnails of all JPEG images in the
-current directory preserving aspect ratios with 128x128 max resolution.
-
-.. code-block:: python
-
-    from PIL import Image
-    import glob, os
-
-    size = 128, 128
-
-    for infile in glob.glob("*.jpg"):
-        file, ext = os.path.splitext(infile)
-        with Image.open(infile) as im:
-            im.thumbnail(size)
-            im.save(file + ".thumbnail", "JPEG")
-
-The algorithm method
----------------
+Functions
+---------
 
 .. autofunction:: synspot.algorithm.make_train_local
 .. autofunction:: synspot.algorithm.make_test_local

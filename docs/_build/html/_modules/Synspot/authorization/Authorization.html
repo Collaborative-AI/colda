@@ -93,7 +93,7 @@
 <span class="c1"># import atob</span>
 
 <div class="viewcode-block" id="Authorization"><a class="viewcode-back" href="../../../reference/authorization.html#synspot.authorization.Authorization">[docs]</a><span class="k">class</span> <span class="nc">Authorization</span><span class="p">():</span>
-    <span class="n">__Authorization_instance</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">__authorization_instance</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
@@ -108,11 +108,11 @@
         <span class="k">return</span> <span class="n">root</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_Authorization_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__Authorization_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">__Authorization_instance</span> <span class="o">=</span> <span class="n">Authorization</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_authorization_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__authorization_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">__authorization_instance</span> <span class="o">=</span> <span class="n">authorization</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__Authorization_instance</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__authorization_instance</span>
 
     <span class="k">def</span> <span class="nf">userRegister</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -142,7 +142,7 @@
 <div class="viewcode-block" id="Authorization.userLogin"><a class="viewcode-back" href="../../../reference/authorization.html#synspot.authorization.Authorization.userLogin">[docs]</a>    <span class="k">def</span> <span class="nf">userLogin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get Token through HTTP Authorization&#39;s Basic Auth when first time login. Update __token in Network class</span>
+<span class="sd">        Get Token through HTTP authorization&#39;s Basic Auth when first time login. Update __token in Network class</span>
 
 <span class="sd">        :param username: The username of current user</span>
 <span class="sd">        :param password: The password of current user</span>

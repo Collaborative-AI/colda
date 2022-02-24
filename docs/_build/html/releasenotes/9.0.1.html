@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+<meta property="og:title" content="9.0.1" />
+  
+<meta property="og:type" content="website" />
+  
+<meta property="og:url" content="releasenotes/9.0.1.html" />
+  
+<meta property="og:description" content="Security: This release addresses several security problems. CVE-2022-24303: If the path to the temporary directory on Linux or macOS contained a space, this would break removal of the temporary ima..." />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Overview: module code &mdash; Synspot 0.0.0 documentation</title>
+  <title>9.0.1 &mdash; Synspot 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -49,7 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
 </ul>
 
@@ -67,8 +76,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Overview: module code</li>
+      <li>9.0.1</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/releasenotes/9.0.1.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -76,29 +86,51 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="synspot/TestRequest.html">synspot.TestRequest</a></li>
-<li><a href="synspot/TrainRequest.html">synspot.TrainRequest</a></li>
-<li><a href="synspot/algorithm/make_eval.html">synspot.algorithm.make_eval</a></li>
-<li><a href="synspot/algorithm/make_hash.html">synspot.algorithm.make_hash</a></li>
-<li><a href="synspot/algorithm/make_match_idx.html">synspot.algorithm.make_match_idx</a></li>
-<li><a href="synspot/algorithm/make_residual.html">synspot.algorithm.make_residual</a></li>
-<li><a href="synspot/algorithm/make_result.html">synspot.algorithm.make_result</a></li>
-<li><a href="synspot/algorithm/make_test.html">synspot.algorithm.make_test</a></li>
-<li><a href="synspot/algorithm/make_test_local.html">synspot.algorithm.make_test_local</a></li>
-<li><a href="synspot/algorithm/make_train.html">synspot.algorithm.make_train</a></li>
-<li><a href="synspot/algorithm/make_train_local.html">synspot.algorithm.make_train_local</a></li>
-<li><a href="synspot/algorithm/save_match_id.html">synspot.algorithm.save_match_id</a></li>
-<li><a href="synspot/algorithm/save_output.html">synspot.algorithm.save_output</a></li>
-<li><a href="synspot/algorithm/save_residual.html">synspot.algorithm.save_residual</a></li>
-<li><a href="synspot/algorithm/utils.html">synspot.algorithm.utils</a></li>
-<li><a href="synspot/authorization/Authorization.html">synspot.authorization.Authorization</a></li>
-<li><a href="synspot/database/Database.html">synspot.database.Database</a></li>
-<li><a href="synspot/error.html">synspot.error</a></li>
-<li><a href="synspot/network/Network.html">synspot.network.Network</a></li>
-<li><a href="synspot/personalinformation/PersonalInformation.html">synspot.personalinformation.PersonalInformation</a></li>
-<li><a href="synspot/utils.html">synspot.utils</a></li>
-</ul>
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="id1">
+<h1>9.0.1<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<section id="security">
+<h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
+<p>This release addresses several security problems.</p>
+<p><a class="reference external" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24303">CVE-2022-24303</a>: If the path to the temporary directory on Linux or macOS
+contained a space, this would break removal of the temporary image file after
+<code class="docutils literal notranslate"><span class="pre">im.show()</span></code> (and related actions), and potentially remove an unrelated file. This
+has been present since PIL.</p>
+<p><a class="reference external" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-22817">CVE-2022-22817</a>: While Pillow 9.0 restricted top-level builtins available to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">PIL.ImageMath.eval()</span></code>, it did not prevent builtins available to lambda
+expressions. These are now also restricted.</p>
+</section>
+<section id="other-changes">
+<h2>Other Changes<a class="headerlink" href="#other-changes" title="Permalink to this headline">¶</a></h2>
+<p>Pillow 9.0 added support for <code class="docutils literal notranslate"><span class="pre">xdg-open</span></code> as an image viewer, but there have been
+reports that the temporary image file was removed too quickly to be loaded into the
+final application. A delay has been added.</p>
+</section>
+</section>
+
 
            </div>
           </div>

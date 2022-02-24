@@ -9,7 +9,7 @@
   
 <meta property="og:url" content="reference/TestRequest.html" />
   
-<meta property="og:description" content="The TestRequest module contains a class of the same name to represent the color palette of palette mapped images." />
+<meta property="og:description" content="The TestRequest module contains a class of the same name to initiate test stage collaboration. Examples: Initiate a testing task: The following script shows how to initiate a testing task Classes:" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TestRequest Module &mdash; Synspot 0.0.0 documentation</title>
@@ -67,7 +67,14 @@
 <li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="GetNotification.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">GetNotification</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="StopRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initiate-a-testing-task">Initiate a testing task</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="TrainRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code> Module</a></li>
 </ul>
@@ -129,13 +136,34 @@
 <span class="target" id="module-synspot.TestRequest"></span><section id="testrequest-module">
 <h1><a class="reference internal" href="#module-synspot.TestRequest" title="synspot.TestRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code></a> Module<a class="headerlink" href="#testrequest-module" title="Permalink to this headline">¶</a></h1>
 <p>The <a class="reference internal" href="#module-synspot.TestRequest" title="synspot.TestRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code></a> module contains a class of the same name to
-represent the color palette of palette mapped images.</p>
+initiate test stage collaboration.</p>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<section id="initiate-a-testing-task">
+<h3>Initiate a testing task<a class="headerlink" href="#initiate-a-testing-task" title="Permalink to this headline">¶</a></h3>
+<p>The following script shows how to initiate a testing task</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">synspot</span>
+<span class="c1"># login</span>
+<span class="n">synspot</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="s1">&#39;xie1&#39;</span><span class="p">,</span> <span class="s1">&#39;Xie1@123&#39;</span><span class="p">)</span>
+
+<span class="n">synspot</span><span class="o">.</span><span class="n">callForTest</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">test_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <a class="reference internal" href="#synspot.TestRequest.TestRequest" title="synspot.TestRequest.TestRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestRequest</span></code></a> class has several methods,
 but they are all marked as “experimental.” Read that as you will. The
 <code class="docutils literal notranslate"><span class="pre">[source]</span></code> link is there for a reason.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method is experimental.</p>
+</div>
+</section>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="synspot.TestRequest.TestRequest">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">synspot.TestRequest.</span></span><span class="sig-name descname"><span class="pre">TestRequest</span></span><a class="reference internal" href="../_modules/synspot/TestRequest.html#TestRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TestRequest.TestRequest" title="Permalink to this definition">¶</a></dt>
@@ -300,6 +328,7 @@ but they are all marked as “experimental.” Read that as you will. The
 
 </dd></dl>
 
+</section>
 </section>
 
 

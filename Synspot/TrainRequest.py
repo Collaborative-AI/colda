@@ -74,10 +74,6 @@ class TrainRequest():
         """
         Call __find_assistor ``for further`` execution
 
-        .. note:: This method is experimental.
-
-        .. warning:: This method is experimental.
-
         :param maxRound: :py:exc:`Integer`. Maximum training round
         :param assistors: List. The List of ``assistors'`` usernames
         :param train_file_path: String. Input path address of training data path

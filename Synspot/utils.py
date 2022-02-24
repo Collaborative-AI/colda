@@ -18,6 +18,16 @@ def log_helper(msg, root, user_id, task_id):
         log(item, root, user_id, task_id)
 
 def check_json_format(content):
+    """
+    start task with all assistors
+
+    :param file_address: Integer. Maximum training round
+    :param file_content: List. The List of assistors' usernames
+
+    :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+    :exception OSError: Placeholder.
+    """
     if isinstance(content, list):
         return False
     elif isinstance(content, int):
@@ -36,12 +46,32 @@ def check_json_format(content):
     return True
 
 def check_status_code(response, status_code):
+    """
+    start task with all assistors
+
+    :param file_address: Integer. Maximum training round
+    :param file_content: List. The List of assistors' usernames
+
+    :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+    :exception OSError: Placeholder.
+    """
     if response.status_code == status_code:
         return True
 
     return False
 
 def load_json_data(json_data, json_data_name, testing_key_value_pair=None):
+    """
+    start task with all assistors
+
+    :param file_address: Integer. Maximum training round
+    :param file_content: List. The List of assistors' usernames
+
+    :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+    :exception OSError: Placeholder.
+    """
     assert json_data is not None
     print('load_json_data', json_data_name)
 
@@ -65,6 +95,16 @@ def load_json_data(json_data, json_data_name, testing_key_value_pair=None):
     return json_data
 
 def load_file(file_address):
+    """
+    start task with all assistors
+
+    :param file_address: Integer. Maximum training round
+    :param file_content: List. The List of assistors' usernames
+
+    :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+    :exception OSError: Placeholder.
+    """
     file_data = np.genfromtxt(file_address, delimiter=',', dtype=np.str_)
     assert file_data is not None
 
@@ -75,6 +115,18 @@ def load_file(file_address):
 
 
 def save_file(file_address, file_content):
+
+    """
+    start task with all assistors
+
+    :param file_address: Integer. Maximum training round
+    :param file_content: List. The List of assistors' usernames
+
+    :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+    :exception OSError: Placeholder.
+    """
+
     try:
         if check_json_format(file_content):
             print('gggg')

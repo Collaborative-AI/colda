@@ -21,6 +21,27 @@ class Database():
         return user_id
 
     def get_all_task_id_as_sponsor(self):
+
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
+        
         user_id = self.__obtain_user_id()
         print(user_id)
         res = []
@@ -35,6 +56,27 @@ class Database():
         return res
     
     def get_all_test_id_as_sponsor(self):
+
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
+
         user_id = self.__obtain_user_id()
         res = []
         for key in self.__temp_database:
@@ -47,6 +89,27 @@ class Database():
         return res
 
     def get_all_task_id_as_assistor(self):
+
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
+
         user_id = self.__obtain_user_id()
         res = []
         for key in self.__temp_database:
@@ -59,6 +122,27 @@ class Database():
         return res
 
     def get_all_test_id_as_assistor(self):
+
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
+
         user_id = self.__obtain_user_id()
         res = []
         for key in self.__temp_database:
@@ -72,6 +156,26 @@ class Database():
 
     def store_User_Default_Table(self, user_id: str, default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, 
                                     default_id_column: str=None, default_data_column: str=None):
+
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
 
         if user_id not in self.__temp_database:
             self.__temp_database[user_id] = collections.defaultdict(dict)
@@ -90,6 +194,26 @@ class Database():
         return True
 
     def get_User_Default_Table(self, user_id: str):
+        
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
 
         user_id = self.__temp_database[user_id]['User_Default_Table']['user_id']
         default_mode = self.__temp_database[user_id]['User_Default_Table']['default_mode']
@@ -105,6 +229,26 @@ class Database():
                                 task_name: str=None, task_description: str=None, test_name: str=None, test_description=None, train_file_path: str=None, train_id_column: str=None, train_data_column: str=None, 
                                 train_target_column: str=None, test_file_path: str=None, test_id_column: str=None, test_data_column: str=None, test_target_column: str=None):
         
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
+
         try:
             key = None
             if test_indicator == 'train':
@@ -141,6 +285,26 @@ class Database():
         return 'User_Sponsor_Table stores successfully'
     
     def get_User_Sponsor_Table(self, user_id: str, test_indicator: str, task_id: str=None, test_id: str=None):
+
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
 
         if not task_id and not test_id:
             raise RuntimeError('Use task_id or test_id to retrieve User_Sponsor_Table')
@@ -185,6 +349,26 @@ class Database():
                                 task_name: str=None, task_description: str=None, test_name: str=None, test_description: str=None, train_file_path: str=None, train_id_column: str=None, train_data_column: str=None, 
                                 test_file_path: str=None, test_id_column: str=None, test_data_column: str=None):
         
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
+
         try:
             key = None
             if test_indicator == 'train':
@@ -220,6 +404,26 @@ class Database():
     
     def get_User_Assistor_Table(self, user_id: str, test_indicator: str, task_id: str=None, test_id: str=None):
         
+        """
+        start task with all assistors
+
+        :param maxRound: Integer. Maximum training round
+        :param assistors: List. The List of assistors' usernames
+        :param train_file_path: String. Input path address of training data path
+        :param train_id_column: String. ID column of Input File
+        :param train_data_column: String. Data column of Input File
+        :param train_target_column: String. Target column of Input File
+        :param task_mode: String. Classification or Regression
+        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param task_name: None or String. The name of current task.
+        :param task_description: None or String. The description of current task
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
+
         if not task_id and not test_id:
             raise RuntimeError('Use task_id or test_id to retrieve User_Assistor_Table')
 

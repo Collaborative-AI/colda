@@ -9,7 +9,7 @@
   
 <meta property="og:url" content="reference/authorization.html" />
   
-<meta property="og:description" content="The authorization module contains a class of the same name to represent the color palette of palette mapped images." />
+<meta property="og:description" content="The authorization module contains a class of the same name to handle simple authentication(login) and authorization(token) Examples: Login and logout to an account: The following script shows how t..." />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>authorization Module &mdash; Synspot 0.0.0 documentation</title>
@@ -60,7 +60,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="algorithm.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code> Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code> Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#login-and-logout-to-an-account">Login and logout to an account</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="personalinformation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">personalinformation</span></code> Module</a></li>
@@ -129,20 +136,42 @@
 <span class="target" id="module-synspot.authorization"></span><section id="authorization-module">
 <h1><a class="reference internal" href="#module-synspot.authorization" title="synspot.authorization"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code></a> Module<a class="headerlink" href="#authorization-module" title="Permalink to this headline">¶</a></h1>
 <p>The <a class="reference internal" href="#module-synspot.authorization" title="synspot.authorization"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code></a> module contains a class of the same name to
-represent the color palette of palette mapped images.</p>
+handle simple authentication(login) and authorization(token)</p>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<section id="login-and-logout-to-an-account">
+<h3>Login and logout to an account<a class="headerlink" href="#login-and-logout-to-an-account" title="Permalink to this headline">¶</a></h3>
+<p>The following script shows how to login and logout.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">synspot</span>
+
+<span class="c1"># login</span>
+<span class="n">synspot</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="s1">&#39;xie1&#39;</span><span class="p">,</span> <span class="s1">&#39;Xie1@123&#39;</span><span class="p">)</span>
+
+<span class="c1"># logout</span>
+<span class="n">synspot</span><span class="o">.</span><span class="n">userLogout</span><span class="p">()</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">authorization</span></code> class has several methods,
 but they are all marked as “experimental.” Read that as you will. The
 <code class="docutils literal notranslate"><span class="pre">[source]</span></code> link is there for a reason.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method is experimental.</p>
+</div>
+</section>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="synspot.authorization.Authorization">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">synspot.authorization.</span></span><span class="sig-name descname"><span class="pre">Authorization</span></span><a class="reference internal" href="../_modules/synspot/authorization/Authorization.html#Authorization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.authorization.Authorization" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="synspot.authorization.Authorization.userLogin">
 <span class="sig-name descname"><span class="pre">userLogin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/authorization/Authorization.html#Authorization.userLogin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.authorization.Authorization.userLogin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get Token through HTTP Authorization’s Basic Auth when first time login. Update __token in Network class</p>
+<dd><p>Get Token through HTTP authorization’s Basic Auth when first time login. Update __token in Network class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -176,6 +205,7 @@ PersonalInformation, and Database_class.</p>
 
 </dd></dl>
 
+</section>
 </section>
 
 

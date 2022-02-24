@@ -9,7 +9,7 @@
   
 <meta property="og:url" content="reference/TrainRequest.html" />
   
-<meta property="og:description" content="The TrainRequest module contains a class of the same name to represent the color palette of palette mapped images." />
+<meta property="og:description" content="The TrainRequest module contains a class of the same name to initiate train stage collaboration. Examples: Initiate a training task: The following script shows how to initiate a training task Classes:" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TrainRequest Module &mdash; Synspot 0.0.0 documentation</title>
@@ -68,7 +68,14 @@
 <li class="toctree-l2"><a class="reference internal" href="GetNotification.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">GetNotification</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="StopRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TestRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initiate-a-training-task">Initiate a training task</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code> Module</a></li>
 </ul>
 </li>
@@ -129,13 +136,34 @@
 <span class="target" id="module-synspot.TrainRequest"></span><section id="trainrequest-module">
 <h1><a class="reference internal" href="#module-synspot.TrainRequest" title="synspot.TrainRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code></a> Module<a class="headerlink" href="#trainrequest-module" title="Permalink to this headline">¶</a></h1>
 <p>The <a class="reference internal" href="#module-synspot.TrainRequest" title="synspot.TrainRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code></a> module contains a class of the same name to
-represent the color palette of palette mapped images.</p>
+initiate train stage collaboration.</p>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<section id="initiate-a-training-task">
+<h3>Initiate a training task<a class="headerlink" href="#initiate-a-training-task" title="Permalink to this headline">¶</a></h3>
+<p>The following script shows how to initiate a training task</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">synspot</span>
+<span class="c1"># login</span>
+<span class="n">synspot</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="s1">&#39;xie1&#39;</span><span class="p">,</span> <span class="s1">&#39;Xie1@123&#39;</span><span class="p">)</span>
+
+<span class="n">synspot</span><span class="o">.</span><span class="n">callForTrain</span><span class="p">(</span><span class="n">maxRound</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">assistors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">train_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <a class="reference internal" href="#synspot.TrainRequest.TrainRequest" title="synspot.TrainRequest.TrainRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainRequest</span></code></a> class has several methods,
 but they are all marked as “experimental.” Read that as you will. The
 <code class="docutils literal notranslate"><span class="pre">[source]</span></code> link is there for a reason.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method is experimental.</p>
+</div>
+</section>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">synspot.TrainRequest.</span></span><span class="sig-name descname"><span class="pre">TrainRequest</span></span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest" title="Permalink to this definition">¶</a></dt>
@@ -143,14 +171,6 @@ but they are all marked as “experimental.” Read that as you will. The
 <dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.handleTrainRequest">
 <span class="sig-name descname"><span class="pre">handleTrainRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxRound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assistors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.handleTrainRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.handleTrainRequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Call __find_assistor <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">further</span></code> execution</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This method is experimental.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This method is experimental.</p>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -401,6 +421,7 @@ but they are all marked as “experimental.” Read that as you will. The
 
 </dd></dl>
 
+</section>
 </section>
 
 

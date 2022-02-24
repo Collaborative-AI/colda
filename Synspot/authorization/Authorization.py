@@ -13,7 +13,7 @@ from synspot.utils import handle_base64_padding, load_json_data, check_status_co
 # import atob
 
 class Authorization():
-    __Authorization_instance = None
+    __authorization_instance = None
 
     def __init__(self):
         self.Network_instance = Network.get_Network_instance()
@@ -28,11 +28,11 @@ class Authorization():
         return root
 
     @classmethod
-    def get_Authorization_instance(cls):
-        if cls.__Authorization_instance == None:
-            cls.__Authorization_instance = Authorization()
+    def get_authorization_instance(cls):
+        if cls.__authorization_instance == None:
+            cls.__authorization_instance = authorization()
 
-        return cls.__Authorization_instance
+        return cls.__authorization_instance
 
     def userRegister(self, username: str, email:str, password: str):
 
@@ -62,7 +62,7 @@ class Authorization():
     def userLogin(self, username: str, password: str):
 
         """
-        Get Token through HTTP Authorization's Basic Auth when first time login. Update __token in Network class
+        Get Token through HTTP authorization's Basic Auth when first time login. Update __token in Network class
 
         :param username: The username of current user
         :param password: The password of current user

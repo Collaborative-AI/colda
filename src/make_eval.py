@@ -5,6 +5,7 @@ import collections
 from utils import log, parse_idx
 from metrics import Metric
 
+
 def make_eval(args):
     root = args['root']
     self_id = args['self_id']
@@ -38,7 +39,7 @@ def make_eval(args):
         if not os.path.exists(sponsor_test_result_path):
             print("300?make_eval sponsor cannot find test output file")
             return
-    
+
     make_eval_res = collections.defaultdict(dict)
     for i in range(1, round + 1):
         output_path_i = os.path.join(task_path, 'test', test_id, 'round', str(i), 'output')
@@ -59,7 +60,6 @@ def make_eval(args):
         output_i = output_i / count_i
         alpha = np.genfromtxt(os.path.join(task_path, 'train', 'round', str(i), 'alpha.csv'), delimiter=',')
         result = result + alpha * output_i
-        print(alpha)
         result_path_i = os.path.join(task_path, 'test', test_id, 'round', str(i), 'result.csv')
         result_path.append(result_path_i)
         np.savetxt(result_path_i, result, delimiter=",")
@@ -69,8 +69,8 @@ def make_eval(args):
             make_eval_res[i] = eval_dict
             msg = 'Test Round: {}, {}'.format(i, eval)
             log(msg, root, self_id, task_id, test_id)
-
     result_path = '?'.join(result_path)
     make_eval_res = json.dumps(make_eval_res)
-    print('200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res = make_eval_res, result_path = result_path), end='')
+    print('200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res=make_eval_res, result_path=result_path),
+          end='')
     return

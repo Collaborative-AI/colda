@@ -126,7 +126,7 @@ export default {
             [
               {
                   name: "linear",
-                  sub: [{ name: "Accuracy_F1_AUCROC" }],
+                  sub: [{ name: "Loss_Accuracy_F1_AUCROC" }],
               },
             ],   
         },
@@ -136,7 +136,7 @@ export default {
             [
               {
                   name: "linear",
-                  sub: [{ name: "MAD_RMSE_R2" }],
+                  sub: [{ name: "Loss_MAD_RMSE_R2" }],
               },
             ],   
         },

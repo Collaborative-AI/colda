@@ -7,7 +7,7 @@
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
 
                         <router-link to="/" class="g-text-underline--none--hover">
-                          <img src="../assets/a-logo3.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                          <img src="../assets/l6.png" width="30" height="30" class="d-inline-block align-top" alt="">
                             
                         </router-link>
                         <li v-if="sharedState.is_authenticated" class="nav-item">
@@ -2177,7 +2177,7 @@ export default {
           + ' --task_mode ' + task_mode + ' --metric_name ' + metric_name, {encoding: 'utf8'})
 
         eval_done = eval_done.split("?")
-        // // console.log('wokan2', eval_done)
+        console.log('wokan2', eval_done)
         let make_eval_res = JSON.parse(eval_done[2])
         let unittest_parameters = generate_unittest_parameters(make_eval_res)
         execute_unittest_list(unittest_callbacks, 2, "unread_test_output_unittest", unittest_parameters)

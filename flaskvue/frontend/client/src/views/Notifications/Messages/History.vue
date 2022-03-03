@@ -90,6 +90,21 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div v-if="page=='chart'" class="container my-5">
 <div class="row">
+  <!-- loss -->
+  <div v-if="task_mode == 'regression'" class="col-md-6">
+    <div class="box box-green" id="chart-parent">
+      <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
+        <mdb-line-chart v-if="test_id!=null" id="chart"
+          :data="lineChartData9"
+          :options="lineChartOptions9"
+        ></mdb-line-chart>
+        <mdb-line-chart v-else id="chart"
+          :data="lineChartData9t"
+          :options="lineChartOptions9t"
+        ></mdb-line-chart>
+      </mdb-container>
+    </div>
+  </div>   
 <!-- mad -->
   <div v-if="task_mode == 'regression'" class="col-md-6">
     <div class="box box-aqua" id="chart-parent">
@@ -155,6 +170,23 @@
         <mdb-line-chart id="chart"
           :data="lineChartData1"
           :options="lineChartOptions1"
+        ></mdb-line-chart>
+      </mdb-container>
+    </div>
+  </div>   
+
+
+<!-- loss -->
+  <div v-if="task_mode == 'classification'" class="col-md-6">
+    <div class="box box-green" id="chart-parent">
+      <mdb-container style='height: auto; width: 100%; object-fit: contain' id="line-chart" v-cloak>
+        <mdb-line-chart v-if="test_id!=null" id="chart"
+          :data="lineChartData9"
+          :options="lineChartOptions9"
+        ></mdb-line-chart>
+        <mdb-line-chart v-else id="chart"
+          :data="lineChartData9t"
+          :options="lineChartOptions9t"
         ></mdb-line-chart>
       </mdb-container>
     </div>
@@ -244,7 +276,10 @@ import Pagination from '../../../components/Pagination'
 // const Pagination = require('../../../components/Pagination.vue').default
 import { mdbLineChart, mdbContainer } from "mdbvue";
 
-
+var baseline_loss = []
+var training_loss = []
+var test_loss = []
+var test_baseline_loss = []
 
 var baseline_rmse = []
 var training_rmse = []
@@ -1264,6 +1299,153 @@ export default {
           }
         },
 
+      lineChartData9: {
+          labels: [
+            "0",
+            "1",
+            "2"
+          ],
+          datasets: [
+            {
+              label: "Baseline LOSS",
+              // backgroundColor: "rgba(255, 99, 132, 0.1)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 0.7,
+              data: baseline_loss
+            },
+            {
+              label: "Training LOSS",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(151,187,205,1)",
+              borderWidth: 0.8,
+              data: training_loss
+            },
+            {
+              label: "Test LOSS",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(3,3,205,1)",
+              borderWidth: 0.8,
+              data: test_loss
+            },
+            {
+              label: "Test Baseline LOSS",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(90,90,90,50)",
+              borderWidth: 0.8,
+              data: test_baseline_loss
+            },
+            
+          ]
+        },
+        
+        lineChartOptions9: {
+          responsive: true,
+          maintainAspectRatio: false,
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
+          title: {
+                display: true,
+                text: 'LOSS vs. Round'
+            },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Round'
+                },
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'LOSS'
+                },
+              }
+            ]
+          }
+        },
+
+      lineChartData9t: {
+          labels: [
+            "0",
+            "1",
+            "2"
+          ],
+          datasets: [
+            {
+              label: "Baseline LOSS",
+              // backgroundColor: "rgba(255, 99, 132, 0.1)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 0.7,
+              data: baseline_loss
+            },
+            {
+              label: "Training LOSS",
+              // backgroundColor: "rgba(151,187,205,0.2)",
+              borderColor: "rgba(151,187,205,1)",
+              borderWidth: 0.8,
+              data: training_loss
+            },
+            
+            
+          ]
+        },
+        
+        lineChartOptions9t: {
+          responsive: true,
+          maintainAspectRatio: false,
+          bezierCurve: false,
+          elements: {
+              line: {
+                  tension: 0
+              }
+          },
+          title: {
+                display: true,
+                text: 'LOSS vs. Round'
+            },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Round'
+                },
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'LOSS'
+                },
+              }
+            ]
+          }
+        },
+
         
 
 
@@ -1599,6 +1781,7 @@ export default {
             const alpha_list =[]
             const mad_list = []
             const r2_list = []
+            const loss_list = []
             // console.log('messages',this.messages)
             for (let message of this.messages){
               // console.log('rmse', message.search("RMSE:"))
@@ -1648,6 +1831,18 @@ export default {
               let r2 = message.slice(message.search("R2:")+4,message.search("R2:")+9)
               r2_list[r2_list.length] = r2
             }
+            for (let message of this.messages){
+              if (message.search("Loss:") == -1){
+                continue
+              }
+              // console.log('content', message)
+              // console.log('che',message)
+              let loss = message.slice(message.search("Loss:")+6,message.search("Loss:")+11)
+              // console.log('zz67',aucroc)
+              // console.log('aucroc_num', message.slice(message.search("F1:")+4,message.search("F1:")+9))
+              loss_list[loss_list.length] = loss
+              
+            }
             // console.log('messages',this.messages)
             console.log('rmse_list',rmse_list)
             // console.log('alpha_list',alpha_list)
@@ -1675,6 +1870,14 @@ export default {
               training_r2[i] = r2_list[i+1]
               test_baseline_r2[i] = r2_list[r2_list.length-4]
               test_r2[i] = r2_list[r2_list.length-3+i]
+
+              baseline_loss[i] = loss_list[0]
+              training_loss[i] = loss_list[i+1]
+              test_baseline_loss[i] = loss_list[loss_list.length-4]
+              test_loss[i] = loss_list[loss_list.length-3+i]
+
+
+
 
             }
             for(let i=0; i<alpha_list.length; i++){
@@ -1730,6 +1933,7 @@ export default {
             const f1_list = []
             const aucroc_list = []
             const alpha_list =[]
+            const loss_list = []
               
             // console.log('messages',this.messages)
             for (let message of this.messages){
@@ -1782,6 +1986,17 @@ export default {
               // console.log('zz67',aucroc)
               // console.log('aucroc_num', message.slice(message.search("F1:")+4,message.search("F1:")+9))
               aucroc_list[aucroc_list.length] = aucroc
+            }
+            for (let message of this.messages){
+              if (message.search("Loss:") == -1){
+                continue
+              }
+              // console.log('content', message)
+              // console.log('che',message)
+              let loss = message.slice(message.search("Loss:")+6,message.search("Loss:")+11)
+              // console.log('zz67',aucroc)
+              // console.log('aucroc_num', message.slice(message.search("F1:")+4,message.search("F1:")+9))
+              loss_list[loss_list.length] = loss
               
             }
             
@@ -1811,6 +2026,13 @@ export default {
               training_aucroc[i] = aucroc_list[i+1]
               test_baseline_aucroc[i] = aucroc_list[4]
               test_aucroc[i] = aucroc_list[aucroc_list.length-3+i]
+
+              baseline_loss[i] = loss_list[0]
+              training_loss[i] = loss_list[i+1]
+              test_baseline_loss[i] = loss_list[4]
+              test_loss[i] = loss_list[loss_list.length-3+i]
+
+
              
 
             }

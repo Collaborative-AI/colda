@@ -7,10 +7,12 @@ from flask.json import jsonify
 from datetime import datetime
 from Items.main.apollo_utils import log, generate_msg
 
-from Items import db
+# from Items import db
+from Items import pyMongo
+
 # import BluePrint
 from Items.main import main
-from Items.models import User, Message, Matched
+# from Items.models import User, Message, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 

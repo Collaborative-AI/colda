@@ -1,8 +1,9 @@
 from flask import g
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
-from Items.models import User
+# from Items.models import User
 from Items.main.errors import error_response
-from Items import db
+# from Items import db
+from Items import pyMongo
 
 basic_auth = HTTPBasicAuth()
 token_auth = HTTPTokenAuth()
@@ -11,7 +12,8 @@ token_auth = HTTPTokenAuth()
 def verify_password(username, password):
     '''check the username and password provided by the user'''
     print('basic_auth', username, password)
-    user = User.query.filter_by(username=username).first()
+    # user = User.query.filter_by(username=username).first()
+    user = pyMongo.db.User.find_one({'username': username})
     if user is None:
         return False
     g.current_user = user
@@ -35,7 +37,7 @@ def verify_token(token):
     if g.current_user:
         # update the last_seen time after visiting any url
         g.current_user.update_jwt()
-        db.session.commit()
+        # db.session.commit()
     # print("我1111")
     return g.current_user is not None
 

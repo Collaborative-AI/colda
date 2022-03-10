@@ -4,7 +4,7 @@ import jwt
 import json
 
 from hashlib import md5
-from Items import db
+from Items import db, pyMongo
 from time import time
 from flask import url_for, current_app
 from datetime import datetime, timedelta
@@ -600,3 +600,6 @@ class Matched(PaginatedAPIMixin, db.Model):
             if key in data:
                 setattr(self, key, data[key])
 
+# def create_MongoDB_Collections():
+#     pyMongo..ensureIndex({'字段名': 1},{unique:true})
+#     db.members.createIndex( { "user_id": 1 }, { unique: true } )

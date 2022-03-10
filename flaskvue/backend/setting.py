@@ -32,19 +32,30 @@ class Config(object):
     # sqlite
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
     #     'sqlite:///' + os.path.join(basedir, 'app.db')
-
+    
+    # MongoDB
+    local_host = '127.0.0.1'
+    Database_name = 'mysynspot_db'
+    MONGO_URI = "mongodb://%s:27017/%s" % (local_host, Database_name)
+    
+    
+    
+    
+    
+    
+    
     # mysql
-    master_username = 'apollo'
-    password = 'Aa1234567!'
-    end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'
-    # database name (created by create schema in mysql workbench)
-    database_name = 'apollo_aws_mysql'
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ENGINE_OPTIONS = {
-    # "poolclass": QueuePool,
-    "pool_size": 50,
-}
+#     master_username = 'apollo'
+#     password = 'Aa1234567!'
+#     end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'
+#     # database name (created by create schema in mysql workbench)
+#     database_name = 'apollo_aws_mysql'
+#     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
+#     SQLALCHEMY_TRACK_MODIFICATIONS = False
+#     SQLALCHEMY_ENGINE_OPTIONS = {
+#     # "poolclass": QueuePool,
+#     "pool_size": 50,
+# }
 
     # master username
     # unittest

@@ -5,15 +5,18 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
+from bson import ObjectId
+
 from Items.main.apollo_utils import log, generate_msg
 
-from Items import db
+# from Items import db
+from Items import pyMongo
+
 # import BluePrint
 from Items.main import main
-from Items.models import User, Message, Matched
+# from Items.models import User, Message, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-
 
 @main.route('/users/<int:id>/situation_file/', methods=['POST'])
 @token_auth.login_required
@@ -31,22 +34,24 @@ def get_user_situation(id):
     rounds = data.get('rounds')
 
     # check if the caller and the id is the same
-    user = User.query.get_or_404(id)
+    user = pyMongo.db.User.find_one({'_id': ObjectId(id)})
     if g.current_user != user:
         return error_response(403)
 
     log(generate_msg('-------------------- unread sitaution begins'), g.current_user.id, task_id)
     log(generate_msg('4.1:', 'assistor get_user_situation from sponsor'), g.current_user.id, task_id)
 
-    data = {}
-    query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").order_by(Message.rounds.desc()).all()
+    user_object_id = g.current_user['_id']
+    user_id = str(user_object_id)
 
-    situation_file = None
-    sender_random_id = None
-    for row in query:
-        if row.situation:
-            situation_file = row.situation
-            sender_random_id = row.sender_random_id
+    data = {}
+    rounds_key = 'rounds_' + str(rounds)
+    train_message_document = pyMongo.db.Train_Message.find_one({'task_id': task_id})
+    sender_random_id = train_message_document[rounds_key][user_id]['sender_random_id']
+    situation_id = train_message_document[rounds_key][user_id]['situation']
+
+    train_message_situation_document = pyMongo.db.Train_Message_Situation.find_one({'situation_id': situation_id})
+    situation_file = train_message_situation_document['situation_content']
 
     data = {
         'situation': situation_file,
@@ -56,54 +61,6 @@ def get_user_situation(id):
     log(generate_msg('4.2:', 'assistor get_user_situation done'), g.current_user.id, task_id)
 
     return jsonify(data)  
-
-# @main.route('/Sponsor_situation_training_done/', methods=['POST'])
-# @token_auth.login_required
-# def Sponsor_situation_training_done():
-
-#     data = request.get_json()
-
-#     if not data:
-#         return bad_request('You must post JSON data.')
-#     if 'task_id' not in data or not data.get('task_id'):
-#         return bad_request('task_id is required.')
-
-#     task_id = data.get('task_id')
-
-#     rounds = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first().rounds
-
-#     return_val = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).update({"Sponsor_situation_training_done": "done"})
-#     db.session.commit()
-
-#     a = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train", Message.output == None).all()
-#     for zz in a:
-#         print(zz.Sponsor_situation_training_done)
-    
-#     queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != g.current_user.id, Matched.test_indicator == "train", Matched.Terminate == "false").all()
-#     assistor_num = len(queries)
-
-#     all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").all()
-#     output_upload = 0
-#     for row in all_cur_round_messages:
-#         print("row", row)
-#         if row.output:
-#             output_upload += 1
-
-#         if output_upload == assistor_num:
-#             user = User.query.get_or_404(queries[0].sponsor_id)
-#             query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").all()
-#             if query_of_task[0].Terminate == 'true':
-#                 continue
-#             # send message notification to the sponsor when all assistor upload the output
-#             print("-----------------sendoutput", g.current_user.id)
-#             user.add_notification('unread output', user.new_output())
-#             db.session.commit()
-
-#             response = jsonify({"Sponsor_situation_training_done": "Send unread output"})
-#             return response
-    
-#     response = jsonify({"Sponsor_situation_training_done": "Assistors havent upload all output"})
-#     return response
 
 @main.route('/send_output/', methods=['POST'])
 @token_auth.login_required

@@ -3,7 +3,9 @@ import json
 from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
+# import py
 from Items import db
+from Items import pyMongo
 
 # import BluePrint
 from Items.main import main
@@ -173,3 +175,32 @@ def delete_test_rows():
       db.session.commit()
 
   return "done"
+
+
+@main.route('/ceshi_mongo/', methods=['POST', 'GET'])
+def ceshi_mongo():
+    res = pyMongo.db.user.find_one_or_404({"name": "Ada Lovelace"})
+    print('res', res)
+    collections = pyMongo.db.list_collection_names()
+    print('collections_1', collections)
+    res = pyMongo.db.shuaiqi.insert_one({'x': 1})
+    print('res1', res)
+    collections = pyMongo.db.list_collection_names()
+    print('collections_2', collections)
+
+    user = pyMongo.db.User.find_one({'username': 'qq'})
+    print('user', user)
+
+    pyMongo.db.User.insert_one({'username': 'qq'})
+    user = pyMongo.db.User.find_one({'username': 'qq'})
+    user_id = user['_id']
+    print('user2', user)
+    print(user['_id'], type(user['_id']))
+    print('hhh', str(user['_id']), type(str(user['_id'])))
+
+    user = pyMongo.db.User.find_one({'_id': str(user_id)})
+    print('user3', user)
+    user = pyMongo.db.User.find_one({'_id': user_id})
+    print('user4', user)
+
+    return 'gg'

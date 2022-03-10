@@ -36,6 +36,8 @@ pymysql = "*"
 cryptography = "*"
 flask-mail = "*"
 colorama = "*"
+flask-pymongo = "*"
+pymongo = "*"
 
 [dev-packages]
 

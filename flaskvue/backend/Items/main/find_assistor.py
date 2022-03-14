@@ -17,7 +17,7 @@ from Items.main import main
 # from Items.models import User, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.apollo_utils import log, generate_msg
+from Items.main.utils import log, generate_msg
 
 @main.route('/create_new_train_task', methods=['GET'])
 @token_auth.login_required
@@ -136,46 +136,30 @@ def find_assistor():
 
     log(generate_msg('1.2:', 'sponsor handles id data done'), user_id, task_id)
 
-    assistor_information = collections.defaultdict(dict)
-    assistor_random_id_mapping = {}
-    train_match_file_document_list = []
-    for assistor_id in assistor_id_list:
-        assistor_random_id = str(uuid.uuid4())
-        match_id_file_id = str(uuid.uuid4())
-        assistor_information[assistor_id]['assistor_id_to_random_id'] = assistor_random_id
-        assistor_information[assistor_id]['match_id_file'] = match_id_file_id
-        
-        assistor_random_id_mapping[assistor_random_id] = assistor_id
-
-        train_match_file_document = {
-            "match_id_file_id": match_id_file_id,
-            "match_id_file_content": id_file
-        }
-        train_match_file_document_list.append(train_match_file_document)
-
-    pyMongo.db.Train_Match_File.insert_many(train_match_file_document_list)
-
     # sponsor_random_id is unique in each task    
     sponsor_random_id = str(uuid.uuid4())
+    match_id_file_id = str(uuid.uuid4())
     sponsor_id = user_id
 
     train_match_document = {
         "task_id": task_id,
+        'total_assistor_num': len(assistor_id_list),
         "request_timestamp": datetime.utcnow,
         "match_id_timestamp": datetime.utcnow,
         "sponsor_information": {
             "sponsor_id": sponsor_id,
             sponsor_id: {
-                "sponsor_id_to_random_id": sponsor_random_id
+                "sponsor_id_to_random_id": sponsor_random_id,
+                'match_id_file_id': match_id_file_id
             }
         },
         "sponsor_random_id_mapping":{
             sponsor_random_id: sponsor_id
         },
-        "assistor_information": assistor_information,
-        "assistor_random_id_mapping": assistor_random_id_mapping,
-        "match_done": False,
-        "isTerminate": False,
+        "assistor_information": {},
+        "assistor_random_id_mapping": {},
+        'sponsor_terminate_id_dict': {},
+        'assistor_terminate_id_dict': {},
     }
     pyMongo.db.Train_Match.insert_one(train_match_document)
  
@@ -291,8 +275,8 @@ def find_test_assistor():
         assistor_random_id = str(uuid.uuid4())
         match_id_file_id = str(uuid.uuid4())
         assistor_information[assistor_id]['assistor_id_to_random_id'] = assistor_random_id
-        assistor_information[assistor_id]['match_id_file'] = match_id_file_id
-        
+        assistor_information[assistor_id]['match_id_file_id'] = match_id_file_id
+
         assistor_random_id_mapping[assistor_random_id] = assistor_id
 
         test_match_file_document = {
@@ -315,7 +299,7 @@ def find_test_assistor():
         "sponsor_information": {
             "sponsor_id": sponsor_id,
             sponsor_id: {
-                "sponsor_id_to_random_id": sponsor_random_id
+                "sponsor_id_to_random_id": sponsor_random_id,
             }
         },
         "sponsor_random_id_mapping":{
@@ -323,8 +307,9 @@ def find_test_assistor():
         },
         "assistor_information": assistor_information,
         "assistor_random_id_mapping": assistor_random_id_mapping,
-        "match_done_assistor_dict": {},
-        "isTerminate": False,
+        "assistor_match_done_dict": {},
+        'sponsor_terminate_id_dict': {},
+        'assistor_terminate_id_dict': {},
     }
     pyMongo.db.Test_Match.insert_one(test_match_document)
  

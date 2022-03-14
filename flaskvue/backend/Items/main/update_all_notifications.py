@@ -7,7 +7,7 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
-from Items.main.apollo_utils import log, generate_msg
+from Items.main.utils import log, generate_msg
 
 from Items import db
 # import BluePrint
@@ -16,7 +16,16 @@ from Items.models import User, Message, Matched, Notification, Stop
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
-
+@main.route('/notifications/<int:id>', methods=['GET'])
+@token_auth.login_required
+def get_notification(id):
+    '''Return a response'''
+    notification = Notification.query.get_or_404(id)
+    if g.current_user != notification.user:
+        return error_response(403)
+    data = notification.to_dict()
+    return jsonify(data)
+    
 @main.route('/update_all_notifications/', methods=['POST'])
 @token_auth.login_required
 def update_all_notifications():

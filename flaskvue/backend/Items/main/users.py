@@ -5,25 +5,41 @@ from flask import Flask, session, request, g, current_app, render_template, flas
 from flask.helpers import url_for
 from flask.json import jsonify
 
-
-from Items import db
+# from Items import db
+from Items import pyMongo
 from flask_cors import CORS, cross_origin
 # import BluePrint
 from Items.main import main
 from datetime import datetime
+from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from Items.models import User, Notification, Message
+# from Items.models import User, Notification, Message
 from Items.main.errors import bad_request, error_response
 from Items.main.auth import token_auth, basic_auth
-from Items.main.apollo_utils import log, generate_msg, validate_password, send_email, generate_confirmation_token, confirm_token
+from Items.main.utils import log, generate_msg, validate_password, send_email, generate_confirmation_token, confirm_token
+from Items.main.utils import generate_password, check_password, verify_token_user_id_and_function_caller_id, obtain_user_object_id_and_user_id
 
-# register
+
 @main.route('/users', methods=['POST'])
 def create_user():
-    print("zzzz")
+
+    """
+    Register new user
+
+    Parameters:
+        username - String. The id of task
+        email - String. The matching id file sent by sponsor
+        password - String.
+
+    Returns:
+        data - Dict. { task_id - String: The id of task, assistor_num - Integer: The number of assistors in this task }
+
+    Raises:
+        KeyError - raises an exception
+    """
+
     data = request.get_json()
-    print(data)
     if not data:
       return bad_request('No data. Please import JSON data')
 
@@ -35,64 +51,81 @@ def create_user():
         message['email'] = 'Please provide a valid email address.'
     if 'password' not in data or not data.get('password', None) or (' ' in data.get('password')):
         message['password'] = 'Please provide a valid password.'
-        
-    print("2")
-    if User.query.filter_by(username=data.get('username', None)).first():
+    
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+    password_hash = generate_password(password)
+
+    user_document = pyMongo.db.User.find_one({'username': username})
+    if user_document:
         message['username'] = 'Please use a different username.'
-    print("3")
-    if User.query.filter_by(email=data.get('email', None)).first():
+    user_document = pyMongo.db.User.find_one({'email': email})
+    if user_document:
         message['email'] = 'Please use a different email address.'
     
-    print("dddd")
-    validate_password_indicator, return_message = validate_password(data['password'])
+    validate_password_indicator, return_message = validate_password(password)
     print('register', validate_password_indicator, return_message)
     if not validate_password_indicator:
         message['password'] = return_message
     if message:
         return bad_request(message)
     
-    user = User()
-    user.from_dict(data, new_user=True)
-    user.confirmed = 'false'
-    # print("user",user)
-    # Add to database
-    db.session.add(user)
-    db.session.commit()
-
-    email = data.get('email')
+    user_document = {
+        'username': username,
+        'email': email,
+        'password_hash': password_hash,
+        'name': None,
+        'location': None,
+        'about_me': None,
+        'authority_level': 'user',
+        'confirm_email': False,
+        'participated_train_task': {},
+    }
+    pyMongo.db.User.insert_one(user_document)
 
     token = generate_confirmation_token(email)
     confirm_url = url_for('main.confirm_email', token=token, _external=True)
-    print("confirm_url", confirm_url)
     html = render_template('activate.html', confirm_url=confirm_url)
     subject = "Please confirm your email"
     send_email(email, subject, html)
 
-    print("aaa",user.to_dict())
-    user_to_dict = user.to_dict()
-    user_to_dict['token'] = token
-    response = jsonify(user_to_dict)
-    print('------------',response)
-
+    return_dict = {}
+    return_dict['token'] = token
+    return_dict['message'] = 'create successfully'
+    response = jsonify(return_dict)
     response.status_code = 201
-    response.headers['Location'] = url_for('main.get_user', id=user.id)  
     return response
 
 @main.route('/confirm_email/<token>', methods=['GET'])
 def confirm_email(token):
 
+    """
+    Confirm the link in the email 
+
+    Parameters:
+       token - instance of URLSafeTimedSerializer.
+       
+    Returns:
+        msg - String. Depends on different situation
+
+    Raises:
+        KeyError - raises an exception
+    """
+
     email = confirm_token(token)
-    user = User.query.filter_by(email=email).first_or_404()
+    user = pyMongo.db.User.find_one({'email': email})
+
     msg = ''
     if user:
-        if user.confirmed == 'false':
-            if user.email == email:
-                user.confirmed = 'true'
-                db.session.commit()
+        if user['confirm_email'] == False:
+            if user['email'] == email:
+                pyMongo.db.User.update_one({'email': email}, {'$set':{'confirm_email': True}})
                 msg = 'You have confirmed your account. Thanks!'
-
-            msg = 'The confirmation link is invalid or has expired.'
-        msg = 'Account already confirmed. Please login.'
+            else:
+                msg = 'The confirmation link is invalid or has expired.'
+        else:
+            msg = 'Account already confirmed. Please login.'
     else:
         msg = 'The confirmation link is invalid or has expired.'
 
@@ -101,15 +134,32 @@ def confirm_email(token):
 @main.route('/resend/', methods=['POST'])
 def resend():
     
-    data = request.get_json()
-    username = data['username']
+    """
+    Resend the email link
 
-    query = User.query.filter_by(username=username).first_or_404()
-    email = query.email
+    Parameters:
+        username - String.
+       
+    Returns:
+        'Resend successfully!'
+
+    Raises:
+        KeyError - raises an exception
+    """
+
+    data = request.get_json()
+    if not data:
+        return bad_request('You must post JSON data.')
+    if 'username' not in data or not data.get('username'):
+        return bad_request('username is required.')
+
+    username = data.get('username')
+
+    user = pyMongo.db.User.find_one({'username': username})
+    email = user['email']
 
     token = generate_confirmation_token(email)
     confirm_url = url_for('main.confirm_email', token=token, _external=True)
-    print("confirm_url", confirm_url)
     html = render_template('activate.html', confirm_url=confirm_url)
     subject = "Please confirm your email"
     send_email(email, subject, html)
@@ -119,6 +169,20 @@ def resend():
 @main.route('/forgot', methods=['POST'])
 def forgot():
     
+    """
+    Reset the password
+
+    Parameters:
+        username - String.
+        email - String.
+       
+    Returns:
+        'A password reset email has been sent via email.'
+
+    Raises:
+        KeyError - raises an exception
+    """
+
     data = request.get_json()
     message = {}
     if 'username' not in data or not data.get('username', None):
@@ -127,20 +191,19 @@ def forgot():
     if 'email' not in data or not re.match(pattern, data.get('email', None)):
         message['email'] = 'Please provide a valid email address.'
     
-    username = data['username']
-    email = data['email']
+    username = data.get('username')
+    email = data.get('email')
 
-    if not User.query.filter_by(username=username).first():
+    user_document = pyMongo.db.User.find_one({'username': username})
+    if not user_document:
         message['username'] = 'Please type in the correct username.'
-    if User.query.filter_by(username=username).first().email != email:
+    if user_document['email'] != email:
         message['email'] = 'Please type in the correct username and email'
         message['username'] = 'Please type in the correct username and email'
-
     if message:
         return bad_request(message)
 
     token = generate_confirmation_token(email)
-
     reset_url = url_for('main.forgot_new', token=token, _external=True)
     html = render_template('reset.html',
                             username=username,
@@ -197,29 +260,28 @@ def forgot_new(token):
         confirm_url = url_for('main.forgot_new', token=token, _external=True)
         print("/forgot/new/<token>_confirm_url", confirm_url)
         return render_template('forgot_new.html', confirm_url=confirm_url, msg=msg, token=token)
-        
-
-
-@main.route('/users', methods=['GET'])
-@token_auth.login_required
-def get_users():
-    '''
-      Implement later
-    '''
-    return "welcome to users!"
-
 
 @main.route('/users/<int:id>', methods=['GET'])
 @token_auth.login_required
 def get_user(id):
-    '''Return a User'''
-    user = User.query.get_or_404(id)
-    # print("id------",id)
-    # print("user------",user)
-    # print("g.current", g.current_user)
-    if g.current_user == user:
-        return jsonify(user.to_dict(include_email=True))
-    return jsonify(user.to_dict())
+
+    """
+    Get information of user itself
+
+    Parameters:
+        id - String. user id queried by the function caller
+       
+    Returns:
+        Dict or None
+
+    Raises:
+        KeyError - raises an exception
+    """
+
+    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    if verify_token_user_id_and_function_caller_id(user_id, id):
+        return jsonify(g.current_user)
+    return None
 
 @main.route('/users/<int:id>', methods=['PUT'])
 @token_auth.login_required

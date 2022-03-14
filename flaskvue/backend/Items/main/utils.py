@@ -1,15 +1,69 @@
 import errno
 import os
 import re
+import jwt
 import logging
-from flask_mail import Message
-from Items import mail
-from Items.extensions import mail
+
+from bson import ObjectId
 from setting import Config
-
-from flask import current_app
+from flask import current_app, g
+from flask_mail import Message
+from datetime import datetime, timedelta
 from itsdangerous import URLSafeTimedSerializer
+from werkzeug.security import generate_password_hash, check_password_hash
 
+from Items import mail, pyMongo
+from Items.extensions import mail
+
+
+
+def generate_password(password):
+    password_hash = generate_password_hash(password)
+    return password_hash
+
+def check_password(user, password):
+    return check_password_hash(user['password_hash'], password)
+
+def get_jwt(user, expires_in=5000):
+    now = datetime.utcnow()
+    
+    payload = {
+        'user_id': str(user['_id']),
+        'user_name': user['name'] if user['name'] else user['username'],
+        'authority': user['authority_level'] if user['authority_level'] else 'user',
+        'exp': now + timedelta(seconds=expires_in),
+        'iat': now
+    }
+    return jwt.encode(
+        payload,
+        current_app.config['SECRET_KEY'],
+        algorithm='HS256').decode('utf-8')
+
+def verify_jwt(token):
+    try:
+        payload = jwt.decode(
+            token,
+            current_app.config['SECRET_KEY'],
+            algorithms=['HS256'])
+    except (jwt.exceptions.ExpiredSignatureError,
+            jwt.exceptions.InvalidSignatureError,
+            jwt.exceptions.DecodeError) as e:
+        return None
+    
+    user_object_id = ObjectId(payload.get('user_id'))
+    user_document = pyMongo.db.User.find_one({'_id': user_object_id})
+    return user_document
+
+def obtain_user_object_id_and_user_id():
+    user_object_id = g.current_user['_id']
+    user_id = str(user_object_id)
+    return user_object_id, user_id
+
+def verify_token_user_id_and_function_caller_id(token_user_id, function_caller_id):
+    if token_user_id == function_caller_id:
+        return True
+    else:
+        return False
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])

@@ -6,16 +6,14 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
-from Items.main.apollo_utils import log, generate_msg
 
 from Items import db
-
 # import BluePrint
 from Items.main import main
-
 from Items.models import User, Matched, Pending
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
+from Items.main.utils import log, generate_msg, obtain_user_object_id_and_user_id
 
 @main.route('/add_train_pending', methods=['POST'])
 @token_auth.login_required
@@ -31,6 +29,9 @@ def add_train_pending():
         return bad_request('task_id is required.')
 
     task_id = data['task_id']
+
+    user_object_id, user_id = obtain_user_object_id_and_user_id()
+
     print('task id shi', task_id)
 
     # Retrieve task name and task description of this unique task_id
@@ -76,6 +77,8 @@ def add_test_pending():
     
     test_id = data['test_id']
     
+    user_object_id, user_id = obtain_user_object_id_and_user_id()
+
     # Retrieve task name and task description of thie unique task_id
     query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
     test_name = query.test_name
@@ -112,6 +115,8 @@ def get_all_pending():
     
     '''
 
+    user_object_id, user_id = obtain_user_object_id_and_user_id()
+
     # Retrieve sponsor id of thie unique test_id
     print('zzzget_all_pending', g.current_user.id)
     all_pending_items = Pending.query.filter(Pending.pending_assistor_id == g.current_user.id).all()
@@ -141,6 +146,8 @@ def dalete_pending():
     task_id = data['task_id']
     test_id = data['test_id']
     test_indicator = data['test_indicator']
+
+    user_object_id, user_id = obtain_user_object_id_and_user_id()
 
     print('delete sucess1')
 

@@ -203,4 +203,20 @@ def ceshi_mongo():
     user = pyMongo.db.User.find_one({'_id': user_id})
     print('user4', user)
 
+    record = {
+        'username': 'qia', 
+        "information": [],
+    }
+    pyMongo.db.User.insert_one(record)
+
+    res = pyMongo.db.User.find_one({'username': 'qia'})
+    print('hhh', res)
+
+    pyMongo.db.User.update_one({'username': 'qia'}, {'$set':{'isTerminate': True}})
+    res = pyMongo.db.User.find_one({'username': 'qia'})
+    print('hhh6', res)
+
+    isTerminate = res['isTerminate']
+    print('type', type(isTerminate))
+
     return 'gg'

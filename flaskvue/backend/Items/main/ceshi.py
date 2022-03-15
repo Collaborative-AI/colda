@@ -1,5 +1,7 @@
 import json
-
+import uuid
+from snowflake import SnowflakeGenerator
+from bson import ObjectId
 from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
@@ -179,6 +181,10 @@ def delete_test_rows():
 
 @main.route('/ceshi_mongo/', methods=['POST', 'GET'])
 def ceshi_mongo():
+
+    a = str(uuid.uuid4())
+    print('ggg', a, len(a))
+
     res = pyMongo.db.user.find_one_or_404({"name": "Ada Lovelace"})
     print('res', res)
     collections = pyMongo.db.list_collection_names()
@@ -219,4 +225,31 @@ def ceshi_mongo():
     isTerminate = res['isTerminate']
     print('type', type(isTerminate))
 
+    newObjectId = ObjectId()
+    print('hh', newObjectId, str(newObjectId))
+    record = {
+        '_id': newObjectId,
+        'username': 'qiab', 
+        "information": [],
+    }
+    pyMongo.db.User.insert_one(record)
+    res = pyMongo.db.User.find_one({'username': 'qiab'})
+    print('res', res)
+    res = pyMongo.db.User.find_one_and_update({'username': 'qiab'}, {'$set':{'username': 'fghs'}})
+    print('res1', res)
+    res = pyMongo.db.User.find_one({'username': 'fghs'})
+    print('res2', res)
+
+    b = 'fff'
+    res = pyMongo.db.User.update_one({'username': 'fghs'}, {'$set': {'apple.' + b: 'good'}})
+    print('res3', res)
+    res = pyMongo.db.User.find_one({'username': 'fghs'})
+    print('res4', res)
+
+    a = SnowflakeGenerator(1)
+    print('fff', a)
+
+    a1 = uuid.uuid1()
+    a2 = uuid.uuid1()
+    print(a1, a2)
     return 'gg'

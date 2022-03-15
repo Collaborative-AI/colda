@@ -36,7 +36,6 @@ def get_token():
     token = get_jwt(g.current_user)
     return jsonify({'token': token})
 
-
 @basic_auth.verify_password
 def verify_password(username, password):
 
@@ -81,12 +80,11 @@ def verify_token(token):
         KeyError - raises an exception
     """
 
-    g.current_user = verify_jwt(token) if token else None
+    g.current_user, token_payload = verify_jwt(token) if token else None
 
-    # if g.current_user:
-    #     # update the last_seen time after visiting any url
-    #     g.current_user.update_jwt()
-    #     # db.session.commit()
+    if g.current_user:
+        new_token = update_jwt(g.current_user, token_payload)
+        g.current_user['new_token'] = new_token
     
     return g.current_user is not None
 

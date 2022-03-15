@@ -18,7 +18,8 @@ from Items.main import main
 # from Items.models import User, Message, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import obtain_user_object_id_and_user_id
+from Items.main.utils import obtain_user_id, obtain_unique_id
+from Items.main.utils import verify_token_user_id_and_function_caller_id
 
 @main.route('/users/<int:id>/situation_file/', methods=['POST'])
 @token_auth.login_required
@@ -52,11 +53,11 @@ def get_user_situation(id):
     task_id = data.get('task_id')
     rounds = data.get('rounds')
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
 
     # check if the caller of the function and the id is the same
-    user = pyMongo.db.User.find_one({'_id': ObjectId(id)})
-    if user_object_id != user['_id']:
+    user = pyMongo.db.User.find_one({'user_id': id})
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
 
     log(generate_msg('---- unread sitaution begins'), user_id, task_id)
@@ -111,7 +112,7 @@ def send_output():
     output = data.get('output')
     task_id = data.get('task_id')
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
     assistor_id = user_id
     log(generate_msg('4.3:"', 'assistor send_output start'), user_id, task_id)
 
@@ -127,7 +128,7 @@ def send_output():
     cur_rounds_num = train_message_document['cur_rounds_num']
     output_dict = train_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
 
-    output_id = str(uuid.uuid4())
+    output_id = obtain_unique_id()
     output_dict[assistor_id] = output_id
 
     train_message_output_document = {

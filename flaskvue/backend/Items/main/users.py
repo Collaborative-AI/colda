@@ -17,8 +17,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # from Items.models import User, Notification, Message
 from Items.main.errors import bad_request, error_response
 from Items.main.auth import token_auth, basic_auth
+from Items.main.utils import obtain_user_id, obtain_unique_id
 from Items.main.utils import log, generate_msg, validate_password, send_email, generate_confirmation_token, confirm_token
-from Items.main.utils import generate_password, check_password, verify_token_user_id_and_function_caller_id, obtain_user_object_id_and_user_id
+from Items.main.utils import generate_password, check_password, verify_token_user_id_and_function_caller_id
 
 
 @main.route('/users', methods=['POST'])
@@ -71,7 +72,10 @@ def create_user():
     if message:
         return bad_request(message)
     
+    newObjectId = ObjectId()
     user_document = {
+        '_id': newObjectId,
+        'user_id': str(newObjectId),
         'username': username,
         'email': email,
         'password_hash': password_hash,
@@ -278,7 +282,7 @@ def get_user(id):
         KeyError - raises an exception
     """
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
     if verify_token_user_id_and_function_caller_id(user_id, id):
         return jsonify(g.current_user)
     return None
@@ -456,30 +460,30 @@ def get_user_history_messages(id):
     return jsonify(data)
 
 
-@main.route('/users/<int:id>/notifications/', methods=['GET'])
-@token_auth.login_required
-def get_user_notifications(id):
-    '''返回该用户的新通知'''
-    user = User.query.get_or_404(id)
+# @main.route('/users/<int:id>/notifications/', methods=['GET'])
+# @token_auth.login_required
+# def get_user_notifications(id):
+#     '''返回该用户的新通知'''
+#     user = User.query.get_or_404(id)
 
-    if g.current_user != user:
-        return error_response(403)
-    # 只返回上次看到的通知以来发生的新通知
-    # 比如用户在 10:00:00 请求一次该API，在 10:00:10 再次请求该API只会返回 10:00:00 之后产生的新通知
-    # since = request.args.get('since', 0.0, type=float)
-    since = 0.0
-    # print("since",since)
-    notifications = user.notifications.filter(
-        Notification.timestamp > since).order_by(Notification.timestamp.asc())
+#     if g.current_user != user:
+#         return error_response(403)
+#     # 只返回上次看到的通知以来发生的新通知
+#     # 比如用户在 10:00:00 请求一次该API，在 10:00:10 再次请求该API只会返回 10:00:00 之后产生的新通知
+#     # since = request.args.get('since', 0.0, type=float)
+#     since = 0.0
+#     # print("since",since)
+#     notifications = user.notifications.filter(
+#         Notification.timestamp > since).order_by(Notification.timestamp.asc())
     
-    return_notification = [n.to_dict() for n in notifications]
-    # print("#########", return_notification)
+#     return_notification = [n.to_dict() for n in notifications]
+#     # print("#########", return_notification)
 
-    # for row in notifications:
-    #     print(row)
-    # notifications2 = user.notifications.order_by(Notification.timestamp.asc())
-    # print("notification2", notifications2)
-    # for n in notifications2:
-    #   print(n)
-    # print(notifications2)
-    return jsonify(return_notification)
+#     # for row in notifications:
+#     #     print(row)
+#     # notifications2 = user.notifications.order_by(Notification.timestamp.asc())
+#     # print("notification2", notifications2)
+#     # for n in notifications2:
+#     #   print(n)
+#     # print(notifications2)
+#     return jsonify(return_notification)

@@ -16,13 +16,13 @@ from Items.main import main
 # from Items.models import User, Notification, Matched, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import log, generate_msg, obtain_user_object_id_and_user_id
+from Items.main.utils import log, generate_msg, obtain_user_id
 
 @main.route('/users/<int:id>/match_id_file/', methods=['POST'])
 @token_auth.login_required
 def get_user_match_id(id):
 
-    user = pyMongo.db.User.find_one({'_id': ObjectId(id)})
+    user = pyMongo.db.User.find_one({'user_id': id})
     if g.current_user != user:
         return error_response(403)
 
@@ -34,7 +34,7 @@ def get_user_match_id(id):
 
     task_id = data.get('task_id')
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
 
     log(generate_msg('---- unread match id begins'), user_id, task_id)
     log(generate_msg('3.1:', 'get_user_match_id begins'), user_id, task_id)
@@ -88,7 +88,7 @@ def get_user_match_id(id):
 @token_auth.login_required
 def get_user_test_match_id(id):
 
-    user = pyMongo.db.User.find_one({'_id': ObjectId(id)})
+    user = pyMongo.db.User.find_one({'user_id': id})
     if g.current_user != user:
         return error_response(403)
 
@@ -103,7 +103,7 @@ def get_user_test_match_id(id):
     task_id = data.get('task_id')
     test_id = data.get('test_id')
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
 
     log(generate_msg('---- unread test match id begins'), user_id, task_id, test_id)
     log(generate_msg('Test 3.1:', 'get_user_test_match_id begins'), user_id, task_id, test_id)
@@ -171,7 +171,7 @@ def send_situation():
     task_id = data.get('task_id')
     assistor_random_id_list = data.get('assistor_random_id_list')
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
 
     # get recent round
     cur_rounds_num = None
@@ -207,7 +207,7 @@ def send_situation():
         assistor_id_list.append(assistor_id)
         sponsor_random_id = train_match_document['sponsor_information'][sponsor_id]['sponsor_id_to_random_id']
 
-        situation_id = str(uuid.uuid4())
+        situation_id = obtain_unique_id()
         rounds_key[assistor_id] = {
             'situation_id': situation_id,
         }
@@ -222,7 +222,7 @@ def send_situation():
         pyMongo.db.Train_Message_Situation.insert_one(train_message_situation_document)
 
     # sponsor also sends information to itself to trigger next stage
-    situation_id = str(uuid.uuid4())
+    situation_id = obtain_unique_id()
     rounds_key[sponsor_id] = {
         'situation_id': situation_id
     }
@@ -291,7 +291,7 @@ def send_test_output():
     test_id = data.get('test_id')
     task_id = data.get('task_id')
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
 
     log(generate_msg('Test 3.3:"', 'assistor send_test_output start'), g.current_user.id, task_id, test_id)
 

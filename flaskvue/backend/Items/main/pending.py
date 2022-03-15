@@ -7,21 +7,32 @@ from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
 
-from Items import db
+# from Items import db
+from Items import pyMongo
 # import BluePrint
 from Items.main import main
 from Items.models import User, Matched, Pending
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import log, generate_msg, obtain_user_object_id_and_user_id
+from Items.main.utils import log, generate_msg, obtain_user_id
 
 @main.route('/add_train_pending', methods=['POST'])
 @token_auth.login_required
 def add_train_pending():
-    '''
-     Add traing stage pending to the Pending database
-    
-    '''
+
+    """
+    Synspot adds train task to the pending when the assistor operation mode is manual
+
+    Parameters:
+        task_id - String. The id of current train task
+       
+    Returns:
+        {"send_output": "send output successfully"}
+
+    Raises:
+        KeyError - raises an exception
+    """
+
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
@@ -30,11 +41,10 @@ def add_train_pending():
 
     task_id = data['task_id']
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
-
-    print('task id shi', task_id)
+    user_id = obtain_user_id()
 
     # Retrieve task name and task description of this unique task_id
+    pending_document = pyMongo.db.Pending.find_one({'user_id': user_id})
     query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
     print('query shi', query)
     task_name = query.task_name
@@ -60,7 +70,8 @@ def add_train_pending():
     db.session.add(pending)
     db.session.commit()
     
-    return jsonify("add train pending successfully")
+    response = {'message': 'add train pending successfully'}
+    return jsonify(response)
 
 @main.route('/add_test_pending', methods=['POST'])
 @token_auth.login_required
@@ -77,7 +88,7 @@ def add_test_pending():
     
     test_id = data['test_id']
     
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
 
     # Retrieve task name and task description of thie unique task_id
     query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
@@ -115,7 +126,7 @@ def get_all_pending():
     
     '''
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
 
     # Retrieve sponsor id of thie unique test_id
     print('zzzget_all_pending', g.current_user.id)
@@ -147,7 +158,7 @@ def dalete_pending():
     test_id = data['test_id']
     test_indicator = data['test_indicator']
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
 
     print('delete sucess1')
 

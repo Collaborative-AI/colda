@@ -12,7 +12,7 @@ from Items.main import main
 # from Items.models import User, Notification, Matched, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import obtain_user_object_id_and_user_id, verify_token_user_id_and_function_caller_id
+from Items.main.utils import obtain_user_id, verify_token_user_id_and_function_caller_id
 
 @main.route('/users/<int:id>/output/', methods=['POST'])
 @token_auth.login_required
@@ -43,7 +43,7 @@ def get_user_output(id):
     task_id = data.get('task_id')
     rounds = data.get('rounds')
 
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
     sponsor_id = user_id
 
     log(generate_msg('---- unread situation begins'), user_id, task_id)
@@ -92,7 +92,7 @@ def get_user_test_output(id):
     test_id = data.get('test_id')
     task_id = data.get('task_id')
     
-    user_object_id, user_id = obtain_user_object_id_and_user_id()
+    user_id = obtain_user_id()
 
     log(generate_msg('--------------------unread test output begins'), g.current_user.id, task_id, test_id)
     log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), g.current_user.id, task_id, test_id)

@@ -2,6 +2,7 @@ import errno
 import os
 import re
 import jwt
+import uuid
 import logging
 
 from bson import ObjectId
@@ -15,7 +16,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from Items import mail, pyMongo
 from Items.extensions import mail
 
-
+def add_new_token_to_response(response):
+    response['new_token'] = g.current_user['new_token']
+    return response
 
 def generate_password(password):
     password_hash = generate_password_hash(password)
@@ -24,40 +27,72 @@ def generate_password(password):
 def check_password(user, password):
     return check_password_hash(user['password_hash'], password)
 
-def get_jwt(user, expires_in=5000):
+def update_jwt(user, token_payload, expires_in=5000):
+
+    token_payload_expiration_time = token_payload.get('exp')
     now = datetime.utcnow()
+    time_diff = token_payload_expiration_time - now
+
+    # if the difference of time is greater than 10 mins, we dont update 
+    # the token
+    if timedelta(seconds=time_diff) > 600:
+        return None
     
-    payload = {
-        'user_id': str(user['_id']),
+    token_payload = {
+        'user_id': user['user_id'],
         'user_name': user['name'] if user['name'] else user['username'],
         'authority': user['authority_level'] if user['authority_level'] else 'user',
+        # expiration time
         'exp': now + timedelta(seconds=expires_in),
+        # create time
         'iat': now
     }
     return jwt.encode(
-        payload,
+        token_payload,
+        current_app.config['SECRET_KEY'],
+        algorithm='HS256').decode('utf-8')
+
+
+def get_jwt(user, expires_in=5000):
+    now = datetime.utcnow()
+    
+    token_payload = {
+        'user_id': user['user_id'],
+        'user_name': user['name'] if user['name'] else user['username'],
+        'authority': user['authority_level'] if user['authority_level'] else 'user',
+        # expiration time
+        'exp': now + timedelta(seconds=expires_in),
+        # create time
+        'iat': now
+    }
+    return jwt.encode(
+        token_payload,
         current_app.config['SECRET_KEY'],
         algorithm='HS256').decode('utf-8')
 
 def verify_jwt(token):
     try:
-        payload = jwt.decode(
+        token_payload = jwt.decode(
             token,
             current_app.config['SECRET_KEY'],
             algorithms=['HS256'])
     except (jwt.exceptions.ExpiredSignatureError,
             jwt.exceptions.InvalidSignatureError,
             jwt.exceptions.DecodeError) as e:
-        return None
+        # If the Token expires or is modified by someone, the signature verification will also fail.
+        return None, None
     
-    user_object_id = ObjectId(payload.get('user_id'))
-    user_document = pyMongo.db.User.find_one({'_id': user_object_id})
-    return user_document
+    user_id = token_payload.get('user_id')
+    user_document = pyMongo.db.User.find_one({'user_id': user_id})
+    return user_document, token_payload
 
-def obtain_user_object_id_and_user_id():
-    user_object_id = g.current_user['_id']
-    user_id = str(user_object_id)
-    return user_object_id, user_id
+def obtain_user_id():
+    user_id = g.current_user['user_id']
+    return user_id
+
+def obtain_unique_id():
+    unique_id = str(uuid.uuid1())
+    return unique_id
 
 def verify_token_user_id_and_function_caller_id(token_user_id, function_caller_id):
     if token_user_id == function_caller_id:

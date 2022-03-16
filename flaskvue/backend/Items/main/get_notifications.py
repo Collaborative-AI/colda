@@ -16,7 +16,7 @@ from Items import pyMongo
 from Items.main import main, stop
 # from Items.models import User, Message, Matched, Notification, Stop
 from Items.main.errors import error_response, bad_request
-from Items.main.utils import obtain_user_id
+from Items.main.utils import obtain_user_id_from_token, add_new_token_to_response
 from Items.main.utils import verify_token_user_id_and_function_caller_id
 from Items.main.auth import token_auth
 
@@ -36,8 +36,10 @@ def get_user_notifications(id):
         KeyError - raises an exception
     """
 
-    user_id = obtain_user_id()
-    if not verify_token_user_id_and_function_caller_id(user_id, id):
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
 
     notification_document = pyMongo.db.Notification.find_one({'user_id': user_id})
@@ -46,7 +48,7 @@ def get_user_notifications(id):
     if len(category) == 0:
         return {}
 
-    returndict = {
+    return_dict = {
         "unread request": {}, 
         "unread match id": {}, 
         "unread situation": {}, 
@@ -80,26 +82,27 @@ def get_user_notifications(id):
         if category_count >= 1:
             if category_name in train_notification:
                 task_id_dict = category[category_name]['task_id_dict']
-                returndict[category_name]['task_id_dict'] = copy.deepcopy(task_id_dict)
+                return_dict[category_name]['task_id_dict'] = copy.deepcopy(task_id_dict)
             elif category_name in test_notification:
                 test_id_dict = category[category_name]['test_id_dict']
-                returndict[category_name]['test_id_dict'] = copy.deepcopy(test_id_dict)
-            
-    return returndict
+                return_dict[category_name]['test_id_dict'] = copy.deepcopy(test_id_dict)
+    
+    return_dict = add_new_token_to_response(return_dict)
+    return return_dict
 
 
     
-@main.route('/update_all_notifications/', methods=['POST'])
-@token_auth.login_required
-def update_all_notifications():
+# @main.route('/update_all_notifications/', methods=['POST'])
+# @token_auth.login_required
+# def update_all_notifications():
 
-    data = request.get_json()
-    if not data:
-        return bad_request('You must post JSON data.')
-    if 'response_data' not in data or not data.get('response_data'):
-        return bad_request('response_data is required.')
+#     data = request.get_json()
+#     if not data:
+#         return bad_request('You must post JSON data.')
+#     if 'response_data' not in data or not data.get('response_data'):
+#         return bad_request('response_data is required.')
 
-    response_data = data.get('response_data')
+#     response_data = data.get('response_data')
     
     
 
@@ -135,8 +138,8 @@ def update_all_notifications():
     #                 user.add_notification('unread train stop', user.stop_train_task()) 
     #                 db.session.commit()
 
-    #             returndict["unread train stop"]["task_id_to_deleted_user_id"] = task_id_to_deleted_user_id
-    #             returndict["unread train stop"]["most_recent_round"] = most_recent_round
+    #             return_dict["unread train stop"]["task_id_to_deleted_user_id"] = task_id_to_deleted_user_id
+    #             return_dict["unread train stop"]["most_recent_round"] = most_recent_round
 
     #         elif response_data[i]["name"] == "unread test stop":
     #             test_id_list = task_id_list
@@ -165,8 +168,8 @@ def update_all_notifications():
     #                 user.add_notification('unread test stop', user.stop_test_task()) 
     #                 db.session.commit()
 
-    #             returndict["unread test stop"]["task_id_to_deleted_user_id"] = task_id_to_deleted_user_id
-    #             returndict["unread test stop"]["most_recent_round"] = most_recent_round
+    #             return_dict["unread test stop"]["task_id_to_deleted_user_id"] = task_id_to_deleted_user_id
+    #             return_dict["unread test stop"]["most_recent_round"] = most_recent_round
 
 
     #         elif response_data[i]["name"] == "unread request":
@@ -195,8 +198,8 @@ def update_all_notifications():
     #                 user.add_notification('unread request', user.new_request()) 
     #                 db.session.commit()
 
-    #             returndict["unread request"]["check_dict"] = check_dict
-    #             returndict["unread request"]["info_dict"] = info_dict
+    #             return_dict["unread request"]["check_dict"] = check_dict
+    #             return_dict["unread request"]["info_dict"] = info_dict
 
     #         elif response_data[i]["name"] == "unread match id":    
     #             print("unread match id", task_id_list)
@@ -240,7 +243,7 @@ def update_all_notifications():
     #                 user.add_notification('unread match id', user.new_match_id()) 
     #                 db.session.commit()
                     
-    #             returndict["unread match id"]["check_dict"] = check_dict
+    #             return_dict["unread match id"]["check_dict"] = check_dict
 
     #         elif response_data[i]["name"] == "unread situation":
     #             print("unread situation", task_id_list)
@@ -298,11 +301,11 @@ def update_all_notifications():
     #                 user.add_notification('unread situation', user.new_situation()) 
     #                 db.session.commit()
 
-    #                 returndict["unread situation"]["check_dict"] = {}
-    #                 returndict["unread situation"]["rounds_dict"] = {}
+    #                 return_dict["unread situation"]["check_dict"] = {}
+    #                 return_dict["unread situation"]["rounds_dict"] = {}
     #             else:
-    #                 returndict["unread situation"]["check_dict"] = check_dict
-    #                 returndict["unread situation"]["rounds_dict"] = rounds_dict
+    #                 return_dict["unread situation"]["check_dict"] = check_dict
+    #                 return_dict["unread situation"]["rounds_dict"] = rounds_dict
 
     #         elif response_data[i]["name"] == "unread output":
     #             print("unread output", task_id_list)
@@ -339,9 +342,9 @@ def update_all_notifications():
     #             if stop_task:
     #                 user.add_notification('unread output', user.new_output()) 
     #                 db.session.commit()
-    #                 returndict["unread output"]["rounds_dict"] = {}
+    #                 return_dict["unread output"]["rounds_dict"] = {}
     #             else:
-    #                 returndict["unread output"]["rounds_dict"] = rounds_dict
+    #                 return_dict["unread output"]["rounds_dict"] = rounds_dict
 
     #         elif response_data[i]["name"] == "unread test request":
     #             test_id_list = task_id_list
@@ -372,9 +375,9 @@ def update_all_notifications():
     #                 user.add_notification('unread test request', user.new_test_request()) 
     #                 db.session.commit()
 
-    #             returndict["unread test request"]["check_dict"] = check_dict
-    #             returndict["unread test request"]["test_id_to_task_id"] = test_id_to_task_id
-    #             returndict["unread test request"]["info_dict"] = info_dict
+    #             return_dict["unread test request"]["check_dict"] = check_dict
+    #             return_dict["unread test request"]["test_id_to_task_id"] = test_id_to_task_id
+    #             return_dict["unread test request"]["info_dict"] = info_dict
 
     #         elif response_data[i]["name"] == "unread test match id":   
     #             test_id_list = task_id_list 
@@ -434,9 +437,9 @@ def update_all_notifications():
     #                 user.add_notification('unread test match id', user.new_test_match_id()) 
     #                 db.session.commit()
                     
-    #             returndict["unread test match id"]["check_dict"] = check_dict
-    #             returndict["unread test match id"]["test_id_to_task_id"] = test_id_to_task_id
-    #             returndict["unread test match id"]["max_rounds"] = max_rounds
+    #             return_dict["unread test match id"]["check_dict"] = check_dict
+    #             return_dict["unread test match id"]["test_id_to_task_id"] = test_id_to_task_id
+    #             return_dict["unread test match id"]["max_rounds"] = max_rounds
 
     #         elif response_data[i]["name"] == "unread test output":
     #             test_id_list = task_id_list
@@ -476,15 +479,15 @@ def update_all_notifications():
     #                 user.add_notification('unread test output', user.new_test_output()) 
     #                 db.session.commit()
 
-    #                 returndict["unread test output"]["check_dict"] = {}
-    #                 returndict["unread test output"]["test_id_to_task_id"] = {}
+    #                 return_dict["unread test output"]["check_dict"] = {}
+    #                 return_dict["unread test output"]["test_id_to_task_id"] = {}
     #             else:
-    #                 returndict["unread test output"]["check_dict"] = check_dict
-    #                 returndict["unread test output"]["test_id_to_task_id"] = test_id_to_task_id
-    # # print("returndict", returndict)
+    #                 return_dict["unread test output"]["check_dict"] = check_dict
+    #                 return_dict["unread test output"]["test_id_to_task_id"] = test_id_to_task_id
+    # # print("return_dict", return_dict)
 
     # notifications = user.notifications.filter(
     #     Notification.timestamp > 0).order_by(Notification.timestamp.asc())
-    # returndict['Updated Notification'] = [n.to_dict() for n in notifications]
+    # return_dict['Updated Notification'] = [n.to_dict() for n in notifications]
 
 

@@ -1,12 +1,16 @@
 1. unread_match_id.py中, '/users/<int:id>/match_id_file/' 返回值修改
 
 2. unread_output.py中, get_user_test_output() 访问路径修改
+   - send_situation中, 传输数据从residual_list修改为:     assistor_random_id_to_residual_dict:{
+     assistor_random_id_1: residual_1,
+     assistor_random_id_n: residual_n,
+   }, 去掉assistor_random_id_list
 
 3. 如何更新token? token增加续签功能，过期前n分钟更新, 加入到短轮训返回中
 
 4. 修改notification逻辑
 
-5. 统一返回格式
+5. 统一返回格式, 都为dict
 
 6. 修改数据库逻辑
 
@@ -25,4 +29,12 @@
     - https://xie.infoq.cn/article/05ca77a58fd21e7e1d8432434
     - 使用MondoDB的id当user id老是需要转换 => 开一个user_id
 
-8. 修改轮训返回值
+8. 修改轮训返回值 （带新token), 同时Key都加下划线
+
+9. 修改传入的数据形式，都为dict
+
+10. find_assistor传入名称: id_file => identifier_content
+
+11. match_assistor_id中的传入名称: file => identifier_content
+
+12. 没有id的url加上<int:id>

@@ -252,4 +252,26 @@ def ceshi_mongo():
     a1 = uuid.uuid1()
     a2 = uuid.uuid1()
     print(a1, a2)
+
+    res = pyMongo.db.User.update_one({'username': 'hhhh'}, {'$set': {'apple.' + b: 'good'}})
+    print('res5', res)
+    res = pyMongo.db.User.find_one({'username': 'hhhh'})
+    print('res6', res)
+
+    record = {
+        'username': 'hhhh', 
+        "information": [],
+    }
+    res = pyMongo.db.User.insert_one(record)
+    print('res7', res)
+    res = pyMongo.db.User.update_one({'username': 'hhhh'}, {'$set': {'apple.' + b: 'good'}})
+    print('res8', res)
+    res = pyMongo.db.User.find_one({'username': 'hhhh'})
+    print('res9', res)
+
+    def xiaohanshu():
+        return (5,6,7)
+    
+    (a,b,c) = xiaohanshu()
+    print(a,b,c)
     return 'gg'

@@ -16,15 +16,13 @@ from Items.main import main
 # from Items.models import User, Notification, Matched, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import log, generate_msg, obtain_user_id
+from Items.main.mongoDB import train_mongoDB
+from Items.main.utils import log, generate_msg, obtain_user_id_from_token, obtain_unique_id
+from Items.main.utils import verify_token_user_id_and_function_caller_id
 
-@main.route('/users/<int:id>/match_id_file/', methods=['POST'])
+@main.route('/get_identifier_content/<int:id>', methods=['POST'])
 @token_auth.login_required
-def get_user_match_id(id):
-
-    user = pyMongo.db.User.find_one({'user_id': id})
-    if g.current_user != user:
-        return error_response(403)
+def get_identifier_content(id):
 
     data = request.get_json()
     if not data:
@@ -32,9 +30,17 @@ def get_user_match_id(id):
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
-    task_id = data.get('task_id')
+    user = pyMongo.db.User.find_one({'user_id': id})
+    if user is None:
+        return error_response(403)
 
-    user_id = obtain_user_id()
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
+    task_id = data.get('task_id')
 
     log(generate_msg('---- unread match id begins'), user_id, task_id)
     log(generate_msg('3.1:', 'get_user_match_id begins'), user_id, task_id)
@@ -45,48 +51,48 @@ def get_user_match_id(id):
     if train_match_document['sponsor_information']['sponsor_id'] == user_id:
         isSponsor = True 
 
-    data = {}
-    match_id_file_list = []
-    assistor_random_id_list = []
+    response = {}
+
     if isSponsor:
+        assistor_random_id_to_match_id_file_dict = {}
         for assistor_id in train_match_document['assistor_information']:
-            match_id_file_id = train_match_document['assistor_information'][assistor_id]['match_id_file_id']
-            train_match_file_document = pyMongo.db.Train_Match_File.find_one({'match_id_file_id': match_id_file_id})
-            match_id_file = train_match_file_document['match_id_file_content']
-            match_id_file_list.append(match_id_file)
-
+            identifier_id = train_match_document['assistor_information'][assistor_id]['identifier_id']
             assistor_random_id = train_match_document['assistor_information'][assistor_id]['assistor_id_to_random_id']
-            assistor_random_id_list.append(assistor_random_id)
 
-        data = {
-            'match_id_file_list': match_id_file_list,
-            'assistor_random_id_list': assistor_random_id_list
+            train_match_file_document = pyMongo.db.Train_Match_File.find_one({'identifier_id': identifier_id})
+            match_id_file = train_match_file_document['identifier_content']
+
+            assistor_random_id_to_match_id_file_dict[assistor_random_id] = match_id_file
+
+        response = {
+            'assistor_random_id_to_match_id_file_dict': assistor_random_id_to_match_id_file_dict,
         }
         log(generate_msg('3.2:', 'get_user_match_id done'), user_id, task_id)
 
     else:
-        match_id_file_id = train_match_document['assistor_information'][assistor_id]['match_id_file_id']
-        train_match_file_document = pyMongo.db.Train_Match_File.find_one({'match_id_file_id': match_id_file_id})
-        match_id_file = train_match_file_document['match_id_file_content']
-        match_id_file_list.append(match_id_file)
+        sponsor_random_id_to_match_id_file_dict = {}
+        identifier_id = train_match_document['assistor_information'][assistor_id]['identifier_id']
+        sponsor_id = train_match_document['sponsor_information']['sponsor_id']
+        sponsor_random_id = train_match_document['sponsor_information'][sponsor_id]['sponsor_id_to_random_id']
 
-        assistor_random_id = train_match_document['assistor_information'][assistor_id]['assistor_id_to_random_id']
-        assistor_random_id_list.append(assistor_random_id)
+        train_match_file_document = pyMongo.db.Train_Match_File.find_one({'identifier_id': identifier_id})
+        match_id_file = train_match_file_document['identifier_content']
 
-        data = {
-            'match_id_file_list': match_id_file_list,
-            'sponsor_random_id_list': assistor_random_id_list,
+        sponsor_random_id_to_match_id_file_dict[sponsor_random_id] = match_id_file
+
+        response = {
+            'sponsor_random_id_to_match_id_file_dict': sponsor_random_id_to_match_id_file_dict,
         }
 
         log(generate_msg('3.2:', 'get_user_match_id done'), user_id, task_id)
         log(generate_msg('---- unread match id done\n'), user_id, task_id)
     
-    return jsonify(data)
+    return jsonify(response)
 
 
-@main.route('/users/<int:id>/test_match_id_file/', methods=['POST'])
+@main.route('get_test_identifier_content/<int:id>', methods=['POST'])
 @token_auth.login_required
-def get_user_test_match_id(id):
+def get_test_identifier_content(id):
 
     user = pyMongo.db.User.find_one({'user_id': id})
     if g.current_user != user:
@@ -100,10 +106,16 @@ def get_user_test_match_id(id):
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
 
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     task_id = data.get('task_id')
     test_id = data.get('test_id')
 
-    user_id = obtain_user_id()
+    user_id = obtain_user_id_from_token()
 
     log(generate_msg('---- unread test match id begins'), user_id, task_id, test_id)
     log(generate_msg('Test 3.1:', 'get_user_test_match_id begins'), user_id, task_id, test_id)
@@ -119,9 +131,9 @@ def get_user_test_match_id(id):
     assistor_random_id_list = []
     if isSponsor:
         for assistor_id in test_match_document['assistor_information']:
-            match_id_file_id = test_match_document['assistor_information'][assistor_id]['match_id_file_id']
-            test_match_file_document = pyMongo.db.Test_Match_File.find_one({'match_id_file_id': match_id_file_id})
-            match_id_file = test_match_file_document['match_id_file_content']
+            identifier_id = test_match_document['assistor_information'][assistor_id]['identifier_id']
+            test_match_file_document = pyMongo.db.Test_Match_File.find_one({'identifier_id': identifier_id})
+            match_id_file = test_match_file_document['identifier_content']
             match_id_file_list.append(match_id_file)
 
             assistor_random_id = test_match_document['assistor_information'][assistor_id]['assistor_id_to_random_id']
@@ -135,9 +147,9 @@ def get_user_test_match_id(id):
         log(generate_msg('Test 3.2:', 'get_user_test_match_id done'), user_id, task_id, test_id)
         log(generate_msg('---- unread test match id done\n'), user_id, task_id, test_id)
     else:
-        match_id_file_id = test_match_document['assistor_information'][assistor_id]['match_id_file_id']
-        test_match_file_document = pyMongo.db.Train_Match_File.find_one({'match_id_file_id': match_id_file_id})
-        match_id_file = test_match_file_document['match_id_file_content']
+        identifier_id = test_match_document['assistor_information'][assistor_id]['identifier_id']
+        test_match_file_document = pyMongo.db.Train_Match_File.find_one({'identifier_id': identifier_id})
+        match_id_file = test_match_file_document['identifier_content']
         match_id_file_list.append(match_id_file)
 
         assistor_random_id = test_match_document['assistor_information'][assistor_id]['assistor_id_to_random_id']
@@ -151,27 +163,28 @@ def get_user_test_match_id(id):
         log(generate_msg('Test 3.2:', 'get_user_test_match_id done'), user_id, task_id, test_id)
     return jsonify(data)
 
-@main.route('/send_situation/', methods=['POST'])
+@main.route('/send_situation/<int:id>', methods=['POST'])
 @token_auth.login_required
-def send_situation():
+def send_situation(id):
 
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'residual_list' not in data or not data.get('residual_list'):
+    if 'assistor_random_id_to_residual_dict' not in data or not data.get('assistor_random_id_to_residual_dict'):
         return bad_request('residual_list is required.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
-    if 'assistor_random_id_list' not in data or not data.get('assistor_random_id_list'):
-        return bad_request('assistor_random_id_list is required.')
+
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
 
     # get data from transferred message
-    residual_list = data.get('residual_list')
-    print('residual length', len(residual_list))
+    assistor_random_id_to_residual_dict = data.get('assistor_random_id_to_residual_dict')
+    print('residual length', len(assistor_random_id_to_residual_dict))
     task_id = data.get('task_id')
-    assistor_random_id_list = data.get('assistor_random_id_list')
-
-    user_id = obtain_user_id()
 
     # get recent round
     cur_rounds_num = None
@@ -187,94 +200,86 @@ def send_situation():
     elif cur_rounds_num > 1:
         log(generate_msg('5.3:', 'sponsor send_situation begins'), user_id, task_id)
 
-    train_match_document = pyMongo.db.Train_Match.find_one({'task_id': task_id})
-    sponsor_terminate_id_dict = train_match_document['sponsor_terminate_id_dict']
-    assistor_terminate_id_dict = train_match_document['assistor_terminate_id_dict']
+    train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
+    total_assistor_num = train_match_document['total_assistor_num']
+    sponsor_information = train_match_document['sponsor_information']
+    assistor_information = train_match_document['assistor_information']
+    sponsor_terminate_id_dict = train_match_document['sponsor_terminate_id_dict']
+    # check how many assistors in this train task have terminated train task
+    assistor_terminate_id_dict = train_match_document['assistor_terminate_id_dict']
+    asssistor_random_id_mapping = train_match_document['asssistor_random_id_mapping']
+    sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
+    sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
+
     if sponsor_id in sponsor_terminate_id_dict:
         return jsonify({"message": "sponsor ends train task"})
 
-    rounds_key = {}
+    situation_dict = {}
     assistor_id_list = []
-    for i in range(len(residual_list)):
-        assistor_random_id = assistor_random_id_list[i]
-        residual = residual_list[i]
+    for assistor_random_id, residual in assistor_random_id_to_residual_dict.items():
 
-        assistor_id = train_match_document['asssistor_random_id_mapping'][assistor_random_id]
+        assistor_id = asssistor_random_id_mapping[assistor_random_id]
         if assistor_id in assistor_terminate_id_dict:
             continue
         
         assistor_id_list.append(assistor_id)
-        sponsor_random_id = train_match_document['sponsor_information'][sponsor_id]['sponsor_id_to_random_id']
+        sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
 
         situation_id = obtain_unique_id()
-        rounds_key[assistor_id] = {
+        situation_dict[assistor_id] = {
             'situation_id': situation_id,
         }
 
-        train_message_situation_document = {
-            'situation_id': situation_id,
-            'sender_id': sponsor_id,
-            'sender_random_id': sponsor_random_id,
-            'recipient_id': assistor_id,
-            'situation_content': residual
-        }
-        pyMongo.db.Train_Message_Situation.insert_one(train_message_situation_document)
+        # assistor add train_message_situation to Train_Message_Situation Table
+        train_mongoDB.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
+                                                           sender_random_id=sponsor_random_id, recipient_id=assistor_id, 
+                                                           situation_content=residual)
 
     # sponsor also sends information to itself to trigger next stage
     situation_id = obtain_unique_id()
-    rounds_key[sponsor_id] = {
+    situation_dict[sponsor_id] = {
         'situation_id': situation_id
     }
 
-    train_message_situation_document = {
-        'situation_id': situation_id,
-        'sender_id': sponsor_id,
-        'sender_random_id': sponsor_random_id,
-        'recipient_id': sponsor_id,
-        'situation_content': None
-    }
-    pyMongo.db.Train_Message_Situation.insert_one(train_message_situation_document)
+    train_mongoDB.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
+                                                       sender_random_id=sponsor_random_id, recipient_id=sponsor_id, 
+                                                       situation_content=None)
 
     if cur_rounds_num == 1:
-        train_message_document = {
-            'task_id': task_id,
-            'cur_rounds_num': cur_rounds_num,
-            'assistor_situation_done_dict': {},
-            'rounds_' + str(cur_rounds_num): {
-                'situation_dict': rounds_key,
-                'output_dict': {},
-            },
-        }
-        pyMongo.db.Train_Message.insert_one(train_message_document)
+        train_mongoDB.create_train_message_document(task_id=task_id, cur_rounds_num=cur_rounds_num, situation_dict=situation_dict)
     elif cur_rounds_num > 1:
-        pyMongo.db.Train_Message.update_one({'task_id': task_id}, {'$set':{'rounds_' + str(cur_rounds_num).situation_dict: rounds_key}})
+        pyMongo.db.Train_Message.update_one({'task_id': task_id}, {'$set':{'rounds_' + str(cur_rounds_num).situation_dict: situation_dict}})
 
+    # send unread_situation notification to all assistors in this train task 
     for assistor_id in assistor_id_list:
-        user.add_notification('unread situation', user.new_situation())
+        train_mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_situation', 
+                                                       task_id=task_id, sender_random_id=sponsor_random_id, 
+                                                       role='assistor', cur_rounds_num=1)
 
     if cur_rounds_num == 1:
         log(generate_msg('3.4:"', 'sponsor adds unread situation to assistors done'), user_id, task_id)
     elif cur_rounds_num > 1:
         log(generate_msg('5.4:"', 'sponsor adds unread situation to assistors done'), user_id, task_id)
     
-    # sponsor
-    user.add_notification('unread situation', user.new_situation())
+    # send unread_situation notification to sponsor in this train task 
+    train_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_situation', 
+                                                       task_id=task_id, sender_random_id=sponsor_random_id, 
+                                                       role='sponsor', cur_rounds_num=1)
 
     if cur_rounds_num == 0:
-        log(generate_msg('3.5:"', 'sponsor add unread situation to sponsor done'), g.current_user.id, task_id)
-        log(generate_msg('------------------------ unread situation done\n'), g.current_user.id, task_id)
+        log(generate_msg('3.5:"', 'sponsor add unread situation to sponsor done'), user_id, task_id)
+        log(generate_msg('------------------------ unread situation done\n'), user_id, task_id)
     else:
-        log(generate_msg('5.5:"', 'sponsor add unread situation to sponsor done'), g.current_user.id, task_id)
-        log(generate_msg('------------------------ unread output done\n'), g.current_user.id, task_id)
+        log(generate_msg('5.5:"', 'sponsor add unread situation to sponsor done'), user_id, task_id)
+        log(generate_msg('------------------------ unread output done\n'), user_id, task_id)
 
     return jsonify({"message": "send situation successfully!"})
 
 
-
-@main.route('/send_test_output/', methods=['POST'])
+@main.route('/send_test_output/<int:id>', methods=['POST'])
 @token_auth.login_required
-def send_test_output():
+def send_test_output(id):
 
     data = request.get_json()
 
@@ -287,11 +292,17 @@ def send_test_output():
     if 'output' not in data or not data.get('output'):
         return bad_request('output is required.')
 
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     output = data.get('output')
     test_id = data.get('test_id')
     task_id = data.get('task_id')
 
-    user_id = obtain_user_id()
+    user_id = obtain_user_id_from_token()
 
     log(generate_msg('Test 3.3:"', 'assistor send_test_output start'), g.current_user.id, task_id, test_id)
 

@@ -86,7 +86,7 @@ def verify_jwt(token):
     user_document = pyMongo.db.User.find_one({'user_id': user_id})
     return user_document, token_payload
 
-def obtain_user_id():
+def obtain_user_id_from_token():
     user_id = g.current_user['user_id']
     return user_id
 

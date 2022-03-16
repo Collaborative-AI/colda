@@ -3,6 +3,7 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
+from Items.main.mongoDB import train_mongoDB
 from Items.main.utils import log, generate_msg
 
 # from Items import db
@@ -12,11 +13,11 @@ from Items.main import main
 # from Items.models import User, Notification, Matched, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import obtain_user_id, verify_token_user_id_and_function_caller_id
+from Items.main.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 
-@main.route('/users/<int:id>/output/', methods=['POST'])
+@main.route('/get_output_content/<int:id>', methods=['POST'])
 @token_auth.login_required
-def get_user_output(id):
+def get_output_content(id):
 
     """
     Sponsor gets outputs of assistors. Only sponsor enters this function.
@@ -43,43 +44,42 @@ def get_user_output(id):
     task_id = data.get('task_id')
     rounds = data.get('rounds')
 
-    user_id = obtain_user_id()
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     sponsor_id = user_id
 
     log(generate_msg('---- unread situation begins'), user_id, task_id)
     log(generate_msg('---- unread situation done (no function pass server)\n'), user_id, task_id)
     log(generate_msg('---- unread output begins'), user_id, task_id)
     log(generate_msg('5.1:"', 'sponsor get_user_output start'), user_id, task_id)
-    
-    if not verify_token_user_id_and_function_caller_id(user_id, id):
-        return error_response(403)
 
-    train_message_document = pyMongo.db.Train_Message.find_one({'task_id': task_id})
+    train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
     output_dict = train_message_document['rounds_' + str(rounds)]['output_dict']
 
-    output_contents = []
-    sender_random_ids = []
+    sender_random_id_to_output_content_dict = {}
     for assistor_id in output_dict:
         output_id = output_dict[assistor_id]
-        train_message_output_document = pyMongo.db.Train_Message_Output.find_one({'output_id': output_id})
+        train_message_output_document = train_mongoDB.search_train_message_output_document(output_id=output_id)
 
         output_content = train_message_output_document['output_content']
         sender_random_id = train_message_output_document['sender_random_id']
 
-        output_contents.append(output_content)
-        sender_random_ids.append(sender_random_id)
+        sender_random_id_to_output_content_dict[sender_random_id] = output_content
 
     log(generate_msg('5.2:"', 'sponsor get_user_output done'), user_id, task_id)
 
     return jsonify({
-                'output': output_contents,
-                'sender_random_ids_list': sender_random_ids
+                'sender_random_id_to_output_content_dict': sender_random_id_to_output_content_dict
             })  
 
 
-@main.route('/users/<int:id>/test_output/', methods=['POST'])
+@main.route('/get_test_output_content/<int:id>', methods=['POST'])
 @token_auth.login_required
-def get_user_test_output(id):
+def get_test_output_content(id):
 
     data = request.get_json()
     if not data:
@@ -89,12 +89,18 @@ def get_user_test_output(id):
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
 
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     test_id = data.get('test_id')
     task_id = data.get('task_id')
     
-    user_id = obtain_user_id()
+    user_id = obtain_user_id_from_token()
 
-    log(generate_msg('--------------------unread test output begins'), g.current_user.id, task_id, test_id)
+    log(generate_msg('---- unread test output begins'), g.current_user.id, task_id, test_id)
     log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), g.current_user.id, task_id, test_id)
 
     user = User.query.get_or_404(g.current_user.id)

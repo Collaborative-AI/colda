@@ -87,13 +87,13 @@ def create_MongoDB_Collections():
     
     if 'Train_Match' not in collection_list:
         pyMongo.db.Train_Match.create_index([("task_id", 1)], unique=True)
-    if 'Train_Match_File' not in collection_list:
-        pyMongo.db.Train_Match_File.create_index([("matched_id_file_id", 1)], unique=True)
+    if 'Train_Match_Identifier' not in collection_list:
+        pyMongo.db.Train_Match_Identifier.create_index([("identifier_id", 1)], unique=True)
     
     if 'Test_Match' not in collection_list:
         pyMongo.db.Test_Match.create_index([("test_id", 1)], unique=True)
-    if 'Test_Match_File' not in collection_list:
-        pyMongo.db.Test_Match_File.create_index([("matched_id_file_id", 1)], unique=True)
+    if 'Test_Match_Identifier' not in collection_list:
+        pyMongo.db.Test_Match_Identifier.create_index([("identifier_id", 1)], unique=True)
     
     if 'Train_Task' not in collection_list:
         pyMongo.db.Train_Task.create_index([("task_id", 1)], unique=True)

@@ -8,16 +8,13 @@ from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
 
-# from Items import db
 from Items import pyMongo
-
-# import BluePrint
 from Items.main import main
-
-# from Items.models import User, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import log, generate_msg, add_new_token_to_response, obtain_user_id, obtain_unique_id
+from Items.main.utils import log, generate_msg, add_new_token_to_response, obtain_user_id_from_token, obtain_unique_id
+from Items.main.utils import verify_token_user_id_and_function_caller_id
+from Items.main.mongoDB import train_mongoDB, test_mongoDB
 
 @main.route('/create_new_train_task', methods=['GET'])
 @token_auth.login_required
@@ -63,9 +60,9 @@ def create_new_test_task():
     response = {"test_id": test_id}
     return jsonify(response)
 
-@main.route('/find_assistor', methods=['POST'])
+@main.route('/find_assistor/<int:id>', methods=['POST'])
 @token_auth.login_required
-def find_assistor():
+def find_assistor(id):
 
     """
     Add information of current task to matched database.
@@ -91,8 +88,8 @@ def find_assistor():
         return bad_request('You must post JSON data.')
     if 'assistor_username_list' not in data or not data.get('assistor_username_list'):
         return bad_request('assistor_username_list is required.')
-    if 'id_file' not in data or not data.get('id_file'):
-        return bad_request('id_file is required.')
+    if 'identifier_content' not in data or not data.get('identifier_content'):
+        return bad_request('identifier_content is required.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
     if 'task_mode' not in data:
@@ -106,8 +103,15 @@ def find_assistor():
     if 'task_description' not in data:
         return bad_request('task_description is required.')
     print('find_assistor----------------')
+
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     assistor_username_list = data['assistor_username_list']
-    id_file = data['id_file']
+    identifier_content = data['identifier_content']
     task_id = data['task_id']
     task_name = data['task_name']
     task_mode = data['task_mode']
@@ -124,77 +128,42 @@ def find_assistor():
         print("user.id", username, user_id)
         assistor_id_list.append(user_id)
 
-    user_id = obtain_user_id()
     log(generate_msg('Sponsor training stage'), user_id, task_id)
     log(generate_msg('---- find_assistor begins'), user_id, task_id)
     log(generate_msg('1.1', 'sponsor find_assistor'), user_id, task_id)
 
     # sponsor_random_id is unique in each task    
     sponsor_random_id = obtain_unique_id()
-    match_id_file_id = obtain_unique_id()
+    identifier_id = obtain_unique_id()
     sponsor_id = user_id
-
-    train_match_document = {
-        "task_id": task_id,
-        'total_assistor_num': len(assistor_id_list),
-        "request_timestamp": datetime.utcnow,
-        "match_id_timestamp": datetime.utcnow,
-        "sponsor_information": {
-            "sponsor_id": sponsor_id,
-            sponsor_id: {
-                "sponsor_id_to_random_id": sponsor_random_id,
-                'match_id_file_id': match_id_file_id
-            }
-        },
-        "sponsor_random_id_mapping":{
-            sponsor_random_id: sponsor_id
-        },
-        "assistor_information": {},
-        "assistor_random_id_mapping": {},
-        'sponsor_terminate_id_dict': {},
-        'assistor_terminate_id_dict': {},
-    }
-    pyMongo.db.Train_Match.insert_one(train_match_document)
+    # add new train_match document to Train_Match Table
+    train_mongoDB.sponsor_create_train_match_document(task_id=task_id, total_assistor_num=len(assistor_id_list), sponsor_id=sponsor_id, 
+                                     sponsor_random_id=sponsor_random_id, identifier_id=identifier_id)
     
-    train_match_file_document = {
-        'match_id_file_id': match_id_file_id,
-        'match_id_file_content': id_file,
-    }
-    pyMongo.db.Train_Match_File.insert_one(train_match_file_document)
+    # add new train_match_file document to Train_Match_File Table
+    train_mongoDB.create_train_match_file_document(identifier_id=identifier_id, identifier_content=identifier_content)
 
     log(generate_msg('1.2:', 'sponsor handles id data done'), user_id, task_id)
 
-    train_task_document = {
-        "task_id": task_id,
-        "task_name": task_name,
-        "task_description": task_description,
-        "task_mode": task_mode,
-        "model_name": model_name,
-        "metric_name": metric_name,
-        "sponsor_id": sponsor_id,
-        "assistor_id_list": assistor_id_list,
-        "test_task_list": [],
-    }
-    pyMongo.db.Train_Task.insert_one(train_task_document)
+    # add new train_task document to Train_Task Table
+    train_mongoDB.create_train_task_document(task_id=task_id, task_name=task_name, task_description=task_description, 
+                                     task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
+                                     sponsor_id=sponsor_id, assistor_id_list=assistor_id_list, test_task_list=[])
 
     # update the participated_train_task in User Table
     pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{'participated_train_task.' + task_id: 'sponsor'}})
 
     # add notifications to all assistors
     for assistor_id in assistor_id_list:
-        pyMongo.db.Notification.update_one({'user_id': assistor_id}, {'$set':{
-            'category.unread_request.task_id_dict.sender_random_id': sponsor_random_id,
-            'category.unread_request.task_id_dict.role': 'assistor',
-            'category.unread_request.task_id_dict.role': 1,
-        }})
+        train_mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_request', 
+                                                 task_id=task_id, sender_random_id=sponsor_random_id, 
+                                                 role='assistor', cur_rounds_num=1)
     
     log(generate_msg('1.3:', 'sponsor adds all unread request to assistors'), user_id, task_id)
 
-    pyMongo.db.Notification.update_one({'user_id': sponsor_id}, {'$set':{
-        'category.unread_request.task_id_dict.sender_random_id': sponsor_random_id,
-        'category.unread_request.task_id_dict.role': 'sponsor',
-        'category.unread_request.task_id_dict.role': 1,
-    }})
+    train_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_request', 
+                                                 task_id=task_id, sender_random_id=sponsor_random_id, 
+                                                 role='sponsor', cur_rounds_num=1)
     
     log(generate_msg('1.4:', 'sponsor adds unread request to itself'), user_id, task_id)
     log(generate_msg('---- sponsor find assistor done \n'), user_id, task_id)
@@ -203,9 +172,9 @@ def find_assistor():
     return jsonify(response)
 
 
-@main.route('/find_test_assistor', methods=['POST'])
+@main.route('/find_test_assistor/<int:id>', methods=['POST'])
 @token_auth.login_required
-def find_test_assistor():
+def find_test_assistor(id):
 
     """
     Add information of current task to matched database.
@@ -246,6 +215,12 @@ def find_test_assistor():
     if 'test_description' not in data:
         return bad_request('test_description is required.')
 
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     task_id = data['task_id']
     test_id = data['test_id']
     id_file = data['id_file']
@@ -266,7 +241,7 @@ def find_test_assistor():
     test_task_list.append(test_id)
     pyMongo.db.Train_Match.update_one({'task_id': task_id}, {'$set':{'test_task_list':test_task_list}})
 
-    user_id = obtain_user_id()
+    user_id = obtain_user_id_from_token()
     log(generate_msg('Sponsor testing stage'), user_id, task_id)
     log(generate_msg('---- find_test_assistor begins'), user_id, task_id, test_id)
     log(generate_msg('Test 1.1', 'sponsor find_assistor'), user_id, task_id, test_id)
@@ -282,15 +257,15 @@ def find_test_assistor():
     test_match_file_document_list = []
     for assistor_id in assistor_id_list:
         assistor_random_id = obtain_unique_id()
-        match_id_file_id = obtain_unique_id()
+        identifier_id = obtain_unique_id()
         assistor_information[assistor_id]['assistor_id_to_random_id'] = assistor_random_id
-        assistor_information[assistor_id]['match_id_file_id'] = match_id_file_id
+        assistor_information[assistor_id]['identifier_id'] = identifier_id
 
         assistor_random_id_mapping[assistor_random_id] = assistor_id
 
         test_match_file_document = {
-            "match_id_file_id": match_id_file_id,
-            "match_id_file_content": id_file
+            "identifier_id": identifier_id,
+            "identifier_content": id_file
         }
         test_match_file_document_list.append(test_match_file_document)
 
@@ -344,22 +319,3 @@ def find_test_assistor():
 
     return jsonify(data)
 
-@main.route('/get_test_history_id', methods=['POST'])
-@token_auth.login_required
-def get_test_history_id():
-
-    # find assistor algorithm, return all_assistor_id
-    data = request.get_json()
-    if not data:
-        return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
-    
-    task_id = data['task_id']
-    train_match_document = pyMongo.db.Train_Match.find_one({'task_id': task_id})
-    
-    data = {"test_id_list": train_match_document['test_task_list']}
-    print("test_id_list", data)
-    response = jsonify(data)
-    
-    return response

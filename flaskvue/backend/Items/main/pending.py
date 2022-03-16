@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from cgi import test
 import uuid
 import json
 
@@ -14,11 +15,12 @@ from Items.main import main
 from Items.models import User, Matched, Pending
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import log, generate_msg, obtain_user_id
+from Items.main.utils import log, generate_msg, obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
+from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 
-@main.route('/add_train_pending', methods=['POST'])
+@main.route('/add_train_pending/<int:id>', methods=['POST'])
 @token_auth.login_required
-def add_train_pending():
+def add_train_pending(id):
 
     """
     Synspot adds train task to the pending when the assistor operation mode is manual
@@ -27,7 +29,7 @@ def add_train_pending():
         task_id - String. The id of current train task
        
     Returns:
-        {"send_output": "send output successfully"}
+        {"message": "add train pending successfully"}
 
     Raises:
         KeyError - raises an exception
@@ -39,104 +41,90 @@ def add_train_pending():
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
-    task_id = data['task_id']
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
 
-    user_id = obtain_user_id()
-
-    # Retrieve task name and task description of this unique task_id
-    pending_document = pyMongo.db.Pending.find_one({'user_id': user_id})
-    query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
-    print('query shi', query)
-    task_name = query.task_name
-    task_mode = query.task_mode
-    model_name = query.model_name
-    metric_name = query.metric_name
-    task_description = query.task_description
-    # test_description = query.test_description
-
-    pending = Pending()
-    pending.pending_assistor_id = g.current_user.id
-    pending.pending_task_id = task_id
-    pending.pending_task_name = task_name
-    pending.pending_task_mode = task_mode
-    pending.pending_model_name = model_name
-    pending.pending_metric_name = metric_name
-    pending.pending_task_description = task_description
-    # pending.pending_test_description = ''
-    pending.pending_test_indicator = "train"
-
-    print('kan1')
-
-    db.session.add(pending)
-    db.session.commit()
+    task_id = data.get('task_id')
+    mongoDB.update_pending_document(user_id=user_id, id=task_id, test_indicator='train')
     
     response = {'message': 'add train pending successfully'}
     return jsonify(response)
 
-@main.route('/add_test_pending', methods=['POST'])
+@main.route('/add_test_pending/<int:id>', methods=['POST'])
 @token_auth.login_required
-def add_test_pending():
-    '''
-     Add test stage pending to the Pending database
-    
-    '''
+def add_test_pending(id):
+    """
+    Synspot adds test task to the pending when the assistor operation mode is manual
+
+    Parameters:
+        test_id - String. The id of current test task
+       
+    Returns:
+        {"message": "add test pending successfully"}
+
+    Raises:
+        KeyError - raises an exception
+    """
+
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
+
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
+    test_id = data.get('test_id')
+    mongoDB.update_pending_document(user_id=user_id, id=test_id, test_indicator='test')
     
-    test_id = data['test_id']
-    
-    user_id = obtain_user_id()
-
-    # Retrieve task name and task description of thie unique task_id
-    query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
-    test_name = query.test_name
-    task_mode = query.task_mode
-    model_name = query.model_name
-    metric_name = query.metric_name
-    test_description = query.test_description
-    task_id = query.task_id
-
-    pending = Pending()
-    pending.pending_assistor_id = g.current_user.id
-    pending.pending_task_id = task_id
-    pending.pending_test_id = test_id
-    pending.pending_task_name = test_name
-    pending.pending_task_mode = task_mode
-    pending.pending_model_name = model_name
-    pending.pending_metric_name = metric_name
-    pending.pending_test_description = test_description
-    pending.pending_test_indicator = "test"
-
-    print('kan1',pending.pending_test_indicator)
-
-    db.session.add(pending)
-    db.session.commit()
-    
-    return jsonify("add test pending successfully")
+    response = {'message': 'add test pending successfully'}
+    return jsonify(response)
 
 
-@main.route('/get_all_pending', methods=['GET'])
+@main.route('/get_all_pending/<int:id>', methods=['GET'])
 @token_auth.login_required
-def get_all_pending():
-    '''
-     Get all pending from the Pending database
-    
-    '''
+def get_all_pending(id):
+    """
+    Synspot adds test task to the pending when the assistor operation mode is manual
 
-    user_id = obtain_user_id()
+    Parameters:
+        test_id - String. The id of current test task
+       
+    Returns:
+        {"message": "add test pending successfully"}
 
-    # Retrieve sponsor id of thie unique test_id
-    print('zzzget_all_pending', g.current_user.id)
-    all_pending_items = Pending.query.filter(Pending.pending_assistor_id == g.current_user.id).all()
-    print('all_pending_items', all_pending_items)
-    res = [item.to_dict() for item in all_pending_items]
+    Raises:
+        KeyError - raises an exception
+    """
 
-    data = {"all_pending_items": res}
-    
-    return jsonify(data)
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
+    pending_document = mongoDB.search_pending_document(user_id=user_id)
+    task_dict = pending_document['task_dict']
+
+    response = {}
+    response['all_pending_items'] = {}
+    for id in task_dict:
+        test_indicator = task_dict[id]['test_indicator']
+        if test_indicator == 'train':
+            train_match_document = train_mongoDB.search_train_match_document(task_id=id)
+            response['all_pending_items'][id] = train_match_document
+        elif test_indicator == 'test':
+            test_match_document = test_mongoDB.search_test_match_document(test_id=id)
+            response['all_pending_items'][id] = test_match_document
+
+    return jsonify(response)
 
 @main.route('/delete_pending', methods=['POST'])
 @token_auth.login_required
@@ -154,20 +142,23 @@ def dalete_pending():
     if 'test_indicator' not in data or not data.get('test_indicator'):
         return bad_request('test_indicator is required.')
 
+    user_id = obtain_user_id_from_token()
+    user = pyMongo.db.User.find_one({'user_id': id})
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     task_id = data['task_id']
     test_id = data['test_id']
     test_indicator = data['test_indicator']
 
-    user_id = obtain_user_id()
-
     print('delete sucess1')
+    if test_indicator == 'train':
+        id = task_id
+    elif test_indicator == 'test':
+        id = test_id
 
-    if test_indicator == "train":
-        Pending.query.filter(Pending.pending_assistor_id == g.current_user.id, Pending.pending_test_indicator == test_indicator, Pending.pending_task_id == task_id).delete()
-        db.session.commit()
-    else:
-        Pending.query.filter(Pending.pending_assistor_id == g.current_user.id, Pending.pending_test_indicator == test_indicator, Pending.pending_test_id == test_id).delete()
-        db.session.commit()
+    mongoDB.delete_pending_document_field(user_id=user_id, id=id)
 
-    print('delete sucess2')
-    return jsonify("Sucessfully delete")
+    response = {'message': 'delete successfully'}
+    return jsonify(response)

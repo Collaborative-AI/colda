@@ -28,7 +28,7 @@ def stop_train_task(id):
     task_id = data.get('task_id')
     print("----------1")
     user_id = obtain_user_id_from_token()
-    user = pyMongo.db.User.find_one({'user_id': id})
+    user = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
@@ -155,7 +155,7 @@ def stop_test_task(id):
 
     test_id = data.get('test_id')
     user_id = obtain_user_id_from_token()
-    user = pyMongo.db.User.find_one({'user_id': id})
+    user = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)

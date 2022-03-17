@@ -296,7 +296,7 @@ def update_user(id):
         return bad_request('You must post JSON data.')
         
     user_id = obtain_user_id_from_token()
-    user = pyMongo.db.User.find_one({'user_id': id})
+    user = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
@@ -340,7 +340,7 @@ def get_user_messages_recipients(id):
     '''我给哪些用户发过私信，按用户分组，返回我给各用户最后一次发送的私信
     即: 我给 (谁) 最后一次 发了 (什么私信)'''
     user_id = obtain_user_id_from_token()
-    user = pyMongo.db.User.find_one({'user_id': id})
+    user = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
@@ -374,7 +374,7 @@ def get_user_messages_senders(id):
     '''哪些用户给我发过私信，按用户分组，返回各用户最后一次发送的私信
     即: (谁) 最后一次 给我发了 (什么私信)'''
     user_id = obtain_user_id_from_token()
-    user = pyMongo.db.User.find_one({'user_id': id})
+    user = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
@@ -428,7 +428,7 @@ def get_user_messages_senders(id):
 def get_user_history_messages(id):
     '''返回我与某个用户(由查询参数 from 获取)之间的所有私信记录'''
     user_id = obtain_user_id_from_token()
-    user = pyMongo.db.User.find_one({'user_id': id})
+    user = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)

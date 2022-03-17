@@ -7,7 +7,7 @@ from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
 from bson import ObjectId
-from Items.main.mongoDB import train_mongoDB
+from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 
 from Items.main.utils import log, generate_msg
 
@@ -52,7 +52,7 @@ def get_situation_content(id):
         return bad_request('rounds is required.')
 
     user_id = obtain_user_id_from_token()
-    user = pyMongo.db.User.find_one({'user_id': id})
+    user = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
@@ -63,7 +63,7 @@ def get_situation_content(id):
     user_id = obtain_user_id_from_token()
 
     # check if the caller of the function and the id is the same
-    user = pyMongo.db.User.find_one({'user_id': id})
+    user = mongoDB.search_user_document(user_id=id)
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
 
@@ -92,12 +92,13 @@ def get_situation_content(id):
 def send_output():
 
     """
-    Assistors send outputs in this function to sponsor. Only when all the assistors in current train task upload
-    their outputs, server will send all the assistors and sponsor the unread_output notifications.
-
+    1. Assistors send outputs in this function to sponsor. Only when all the assistors in current train task upload
+    their outputs, server will send sponsor the unread_output notifications.
+    2. Only assistor will enter this function
+    
     Parameters:
         task_id - String. The id of current train task
-        output - 
+        output_content - List. 
        
     Returns:
         {"send_output": "send output successfully"}
@@ -116,16 +117,15 @@ def send_output():
         return bad_request('output_content is required.')
 
     user_id = obtain_user_id_from_token()
-    user = pyMongo.db.User.find_one({'user_id': id})
+    user = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
 
     output_content = data.get('output_content')
     task_id = data.get('task_id')
-
-    user_id = obtain_user_id_from_token()
     assistor_id = user_id
+
     log(generate_msg('4.3:"', 'assistor send_output start'), user_id, task_id)
 
     # get sponsor id    

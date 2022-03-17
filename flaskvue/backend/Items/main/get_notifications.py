@@ -20,9 +20,9 @@ from Items.main.utils import obtain_user_id_from_token, add_new_token_to_respons
 from Items.main.utils import verify_token_user_id_and_function_caller_id
 from Items.main.auth import token_auth
 
-@main.route('/users/<int:id>/notifications/', methods=['GET'])
+@main.route('/get_notifications/<string:id>/', methods=['GET'])
 @token_auth.login_required
-def get_user_notifications(id):
+def get_notifications(id):
     """
     Return a new notification
 
@@ -45,50 +45,63 @@ def get_user_notifications(id):
     notification_document = pyMongo.db.Notification.find_one({'user_id': user_id})
     category = notification_document['category']
 
+    # If there is no new notification return a null dict
     if len(category) == 0:
-        return {}
+        response = {
+            'notification_result': {
+                'category': {}
+            }
+        }
+        return jsonify(response)
 
-    return_dict = {
-        "unread request": {}, 
-        "unread match id": {}, 
-        "unread situation": {}, 
-        "unread output": {}, 
-        "unread test request": {}, 
-        "unread test match id": {}, 
-        "unread test output": {}, 
-        "unread train stop": {}, 
-        "unread test stop": {}
-    }
-
-    train_notification = {
-        "unread request",
-        "unread match id",
-        "unread situation", 
-        "unread output", 
-    }
-
-    test_notification = {
-        "unread test request", 
-        "unread test match id", 
-        "unread test output"
-    }
-
-
+    # If there is new notification, return the notification document and set the category to {}
     notification_document = pyMongo.db.Notification.find_one_and_update({'user_id': user_id}, {'$set':{'category': {}}})
+    response = {
+        'notification_result': copy.deepcopy(notification_document)
+    }
+    return jsonify(response)
 
-    category = notification_document['category']
-    for category_name in category:
-        category_count = category[category_name]['category_count']
-        if category_count >= 1:
-            if category_name in train_notification:
-                task_id_dict = category[category_name]['task_id_dict']
-                return_dict[category_name]['task_id_dict'] = copy.deepcopy(task_id_dict)
-            elif category_name in test_notification:
-                test_id_dict = category[category_name]['test_id_dict']
-                return_dict[category_name]['test_id_dict'] = copy.deepcopy(test_id_dict)
+    # return_dict = {
+    #     "unread request": {}, 
+    #     "unread match id": {}, 
+    #     "unread situation": {}, 
+    #     "unread output": {}, 
+    #     "unread test request": {}, 
+    #     "unread test match id": {}, 
+    #     "unread test output": {}, 
+    #     "unread train stop": {}, 
+    #     "unread test stop": {}
+    # }
+
+    # train_notification = {
+    #     "unread request",
+    #     "unread match id",
+    #     "unread situation", 
+    #     "unread output", 
+    # }
+
+    # test_notification = {
+    #     "unread test request", 
+    #     "unread test match id", 
+    #     "unread test output"
+    # }
+
+
+    # notification_document = pyMongo.db.Notification.find_one_and_update({'user_id': user_id}, {'$set':{'category': {}}})
+
+    # category = notification_document['category']
+    # for category_name in category:
+    #     category_count = category[category_name]['category_count']
+    #     if category_count >= 1:
+    #         if category_name in train_notification:
+    #             task_id_dict = category[category_name]['task_id_dict']
+    #             return_dict[category_name]['task_id_dict'] = copy.deepcopy(task_id_dict)
+    #         elif category_name in test_notification:
+    #             test_id_dict = category[category_name]['test_id_dict']
+    #             return_dict[category_name]['test_id_dict'] = copy.deepcopy(test_id_dict)
     
-    return_dict = add_new_token_to_response(return_dict)
-    return return_dict
+    # return_dict = add_new_token_to_response(return_dict)
+    # return return_dict
 
 
     

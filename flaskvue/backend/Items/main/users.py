@@ -265,7 +265,7 @@ def forgot_new(token):
         print("/forgot/new/<token>_confirm_url", confirm_url)
         return render_template('forgot_new.html', confirm_url=confirm_url, msg=msg, token=token)
 
-@main.route('/users/<int:id>', methods=['GET'])
+@main.route('/users/<string:id>', methods=['GET'])
 @token_auth.login_required
 def get_user(id):
 
@@ -287,7 +287,7 @@ def get_user(id):
         return jsonify(g.current_user)
     return None
 
-@main.route('/users/<int:id>', methods=['PUT'])
+@main.route('/users/<string:id>', methods=['PUT'])
 @token_auth.login_required
 def update_user(id):
 
@@ -326,7 +326,7 @@ def update_user(id):
     return jsonify(user.to_dict())
 
 
-@main.route('/users/<int:id>', methods=['DELETE'])
+@main.route('/users/<string:id>', methods=['DELETE'])
 @token_auth.login_required
 def delete_user(id):
     '''
@@ -334,7 +334,7 @@ def delete_user(id):
     '''
     return "Welcome to Delete!"
 
-@main.route('/users/<int:id>/messages-recipients/', methods=['GET'])
+@main.route('/users/<string:id>/messages-recipients/', methods=['GET'])
 @token_auth.login_required
 def get_user_messages_recipients(id):
     '''我给哪些用户发过私信，按用户分组，返回我给各用户最后一次发送的私信
@@ -368,7 +368,7 @@ def get_user_messages_recipients(id):
             item['new_count'] = user.messages_sent.filter_by(recipient_id=item['recipient']['id']).filter(Message.timestamp > last_read_time).count()
     return jsonify(data)
 
-@main.route('/users/<int:id>/messages-senders/', methods=['GET'])
+@main.route('/users/<string:id>/messages-senders/', methods=['GET'])
 @token_auth.login_required
 def get_user_messages_senders(id):
     '''哪些用户给我发过私信，按用户分组，返回各用户最后一次发送的私信
@@ -423,7 +423,7 @@ def get_user_messages_senders(id):
     return jsonify(data)
 
 
-@main.route('/users/<int:id>/history-messages/', methods=['GET'])
+@main.route('/users/<string:id>/history-messages/', methods=['GET'])
 @token_auth.login_required
 def get_user_history_messages(id):
     '''返回我与某个用户(由查询参数 from 获取)之间的所有私信记录'''

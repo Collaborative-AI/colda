@@ -22,7 +22,7 @@ from Items.main.auth import token_auth
 from Items.main.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 from Items.main.mongoDB import train_mongoDB, test_mongoDB
 
-@main.route('/match_identifier_content/<int:id>', methods=['POST'])
+@main.route('/match_identifier_content/<string:id>', methods=['POST'])
 @token_auth.login_required
 def match_identifier_content():
 
@@ -72,14 +72,14 @@ def match_identifier_content():
     sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
     train_match_file_document = pyMongo.db.Train_Match_File.find_one({'identifier_id': sponsor_identifier_id})
-    sponsor_match_id_file = train_match_file_document['identifier_content']
+    sponsor_identifier_content = train_match_file_document['identifier_content']
 
     log(generate_msg('Assistor training stage'), user_id, task_id)
     log(generate_msg('---- unread request begins'), user_id, task_id)
     log(generate_msg('2.1:', 'assistor match_assistor_id begins'), user_id, task_id)
 
-    same_id_keys = list(set(identifier_content) & set(sponsor_match_id_file))
-    print('same_id_keys', same_id_keys)
+    same_identifiers = list(set(identifier_content) & set(sponsor_identifier_content))
+    print('same_identifiers', same_identifiers)
 
     assistor_random_id = obtain_unique_id()
     identifier_id = obtain_unique_id()
@@ -88,7 +88,7 @@ def match_identifier_content():
                                                  assistor_random_id=assistor_random_id, identifier_id=identifier_id)
 
     # add new train_match_file document to Train_Match_File Table
-    train_mongoDB.add_match_file_document(identifier_id=identifier_id, identifier_content=same_id_keys)
+    train_mongoDB.create_train_match_identifier_document(identifier_id=identifier_id, identifier_content=same_identifiers)
     
     log(generate_msg('2.2:', 'assistor matching', user_id), user_id, task_id)
     
@@ -117,7 +117,7 @@ def match_identifier_content():
     return jsonify({"stored": "assistor match id stored", "task_id": task_id})
 
 
-@main.route('/match_test_identifier_content/<int:id>', methods=['POST'])
+@main.route('/match_test_identifier_content/<string:id>', methods=['POST'])
 @token_auth.login_required
 def match_test_identifier_content():
 
@@ -150,14 +150,14 @@ def match_test_identifier_content():
     assistor_match_done_dict = test_match_document['assistor_match_done_dict']
 
     test_match_file_document = pyMongo.db.Test_Match_File.find_one({'identifier_id': identifier_id})
-    match_id_file = test_match_file_document['identifier_content']
+    identifier_content = test_match_file_document['identifier_content']
     
     log(generate_msg('Assistor testing stage'), user_id, task_id, test_id)
     log(generate_msg('---- unread test request begins'), user_id, task_id, test_id)
     log(generate_msg('Test 2.1:', 'assistor match_test_assistor_id begins'), user_id, task_id, test_id)
 
     data_array_id = set(data_array)
-    db_array = json.loads(match_id_file)
+    db_array = json.loads(identifier_content)
     same_id_keys = list(data_array_id & set(db_array))
     pyMongo.db.Test_Match_File.update_one({'identifier_id': identifier_id}, {'$set':{'identifier_content': same_id_keys}})
     log(generate_msg('Test 2.2:', 'assistor matching', user_id), user_id, task_id, test_id)

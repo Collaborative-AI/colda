@@ -20,7 +20,7 @@ from Items.main.mongoDB import train_mongoDB
 from Items.main.utils import log, generate_msg, obtain_user_id_from_token, obtain_unique_id
 from Items.main.utils import verify_token_user_id_and_function_caller_id
 
-@main.route('/get_identifier_content/<int:id>', methods=['POST'])
+@main.route('/get_identifier_content/<string:id>', methods=['POST'])
 @token_auth.login_required
 def get_identifier_content(id):
 
@@ -54,34 +54,34 @@ def get_identifier_content(id):
     response = {}
 
     if isSponsor:
-        assistor_random_id_to_match_id_file_dict = {}
+        assistor_random_id_to_identifier_content_dict = {}
         for assistor_id in train_match_document['assistor_information']:
             identifier_id = train_match_document['assistor_information'][assistor_id]['identifier_id']
             assistor_random_id = train_match_document['assistor_information'][assistor_id]['assistor_id_to_random_id']
 
             train_match_file_document = pyMongo.db.Train_Match_File.find_one({'identifier_id': identifier_id})
-            match_id_file = train_match_file_document['identifier_content']
+            identifier_content = train_match_file_document['identifier_content']
 
-            assistor_random_id_to_match_id_file_dict[assistor_random_id] = match_id_file
+            assistor_random_id_to_identifier_content_dict[assistor_random_id] = identifier_content
 
         response = {
-            'assistor_random_id_to_match_id_file_dict': assistor_random_id_to_match_id_file_dict,
+            'assistor_random_id_to_identifier_content_dict': assistor_random_id_to_identifier_content_dict,
         }
         log(generate_msg('3.2:', 'get_user_match_id done'), user_id, task_id)
 
     else:
-        sponsor_random_id_to_match_id_file_dict = {}
+        sponsor_random_id_to_identifier_content_dict = {}
         identifier_id = train_match_document['assistor_information'][assistor_id]['identifier_id']
         sponsor_id = train_match_document['sponsor_information']['sponsor_id']
         sponsor_random_id = train_match_document['sponsor_information'][sponsor_id]['sponsor_id_to_random_id']
 
         train_match_file_document = pyMongo.db.Train_Match_File.find_one({'identifier_id': identifier_id})
-        match_id_file = train_match_file_document['identifier_content']
+        identifier_content = train_match_file_document['identifier_content']
 
-        sponsor_random_id_to_match_id_file_dict[sponsor_random_id] = match_id_file
+        sponsor_random_id_to_identifier_content_dict[sponsor_random_id] = identifier_content
 
         response = {
-            'sponsor_random_id_to_match_id_file_dict': sponsor_random_id_to_match_id_file_dict,
+            'sponsor_random_id_to_identifier_content_dict': sponsor_random_id_to_identifier_content_dict,
         }
 
         log(generate_msg('3.2:', 'get_user_match_id done'), user_id, task_id)
@@ -90,7 +90,7 @@ def get_identifier_content(id):
     return jsonify(response)
 
 
-@main.route('/get_test_identifier_content/<int:id>', methods=['POST'])
+@main.route('/get_test_identifier_content/<string:id>', methods=['POST'])
 @token_auth.login_required
 def get_test_identifier_content(id):
 
@@ -127,20 +127,20 @@ def get_test_identifier_content(id):
         isSponsor = True 
 
     data = {}
-    match_id_file_list = []
+    identifier_content_list = []
     assistor_random_id_list = []
     if isSponsor:
         for assistor_id in test_match_document['assistor_information']:
             identifier_id = test_match_document['assistor_information'][assistor_id]['identifier_id']
             test_match_file_document = pyMongo.db.Test_Match_File.find_one({'identifier_id': identifier_id})
-            match_id_file = test_match_file_document['identifier_content']
-            match_id_file_list.append(match_id_file)
+            identifier_content = test_match_file_document['identifier_content']
+            identifier_content_list.append(identifier_content)
 
             assistor_random_id = test_match_document['assistor_information'][assistor_id]['assistor_id_to_random_id']
             assistor_random_id_list.append(assistor_random_id)
 
         data = {
-            'match_id_file_list': match_id_file_list, 
+            'identifier_content_list': identifier_content_list, 
             'assistor_random_id_list': assistor_random_id_list,
         }
 
@@ -149,21 +149,21 @@ def get_test_identifier_content(id):
     else:
         identifier_id = test_match_document['assistor_information'][assistor_id]['identifier_id']
         test_match_file_document = pyMongo.db.Train_Match_File.find_one({'identifier_id': identifier_id})
-        match_id_file = test_match_file_document['identifier_content']
-        match_id_file_list.append(match_id_file)
+        identifier_content = test_match_file_document['identifier_content']
+        identifier_content_list.append(identifier_content)
 
         assistor_random_id = test_match_document['assistor_information'][assistor_id]['assistor_id_to_random_id']
         assistor_random_id_list.append(assistor_random_id)
 
         data = {
-            'match_id_file_list': match_id_file_list,
+            'identifier_content_list': identifier_content_list,
             'sponsor_random_id_list': assistor_random_id_list,
         }
 
         log(generate_msg('Test 3.2:', 'get_user_test_match_id done'), user_id, task_id, test_id)
     return jsonify(data)
 
-@main.route('/send_situation/<int:id>', methods=['POST'])
+@main.route('/send_situation/<string:id>', methods=['POST'])
 @token_auth.login_required
 def send_situation(id):
 
@@ -188,7 +188,7 @@ def send_situation(id):
 
     # get recent round
     cur_rounds_num = None
-    train_message_document = pyMongo.db.Train_Message.find_one({'task_id': task_id})
+    train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
     # if train_message_document is None, it means it is the first round of this train_task
     if train_message_document is None:
         cur_rounds_num = 1
@@ -249,7 +249,10 @@ def send_situation(id):
     if cur_rounds_num == 1:
         train_mongoDB.create_train_message_document(task_id=task_id, cur_rounds_num=cur_rounds_num, situation_dict=situation_dict)
     elif cur_rounds_num > 1:
-        pyMongo.db.Train_Message.update_one({'task_id': task_id}, {'$set':{'rounds_' + str(cur_rounds_num).situation_dict: situation_dict}})
+        pyMongo.db.Train_Message.update_one({'task_id': task_id}, {'$set':{
+            'cur_rounds_num': cur_rounds_num,
+            'rounds_' + str(cur_rounds_num).situation_dict: situation_dict
+        }})
 
     # send unread_situation notification to all assistors in this train task 
     for assistor_id in assistor_id_list:
@@ -277,7 +280,7 @@ def send_situation(id):
     return jsonify({"message": "send situation successfully!"})
 
 
-@main.route('/send_test_output/<int:id>', methods=['POST'])
+@main.route('/send_test_output/<string:id>', methods=['POST'])
 @token_auth.login_required
 def send_test_output(id):
 

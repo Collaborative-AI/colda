@@ -173,7 +173,7 @@ def find_assistor(id):
     return jsonify(response)
 
 
-@main.route('/find_test_assistor/<int:id>', methods=['POST'])
+@main.route('/find_test_assistor/<string:id>', methods=['POST'])
 @token_auth.login_required
 def find_test_assistor(id):
 

@@ -179,614 +179,367 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         identifier_content = train_match_identifier_document['identifier_content']
         self.assertEqual(identifier_content, [8, 4, 3, 12, 16, 17])
         
-        return task_id, assistor_username_list
+        user_id_list = [user_id_1, user_id_2, user_id_3]
+        return task_id, assistor_username_list, user_id_list 
     
-    def unread_request_two_users_helper(self, task_id, list_content, assistor_random_id_list):
+    def unread_request_two_users_helper(self, task_id, assistor_username_list, user_id_list):
+        
+        user_id_1 = user_id_list[0]
+        user_id_2 = user_id_list[1]
+        user_id_3 = user_id_list[2]
 
-         # Check the Notification of user 2
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        response = self.client.get('/users/2/notifications/', headers=headers)
+        # Check the Notification of user 1
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        response = self.client.get('/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
-        json_response2 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response2[-1]['name'], "unread request")
-        self.assertEqual(json_response2[-1]['payload'], 1)
+        json_response_1 = json.loads(response.get_data(as_text=True))
+        self.assertEqual(len(json_response_1['category']), 0)
+
+        # Check the Notification of user 2
+        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
+        response = self.client.get('/get_notifications/' + user_id_2, headers=headers)
+        self.assertEqual(response.status_code, 200)
+        json_response_2 = json.loads(response.get_data(as_text=True))
+        self.assertEqual(len(json_response_2['category']), 1)
+        self.assertEqual(len(json_response_2['category']['unread_request']['task_id_dict']), 1)
+        assert task_id in json_response_2['category']['unread_request']['task_id_dict']
 
         # User 3 cannot check the notification of user 2
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        response = self.client.get('/users/2/notifications/', headers=headers)
+        response = self.client.get('/get_notifications/' + user_id_3, headers=headers)
         self.assertEqual(response.status_code, 403)
 
         # Check the Notification of user 3
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        response = self.client.get('/users/3/notifications/', headers=headers)
+        response = self.client.get('/get_notifications/' + user_id_3, headers=headers)
         self.assertEqual(response.status_code, 200)
-        json_response3 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response3[-1]['name'], "unread request")
-        self.assertEqual(json_response3[-1]['payload'], 1)
-
-        # 3. update request notification
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        data = json.dumps({'response_data': json_response2})
-        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        data = json.dumps({'response_data': json_response3})
-        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-
-        # 4. check update notification
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        response = self.client.get('/users/2/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response[-1]['name'], "unread request")
-        self.assertEqual(json_response[-1]['payload'], 0)
-
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        response = self.client.get('/users/3/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response[-1]['name'], "unread request")
-        self.assertEqual(json_response[-1]['payload'], 0)
+        json_response_3 = json.loads(response.get_data(as_text=True))
+        self.assertEqual(len(json_response_3['category']), 1)
+        self.assertEqual(len(json_response_3['category']['unread_request']['task_id_dict']), 1)
+        assert task_id in json_response_3['category']['unread_request']['task_id_dict']
 
          # 5. assistor uploads the ID file
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        # file_content = [['a','b','c'],[0,1,2],[4,5,6],[3,3,6]]
-        file_content = "0\n4\n1\n12\n16\n17\n18"
-        data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_assistor_id/', headers=headers, data=data)
+        identifier_content = [0, 4, 1, 12, 16, 17, 18]
+        data = json.dumps({'task_id': task_id, 'identifier_content': identifier_content})
+        response = self.client.post('/match_identifier_content/' + user_id_2, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         stored = json_response['stored']
         task_id_response = json_response['task_id']
         self.assertEqual(stored, "assistor match id stored")
         self.assertEqual(task_id, task_id_response)
-        # test matched id file
-        query = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == 2, Matched.test_indicator == "train").all()
-        self.assertEqual(set(json.loads(query[0].Matched_id_file)), set(["4","12","16","17"]))
 
-        # should not exist notification yet
+        # test train_match_document
+        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        assistor_information = train_match_document['assistor_information']
+        assert user_id_2 in assistor_information
+        identifier_id = assistor_information[user_id_2]['identifier_id']
+
+        train_match_identifier_document = train_mongoDB.search_train_match_identifier_document(identifier_id=identifier_id)
+        identifier_content = train_match_identifier_document['identifier_content']
+        self.assertEqual(set(identifier_content), set([4,12,16,17]))
+
+        # should not exist notification yet for sponsor
         headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        response = self.client.get('/users/1/notifications/', headers=headers)
+        response = self.client.get('/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response), 0)
+        self.assertEqual(len(json_response['category']), 0)
         
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        # file_content = [['a','b','c'],[0,1,2],[5,5,6],[3,3,6]]
-        file_content = "2\n3\n4\n5\n12\n18"
-        data = json.dumps({'task_id': task_id, 'file': file_content})
-        response = self.client.post('/match_assistor_id/', headers=headers, data=data)
+        identifier_content = [2, 3, 4, 5, 12, 18]
+        data = json.dumps({'task_id': task_id, 'identifier_content': identifier_content})
+        response = self.client.post('/match_identifier_content/' + user_id_3, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         stored = json_response['stored']
         task_id_response = json_response['task_id']
         self.assertEqual(stored, "assistor match id stored")
         self.assertEqual(task_id, task_id_response)
-        # test matched id file
-        query = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == 3, Matched.test_indicator == "train").all()
-        self.assertEqual(set(json.loads(query[0].Matched_id_file)), set(["3","4","12"]))
 
-        return task_id, list_content, assistor_random_id_list
+         # test train_match_document
+        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        assistor_information = train_match_document['assistor_information']
+        assert user_id_3 in assistor_information
+        identifier_id = assistor_information[user_id_3]['identifier_id']
 
-    def unread_match_id_two_users_helper(self, task_id, list_content, assistor_random_id_list):
+        train_match_identifier_document = train_mongoDB.search_train_match_identifier_document(identifier_id=identifier_id)
+        identifier_content = train_match_identifier_document['identifier_content']
+        self.assertEqual(set(identifier_content), set([3,4,12]))
+
+        return task_id, assistor_username_list, user_id_list
+
+    def unread_match_id_two_users_helper(self, task_id, assistor_username_list, user_id_list):
         
         # 6. Check Updated Notification
-        headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        response = self.client.get('/users/1/notifications/', headers=headers)
+        user_id_1 = user_id_list[0]
+        user_id_2 = user_id_list[1]
+        user_id_3 = user_id_list[2]
+
+         # Check the Notification of user 2
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        response = self.client.get('/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_1 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response_1[-1]['name'], "unread match id")
-        self.assertEqual(json_response_1[-1]['payload'], 1)
+        self.assertEqual(len(json_response_1['category']), 1)
+        self.assertEqual(len(json_response_1['category']['unread_match_id']['task_id_dict']), 1)
+        assert task_id in json_response_1['category']['unread_match_id']['task_id_dict']
 
+        # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        response = self.client.get('/users/2/notifications/', headers=headers)
+        response = self.client.get('/get_notifications/' + user_id_2, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_2 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response_2[-2]['name'], "unread request")
-        self.assertEqual(json_response_2[-2]['payload'], 0)
-        self.assertEqual(json_response_2[-1]['name'], "unread match id")
-        self.assertEqual(json_response_2[-1]['payload'], 1)
+        self.assertEqual(len(json_response_2['category']), 1)
+        self.assertEqual(len(json_response_2['category']['unread_match_id']['task_id_dict']), 1)
+        assert task_id in json_response_2['category']['unread_match_id']['task_id_dict']
 
+        # User 3 cannot check the notification of user 2
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        response = self.client.get('/users/3/notifications/', headers=headers)
+        response = self.client.get('/get_notifications/' + user_id_3, headers=headers)
+        self.assertEqual(response.status_code, 403)
+
+        # Check the Notification of user 3
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        response = self.client.get('/get_notifications/' + user_id_3, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response_3[-2]['name'], "unread request")
-        self.assertEqual(json_response_3[-2]['payload'], 0)
-        self.assertEqual(json_response_3[-1]['name'], "unread match id")
-        self.assertEqual(json_response_3[-1]['payload'], 1)
+        self.assertEqual(len(json_response_3['category']), 1)
+        self.assertEqual(len(json_response_3['category']['unread_match_id']['task_id_dict']), 1)
+        assert task_id in json_response_3['category']['unread_match_id']['task_id_dict']
 
         # 6. sponsor and assistors call update_match_id_notification() (in unread_match_id.py) and check updated notification (unread match id => 0)
         headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        data = json.dumps({'response_data': json_response_1})
-        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response_1 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response_1["unread match id"]['check_dict'][str(task_id)], 1)
-
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        data = json.dumps({'response_data': json_response_2})
-        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response_2 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response_2["unread match id"]['check_dict'][str(task_id)], 0)
-
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        data = json.dumps({'response_data': json_response_3})
-        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response_3 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response_3["unread match id"]['check_dict'][str(task_id)], 0)
-        
-        headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        response = self.client.get('/users/1/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response), 1)
-        self.assertEqual(json_response[-1]['name'], "unread match id")
-        self.assertEqual(json_response[-1]['payload'], 0)
-
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        response = self.client.get('/users/2/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response), 2)
-        self.assertEqual(json_response[-2]['name'], "unread request")
-        self.assertEqual(json_response[-2]['payload'], 0)
-        self.assertEqual(json_response[-1]['name'], "unread match id")
-        self.assertEqual(json_response[-1]['payload'], 0)
-
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        response = self.client.get('/users/3/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(len(json_response), 2)
-        self.assertEqual(json_response[-2]['name'], "unread request")
-        self.assertEqual(json_response[-2]['payload'], 0)
-        self.assertEqual(json_response[-1]['name'], "unread match id")
-        self.assertEqual(json_response[-1]['payload'], 0)
-
-        headers = self.get_token_auth_headers('unittest', 'Xie1@456')
         data = json.dumps({'task_id': task_id})
-        response = self.client.post('/users/1/match_id_file/', headers=headers, data=data)
+        response = self.client.post('/get_identifier_content/' + user_id_1, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
-        self.assertIsNotNone(json_response.get('assistor_random_id_pair'))
+        self.assertIsNotNone(json_response.get('assistor_random_id_to_identifier_content_dict'))
+
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set(["4","12","16","17"]))
-        self.assertEqual(set(json.loads(match_id_file_list[1])), set(["3","4","12"]))
+        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        user_random_id_1 = train_match_document['sponsor_information'][user_id_1]['sponsor_id_to_random_id']
+        user_random_id_2 = train_match_document['assistor_information'][user_id_2]['assistor_id_to_random_id']
+        user_random_id_3 = train_match_document['assistor_information'][user_id_3]['assistor_id_to_random_id']
+
+        assistor_random_id_to_identifier_content_dict = json_response['assistor_random_id_to_identifier_content_dict']
+        self.assertEqual(set(assistor_random_id_to_identifier_content_dict[user_random_id_2]), set([4, 12, 16, 17]))
+        self.assertEqual(set(assistor_random_id_to_identifier_content_dict[user_random_id_3]), set([3, 4, 12]))
 
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         data = json.dumps({'task_id': task_id})
-        response = self.client.post('/users/2/match_id_file/', headers=headers, data=data)
+        response = self.client.post('get_identifier_content/' + user_id_2, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
-        self.assertIsNotNone(json_response.get('sponsor_random_id'))
-        # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set(["4","12","16","17"]))
+        self.assertIsNotNone(json_response.get('sponsor_random_id_to_identifier_content_dict'))
+        sponsor_random_id_to_identifier_content_dict = json_response['sponsor_random_id_to_identifier_content_dict']
+        # test idendifier content
+        self.assertEqual(set(sponsor_random_id_to_identifier_content_dict[user_random_id_1]), set([4, 12, 16, 17]))
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
         data = json.dumps({'task_id': task_id})
-        response = self.client.post('/users/3/match_id_file/', headers=headers, data=data)
+        response = self.client.post('get_identifier_content/' + user_id_3, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
-        self.assertIsNotNone(json_response.get('sponsor_random_id'))
-        # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set(["3","4","12"]))
-
-        # 10. sponsor calls send_situation() (in send_situation.py)
-        # headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        # data = json.dumps({'task_id': task_id})
-        # response = self.client.post('/assistor_write_match_index_done/', headers=headers, data=data)
-        # self.assertEqual(response.status_code, 200)
-        # json_response = json.loads(response.get_data(as_text=True))
-        # self.assertEqual(json_response['assistor_write_match_index_done'], 'Assistors dont finish')
-
-        # headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        # data = json.dumps({'task_id': task_id})
-        # response = self.client.post('/assistor_write_match_index_done/', headers=headers, data=data)
-        # self.assertEqual(response.status_code, 200)
-        # json_response = json.loads(response.get_data(as_text=True))
-        # self.assertEqual(json_response['assistor_write_match_index_done'], 'Situation doesnt update')
+        self.assertIsNotNone(json_response.get('sponsor_random_id_to_identifier_content_dict'))
+        sponsor_random_id_to_identifier_content_dict = json_response['sponsor_random_id_to_identifier_content_dict']
+        # test idendifier content
+        self.assertEqual(set(sponsor_random_id_to_identifier_content_dict[user_random_id_1]), set([3, 4, 12]))
 
         headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        residual_list = [[[1,2,3], [4,5,6], [7,8,9]], [[1,2], [3,4]]]
-        data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
-        response = self.client.post('/send_situation/', headers=headers, data=data)
+        assistor_random_id_to_residual_dict = {}
+        assistor_random_id_to_residual_dict[user_random_id_2] = [[1,2,3], [4,5,6], [7,8,9]]
+        assistor_random_id_to_residual_dict[user_random_id_3] = [[1,2], [3,4]]
+        data = json.dumps({'assistor_random_id_to_residual_dict': assistor_random_id_to_residual_dict})
+        response = self.client.post('/send_situation/' + user_id_1, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.assistor_id != 1, Message.task_id == task_id, Message.rounds == 1, Message.test_indicator == "train").all()
-        self.assertEqual(len(queries), len(list_content))
-        for i in range(len(queries)):
-            self.assertEqual(queries[i].rounds, 1)
-            self.assertEqual(queries[i].sender_id, 1)
-            self.assertEqual(queries[i].assistor_id, list_content[i])
-            self.assertEqual(json.loads(queries[i].situation), residual_list[i])
-        
-        return task_id, list_content, assistor_random_id_list
+        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        situation_dict = train_message_document['rounds_1']['situation_dict']
+        self.assertEqual(len(situation_dict), 3)
+        for recipient_id in situation_dict:
+            situation_id = situation_dict[recipient_id]['situation_id']
+            train_message_situation_document = train_mongoDB.search_train_message_situation_document(situation_id=situation_id)
+            situation_content = train_message_situation_document['situation_content']
+            sender_id = train_message_situation_document['sender_id']
+            sender_random_id = train_message_situation_document['sender_random_id']
 
-    def unread_situation_two_users_helper(self, task_id, list_content, assistor_random_id_list, test_round, sponsor_stop, user2_stop, user3_stop):     
+            if recipient_id == user_id_2:
+                self.assertEqual(situation_content, [[1,2,3], [4,5,6], [7,8,9]])
+                self.assertEqual(sender_id, user_id_1)
+                self.assertEqual(sender_random_id, user_random_id_1)
+            elif recipient_id == user_id_3:
+                self.assertEqual(situation_content, [[1,2], [3,4]])
+                self.assertEqual(sender_id, user_id_1)
+                self.assertEqual(sender_random_id, user_random_id_1)
+        
+        return task_id, assistor_username_list, user_id_list
+
+    def unread_situation_two_users_helper(self, task_id, assistor_username_list, user_id_list, sponsor_stop, user2_stop, user3_stop):     
+
+        user_id_1 = user_id_list[0]
+        user_id_2 = user_id_list[1]
+        user_id_3 = user_id_list[2]
 
         # 11. sponsor and assistors check notification (unread situation => 1)
         headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        response = self.client.get('/users/1/notifications/', headers=headers)
+        response = self.client.get('/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_1 = json.loads(response.get_data(as_text=True))
-        print("********", json_response_1)
-        if sponsor_stop or user2_stop or user2_stop:
-            if test_round == 1:
-                self.assertEqual(len(json_response_1), 3)
-            else:
-                self.assertEqual(len(json_response_1), 4)
-            
-            self.assertEqual(json_response_1[-1]['name'], "unread train stop")
-        else:
-            if test_round == 1:
-                self.assertEqual(len(json_response_1), 2)
-            else:
-                self.assertEqual(len(json_response_1), 3)
- 
-            self.assertEqual(json_response_1[-1]['name'], "unread situation")
-            self.assertEqual(json_response_1[-1]['payload'], 1)
+        self.assertEqual(len(json_response_1['category']), 1)
+        self.assertEqual(len(json_response_1['category']['unread_situation']['task_id_dict']), 1)
+        assert task_id in json_response_1['category']['unread_situation']['task_id_dict']
 
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        response = self.client.get('/users/2/notifications/', headers=headers)
+        response = self.client.get('/get_notifications/' + user_id_2, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_2 = json.loads(response.get_data(as_text=True))
-        if user2_stop or sponsor_stop:
-            self.assertEqual(len(json_response_2), 4)
-            self.assertEqual(json_response_2[-2]['name'], "unread situation")
-            self.assertEqual(json_response_2[-2]['payload'], 1)
-            self.assertEqual(json_response_2[-1]['name'], "unread train stop")
-            self.assertEqual(json_response_2[-1]['payload'], 1)
-        else:
-            self.assertEqual(len(json_response_2), 3)
-            self.assertEqual(json_response_2[-1]['name'], "unread situation")
-            self.assertEqual(json_response_2[-1]['payload'], 1)
+        self.assertEqual(len(json_response_2['category']), 1)
+        self.assertEqual(len(json_response_2['category']['unread_situation']['task_id_dict']), 1)
+        assert task_id in json_response_2['category']['unread_situation']['task_id_dict']
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        response = self.client.get('/users/3/notifications/', headers=headers)
+        response = self.client.get('/get_notifications/' + user_id_3, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
-        if user3_stop or sponsor_stop:
-            self.assertEqual(len(json_response_3), 4)
-            self.assertEqual(json_response_3[-2]['name'], "unread situation")
-            self.assertEqual(json_response_3[-2]['payload'], 1)
-            self.assertEqual(json_response_3[-1]['name'], "unread train stop")
-            self.assertEqual(json_response_3[-1]['payload'], 1)
-        else:
-            self.assertEqual(len(json_response_3), 3)
-            self.assertEqual(json_response_3[-1]['name'], "unread situation")
-            self.assertEqual(json_response_3[-1]['payload'], 1)
+        self.assertEqual(len(json_response_3['category']), 1)
+        self.assertEqual(len(json_response_3['category']['unread_situation']['task_id_dict']), 1)
+        assert task_id in json_response_3['category']['unread_situation']['task_id_dict']
         
-        # 12. sponsor and assistors call update_situation_notification() (in unread_situation.py) and check updated notification (unread situation => 0)
-        headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        data = json.dumps({'response_data': json_response_1})
-        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        print("((", json_response)
-        if sponsor_stop:
-            self.assertEqual(len(json_response['unread situation']['check_dict']), 0)
-            self.assertEqual(len(json_response['unread situation']['rounds_dict']), 0)
-        else:
-            self.assertEqual(len(json_response['unread situation']['check_dict']), 1)
-            self.assertEqual(len(json_response['unread situation']['rounds_dict']), 1)
-            self.assertEqual(json_response['unread situation']['check_dict'][str(task_id)], 1)
-            self.assertEqual(json_response['unread situation']['rounds_dict'][str(task_id)], test_round)
-
-        if sponsor_stop:
-            self.assertEqual(len(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id]), 2)
-            self.assertEqual(len(json_response["unread train stop"]['most_recent_round'][task_id]), 2)
-            self.assertEqual(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id][0], 2)
-            self.assertEqual(json_response["unread train stop"]['most_recent_round'][task_id][0], test_round)
-            self.assertEqual(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id][1], 3)
-            self.assertEqual(json_response["unread train stop"]['most_recent_round'][task_id][1], test_round)
-        elif user2_stop:
-            self.assertEqual(len(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id]), 1)
-            self.assertEqual(len(json_response["unread train stop"]['most_recent_round'][task_id]), 1)
-            self.assertEqual(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id][0], 2)
-            self.assertEqual(json_response["unread train stop"]['most_recent_round'][task_id][0], test_round)
-        elif user3_stop:
-            self.assertEqual(len(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id]), 1)
-            self.assertEqual(len(json_response["unread train stop"]['most_recent_round'][task_id]), 1)
-            self.assertEqual(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id][0], 3)
-            self.assertEqual(json_response["unread train stop"]['most_recent_round'][task_id][0], test_round)
-
-
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        data = json.dumps({'response_data': json_response_2})
-        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        
-        # if sponsor_stop or user2_stop, the Message DB will not have record, thus length of dict is 0
-        if sponsor_stop or user2_stop:
-            self.assertEqual(len(json_response['unread situation']['check_dict']), 0)
-            self.assertEqual(len(json_response['unread situation']['rounds_dict']), 0)
-        else:
-            self.assertEqual(len(json_response['unread situation']['check_dict']), 1)
-            self.assertEqual(len(json_response['unread situation']['rounds_dict']), 1)
-            self.assertEqual(json_response['unread situation']['check_dict'][str(task_id)], 0)
-            self.assertEqual(json_response['unread situation']['rounds_dict'][str(task_id)], test_round)
-
-        if sponsor_stop or user2_stop:
-            self.assertEqual(len(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id]), 1)
-            self.assertEqual(len(json_response["unread train stop"]['most_recent_round'][task_id]), 1)
-            self.assertEqual(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id][0], 1)
-            self.assertEqual(json_response["unread train stop"]['most_recent_round'][task_id][0], test_round)
-
-
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        data = json.dumps({'response_data': json_response_3})
-        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        
-        if sponsor_stop or user3_stop:
-            self.assertEqual(len(json_response['unread situation']['check_dict']), 0)
-            self.assertEqual(len(json_response['unread situation']['rounds_dict']), 0)
-        else:
-            self.assertEqual(len(json_response['unread situation']['check_dict']), 1)
-            self.assertEqual(len(json_response['unread situation']['rounds_dict']), 1)
-            self.assertEqual(json_response['unread situation']['check_dict'][str(task_id)], 0)
-            self.assertEqual(json_response['unread situation']['rounds_dict'][str(task_id)], test_round)
-
-        if sponsor_stop or user3_stop:
-            self.assertEqual(len(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id]), 1)
-            self.assertEqual(len(json_response["unread train stop"]['most_recent_round'][task_id]), 1)
-            self.assertEqual(json_response["unread train stop"]['task_id_to_deleted_user_id'][task_id][0], 1)
-            self.assertEqual(json_response["unread train stop"]['most_recent_round'][task_id][0], test_round)
-
-
-        headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        response = self.client.get('/users/1/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        if sponsor_stop or user2_stop or user2_stop:
-            if test_round == 1:
-                self.assertEqual(len(json_response), 3)
-            else:
-                self.assertEqual(len(json_response), 4)
-            
-            self.assertEqual(json_response[-1]['name'], "unread train stop")
-        else:
-            if test_round == 1:
-                self.assertEqual(len(json_response), 2)
-            else:
-                self.assertEqual(len(json_response), 3)
- 
-            self.assertEqual(json_response[-1]['name'], "unread situation")
-            self.assertEqual(json_response[-1]['payload'], 0)
-
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        response = self.client.get('/users/2/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        if user2_stop or sponsor_stop:
-            self.assertEqual(len(json_response), 4)
-            self.assertEqual(json_response[-2]['name'], "unread situation")
-            self.assertEqual(json_response[-2]['payload'], 0)
-            self.assertEqual(json_response[-1]['name'], "unread train stop")
-            self.assertEqual(json_response[-1]['payload'], 0)
-        else:
-            self.assertEqual(len(json_response), 3)
-            self.assertEqual(json_response[-1]['name'], "unread situation")
-            self.assertEqual(json_response[-1]['payload'], 0)
-
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        response = self.client.get('/users/3/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        if user3_stop or sponsor_stop:
-            self.assertEqual(len(json_response), 4)
-            self.assertEqual(json_response[-2]['name'], "unread situation")
-            self.assertEqual(json_response[-2]['payload'], 0)
-            self.assertEqual(json_response[-1]['name'], "unread train stop")
-            self.assertEqual(json_response[-1]['payload'], 0)
-        else:
-            self.assertEqual(len(json_response), 3)
-            self.assertEqual(json_response[-1]['name'], "unread situation")
-            self.assertEqual(json_response[-1]['payload'], 0)
-
         # if sponsor_stop, everything of this round will be cleaned and we cant get into the Sponsor_situation_training_done() or send_output() function
-        if sponsor_stop:
-            return
+        # if sponsor_stop:
+        #     return
         
-        # 13. assistors call send_output() (in unread situation.py)
-        # headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        # data = json.dumps({'task_id': task_id})
-        # response = self.client.post('/Sponsor_situation_training_done/', headers=headers, data=data)
-        # self.assertEqual(response.status_code, 200)
-        # json_response = json.loads(response.get_data(as_text=True))
-        # self.assertEqual(json_response['Sponsor_situation_training_done'], "Assistors havent upload all output")
+        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        cur_rounds_num = train_message_document['cur_rounds_num']
+
+        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        sponsor_random_id = train_match_document['sponsor_information'][user_id_1]['sponsor_id_to_random_id']
+
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        data = json.dumps({'task_id': task_id, 'rounds': test_round})
-        response = self.client.post('/users/2/situation_file/', headers=headers, data=data)
+        data = json.dumps({'task_id': task_id, 'rounds': cur_rounds_num})
+        response = self.client.post('/get_situation_content/' + user_id_2, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
+        json_response_2 = json.loads(response.get_data(as_text=True))
+        situation_content = json_response_2['situation_content']
+        sender_random_id = json_response_2['sender_random_id']
+        self.assertEqual(situation_content, [[1,2,3], [4,5,6], [7,8,9]])
+        self.assertEqual(sender_random_id, sponsor_random_id)
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        data = json.dumps({'task_id': task_id, 'rounds': test_round})
-        response = self.client.post('/users/3/situation_file/', headers=headers, data=data)
+        data = json.dumps({'task_id': task_id, 'rounds': cur_rounds_num})
+        response = self.client.post('/get_situation_content/' + user_id_3, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
-
-        if not user2_stop and not user3_stop:
-            headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-            output_content = [[3,321,6], [88,5,6], [7,99,9]]
-            data = json.dumps({'output': output_content, 'rounds': test_round, 'task_id': task_id})
-            response = self.client.post('/send_output/', headers=headers, data=data)
-            self.assertEqual(response.status_code, 200)
-            json_response = json.loads(response.get_data(as_text=True))
-            # self.assertEqual(json_response['send_output'], "Assistors havent upload all outputs")
-            self.assertEqual(json_response['send_output'], "send output successfully")
-            queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
-            self.assertEqual(len(queries), 2)
-            self.assertEqual(queries[-1].sender_id, 2)
-            self.assertEqual(json.loads(queries[-1].output), [[3,321,6], [88,5,6], [7,99,9]])
-
-            headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-            output_content = [[6,321,6], [88,5,6], [7,87.6,9]]
-            data = json.dumps({'output': output_content, 'rounds': test_round, 'task_id': task_id})
-            response = self.client.post('/send_output/', headers=headers, data=data)
-            self.assertEqual(response.status_code, 200)
-            json_response = json.loads(response.get_data(as_text=True))
-            self.assertEqual(json_response['send_output'], "send output successfully")
-            queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
-            self.assertEqual(len(queries), 3)
-            self.assertEqual(queries[-1].sender_id, 3)
-            self.assertEqual(json.loads(queries[-1].output), [[6,321,6], [88,5,6], [7,87.6,9]])
-        
-        if user2_stop:
-            headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-            output_content = [[6,321,6], [88,5,6], [7,87.6,9]]
-            data = json.dumps({'output': output_content, 'rounds': test_round, 'task_id': task_id})
-            response = self.client.post('/send_output/', headers=headers, data=data)
-            self.assertEqual(response.status_code, 200)
-            json_response = json.loads(response.get_data(as_text=True))
-            self.assertEqual(json_response['send_output'], "send output successfully")
-            queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
-            self.assertEqual(len(queries), 2)
-            self.assertEqual(queries[-1].sender_id, 3)
-            self.assertEqual(json.loads(queries[-1].output), [[6,321,6], [88,5,6], [7,87.6,9]])
-            
-        if user3_stop:
-            headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-            output_content = [[3,321,6], [88,5,6], [7,99,9]]
-            data = json.dumps({'output': output_content, 'rounds': test_round, 'task_id': task_id})
-            response = self.client.post('/send_output/', headers=headers, data=data)
-            self.assertEqual(response.status_code, 200)
-            json_response = json.loads(response.get_data(as_text=True))
-            self.assertEqual(json_response['send_output'], "send output successfully")
-            queries = Message.query.filter(Message.assistor_id == 1, Message.task_id == task_id, Message.rounds == test_round, Message.test_indicator == "train").all()
-            self.assertEqual(len(queries), 2)
-            self.assertEqual(queries[-1].sender_id, 2)
-            self.assertEqual(json.loads(queries[-1].output), [[3,321,6], [88,5,6], [7,99,9]])
+        json_response_3 = json.loads(response.get_data(as_text=True))
+        situation_content = json_response_3['situation_content']
+        sender_random_id = json_response_3['sender_random_id']
+        self.assertEqual(situation_content, [[1,2], [3,4]])
+        self.assertEqual(sender_random_id, sponsor_random_id)
 
 
-    def unread_output_two_users_helper(self, task_id, list_content, assistor_random_id_list, test_round, sponsor_stop, user2_stop, user3_stop):
+        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
+        output_content = [[3,321,6], [88,5,6], [7,99,9]]
+        data = json.dumps({'task_id': task_id, 'output': output_content})
+        response = self.client.post('/send_output/' + user_id_2, headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['send_output'], "send output successfully")
+
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        output_content = [[6,321,6], [88,5,6], [7,87.6,9]]
+        data = json.dumps({'task_id': task_id, 'output': output_content})
+        response = self.client.post('/send_output/' + user_id_3, headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['send_output'], "send output successfully")
+
+        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        output_dict = train_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
+
+        output_id = output_dict[user_id_2]
+        output_content = train_mongoDB.search_train_message_output_document(output_id=output_id)
+        self.assertEqual(output_content, [[3,321,6], [88,5,6], [7,99,9]])
+
+        output_id = output_dict[user_id_3]
+        output_content = train_mongoDB.search_train_message_output_document(output_id=output_id)
+        self.assertEqual(output_content, [[6,321,6], [88,5,6], [7,87.6,9]])
+
+    def unread_output_two_users_helper(self, task_id, assistor_username_list, user_id_list, sponsor_stop, user2_stop, user3_stop):
+
+        user_id_1 = user_id_list[0]
+        user_id_2 = user_id_list[1]
+        user_id_3 = user_id_list[2]
+
+        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        cur_rounds_num = train_message_document['cur_rounds_num']
 
         # 14. sponsor check notification (unread output => 1)
         headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        response = self.client.get('/users/1/notifications/', headers=headers)
+        response = self.client.get('/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        print("json_response", json_response, test_round, sponsor_stop, user2_stop, user3_stop)
-        if sponsor_stop:
-            self.assertEqual(len(json_response), 4)
-            self.assertEqual(json_response[-3]['name'], "unread situation")
-            self.assertEqual(json_response[-3]['payload'], 0)
-            self.assertEqual(json_response[-2]['name'], "unread output")
-            self.assertEqual(json_response[-2]['payload'], 2)
-            self.assertEqual(json_response[-1]['name'], "unread train stop")
-            self.assertEqual(json_response[-1]['payload'], 2)
-        elif user2_stop or user3_stop:
-            self.assertEqual(len(json_response), 4)
-            self.assertEqual(json_response[-3]['name'], "unread situation")
-            self.assertEqual(json_response[-3]['payload'], 0)
-            self.assertEqual(json_response[-2]['name'], "unread output")
-            self.assertEqual(json_response[-2]['payload'], 2)
-            self.assertEqual(json_response[-1]['name'], "unread train stop")
-            self.assertEqual(json_response[-1]['payload'], 1)
-        else:
-            self.assertEqual(len(json_response), 3)
-            self.assertEqual(json_response[-2]['name'], "unread situation")
-            self.assertEqual(json_response[-2]['payload'], 0)
-            self.assertEqual(json_response[-1]['name'], "unread output")
-            self.assertEqual(json_response[-1]['payload'], 2)
-
-        # 15. sponsor calls: update_output_notification() (in unread_output.py) and check updated notification (unread output => 0)
-        data = json.dumps({'response_data': json_response})
-        response = self.client.post('/update_all_notifications/', headers=headers, data=data)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        # check rounds
-        print("))", json_response)
-        if sponsor_stop:
-            self.assertEqual(len(json_response["unread output"]['rounds_dict']), 0)
-        else:
-            self.assertEqual(json_response["unread output"]['rounds_dict'][str(task_id)], test_round)
-
-        response = self.client.get('/users/1/notifications/', headers=headers)
-        self.assertEqual(response.status_code, 200)
-        json_response = json.loads(response.get_data(as_text=True))
-        if sponsor_stop or user2_stop or user3_stop:
-            self.assertEqual(len(json_response), 4)
-            self.assertEqual(json_response[-3]['name'], "unread situation")
-            self.assertEqual(json_response[-3]['payload'], 0)
-            self.assertEqual(json_response[-2]['name'], "unread output")
-            self.assertEqual(json_response[-2]['payload'], 0)
-            self.assertEqual(json_response[-1]['name'], "unread train stop")
-            self.assertEqual(json_response[-1]['payload'], 0)
-        else:
-            self.assertEqual(len(json_response), 3)
-            self.assertEqual(json_response[-2]['name'], "unread situation")
-            self.assertEqual(json_response[-2]['payload'], 0)
-            self.assertEqual(json_response[-1]['name'], "unread output")
-            self.assertEqual(json_response[-1]['payload'], 0)
+        json_response_1 = json.loads(response.get_data(as_text=True))
+        self.assertEqual(len(json_response_1['category']), 1)
+        self.assertEqual(len(json_response_1['category']['unread_output']['task_id_dict']), 1)
+        assert task_id in json_response_1['category']['unread_output']['task_id_dict']
+        
 
         # 16. sponsor calls: get_user_output() (in unread_output.py), gets output files
-        data = json.dumps({'task_id': task_id, 'rounds': test_round})
-        response = self.client.post('/users/1/output/', headers=headers, data=data)
+        data = json.dumps({'task_id': task_id, 'rounds': cur_rounds_num})
+        response = self.client.post('/get_output_content/' + user_id_1, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        print("zzzzz", json_response)
-        if sponsor_stop:
-            self.assertEqual(len(json_response['output']), 0)
-            return
-        elif user2_stop or user3_stop:
-            self.assertEqual(len(json_response['output']), 1)
-        else:
-            self.assertEqual(len(json_response['output']), 2)
+        assert 'assistor_random_id_to_output_content_dict' in json_response
 
-        if not user2_stop and not user3_stop:
-            self.assertEqual(json.loads(json_response['output'][0]), [[3,321,6], [88,5,6], [7,99,9]])
-            self.assertEqual(json.loads(json_response['output'][1]), [[6,321,6], [88,5,6], [7,87.6,9]])
-        elif user2_stop:
-            self.assertEqual(json.loads(json_response['output'][0]), [[6,321,6], [88,5,6], [7,87.6,9]])
-        elif user3_stop:
-            self.assertEqual(json.loads(json_response['output'][0]), [[3,321,6], [88,5,6], [7,99,9]])
+        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        assistor_random_id_mapping = train_match_document['assistor_random_id_mapping']
 
+        for assistor_random_id, output_content in assistor_random_id_mapping.items():
+
+            assistor_id = assistor_random_id_mapping[assistor_random_id]
+            if assistor_id == user_id_2:
+                self.assertEqual(output_content, [[3,321,6], [88,5,6], [7,99,9]])
+            elif assistor_id == user_id_3:
+                self.assertEqual(output_content, [[6,321,6], [88,5,6], [7,87.6,9]])
+
+        sponsor_information = train_match_document['sponsor_information']
+        assistor_information = train_match_document['assistor_information']
+        user_random_id_1 = sponsor_information[user_id_1]['sponsor_id_to_random_id']
+        user_random_id_2 = assistor_information[user_id_2]['assistor_id_to_random_id']
+        user_random_id_3 = assistor_information[user_id_3]['assistor_id_to_random_id']
+
+        assistor_random_id_to_residual_dict = {}
+        assistor_random_id_to_residual_dict[user_random_id_2] = [[1,2]]
+        assistor_random_id_to_residual_dict[user_random_id_3] = [[1,2,3], [4,5,6]]
 
         # 17. sponsor calls: send_situation(), goes into new round 
         headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        residual_list = [[[1,2,3], [4,5,6]], [[1,2]]]
-        data = json.dumps({'residual_list': residual_list, 'task_id': task_id, "assistor_random_id_list": assistor_random_id_list})
-        response = self.client.post('/send_situation/', headers=headers, data=data)
+        data = json.dumps({'task_id': task_id, "assistor_random_id_to_residual_dict": assistor_random_id_to_residual_dict})
+        response = self.client.post('/send_situation/' + user_id_1, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        queries = Message.query.filter(Message.assistor_id != 1, Message.task_id == task_id, Message.rounds == test_round+1, Message.test_indicator == "train").all()
-        if not user2_stop and not user3_stop:
-            self.assertEqual(len(queries), len(list_content))
-            for i in range(len(queries)):
-                self.assertEqual(queries[i].rounds, test_round+1)
-                self.assertEqual(queries[i].sender_id, 1)
-                self.assertEqual(queries[i].assistor_id, list_content[i])
-                self.assertEqual(json.loads(queries[i].situation), residual_list[i])
-        elif user2_stop:
-            self.assertEqual(len(queries), len(list_content)-1)
-            for i in range(len(queries)):
-                self.assertEqual(queries[i].rounds, test_round+1)
-                self.assertEqual(queries[i].sender_id, 1)
-                self.assertEqual(json.loads(queries[i].situation), residual_list[1])
-        elif user3_stop:
-            self.assertEqual(len(queries), len(list_content)-1)
-            for i in range(len(queries)):
-                self.assertEqual(queries[i].rounds, test_round+1)
-                self.assertEqual(queries[i].sender_id, 1)
-                self.assertEqual(json.loads(queries[i].situation), residual_list[0])
+        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        situation_dict = train_message_document['rounds_' + str(cur_rounds_num)]['situation_dict']
+        self.assertEqual(len(situation_dict), 3)
+        for recipient_id in situation_dict:
+            situation_id = situation_dict[recipient_id]['situation_id']
+            train_message_situation_document = train_mongoDB.search_train_message_situation_document(situation_id=situation_id)
+            situation_content = train_message_situation_document['situation_content']
+            sender_id = train_message_situation_document['sender_id']
+            sender_random_id = train_message_situation_document['sender_random_id']
 
+            if recipient_id == user_id_2:
+                self.assertEqual(situation_content, [[1,2]])
+                self.assertEqual(sender_id, user_id_1)
+                self.assertEqual(sender_random_id, user_random_id_1)
+            elif recipient_id == user_id_3:
+                self.assertEqual(situation_content, [[1,2], [3,4]])
+                self.assertEqual(sender_id, user_id_1)
+                self.assertEqual(sender_random_id, user_random_id_1)
     
 
     def unread_match_id_two_users_helper_without_send_situation(self, task_id, list_content, assistor_random_id_list):
@@ -868,37 +621,37 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         headers = self.get_token_auth_headers('unittest', 'Xie1@456')
         data = json.dumps({'task_id': task_id})
-        response = self.client.post('/users/1/match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/1/identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
+        self.assertIsNotNone(json_response.get('identifier_content'))
         self.assertIsNotNone(json_response.get('assistor_random_id_pair'))
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set(["4","12","16","17"]))
-        self.assertEqual(set(json.loads(match_id_file_list[1])), set(["3","4","12"]))
+        identifier_content_list = json_response['identifier_content']
+        self.assertEqual(set(json.loads(identifier_content_list[0])), set(["4","12","16","17"]))
+        self.assertEqual(set(json.loads(identifier_content_list[1])), set(["3","4","12"]))
 
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         data = json.dumps({'task_id': task_id})
-        response = self.client.post('/users/2/match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/2/identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
+        self.assertIsNotNone(json_response.get('identifier_content'))
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set(["4","12","16","17"]))
+        identifier_content_list = json_response['identifier_content']
+        self.assertEqual(set(json.loads(identifier_content_list[0])), set(["4","12","16","17"]))
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
         data = json.dumps({'task_id': task_id})
-        response = self.client.post('/users/3/match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/3/identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
+        self.assertIsNotNone(json_response.get('identifier_content'))
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set(["3","4","12"]))
+        identifier_content_list = json_response['identifier_content']
+        self.assertEqual(set(json.loads(identifier_content_list[0])), set(["3","4","12"]))
 
         # 10. sponsor calls send_situation() (in send_situation.py)
         # headers = self.get_token_auth_headers('unittest3', 'Xie1@456')

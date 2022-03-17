@@ -14,7 +14,7 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
 
-@main.route('/stop_train_task/<int:id>', methods=['POST'])
+@main.route('/stop_train_task/<string:id>', methods=['POST'])
 @token_auth.login_required
 def stop_train_task(id):
 
@@ -142,7 +142,7 @@ def stop_train_task(id):
 
 
 
-@main.route('/stop_test_task/<int:id>', methods=['POST'])
+@main.route('/stop_test_task/<string:id>', methods=['POST'])
 @token_auth.login_required
 def stop_test_task(id):
     

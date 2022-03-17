@@ -15,7 +15,7 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 from Items.main.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 
-@main.route('/get_output_content/<int:id>', methods=['POST'])
+@main.route('/get_output_content/<string:id>', methods=['POST'])
 @token_auth.login_required
 def get_output_content(id):
 
@@ -60,7 +60,7 @@ def get_output_content(id):
     train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
     output_dict = train_message_document['rounds_' + str(rounds)]['output_dict']
 
-    sender_random_id_to_output_content_dict = {}
+    assistor_random_id_to_output_content_dict = {}
     for assistor_id in output_dict:
         output_id = output_dict[assistor_id]
         train_message_output_document = train_mongoDB.search_train_message_output_document(output_id=output_id)
@@ -68,16 +68,16 @@ def get_output_content(id):
         output_content = train_message_output_document['output_content']
         sender_random_id = train_message_output_document['sender_random_id']
 
-        sender_random_id_to_output_content_dict[sender_random_id] = output_content
+        assistor_random_id_to_output_content_dict[sender_random_id] = output_content
 
     log(generate_msg('5.2:"', 'sponsor get_user_output done'), user_id, task_id)
 
     return jsonify({
-                'sender_random_id_to_output_content_dict': sender_random_id_to_output_content_dict
+                'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict
             })  
 
 
-@main.route('/get_test_output_content/<int:id>', methods=['POST'])
+@main.route('/get_test_output_content/<string:id>', methods=['POST'])
 @token_auth.login_required
 def get_test_output_content(id):
 

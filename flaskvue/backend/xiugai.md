@@ -1,4 +1,4 @@
-1. unread_match_id.py中, '/users/<int:id>/match_id_file/' 返回值修改
+1. unread_match_id.py中, '/users/<string:id>/identifier_content/' 返回值修改
 
 2. unread_output.py中, get_user_test_output() 访问路径修改
    - send_situation中, 传输数据从residual_list修改为:     assistor_random_id_to_residual_dict:{
@@ -37,4 +37,4 @@
 
 11. match_assistor_id中的传入名称: file => identifier_content
 
-12. 没有id的url加上<int:id>
+12. 没有id的url加上<string:id>

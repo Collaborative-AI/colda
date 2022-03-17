@@ -22,7 +22,7 @@ from Items.main.auth import token_auth
 from Items.main.utils import obtain_user_id_from_token, obtain_unique_id
 from Items.main.utils import verify_token_user_id_and_function_caller_id
 
-@main.route('/get_situation_content/<int:id>', methods=['POST'])
+@main.route('/get_situation_content/<string:id>', methods=['POST'])
 @token_auth.login_required
 def get_situation_content(id):
 
@@ -87,7 +87,7 @@ def get_situation_content(id):
     }
     return jsonify(response)  
 
-@main.route('/send_output/<int:id>', methods=['POST'])
+@main.route('/send_output/<string:id>', methods=['POST'])
 @token_auth.login_required
 def send_output():
 

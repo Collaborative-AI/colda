@@ -15,7 +15,7 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 from Items.main.utils import log, generate_msg
 
-@main.route('/get_user_history/<int:id>', methods=['GET'])
+@main.route('/get_user_history/<string:id>', methods=['GET'])
 @token_auth.login_required
 def get_user_history(id):
 
@@ -48,7 +48,7 @@ def get_user_history(id):
     print("d")
     return jsonify(participated_task)
 
-@main.route('/check_sponsor/<int:id>', methods=['POST'])
+@main.route('/check_sponsor/<string:id>', methods=['POST'])
 @token_auth.login_required
 def check_sponsor(id):
 
@@ -81,7 +81,7 @@ def check_sponsor(id):
     return jsonify(dict)
 
 
-@main.route('/get_test_history_id/<int:id>', methods=['POST'])
+@main.route('/get_test_history_id/<string:id>', methods=['POST'])
 @token_auth.login_required
 def get_test_history_id(id):
 

@@ -255,25 +255,25 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(json_response3[-1]['name'], "unread test match id")
         self.assertEqual(json_response3[-1]['payload'], 1)
 
-        # check get test_match_id_file
+        # check get test_identifier_content
         headers = self.get_token_auth_headers('unittest', 'Xie1@456')
         data = json.dumps({'test_id': test_id, 'task_id': task_id})
-        response = self.client.post('/users/1/test_match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/1/test_identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response4 = json.loads(response.get_data(as_text=True))
-        self.assertEqual(set(json.loads(json_response4['match_id_file'][0])), set(['4']))
-        self.assertEqual(set(json.loads(json_response4['match_id_file'][1])), set(['8','4']))
+        self.assertEqual(set(json.loads(json_response4['identifier_content'][0])), set(['4']))
+        self.assertEqual(set(json.loads(json_response4['identifier_content'][1])), set(['8','4']))
 
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         data = json.dumps({'test_id': test_id, 'task_id': task_id})
-        response = self.client.post('/users/2/test_match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/2/test_identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response4 = json.loads(response.get_data(as_text=True))
 
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
         data = json.dumps({'test_id': test_id, 'task_id': task_id})
-        response = self.client.post('/users/3/test_match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/3/test_identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response4 = json.loads(response.get_data(as_text=True))
 

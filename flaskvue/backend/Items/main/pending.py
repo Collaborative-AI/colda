@@ -18,7 +18,7 @@ from Items.main.auth import token_auth
 from Items.main.utils import log, generate_msg, obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 
-@main.route('/add_train_pending/<int:id>', methods=['POST'])
+@main.route('/add_train_pending/<string:id>', methods=['POST'])
 @token_auth.login_required
 def add_train_pending(id):
 
@@ -53,7 +53,7 @@ def add_train_pending(id):
     response = {'message': 'add train pending successfully'}
     return jsonify(response)
 
-@main.route('/add_test_pending/<int:id>', methods=['POST'])
+@main.route('/add_test_pending/<string:id>', methods=['POST'])
 @token_auth.login_required
 def add_test_pending(id):
     """
@@ -88,7 +88,7 @@ def add_test_pending(id):
     return jsonify(response)
 
 
-@main.route('/get_all_pending/<int:id>', methods=['GET'])
+@main.route('/get_all_pending/<string:id>', methods=['GET'])
 @token_auth.login_required
 def get_all_pending(id):
     """

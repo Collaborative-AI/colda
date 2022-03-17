@@ -49,15 +49,15 @@ def get_output_content(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
 
+    task_id = data.get('task_id')
+    rounds = data.get('rounds')
+    sponsor_id = user_id
+
     # if caller is not sponsor, it should not enter this function
     task_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
     sponsor_id = task_match_document['sponsor_information']['sponsor_id']
     if sponsor_id != user_id:
         return error_response(403)
-
-    task_id = data.get('task_id')
-    rounds = data.get('rounds')
-    sponsor_id = user_id
 
     log(generate_msg('---- unread situation begins'), user_id, task_id)
     log(generate_msg('---- unread situation done (no function pass server)\n'), user_id, task_id)
@@ -69,7 +69,7 @@ def get_output_content(id):
 
     assistor_random_id_to_output_content_dict = {}
     for assistor_id in output_dict:
-        output_id = output_dict[assistor_id]
+        output_id = output_dict[assistor_id]['output_id']
         train_message_output_document = train_mongoDB.search_train_message_output_document(output_id=output_id)
 
         output_content = train_message_output_document['output_content']
@@ -129,23 +129,23 @@ def get_test_output_content(id):
     task_id = data.get('task_id')
     sponsor_id = user_id
 
-    log(generate_msg('---- unread test output begins'), g.current_user.id, task_id, test_id)
-    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), g.current_user.id, task_id, test_id)
+    log(generate_msg('---- unread test output begins'), user_id, task_id, test_id)
+    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), user_id, task_id, test_id)
 
     test_message_document = test_mongoDB.search_test_message_document(test_id=test_id)
     output_dict = test_message_document['rounds_1']['output_dict']
 
     assistor_random_id_to_output_content_dict = {}
     for assistor_id in output_dict:
-        output_id = output_dict[assistor_id]
+        output_id = output_dict[assistor_id]['output_id']
         test_message_output_document = test_mongoDB.search_test_message_output_document(output_id=output_id)
 
         output_content = test_message_output_document['output_content']
         sender_random_id = test_message_output_document['sender_random_id']
         assistor_random_id_to_output_content_dict[sender_random_id] = output_content
 
-    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output done'), g.current_user.id, task_id, test_id)
-    log(generate_msg('--------------------unread test output done\n'), g.current_user.id, task_id, test_id)
+    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output done'), user_id, task_id, test_id)
+    log(generate_msg('--------------------unread test output done\n'), user_id, task_id, test_id)
 
     response = {
         'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict

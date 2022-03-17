@@ -72,7 +72,8 @@ def get_situation_content(id):
 
     # obtain some information from Train_Message table using specific key, such as rounds_1, rounds_2
     train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
-    situation_id = train_message_document['rounds_' + str(rounds)][user_id]['situation']
+    print('rounds', rounds, user_id)
+    situation_id = train_message_document['rounds_' + str(rounds)]['situation_dict'][user_id]['situation_id']
 
     # obtain situation file from Train_Message_Situation table
     train_message_situation_document = train_mongoDB.search_train_message_situation_document(situation_id=situation_id)
@@ -89,7 +90,7 @@ def get_situation_content(id):
 
 @main.route('/send_output/<string:id>', methods=['POST'])
 @token_auth.login_required
-def send_output():
+def send_output(id):
 
     """
     1. Assistors send outputs in this function to sponsor. Only when all the assistors in current train task upload
@@ -139,8 +140,10 @@ def send_output():
     cur_rounds_num = train_message_document['cur_rounds_num']
 
     output_id = obtain_unique_id()
-    pyMongo.db.Train_Message.update_one({'task_id': task_id}, {'$set':{'rounds_' + str(cur_rounds_num) + '.output_dict.' + assistor_id: output_id}})
-
+    pyMongo.db.Train_Message.update_one({'task_id': task_id}, {'$set':
+        {'rounds_' + str(cur_rounds_num) + '.output_dict.' + assistor_id + '.output_id': output_id
+    }})
+    print('output_content', output_content, user_id)
     train_mongoDB.create_train_message_output_document(output_id=output_id, sender_id=assistor_id,
                                                        sender_random_id=assistor_random_id, recipient_id=sponsor_id,
                                                        output_content=output_content)
@@ -151,16 +154,22 @@ def send_output():
 
     # check how many assistors have uploaded their output 
     # if the number of output surpasses the ramin_assistor_num, we can send notifications
+    train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
     output_dict = train_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
     if len(output_dict) >= remain_assistor_num:
         train_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_output', 
                                                    task_id=task_id, sender_random_id=assistor_random_id, 
                                                    role='sponsor', cur_rounds_num=cur_rounds_num)
-
-    log(generate_msg('4.5:"', 'assistor send_output done'), user_id, task_id)
+        log(generate_msg('4.5:"', 'assistor uploads all output'), user_id, task_id)
+    else:
+        log(generate_msg('4.5:"', 'assistor send_output done'), user_id, task_id)
+    
     log(generate_msg('---- unread situation done\n'), user_id, task_id)
 
-    return jsonify({"send_output": "send output successfully"})
+    response = {
+        "send_output": "send output successfully"
+    }
+    return jsonify(response)
 
 
     

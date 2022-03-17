@@ -75,7 +75,7 @@ class train_mongoDB():
             pyMongo.db.Notification.insert_one({'user_id': user_id})
 
         base_key = 'category' + '.' + notification_name + '.' + 'task_id_dict' + '.' + task_id 
-        print('base_key', base_key)
+        # print('base_key', base_key)
         return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
             base_key + '.sender_random_id': sender_random_id,
             base_key + '.role': role,

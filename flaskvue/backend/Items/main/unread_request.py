@@ -24,7 +24,7 @@ from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 
 @main.route('/match_identifier_content/<string:id>', methods=['POST'])
 @token_auth.login_required
-def match_identifier_content():
+def match_identifier_content(id):
 
     """
     Match the identifier of sponsor and assistor
@@ -123,7 +123,7 @@ def match_identifier_content():
 
 @main.route('/match_test_identifier_content/<string:id>', methods=['POST'])
 @token_auth.login_required
-def match_test_identifier_content():
+def match_test_identifier_content(id):
 
     """
     Match the identifier of sponsor and assistor for test task

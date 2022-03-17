@@ -19,6 +19,8 @@ from Items.main.errors import error_response, bad_request
 from Items.main.utils import obtain_user_id_from_token, add_new_token_to_response
 from Items.main.utils import verify_token_user_id_and_function_caller_id
 from Items.main.auth import token_auth
+from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
+
 
 @main.route('/get_notifications/<string:id>/', methods=['GET'])
 @token_auth.login_required
@@ -43,6 +45,15 @@ def get_notifications(id):
         return error_response(403)
 
     notification_document = pyMongo.db.Notification.find_one({'user_id': user_id})
+    # print('notification_document', notification_document, user_id)
+    if notification_document is None:
+        response = {
+            'notification_result': {
+                'category': {}
+            }
+        }
+        return jsonify(response)
+
     category = notification_document['category']
 
     # If there is no new notification return a null dict
@@ -56,9 +67,11 @@ def get_notifications(id):
 
     # If there is new notification, return the notification document and set the category to {}
     notification_document = pyMongo.db.Notification.find_one_and_update({'user_id': user_id}, {'$set':{'category': {}}})
+    del notification_document['_id']
     response = {
         'notification_result': copy.deepcopy(notification_document)
     }
+    # print('notification_response', response)
     return jsonify(response)
 
     # return_dict = {

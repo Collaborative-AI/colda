@@ -91,6 +91,7 @@ def get_identifier_content(id):
         log(generate_msg('3.2:', 'get_user_match_id done'), user_id, task_id)
     else:
         sponsor_random_id_to_identifier_content_dict = {}
+        assistor_id = user_id
         assistor_information = train_match_document['assistor_information']
         sponsor_information = train_match_document['sponsor_information']
 
@@ -183,6 +184,7 @@ def get_test_identifier_content(id):
         log(generate_msg('Test 3.2:', 'get_user_test_match_id done'), user_id, task_id, test_id)
     else:
         sponsor_random_id_to_identifier_content_dict = {}
+        assistor_id = user_id
         assistor_information = test_match_document['assistor_information']
         sponsor_information = test_match_document['sponsor_information']
 
@@ -259,6 +261,7 @@ def send_situation(id):
     for assistor_random_id, residual in assistor_random_id_to_residual_dict.items():
 
         assistor_id = asssistor_random_id_mapping[assistor_random_id]
+        print('send situation assistor_id', assistor_id)
         if assistor_id in assistor_terminate_id_dict:
             continue
         
@@ -272,8 +275,8 @@ def send_situation(id):
 
         # assistor add train_message_situation to Train_Message_Situation Table
         train_mongoDB.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
-                                                           sender_random_id=sponsor_random_id, recipient_id=assistor_id, 
-                                                           situation_content=residual)
+                                                              sender_random_id=sponsor_random_id, recipient_id=assistor_id, 
+                                                              situation_content=residual)
 
     # sponsor also sends information to itself to trigger next stage
     situation_id = obtain_unique_id()
@@ -282,15 +285,15 @@ def send_situation(id):
     }
 
     train_mongoDB.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
-                                                       sender_random_id=sponsor_random_id, recipient_id=sponsor_id, 
-                                                       situation_content=None)
+                                                          sender_random_id=sponsor_random_id, recipient_id=sponsor_id, 
+                                                          situation_content=None)
 
     if cur_rounds_num == 1:
         train_mongoDB.create_train_message_document(task_id=task_id, cur_rounds_num=cur_rounds_num, situation_dict=situation_dict)
     elif cur_rounds_num > 1:
         pyMongo.db.Train_Message.update_one({'task_id': task_id}, {'$set':{
             'cur_rounds_num': cur_rounds_num,
-            'rounds_' + str(cur_rounds_num).situation_dict: situation_dict
+            'rounds_' + str(cur_rounds_num) + '.situation_dict': situation_dict
         }})
 
     # send unread_situation notification to all assistors in this train task 
@@ -316,7 +319,10 @@ def send_situation(id):
         log(generate_msg('5.5:"', 'sponsor add unread situation to sponsor done'), user_id, task_id)
         log(generate_msg('------------------------ unread output done\n'), user_id, task_id)
 
-    return jsonify({"message": "send situation successfully!"})
+    response = {
+        "message": "send situation successfully!"
+    }
+    return jsonify(response)
 
 
 @main.route('/send_test_output/<string:id>', methods=['POST'])
@@ -364,65 +370,39 @@ def send_test_output(id):
 
     log(generate_msg('Test 3.3:"', 'assistor send_test_output start'), g.current_user.id, task_id, test_id)
 
-    find_sponsor_query = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").first()
-    sponsor = find_sponsor_query.sponsor_id
+    test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+    total_assistor_num = test_match_document['total_assistor_num']
+    sponsor_id = test_match_document['sponsor_information']['sponsor_id']
+    assistor_random_id = test_match_document['assistor_information'][assistor_id]['assistor_id_to_random_id']
+    assistor_terminate_id_dict = test_match_document['assistor_terminate_id_dict']
 
-    # extract sponsor_id
-    queries = Matched.query.filter(Matched.assistor_id_pair != sponsor, Matched.test_id == test_id, Matched.test_indicator == "test", Matched.Terminate == "false").all()
-    assistor_num = len(queries)
+    cur_rounds_num = 1
 
-    current_user_test_situation = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
-    if current_user_test_situation.Terminate == "false":
-        user = User.query.get_or_404(g.current_user.id)
-        task_id = queries[0].task_id
+    output_id = obtain_unique_id()
+    pyMongo.db.Test_Message.update_one({'test_id': test_id}, {'$set':{
+        'rounds_' + str(cur_rounds_num) + '.output_dict.' + assistor_id: output_id
+    }})
 
-        message = Message()
-        message.from_dict(data)
-        message.sender_id = g.current_user.id
-        message.assistor_id = queries[0].sponsor_id
-        message.task_id = task_id
+    test_mongoDB.create_test_message_output_document(output_id=output_id, sender_id=assistor_id,
+                                                     sender_random_id=assistor_random_id, recipient_id=sponsor_id,
+                                                     output_content=output_content)
 
-        # Store the output
-        message.output = json.dumps(output)
-        message.test_indicator = "test"
-        message.test_id = test_id
+    # check how many assistors are still participate in this train task
+    remain_assistor_num = total_assistor_num - len(assistor_terminate_id_dict)
 
-        for i in range(len(queries)):
-            if int(queries[i].assistor_id_pair) == g.current_user.id:
-                print("----------queries[i].assistor_random_id_pair", queries[i].assistor_random_id_pair)
-                print("----------queries[i].assistor_id_pair", queries[i].assistor_id_pair)
-                print("----------queries[i].sponsor_id", queries[i].sponsor_id)
-                print("----------queries[i].sponsor_random_id", queries[i].sponsor_random_id)
-                print("----------queries[i].sponsor_random_id", queries[i].test_id, queries[i].task_id)
-                # print("----------queries[i].output", queries[i].output)
-                message.sender_random_id = queries[i].assistor_random_id_pair
+    # check how many assistors have uploaded their output 
+    # if the number of output surpasses the ramin_assistor_num, we can send notifications
+    test_message_document = test_mongoDB.search_test_message_document(test_id=test_id)
+    output_dict = test_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
+    if len(output_dict) >= remain_assistor_num:
+        test_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_output', 
+                                                   test_id=test_id, sender_random_id=assistor_random_id, 
+                                                   role='sponsor', cur_rounds_num=cur_rounds_num)
+        log(generate_msg('Test 3.4:"', 'assistor uploads all test output'), user_id, task_id, test_id)
+    else:
+        log(generate_msg('Test 3.4:"', 'assistor send_test_output done'), user_id, task_id, test_id)
 
-        db.session.add(message)
-        db.session.commit()
-   
-    all_cur_round_messages = Message.query.filter(Message.assistor_id == queries[0].sponsor_id, Message.test_id == test_id, Message.test_indicator == "test").all()
-
-    output_upload = 0
-    for row in all_cur_round_messages:
-        print("row(((((((((((((((((((((((-----------------------------------------)))))))))))))))))))))))", row)
-        if row.output:
-            output_upload += 1
-
-        if output_upload == assistor_num:
-            log(generate_msg('Test 3.4:"', 'assistor uploads all test output'), g.current_user.id, task_id, test_id)
-            user = User.query.get_or_404(queries[0].sponsor_id)
-
-            # query_of_task = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.test_id == test_id, Matched.test_indicator == "test").first()
-            # if query_of_task.Terminate == 'true':
-            #     continue
-            # send message notification to the sponsor when all assistor upload the output
-            print("-----------------send test output", g.current_user.id)
-            user.add_notification('unread test output', user.new_test_output())
-            db.session.commit()
-
-    
-    log(generate_msg('Test 3.5:"', 'assistor send_test_output done'), g.current_user.id, task_id, test_id)
-    log(generate_msg('----------------------- unread_test_match_id done\n'), g.current_user.id, task_id, test_id)
+    log(generate_msg('----------------------- unread_test_match_id done\n'), user_id, task_id, test_id)
     
     response = {
         "send_test_output": "send test output successfully"

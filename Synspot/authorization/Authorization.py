@@ -2,7 +2,6 @@ import requests
 import json
 import base64
 
-# import jwt
 from synspot.network import Network
 from synspot.personalinformation import PersonalInformation
 from synspot.database import Database
@@ -23,14 +22,14 @@ class Authorization():
 
     def __obtain_important_information(self):
         root = self.PersonalInformation_instance.root
-        assert root is not None
+        # assert root is not None
 
         return root
 
     @classmethod
-    def get_authorization_instance(cls):
+    def get_Authorization_instance(cls):
         if cls.__authorization_instance == None:
-            cls.__authorization_instance = authorization()
+            cls.__authorization_instance = Authorization()
 
         return cls.__authorization_instance
 

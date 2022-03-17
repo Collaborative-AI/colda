@@ -1,10 +1,5 @@
-README
+Quick Setup Guide
 ========
-
-# The 'Synspot' package
-This package aims to help various entities assist each other in supervised learning tasks without sharing data, models, and objective function. 
-
-# A Quick Setup Guide
 
 ## Getting Started
 

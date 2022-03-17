@@ -57,11 +57,11 @@ class TrainRequest():
         :exception OSError: Placeholder.
         """
         user_id = self.PersonalInformation_instance.user_id
-        assert user_id is not None
+        # assert user_id is not None
         root = self.PersonalInformation_instance.root
-        assert root is not None
+        # assert root is not None
         token = self.Network_instance.token
-        assert token is not None
+        # assert token is not None
 
         task_id = None
         if get_train_id:
@@ -72,16 +72,16 @@ class TrainRequest():
                             train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str, task_description: str):
         
         """
-        Call __find_assistor ``for further`` execution
+        Call ``__find_assistor for further execution``
 
-        :param maxRound: :py:exc:`Integer`. Maximum training round
+        :param maxRound: Integer. Maximum training round
         :param assistors: List. The List of ``assistors'`` usernames
         :param train_file_path: String. Input path address of training data path
         :param train_id_column: String. ID column of Input File
         :param train_data_column: String. Data column of Input File
         :param train_target_column: String. Target column of Input File
         :param task_mode: String. Classification or Regression
-        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
+        :param model_name: String. Specific model, such as ``LinearRegression``, ``DecisionTree``.
         :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
         :param task_name: None or String. The name of current task.
         :param task_description: None or String. The description of current task
@@ -101,7 +101,7 @@ class TrainRequest():
         """
         Get new Task id for this task
 
-        :returns: new_task_id. String. The new task id of new task
+        :returns: new_task_id. String`. The new task id of new task
 
         :exception OSError: 
         """
@@ -117,7 +117,7 @@ class TrainRequest():
                                                     testing_key_value_pair=[('task_id', None)])
 
         new_task_id = get_train_id_response_text["task_id"]
-        assert new_task_id is not None
+        # assert new_task_id is not None
 
         return new_task_id
 
@@ -134,8 +134,8 @@ class TrainRequest():
         :param train_data_column: String. Data column of Input File
         :param train_target_column: String. Target column of Input File
         :param task_mode: String. Classification or Regression
-        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
-        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
+        :param model_name: String. Specific model, such as ``LinearRegression``, ``DecisionTree``.
+        :param metric_name: String. Metric to measure the result, such as ``MAD``, ``RMSE``, ``R2``.
         :param task_name: None or String. The name of current task.
         :param task_description: None or String. The description of current task
 
@@ -150,14 +150,14 @@ class TrainRequest():
         store_User_Sponsor_Table_res = self.Database_instance.store_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, task_mode=task_mode, model_name=model_name, metric_name=metric_name,
                                                             task_name=task_name, task_description=task_description, train_file_path=train_file_path, train_id_column=train_id_column, train_data_column=train_data_column,
                                                             train_target_column=train_target_column)
-        assert store_User_Sponsor_Table_res == 'User_Sponsor_Table stores successfully'
+        # assert store_User_Sponsor_Table_res == 'User_Sponsor_Table stores successfully'
 
 
         # call make_hash in Algorithm module
         hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, dataset_path=train_file_path, id_idx=train_id_column, skip_header=self.skip_header_default)
-        assert hash_id_file_address is not None
+        # assert hash_id_file_address is not None
         _, hash_id_file_address = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
-        assert hash_id_file_address is not None
+        # assert hash_id_file_address is not None
 
         # read file => array data type from np.genfromtxt
         # we need string type with \n between ids.
@@ -221,14 +221,14 @@ class TrainRequest():
                 store_User_Assistor_Table_res = self.Database_instance.store_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, mode=default_mode, task_mode=default_task_mode, model_name=default_model_name, 
                                                             test_id=None, task_name=None, task_description=None, test_name=None, test_description=None, train_file_path=default_file_path, 
                                                             train_id_column=default_id_column, train_data_column=default_data_column, test_file_path=None, test_id_column=None, test_data_column=None)
-                assert store_User_Assistor_Table_res == 'User_Assistor_Table stores successfully'
+                # assert store_User_Assistor_Table_res == 'User_Assistor_Table stores successfully'
 
                 hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
                                                 test_id=None, dataset_path=default_file_path, id_idx=default_id_column, skip_header=self.skip_header_default)
-                assert hash_id_file_address is not None
+                # assert hash_id_file_address is not None
                 _, hash_id_file_address = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
                 print('hash_id_file_address', hash_id_file_address)
-                assert hash_id_file_address is not None
+                # assert hash_id_file_address is not None
 
                 hash_id_file_data = load_file(hash_id_file_address[2])
 
@@ -336,10 +336,10 @@ class TrainRequest():
             # call save_match_id
             save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
                                                     test_id=None, from_id=from_id)
-            assert save_match_id_file_pos is not None
+            # assert save_match_id_file_pos is not None
             _, save_match_id_file_pos = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos,
                                                                    "200", "save_match_id")
-            assert save_match_id_file_pos is not None
+            # assert save_match_id_file_pos is not None
 
             # write file
             save_file(save_match_id_file_pos[2], cur_match_id_file)
@@ -349,9 +349,9 @@ class TrainRequest():
 
             # call make_match_idx
             make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
-            assert make_match_idx_done is not None
+            # assert make_match_idx_done is not None
             _, make_match_idx_done = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
-            assert make_match_idx_done is not None
+            # assert make_match_idx_done is not None
 
             msg = ["3.5 Sponsor matches id to index\n"]
             log_helper(msg, root, user_id, task_id)
@@ -362,9 +362,9 @@ class TrainRequest():
 
         # call make residual
         make_residual_multiple_paths = make_residual(root=root, self_id=user_id, task_id=task_id, round=self.initial_round, dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
-        assert make_residual_multiple_paths is not None
+        # assert make_residual_multiple_paths is not None
         _, make_residual_multiple_paths = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
-        assert make_residual_multiple_paths is not None
+        # assert make_residual_multiple_paths is not None
 
         msg = ["3.6 Sponsor makes residual finished\n"]
         log_helper(msg, root, user_id, task_id)
@@ -438,10 +438,10 @@ class TrainRequest():
 
         # call save_match_id to get the designated position to save the match_id file
         save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
-        assert save_match_id_file_pos is not None
+        # assert save_match_id_file_pos is not None
         _, save_match_id_file_pos = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos,
                                                                 "200", "save_match_id")
-        assert save_match_id_file_pos is not None
+        # assert save_match_id_file_pos is not None
 
         # save match id file to designated position
         save_file(save_match_id_file_pos[2], cur_match_id_file)
@@ -451,9 +451,9 @@ class TrainRequest():
 
         # call make_match_idx
         make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, from_id=from_id)
-        assert make_match_idx_done is not None
+        # assert make_match_idx_done is not None
         _, make_match_idx_done = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
-        assert make_match_idx_done is not None
+        # assert make_match_idx_done is not None
 
         msg = ["3.5 Assistor matches id to index\n", "---- 3. Unread Match ID Done\n"]
         log_helper(msg, root, user_id, task_id)
@@ -519,9 +519,9 @@ class TrainRequest():
 
         # call make train
         train_output = make_train(root=root, self_id=user_id, task_id=task_id, round=rounds, dataset_path=train_file_path, data_idx=train_data_column, skip_header=self.skip_header_default, task_mode=task_mode, model_name=model_name)
-        assert train_output is not None
+        # assert train_output is not None
         _, train_output = handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
-        assert train_output is not None
+        # assert train_output is not None
 
         msg = ["4.3 Sponsor round " + str(rounds) + " training done." + "\n", "-------------------------- 4. Unread Situation Done\n"]
         log_helper(msg, root, user_id, task_id)
@@ -552,9 +552,9 @@ class TrainRequest():
         
         # train the model and get output
         train_output = make_train(root=root, self_id=user_id, task_id=task_id, round=rounds, from_id=from_id, dataset_path=train_file_path, data_idx=train_data_column, skip_header=self.skip_header_default, task_mode=task_mode, model_name=model_name)
-        assert train_output is not None
+        # assert train_output is not None
         train_output_indicator, train_output = handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
-        assert train_output is not None
+        # assert train_output is not None
 
         if train_output_indicator == False:
             args = [task_id, rounds, from_id, train_file_path, train_data_column, task_mode, model_name, waiting_start_time]
@@ -623,10 +623,10 @@ class TrainRequest():
 
         # call save_residual
         save_residual_pos = save_residual(root=root, self_id=user_id, task_id=task_id, round=rounds)
-        assert save_residual_pos is not None
+        # assert save_residual_pos is not None
         _, save_residual_pos = handle_Algorithm_return_value("save_residual_pos", save_residual_pos,
                                                                 "200", "save_residual")
-        assert save_residual_pos is not None
+        # assert save_residual_pos is not None
 
         # save match id file to designated position
         save_file(save_residual_pos[2], cur_situation_file)
@@ -708,9 +708,9 @@ class TrainRequest():
             print("from_id", from_id)
             # call save_output
             save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, round=rounds, from_id=from_id)
-            assert save_output_pos is not None
+            # assert save_output_pos is not None
             _, save_output_pos = handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
-            assert save_output_pos is not None
+            # assert save_output_pos is not None
 
             # write file
             # cur_output = json.loads(output[i]).split("\n")
@@ -750,9 +750,9 @@ class TrainRequest():
 
         # call make_result
         make_result_done = make_result(root=root, self_id=user_id, task_id=task_id, round=rounds, dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
-        assert make_result_done is not None
+        # assert make_result_done is not None
         make_result_done_indicator, make_result_done = handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
-        assert make_result_done is not None
+        # assert make_result_done is not None
 
         if make_result_done_indicator == False:
             args = [task_id, rounds, train_file_path, train_target_column, task_mode, metric_name, waiting_start_time]
@@ -771,9 +771,9 @@ class TrainRequest():
 
                 # call make_residual
                 make_residual_multiple_paths = make_residual(root=root, self_id=user_id, task_id=task_id, round=(rounds+1), dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
-                assert make_residual_multiple_paths is not None
+                # assert make_residual_multiple_paths is not None
                 _, make_residual_multiple_paths = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
-                assert make_residual_multiple_paths is not None
+                # assert make_residual_multiple_paths is not None
 
                 msg = ["5.5 Sponsor makes residual finished\n"]
                 log_helper(msg, root, user_id, task_id)

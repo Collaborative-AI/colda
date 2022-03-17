@@ -34,7 +34,6 @@ from synspot.personalinformation import PersonalInformation
 # from synspot import Database_class
 import threading
 
-# import jwt
 _default_authorization = Authorization.get_Authorization_instance()
 _default_trainRequest = TrainRequest.get_TrainRequest_instance()
 _default_testRequest = TestRequest.get_TestRequest_instance()
@@ -159,13 +158,12 @@ def store_database(path, mode='pickle'):
 
 def get_pending_requests():
     pass
-
     
 def get_online_user(username: list):
     pass
 
 def test_function():
-    return 'test successfully'
+    return 'test successfully' 
 # userLogin("xie2", "Xie2@123")
 # set_default_data_path("/Users/qile/Documents/data/BostonHousing/2/123/0.5/0/train/data.csv", "1", "2")
 # callForTrain(2, [2], "/Users/qile/Documents/data/combine.csv", "1", "2-7", "8")

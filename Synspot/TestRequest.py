@@ -47,11 +47,11 @@ class TestRequest:
         :exception OSError: Placeholder.
         """
         user_id = self.PersonalInformation_instance.user_id
-        assert user_id is not None
+        # assert user_id is not None
         root = self.PersonalInformation_instance.root
-        assert root is not None
+        # assert root is not None
         token = self.Network_instance.token
-        assert token is not None
+        # assert token is not None
 
         test_id = None
         if get_test_id:
@@ -62,7 +62,7 @@ class TestRequest:
                             test_target_column: str, test_name: str, test_description: str):
 
         """
-        Call __find_test_assistor for further execution
+        Call :py:exc:`__find_test_assistor for further execution`
 
         :param task_id: String. The task that the user wanted to test
         :param test_file_path: String. Input path address of testing data path
@@ -138,13 +138,13 @@ class TestRequest:
                                                             test_id=test_id, task_name=task_name, task_description=task_description, test_name=test_name, test_description=test_description, train_file_path=None, 
                                                             train_id_column=None, train_data_column=None, train_target_column=None, test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column,
                                                             test_target_column=test_target_column)
-        assert store_User_Sponsor_Table_res == 'User_Sponsor_Table stores successfully'
+        # assert store_User_Sponsor_Table_res == 'User_Sponsor_Table stores successfully'
 
         # call make_hash in Algorithm module
         test_hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, dataset_path=test_file_path, id_idx=test_id_column, skip_header=self.skip_header_default)
-        assert test_hash_id_file_address is not None
+        # assert test_hash_id_file_address is not None
         _, test_hash_id_file_address = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
-        assert test_hash_id_file_address is not None
+        # assert test_hash_id_file_address is not None
 
         # read file => array data type from np.genfromtxt
         # we need string type with \n between ids.
@@ -208,14 +208,14 @@ class TestRequest:
                 store_User_Assistor_Table_res = self.Database_instance.store_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, mode=default_mode, task_mode=default_task_mode, model_name=default_model_name, 
                                                             test_id=test_id, task_name=None, task_description=None, test_name=None, test_description=None, train_file_path=None, 
                                                             train_id_column=None, train_data_column=None, test_file_path=default_file_path, test_id_column=default_id_column, test_data_column=default_data_column)
-                assert store_User_Assistor_Table_res == 'User_Assistor_Table stores successfully'
+                # assert store_User_Assistor_Table_res == 'User_Assistor_Table stores successfully'
 
                 # call make_hash in Algorithm module
                 test_hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, dataset_path=default_file_path, id_idx=default_id_column, skip_header=self.skip_header_default)
                 print('sssss')
-                assert test_hash_id_file_address is not None
+                # assert test_hash_id_file_address is not None
                 _, test_hash_id_file_address = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
-                assert test_hash_id_file_address is not None
+                # assert test_hash_id_file_address is not None
 
                 # read file => array data type from np.genfromtxt
                 # we need string type with \n between ids.
@@ -307,10 +307,10 @@ class TestRequest:
             # call save_match_id
             test_save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
                                                     test_id=test_id, from_id=from_id)
-            assert test_save_match_id_file_pos is not None
+            # assert test_save_match_id_file_pos is not None
             _, test_save_match_id_file_pos = handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos,
                                                                    "200", "save_match_id")
-            assert test_save_match_id_file_pos is not None
+            # assert test_save_match_id_file_pos is not None
 
             # write file
             save_file(test_save_match_id_file_pos[2], cur_match_id_file)
@@ -319,9 +319,9 @@ class TestRequest:
 
             # call make_match_idx
             test_make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, from_id=from_id)
-            assert test_make_match_idx_done is not None
+            # assert test_make_match_idx_done is not None
             _, test_make_match_idx_done = handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
-            assert test_make_match_idx_done is not None
+            # assert test_make_match_idx_done is not None
             print('from_id', from_id, cur_match_id_file)
         # Get information from User Sponsor Table
         task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
@@ -331,9 +331,9 @@ class TestRequest:
         print('max_round', max_round)
         print('make_test', root, user_id, task_id, test_id, max_round, from_id, test_file_path, test_data_column, self.skip_header_default)
         test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, from_id=None, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
-        assert test_done is not None
+        # assert test_done is not None
         _, test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
-        assert test_done is not None
+        # assert test_done is not None
         # print('test_done', test_done)
         if unittest_callbacks:
             assert unittest_callbacks(load_json_data(test_done[2], 'test_done[2]')) == True
@@ -376,10 +376,10 @@ class TestRequest:
         # call test_save_match_id
         test_save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
                                                     test_id=test_id, from_id=from_id)
-        assert test_save_match_id_file_pos is not None
+        # assert test_save_match_id_file_pos is not None
         _, test_save_match_id_file_pos = handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos,
                                                                 "200", "save_match_id")
-        assert test_save_match_id_file_pos is not None
+        # assert test_save_match_id_file_pos is not None
 
         # save match id file to designated position
         save_file(test_save_match_id_file_pos[2], cur_match_id_file)
@@ -388,9 +388,9 @@ class TestRequest:
 
         # call make_match_idx
         test_make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, from_id=from_id)
-        assert test_make_match_idx_done is not None
+        # assert test_make_match_idx_done is not None
         _, test_make_match_idx_done = handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
-        assert test_make_match_idx_done is not None
+        # assert test_make_match_idx_done is not None
 
         msg = ["3.5 Assistor matches id to index\n"]
         log_helper(msg, root, user_id, task_id)
@@ -402,9 +402,9 @@ class TestRequest:
 
         # call make test
         test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
-        assert test_done is not None
+        # assert test_done is not None
         _, test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
-        assert test_done is not None
+        # assert test_done is not None
 
         if unittest_callbacks:
             assert unittest_callbacks(load_json_data(test_done[2], 'test_done[2]')) == True
@@ -501,9 +501,9 @@ class TestRequest:
 
                 # call save_output
                 test_save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, round=(j+1), from_id=from_id)
-                assert test_save_output_pos is not None
+                # assert test_save_output_pos is not None
                 _, test_save_output_pos = handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
-                assert test_save_output_pos is not None
+                # assert test_save_output_pos is not None
                 save_file(test_save_output_pos[2], cur_output)
                 
         # max_round = len(output[0])
@@ -539,9 +539,9 @@ class TestRequest:
 
         # call make_eval
         eval_done = make_eval(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, dataset_path=test_file_path, target_idx=test_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name, task_path=None)
-        assert eval_done is not None
+        # assert eval_done is not None
         eval_done_indicator, eval_done = handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
-        assert eval_done is not None
+        # assert eval_done is not None
 
         if eval_done_indicator == False:
             args = [task_id, test_id, max_round, waiting_start_time, unittest_callbacks]

@@ -118,21 +118,22 @@ class GetNotification():
 
                 # print("update_all_notifications", update_all_notifications_res)
                 update_all_notifications_data = json.loads(update_all_notifications_res.text)
-                assert update_all_notifications_data is not None
+                # assert update_all_notifications_data is not None
+                
                 # print("update_all_notifications", update_all_notifications_data)
 
                 # for running, comment back
-                # self.__update_notification(update_all_notifications_data)
-                # break
+                self.__update_notification(update_all_notifications_data)
+                break
 
                 # for unittest
-                return update_all_notifications_data
+                # return update_all_notifications_data
         
         # for running, comment back
-        # if not self.__stop_indicator:
-        #     print('lihjai a ')
-        #     timer = threading.Timer(10, self.start_Collaboration)
-        #     timer.start()
+        if not self.__stop_indicator:
+            print('lihjai a ')
+            timer = threading.Timer(10, self.start_Collaboration)
+            timer.start()
         return
 
     def end_Collaboration(self):

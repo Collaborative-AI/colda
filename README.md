@@ -1,12 +1,12 @@
 Documentaion:
 https://docutils-zh-cn.readthedocs.io/zh_CN/latest/user/rst/cheatsheet.html
-1. 分Module
+1. 分Module done
 2. (done) 加粗 => ** **
 3. (done )红字 => `` ``
 4. !Note => .. note::
 5. !Warning => .. warning:: 
-6. code block
-7. 文字中分小块
+6. code block done :py:exc:` `
+7. 文字中分小块 
 
 1. 
 The 'Synspot' package

@@ -2,7 +2,7 @@
 .. py:currentmodule:: synspot.personalinformation
 
 :py:mod:`~synspot.personalinformation` Module
-==============================
+=============================================
 
 The :py:mod:`~synspot.personalinformation` module contains a class of the same name to
 manage the personal information of current user.

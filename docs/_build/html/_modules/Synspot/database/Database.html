@@ -51,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../releasenotes/index.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../deprecations.html">Deprecations and removals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Quick Setup Guide</a></li>
 </ul>
 
         </div>
@@ -97,7 +98,7 @@
     <span class="k">def</span> <span class="nf">__obtain_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
         <span class="n">user_id</span> <span class="o">=</span> <span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">user_id</span>
-        <span class="k">assert</span> <span class="n">user_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="c1"># assert user_id is not None</span>
         <span class="k">return</span> <span class="n">user_id</span>
 
 <div class="viewcode-block" id="Database.get_all_task_id_as_sponsor"><a class="viewcode-back" href="../../../reference/database.html#synspot.database.Database.get_all_task_id_as_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_task_id_as_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -121,7 +122,7 @@
 
 <span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_user_id</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>

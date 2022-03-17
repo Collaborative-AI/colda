@@ -1,0 +1,48 @@
+
+ You are SPONSOR
+
+Task ID: a23fdba8-951f-40d6-811d-8be07841b09c
+
+---------------------- Train Stage Starts
+
+---------------------- 1. Find assistor
+
+1.1 Sponsor calls for help
+
+1.2 Sponsor sends id file
+
+----3. Unread Match ID
+
+3.1 Update the match id notification
+
+3.2 Unread_match_id_sponsor
+
+3.3 Sponsor gets matched id file
+
+3.4 Sponsor Saved Matched id File at /Users/qile/Documents/Apollo_Package/synspot/synspot/personalinformation/1/task/a23fdba8-951f-40d6-811d-8be07841b09c/train/id/bb53b14d-afbb-49fe-bfaa-680dc93d8025.csv
+
+3.5 Sponsor matches id to index
+
+Train Round: 0, (['MAD: 6.6434', 'RMSE: 9.2083', 'R2: -6718000550806824212549886541824.0000'], {'MAD': 6.643383001666503, 'RMSE': 9.208316237649294, 'R2': -6.718000550806824e+30})
+3.6 Sponsor makes residual finished
+
+3.7 Sponsor sends all situations
+
+-------------------------- 3. Unread Match ID Done
+
+-------------------------- 4. Unread Situation
+
+4.1 Update the situation notification
+
+4.2 Cur round is: 1
+
+4.3 Sponsor round 1 training done.
+
+-------------------------- 4. Unread Situation Done
+
+-------------------------- 5. Unread Output
+
+5.1 Update the output notification
+
+5.2 Sponsor gets output model
+

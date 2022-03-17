@@ -82,6 +82,7 @@ The core library is designed for fast collaboration between participants. It hel
    about.rst
    releasenotes/index.rst
    deprecations.rst
+   README.md
 
 Indices and tables
 ==================

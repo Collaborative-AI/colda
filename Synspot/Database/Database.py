@@ -17,7 +17,7 @@ class Database():
     def __obtain_user_id(self):
         PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
         user_id = PersonalInformation_instance.user_id
-        assert user_id is not None
+        # assert user_id is not None
         return user_id
 
     def get_all_task_id_as_sponsor(self):
@@ -41,7 +41,7 @@ class Database():
 
         :exception OSError: Placeholder.
         """
-        
+
         user_id = self.__obtain_user_id()
         print(user_id)
         res = []

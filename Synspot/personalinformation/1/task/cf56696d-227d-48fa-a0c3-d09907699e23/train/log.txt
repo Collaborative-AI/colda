@@ -1,0 +1,84 @@
+
+ You are SPONSOR
+
+Task ID: cf56696d-227d-48fa-a0c3-d09907699e23
+
+---------------------- Train Stage Starts
+
+---------------------- 1. Find assistor
+
+1.1 Sponsor calls for help
+
+1.2 Sponsor sends id file
+
+----3. Unread Match ID
+
+3.1 Update the match id notification
+
+3.2 Unread_match_id_sponsor
+
+3.3 Sponsor gets matched id file
+
+3.4 Sponsor Saved Matched id File at /Users/qile/Documents/Apollo_Package/synspot/synspot/personalinformation/1/task/cf56696d-227d-48fa-a0c3-d09907699e23/train/id/caf94374-9b0b-4d29-ae96-0a6754aa82fe.csv
+
+3.5 Sponsor matches id to index
+
+Train Round: 0, (['MAD: 6.6434', 'RMSE: 9.2083', 'R2: -6718000550806824212549886541824.0000'], {'MAD': 6.643383001666503, 'RMSE': 9.208316237649294, 'R2': -6.718000550806824e+30})
+3.6 Sponsor makes residual finished
+
+3.7 Sponsor sends all situations
+
+-------------------------- 3. Unread Match ID Done
+
+-------------------------- 4. Unread Situation
+
+4.1 Update the situation notification
+
+4.2 Cur round is: 1
+
+4.3 Sponsor round 1 training done.
+
+-------------------------- 4. Unread Situation Done
+
+-------------------------- 5. Unread Output
+
+5.1 Update the output notification
+
+5.2 Sponsor gets output model
+
+5.3 Sponsor saves Output model
+
+Train Round: 1, (['MAD: 3.3422', 'RMSE: 4.7969', 'R2: 0.6276'], {'MAD': 3.342172549363508, 'RMSE': 4.796930354935761, 'R2': 0.6275559752130324}), Alpha: 0.5716634673877543
+5.4 Sponsor makes result done.
+
+5.5 Sponsor makes residual finished
+
+5.6 Sponsor updates situation done
+
+-------------------------- 5. Unread Output Done
+
+-------------------------- 4. Unread Situation
+
+4.1 Update the situation notification
+
+4.2 Cur round is: 2
+
+4.3 Sponsor round 2 training done.
+
+-------------------------- 4. Unread Situation Done
+
+-------------------------- 5. Unread Output
+
+5.1 Update the output notification
+
+5.2 Sponsor gets output model
+
+5.3 Sponsor saves Output model
+
+Train Round: 2, (['MAD: 3.2586', 'RMSE: 4.6277', 'R2: 0.6442'], {'MAD': 3.258645480890324, 'RMSE': 4.6276562346839425, 'R2': 0.6441901379685752}), Alpha: 0.8024188636372007
+5.4 Sponsor makes result done.
+
+---- Train Stage Ends
+
+Test: 3.4 Sponsor Saved Matched id File at /Users/qile/Documents/Apollo_Package/synspot/synspot/personalinformation/1/task/cf56696d-227d-48fa-a0c3-d09907699e23/test/048a5687-322f-4a99-a46f-647ebc659158/id/90a9e746-151e-4295-ab14-f4f138aa8ea0.csv
+

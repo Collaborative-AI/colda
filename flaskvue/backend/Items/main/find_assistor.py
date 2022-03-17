@@ -14,7 +14,7 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 from Items.main.utils import log, generate_msg, add_new_token_to_response, obtain_user_id_from_token, obtain_unique_id
 from Items.main.utils import verify_token_user_id_and_function_caller_id
-from Items.main.mongoDB import train_mongoDB, test_mongoDB
+from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 
 @main.route('/create_new_train_task', methods=['GET'])
 @token_auth.login_required
@@ -60,7 +60,7 @@ def create_new_test_task():
     response = {"test_id": test_id}
     return jsonify(response)
 
-@main.route('/find_assistor/<int:id>', methods=['POST'])
+@main.route('/find_assistor/<string:id>', methods=['POST'])
 @token_auth.login_required
 def find_assistor(id):
 
@@ -121,12 +121,11 @@ def find_assistor(id):
 
     assistor_id_list = []
     for username in assistor_username_list:
-        user = pyMongo.db.User.find_one({'username': username})
-        if user is None:
+        user_document = mongoDB.search_user_document(user_id=None, username=username)
+        if user_document is None:
             return jsonify("wrong username")
-        user_id = user['user_id']
-        print("user.id", username, user_id)
-        assistor_id_list.append(user_id)
+        assistor_user_id = user_document['user_id']
+        assistor_id_list.append(assistor_user_id)
 
     log(generate_msg('Sponsor training stage'), user_id, task_id)
     log(generate_msg('---- find_assistor begins'), user_id, task_id)
@@ -135,13 +134,14 @@ def find_assistor(id):
     # sponsor_random_id is unique in each task    
     sponsor_random_id = obtain_unique_id()
     identifier_id = obtain_unique_id()
+    print('identifier_id_1', identifier_id)
     sponsor_id = user_id
     # add new train_match document to Train_Match Table
     train_mongoDB.sponsor_create_train_match_document(task_id=task_id, total_assistor_num=len(assistor_id_list), sponsor_id=sponsor_id, 
                                      sponsor_random_id=sponsor_random_id, identifier_id=identifier_id)
     
     # add new train_match_file document to Train_Match_File Table
-    train_mongoDB.create_train_match_file_document(identifier_id=identifier_id, identifier_content=identifier_content)
+    train_mongoDB.create_train_match_identifier_document(identifier_id=identifier_id, identifier_content=identifier_content)
 
     log(generate_msg('1.2:', 'sponsor handles id data done'), user_id, task_id)
 
@@ -151,24 +151,25 @@ def find_assistor(id):
                                      sponsor_id=sponsor_id, assistor_id_list=assistor_id_list, test_task_list=[])
 
     # update the participated_train_task in User Table
-    pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{'participated_train_task.' + task_id: 'sponsor'}})
+    pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
+        'participated_train_task.' + task_id + '.role': 'sponsor'
+    }})
 
+    print('-----sdfasdfsafss')
     # add notifications to all assistors
+    print('assistor_id_list', user_id, assistor_id_list)
     for assistor_id in assistor_id_list:
         train_mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_request', 
                                                  task_id=task_id, sender_random_id=sponsor_random_id, 
                                                  role='assistor', cur_rounds_num=1)
-    
+    print('sdfsadfasdfascvv')
     log(generate_msg('1.3:', 'sponsor adds all unread request to assistors'), user_id, task_id)
-
-    train_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_request', 
-                                                 task_id=task_id, sender_random_id=sponsor_random_id, 
-                                                 role='sponsor', cur_rounds_num=1)
-    
-    log(generate_msg('1.4:', 'sponsor adds unread request to itself'), user_id, task_id)
     log(generate_msg('---- sponsor find assistor done \n'), user_id, task_id)
 
-    response = {"task_id": task_id, 'assistor_num': len(assistor_id_list)}
+    response = {
+        'task_id': task_id, 
+        'assistor_num': len(assistor_id_list)
+    }
     return jsonify(response)
 
 

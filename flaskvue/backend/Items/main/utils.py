@@ -27,65 +27,6 @@ def generate_password(password):
 def check_password(user, password):
     return check_password_hash(user['password_hash'], password)
 
-def update_jwt(user, token_payload, expires_in=5000):
-
-    token_payload_expiration_time = token_payload.get('exp')
-    now = datetime.utcnow()
-    time_diff = token_payload_expiration_time - now
-
-    # if the difference of time is greater than 10 mins, we dont update 
-    # the token
-    if timedelta(seconds=time_diff) > 600:
-        return None
-    
-    token_payload = {
-        'user_id': user['user_id'],
-        'user_name': user['name'] if user['name'] else user['username'],
-        'authority': user['authority_level'] if user['authority_level'] else 'user',
-        # expiration time
-        'exp': now + timedelta(seconds=expires_in),
-        # create time
-        'iat': now
-    }
-    return jwt.encode(
-        token_payload,
-        current_app.config['SECRET_KEY'],
-        algorithm='HS256').decode('utf-8')
-
-
-def get_jwt(user, expires_in=5000):
-    now = datetime.utcnow()
-    
-    token_payload = {
-        'user_id': user['user_id'],
-        'user_name': user['name'] if user['name'] else user['username'],
-        'authority': user['authority_level'] if user['authority_level'] else 'user',
-        # expiration time
-        'exp': now + timedelta(seconds=expires_in),
-        # create time
-        'iat': now
-    }
-    return jwt.encode(
-        token_payload,
-        current_app.config['SECRET_KEY'],
-        algorithm='HS256').decode('utf-8')
-
-def verify_jwt(token):
-    try:
-        token_payload = jwt.decode(
-            token,
-            current_app.config['SECRET_KEY'],
-            algorithms=['HS256'])
-    except (jwt.exceptions.ExpiredSignatureError,
-            jwt.exceptions.InvalidSignatureError,
-            jwt.exceptions.DecodeError) as e:
-        # If the Token expires or is modified by someone, the signature verification will also fail.
-        return None, None
-    
-    user_id = token_payload.get('user_id')
-    user_document = pyMongo.db.User.find_one({'user_id': user_id})
-    return user_document, token_payload
-
 def obtain_user_id_from_token():
     user_id = g.current_user['user_id']
     return user_id

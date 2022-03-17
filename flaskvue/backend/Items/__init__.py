@@ -58,12 +58,14 @@ def configure_extensions(app):
     create_MongoDB_Collections()
 
 def create_MongoDB_Collections():
+    print('pyMongo', pyMongo)
+    # print('pymongo2', pyMongo.mysynspot_db)
     collection_list = pyMongo.db.list_collection_names()
     if 'User' not in collection_list:
         pyMongo.db.User.insert_one( { "user_id": 'placeholder' } )
-        pyMongo.db.Notification.create_index([("user_id", 1)], unique=True)
-        pyMongo.db.Notification.create_index([("username", 1)], unique=True)
-        pyMongo.db.Notification.create_index([("email", 1)], unique=True)
+        pyMongo.db.User.create_index([("user_id", 1)], unique=True)
+        pyMongo.db.User.create_index([("username", 1)], unique=True)
+        pyMongo.db.User.create_index([("email", 1)], unique=True)
 
     if 'Notification' not in collection_list:
         pyMongo.db.Notification.create_index([("user_id", 1)], unique=True)
@@ -89,7 +91,7 @@ def create_MongoDB_Collections():
         pyMongo.db.Train_Match.create_index([("task_id", 1)], unique=True)
     if 'Train_Match_Identifier' not in collection_list:
         pyMongo.db.Train_Match_Identifier.create_index([("identifier_id", 1)], unique=True)
-    
+
     if 'Test_Match' not in collection_list:
         pyMongo.db.Test_Match.create_index([("test_id", 1)], unique=True)
     if 'Test_Match_Identifier' not in collection_list:

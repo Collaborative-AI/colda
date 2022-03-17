@@ -12,7 +12,7 @@ from datetime import datetime
 from Items import pyMongo
 # import BluePrint
 from Items.main import main
-from Items.models import User, Matched, Pending
+# from Items.models import User, Matched, Pending
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 from Items.main.utils import log, generate_msg, obtain_user_id_from_token, verify_token_user_id_and_function_caller_id

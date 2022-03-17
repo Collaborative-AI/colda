@@ -14,6 +14,30 @@ from abc import ABC, abstractmethod
 from Items import pyMongo
 
 class mongoDB():
+
+    @classmethod
+    def search_user_document(cls, user_id, username=None):
+        if user_id:
+            return pyMongo.db.User.find_one({'user_id': user_id})
+        elif username:
+            return pyMongo.db.User.find_one({'username': username})
+
+    @classmethod
+    def create_user_document(cls, user_id):
+        pending_document = {
+            'user_id': user_id,
+            'task_dict': {}
+        }
+        return pyMongo.db.Pending.insert_one(pending_document)
+    
+    @classmethod
+    def update_user_document(cls, user_id):
+        pending_document = {
+            'user_id': user_id,
+            'task_dict': {}
+        }
+        return pyMongo.db.Pending.insert_one(pending_document)
+
     @classmethod
     def search_pending_document(cls, user_id):
         return pyMongo.db.Pending.find_one({'user_id': user_id})
@@ -51,6 +75,7 @@ class train_mongoDB():
             pyMongo.db.Notification.insert_one({'user_id': user_id})
 
         base_key = 'category' + '.' + notification_name + '.' + 'task_id_dict' + '.' + task_id 
+        print('base_key', base_key)
         return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
             base_key + '.sender_random_id': sender_random_id,
             base_key + '.role': role,
@@ -141,12 +166,16 @@ class train_mongoDB():
         }})
 
     @classmethod
-    def create_train_match_file_document(cls, identifier_id, identifier_content):
-        train_match_file_document = {
+    def search_train_match_identifier_document(cls, identifier_id):
+        return pyMongo.db.Train_Match_Identifier.find_one({'identifier_id': identifier_id})
+
+    @classmethod
+    def create_train_match_identifier_document(cls, identifier_id, identifier_content):
+        train_match_identifier_document = {
             'identifier_id': identifier_id,
             'identifier_content': identifier_content,
         }
-        return pyMongo.db.Train_Match_File.insert_one(train_match_file_document)
+        return pyMongo.db.Train_Match_Identifier.insert_one(train_match_identifier_document)
 
     @classmethod
     def create_train_task_document(cls, task_id, task_name, task_description, task_mode, 

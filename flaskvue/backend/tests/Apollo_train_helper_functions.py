@@ -1,9 +1,15 @@
-from base64 import b64encode
-from datetime import datetime, timedelta
 import json
 import unittest
-from Items import create_app, db
-from Items.models import User, Message, Notification, Matched
+
+from base64 import b64encode
+from datetime import datetime, timedelta
+from bson import ObjectId
+
+# from Items import create_app, db
+from Items import create_app, pyMongo
+from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
+from Items.main.utils import generate_password
+# from Items.models import User, Message, Notification, Matched
 from tests import TestConfig
 
 
@@ -14,14 +20,33 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.app = create_app(TestConfig)  # 创建Flask应用
         self.app_context = self.app.app_context()  # 激活(或推送)Flask应用上下文
         self.app_context.push()
-        db.create_all()  # 通过SQLAlchemy来使用SQLite内存数据库，db.create_all()快速创建所有的数据库表
+        # db.create_all()  # 通过SQLAlchemy来使用SQLite内存数据库，db.create_all()快速创建所有的数据库表
         self.client = self.app.test_client()  # Flask内建的测试客户端，模拟浏览器行为
 
     def tearDown(self):
         '''每个测试之后执行'''
-        db.session.remove()
-        db.drop_all()  # 删除所有数据库表
+        # db.session.remove()
+        # db.drop_all()  # 删除所有数据库表
+        self.drop_db_collections()
         self.app_context.pop()  # 退出Flask应用上下文
+
+    def drop_db_collections(self):
+        pyMongo.db.User.drop()
+        pyMongo.db.Notification.drop()
+        pyMongo.db.Pending.drop()
+        pyMongo.db.Train_Message.drop()
+        pyMongo.db.Train_Message_Situation.drop()
+        pyMongo.db.Train_Message_Output.drop()
+        pyMongo.db.Test_Message.drop()
+        pyMongo.db.Test_Message_Situation.drop()
+        pyMongo.db.Test_Message_Output.drop()
+        pyMongo.db.Train_Match.drop()
+        pyMongo.db.Train_Match_Identifier.drop()
+        pyMongo.db.Test_Match.drop()
+        pyMongo.db.Test_Match_Identifier.drop()
+        pyMongo.db.Train_Task.drop()
+        pyMongo.db.Test_Task.drop()
+        pyMongo.db.Stop.drop()
 
     def get_basic_auth_headers(self, username, password):
         '''创建Basic Auth认证的headers'''
@@ -51,71 +76,110 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         # Check 1 sponsor with 2 assistors
         # Construct 2 new Matched rows
         # Check the Notification of each assistor
+        newObjectId = ObjectId()
+        user_id_1 = str(newObjectId)
+        password_hash = generate_password('Xie1@456')
+        user_document = {
+            '_id': newObjectId,
+            'user_id': user_id_1,
+            'username': 'unittest1',
+            'name': None,
+            'authority_level': 'user',
+            'email': 'john1@163.com',
+            'password_hash': password_hash,
+            'confirm_email': True
+        }
+        pyMongo.db.User.insert_one(user_document)
 
-        u1 = User(username='unittest', email='john@163.com', confirmed='true')
-        u1.set_password('Xie1@456')
-        u2 = User(username='unittest2', email='john@163.com', confirmed='true')
-        u2.set_password('Xie1@456')
-        u3 = User(username='unittest3', email='john@163.com', confirmed='true')
-        u3.set_password('Xie1@456')
-        db.session.add(u1)
-        db.session.add(u2)
-        db.session.add(u3)
-        db.session.commit()
+        newObjectId = ObjectId()
+        user_id_2 = str(newObjectId)
+        password_hash = generate_password('Xie1@456')
+        user_document = {
+            '_id': newObjectId,
+            'user_id': user_id_2,
+            'username': 'unittest2',
+            'name': None,
+            'authority_level': 'user',
+            'email': 'john2@163.com',
+            'password_hash': password_hash,
+            'confirm_email': True
+        }
+        pyMongo.db.User.insert_one(user_document)
+
+        newObjectId = ObjectId()
+        user_id_3 = str(newObjectId)
+        password_hash = generate_password('Xie1@456')
+        user_document = {
+            '_id': newObjectId,
+            'user_id': user_id_3,
+            'username': 'unittest3',
+            'name': None,
+            'authority_level': 'user',
+            'email': 'john3@163.com',
+            'password_hash': password_hash,
+            'confirm_email': True
+        }
+        pyMongo.db.User.insert_one(user_document)
 
         # 附带JWT到请求头中
-        headers = self.get_token_auth_headers('unittest', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
         response = self.client.get('/create_new_train_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         task_id = json_response['task_id']
         self.task_id = task_id
 
-        list_content = ['unittest2', 'unittest4']
-        # file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
-        file = "8\n4\n3\n12\n16\n17"
-        data = json.dumps({'assistor_username_list': list_content, 'id_file': file, 'task_id': task_id, 'task_mode':"", 'model_name':"", 'metric_name':"",'task_name': "", 'task_description': ""})
-        response = self.client.post('/find_assistor/', headers=headers, data=data)
+        # If we add non-exist username, such as unittest4, 'wrong username' will be returned
+        assistor_username_list = ['unittest2', 'unittest4']
+        identifier_content = [8, 4, 3, 12, 16, 17]
+        data = json.dumps({'assistor_username_list': assistor_username_list, 'identifier_content': identifier_content, 
+                           'task_id': task_id, 'task_mode': 'regression', 'model_name': 'LinearRegression', 
+                           'metric_name': 'RMSE','task_name': 'unittest', 'task_description': 'unittest_desciption'})
+        response = self.client.post('/find_assistor/' + user_id_1, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response, "wrong username")
 
-        headers = self.get_token_auth_headers('unittest', 'Xie1@456')
-        list_content = ['unittest2', 'unittest3']
-        # file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
-        file = "8\n4\n3\n12\n16\n17"
-        data = json.dumps({'assistor_username_list': list_content, 'id_file': file, 'task_id': task_id, 'task_mode':"", 'model_name':"", 'metric_name':"",'task_name': "", 'task_description': ""})
-        response = self.client.post('/find_assistor/', headers=headers, data=data)
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        assistor_username_list = ['unittest2', 'unittest3']
+        identifier_content = [8, 4, 3, 12, 16, 17]
+        data = json.dumps({'assistor_username_list': assistor_username_list, 'identifier_content': identifier_content, 
+                           'task_id': task_id, 'task_mode': 'regression', 'model_name': 'LinearRegression', 
+                           'metric_name': 'RMSE','task_name': 'unittest', 'task_description': 'unittest_desciption'})
+        response = self.client.post('/find_assistor/' + user_id_1, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
+        print('json_response', json_response)
         self.assertEqual(json_response['task_id'], task_id)
         assistor_num = json_response['assistor_num']
 
-        # check Matched database new rows, include sponsor to sponsor
-        queries = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
-        self.assertEqual(len(queries), assistor_num+1)
-        sponsor_random_id = queries[0].sponsor_random_id
-        for i in range(len(queries)):
-            print("query", queries[i].sponsor_id)
-            self.assertEqual(queries[i].sponsor_id, 1) 
-            self.assertEqual(queries[i].task_id, task_id)
-            self.assertEqual(queries[i].sponsor_random_id, sponsor_random_id)
-            # self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set([0, 4, 1]))
-            self.assertEqual(set(json.loads(queries[i].Matched_id_file)), set(["8", "4", "3","12","16","17"]))
+        # check Train_Match database new rows, include sponsor to sponsor
+        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        total_assistor_num = train_match_document['total_assistor_num']
+        sponsor_id = train_match_document['sponsor_information']['sponsor_id']
+        sponsor_information = train_match_document['sponsor_information']
+        assistor_information = train_match_document['assistor_information']
+        sponsor_terminate_id_dict = train_match_document['sponsor_terminate_id_dict']
+        assistor_terminate_id_dict = train_match_document['assistor_terminate_id_dict']
+        sponsor_random_id_mapping = train_match_document['sponsor_random_id_mapping']
+        asssistor_random_id_mapping = train_match_document['assistor_random_id_mapping']
+        sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
+        sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
-        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair != 1, Matched.test_indicator == "train").all()
-        self.assertEqual(len(queries), len(list_content))
-        assistor_random_id_list = []
-        for i in range(len(queries)):
-            assistor_random_id_list.append(queries[i].assistor_random_id_pair)
+        self.assertEqual(train_match_document['task_id'], task_id)
+        self.assertEqual(total_assistor_num, assistor_num)
+        self.assertEqual(sponsor_id, user_id_1)
+        self.assertEqual(sponsor_random_id_mapping[sponsor_random_id], sponsor_id)
+        self.assertEqual(len(assistor_information), 0)
+        self.assertEqual(len(asssistor_random_id_mapping), 0)
+        self.assertEqual(len(sponsor_terminate_id_dict), 0)
+        self.assertEqual(len(assistor_terminate_id_dict), 0)
 
-        # check the row that sponsor to sponsor
-        queries = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == 1, Matched.test_indicator == "train").all()
-        self.assertEqual(len(queries), 1)
-        self.assertEqual(queries[0].sponsor_id, 1)
+        train_match_identifier_document = train_mongoDB.search_train_match_identifier_document(identifier_id=sponsor_identifier_id)
+        identifier_content = train_match_identifier_document['identifier_content']
+        self.assertEqual(identifier_content, [8, 4, 3, 12, 16, 17])
         
-        list_content = [2,3]
-        return task_id, list_content, assistor_random_id_list
+        return task_id, assistor_username_list
     
     def unread_request_two_users_helper(self, task_id, list_content, assistor_random_id_list):
 

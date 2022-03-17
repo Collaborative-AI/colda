@@ -67,7 +67,7 @@ def match_identifier_content():
     sponsor_terminate_id_dict = train_match_document['sponsor_terminate_id_dict']
     # check how many assistors in this train task have terminated train task
     assistor_terminate_id_dict = train_match_document['assistor_terminate_id_dict']
-    asssistor_random_id_mapping = train_match_document['asssistor_random_id_mapping']
+    asssistor_random_id_mapping = train_match_document['assistor_random_id_mapping']
     sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
     sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 

@@ -90,7 +90,7 @@ def get_identifier_content(id):
     return jsonify(response)
 
 
-@main.route('get_test_identifier_content/<int:id>', methods=['POST'])
+@main.route('/get_test_identifier_content/<int:id>', methods=['POST'])
 @token_auth.login_required
 def get_test_identifier_content(id):
 

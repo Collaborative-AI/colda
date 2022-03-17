@@ -12,7 +12,7 @@ from Items import pyMongo
 # import BluePrint
 from Items.main import main
 
-from Items.models import User, Message, Matched, Notification, Stop, Pending
+# from Items.models import User, Message, Matched, Notification, Stop, Pending
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 

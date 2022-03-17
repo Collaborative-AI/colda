@@ -11,7 +11,7 @@ load_dotenv(os.path.join(basedir, '.env'), encoding='utf-8')
 class Config(object):
     
     DEBUG = True
-    SECRET_KEY = 'adasdaxcw!!!--xq4213'
+    SECRET_KEY = 'adasdaxcwxq4213'
 
     # When session.permanent = True, PERMANENT_SESSION_LIFETIME works.
     # session.permanent default value is False, but Redis is True
@@ -35,13 +35,10 @@ class Config(object):
     
     # MongoDB
     local_host = '127.0.0.1'
-    Database_name = 'mysynspot_db'
+    # Database_name = 'mysynspot_db'
+    Database_name = 'unittest_db'
     MONGO_URI = "mongodb://%s:27017/%s" % (local_host, Database_name)
-    
-    
-    
-    
-    
+    # MONGO_URI = "mongodb://%s:27017" % (local_host)
     
     
     # mysql
@@ -71,9 +68,6 @@ class Config(object):
 #     "pool_size": 50,
 # }
 
-
-
-
     MESSAGES_PER_PAGE = 10
 
     # gmail for email validation
@@ -99,5 +93,5 @@ class DevelopmentConfig(Config):
     
 
 class TestingConfig(Config):
-
+    
     pass

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import json
 import unittest
 from Items import create_app, db, pyMongo
-from Items.models import User, Message, Notification, Matched
+# from Items.models import User, Message, Notification, Matched
 from tests import TestConfig
 
 
@@ -11,6 +11,7 @@ class Test_Helper_Func_APITestCase(unittest.TestCase):
 
     def setUp(self):
         '''每个测试之前执行'''
+        print('hggfs')
         self.app = create_app(TestConfig)  # 创建Flask应用
         self.app_context = self.app.app_context()  # 激活(或推送)Flask应用上下文
         self.app_context.push()

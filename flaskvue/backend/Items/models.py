@@ -4,7 +4,7 @@ import jwt
 import json
 
 from hashlib import md5
-from Items import db
+from Items import db, pyMongo
 from time import time
 from flask import url_for, current_app
 from datetime import datetime, timedelta
@@ -38,565 +38,568 @@ class PaginatedAPIMixin(object):
         }
         return data
 
-class User(PaginatedAPIMixin, db.Model):
-    __tablename__ = 'users'
-    print("ppppp")
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True)
-    password_hash = db.Column(db.String(128))
-    name = db.Column(db.String(64))
-    location = db.Column(db.String(64))
-    about_me = db.Column(db.Text())
-    authority = db.Column(db.String(30))
-    confirmed = db.Column(db.String(10))
+# class User(PaginatedAPIMixin, db.Model):
+#     __tablename__ = 'users'
+#     print("ppppp")
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(64), index=True, unique=True)
+#     email = db.Column(db.String(120), index=True)
+#     password_hash = db.Column(db.String(128))
+#     name = db.Column(db.String(64))
+#     location = db.Column(db.String(64))
+#     about_me = db.Column(db.Text())
+#     authority = db.Column(db.String(30))
+#     confirmed = db.Column(db.String(10))
 
-    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+#     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
-    last_requests_read_time = db.Column(db.DateTime)
+#     last_requests_read_time = db.Column(db.DateTime)
 
-    last_matched_file_read_time = db.Column(db.DateTime)
+#     last_matched_file_read_time = db.Column(db.DateTime)
 
-    last_situation_read_time = db.Column(db.DateTime)
+#     last_situation_read_time = db.Column(db.DateTime)
 
-    last_output_read_time = db.Column(db.DateTime)
+#     last_output_read_time = db.Column(db.DateTime)
 
-    last_test_requests_read_time = db.Column(db.DateTime)
+#     last_test_requests_read_time = db.Column(db.DateTime)
 
-    last_test_matched_file_read_time = db.Column(db.DateTime)
+#     last_test_matched_file_read_time = db.Column(db.DateTime)
 
-    last_test_output_read_time = db.Column(db.DateTime)
+#     last_test_output_read_time = db.Column(db.DateTime)
 
-    last_messages_read_time = db.Column(db.DateTime)
+#     last_messages_read_time = db.Column(db.DateTime)
 
-    last_unread_stop_train_task_read_time = db.Column(db.DateTime)
+#     last_unread_stop_train_task_read_time = db.Column(db.DateTime)
 
-    last_unread_stop_test_task_read_time = db.Column(db.DateTime)
+#     last_unread_stop_test_task_read_time = db.Column(db.DateTime)
 
-    # last_stop_read_time = db.Column(db.DateTime)
+#     # last_stop_read_time = db.Column(db.DateTime)
 
-    # Message User sent
-    messages_sent = db.relationship('Message', foreign_keys='Message.sender_id',
-                                    backref='sender', lazy='dynamic',
-                                    cascade='all, delete-orphan')
-    # Message User received
-    messages_received = db.relationship('Message',
-                                        foreign_keys='Message.assistor_id',
-                                        backref='assistor', lazy='dynamic',
-                                        cascade='all, delete-orphan')
+#     # Message User sent
+#     messages_sent = db.relationship('Message', foreign_keys='Message.sender_id',
+#                                     backref='sender', lazy='dynamic',
+#                                     cascade='all, delete-orphan')
+#     # Message User received
+#     messages_received = db.relationship('Message',
+#                                         foreign_keys='Message.assistor_id',
+#                                         backref='assistor', lazy='dynamic',
+#                                         cascade='all, delete-orphan')
     
-    # Message User sent
-    # match_sponsor = db.relationship('Matched', foreign_keys='Matched.sponsor_id',
-    #                                 backref='matchsponsor', lazy='dynamic',
-    #                                 cascade='all, delete-orphan')
-    # # Message User received
-    # match_assistor = db.relationship('Matched',
-    #                                     foreign_keys='Matched.assistor_id_pair',
-    #                                     backref='matchassistor', lazy='dynamic',
-    #                                     cascade='all, delete-orphan')
+#     # Message User sent
+#     # match_sponsor = db.relationship('Matched', foreign_keys='Matched.sponsor_id',
+#     #                                 backref='matchsponsor', lazy='dynamic',
+#     #                                 cascade='all, delete-orphan')
+#     # # Message User received
+#     # match_assistor = db.relationship('Matched',
+#     #                                     foreign_keys='Matched.assistor_id_pair',
+#     #                                     backref='matchassistor', lazy='dynamic',
+#     #                                     cascade='all, delete-orphan')
 
-    # Notification
-    notifications = db.relationship('Notification', backref='user',
-                                    lazy='dynamic', cascade='all, delete-orphan')
+#     # Notification
+#     notifications = db.relationship('Notification', backref='user',
+#                                     lazy='dynamic', cascade='all, delete-orphan')
 
-    def __repr__(self):
-        return '<User {}>'.format(self.username)
+#     def __repr__(self):
+#         return '<User {}>'.format(self.username)
 
-    def avatar(self, size):
-        '''头像'''
-        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
+#     def avatar(self, size):
+#         '''头像'''
+#         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+#         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+#     def set_password(self, password):
+#         self.password_hash = generate_password_hash(password)
 
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+#     def check_password(self, password):
+#         return check_password_hash(self.password_hash, password)
 
-    # change User Object to dictionary, the dictionary would be changed to 
-    # Json later
-    def to_dict(self, include_email=False):
-        data = {
-            'id': self.id,
-            'name': self.name,
-            'location': self.location,
-            'about_me': self.about_me,
-            'username': self.username,
-            'last_seen': self.last_seen.isoformat() + 'Z',
-            '_links': {
-                'self': url_for('main.get_user', id=self.id),
-                'avatar': self.avatar(128),
-            },
-            'token': None,
-        }
+#     # change User Object to dictionary, the dictionary would be changed to 
+#     # Json later
+#     def to_dict(self, include_email=False):
+#         data = {
+#             'id': self.id,
+#             'name': self.name,
+#             'location': self.location,
+#             'about_me': self.about_me,
+#             'username': self.username,
+#             'last_seen': self.last_seen.isoformat() + 'Z',
+#             '_links': {
+#                 'self': url_for('main.get_user', id=self.id),
+#                 'avatar': self.avatar(128),
+#             },
+#             'token': None,
+#         }
         
-        if include_email:
-            data['email'] = self.email
-        return data
+#         if include_email:
+#             data['email'] = self.email
+#         return data
 
-    # change Json to User Object
-    def from_dict(self, data, new_user=False):
-        for key in ['username','email', 'name', 'about_me', 'location']:
-            if key in data:
-                setattr(self, key, data[key])
-        if new_user and 'password' in data:
-            self.set_password(data['password'])
+#     # change Json to User Object
+#     def from_dict(self, data, new_user=False):
+#         for key in ['username','email', 'name', 'about_me', 'location']:
+#             if key in data:
+#                 setattr(self, key, data[key])
+#         if new_user and 'password' in data:
+#             self.set_password(data['password'])
     
-    def add_notification(self, name, data):
-        '''给用户实例对象增加通知'''
-        # 如果具有相同名称的通知已存在，则先删除该通知
-        a = self.notifications.filter_by(name=name).first()
-        print("aaa", a)
-        self.notifications.filter_by(name=name).delete()
-        db.session.commit()
+#     def add_notification(self, name, data):
+#         '''给用户实例对象增加通知'''
+#         # 如果具有相同名称的通知已存在，则先删除该通知
+#         a = self.notifications.filter_by(name=name).first()
+#         print("aaa", a)
+#         self.notifications.filter_by(name=name).delete()
+#         db.session.commit()
 
-        task_id_list = data[0]
-        sender_random_id_list = data[1]
+#         task_id_list = data[0]
+#         sender_random_id_list = data[1]
 
-        # print("task_id_list", task_id_list, json.dumps(task_id_list))
-        # print(json.loads(json.dumps(task_id_list)))
-        # print("sender", sender_random_id_list)
+#         # print("task_id_list", task_id_list, json.dumps(task_id_list))
+#         # print(json.loads(json.dumps(task_id_list)))
+#         # print("sender", sender_random_id_list)
 
-        count = len(task_id_list)
+#         count = len(task_id_list)
 
-        # 为用户添加通知，写入数据库
-        notification = Notification()
-        notification.name = name
-        notification.payload_json = json.dumps(count)
-        notification.user_id = self.id
-        notification.sender_random_id_list = json.dumps(sender_random_id_list)
-        notification.task_id_list = json.dumps(task_id_list)
-        # n = Notification(name=name, payload_json=json.dumps(count), user=self,
-        #     sender_random_id_list=json.dumps(sender_random_id_list),task_id_list=json.dumps(task_id_list))
+#         # 为用户添加通知，写入数据库
+#         notification = Notification()
+#         notification.name = name
+#         notification.payload_json = json.dumps(count)
+#         notification.user_id = self.id
+#         notification.sender_random_id_list = json.dumps(sender_random_id_list)
+#         notification.task_id_list = json.dumps(task_id_list)
+#         # n = Notification(name=name, payload_json=json.dumps(count), user=self,
+#         #     sender_random_id_list=json.dumps(sender_random_id_list),task_id_list=json.dumps(task_id_list))
 
-        print('add_notification', self, data, notification)
-        db.session.add(notification)
-        db.session.commit()
-        return notification
+#         print('add_notification', self, data, notification)
+#         db.session.add(notification)
+#         db.session.commit()
+#         return notification
         
-    def new_recived_messages(self):
-        '''用户未读的私信计数'''
-        last_read_time = self.last_messages_read_time or datetime(1900, 1, 1)
-        return Message.query.filter_by(assistor=self).filter(
-            Message.timestamp > last_read_time).count()
+#     def new_recived_messages(self):
+#         '''用户未读的私信计数'''
+#         last_read_time = self.last_messages_read_time or datetime(1900, 1, 1)
+#         return Message.query.filter_by(assistor=self).filter(
+#             Message.timestamp > last_read_time).count()
 
-    def stop_train_task(self):
+#     def stop_train_task(self):
 
-        last_unread_stop_train_task_read_time = self.last_unread_stop_train_task_read_time or datetime(1900, 1, 1)
+#         last_unread_stop_train_task_read_time = self.last_unread_stop_train_task_read_time or datetime(1900, 1, 1)
 
-        # stop_informed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-        # stop_deleted_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#         # stop_informed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#         # stop_deleted_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-        query = Stop.query.filter_by(stop_informed_user_id=self.id).filter(
-            Stop.timestamp > last_unread_stop_train_task_read_time, Stop.test_indicator == "train").all()
+#         query = Stop.query.filter_by(stop_informed_user_id=self.id).filter(
+#             Stop.timestamp > last_unread_stop_train_task_read_time, Stop.test_indicator == "train").all()
         
-        print("---", len(query), last_unread_stop_train_task_read_time)
-        task_id_list = []
-        # deleted_user_id / stop_round
-        stop_deleted_user_id_and_round_list = [[],[]]
+#         print("---", len(query), last_unread_stop_train_task_read_time)
+#         task_id_list = []
+#         # deleted_user_id / stop_round
+#         stop_deleted_user_id_and_round_list = [[],[]]
 
-        for i in range(len(query)):
-            task_id_list.append(query[i].task_id)
-            stop_deleted_user_id_and_round_list[0].append(query[i].stop_deleted_user_id)
-            stop_deleted_user_id_and_round_list[1].append(query[i].stop_round)
-        print("--", task_id_list, stop_deleted_user_id_and_round_list)
-        return [task_id_list, stop_deleted_user_id_and_round_list]
+#         for i in range(len(query)):
+#             task_id_list.append(query[i].task_id)
+#             stop_deleted_user_id_and_round_list[0].append(query[i].stop_deleted_user_id)
+#             stop_deleted_user_id_and_round_list[1].append(query[i].stop_round)
+#         print("--", task_id_list, stop_deleted_user_id_and_round_list)
+#         return [task_id_list, stop_deleted_user_id_and_round_list]
 
-    def stop_test_task(self):
-        last_unread_stop_test_task_read_time = self.last_unread_stop_test_task_read_time or datetime(1900, 1, 1)
+#     def stop_test_task(self):
+#         last_unread_stop_test_task_read_time = self.last_unread_stop_test_task_read_time or datetime(1900, 1, 1)
 
-        # stop_informed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-        # stop_deleted_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#         # stop_informed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#         # stop_deleted_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-        query = Stop.query.filter_by(stop_informed_user_id=self.id).filter(
-            Stop.timestamp > last_unread_stop_test_task_read_time, Stop.test_indicator == "train").all()
+#         query = Stop.query.filter_by(stop_informed_user_id=self.id).filter(
+#             Stop.timestamp > last_unread_stop_test_task_read_time, Stop.test_indicator == "train").all()
         
-        print("---", len(query), last_unread_stop_test_task_read_time)
-        task_id_list = []
-        # deleted_user_id / stop_round
-        stop_deleted_user_id_and_round_list = [[],[]]
+#         print("---", len(query), last_unread_stop_test_task_read_time)
+#         task_id_list = []
+#         # deleted_user_id / stop_round
+#         stop_deleted_user_id_and_round_list = [[],[]]
 
-        for i in range(len(query)):
-            task_id_list.append(query[i].test_id)
-            stop_deleted_user_id_and_round_list[0].append(query[i].stop_deleted_user_id)
-            stop_deleted_user_id_and_round_list[1].append(query[i].stop_round)
-        print("--", task_id_list, stop_deleted_user_id_and_round_list)
-        return [task_id_list, stop_deleted_user_id_and_round_list]
+#         for i in range(len(query)):
+#             task_id_list.append(query[i].test_id)
+#             stop_deleted_user_id_and_round_list[0].append(query[i].stop_deleted_user_id)
+#             stop_deleted_user_id_and_round_list[1].append(query[i].stop_round)
+#         print("--", task_id_list, stop_deleted_user_id_and_round_list)
+#         return [task_id_list, stop_deleted_user_id_and_round_list]
 
-    def new_request(self):
-        '''用户未读的请求数'''
-        last_request_time = self.last_requests_read_time or datetime(1900, 1, 1)
+#     def new_request(self):
+#         '''用户未读的请求数'''
+#         last_request_time = self.last_requests_read_time or datetime(1900, 1, 1)
 
-        query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
-            Matched.request_timestamp > last_request_time, Matched.test_indicator == "train").all()
+#         query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
+#             Matched.request_timestamp > last_request_time, Matched.test_indicator == "train").all()
         
-        task_id_list = []
-        sender_random_id_list = []
-        for i in range(len(query)):
-            task_id_list.append(query[i].task_id)
+#         task_id_list = []
+#         sender_random_id_list = []
+#         for i in range(len(query)):
+#             task_id_list.append(query[i].task_id)
 
-            # sender must be sponsor
-            sender_random_id_list.append(query[i].sponsor_random_id)
+#             # sender must be sponsor
+#             sender_random_id_list.append(query[i].sponsor_random_id)
 
-        return [task_id_list, sender_random_id_list]
+#         return [task_id_list, sender_random_id_list]
 
 
-    def new_match_id(self):
-        '''用户未读的match完的id'''
-        last_match_time = self.last_matched_file_read_time or datetime(1900, 1, 1)
+#     def new_match_id(self):
+#         '''用户未读的match完的id'''
+#         last_match_time = self.last_matched_file_read_time or datetime(1900, 1, 1)
 
-        query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
-            Matched.match_id_timestamp > last_match_time, Matched.test_indicator == "train").all()
+#         query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
+#             Matched.match_id_timestamp > last_match_time, Matched.test_indicator == "train").all()
 
-        task_id_list = []
-        sender_random_id_list = []
-        for i in range(len(query)):
-            task_id_list.append(query[i].task_id)
+#         task_id_list = []
+#         sender_random_id_list = []
+#         for i in range(len(query)):
+#             task_id_list.append(query[i].task_id)
 
-            # sender must be sponsor
-            sender_random_id_list.append(query[i].sponsor_random_id)
-        print('new_match_id', task_id_list, sender_random_id_list)
-        return [task_id_list, sender_random_id_list]
+#             # sender must be sponsor
+#             sender_random_id_list.append(query[i].sponsor_random_id)
+#         print('new_match_id', task_id_list, sender_random_id_list)
+#         return [task_id_list, sender_random_id_list]
 
-    def new_situation(self):
-        '''用户未读的situation'''
-        last_situation_time = self.last_situation_read_time or datetime(1900, 1, 1)
-        query = Message.query.filter_by(assistor_id=self.id).filter(
-            Message.situation_timestamp > last_situation_time, Message.test_indicator == "train").all()
+#     def new_situation(self):
+#         '''用户未读的situation'''
+#         last_situation_time = self.last_situation_read_time or datetime(1900, 1, 1)
+#         query = Message.query.filter_by(assistor_id=self.id).filter(
+#             Message.situation_timestamp > last_situation_time, Message.test_indicator == "train").all()
 
-        # print("last_situation_time",last_situation_time)
-        # if self.id == 1:
-        #     for i in query:
-        #         print(i.situation_timestamp)
+#         # print("last_situation_time",last_situation_time)
+#         # if self.id == 1:
+#         #     for i in query:
+#         #         print(i.situation_timestamp)
 
-        task_id_list = []
-        sender_random_id_list = []
-        for i in range(len(query)):
-            if not query[i].output:
-                task_id_list.append(query[i].task_id)
+#         task_id_list = []
+#         sender_random_id_list = []
+#         for i in range(len(query)):
+#             if not query[i].output:
+#                 task_id_list.append(query[i].task_id)
 
-                # sender must be sponsor
-                sender_random_id_list.append(query[i].sender_random_id)
+#                 # sender must be sponsor
+#                 sender_random_id_list.append(query[i].sender_random_id)
 
-        return [task_id_list, sender_random_id_list]
+#         return [task_id_list, sender_random_id_list]
     
-    def new_output(self):
-        '''用户未读的output'''
-        last_output_time = self.last_output_read_time or datetime(1900, 1, 1)
-        query = Message.query.filter_by(assistor_id=self.id).filter(
-            Message.output_timestamp > last_output_time, Message.test_indicator == "train").all()
+#     def new_output(self):
+#         '''用户未读的output'''
+#         last_output_time = self.last_output_read_time or datetime(1900, 1, 1)
+#         query = Message.query.filter_by(assistor_id=self.id).filter(
+#             Message.output_timestamp > last_output_time, Message.test_indicator == "train").all()
         
-        print("new_output---------------------",self.id)
-        task_id_list = []
-        sender_random_id_list = []
-        for i in range(len(query)):
-            if query[i].output:
-                task_id_list.append(query[i].task_id)
+#         print("new_output---------------------",self.id)
+#         task_id_list = []
+#         sender_random_id_list = []
+#         for i in range(len(query)):
+#             if query[i].output:
+#                 task_id_list.append(query[i].task_id)
 
-                # sender must be sponsor
-                sender_random_id_list.append(query[i].sender_random_id)
+#                 # sender must be sponsor
+#                 sender_random_id_list.append(query[i].sender_random_id)
 
-        return [task_id_list, sender_random_id_list]
+#         return [task_id_list, sender_random_id_list]
 
-    def new_test_request(self):
-        print('last_test_requests_read_time', self.last_test_requests_read_time)
-        last_test_request_time = self.last_test_requests_read_time or datetime(1900, 1, 1)
+#     def new_test_request(self):
+#         print('last_test_requests_read_time', self.last_test_requests_read_time)
+#         last_test_request_time = self.last_test_requests_read_time or datetime(1900, 1, 1)
 
-        query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
-            Matched.request_timestamp > last_test_request_time, Matched.test_indicator == "test").all()
+#         query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
+#             Matched.request_timestamp > last_test_request_time, Matched.test_indicator == "test").all()
         
-        test_id_list = []
-        sender_random_id_list = []
-        for i in range(len(query)):
-            test_id_list.append(query[i].test_id)
+#         test_id_list = []
+#         sender_random_id_list = []
+#         for i in range(len(query)):
+#             test_id_list.append(query[i].test_id)
 
-            # sender must be sponsor
-            sender_random_id_list.append(query[i].sponsor_random_id)
+#             # sender must be sponsor
+#             sender_random_id_list.append(query[i].sponsor_random_id)
 
-        return [test_id_list, sender_random_id_list]
+#         return [test_id_list, sender_random_id_list]
 
-    def new_test_match_id(self):
-        last_test_match_time = self.last_test_matched_file_read_time or datetime(1900, 1, 1)
+#     def new_test_match_id(self):
+#         last_test_match_time = self.last_test_matched_file_read_time or datetime(1900, 1, 1)
 
-        query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
-            Matched.match_id_timestamp > last_test_match_time, Matched.test_indicator == "test").all()
+#         query = Matched.query.filter_by(assistor_id_pair=self.id).filter(
+#             Matched.match_id_timestamp > last_test_match_time, Matched.test_indicator == "test").all()
 
-        test_id_list = []
-        sender_random_id_list = []
-        for i in range(len(query)):
-            test_id_list.append(query[i].test_id)
+#         test_id_list = []
+#         sender_random_id_list = []
+#         for i in range(len(query)):
+#             test_id_list.append(query[i].test_id)
 
-            # sender must be sponsor
-            sender_random_id_list.append(query[i].sponsor_random_id)
+#             # sender must be sponsor
+#             sender_random_id_list.append(query[i].sponsor_random_id)
 
-        return [test_id_list, sender_random_id_list]
+#         return [test_id_list, sender_random_id_list]
 
-    def new_test_output(self):
-        last_test_output_time = self.last_test_output_read_time or datetime(1900, 1, 1)
-        print('last_test_output_time', self.last_test_output_read_time, last_test_output_time)
+#     def new_test_output(self):
+#         last_test_output_time = self.last_test_output_read_time or datetime(1900, 1, 1)
+#         print('last_test_output_time', self.last_test_output_read_time, last_test_output_time)
         
-        query = Message.query.filter_by(assistor_id=self.id).filter(
-            Message.output_timestamp > last_test_output_time, Message.test_indicator == "test").all()
+#         query = Message.query.filter_by(assistor_id=self.id).filter(
+#             Message.output_timestamp > last_test_output_time, Message.test_indicator == "test").all()
         
         
-        print("new_output---------------------",self.id,len(query))
-        test_id_list = []
-        sender_random_id_list = []
-        for i in range(len(query)):
-            if query[i].output:
-                test_id_list.append(query[i].test_id)
+#         print("new_output---------------------",self.id,len(query))
+#         test_id_list = []
+#         sender_random_id_list = []
+#         for i in range(len(query)):
+#             if query[i].output:
+#                 test_id_list.append(query[i].test_id)
 
-                # sender must be sponsor
-                sender_random_id_list.append(query[i].sender_random_id)
-        print('zzz',test_id_list, sender_random_id_list)
-        return [test_id_list, sender_random_id_list]
-
-
-    def update_jwt(self):
-        self.last_seen = datetime.utcnow()
-        db.session.add(self)
-
-    def get_jwt(self, expires_in=50000):
-        now = datetime.utcnow()
-        payload = {
-            'user_id': self.id,
-            'user_name': self.name if self.name else self.username,
-            'authority': self.authority if self.authority else 'user',
-            'exp': now + timedelta(seconds=expires_in),
-            'iat': now
-        }
-        return jwt.encode(
-            payload,
-            current_app.config['SECRET_KEY'],
-            algorithm='HS256').decode('utf-8')
-
-    @staticmethod
-    def verify_jwt(token):
-        try:
-            payload = jwt.decode(
-                token,
-                current_app.config['SECRET_KEY'],
-                algorithms=['HS256'])
-        except (jwt.exceptions.ExpiredSignatureError,
-                jwt.exceptions.InvalidSignatureError,
-                jwt.exceptions.DecodeError) as e:
-            return None
-        return User.query.get(payload.get('user_id'))
+#                 # sender must be sponsor
+#                 sender_random_id_list.append(query[i].sender_random_id)
+#         print('zzz',test_id_list, sender_random_id_list)
+#         return [test_id_list, sender_random_id_list]
 
 
-class Stop(PaginatedAPIMixin, db.Model):
-    __tablenale__ = 'stop'
-    id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     def update_jwt(self):
+#         self.last_seen = datetime.utcnow()
+#         db.session.add(self)
 
-    stop_informed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    stop_deleted_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    stop_round = db.Column(db.Integer)
-    task_id = db.Column(db.String(120), index=True)
-    test_id = db.Column(db.String(120), index=True)
-    test_indicator = db.Column(db.String(10))
+#     def get_jwt(self, expires_in=50000):
+#         now = datetime.utcnow()
+#         payload = {
+#             'user_id': self.id,
+#             'user_name': self.name if self.name else self.username,
+#             'authority': self.authority if self.authority else 'user',
+#             'exp': now + timedelta(seconds=expires_in),
+#             'iat': now
+#         }
+#         return jwt.encode(
+#             payload,
+#             current_app.config['SECRET_KEY'],
+#             algorithm='HS256').decode('utf-8')
 
-class Pending(PaginatedAPIMixin, db.Model):
-    __tablenale__ = 'pending'
-    id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
-    pending_assistor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    pending_task_id = db.Column(db.String(120), index=True)
-    pending_test_id = db.Column(db.String(120), index=True)
-    pending_task_name = db.Column(db.String(120))
-    pending_task_mode = db.Column(db.String(120))
-    pending_model_name = db.Column(db.String(120))
-    pending_metric_name = db.Column(db.String(120))
-    pending_task_description = db.Column(db.String(500))
-    pending_test_indicator = db.Column(db.String(10))
-    pending_test_description = db.Column(db.String(500))
-
-    def to_dict(self):
-        data = {
-            'pending_task_id': self.pending_task_id,
-            'pending_test_id': self.pending_test_id,
-            'pending_task_name': self.pending_task_name,
-            'pending_task_mode': self.pending_task_mode,
-            'pending_model_name': self.pending_model_name,
-            'pending_metric_name': self.pending_metric_name,
-            'pending_task_description': self.pending_task_description,
-            'pending_test_indicator': self.pending_test_indicator,
-            'pending_test_description': self.pending_test_description,
-        } 
-        return data
+#     @staticmethod
+#     def verify_jwt(token):
+#         try:
+#             payload = jwt.decode(
+#                 token,
+#                 current_app.config['SECRET_KEY'],
+#                 algorithms=['HS256'])
+#         except (jwt.exceptions.ExpiredSignatureError,
+#                 jwt.exceptions.InvalidSignatureError,
+#                 jwt.exceptions.DecodeError) as e:
+#             return None
+#         return User.query.get(payload.get('user_id'))
 
 
-class Message(PaginatedAPIMixin, db.Model):
-    __tablename__ = 'messages'
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text)
+# class Stop(PaginatedAPIMixin, db.Model):
+#     __tablenale__ = 'stop'
+#     id = db.Column(db.Integer, primary_key=True)
+#     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    situation_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    output_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     stop_informed_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     stop_deleted_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     stop_round = db.Column(db.Integer)
+#     task_id = db.Column(db.String(120), index=True)
+#     test_id = db.Column(db.String(120), index=True)
+#     test_indicator = db.Column(db.String(10))
+
+# class Pending(PaginatedAPIMixin, db.Model):
+#     __tablenale__ = 'pending'
+#     id = db.Column(db.Integer, primary_key=True)
+#     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+#     pending_assistor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     pending_task_id = db.Column(db.String(120), index=True)
+#     pending_test_id = db.Column(db.String(120), index=True)
+#     pending_task_name = db.Column(db.String(120))
+#     pending_task_mode = db.Column(db.String(120))
+#     pending_model_name = db.Column(db.String(120))
+#     pending_metric_name = db.Column(db.String(120))
+#     pending_task_description = db.Column(db.String(500))
+#     pending_test_indicator = db.Column(db.String(10))
+#     pending_test_description = db.Column(db.String(500))
+
+#     def to_dict(self):
+#         data = {
+#             'pending_task_id': self.pending_task_id,
+#             'pending_test_id': self.pending_test_id,
+#             'pending_task_name': self.pending_task_name,
+#             'pending_task_mode': self.pending_task_mode,
+#             'pending_model_name': self.pending_model_name,
+#             'pending_metric_name': self.pending_metric_name,
+#             'pending_task_description': self.pending_task_description,
+#             'pending_test_indicator': self.pending_test_indicator,
+#             'pending_test_description': self.pending_test_description,
+#         } 
+#         return data
+
+
+# class Message(PaginatedAPIMixin, db.Model):
+#     __tablename__ = 'messages'
+#     id = db.Column(db.Integer, primary_key=True)
+#     body = db.Column(db.Text)
+
+#     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     situation_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     output_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     
-    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    sender_random_id = db.Column(db.String(120))
-    assistor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    task_id = db.Column(db.String(120), index=True)
-    rounds = db.Column(db.Integer)
-    situation = db.Column(db.Text(10000000))
-    output = db.Column(db.Text(10000000), nullable=True)
-    test_indicator = db.Column(db.String(10))
-    test_id = db.Column(db.String(120), index=True)
-    Sponsor_situation_training_done = db.Column(db.String(120), nullable=True)
+#     sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     sender_random_id = db.Column(db.String(120))
+#     assistor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     task_id = db.Column(db.String(120), index=True)
+#     rounds = db.Column(db.Integer)
+#     situation = db.Column(db.Text(10000000))
+#     output = db.Column(db.Text(10000000), nullable=True)
+#     test_indicator = db.Column(db.String(10))
+#     test_id = db.Column(db.String(120), index=True)
+#     Sponsor_situation_training_done = db.Column(db.String(120), nullable=True)
 
-    def __repr__(self):
-        return '<Message {}>'.format(self.id)
+#     def __repr__(self):
+#         return '<Message {}>'.format(self.id)
 
-    # change User Object to dictionary, the dictionary would be changed to 
-    # Json later
-    def to_dict(self):
-        data = {
-            'id': self.id,
-            'body': self.body,
-            'sender': self.sender.to_dict(),
-            'assistor': self.assistor.to_dict(),
-            'timestamp': self.timestamp,
-            'situation_timestamp': self.situation_timestamp,
-            'output_timestamp': self.output_timestamp,
-            'task_id': self.task_id,
-            'rounds': self.rounds, 
-        } 
-        return data
+#     # change User Object to dictionary, the dictionary would be changed to 
+#     # Json later
+#     def to_dict(self):
+#         data = {
+#             'id': self.id,
+#             'body': self.body,
+#             'sender': self.sender.to_dict(),
+#             'assistor': self.assistor.to_dict(),
+#             'timestamp': self.timestamp,
+#             'situation_timestamp': self.situation_timestamp,
+#             'output_timestamp': self.output_timestamp,
+#             'task_id': self.task_id,
+#             'rounds': self.rounds, 
+#         } 
+#         return data
     
-    # change Json to User Object
-    def from_dict(self, data):
-        for key in ['body', 'timestamp']:
-            if key in data:
-                setattr(self, key, data[key])
+#     # change Json to User Object
+#     def from_dict(self, data):
+#         for key in ['body', 'timestamp']:
+#             if key in data:
+#                 setattr(self, key, data[key])
 
 
-class Notification(PaginatedAPIMixin, db.Model):  
-    __tablename__ = 'notifications'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+# class Notification(PaginatedAPIMixin, db.Model):  
+#     __tablename__ = 'notifications'
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    # category of notification
-    name = db.Column(db.String(128), index=True)
-    timestamp = db.Column(db.Float, index=True, default=time)
-    payload_json = db.Column(db.Text)
-    sender_random_id_list = db.Column(db.Text)
-    task_id_list = db.Column(db.Text)
+#     # category of notification
+#     name = db.Column(db.String(128), index=True)
+#     timestamp = db.Column(db.Float, index=True, default=time)
+#     payload_json = db.Column(db.Text)
+#     sender_random_id_list = db.Column(db.Text)
+#     task_id_list = db.Column(db.Text)
 
-    # sender_random_id = db.Column(db.Integer)
-    # task_id = db.Column(db.String(120), index=True)
-    # assistor_num = db.Column(db.Integer)
+#     # sender_random_id = db.Column(db.Integer)
+#     # task_id = db.Column(db.String(120), index=True)
+#     # assistor_num = db.Column(db.Integer)
 
-    def __repr__(self):
-        return '<Notification {}>'.format(self.id)
+#     def __repr__(self):
+#         return '<Notification {}>'.format(self.id)
 
-    def get_data(self):
-        return json.loads(str(self.payload_json))
+#     def get_data(self):
+#         return json.loads(str(self.payload_json))
 
-    def get_sender_random_id_list(self):
-        # print("self.sender_random_id_list", self.sender_random_id_list)
-        if not self.sender_random_id_list:
-            return []
-        return json.loads(str(self.sender_random_id_list))
+#     def get_sender_random_id_list(self):
+#         # print("self.sender_random_id_list", self.sender_random_id_list)
+#         if not self.sender_random_id_list:
+#             return []
+#         return json.loads(str(self.sender_random_id_list))
     
-    def get_task_id_list(self):
-        # print("self.task_id_list", self.task_id_list)
-        if not self.task_id_list:
-            return []
-        return json.loads(str(self.task_id_list))
+#     def get_task_id_list(self):
+#         # print("self.task_id_list", self.task_id_list)
+#         if not self.task_id_list:
+#             return []
+#         return json.loads(str(self.task_id_list))
 
-    def to_dict(self):
-        data = {
-            'id': self.id,
-            'name': self.name,
-            'user': {
-                'id': self.user.id,
-                'username': self.user.username,
-                'name': self.user.name,
-            },
-            'timestamp': self.timestamp,
-            'payload': self.get_data(),
-            'sender_random_id_list': self.get_sender_random_id_list(),
-            'task_id_list': self.get_task_id_list(),
-            # 'sender_random_id': self.sender_random_id,
-            # 'task_id': self.task_id,
-            # 'assistor_num': self.assistor_num,
-            # '_links': {
-            #     'self': url_for('main.get_notification', id=self.id),
-            #     'user_url': url_for('main.get_user', id=self.user_id)
-            # }
-        }
-        return data
+#     def to_dict(self):
+#         data = {
+#             'id': self.id,
+#             'name': self.name,
+#             'user': {
+#                 'id': self.user.id,
+#                 'username': self.user.username,
+#                 'name': self.user.name,
+#             },
+#             'timestamp': self.timestamp,
+#             'payload': self.get_data(),
+#             'sender_random_id_list': self.get_sender_random_id_list(),
+#             'task_id_list': self.get_task_id_list(),
+#             # 'sender_random_id': self.sender_random_id,
+#             # 'task_id': self.task_id,
+#             # 'assistor_num': self.assistor_num,
+#             # '_links': {
+#             #     'self': url_for('main.get_notification', id=self.id),
+#             #     'user_url': url_for('main.get_user', id=self.user_id)
+#             # }
+#         }
+#         return data
 
-    def from_dict(self, data):
-        for key in ['body', 'timestamp']:
-            if key in data:
-                setattr(self, key, data[key])
+#     def from_dict(self, data):
+#         for key in ['body', 'timestamp']:
+#             if key in data:
+#                 setattr(self, key, data[key])
 
-class Matched(PaginatedAPIMixin, db.Model):  
-    __tablename__ = 'matched'
-    id = db.Column(db.Integer, primary_key=True)
-    task_id = db.Column(db.String(120), index=True)
-    task_name = db.Column(db.String(120))
-    task_description = db.Column(db.String(500))
-    test_name = db.Column(db.String(120))
-    test_description = db.Column(db.String(500))
-    task_mode = db.Column(db.String(120))
-    model_name = db.Column(db.String(120))
-    metric_name = db.Column(db.String(120))
+# class Matched(PaginatedAPIMixin, db.Model):  
+#     __tablename__ = 'matched'
+#     id = db.Column(db.Integer, primary_key=True)
+#     task_id = db.Column(db.String(120), index=True)
+#     task_name = db.Column(db.String(120))
+#     task_description = db.Column(db.String(500))
+#     test_name = db.Column(db.String(120))
+#     test_description = db.Column(db.String(500))
+#     task_mode = db.Column(db.String(120))
+#     model_name = db.Column(db.String(120))
+#     metric_name = db.Column(db.String(120))
 
-    request_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    match_id_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     request_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     match_id_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
-    # sponsor_id = db.Column(db.String(120), db.ForeignKey('users.id'))
-    # assistor_id_pair = db.Column(db.String(120), db.ForeignKey('users.id'))
+#     # sponsor_id = db.Column(db.String(120), db.ForeignKey('users.id'))
+#     # assistor_id_pair = db.Column(db.String(120), db.ForeignKey('users.id'))
 
-    sponsor_id = db.Column(db.Integer)
-    assistor_id_pair = db.Column(db.Integer)
+#     sponsor_id = db.Column(db.Integer)
+#     assistor_id_pair = db.Column(db.Integer)
 
-    Matched_id_file =  db.Column(db.Text(10000000), nullable=True)
-    matched_done = db.Column(db.Integer, nullable=True)
-    Assistor_matched_written_done = db.Column(db.String(120), nullable=True)
-    sponsor_random_id = db.Column(db.String(120))
-    assistor_random_id_pair = db.Column(db.String(120))
+#     Matched_id_file =  db.Column(db.Text(10000000), nullable=True)
+#     matched_done = db.Column(db.Integer, nullable=True)
+#     Assistor_matched_written_done = db.Column(db.String(120), nullable=True)
+#     sponsor_random_id = db.Column(db.String(120))
+#     assistor_random_id_pair = db.Column(db.String(120))
 
-    test_indicator = db.Column(db.String(10))
-    test_id = db.Column(db.String(120), index=True)
+#     test_indicator = db.Column(db.String(10))
+#     test_id = db.Column(db.String(120), index=True)
     
-    Terminate = db.Column(db.String(120))
+#     Terminate = db.Column(db.String(120))
 
 
-    def __repr__(self):
-        return '<Match {}>'.format(self.id)
+#     def __repr__(self):
+#         return '<Match {}>'.format(self.id)
 
-    def get_data(self):
-        return json.loads(str(self.payload_json))
+#     def get_data(self):
+#         return json.loads(str(self.payload_json))
 
-    def to_dict(self):
-        data = {
-            'id': self.id,
-            'task_id': self.task_id,
-            'test_id': self.test_id,
-            'test_name': self.test_name,
-            'test_description': self.test_description,
-            'test_indicator': self.test_indicator,
-            'request_timestamp': self.request_timestamp,
-            'match_id_timestamp': self.match_id_timestamp,
-            'sponsor_random_id': self.sponsor_random_id,
-            'assistor_random_id_pair': self.assistor_random_id_pair,
-            'task_name':self.task_name,
-            'task_description': self.task_description,
-            # '_links': {
-            #     'self': url_for('main.get_notification', id=self.id),
-            #     'user_url': url_for('main.get_user', id=self.user_id)
-            # }
-        }
-        return data
+#     def to_dict(self):
+#         data = {
+#             'id': self.id,
+#             'task_id': self.task_id,
+#             'test_id': self.test_id,
+#             'test_name': self.test_name,
+#             'test_description': self.test_description,
+#             'test_indicator': self.test_indicator,
+#             'request_timestamp': self.request_timestamp,
+#             'match_id_timestamp': self.match_id_timestamp,
+#             'sponsor_random_id': self.sponsor_random_id,
+#             'assistor_random_id_pair': self.assistor_random_id_pair,
+#             'task_name':self.task_name,
+#             'task_description': self.task_description,
+#             # '_links': {
+#             #     'self': url_for('main.get_notification', id=self.id),
+#             #     'user_url': url_for('main.get_user', id=self.user_id)
+#             # }
+#         }
+#         return data
 
-    def from_dict(self, data):
-        for key in ['file_to_match', 'timestamp']:
-            if key in data:
-                setattr(self, key, data[key])
+#     def from_dict(self, data):
+#         for key in ['file_to_match', 'timestamp']:
+#             if key in data:
+#                 setattr(self, key, data[key])
 
+# # def create_MongoDB_Collections():
+# #     pyMongo..ensureIndex({'字段名': 1},{unique:true})
+# #     db.members.createIndex( { "user_id": 1 }, { unique: true } )

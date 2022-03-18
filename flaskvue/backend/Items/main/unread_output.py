@@ -3,20 +3,37 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
-from Items.main.apollo_utils import log, generate_msg
+from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
+from Items.main.utils import log, generate_msg
 
-from Items import db
+# from Items import db
+from Items import pyMongo
 # import BluePrint
 from Items.main import main
-from Items.models import User, Notification, Matched, Message
+# from Items.models import User, Notification, Matched, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
+from Items.main.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 
-
-
-@main.route('/users/<int:id>/output/', methods=['POST'])
+@main.route('/get_output_content/<string:id>', methods=['POST'])
 @token_auth.login_required
-def get_user_output(id):
+def get_output_content(id):
+
+    """
+    Sponsor gets outputs of assistors. Only sponsor enters this function.
+
+    Parameters:
+        task_id - String. The id of task
+        rounds - String. The round number
+
+    Returns:
+        data - { 
+                    assistor_random_id_to_output_content_dict: assistor_random_id_to_output_content_dict
+                }
+
+    Raises:
+        KeyError - raises an exception
+    """
 
     data = request.get_json()
     if not data:
@@ -26,45 +43,67 @@ def get_user_output(id):
     if 'rounds' not in data:
         return bad_request('rounds is required.')
 
+    user_id = obtain_user_id_from_token()
+    user = mongoDB.search_user_document(user_id=id)
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     task_id = data.get('task_id')
     rounds = data.get('rounds')
+    sponsor_id = user_id
 
-    log(generate_msg('--------------------unread situation begins'), g.current_user.id, task_id)
-    log(generate_msg('--------------------unread situation done (no function pass server)\n'), g.current_user.id, task_id)
-    log(generate_msg('--------------------unread output begins'), g.current_user.id, task_id)
-    log(generate_msg('5.1:"', 'sponsor get_user_output start'), g.current_user.id, task_id)
-
-    # only call this function with id that is sponsor
-    query = Matched.query.filter(Matched.task_id == task_id).first()
-    if int(query.sponsor_id) != id:
+    # if caller is not sponsor, it should not enter this function
+    task_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+    sponsor_id = task_match_document['sponsor_information']['sponsor_id']
+    if sponsor_id != user_id:
         return error_response(403)
 
-    # check if the caller and the id is the same
-    user = User.query.get_or_404(id)
-    if g.current_user != user:
-        return error_response(403)
+    log(generate_msg('---- unread situation begins'), user_id, task_id)
+    log(generate_msg('---- unread situation done (no function pass server)\n'), user_id, task_id)
+    log(generate_msg('---- unread output begins'), user_id, task_id)
+    log(generate_msg('5.1:"', 'sponsor get_user_output start'), user_id, task_id)
 
-    data = {}
-    query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.task_id == task_id, Message.rounds == rounds, Message.test_indicator == "train").order_by(Message.rounds.desc()).all()
+    train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+    output_dict = train_message_document['rounds_' + str(rounds)]['output_dict']
 
-    output_files = []
-    sender_random_ids = []
-    for row in query:
-        if row.output:
-            output_files.append(row.output)
-            sender_random_ids.append(row.sender_random_id)
+    assistor_random_id_to_output_content_dict = {}
+    for assistor_id in output_dict:
+        output_id = output_dict[assistor_id]['output_id']
+        train_message_output_document = train_mongoDB.search_train_message_output_document(output_id=output_id)
 
-    data = {
-        'output': output_files,
-        'sender_random_ids_list': sender_random_ids
+        output_content = train_message_output_document['output_content']
+        sender_random_id = train_message_output_document['sender_random_id']
+        assistor_random_id_to_output_content_dict[sender_random_id] = output_content
+
+    log(generate_msg('5.2:"', 'sponsor get_user_output done'), user_id, task_id)
+
+    response = {
+        'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict
     }
+    return jsonify(response)  
 
-    log(generate_msg('5.2:"', 'sponsor get_user_output done'), g.current_user.id, task_id)
-    return jsonify(data)  
 
-@main.route('/test_output/', methods=['POST'])
+@main.route('/get_test_output_content/<string:id>', methods=['POST'])
 @token_auth.login_required
-def get_user_test_output():
+def get_test_output_content(id):
+
+    """
+    Sponsor gets test outputs of assistors. Only sponsor enters this function.
+    test stage will only have 1 round
+
+    Parameters:
+        task_id - String. The id of train task
+        test_id - String. The id of test task
+
+    Returns:
+        data - { 
+                    assistor_random_id_to_output_content_dict: assistor_random_id_to_output_content_dict
+                }
+
+    Raises:
+        KeyError - raises an exception
+    """
 
     data = request.get_json()
     if not data:
@@ -74,35 +113,41 @@ def get_user_test_output():
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
 
-    test_id = data.get('test_id')
-    task_id = data.get('task_id')
-    
-    log(generate_msg('--------------------unread test output begins'), g.current_user.id, task_id, test_id)
-    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), g.current_user.id, task_id, test_id)
-
-    user = User.query.get_or_404(g.current_user.id)
-    # only call this function with id that is sponsor
-    query = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").first()
-    if int(query.sponsor_id) != g.current_user.id:
+    user_id = obtain_user_id_from_token()
+    user = mongoDB.search_user_document(user_id=id)
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
         return error_response(403)
 
-    data = {}
-    query = Message.query.filter(Message.assistor_id == g.current_user.id, Message.test_id == test_id, Message.test_indicator == "test").all()
+    # if caller is not sponsor, it should not enter this function
+    test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+    sponsor_id = test_match_document['sponsor_information']['sponsor_id']
+    if sponsor_id != user_id:
+        return error_response(403)
 
-    output_files = []
-    sender_random_ids = []
-    for row in query:
-        if row.output:
-            output_files.append(row.output)
-            sender_random_ids.append(row.sender_random_id)
+    test_id = data.get('test_id')
+    task_id = data.get('task_id')
+    sponsor_id = user_id
 
-    data = {
-        'output': output_files,
-        'sender_random_ids_list': sender_random_ids
+    log(generate_msg('---- unread test output begins'), user_id, task_id, test_id)
+    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), user_id, task_id, test_id)
+
+    test_message_document = test_mongoDB.search_test_message_document(test_id=test_id)
+    output_dict = test_message_document['rounds_1']['output_dict']
+
+    assistor_random_id_to_output_content_dict = {}
+    for assistor_id in output_dict:
+        output_id = output_dict[assistor_id]['output_id']
+        test_message_output_document = test_mongoDB.search_test_message_output_document(output_id=output_id)
+
+        output_content = test_message_output_document['output_content']
+        sender_random_id = test_message_output_document['sender_random_id']
+        assistor_random_id_to_output_content_dict[sender_random_id] = output_content
+
+    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output done'), user_id, task_id, test_id)
+    log(generate_msg('--------------------unread test output done\n'), user_id, task_id, test_id)
+
+    response = {
+        'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict
     }
-
-    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output done'), g.current_user.id, task_id, test_id)
-    log(generate_msg('--------------------unread test output done\n'), g.current_user.id, task_id, test_id)
-
-
-    return jsonify(data)  
+    return jsonify(response)  

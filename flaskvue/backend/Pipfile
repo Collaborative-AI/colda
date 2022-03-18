@@ -36,6 +36,9 @@ pymysql = "*"
 cryptography = "*"
 flask-mail = "*"
 colorama = "*"
+flask-pymongo = "*"
+pymongo = "*"
+snowflake-id = "*"
 
 [dev-packages]
 

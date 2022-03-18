@@ -13,7 +13,6 @@ def error_response(status_code, message=None):
     response.status_code = status_code
     return response
 
-
 def bad_request(message):
     '''400： Wrong Request'''
     return error_response(400, message)
@@ -22,7 +21,6 @@ def bad_request(message):
 @main.app_errorhandler(404)
 def not_found_error(error):
     return error_response(404)
-
 
 @main.app_errorhandler(500)
 def internal_error(error):

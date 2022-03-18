@@ -4,6 +4,8 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_mail import Mail
+from flask_pymongo import PyMongo
+# import pymongo 
 
 import pymysql
 
@@ -14,3 +16,5 @@ db = SQLAlchemy()
 # # Flask-Migrate plugin
 migrate = Migrate()
 mail = Mail()
+pyMongo = PyMongo()
+

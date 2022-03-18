@@ -287,71 +287,71 @@ class Test_total_flow_APITestCase(unittest.TestCase):
         # 9. sponsor and assistor call: get_user_match_id() (in unread_match_id.py), get matched id file
         headers = self.get_token_auth_headers('unittest', '123')
         data = json.dumps({'test_id': test_id_1})
-        response = self.client.post('/users/1/test_match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/1/test_identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
+        self.assertIsNotNone(json_response.get('identifier_content'))
         self.assertIsNotNone(json_response.get('assistor_random_id_pair'))
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set([4,12,16,17]))
-        self.assertEqual(set(json.loads(match_id_file_list[1])), set([3,4,12]))
+        identifier_content_list = json_response['identifier_content']
+        self.assertEqual(set(json.loads(identifier_content_list[0])), set([4,12,16,17]))
+        self.assertEqual(set(json.loads(identifier_content_list[1])), set([3,4,12]))
 
         headers = self.get_token_auth_headers('unittest', '123')
         data = json.dumps({'test_id': test_id_2})
-        response = self.client.post('/users/1/test_match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/1/test_identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
+        self.assertIsNotNone(json_response.get('identifier_content'))
         self.assertIsNotNone(json_response.get('assistor_random_id_pair'))
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set([8]))
-        self.assertEqual(set(json.loads(match_id_file_list[1])), set([4]))
+        identifier_content_list = json_response['identifier_content']
+        self.assertEqual(set(json.loads(identifier_content_list[0])), set([8]))
+        self.assertEqual(set(json.loads(identifier_content_list[1])), set([4]))
 
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'test_id': test_id_1})
-        response = self.client.post('/users/2/test_match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/2/test_identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
+        self.assertIsNotNone(json_response.get('identifier_content'))
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set([4,12,16,17]))
+        identifier_content_list = json_response['identifier_content']
+        self.assertEqual(set(json.loads(identifier_content_list[0])), set([4,12,16,17]))
 
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'test_id': test_id_2})
-        response = self.client.post('/users/2/test_match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/2/test_identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
+        self.assertIsNotNone(json_response.get('identifier_content'))
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set([8]))
+        identifier_content_list = json_response['identifier_content']
+        self.assertEqual(set(json.loads(identifier_content_list[0])), set([8]))
         
         headers = self.get_token_auth_headers('unittest3', '123')
         data = json.dumps({'test_id': test_id_1})
-        response = self.client.post('/users/3/test_match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/3/test_identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
+        self.assertIsNotNone(json_response.get('identifier_content'))
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set([3,4,12]))
+        identifier_content_list = json_response['identifier_content']
+        self.assertEqual(set(json.loads(identifier_content_list[0])), set([3,4,12]))
 
         headers = self.get_token_auth_headers('unittest3', '123')
         data = json.dumps({'test_id': test_id_2})
-        response = self.client.post('/users/3/test_match_id_file/', headers=headers, data=data)
+        response = self.client.post('/users/3/test_identifier_content/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertIsNotNone(json_response.get('match_id_file'))
+        self.assertIsNotNone(json_response.get('identifier_content'))
         self.assertIsNotNone(json_response.get('sponsor_random_id'))
         # test match id file
-        match_id_file_list = json_response['match_id_file']
-        self.assertEqual(set(json.loads(match_id_file_list[0])), set([4]))
+        identifier_content_list = json_response['identifier_content']
+        self.assertEqual(set(json.loads(identifier_content_list[0])), set([4]))
         
         # 13. assistors call send_output() (in unread situation.py)
         headers = self.get_token_auth_headers('unittest2', '123')

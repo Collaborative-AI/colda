@@ -1,15 +1,45 @@
 import errno
 import os
 import re
+import jwt
+import uuid
 import logging
-from flask_mail import Message
-from Items import mail
-from Items.extensions import mail
+
+from bson import ObjectId
 from setting import Config
-
-from flask import current_app
+from flask import current_app, g
+from flask_mail import Message
+from datetime import datetime, timedelta
 from itsdangerous import URLSafeTimedSerializer
+from werkzeug.security import generate_password_hash, check_password_hash
 
+from Items import mail, pyMongo
+from Items.extensions import mail
+
+def add_new_token_to_response(response):
+    response['new_token'] = g.current_user['new_token']
+    return response
+
+def generate_password(password):
+    password_hash = generate_password_hash(password)
+    return password_hash
+
+def check_password(user, password):
+    return check_password_hash(user['password_hash'], password)
+
+def obtain_user_id_from_token():
+    user_id = g.current_user['user_id']
+    return user_id
+
+def obtain_unique_id():
+    unique_id = str(uuid.uuid1())
+    return unique_id
+
+def verify_token_user_id_and_function_caller_id(token_user_id, function_caller_id):
+    if token_user_id == function_caller_id:
+        return True
+    else:
+        return False
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])

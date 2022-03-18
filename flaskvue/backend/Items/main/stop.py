@@ -4,19 +4,19 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
-from Items.main.apollo_utils import log, generate_msg
+from Items.main.utils import log, generate_msg
 
 from Items import db
 # import BluePrint
 from Items.main import main
-from Items.models import User, Message, Matched, Stop
+# from Items.models import User, Message, Matched, Stop
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
 
-@main.route('/stop_train_task/', methods=['POST'])
+@main.route('/stop_train_task/<string:id>', methods=['POST'])
 @token_auth.login_required
-def stop_train_task():
+def stop_train_task(id):
 
     data = request.get_json()
 
@@ -27,6 +27,12 @@ def stop_train_task():
 
     task_id = data.get('task_id')
     print("----------1")
+    user_id = obtain_user_id_from_token()
+    user = mongoDB.search_user_document(user_id=id)
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     most_recent_round = 0
     query = Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
     if query is not None:
@@ -136,9 +142,9 @@ def stop_train_task():
 
 
 
-@main.route('/stop_test_task/', methods=['POST'])
+@main.route('/stop_test_task/<string:id>', methods=['POST'])
 @token_auth.login_required
-def stop_test_task():
+def stop_test_task(id):
     
     data = request.get_json()
 
@@ -148,6 +154,12 @@ def stop_test_task():
         return bad_request('test_id is required.')
 
     test_id = data.get('test_id')
+    user_id = obtain_user_id_from_token()
+    user = mongoDB.search_user_document(user_id=id)
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+        return error_response(403)
+
     print("----------1")
     most_recent_round = 0
     # query = Message.query.filter(Message.test_id == test_id, Message.test_indicator == "test").order_by(Message.rounds.desc()).first()

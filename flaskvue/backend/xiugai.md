@@ -68,145 +68,145 @@
    - train
     - /find_assistor/<string:id>
       {
-          'assistor_username_list': assistor_username_list, 
-          'identifier_content': identifier_content,      
-          'task_id': task_id, 
-          'task_mode': 'regression', 
-          'model_name': 'LinearRegression', 
-          'metric_name': 'RMSE',
-          'task_name': 'unittest', 
-          'task_description': 'unittest_desciption'
+          'assistor_username_list': assistor_username_list (list), 
+          'identifier_content': identifier_content (list),      
+          'task_id': task_id (string), 
+          'task_mode': 'regression' (string), 
+          'model_name': 'LinearRegression' (string), 
+          'metric_name': 'RMSE' (string),
+          'task_name': 'unittest' (string), 
+          'task_description': 'unittest_desciption' (string)
       }
     - /match_identifier_content/<string:id>
       {
-          'task_id': task_id, 
-          'identifier_content': identifier_content
+          'task_id': task_id, (string) 
+          'identifier_content': identifier_content (list)
       }
     - /get_identifier_content/<string:id>
       {
-          'task_id': task_id
+          'task_id': task_id (string)
       }
     - /send_situation/<string:id>
      {
-          'task_id': task_id,
-          'assistor_random_id_to_residual_dict': assistor_random_id_to_residual_dict
+          'task_id': task_id (string),
+          'assistor_random_id_to_residual_dict': assistor_random_id_to_residual_dict (dict)
       }
     - /get_situation_content/<string:id>
      {
-          'task_id': task_id, 
-          'rounds': cur_rounds_num
+          'task_id': task_id (string), 
+          'rounds': cur_rounds_num (int)
       }
     - /send_output/<string:id>
      {
-          'task_id': task_id, 
-          'output_content': output_content
+          'task_id': task_id (string), 
+          'output_content': output_content (list)
       }
     - /get_output_content/<string:id>
      {
-          'task_id': task_id, 
-          'rounds': cur_rounds_num
+          'task_id': task_id (string), 
+          'rounds': cur_rounds_num (int)
       }
    - test
     - /find_test_assistor/<string:id>
       {
-          'identifier_content': identifier_content,      
-          'task_id': task_id, 
-          'test_id': test_id,
-          'task_mode': 'regression', 
-          'model_name': 'LinearRegression', 
-          'metric_name': 'RMSE',
-          'test_name': 'unittest', 
-          'test_description': 'unittest_desciption'
+          'identifier_content': identifier_content (list),      
+          'task_id': task_id (string), 
+          'test_id': test_id (string),
+          'task_mode': 'regression' (string), 
+          'model_name': 'LinearRegression' (string), 
+          'metric_name': 'RMSE' (string),
+          'test_name': 'unittest' (string), 
+          'test_description': 'unittest_desciption' (string)
       }
     - /match_test_identifier_content/<string:id>
      {
-          'task_id': task_id, 
-          'test_id': test_id,
-          'identifier_content': identifier_content
+          'task_id': task_id (string), 
+          'test_id': test_id (string),
+          'identifier_content': identifier_content (string)
       }
     - /get_test_identifier_content/<string:id>
      {
-          'task_id': task_id,
-          'test_id': test_id,
+          'task_id': task_id(string) ,
+          'test_id': test_id(string) ,
       }
     - /send_test_output/<string:id>
      {
-          'task_id': task_id, 
-          'test_id': test_Id,
-          'output_content': output_content
+          'task_id': task_id (string), 
+          'test_id': test_Id (string),
+          'output_content': output_content (list)
       }
     - /get_test_output_content/<string:id>
      {
-          'task_id': task_id, 
-          'test_id': test_id
+          'task_id': task_id (string), 
+          'test_id': test_id (string)
       }
 
 3. 传出数据名称, 格式改变
    - train
     - /find_assistor/<string:id>
       {
-          'task_id': task_id, 
-          'assistor_num': len(assistor_id_list),
+          'task_id': task_id (string), 
+          'assistor_num': len(assistor_id_list) (int),
      }
     - /match_identifier_content/<string:id>
       {
-          "stored": "assistor match id stored",
-          "task_id": task_id
+          "stored": "assistor match id stored" (string),
+          "task_id": task_id (string)
       }
     - /get_identifier_content/<string:id>
       如果是sponsor:
       {
-          'assistor_random_id_to_identifier_content_dict': assistor_random_id_to_identifier_content_dict,
+          'assistor_random_id_to_identifier_content_dict': assistor_random_id_to_identifier_content_dict (dict),
       }
       如果是assistor:
       {
-          'sponsor_random_id_to_identifier_content_dict': sponsor_random_id_to_identifier_content_dict,
+          'sponsor_random_id_to_identifier_content_dict': sponsor_random_id_to_identifier_content_dict (dict),
       }
     - /send_situation/<string:id>
       {
-        "message": "send situation successfully!"
+        "message": "send situation successfully!" (string)
       }
     - /get_situation_content/<string:id>
       {
-        'situation_content': situation_content,
-        'sender_random_id': sender_random_id
+        'situation_content': situation_content (list),
+        'sender_random_id': sender_random_id (string)
       }
     - /send_output/<string:id>
       {
-        "send_output": "send output successfully"
+        "send_output": "send output successfully" (string)
       }
     - /get_output_content/<string:id>
       {
-        'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict
+        'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict (dict)
       }
    - test
     - /find_test_assistor/<string:id>
       {
-        'task_id': task_id, 
-        'assistor_num': len(assistor_id_list),
-        'test_id': test_id
+        'task_id': task_id (string), 
+        'assistor_num': len(assistor_id_list) (int),
+        'test_id': test_id (string)
       }
     - /match_test_identifier_content/<string:id>
       {
-        "stored": "assistor test match id stored",
-        "test_id": test_id
+        "stored": "assistor test match id stored" (string),
+        "test_id": test_id (string)
       }
     - /get_test_identifier_content/<string:id>
       如果是sponsor:
       {
-          'assistor_random_id_to_identifier_content_dict': assistor_random_id_to_identifier_content_dict,
+          'assistor_random_id_to_identifier_content_dict': assistor_random_id_to_identifier_content_dict (dict),
       }
       如果是assistor:
       {
-          'sponsor_random_id_to_identifier_content_dict': sponsor_random_id_to_identifier_content_dict,
+          'sponsor_random_id_to_identifier_content_dict': sponsor_random_id_to_identifier_content_dict (dict),
       }
     - /send_test_output/<string:id>
       {
-        "send_test_output": "send test output successfully"
+        "send_test_output": "send test output successfully" (string)
       }
     - /get_test_output_content/<string:id>
       {
-        'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict
+        'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict (dict)
       }
 
 4. 逻辑改变

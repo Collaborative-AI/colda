@@ -6,17 +6,17 @@ from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
 from datetime import datetime
-from Items.main.utils import log, generate_msg
+from Items.main.apollo_utils import log, generate_msg
 
 from Items import db
 
 # import BluePrint
 from Items.main import main
 
-# from Items.models import User, Matched, Pending
+from Items.models import User, Matched, Pending
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import get_log
+from Items.main.apollo_utils import get_log
 
 @main.route('/get_backend_log', methods=['POST'])
 @token_auth.login_required
@@ -26,7 +26,7 @@ def get_backend_log():
     return log of current task. Must have task_id in data, Might have test_id in data.
 
     Parameters:
-        task_id - String.
+       None
 
     Returns:
         data - List[List[String, String, List[String]]]. List[String]: ['first log_interval\n', 'second\n', 'third']
@@ -41,6 +41,10 @@ def get_backend_log():
         return bad_request('You must post JSON data.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
+    # if 'task_id' not in data and 'test_id' not in data:
+    #     return bad_request('task_id or test_id is required.')
+    # if not data.get('task_id') and not data.get('test_id'):
+    #     return bad_request('task_id or test_id is required.')
 
     task_id = data['task_id']
 

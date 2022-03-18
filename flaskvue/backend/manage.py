@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from Items import create_app
 from Items.extensions import db
-# from Items.models import User, Notification, Message, Matched
+from Items.models import User, Notification, Message, Matched
 from setting import Config
 
 app = create_app(Config)

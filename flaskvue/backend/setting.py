@@ -11,7 +11,7 @@ load_dotenv(os.path.join(basedir, '.env'), encoding='utf-8')
 class Config(object):
     
     DEBUG = True
-    SECRET_KEY = 'adasdaxcwxq4213'
+    SECRET_KEY = 'adasdaxcw!!!--xq4213'
 
     # When session.permanent = True, PERMANENT_SESSION_LIFETIME works.
     # session.permanent default value is False, but Redis is True
@@ -32,27 +32,19 @@ class Config(object):
     # sqlite
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
     #     'sqlite:///' + os.path.join(basedir, 'app.db')
-    
-    # MongoDB
-    local_host = '127.0.0.1'
-    # Database_name = 'mysynspot_db'
-    Database_name = 'unittest_db'
-    MONGO_URI = "mongodb://%s:27017/%s" % (local_host, Database_name)
-    # MONGO_URI = "mongodb://%s:27017" % (local_host)
-    
-    
+
     # mysql
-#     master_username = 'apollo'
-#     password = 'Aa1234567!'
-#     end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'
-#     # database name (created by create schema in mysql workbench)
-#     database_name = 'apollo_aws_mysql'
-#     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
-#     SQLALCHEMY_TRACK_MODIFICATIONS = False
-#     SQLALCHEMY_ENGINE_OPTIONS = {
-#     # "poolclass": QueuePool,
-#     "pool_size": 50,
-# }
+    master_username = 'apollo'
+    password = 'Aa1234567!'
+    end_point = 'apollodatabase.cb9jianlqhw8.us-east-2.rds.amazonaws.com'
+    # database name (created by create schema in mysql workbench)
+    database_name = 'apollo_aws_mysql'
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://%s:%s@%s/%s" % (master_username, password, end_point, database_name)
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {
+    # "poolclass": QueuePool,
+    "pool_size": 50,
+}
 
     # master username
     # unittest
@@ -67,6 +59,9 @@ class Config(object):
 #     # "poolclass": QueuePool,
 #     "pool_size": 50,
 # }
+
+
+
 
     MESSAGES_PER_PAGE = 10
 
@@ -93,5 +88,5 @@ class DevelopmentConfig(Config):
     
 
 class TestingConfig(Config):
-    
+
     pass

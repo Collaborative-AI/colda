@@ -1,18 +1,14 @@
 import json
-import uuid
-from snowflake import SnowflakeGenerator
-from bson import ObjectId
+
 from flask import Flask, session, request, g, current_app
 from flask.helpers import url_for
 from flask.json import jsonify
-# import py
 from Items import db
-from Items import pyMongo
 
 # import BluePrint
 from Items.main import main
 
-# from Items.models import User, Message, Matched, Notification, Stop, Pending
+from Items.models import User, Message, Matched, Notification, Stop, Pending
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 
@@ -177,101 +173,3 @@ def delete_test_rows():
       db.session.commit()
 
   return "done"
-
-
-@main.route('/ceshi_mongo/', methods=['POST', 'GET'])
-def ceshi_mongo():
-
-    a = str(uuid.uuid4())
-    print('ggg', a, len(a))
-
-    res = pyMongo.db.user.find_one_or_404({"name": "Ada Lovelace"})
-    print('res', res)
-    collections = pyMongo.db.list_collection_names()
-    print('collections_1', collections)
-    res = pyMongo.db.shuaiqi.insert_one({'x': 1})
-    print('res1', res)
-    collections = pyMongo.db.list_collection_names()
-    print('collections_2', collections)
-
-    user = pyMongo.db.User.find_one({'username': 'qq'})
-    print('user', user)
-
-    pyMongo.db.User.insert_one({'username': 'qq'})
-    user = pyMongo.db.User.find_one({'username': 'qq'})
-    user_id = user['_id']
-    print('user2', user)
-    print(user['_id'], type(user['_id']))
-    print('hhh', str(user['_id']), type(str(user['_id'])))
-
-    user = pyMongo.db.User.find_one({'_id': str(user_id)})
-    print('user3', user)
-    user = pyMongo.db.User.find_one({'_id': user_id})
-    print('user4', user)
-
-    record = {
-        'username': 'qia', 
-        "information": [],
-    }
-    pyMongo.db.User.insert_one(record)
-
-    res = pyMongo.db.User.find_one({'username': 'qia'})
-    print('hhh', res)
-
-    pyMongo.db.User.update_one({'username': 'qia'}, {'$set':{'isTerminate': True}})
-    res = pyMongo.db.User.find_one({'username': 'qia'})
-    print('hhh6', res)
-
-    isTerminate = res['isTerminate']
-    print('type', type(isTerminate))
-
-    newObjectId = ObjectId()
-    print('hh', newObjectId, str(newObjectId))
-    record = {
-        '_id': newObjectId,
-        'username': 'qiab', 
-        "information": [],
-    }
-    pyMongo.db.User.insert_one(record)
-    res = pyMongo.db.User.find_one({'username': 'qiab'})
-    print('res', res)
-    res = pyMongo.db.User.find_one_and_update({'username': 'qiab'}, {'$set':{'username': 'fghs'}})
-    print('res1', res)
-    res = pyMongo.db.User.find_one({'username': 'fghs'})
-    print('res2', res)
-
-    b = 'fff'
-    res = pyMongo.db.User.update_one({'username': 'fghs'}, {'$set': {'apple.' + b: 'good'}})
-    print('res3', res)
-    res = pyMongo.db.User.find_one({'username': 'fghs'})
-    print('res4', res)
-
-    a = SnowflakeGenerator(1)
-    print('fff', a)
-
-    a1 = uuid.uuid1()
-    a2 = uuid.uuid1()
-    print(a1, a2)
-
-    res = pyMongo.db.User.update_one({'username': 'hhhh'}, {'$set': {'apple.' + b: 'good'}})
-    print('res5', res)
-    res = pyMongo.db.User.find_one({'username': 'hhhh'})
-    print('res6', res)
-
-    record = {
-        'username': 'hhhh', 
-        "information": [],
-    }
-    res = pyMongo.db.User.insert_one(record)
-    print('res7', res)
-    res = pyMongo.db.User.update_one({'username': 'hhhh'}, {'$set': {'apple.' + b: 'good'}})
-    print('res8', res)
-    res = pyMongo.db.User.find_one({'username': 'hhhh'})
-    print('res9', res)
-
-    def xiaohanshu():
-        return (5,6,7)
-    
-    (a,b,c) = xiaohanshu()
-    print(a,b,c)
-    return 'gg'

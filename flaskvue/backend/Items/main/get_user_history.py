@@ -10,22 +10,16 @@ from operator import itemgetter
 from Items import db
 # import BluePrint
 from Items.main import main
-# from Items.models import User, Message, Matched
+from Items.models import User, Message, Matched
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import log, generate_msg
+from Items.main.apollo_utils import log, generate_msg
 
-@main.route('/get_user_history/<string:id>', methods=['GET'])
+@main.route('/get_user_history/', methods=['GET'])
 @token_auth.login_required
-def get_user_history(id):
+def get_user_history():
 
     print("a")
-    user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
-    # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
-        return error_response(403)
-
     user = User.query.get_or_404(g.current_user.id)
     if g.current_user != user:
         return error_response(403)
@@ -48,9 +42,9 @@ def get_user_history(id):
     print("d")
     return jsonify(participated_task)
 
-@main.route('/check_sponsor/<string:id>', methods=['POST'])
+@main.route('/check_sponsor/', methods=['POST'])
 @token_auth.login_required
-def check_sponsor(id):
+def check_sponsor():
 
     data = request.get_json()
     if not data:
@@ -58,12 +52,6 @@ def check_sponsor(id):
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
     
-    user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
-    # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
-        return error_response(403)
-
     task_id = data['task_id']
   
     query = Matched.query.filter(Matched.assistor_id_pair == g.current_user.id, Matched.task_id == task_id, Matched.test_indicator == "train").first()
@@ -79,30 +67,3 @@ def check_sponsor(id):
 
     dict = {"result": data}
     return jsonify(dict)
-
-
-@main.route('/get_test_history_id/<string:id>', methods=['POST'])
-@token_auth.login_required
-def get_test_history_id(id):
-
-    # find assistor algorithm, return all_assistor_id
-    data = request.get_json()
-    if not data:
-        return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
-    
-    user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
-    # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
-        return error_response(403)
-
-    task_id = data['task_id']
-    train_match_document = pyMongo.db.Train_Match.find_one({'task_id': task_id})
-    
-    data = {"test_id_list": train_match_document['test_task_list']}
-    print("test_id_list", data)
-    response = jsonify(data)
-    
-    return response

@@ -310,10 +310,10 @@ export default {
 
             const match_assistor_id_data = {
               task_id: task_id,
-              file: hash_id_file_data,
+              identifier_content: hash_id_file_data,
             }
             
-            vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
+            vm.$axios.post(`/match_identifier_content/${vm.sharedState.user_id}/`, match_assistor_id_data)
               .then((response) => {
                 // handle success
 
@@ -447,8 +447,9 @@ export default {
         task_id: task_id
       }
       
-      const path = `/users/${vm.sharedState.user_id}/match_id_file/`
-      vm.$axios.post(path, payload)
+      // const path = `/users/${vm.sharedState.user_id}/match_id_file/`
+
+      vm.$axios.post(`/get_identifier_content/${vm.sharedState.user_id}/`, payload)
         .then((response) => {
           // call back
           // iterate the match_id_file
@@ -613,14 +614,16 @@ export default {
             // // console.log("assistor_random_id_list", assistor_random_id_list)
             const send_situation_payload = {
                 task_id: task_id,
-                assistor_random_id_list: assistor_random_id_list,
-                residual_list: all_residual_data,
+                // ?????????
+                assistor_random_id_to_residual_dict: assistor_random_id_to_residual_dict,
+                // assistor_random_id_list: assistor_random_id_list,
+                // residual_list: all_residual_data,
               }
             // // console.log('send situation payload', send_situation_payload)
 
             // send initial situation
             // async
-            vm.$axios.post('/send_situation/', send_situation_payload)
+            vm.$axios.post(`/send_situation/${vm.sharedState.user_id}/`, send_situation_payload)
               .then((response) => {
               // handle success
 
@@ -664,9 +667,9 @@ export default {
       const payload = {
         task_id: task_id
       }
-      const path = `/users/${vm.sharedState.user_id}/match_id_file/`
+      // const path = `/users/${vm.sharedState.user_id}/match_id_file/`
       // async
-      this.$axios.post(path, payload)
+      this.$axios.post(`get_identifier_content/${vm.sharedState.user_id}/`, payload)
         .then((response) => {
           
           // check users/user_id/match_id_file return value
@@ -950,12 +953,12 @@ export default {
 
         const Assistor_output_payload = {
           task_id: task_id,
-          output: Assistor_train_output_data,
+          output_content: Assistor_train_output_data,
         }
 
         // send output
         // async
-        vm.$axios.post('/send_output/', Assistor_output_payload)
+        vm.$axios.post(`/send_output/${vm.sharedState.user_id}/`, Assistor_output_payload)
           .then((response) => {
           // handle success
           // console.log("4.5 Assistor sends output")
@@ -999,8 +1002,8 @@ export default {
         rounds: rounds
       }
       
-      const path = `/users/${vm.sharedState.user_id}/situation_file/`
-      vm.$axios.post(path, payload)
+      // const path = `/users/${vm.sharedState.user_id}/situation_file/`
+      vm.$axios.post(`/get_situation_content/${vm.sharedState.user_id}/`, payload)
         .then((response) => {
           // call back
           // store the situation file
@@ -1019,7 +1022,7 @@ export default {
           }
 
           const from_id = response.data.sender_random_id;
-          let cur_situation_file = JSON.parse(response.data.situation);
+          let cur_situation_file = JSON.parse(response.data.situation_content);
 
           // Store residual file from sponsor
           let save_residual_file_pos = null;
@@ -1151,9 +1154,9 @@ export default {
         task_id: task_id,
         rounds: rounds
       }
-      const url = `/users/${vm.sharedState.user_id}/output/`
+      // const url = `/users/${vm.sharedState.user_id}/output/`
 
-      this.$axios.post(url, payload)
+      this.$axios.post(`/get_output_content/${vm.sharedState.user_id}`, payload)
         .then((response) => {
           // console.log("5.2 Sponsor gets output model")
           // vm.$toasted.success("5.2 Sponsor gets output model", { icon: 'fingerprint' })
@@ -1363,7 +1366,7 @@ export default {
 
         // send initial situation
         // async
-        vm.$axios.post('/send_situation/', payload1)
+        vm.$axios.post(`/send_situation/${vm.sharedState.user_id}/`, payload1)
           .then((response) => {
             // handle success
             // // console.log("5.6 Sponsor updates situation done", response)
@@ -1534,12 +1537,12 @@ export default {
               test_hash_id_file_data = test_hash_id_file_data.split(/[\r\n]+/)
 
               const match_test_assistor_id_data = {
-                file: test_hash_id_file_data,
                 task_id: task_id,
-                test_id: test_id
+                test_id: test_id,
+                identifier_content: test_hash_id_file_data,
               }
 
-              vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
+              vm.$axios.post(`/match_test_identifier_content/${vm.sharedState.user_id}`, match_test_assistor_id_data)
                 .then((response) => {
                   // handle success
                   // // console.log("2.2 Test: assistor uploads id file")
@@ -1673,8 +1676,8 @@ export default {
         test_id: test_id
       }
       
-      const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
-      vm.$axios.post(path, payload)
+      // const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
+      vm.$axios.post(`/get_test_identifier_content/${vm.sharedState.user_id}/`, payload)
         .then((response) => {
           // call back
           // iterate the match_id_file
@@ -1823,9 +1826,9 @@ export default {
         task_id: task_id,
         test_id: test_id
       }
-      const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
+      // const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
       // async
-      this.$axios.post(path, payload)
+      vm.$axios.post(`get_test_identifier_content/${vm.sharedState.user_id}/`, payload)
         .then((response) => {
 
           let unittest_parameters = generate_unittest_parameters(response.data)
@@ -1965,12 +1968,12 @@ export default {
               // // console.log("all_test_output", all_test_output)
 
               const send_test_output_payload = {
-                output: all_test_output,
-                test_id: test_id,
                 task_id: task_id,
+                test_id: test_id,
+                output_content: all_test_output,
               }
 
-              vm.$axios.post('/send_test_output/', send_test_output_payload)
+              vm.$axios.post(`/send_test_output/${vm.sharedState.user_id}/`, send_test_output_payload)
                 .then((response) => {
                 // handle success
                 let unittest_parameters = generate_unittest_parameters(response.data)
@@ -2056,8 +2059,8 @@ export default {
         test_id: test_id,
       }
 
-      const url = `/test_output/`
-      this.$axios.post(url, payload)
+      // const url = `/test_output/`
+      this.$axios.post(`get_test_output_content/${vm.sharedState.user_id}/`, payload)
         .then((response) => {
           // console.log("4.2 Test: Sponsor gets assistors' Test output model")
           // vm.$toasted.success("4.2 Test: Sponsor gets assistors' Test output model", { icon: 'fingerprint' })

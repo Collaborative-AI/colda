@@ -1307,28 +1307,28 @@ export default {
           ],
           datasets: [
             {
-              label: "Baseline LOSS",
+              label: "Baseline Loss",
               // backgroundColor: "rgba(255, 99, 132, 0.1)",
               borderColor: "rgba(255, 99, 132, 1)",
               borderWidth: 0.7,
               data: baseline_loss
             },
             {
-              label: "Training LOSS",
+              label: "Training Loss",
               // backgroundColor: "rgba(151,187,205,0.2)",
               borderColor: "rgba(151,187,205,1)",
               borderWidth: 0.8,
               data: training_loss
             },
             {
-              label: "Test LOSS",
+              label: "Test Loss",
               // backgroundColor: "rgba(151,187,205,0.2)",
               borderColor: "rgba(3,3,205,1)",
               borderWidth: 0.8,
               data: test_loss
             },
             {
-              label: "Test Baseline LOSS",
+              label: "Test Baseline Loss",
               // backgroundColor: "rgba(151,187,205,0.2)",
               borderColor: "rgba(90,90,90,50)",
               borderWidth: 0.8,
@@ -1349,7 +1349,7 @@ export default {
           },
           title: {
                 display: true,
-                text: 'LOSS vs. Round'
+                text: 'Loss vs. Round'
             },
           scales: {
             xAxes: [
@@ -1372,7 +1372,7 @@ export default {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'LOSS'
+                  labelString: 'Loss'
                 },
               }
             ]
@@ -1387,14 +1387,14 @@ export default {
           ],
           datasets: [
             {
-              label: "Baseline LOSS",
+              label: "Baseline Loss",
               // backgroundColor: "rgba(255, 99, 132, 0.1)",
               borderColor: "rgba(255, 99, 132, 1)",
               borderWidth: 0.7,
               data: baseline_loss
             },
             {
-              label: "Training LOSS",
+              label: "Training Loss",
               // backgroundColor: "rgba(151,187,205,0.2)",
               borderColor: "rgba(151,187,205,1)",
               borderWidth: 0.8,
@@ -1416,7 +1416,7 @@ export default {
           },
           title: {
                 display: true,
-                text: 'LOSS vs. Round'
+                text: 'Loss vs. Round'
             },
           scales: {
             xAxes: [

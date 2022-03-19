@@ -51,6 +51,8 @@ Vue.component('sidebar-header', SidebarHeader)
 // console.log(node_path.join(__dirname, '../dist/run/run.exe'))
 import db from './db'
 console.log('dbdachu3',db)
+import nedb from './nedb'
+console.log('wolaile2',nedb)
 
 // const fs = window.require("fs")
 // console.log("fs", fs)
@@ -192,6 +194,7 @@ Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment
 Vue.prototype.$store = store
 Vue.prototype.$db = db
+Vue.prototype.$nedb = nedb
 
 
 new Vue({

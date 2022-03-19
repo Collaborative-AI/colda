@@ -369,17 +369,17 @@ export default {
           console.log(vm.assistor_username_list,"assistor_username_list")
           const find_assistor_data = {
             assistor_username_list: handle_assistor_username_list_res,
-            id_file: hash_id_file_data,
+            identifier_content: hash_id_file_data,
             task_id: vm.task_id,
-            task_name: vm.task_name,
             task_mode: vm.task_mode,
             model_name: vm.model_name,
             metric_name: vm.metric_name,
+            task_name: vm.task_name,
             task_description: vm.task_description,
           }
           // console.log('fins_assistor_data', find_assistor_data)
 
-          vm.$axios.post('/find_assistor', find_assistor_data)
+          vm.$axios.post(`/find_assistor/${vm.sharedState.user_id}/`, find_assistor_data)
           .then((response) => {
             console.log('response!!', response.data)
             if (response.data == "wrong username"){

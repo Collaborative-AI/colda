@@ -57,7 +57,11 @@ module.exports = {
           },
           // "asar":false,
 
-        }
+        },
+        externals:[
+          "nedb",
+          "electron-log"
+        ],
       }
     }
     

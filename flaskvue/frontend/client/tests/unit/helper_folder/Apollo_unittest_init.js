@@ -8,7 +8,7 @@ const node_path = require('path');
 const os = require('os');
 const dialog = console.log
 // const log = require('electron-log')
-const log = console.log
+// const log = console.log
 
 import Login from '../../../src/views/Auth/Login.vue'
 import Navbar from '../../../src/components/Navbar.vue'

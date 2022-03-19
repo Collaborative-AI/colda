@@ -1,7 +1,13 @@
-// const log = require('electron-log')
+let log = window.require('electron-log');
 // import {db} from './db'
 // console.log('dbdachu',db)
-// console = log
+const node_path = window.node_path ? window.node_path : window.require('path');
+console = log
+log.transports.file.resolvePath = () => node_path.join(__dirname, './main.log');
+console.log('chengle')
+log.info('chengle')
+Log('assistor ceshi', 'info')
+
 
 export function generate_unittest_parameters(){
   let unittest_parameters = []
@@ -56,24 +62,24 @@ export function generate_message_string(){
 
 export function Log(message, level){
   console.log(message)
-  // if (level == 'error'){
-  //   log.error(message);
-  // }
-  // else if (level == 'warn'){
-  //   log.warn(message);
-  // }
-  // else if (level == 'info'){
-  //   log.info(message);
-  // }
-  // else if (level == 'verbose'){
-  //   log.verbose(message);
-  // }
-  // else if (level == 'debug'){
-  //   log.debug(message);
-  // }
-  // else{
-  //   log.silly(message);
-  // }
+  if (level == 'error'){
+    log.error(message);
+  }
+  else if (level == 'warn'){
+    log.warn(message);
+  }
+  else if (level == 'info'){
+    log.info(message);
+  }
+  else if (level == 'verbose'){
+    log.verbose(message);
+  }
+  else if (level == 'debug'){
+    log.debug(message);
+  }
+  else{
+    log.silly(message);
+  }
   
 }
 

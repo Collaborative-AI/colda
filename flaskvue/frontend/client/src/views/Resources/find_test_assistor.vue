@@ -329,18 +329,17 @@ export default {
               }
 
               const payload = {
+                identifier_content:test_hash_id_file_data,
                 task_id: vm.task_id,
-                task_name: vm.task_name,
                 test_id: vm.test_id, 
-                test_name: vm.test_name,
-                test_description: vm.test_description,
                 task_mode: vm.task_mode,
                 model_name: vm.model_name,
                 metric_name: vm.metric_name,
-                id_file: test_hash_id_file_data
+                test_name: vm.test_name,
+                test_description: vm.test_description,
               }
               
-              vm.$axios.post('/find_test_assistor/', payload)
+              vm.$axios.post(`/find_test_assistor/${vm.sharedState.user_id}`, payload)
                 .then((response) => {
                   
                   let unittest_parameters = generate_unittest_parameters(response.data)

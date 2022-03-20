@@ -950,6 +950,7 @@ export default {
         }
 
         let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path[2], {encoding:'utf8', flag:'r'});
+        Assistor_train_output_data = Assistor_train_output_data.split(/[\r\n]+/)
 
         const Assistor_output_payload = {
           task_id: task_id,
@@ -1357,11 +1358,14 @@ export default {
           assistor_random_id_list.push(assistor_random_id);
           
         }
+        const assistor_random_id_to_residual_dict = {}
+        for (let i = 0; i < assistor_random_id_list.length; i++){
+          assistor_random_id_to_residual_dict.assistor_random_id_list[i] = all_residual_data[i]
+        }
 
         const payload1 = {
-          residual_list: all_residual_data,
           task_id: task_id,
-          assistor_random_id_list: assistor_random_id_list,
+          assistor_random_id_to_residual_dict: assistor_random_id_to_residual_dict
         }
 
         // send initial situation

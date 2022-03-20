@@ -466,10 +466,10 @@ export default {
             console.log(err)
           }
 
-          for(let i = 0;i < response.data.match_id_file.length; i++){
+          for(let i = 0;i < Object.keys(response.data.assistor_random_id_to_identifier_content_dict).length; i++){
 
-            const from_id = response.data.assistor_random_id_pair[i];
-            let cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
+            const from_id = Object.keys(response.data.assistor_random_id_to_identifier_content_dict)[i];
+            let cur_match_id_file = JSON.parse(Object.values(response.data.assistor_random_id_to_identifier_content_dict)[i]);
             cur_match_id_file = cur_match_id_file.join("\n")
 
             // Store match_id file from different assistor
@@ -610,11 +610,14 @@ export default {
               assistor_random_id_list.push(assistor_random_id);
               
             }
+            const assistor_random_id_to_residual_dict = {}
+            for (let i = 0; i < assistor_random_id_list.length; i++){
+              assistor_random_id_to_residual_dict.assistor_random_id_list[i] = all_residual_data[i]
+            }
 
             // // console.log("assistor_random_id_list", assistor_random_id_list)
             const send_situation_payload = {
                 task_id: task_id,
-                // ?????????
                 assistor_random_id_to_residual_dict: assistor_random_id_to_residual_dict,
                 // assistor_random_id_list: assistor_random_id_list,
                 // residual_list: all_residual_data,
@@ -686,8 +689,8 @@ export default {
             console.log(err)
           }
           
-          const from_id = response.data.sponsor_random_id;
-          let cur_match_id_file = JSON.parse(response.data.match_id_file[0]);
+          const from_id = Object.keys(response.data.sponsor_random_id_to_identifier_content_dict);
+          let cur_match_id_file = JSON.parse(Object.values(response.data.sponsor_random_id_to_identifier_content_dict)[0]);
           cur_match_id_file = cur_match_id_file.join("\n")
           
           // Store match_id file from sponsor
@@ -1168,12 +1171,12 @@ export default {
             console.log(err)
           }
           // iterate the output file
-          for(let i = 0;i < response.data.output.length; i++){
+          for(let i = 0;i < Object.keys(response.data.assistor_random_id_to_output_content_dict).length; i++){
 
-            const from_id = response.data.sender_random_ids_list[i];
+            const from_id = Object.keys(response.data.assistor_random_id_to_output_content_dict)[i];
 
             // // console.log("cur_output^^^^^^^^", response.data.output[i])
-            let cur_output = JSON.parse(response.data.output[i]);
+            let cur_output = JSON.parse(Object.values(response.data.assistor_random_id_to_output_content_dict)[i]);
             // // console.log("cur_output^^^^^^^^1", cur_output)
 
             // Store the output from assistor
@@ -1697,10 +1700,10 @@ export default {
             console.log(err)
           }
 
-          for(let i = 0;i < response.data.match_id_file.length; i++){
+          for(let i = 0;i < Object.values(response.data.assistor_random_id_to_identifier_content_dict).length; i++){
             
-            const from_id = response.data.assistor_random_id_pair[i];
-            let cur_match_id_file = JSON.parse(response.data.match_id_file[i]);
+            const from_id = object.keys(response.data.assistor_random_id_to_identifier_content_dict)[i];
+            let cur_match_id_file = JSON.parse(Object.values(response.data.assistor_random_id_to_identifier_content_dict)[i]);
             cur_match_id_file = cur_match_id_file.join('\n');
             // // console.log('sponsor_match', cur_match_id_file)
             // Store match_id file from different assistor
@@ -1846,8 +1849,8 @@ export default {
             console.log(err)
           }
 
-          const from_id = response.data.sponsor_random_id;
-          let cur_match_id_file = JSON.parse(response.data.match_id_file[0]);
+          const from_id = Object.keys(response.data.sponsor_random_id_to_identifier_content_dict);
+          let cur_match_id_file = JSON.parse(Object.values(response.data.sponsor_random_id_to_identifier_content_dict)[0]);
           cur_match_id_file = cur_match_id_file.join('\n');
           // // console.log('assistor_match', cur_match_id_file)
 
@@ -2075,10 +2078,10 @@ export default {
           }
           // iterate the match_id_file
           // List[List[List]] structure: [[[data from one assistor],[data from one assistor]],[[data from another assistor],[data from another assistor]]]
-          for(let i = 0;i < response.data.output.length; i++){
+          for(let i = 0;i < Object.values(response.data.assistor_random_id_to_output_content_dict).length; i++){
 
-            const from_id = response.data.sender_random_ids_list[i];
-            let multiple_outputs_from_one_assistor = JSON.parse(response.data.output[i]);
+            const from_id = Object.keys(response.data.assistor_random_id_to_output_content_dict)[i];
+            let multiple_outputs_from_one_assistor = JSON.parse(Object.values(response.data.assistor_random_id_to_output_content_dict)[i]);
             // // console.log("multiple_outputs_from_one_assistor", multiple_outputs_from_one_assistor)
 
             for (let j = 0; j < multiple_outputs_from_one_assistor.length; j++){

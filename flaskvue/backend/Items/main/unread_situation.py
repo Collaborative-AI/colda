@@ -52,9 +52,9 @@ def get_situation_content(id):
         return bad_request('rounds is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
         
     task_id = data.get('task_id')
@@ -63,8 +63,8 @@ def get_situation_content(id):
     user_id = obtain_user_id_from_token()
 
     # check if the caller of the function and the id is the same
-    user = mongoDB.search_user_document(user_id=id)
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    user_document = mongoDB.search_user_document(user_id=id)
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     log(generate_msg('---- unread sitaution begins'), user_id, task_id)
@@ -118,9 +118,9 @@ def send_output(id):
         return bad_request('output_content is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     output_content = data.get('output_content')

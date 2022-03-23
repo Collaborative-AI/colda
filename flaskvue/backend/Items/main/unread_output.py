@@ -44,9 +44,9 @@ def get_output_content(id):
         return bad_request('rounds is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     task_id = data.get('task_id')
@@ -114,20 +114,20 @@ def get_test_output_content(id):
         return bad_request('test_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
+
+    test_id = data.get('test_id')
+    task_id = data.get('task_id')
+    sponsor_id = user_id
 
     # if caller is not sponsor, it should not enter this function
     test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
     sponsor_id = test_match_document['sponsor_information']['sponsor_id']
     if sponsor_id != user_id:
         return error_response(403)
-
-    test_id = data.get('test_id')
-    task_id = data.get('task_id')
-    sponsor_id = user_id
 
     log(generate_msg('---- unread test output begins'), user_id, task_id, test_id)
     log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), user_id, task_id, test_id)

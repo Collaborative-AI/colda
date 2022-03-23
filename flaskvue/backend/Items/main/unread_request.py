@@ -52,9 +52,9 @@ def match_identifier_content(id):
         return bad_request('identifier_content is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     task_id = data.get('task_id')
@@ -135,7 +135,7 @@ def match_test_identifier_content(id):
 
     Returns:
         data - { 
-                    task_id - String: The id of task, 
+                    test_id - String: The id of task, 
                     assistor_num - Integer: The number of assistors in this task 
                 }
 
@@ -154,9 +154,9 @@ def match_test_identifier_content(id):
         return bad_request('identifier_content is required.')
     
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
         
     task_id = data.get('task_id')
@@ -195,7 +195,7 @@ def match_test_identifier_content(id):
     assistor_terminate_id_dict = test_match_document['assistor_terminate_id_dict']
     remain_assistor_num = total_assistor_num - len(assistor_terminate_id_dict)
     if len(assistor_information) >= remain_assistor_num:
-        log(generate_msg('Test 2.3:', 'assistor matching_done', 'number of assistor:', len(assistor_match_done_dict)), user_id, task_id, test_id)
+        log(generate_msg('Test 2.3:', 'assistor matching_done', 'number of assistor:', len(assistor_information)), user_id, task_id, test_id)
         for assistor_id in assistor_information:
             test_mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_match_id', 
                                                       test_id=test_id, sender_random_id=sponsor_random_id, 

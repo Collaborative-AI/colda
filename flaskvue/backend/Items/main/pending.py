@@ -42,15 +42,17 @@ def add_train_pending(id):
         return bad_request('task_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     task_id = data.get('task_id')
     mongoDB.update_pending_document(user_id=user_id, id=task_id, test_indicator='train')
     
-    response = {'message': 'add train pending successfully'}
+    response = {
+        'message': 'add train pending successfully'
+    }
     return jsonify(response)
 
 @main.route('/add_test_pending/<string:id>', methods=['POST'])
@@ -76,15 +78,17 @@ def add_test_pending(id):
         return bad_request('test_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     test_id = data.get('test_id')
     mongoDB.update_pending_document(user_id=user_id, id=test_id, test_indicator='test')
     
-    response = {'message': 'add test pending successfully'}
+    response = {
+        'message': 'add test pending successfully'
+    }
     return jsonify(response)
 
 
@@ -105,9 +109,9 @@ def get_all_pending(id):
     """
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     pending_document = mongoDB.search_pending_document(user_id=user_id)
@@ -143,9 +147,9 @@ def dalete_pending():
         return bad_request('test_indicator is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     task_id = data['task_id']
@@ -160,5 +164,7 @@ def dalete_pending():
 
     mongoDB.delete_pending_document_field(user_id=user_id, id=id)
 
-    response = {'message': 'delete successfully'}
+    response = {
+        'message': 'delete successfully'
+    }
     return jsonify(response)

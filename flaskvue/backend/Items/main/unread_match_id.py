@@ -50,14 +50,14 @@ def get_identifier_content(id):
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     if user is None:
         return error_response(403)
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     task_id = data.get('task_id')
@@ -147,9 +147,9 @@ def get_test_identifier_content(id):
         return bad_request('test_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     task_id = data.get('task_id')
@@ -217,9 +217,9 @@ def send_situation(id):
         return bad_request('task_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     # get data from transferred message
@@ -358,9 +358,9 @@ def send_test_output(id):
         return bad_request('output_content is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     output_content = data.get('output_content')
@@ -368,7 +368,7 @@ def send_test_output(id):
     task_id = data.get('task_id')
     assistor_id = user_id
 
-    log(generate_msg('Test 3.3:"', 'assistor send_test_output start'), g.current_user.id, task_id, test_id)
+    log(generate_msg('Test 3.3:"', 'assistor send_test_output start'), user_id, task_id, test_id)
 
     test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
     total_assistor_num = test_match_document['total_assistor_num']
@@ -379,9 +379,8 @@ def send_test_output(id):
     cur_rounds_num = 1
 
     output_id = obtain_unique_id()
-    pyMongo.db.Test_Message.update_one({'test_id': test_id}, {'$set':{
-        'rounds_' + str(cur_rounds_num) + '.output_dict.' + assistor_id: output_id
-    }})
+    res = test_mongoDB.update_test_message_document(test_id=test_id, cur_rounds_num=cur_rounds_num, 
+                                                    assistor_id=assistor_id, output_id=output_id)
 
     test_mongoDB.create_test_message_output_document(output_id=output_id, sender_id=assistor_id,
                                                      sender_random_id=assistor_random_id, recipient_id=sponsor_id,
@@ -393,13 +392,17 @@ def send_test_output(id):
     # check how many assistors have uploaded their output 
     # if the number of output surpasses the ramin_assistor_num, we can send notifications
     test_message_document = test_mongoDB.search_test_message_document(test_id=test_id)
+    print('test_message_document', test_message_document)
     output_dict = test_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
+    print('test_message_document')
     if len(output_dict) >= remain_assistor_num:
+        print('gggggggggggggg')
         test_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_output', 
                                                    test_id=test_id, sender_random_id=assistor_random_id, 
                                                    role='sponsor', cur_rounds_num=cur_rounds_num)
         log(generate_msg('Test 3.4:"', 'assistor uploads all test output'), user_id, task_id, test_id)
     else:
+        print('xxxxxx')
         log(generate_msg('Test 3.4:"', 'assistor send_test_output done'), user_id, task_id, test_id)
 
     log(generate_msg('----------------------- unread_test_match_id done\n'), user_id, task_id, test_id)

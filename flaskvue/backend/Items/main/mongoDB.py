@@ -55,11 +55,15 @@ class mongoDB():
         if cls.search_pending_document(user_id) == None:
             cls.create_pending_document(user_id)
 
-        return pyMongo.db.Pending.update_one({'user_id': user_id}, {'$set':{'task_dict.' + id: test_indicator}})
+        return pyMongo.db.Pending.update_one({'user_id': user_id}, {'$set':{
+            'task_dict.' + id: test_indicator
+        }})
     
     @classmethod
     def delete_pending_document_field(cls, user_id, id):
-        return pyMongo.db.Pending.update_one({'user_id': user_id}, {'$unset':{'task_dict.' + id: ""}})
+        return pyMongo.db.Pending.update_one({'user_id': user_id}, {'$unset':{
+            'task_dict.' + id: ""
+        }})
     
     @classmethod
     def create_stop_document(cls, task_id, cur_rounds_num, assistor_situation_don):
@@ -84,7 +88,7 @@ class train_mongoDB():
     
     @classmethod
     def search_train_message_document(cls, task_id):
-        return  pyMongo.db.Train_Message.find_one({'task_id': task_id})
+        return pyMongo.db.Train_Message.find_one({'task_id': task_id})
         
     @classmethod
     def create_train_message_document(cls, task_id, cur_rounds_num, situation_dict):
@@ -128,13 +132,22 @@ class train_mongoDB():
         }
         return pyMongo.db.Train_Message_Output.insert_one(train_message_output_document)
 
+    # @classmethod
+    # def delete_rounds_in_train_message_output_document(cls, task_id, cur_rounds_num, role):
+    #     if role == 'sponsor':
+    #         return pyMongo.db.Train_Message_Output.update_one({'task_id': task_id}, {'$unset':{'task_dict.' + 'rounds_' + str(cur_rounds_num): {}}})
+    #     elif role == 'assistor':
+            
+
+
+
     @classmethod
     def search_train_match_document(cls, task_id):
         return pyMongo.db.Train_Match.find_one({'task_id': task_id})
 
     @classmethod
     def sponsor_create_train_match_document(cls, task_id, total_assistor_num, sponsor_id, 
-                           sponsor_random_id, identifier_id):
+                                            sponsor_random_id, identifier_id):
         train_match_document = {
             "task_id": task_id,
             'total_assistor_num': total_assistor_num,
@@ -165,6 +178,17 @@ class train_mongoDB():
             'asssistor_random_id_mapping.' + assistor_random_id: assistor_id,
         }})
 
+    @classmethod
+    def update_user_stop_in_train_match_document(cls, task_id, user_id, role):
+        if role == 'sponsor':
+            return pyMongo.db.Train_Match.update_one({'task_id': task_id}, {'$set':{
+                'sponsor_terminate_id_dict.' + user_id: 'terminate',
+            }})
+        elif role == 'assistor':
+            return pyMongo.db.Train_Match.update_one({'task_id': task_id}, {'$set':{
+                'assistor_terminate_id_dict.' + user_id: 'terminate',
+            }})
+        
     @classmethod
     def search_train_match_identifier_document(cls, identifier_id):
         return pyMongo.db.Train_Match_Identifier.find_one({'identifier_id': identifier_id})
@@ -226,6 +250,7 @@ class test_mongoDB():
             pyMongo.db.Notification.insert_one({'user_id': user_id})
 
         base_key = 'category' + '.' + notification_name + '.' + 'test_id_dict' + '.' + test_id 
+        print('ttttttttttttttt')
         return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
             base_key + '.sender_random_id': sender_random_id,
             base_key + '.role': role,
@@ -234,19 +259,24 @@ class test_mongoDB():
     
     @classmethod
     def search_test_message_document(cls, test_id):
-        return  pyMongo.db.Test_Message.find_one({'test_id': test_id})
+        return pyMongo.db.Test_Message.find_one({'test_id': test_id})
         
     @classmethod
-    def create_train_message_document(cls, test_id, cur_rounds_num, situation_dict):
-        train_message_document = {
+    def create_test_message_document(cls, test_id, cur_rounds_num):
+        test_message_document = {
             'test_id': test_id,
             'cur_rounds_num': cur_rounds_num,
-            'rounds_' + str(cur_rounds_num): {
-                'situation_dict': situation_dict,
-                'output_dict': {},
-            },
         }
-        return pyMongo.db.Test_Message.insert_one(train_message_document)
+        return pyMongo.db.Test_Message.insert_one(test_message_document)
+
+    @classmethod
+    def update_test_message_document(cls, test_id, cur_rounds_num, assistor_id, output_id):
+        if cls.search_test_message_document(test_id=test_id) == None:
+            cls.create_test_message_document(test_id=test_id, cur_rounds_num=cur_rounds_num)
+
+        return pyMongo.db.Test_Message.update_one({'test_id': test_id}, {'$set':{
+                   'rounds_' + str(cur_rounds_num) + '.output_dict.' + assistor_id + '.output_id': output_id
+               }})
 
     @classmethod
     def search_test_message_situation_document(cls, situation_id):
@@ -315,6 +345,17 @@ class test_mongoDB():
             base_key + '.identifier_id': identifier_id,
             'asssistor_random_id_mapping.' + assistor_random_id: assistor_id,
         }})
+
+    @classmethod
+    def update_user_stop_in_test_match_document(cls, test_id, user_id, role):
+        if role == 'sponsor':
+            return pyMongo.db.Test_Match.update_one({'test_id': test_id}, {'$set':{
+                'sponsor_terminate_id_dict.' + user_id: 'terminate',
+            }})
+        elif role == 'assistor':
+            return pyMongo.db.Test_Match.update_one({'test_id': test_id}, {'$set':{
+                'assistor_terminate_id_dict.' + user_id: 'terminate',
+            }})
 
     @classmethod
     def search_test_match_identifier_document(cls, identifier_id):

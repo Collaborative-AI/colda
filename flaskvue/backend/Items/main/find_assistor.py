@@ -12,7 +12,8 @@ from Items import pyMongo
 from Items.main import main
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.utils import log, generate_msg, add_new_token_to_response, obtain_user_id_from_token, obtain_unique_id
+from Items.main.utils import log, generate_msg, add_new_token_to_response
+from Items.main.utils import obtain_user_id_from_token, obtain_unique_id
 from Items.main.utils import verify_token_user_id_and_function_caller_id
 from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 
@@ -105,9 +106,9 @@ def find_assistor(id):
     print('find_assistor----------------')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     assistor_username_list = data['assistor_username_list']
@@ -217,9 +218,9 @@ def find_test_assistor(id):
         return bad_request('test_description is required.')
 
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     task_id = data['task_id']

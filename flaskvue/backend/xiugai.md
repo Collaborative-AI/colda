@@ -210,3 +210,21 @@
       }
 
 4. 逻辑改变
+
+
+
+5. 补充: 
+    1. /check_sponsor/<string:id> 返回值为response = {
+        'role': role
+    }
+
+    2. '/get_test_history_id/<string:id>' -> '/get_test_task_id_history/<string:id>'
+
+    3. stop_train_task / stop_test_task in Notification Table
+
+    4. '/stop_train_task/<string:id>' 返回值:
+        response = {
+            "message": "delete successfully", 
+            "isSponsor": False, 
+            "cur_rounds_num": cur_rounds_num
+        }

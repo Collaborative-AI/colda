@@ -4,14 +4,10 @@ import unittest
 from base64 import b64encode
 from datetime import datetime, timedelta
 from bson import ObjectId
-
-# from Items import create_app, db
 from Items import create_app, pyMongo
 from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 from Items.main.utils import generate_password
-# from Items.models import User, Message, Notification, Matched
 from tests import TestConfig
-
 
 class Train_Helper_API_TestCase(unittest.TestCase):
 
@@ -197,6 +193,26 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         identifier_content = train_match_identifier_document['identifier_content']
         self.assertEqual(identifier_content, [8, 4, 3, 12, 16, 17])
         
+        train_task_document = train_mongoDB.search_train_task_document(task_id=task_id)
+        task_name = train_task_document['task_name']
+        task_description = train_task_document['task_description']
+        task_mode = train_task_document['task_mode']
+        model_name = train_task_document['model_name']
+        metric_name = train_task_document['metric_name']
+        assistor_id_list = train_task_document['assistor_id_list']
+        test_task_list = train_task_document['test_task_list']
+
+        self.assertEqual(train_task_document['task_id'], task_id)
+        self.assertEqual(task_name, 'unittest')
+        self.assertEqual(task_description, 'unittest_desciption')
+        self.assertEqual(task_mode, 'regression')
+        self.assertEqual(model_name, 'LinearRegression')
+        self.assertEqual(metric_name, 'RMSE')
+        self.assertEqual(train_task_document['sponsor_id'], sponsor_id)
+        self.assertEqual(assistor_id_list, [user_id_2, user_id_3])
+        self.assertEqual(len(test_task_list), 0)
+
+        assistor_username_list = ['unittest2', 'unittest3']
         user_id_list = [user_id_1, user_id_2, user_id_3]
         return task_id, assistor_username_list, user_id_list 
     
@@ -236,7 +252,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(json_response_3['notification_result']['category']['unread_request']['task_id_dict']), 1)
         assert task_id in json_response_3['notification_result']['category']['unread_request']['task_id_dict']
 
-         # 5. assistor uploads the ID file
+        # 5. assistor uploads the ID file
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         identifier_content = [0, 4, 1, 12, 16, 17, 18]
         data = json.dumps({
@@ -296,12 +312,11 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
     def unread_match_id_two_users_helper(self, task_id, assistor_username_list, user_id_list):
         
-        # 6. Check Updated Notification
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
         user_id_3 = user_id_list[2]
 
-         # Check the Notification of user 2
+        # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
         response = self.client.get('/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
@@ -532,7 +547,6 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(json_response_1['notification_result']['category']['unread_output']['task_id_dict']), 1)
         assert task_id in json_response_1['notification_result']['category']['unread_output']['task_id_dict']
         
-
         # 16. sponsor calls: get_user_output() (in unread_output.py), gets output files
         data = json.dumps({
             'task_id': task_id, 

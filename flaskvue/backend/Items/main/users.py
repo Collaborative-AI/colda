@@ -17,6 +17,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # from Items.models import User, Notification, Message
 from Items.main.errors import bad_request, error_response
 from Items.main.auth import token_auth, basic_auth
+from Items.main.mongoDB import mongoDB, train_mongoDB
 from Items.main.utils import obtain_user_id_from_token, obtain_unique_id
 from Items.main.utils import log, generate_msg, validate_password, send_email, generate_confirmation_token, confirm_token
 from Items.main.utils import generate_password, check_password, verify_token_user_id_and_function_caller_id
@@ -124,7 +125,9 @@ def confirm_email(token):
     if user:
         if user['confirm_email'] == False:
             if user['email'] == email:
-                pyMongo.db.User.update_one({'email': email}, {'$set':{'confirm_email': True}})
+                pyMongo.db.User.update_one({'email': email}, {'$set':{
+                    'confirm_email': True
+                }})
                 msg = 'You have confirmed your account. Thanks!'
             else:
                 msg = 'The confirmation link is invalid or has expired.'
@@ -159,8 +162,8 @@ def resend():
 
     username = data.get('username')
 
-    user = pyMongo.db.User.find_one({'username': username})
-    email = user['email']
+    user_document = mongoDB.search_user_document(user_id=None, username=username)
+    email = user_document['email']
 
     token = generate_confirmation_token(email)
     confirm_url = url_for('main.confirm_email', token=token, _external=True)
@@ -168,7 +171,10 @@ def resend():
     subject = "Please confirm your email"
     send_email(email, subject, html)
 
-    return jsonify('Resend successfully!')
+    response = {
+        'message': 'Resend successfully!'
+    }
+    return jsonify(response)
 
 @main.route('/forgot', methods=['POST'])
 def forgot():
@@ -198,7 +204,7 @@ def forgot():
     username = data.get('username')
     email = data.get('email')
 
-    user_document = pyMongo.db.User.find_one({'username': username})
+    user_document = mongoDB.search_pending_document(user_id=None, username=username)
     if not user_document:
         message['username'] = 'Please type in the correct username.'
     if user_document['email'] != email:
@@ -215,52 +221,67 @@ def forgot():
     subject = "Reset your password"
     send_email(email, subject, html)
 
-    return jsonify('A password reset email has been sent via email.')
+    response = {
+        'message': 'A password reset email has been sent via email.'
+    }
+    return jsonify(response)
 
 
 @main.route('/forgot/new/<token>', methods=['GET', 'POST'])
 def forgot_new(token):
 
+    """
+    backend function to handle resetting the password
+
+    Parameters:
+        username - String.
+        email - String.
+       
+    Returns:
+        'A password reset email has been sent via email.'
+
+    Raises:
+        KeyError - raises an exception
+    """
+
     if request.method == 'POST':
         # would have a "\" append in the end
         token = request.form['token'][:-1]
-        print("niubi", token)
+
     email = confirm_token(token)
-    # debug(email, 'email')
     if email == False:
         flash('Token has expired')
         return 'Token has expired'
 
     # form = ChangePasswordForm()
     # if form.validate_on_submit():
-    user = User.query.filter(User.email == email).first()
-    if not user:
+    user_document = pyMongo.db.User.find_one({'email': email})
+    if not user_document:
         flash('Cannot Find the User according to email')
         return 'Cannot Find the User according to email'
     
     if request.method == 'POST':
-        print("11", request.form)
+ 
         password = request.form['newPassword']
-        print('password', password)
+
         validate_password_indicator, return_message = validate_password(password)
         if not validate_password_indicator:
             msg = ('New password must follow the following instructions:\n' + ' At least 8 characters. At most 25 characters\n'
                 + 'A mixture of both uppercase and lowercase letters\n' + 'A mixture of letters and numbers' + 'Inclusion of at least one special character, e.g., ! @')
             confirm_url = url_for('main.forgot_new', token=token, msg=msg, _external=True)
-
             return render_template('forgot_new.html', confirm_url=confirm_url)
-        print('validate_password_indicator', validate_password_indicator,user.password_hash)
+
+ 
         user_password_hash = generate_password_hash(password)
-        print("email",email)
-        User.query.filter(User.email == email).update({"password_hash": user_password_hash})
-        db.session.commit()
-        print("zz", user.password_hash)
+        pyMongo.db.User.update_one({'email': email}, {'$set':{
+            'password_hash': user_password_hash
+        }})
 
         flash('Password successfully changed.')
         return 'Password successfully changed.'
     else:
         print('123token', token)
-        msg = 'Hello ' + user.username
+        msg = 'Hello ' + user_document['username']
         confirm_url = url_for('main.forgot_new', token=token, _external=True)
         print("/forgot/new/<token>_confirm_url", confirm_url)
         return render_template('forgot_new.html', confirm_url=confirm_url, msg=msg, token=token)
@@ -284,7 +305,10 @@ def get_user(id):
 
     user_id = obtain_user_id_from_token()
     if verify_token_user_id_and_function_caller_id(user_id, id):
-        return jsonify(g.current_user)
+        response = {
+            'user': g.current_user
+        }
+        return jsonify(response)
     return None
 
 @main.route('/users/<string:id>', methods=['PUT'])
@@ -294,36 +318,34 @@ def update_user(id):
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-        
-    user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
-    # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
-        return error_response(403)
-
-    
-
-    message = {}
-    if 'username' in data and not data.get('username', None).strip():
+    elif 'username' not in data or not data.get('username', None) or (' ' in data.get('username')):
         message['username'] = 'Please provide a valid username.'
-
     pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
-    if 'email' in data and not re.match(pattern, data.get('email', None)):
+    if 'email' not in data or not re.match(pattern, data.get('email', None)) or (' ' in data.get('email')):
         message['email'] = 'Please provide a valid email address.'
 
-    if 'username' in data and data['username'] != user.username and \
-            User.query.filter_by(username=data['username']).first():
+    user_id = obtain_user_id_from_token()
+    user_document = mongoDB.search_user_document(user_id=id)
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
+        return error_response(403)
+
+    username = data.get('username')
+    email = data.get('email')
+    
+    message = {}
+    if mongoDB.search_user_document(user_id=None, username=username):
         message['username'] = 'Please use a different username.'
-    if 'email' in data and data['email'] != user.email and \
-            User.query.filter_by(email=data['email']).first():
+    if pyMongo.db.User.find_one({'email': email}):
         message['email'] = 'Please use a different email address.'
 
     if message:
         return bad_request(message)
 
-    user.from_dict(data, new_user=False)
-    db.session.commit()
-    return jsonify(user.to_dict())
+    response = {
+
+    }
+    return jsonify(response)
 
 
 @main.route('/users/<string:id>', methods=['DELETE'])
@@ -334,141 +356,53 @@ def delete_user(id):
     '''
     return "Welcome to Delete!"
 
-@main.route('/users/<string:id>/messages-recipients/', methods=['GET'])
-@token_auth.login_required
-def get_user_messages_recipients(id):
-    '''我给哪些用户发过私信，按用户分组，返回我给各用户最后一次发送的私信
-    即: 我给 (谁) 最后一次 发了 (什么私信)'''
-    user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
-    # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
-        return error_response(403)
 
-    page = request.args.get('page', 1, type=int)
-    per_page = min(
-        request.args.get(
-            'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
-    data = Message.to_collection_dict(
-        user.messages_sent.group_by(Message.recipient_id).order_by(Message.timestamp.desc()), page, per_page,
-        'main.get_user_messages_recipients', id=id)
-        
-    # 我给每个用户发的私信，他们有没有未读的
-    for item in data['items']:
-        # 发给了谁
-        recipient = User.query.get(item['recipient']['id'])
-        # 总共给他发过多少条
-        item['total_count'] = user.messages_sent.filter_by(recipient_id=item['recipient']['id']).count()
-        # 他最后一次查看收到的私信的时间
-        last_read_time = recipient.last_messages_read_time or datetime(1900, 1, 1)
-        # item 是发给他的最后一条，如果最后一条不是新的，肯定就没有啦
-        if item['timestamp'] > last_read_time:
-            item['is_new'] = True
-            # 继续获取发给这个用户的私信有几条是新的
-            item['new_count'] = user.messages_sent.filter_by(recipient_id=item['recipient']['id']).filter(Message.timestamp > last_read_time).count()
-    return jsonify(data)
+# @main.route('/users/<string:id>/history-messages/', methods=['GET'])
+# @token_auth.login_required
+# def get_user_history_messages(id):
+#     '''返回我与某个用户(由查询参数 from 获取)之间的所有私信记录'''
+#     user_id = obtain_user_id_from_token()
+#     user_document = mongoDB.search_user_document(user_id=id)
+#     # check if the caller of the function and the id is the same
+#     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
+#         return error_response(403)
 
-@main.route('/users/<string:id>/messages-senders/', methods=['GET'])
-@token_auth.login_required
-def get_user_messages_senders(id):
-    '''哪些用户给我发过私信，按用户分组，返回各用户最后一次发送的私信
-    即: (谁) 最后一次 给我发了 (什么私信)'''
-    user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
-    # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
-        return error_response(403)
+#     page = request.args.get('page', 1, type=int)
+#     per_page = min(
+#         request.args.get(
+#             'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
+#     from_id = request.args.get('from', type=int)
 
-    page = request.args.get('page', 1, type=int)
-    per_page = min(
-        request.args.get(
-            'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
-    
-    # fanhui = user.messages_received.group_by(Message.sender_id).order_by(Message.timestamp.desc()).all()
-    # print("fanhui",fanhui)
-    # for i in range(len(fanhui)):
-    #     print(fanhui[i].timestamp)
-
-    # fanhui2 = Message.query.filter(Message.recipient_id == g.current_user.id).all()
-    # print("fanhui2",fanhui2)
-    # # print("fanhui3",[r[0] for r in fanhui2])
-    # for i in fanhui2:
-    #     print(i.timestamp)
-
-    # fanhui3 = Message.query.group_by(Message.sender_id).all()
-    # print("fanhui3", fanhui3)
-
-    data = Message.to_collection_dict(
-        user.messages_received.group_by(Message.sender_id).order_by(Message.timestamp.desc()), page, per_page,
-        'main.get_user_messages_senders', id=id)
-    # print("data",data)
-    # print("item",data["items"])
-
-    # 这个用户发给我的私信有没有新的
-    last_read_time = user.last_messages_read_time or datetime(1900, 1, 1)
-    new_items = []  # 最后一条是新的
-    not_new_items = []  # 最后一条不是新的
-    for item in data['items']:
-        # item 是他发的最后一条，如果最后一条不是新的，肯定就没有啦
-        if item['timestamp'] > last_read_time:
-            item['is_new'] = True
-            # 继续获取这个用户发的私信有几条是新的
-            item['new_count'] = user.messages_received.filter_by(sender_id=item['sender']['id']).filter(Message.timestamp > last_read_time).count()
-            new_items.append(item)
-        else:
-            not_new_items.append(item)
-    # 对那些最后一条是新的按 timestamp 正序排序，不然用户更新 last_messages_read_time 会导致时间靠前的全部被标记已读
-    new_items = sorted(new_items, key=itemgetter('timestamp'))
-    data['items'] = new_items + not_new_items
-    return jsonify(data)
-
-
-@main.route('/users/<string:id>/history-messages/', methods=['GET'])
-@token_auth.login_required
-def get_user_history_messages(id):
-    '''返回我与某个用户(由查询参数 from 获取)之间的所有私信记录'''
-    user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
-    # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
-        return error_response(403)
-
-    page = request.args.get('page', 1, type=int)
-    per_page = min(
-        request.args.get(
-            'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
-    from_id = request.args.get('from', type=int)
-
-    if not from_id:  # 必须提供聊天的对方用户的ID
-        return bad_request('You must provide the user id of opposite site.')
-    # 对方发给我的
-    q1 = Message.query.filter(Message.sender_id == from_id, Message.recipient_id == id)
-    # 我发给对方的
-    q2 = Message.query.filter(Message.sender_id == id, Message.recipient_id == from_id)
-    # 按时间正序排列构成完整的对话时间线
-    history_messages = q1.union(q2).order_by(Message.timestamp)
-    data = Message.to_collection_dict(history_messages, page, per_page, 'main.get_user_history_messages', id=id)
-    # print("page",page,"length",len(data['items']))
-    # 现在这一页的 data['items'] 包含对方发给我和我发给对方的
-    # 需要创建一个新列表，只包含对方发给我的，用来查看哪些私信是新的
-    recived_messages = [item for item in data['items'] if item['sender']['id'] != id]
-    sent_messages = [item for item in data['items'] if item['sender']['id'] == id]
-    # 然后，标记哪些私信是新的
-    last_read_time = user.last_messages_read_time or datetime(1900, 1, 1)
-    new_count = 0
-    for item in recived_messages:
-        if item['timestamp'] > last_read_time:
-            item['is_new'] = True
-            new_count += 1
-    if new_count > 0:
-        # 更新 last_messages_read_time 属性值为收到的私信列表最后一条(最近的)的时间
-        user.last_messages_read_time = recived_messages[-1]['timestamp']
-        db.session.commit()  # 先提交数据库，这样 user.new_recived_messages() 才会变化
-        # 更新用户的新私信通知的计数
-        user.add_notification('unread_messages_count', user.new_recived_messages())
-        db.session.commit()
-    # 最后，重新组合 data['items']，因为收到的新私信添加了 is_new 标记
-    messages = recived_messages + sent_messages
-    messages.sort(key=data['items'].index)  # 保持 messages 列表元素的顺序跟 data['items'] 一样
-    data['items'] = messages
-    return jsonify(data)
+#     if not from_id:  # 必须提供聊天的对方用户的ID
+#         return bad_request('You must provide the user id of opposite site.')
+#     # 对方发给我的
+#     q1 = Message.query.filter(Message.sender_id == from_id, Message.recipient_id == id)
+#     # 我发给对方的
+#     q2 = Message.query.filter(Message.sender_id == id, Message.recipient_id == from_id)
+#     # 按时间正序排列构成完整的对话时间线
+#     history_messages = q1.union(q2).order_by(Message.timestamp)
+#     data = Message.to_collection_dict(history_messages, page, per_page, 'main.get_user_history_messages', id=id)
+#     # print("page",page,"length",len(data['items']))
+#     # 现在这一页的 data['items'] 包含对方发给我和我发给对方的
+#     # 需要创建一个新列表，只包含对方发给我的，用来查看哪些私信是新的
+#     recived_messages = [item for item in data['items'] if item['sender']['id'] != id]
+#     sent_messages = [item for item in data['items'] if item['sender']['id'] == id]
+#     # 然后，标记哪些私信是新的
+#     last_read_time = user.last_messages_read_time or datetime(1900, 1, 1)
+#     new_count = 0
+#     for item in recived_messages:
+#         if item['timestamp'] > last_read_time:
+#             item['is_new'] = True
+#             new_count += 1
+#     if new_count > 0:
+#         # 更新 last_messages_read_time 属性值为收到的私信列表最后一条(最近的)的时间
+#         user.last_messages_read_time = recived_messages[-1]['timestamp']
+#         db.session.commit()  # 先提交数据库，这样 user.new_recived_messages() 才会变化
+#         # 更新用户的新私信通知的计数
+#         user.add_notification('unread_messages_count', user.new_recived_messages())
+#         db.session.commit()
+#     # 最后，重新组合 data['items']，因为收到的新私信添加了 is_new 标记
+#     messages = recived_messages + sent_messages
+#     messages.sort(key=data['items'].index)  # 保持 messages 列表元素的顺序跟 data['items'] 一样
+#     data['items'] = messages
+#     return jsonify(data)

@@ -12,133 +12,116 @@ from Items.main import main
 # from Items.models import User, Message, Matched, Stop
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-
+from Items.main.utils import obtain_user_id_from_token, obtain_unique_id
+from Items.main.utils import verify_token_user_id_and_function_caller_id
+from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 
 @main.route('/stop_train_task/<string:id>', methods=['POST'])
 @token_auth.login_required
 def stop_train_task(id):
 
-    data = request.get_json()
+    """
+    user terminates specific train task.
+    If the user is sponsor, the whole train task will be terminated.
+    If the user is assistor, it will not receive any message from this train task.
 
+    Parameters:
+       task_id - String. The id of train task
+       
+    Returns:
+        If sponsor:
+            response = {
+                "message": "delete successfully", 
+                "isSponsor": True, 
+                "cur_rounds_num": cur_rounds_num
+            }
+        elif assistor:
+            response = {
+                "message": "delete successfully", 
+                "isSponsor": False, 
+                "cur_rounds_num": cur_rounds_num
+            }
+
+    Raises:
+        KeyError - raises an exception
+    """
+
+    data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
     task_id = data.get('task_id')
-    print("----------1")
+
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    most_recent_round = 0
-    query = Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train").order_by(Message.rounds.desc()).first()
-    if query is not None:
-        most_recent_round = query.rounds
+    # check if the current client is the sponsor
+    isSponsor = False
+    train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+    sponsor_id = train_match_document['sponsor_information']['sponsor_id']
+    assistor_information = train_match_document['assistor_information']
+    sponsor_information = train_match_document['sponsor_information']
+    sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
+    asssistor_random_id_mapping = train_match_document['asssistor_random_id_mapping']
+    if sponsor_id == user_id:
+        isSponsor = True 
 
-    # get sponsor id
-    get_all_sponsor_assistors = Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").all()
-    sponsor_id = None
-    if get_all_sponsor_assistors:
-        sponsor_id = get_all_sponsor_assistors[0].sponsor_id
-    
-    print("----------2", sponsor_id)
-
-    if int(sponsor_id) == g.current_user.id:
-        Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.rounds == most_recent_round).delete()
-        db.session.commit()
-        
-        Matched.query.filter(Matched.task_id == task_id, Matched.test_indicator == "train").update({"Terminate": "true"})
-        db.session.commit()
-
-        
-        # add stop_deleted_user_id == sponsor to assistor
-        for row in get_all_sponsor_assistors:
-            if row.assistor_id_pair != sponsor_id:
-                
-                stop = Stop()
-                stop.stop_informed_user_id = row.assistor_id_pair
-                stop.stop_deleted_user_id = sponsor_id
-                stop.stop_round = most_recent_round
-                stop.task_id = task_id
-                stop.test_indicator = "train"
-
-                db.session.add(stop)
-                db.session.commit()
-                user = User.query.get_or_404(row.assistor_id_pair)
-                # send unread train stop notification to current assistor
-                user.add_notification('unread train stop', user.stop_train_task()) 
-                db.session.commit()
-
-        # add stop_deleted_user_id == assistor to sponsor
-        # Use 2 for loop because I do not want to search User DB everytime. We only need user who is sponsor
-        user = User.query.get_or_404(sponsor_id)
-        for row in get_all_sponsor_assistors:
-            if row.assistor_id_pair != sponsor_id:
-
-                stop = Stop()
-                stop.stop_informed_user_id = sponsor_id
-                stop.stop_deleted_user_id = row.assistor_id_pair
-                stop.stop_round = most_recent_round
-                stop.task_id = task_id
-                stop.test_indicator = "train"
-
-                db.session.add(stop)
-                db.session.commit()
-                print("yiyiyiyiyiyiyiyiyiy")
-                # send unread train stop notification to sponsor of current task
-        user.add_notification('unread train stop', user.stop_train_task()) 
-        db.session.commit()
-
-
-        response = jsonify({"sponsor delete successfully": "successfully", "check sponsor": "true", "most recent round": most_recent_round})
-        return response
-
+    # get recent round
+    cur_rounds_num = None
+    train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+    # if train_message_document is None, it means it is the first round of this train_task
+    if train_message_document is None:
+        cur_rounds_num = 1
     else:
-        print("----------3")
-        Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.rounds == most_recent_round, Message.sender_id == g.current_user.id).delete()
-        db.session.commit()
+        cur_rounds_num = train_message_document['cur_rounds_num']
+
+    if isSponsor:
+        # delete the stopped round in train_message Table
+        # train_mongoDB.delete_rounds_in_train_message_output_document(task_id=task_id, cur_rounds_num=cur_rounds_num, role='sponsor')
         
-        Message.query.filter(Message.task_id == task_id, Message.test_indicator == "train", Message.rounds == most_recent_round, Message.assistor_id == g.current_user.id).delete()
-        db.session.commit()
+        # put sponsor in sponsor_terminate_id_dict
+        train_mongoDB.update_user_stop_in_train_match_document(task_id=task_id, user_id=user_id, role='sponsor')
+
+        # add stop notification to all sponsor and assistors' notification table
+        for assistor_id in assistor_information:
+            train_mongoDB.update_notification_document(user_id=assistor_id, notification_name='stop_train_task', 
+                                                       task_id=task_id, sender_random_id=sponsor_random_id, 
+                                                       role='assistor', cur_rounds_num=cur_rounds_num)
+
+        train_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='stop_train_task', 
+                                                       task_id=task_id, sender_random_id=sponsor_random_id, 
+                                                       role='sponsor', cur_rounds_num=cur_rounds_num)
+   
+        response = {
+            "message": "delete successfully", 
+            "isSponsor": True, 
+            "cur_rounds_num": cur_rounds_num
+        }
+    elif not isSponsor:
+        # delete the stopped round in train_message Table
+        # train_mongoDB.delete_rounds_in_train_message_output_document(task_id=task_id, cur_rounds_num=cur_rounds_num)
         
-        Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == g.current_user.id, Matched.test_indicator == "train").update({"Terminate": "true"})
-        db.session.commit()
+        # put sponsor in sponsor_terminate_id_dict
+        train_mongoDB.update_user_stop_in_train_match_document(task_id=task_id, user_id=user_id, role='assistor')
+        assistor_id = user_id
+        assistor_random_id = asssistor_random_id_mapping[assistor_id]
 
-        stop = Stop()
-        stop.stop_informed_user_id = g.current_user.id
-        stop.stop_deleted_user_id = sponsor_id
-        stop.stop_round = most_recent_round
-        stop.task_id = task_id
-        stop.test_indicator = "train"
-
-        db.session.add(stop)
-        db.session.commit()
-        # send unread train stop notification to current assistor
-        user = User.query.get_or_404(g.current_user.id)
-        user.add_notification('unread train stop', user.stop_train_task()) 
-        db.session.commit()
-
-
-        stop = Stop()
-        stop.stop_informed_user_id = sponsor_id
-        stop.stop_deleted_user_id = g.current_user.id
-        stop.stop_round = most_recent_round
-        stop.task_id = task_id
-        stop.test_indicator = "train"
-
-        db.session.add(stop)
-        db.session.commit()
-        # send unread train stop notification to sponsor of current task
-        user = User.query.get_or_404(sponsor_id)
-        user.add_notification('unread train stop', user.stop_train_task()) 
-        db.session.commit()
-
-        print("----------4")
-        response = jsonify({"assistor delete successfully": "successfully", "check sponsor": "false", "most recent round": most_recent_round})
-        return response
+        # add stop notification to its notification table
+        train_mongoDB.update_notification_document(user_id=assistor_id, notification_name='stop_train_task', 
+                                                   task_id=task_id, sender_random_id=assistor_random_id, 
+                                                   role='assistor', cur_rounds_num=cur_rounds_num)
+   
+        response = {
+            "message": "delete successfully", 
+            "isSponsor": False, 
+            "cur_rounds_num": cur_rounds_num
+        }
+    return jsonify(response)
 
 
 
@@ -146,84 +129,105 @@ def stop_train_task(id):
 @token_auth.login_required
 def stop_test_task(id):
     
-    data = request.get_json()
+    """
+    user terminates specific test task.
+    If the user is sponsor, the whole test task will be terminated.
+    If the user is assistor, it will not receive any message from this test task.
 
+    Parameters:
+       test_id - String. The id of test task
+       
+    Returns:
+        If sponsor:
+            response = {
+                "message": "delete successfully", 
+                "isSponsor": True, 
+                "cur_rounds_num": cur_rounds_num
+            }
+        elif assistor:
+            response = {
+                "message": "delete successfully", 
+                "isSponsor": False, 
+                "cur_rounds_num": cur_rounds_num
+            }
+
+    Raises:
+        KeyError - raises an exception
+    """
+
+    data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
 
     test_id = data.get('test_id')
+
     user_id = obtain_user_id_from_token()
-    user = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id)
     # check if the caller of the function and the id is the same
-    if not verify_token_user_id_and_function_caller_id(user_id, user['user_id']):
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    print("----------1")
-    most_recent_round = 0
-    # query = Message.query.filter(Message.test_id == test_id, Message.test_indicator == "test").order_by(Message.rounds.desc()).first()
-    # if query is not None:
-    #     most_recent_round = query.rounds
+    # check if the current client is the sponsor
+    isSponsor = False
+    test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+    sponsor_id = test_match_document['sponsor_information']['sponsor_id']
+    assistor_information = test_match_document['assistor_information']
+    sponsor_information = test_match_document['sponsor_information']
+    sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
+    asssistor_random_id_mapping = test_match_document['asssistor_random_id_mapping']
+    if sponsor_id == user_id:
+        isSponsor = True 
 
-    # get sponsor id
-    get_all_sponsor_assistors = Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").all()
-    sponsor_id = None
-    if get_all_sponsor_assistors:
-        sponsor_id = get_all_sponsor_assistors[0].sponsor_id
-    
-    print("----------2", sponsor_id)
+    # get recent round
+    cur_rounds_num = None
+    test_message_document = test_mongoDB.search_test_message_document(test_id=test_id)
+    # if train_message_document is None, it means it is the first round of this train_task
+    if test_message_document is None:
+        cur_rounds_num = 1
+    else:
+        cur_rounds_num = test_message_document['cur_rounds_num']
 
-    if int(sponsor_id) == g.current_user.id:
-        Message.query.filter(Message.test_id == test_id, Message.test_indicator == "test", Message.rounds == most_recent_round).delete()
-        db.session.commit()
+    if isSponsor:
+        # delete the stopped round in train_message Table
+        # train_mongoDB.delete_rounds_in_train_message_output_document(task_id=task_id, cur_rounds_num=cur_rounds_num, role='sponsor')
         
-        Matched.query.filter(Matched.test_id == test_id, Matched.test_indicator == "test").update({"Terminate": "true"})
-        db.session.commit()
+        # put sponsor in sponsor_terminate_id_dict
+        test_mongoDB.update_user_stop_in_test_match_document(test_id=test_id, user_id=user_id, role='sponsor')
 
+        # add stop notification to all sponsor and assistors' notification table
+        for assistor_id in assistor_information:
+            test_mongoDB.update_notification_document(user_id=assistor_id, notification_name='stop_test_task', 
+                                                       test_id=test_id, sender_random_id=sponsor_random_id, 
+                                                       role='assistor', cur_rounds_num=cur_rounds_num)
+
+        test_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='stop_test_task', 
+                                                       test_id=test_id, sender_random_id=sponsor_random_id, 
+                                                       role='sponsor', cur_rounds_num=cur_rounds_num)
+   
+        response = {
+            "message": "delete successfully", 
+            "isSponsor": True, 
+            "cur_rounds_num": cur_rounds_num
+        }
+    elif not isSponsor:
+        # delete the stopped round in train_message Table
+        # train_mongoDB.delete_rounds_in_train_message_output_document(task_id=task_id, cur_rounds_num=cur_rounds_num)
         
-        # add stop_deleted_user_id == sponsor to assistor
-        for row in get_all_sponsor_assistors:
-            if row.assistor_id_pair != sponsor_id:
-                
-                stop = Stop()
-                stop.stop_informed_user_id = row.assistor_id_pair
-                stop.stop_deleted_user_id = sponsor_id
-                stop.stop_round = most_recent_round
-                stop.test_id = test_id
-                stop.test_indicator = "test"
+        # put sponsor in sponsor_terminate_id_dict
+        test_mongoDB.update_user_stop_in_train_match_document(test_id=test_id, user_id=user_id, role='assistor')
+        assistor_id = user_id
+        assistor_random_id = asssistor_random_id_mapping[assistor_id]
 
-                db.session.add(stop)
-                db.session.commit()
-                user = User.query.get_or_404(row.assistor_id_pair)
-                # send unread train stop notification to current assistor
-                user.add_notification('unread test stop', user.stop_test_task()) 
-                db.session.commit()
-
-        # add stop_deleted_user_id == assistor to sponsor
-        # Use 2 for loop because I do not want to search User DB everytime. We only need user who is sponsor
-        user = User.query.get_or_404(sponsor_id)
-        for row in get_all_sponsor_assistors:
-            if row.assistor_id_pair != sponsor_id:
-
-                stop = Stop()
-                stop.stop_informed_user_id = sponsor_id
-                stop.stop_deleted_user_id = row.assistor_id_pair
-                stop.stop_round = most_recent_round
-                stop.test_id = test_id
-                stop.test_indicator = "test"
-
-                db.session.add(stop)
-                db.session.commit()
-                print("yiyiyiyiyiyiyiyiyiy")
-                # send unread train stop notification to sponsor of current task
-        user.add_notification('unread test stop', user.stop_test_task()) 
-        db.session.commit()
-
-        response = jsonify({"test stop successfully": "successfully"})
-        return response
-
-
-    
-      
-    
+        # add stop notification to its notification table
+        test_mongoDB.update_notification_document(user_id=assistor_id, notification_name='stop_test_task', 
+                                                   test_id=test_id, sender_random_id=assistor_random_id, 
+                                                   role='assistor', cur_rounds_num=cur_rounds_num)
+   
+        response = {
+            "message": "delete successfully", 
+            "isSponsor": False, 
+            "cur_rounds_num": cur_rounds_num
+        }
+    return jsonify(response)

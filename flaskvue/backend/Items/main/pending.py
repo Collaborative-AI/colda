@@ -16,7 +16,7 @@ from Items.main import main
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 from Items.main.utils import log, generate_msg, obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
-from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
+from Items.main.mongoDB import mongoDB
 
 @main.route('/add_train_pending/<string:id>', methods=['POST'])
 @token_auth.login_required
@@ -42,7 +42,7 @@ def add_train_pending(id):
         return bad_request('task_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -78,7 +78,7 @@ def add_test_pending(id):
         return bad_request('test_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -109,7 +109,7 @@ def get_all_pending(id):
     """
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -147,7 +147,7 @@ def dalete_pending():
         return bad_request('test_indicator is required.')
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)

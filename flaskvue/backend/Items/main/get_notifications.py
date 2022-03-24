@@ -19,7 +19,7 @@ from Items.main.errors import error_response, bad_request
 from Items.main.utils import obtain_user_id_from_token, add_new_token_to_response
 from Items.main.utils import verify_token_user_id_and_function_caller_id
 from Items.main.auth import token_auth
-from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
+from Items.main.mongoDB import mongoDB
 
 
 @main.route('/get_notifications/<string:id>/', methods=['GET'])
@@ -39,7 +39,7 @@ def get_notifications(id):
     """
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)

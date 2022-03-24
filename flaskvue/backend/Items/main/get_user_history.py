@@ -20,14 +20,17 @@ from Items.main.auth import token_auth
 from Items.main.utils import log, generate_msg
 from Items.main.auth import token_auth
 from Items.main.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
-from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
+
+from Items.main.mongoDB import mongoDB
+from Items.main.mongoDB import train_match
+from Items.main.mongoDB import test_match
 
 @main.route('/get_user_history/<string:id>', methods=['GET'])
 @token_auth.login_required
 def get_user_history(id):
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -40,10 +43,10 @@ def get_user_history(id):
     participated_train_task = user_document['participated_train_task']
     participated_task = []
     for task_id in participated_train_task:
-        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        train_match_document = train_match.search_train_match_document(task_id=task_id)
         task_name = train_match_document['task_name']
         task_description = train_match_document['task_description']
-        timestamp = 5
+        timestamp = train_match_document['_id'].generation_time
         sub_task = {
             'task_id': task_id,
             'task_name': task_name,
@@ -57,10 +60,11 @@ def get_user_history(id):
 
         test_task_list = train_match_document['test_task_list']
         for test_id in test_task_list:
-            test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+            test_match_document = test_match.search_test_match_document(test_id=test_id)
             test_name = test_match_document['test_name']
             test_description = test_match_document['test_description']
-            timestamp = 5
+            # obtain timestamp from ObjectID object
+            timestamp = test_match_document['_id'].generation_time
             sub_task = {
                 'task_id': None,
                 'task_name': None,
@@ -101,14 +105,14 @@ def check_sponsor(id):
         return bad_request('task_id is required.')
     
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     task_id = data['task_id']
     
-    task_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+    task_match_document = train_match.search_train_match_document(task_id=task_id)
     sponsor_id = task_match_document['sponsor_information']['sponsor_id']
 
     if sponsor_id == user_id:
@@ -134,13 +138,13 @@ def get_test_history_id(id):
         return bad_request('task_id is required.')
     
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
     task_id = data['task_id']
-    train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+    train_match_document = train_match.search_train_match_document(task_id=task_id)
     
     response = {
         "test_id_list": train_match_document['test_task_list']

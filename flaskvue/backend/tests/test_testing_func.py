@@ -22,6 +22,7 @@ class Test_Helper_Func_APITestCase(unittest.TestCase):
         '''每个测试之后执行'''
         # db.session.remove()
         # db.drop_all()  # 删除所有数据库表
+        self.drop_db_collections()
         self.app_context.pop()  # 退出Flask应用上下文
 
     def get_basic_auth_headers(self, username, password):
@@ -47,6 +48,24 @@ class Test_Helper_Func_APITestCase(unittest.TestCase):
             'Content-Type': 'application/json'
         }
     
+    def drop_db_collections(self):
+        pyMongo.db.User.drop()
+        pyMongo.db.Notification.drop()
+        pyMongo.db.Pending.drop()
+        pyMongo.db.Train_Message.drop()
+        pyMongo.db.Train_Message_Situation.drop()
+        pyMongo.db.Train_Message_Output.drop()
+        pyMongo.db.Test_Message.drop()
+        pyMongo.db.Test_Message_Situation.drop()
+        pyMongo.db.Test_Message_Output.drop()
+        pyMongo.db.Train_Match.drop()
+        pyMongo.db.Train_Match_Identifier.drop()
+        pyMongo.db.Test_Match.drop()
+        pyMongo.db.Test_Match_Identifier.drop()
+        pyMongo.db.Train_Task.drop()
+        pyMongo.db.Test_Task.drop()
+        pyMongo.db.Stop.drop()
+
     # def test_get_notification(self):
 
     #     u1 = User(username='unittest', email='john@163.com')

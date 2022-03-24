@@ -20,7 +20,10 @@ from Items.main import main
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 from Items.main.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
-from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
+
+from Items.main.mongoDB import mongoDB
+from Items.main.mongoDB import train_match, train_match_identifier
+from Items.main.mongoDB import test_match, test_match_identifier
 
 @main.route('/match_identifier_content/<string:id>', methods=['POST'])
 @token_auth.login_required
@@ -52,7 +55,7 @@ def match_identifier_content(id):
         return bad_request('identifier_content is required.')
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -61,13 +64,13 @@ def match_identifier_content(id):
     identifier_content = data.get('identifier_content')
     assistor_id = user_id
 
-    train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+    train_match_document = train_match.search_train_match_document(task_id=task_id)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
     sponsor_information = train_match_document['sponsor_information']
     sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
     sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
-    train_match_identifier_document = train_mongoDB.search_train_match_identifier_document(identifier_id=sponsor_identifier_id)
+    train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=sponsor_identifier_id)
     sponsor_identifier_content = train_match_identifier_document['identifier_content']
 
     log(generate_msg('Assistor training stage'), user_id, task_id)
@@ -80,15 +83,15 @@ def match_identifier_content(id):
     assistor_random_id = obtain_unique_id()
     identifier_id = obtain_unique_id()
 
-    train_mongoDB.assistor_update_train_match_document(task_id=task_id, assistor_id=assistor_id, 
+    train_match.assistor_update_train_match_document(task_id=task_id, assistor_id=assistor_id, 
                                                  assistor_random_id=assistor_random_id, identifier_id=identifier_id)
 
     # add new train_match_file document to Train_Match_File Table
-    train_mongoDB.create_train_match_identifier_document(identifier_id=identifier_id, identifier_content=same_identifiers)
+    train_match_identifier.create_train_match_identifier_document(identifier_id=identifier_id, identifier_content=same_identifiers)
     
     log(generate_msg('2.2:', 'assistor matching', user_id), user_id, task_id)
     
-    train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+    train_match_document = train_match.search_train_match_document(task_id=task_id)
     assistor_information = train_match_document['assistor_information']
     total_assistor_num = train_match_document['total_assistor_num']
     assistor_terminate_id_dict = train_match_document['assistor_terminate_id_dict']
@@ -97,14 +100,14 @@ def match_identifier_content(id):
         log(generate_msg('2.3:', 'assistor matching_done', 'number of assistor:', len(assistor_information)), user_id, task_id)
         # send unread_match_id notification to assistors
         for assistor_id in assistor_information:
-            train_mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_match_id', 
-                                                       task_id=task_id, sender_random_id=sponsor_random_id, 
-                                                       role='assistor', cur_rounds_num=1)
+            mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_match_id', 
+                                                       id=task_id, sender_random_id=sponsor_random_id, 
+                                                       role='assistor', cur_rounds_num=1, test_indicator='train')
                                                         
         # send unread_match_id notification to sponsor
-        train_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_match_id', 
-                                                   task_id=task_id, sender_random_id=sponsor_random_id, 
-                                                   role='sponsor', cur_rounds_num=1)
+        mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_match_id', 
+                                                   id=task_id, sender_random_id=sponsor_random_id, 
+                                                   role='sponsor', cur_rounds_num=1, test_indicator='train')
         log(generate_msg('2.4:', 'Server sends unread match id to all participants of this task (sponsor and all assistors)'), user_id, task_id)
 
     if len(assistor_information) >= remain_assistor_num:
@@ -154,7 +157,7 @@ def match_test_identifier_content(id):
         return bad_request('identifier_content is required.')
     
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -164,13 +167,13 @@ def match_test_identifier_content(id):
     identifier_content = data.get('identifier_content')
     assistor_id = user_id
 
-    test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+    test_match_document = test_match.search_test_match_document(test_id=test_id)
     sponsor_id = test_match_document['sponsor_information']['sponsor_id']
     sponsor_information = test_match_document['sponsor_information']
     sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
     sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
-    test_match_identifier_document = test_mongoDB.search_test_match_identifier_document(identifier_id=sponsor_identifier_id)
+    test_match_identifier_document = test_match_identifier.search_test_match_identifier_document(identifier_id=sponsor_identifier_id)
     sponsor_identifier_content = test_match_identifier_document['identifier_content']
     
     log(generate_msg('Assistor testing stage'), user_id, task_id, test_id)
@@ -182,14 +185,14 @@ def match_test_identifier_content(id):
     assistor_random_id = obtain_unique_id()
     identifier_id = obtain_unique_id()
 
-    test_mongoDB.assistor_update_test_match_document(test_id=test_id, assistor_id=assistor_id, 
+    test_match.assistor_update_test_match_document(test_id=test_id, assistor_id=assistor_id, 
                                                      assistor_random_id=assistor_random_id, identifier_id=identifier_id)
 
     # add new train_match_file document to Train_Match_File Table
-    test_mongoDB.create_test_match_identifier_document(identifier_id=identifier_id, identifier_content=same_identifiers)                                             
+    test_match_identifier.create_test_match_identifier_document(identifier_id=identifier_id, identifier_content=same_identifiers)                                             
     log(generate_msg('Test 2.2:', 'assistor matching', user_id), user_id, task_id, test_id)
 
-    test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+    test_match_document = test_match.search_test_match_document(test_id=test_id)
     assistor_information = test_match_document['assistor_information']
     total_assistor_num = test_match_document['total_assistor_num']
     assistor_terminate_id_dict = test_match_document['assistor_terminate_id_dict']
@@ -197,14 +200,14 @@ def match_test_identifier_content(id):
     if len(assistor_information) >= remain_assistor_num:
         log(generate_msg('Test 2.3:', 'assistor matching_done', 'number of assistor:', len(assistor_information)), user_id, task_id, test_id)
         for assistor_id in assistor_information:
-            test_mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_match_id', 
-                                                      test_id=test_id, sender_random_id=sponsor_random_id, 
-                                                      role='assistor', cur_rounds_num=1)
+            mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_match_id', 
+                                                      id=test_id, sender_random_id=sponsor_random_id, 
+                                                      role='assistor', cur_rounds_num=1, test_indicator='test')
                                                         
         # send unread_match_id notification to sponsor
-        test_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_match_id', 
-                                                  test_id=test_id, sender_random_id=sponsor_random_id, 
-                                                  role='sponsor', cur_rounds_num=1)
+        mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_match_id', 
+                                                  id=test_id, sender_random_id=sponsor_random_id, 
+                                                  role='sponsor', cur_rounds_num=1, test_indicator='test')
         log(generate_msg('Test 2.4:', 'Server sends unread match id to all participants of this test task'), user_id, task_id, test_id)
 
     if len(assistor_information) >= remain_assistor_num:

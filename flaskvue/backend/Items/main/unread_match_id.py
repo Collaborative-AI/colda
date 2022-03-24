@@ -16,9 +16,12 @@ from Items.main import main
 # from Items.models import User, Notification, Matched, Message
 from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
-from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 from Items.main.utils import log, generate_msg, obtain_user_id_from_token, obtain_unique_id
 from Items.main.utils import verify_token_user_id_and_function_caller_id
+
+from Items.main.mongoDB import mongoDB
+from Items.main.mongoDB import train_match, train_match_identifier, train_message, train_message_situation
+from Items.main.mongoDB import test_match, test_match_identifier, test_message, test_message_output
 
 @main.route('/get_identifier_content/<string:id>', methods=['POST'])
 @token_auth.login_required
@@ -50,12 +53,12 @@ def get_identifier_content(id):
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
-    user_document = mongoDB.search_user_document(user_id=id)
-    if user is None:
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
+    if user_document is None:
         return error_response(403)
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -67,7 +70,7 @@ def get_identifier_content(id):
 
     # check if the current client is the sponsor
     isSponsor = False
-    train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+    train_match_document = train_match.search_train_match_document(task_id=task_id)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
     if sponsor_id == user_id:
         isSponsor = True 
@@ -80,7 +83,7 @@ def get_identifier_content(id):
             identifier_id = assistor_information[assistor_id]['identifier_id']
             assistor_random_id = assistor_information[assistor_id]['assistor_id_to_random_id']
 
-            train_match_identifier_document = train_mongoDB.search_train_match_identifier_document(identifier_id=identifier_id)
+            train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=identifier_id)
             identifier_content = train_match_identifier_document['identifier_content']
 
             assistor_random_id_to_identifier_content_dict[assistor_random_id] = identifier_content
@@ -98,7 +101,7 @@ def get_identifier_content(id):
         identifier_id = assistor_information[assistor_id]['identifier_id']
         sponsor_random_id =sponsor_information[sponsor_id]['sponsor_id_to_random_id']
 
-        train_match_identifier_document = train_mongoDB.search_train_match_identifier_document(identifier_id=identifier_id)
+        train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=identifier_id)
         identifier_content = train_match_identifier_document['identifier_content']
 
         sponsor_random_id_to_identifier_content_dict[sponsor_random_id] = identifier_content
@@ -147,7 +150,7 @@ def get_test_identifier_content(id):
         return bad_request('test_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -160,7 +163,7 @@ def get_test_identifier_content(id):
 
     # check if the current client is the sponsor
     isSponsor = False
-    test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+    test_match_document = test_match.search_test_match_document(test_id=test_id)
     sponsor_id = test_match_document['sponsor_information']['sponsor_id']
     if sponsor_id == user_id:
         isSponsor = True 
@@ -173,7 +176,7 @@ def get_test_identifier_content(id):
             identifier_id = assistor_information[assistor_id]['identifier_id']
             assistor_random_id = assistor_information[assistor_id]['assistor_id_to_random_id']
 
-            test_match_identifier_document = test_mongoDB.search_test_match_identifier_document(identifier_id=identifier_id)
+            test_match_identifier_document = test_match_identifier.search_test_match_identifier_document(identifier_id=identifier_id)
             identifier_content = test_match_identifier_document['identifier_content']
 
             assistor_random_id_to_identifier_content_dict[assistor_random_id] = identifier_content
@@ -191,7 +194,7 @@ def get_test_identifier_content(id):
         identifier_id = assistor_information[assistor_id]['identifier_id']
         sponsor_random_id =sponsor_information[sponsor_id]['sponsor_id_to_random_id']
 
-        test_match_identifier_document = test_mongoDB.search_test_match_identifier_document(identifier_id=identifier_id)
+        test_match_identifier_document = test_match_identifier.search_test_match_identifier_document(identifier_id=identifier_id)
         identifier_content = test_match_identifier_document['identifier_content']
 
         sponsor_random_id_to_identifier_content_dict[sponsor_random_id] = identifier_content
@@ -217,7 +220,7 @@ def send_situation(id):
         return bad_request('task_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -229,7 +232,7 @@ def send_situation(id):
 
     # get recent round
     cur_rounds_num = None
-    train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+    train_message_document = train_message.search_train_message_document(task_id=task_id)
     # if train_message_document is None, it means it is the first round of this train_task
     if train_message_document is None:
         cur_rounds_num = 1
@@ -241,7 +244,7 @@ def send_situation(id):
     elif cur_rounds_num > 1:
         log(generate_msg('5.3:', 'sponsor send_situation begins'), user_id, task_id)
 
-    train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+    train_match_document = train_match.search_train_match_document(task_id=task_id)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
     total_assistor_num = train_match_document['total_assistor_num']
     sponsor_information = train_match_document['sponsor_information']
@@ -274,7 +277,7 @@ def send_situation(id):
         }
 
         # assistor add train_message_situation to Train_Message_Situation Table
-        train_mongoDB.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
+        train_message_situation.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
                                                               sender_random_id=sponsor_random_id, recipient_id=assistor_id, 
                                                               situation_content=residual)
 
@@ -284,12 +287,12 @@ def send_situation(id):
         'situation_id': situation_id
     }
 
-    train_mongoDB.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
+    train_message_situation.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
                                                           sender_random_id=sponsor_random_id, recipient_id=sponsor_id, 
                                                           situation_content=None)
 
     if cur_rounds_num == 1:
-        train_mongoDB.create_train_message_document(task_id=task_id, cur_rounds_num=cur_rounds_num, situation_dict=situation_dict)
+        train_message.create_train_message_document(task_id=task_id, cur_rounds_num=cur_rounds_num, situation_dict=situation_dict)
     elif cur_rounds_num > 1:
         pyMongo.db.Train_Message.update_one({'task_id': task_id}, {'$set':{
             'cur_rounds_num': cur_rounds_num,
@@ -298,9 +301,9 @@ def send_situation(id):
 
     # send unread_situation notification to all assistors in this train task 
     for assistor_id in assistor_id_list:
-        train_mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_situation', 
-                                                       task_id=task_id, sender_random_id=sponsor_random_id, 
-                                                       role='assistor', cur_rounds_num=1)
+        mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_situation', 
+                                            id=task_id, sender_random_id=sponsor_random_id, 
+                                            role='assistor', cur_rounds_num=1, test_indicator='train')
 
     if cur_rounds_num == 1:
         log(generate_msg('3.4:"', 'sponsor adds unread situation to assistors done'), user_id, task_id)
@@ -308,9 +311,9 @@ def send_situation(id):
         log(generate_msg('5.4:"', 'sponsor adds unread situation to assistors done'), user_id, task_id)
     
     # send unread_situation notification to sponsor in this train task 
-    train_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_situation', 
-                                                       task_id=task_id, sender_random_id=sponsor_random_id, 
-                                                       role='sponsor', cur_rounds_num=1)
+    mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_situation', 
+                                        id=task_id, sender_random_id=sponsor_random_id, 
+                                        role='sponsor', cur_rounds_num=1, test_indicator='train')
 
     if cur_rounds_num == 0:
         log(generate_msg('3.5:"', 'sponsor add unread situation to sponsor done'), user_id, task_id)
@@ -358,7 +361,7 @@ def send_test_output(id):
         return bad_request('output_content is required.')
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -370,7 +373,7 @@ def send_test_output(id):
 
     log(generate_msg('Test 3.3:"', 'assistor send_test_output start'), user_id, task_id, test_id)
 
-    test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+    test_match_document = test_match.search_test_match_document(test_id=test_id)
     total_assistor_num = test_match_document['total_assistor_num']
     sponsor_id = test_match_document['sponsor_information']['sponsor_id']
     assistor_random_id = test_match_document['assistor_information'][assistor_id]['assistor_id_to_random_id']
@@ -379,10 +382,10 @@ def send_test_output(id):
     cur_rounds_num = 1
 
     output_id = obtain_unique_id()
-    res = test_mongoDB.update_test_message_document(test_id=test_id, cur_rounds_num=cur_rounds_num, 
+    test_message.update_test_message_document(test_id=test_id, cur_rounds_num=cur_rounds_num, 
                                                     assistor_id=assistor_id, output_id=output_id)
 
-    test_mongoDB.create_test_message_output_document(output_id=output_id, sender_id=assistor_id,
+    test_message_output.create_test_message_output_document(output_id=output_id, sender_id=assistor_id,
                                                      sender_random_id=assistor_random_id, recipient_id=sponsor_id,
                                                      output_content=output_content)
 
@@ -391,15 +394,15 @@ def send_test_output(id):
 
     # check how many assistors have uploaded their output 
     # if the number of output surpasses the ramin_assistor_num, we can send notifications
-    test_message_document = test_mongoDB.search_test_message_document(test_id=test_id)
+    test_message_document = test_message.search_test_message_document(test_id=test_id)
     print('test_message_document', test_message_document)
     output_dict = test_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
     print('test_message_document')
     if len(output_dict) >= remain_assistor_num:
         print('gggggggggggggg')
-        test_mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_output', 
-                                                   test_id=test_id, sender_random_id=assistor_random_id, 
-                                                   role='sponsor', cur_rounds_num=cur_rounds_num)
+        mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_output', 
+                                            id=test_id, sender_random_id=assistor_random_id, 
+                                            role='sponsor', cur_rounds_num=cur_rounds_num, test_indicator='test')
         log(generate_msg('Test 3.4:"', 'assistor uploads all test output'), user_id, task_id, test_id)
     else:
         print('xxxxxx')

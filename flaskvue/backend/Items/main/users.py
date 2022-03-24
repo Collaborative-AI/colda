@@ -17,11 +17,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # from Items.models import User, Notification, Message
 from Items.main.errors import bad_request, error_response
 from Items.main.auth import token_auth, basic_auth
-from Items.main.mongoDB import mongoDB, train_mongoDB
 from Items.main.utils import obtain_user_id_from_token, obtain_unique_id
 from Items.main.utils import log, generate_msg, validate_password, send_email, generate_confirmation_token, confirm_token
 from Items.main.utils import generate_password, check_password, verify_token_user_id_and_function_caller_id
 
+from Items.main.mongoDB import mongoDB
 
 @main.route('/users', methods=['POST'])
 def create_user():
@@ -325,7 +325,7 @@ def update_user(id):
         message['email'] = 'Please provide a valid email address.'
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -362,7 +362,7 @@ def delete_user(id):
 # def get_user_history_messages(id):
 #     '''返回我与某个用户(由查询参数 from 获取)之间的所有私信记录'''
 #     user_id = obtain_user_id_from_token()
-#     user_document = mongoDB.search_user_document(user_id=id)
+#     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
 #     # check if the caller of the function and the id is the same
 #     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
 #         return error_response(403)

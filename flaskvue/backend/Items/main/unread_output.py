@@ -15,6 +15,10 @@ from Items.main.errors import error_response, bad_request
 from Items.main.auth import token_auth
 from Items.main.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 
+from Items.main.mongoDB import mongoDB
+from Items.main.mongoDB import train_match, train_message, train_message_output
+from Items.main.mongoDB import test_match, test_message, test_message_output
+
 @main.route('/get_output_content/<string:id>', methods=['POST'])
 @token_auth.login_required
 def get_output_content(id):
@@ -44,7 +48,7 @@ def get_output_content(id):
         return bad_request('rounds is required.')
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -54,7 +58,7 @@ def get_output_content(id):
     sponsor_id = user_id
 
     # if caller is not sponsor, it should not enter this function
-    task_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+    task_match_document = train_match.search_train_match_document(task_id=task_id)
     sponsor_id = task_match_document['sponsor_information']['sponsor_id']
     if sponsor_id != user_id:
         return error_response(403)
@@ -64,13 +68,13 @@ def get_output_content(id):
     log(generate_msg('---- unread output begins'), user_id, task_id)
     log(generate_msg('5.1:"', 'sponsor get_user_output start'), user_id, task_id)
 
-    train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+    train_message_document = train_message.search_train_message_document(task_id=task_id)
     output_dict = train_message_document['rounds_' + str(rounds)]['output_dict']
 
     assistor_random_id_to_output_content_dict = {}
     for assistor_id in output_dict:
         output_id = output_dict[assistor_id]['output_id']
-        train_message_output_document = train_mongoDB.search_train_message_output_document(output_id=output_id)
+        train_message_output_document = train_message_output.search_train_message_output_document(output_id=output_id)
 
         output_content = train_message_output_document['output_content']
         sender_random_id = train_message_output_document['sender_random_id']
@@ -114,7 +118,7 @@ def get_test_output_content(id):
         return bad_request('test_id is required.')
 
     user_id = obtain_user_id_from_token()
-    user_document = mongoDB.search_user_document(user_id=id)
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -124,7 +128,7 @@ def get_test_output_content(id):
     sponsor_id = user_id
 
     # if caller is not sponsor, it should not enter this function
-    test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+    test_match_document = test_match.search_test_match_document(test_id=test_id)
     sponsor_id = test_match_document['sponsor_information']['sponsor_id']
     if sponsor_id != user_id:
         return error_response(403)
@@ -132,13 +136,13 @@ def get_test_output_content(id):
     log(generate_msg('---- unread test output begins'), user_id, task_id, test_id)
     log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), user_id, task_id, test_id)
 
-    test_message_document = test_mongoDB.search_test_message_document(test_id=test_id)
+    test_message_document = test_message.search_test_message_document(test_id=test_id)
     output_dict = test_message_document['rounds_1']['output_dict']
 
     assistor_random_id_to_output_content_dict = {}
     for assistor_id in output_dict:
         output_id = output_dict[assistor_id]['output_id']
-        test_message_output_document = test_mongoDB.search_test_message_output_document(output_id=output_id)
+        test_message_output_document = test_message_output.search_test_message_output_document(output_id=output_id)
 
         output_content = test_message_output_document['output_content']
         sender_random_id = test_message_output_document['sender_random_id']

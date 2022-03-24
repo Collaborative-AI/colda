@@ -315,10 +315,10 @@ def send_situation(id):
                                         id=task_id, sender_random_id=sponsor_random_id, 
                                         role='sponsor', cur_rounds_num=1, test_indicator='train')
 
-    if cur_rounds_num == 0:
+    if cur_rounds_num == 1:
         log(generate_msg('3.5:"', 'sponsor add unread situation to sponsor done'), user_id, task_id)
         log(generate_msg('------------------------ unread situation done\n'), user_id, task_id)
-    else:
+    elif cur_rounds_num > 1:
         log(generate_msg('5.5:"', 'sponsor add unread situation to sponsor done'), user_id, task_id)
         log(generate_msg('------------------------ unread output done\n'), user_id, task_id)
 

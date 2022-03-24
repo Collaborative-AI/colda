@@ -13,18 +13,18 @@ from abc import ABC, abstractmethod
 
 from Items import pyMongo
 
-from test_mongoDB import test_match
-from test_mongoDB import test_match_identifier
-from test_mongoDB import test_message
-from test_mongoDB import test_message_output
-from test_mongoDB import test_task
+from Items.main.mongoDB.test_mongoDB import test_match
+from Items.main.mongoDB.test_mongoDB import test_match_identifier
+from Items.main.mongoDB.test_mongoDB import test_message
+from Items.main.mongoDB.test_mongoDB import test_message_output
+from Items.main.mongoDB.test_mongoDB import test_task
 
-from train_mongoDB import train_match
-from train_mongoDB import train_match_identifier
-from train_mongoDB import train_message
-from train_mongoDB import train_message_situation
-from train_mongoDB import train_message_output
-from train_mongoDB import train_task
+from Items.main.mongoDB.train_mongoDB import train_match
+from Items.main.mongoDB.train_mongoDB import train_match_identifier
+from Items.main.mongoDB.train_mongoDB import train_message
+from Items.main.mongoDB.train_mongoDB import train_message_situation
+from Items.main.mongoDB.train_mongoDB import train_message_output
+from Items.main.mongoDB.train_mongoDB import train_task
 
 class mongoDB():
 
@@ -34,7 +34,7 @@ class mongoDB():
             return False
         elif not isinstance(notification_name, str):
             return False
-        elif id and not isinstance(id, str):
+        elif not isinstance(id, str):
             return False
         elif not isinstance(sender_random_id, str):
             return False
@@ -44,12 +44,12 @@ class mongoDB():
             return False
         elif not isinstance(test_indicator, str):
             return False
-        
+
         if pyMongo.db.Notification.find_one({'user_id': user_id}) == None:
             pyMongo.db.Notification.insert_one({'user_id': user_id})
 
         if test_indicator == 'train':
-            base_key = 'category' + '.' + notification_name + '.' + 'train_id_dict' + '.' + id 
+            base_key = 'category' + '.' + notification_name + '.' + 'task_id_dict' + '.' + id 
         elif test_indicator == 'test':
             base_key = 'category' + '.' + notification_name + '.' + 'test_id_dict' + '.' + id 
 

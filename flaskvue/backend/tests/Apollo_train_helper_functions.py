@@ -5,9 +5,10 @@ from base64 import b64encode
 from datetime import datetime, timedelta
 from bson import ObjectId
 from Items import create_app, pyMongo
-from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 from Items.main.utils import generate_password
 from tests import TestConfig
+
+from Items.main.mongoDB import train_match, train_match_identifier, train_task, train_message, train_message_situation, train_message_output
 
 class Train_Helper_API_TestCase(unittest.TestCase):
 
@@ -168,7 +169,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         assistor_num = json_response['assistor_num']
 
         # check Train_Match database new rows, include sponsor to sponsor
-        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        train_match_document = train_match.search_train_match_document(task_id=task_id)
         total_assistor_num = train_match_document['total_assistor_num']
         sponsor_id = train_match_document['sponsor_information']['sponsor_id']
         sponsor_information = train_match_document['sponsor_information']
@@ -189,11 +190,11 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(sponsor_terminate_id_dict), 0)
         self.assertEqual(len(assistor_terminate_id_dict), 0)
 
-        train_match_identifier_document = train_mongoDB.search_train_match_identifier_document(identifier_id=sponsor_identifier_id)
+        train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=sponsor_identifier_id)
         identifier_content = train_match_identifier_document['identifier_content']
         self.assertEqual(identifier_content, [8, 4, 3, 12, 16, 17])
         
-        train_task_document = train_mongoDB.search_train_task_document(task_id=task_id)
+        train_task_document = train_task.search_train_task_document(task_id=task_id)
         task_name = train_task_document['task_name']
         task_description = train_task_document['task_description']
         task_mode = train_task_document['task_mode']
@@ -268,12 +269,12 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(task_id, task_id_response)
 
         # test train_match_document
-        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        train_match_document = train_match.search_train_match_document(task_id=task_id)
         assistor_information = train_match_document['assistor_information']
         assert user_id_2 in assistor_information
         identifier_id = assistor_information[user_id_2]['identifier_id']
 
-        train_match_identifier_document = train_mongoDB.search_train_match_identifier_document(identifier_id=identifier_id)
+        train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=identifier_id)
         identifier_content = train_match_identifier_document['identifier_content']
         self.assertEqual(set(identifier_content), set([4,12,16,17]))
 
@@ -299,12 +300,12 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(task_id, task_id_response)
 
          # test train_match_document
-        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        train_match_document = train_match.search_train_match_document(task_id=task_id)
         assistor_information = train_match_document['assistor_information']
         assert user_id_3 in assistor_information
         identifier_id = assistor_information[user_id_3]['identifier_id']
 
-        train_match_identifier_document = train_mongoDB.search_train_match_identifier_document(identifier_id=identifier_id)
+        train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=identifier_id)
         identifier_content = train_match_identifier_document['identifier_content']
         self.assertEqual(set(identifier_content), set([3,4,12]))
 
@@ -359,7 +360,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('assistor_random_id_to_identifier_content_dict'))
 
         # test match id file
-        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        train_match_document = train_match.search_train_match_document(task_id=task_id)
         user_random_id_1 = train_match_document['sponsor_information'][user_id_1]['sponsor_id_to_random_id']
         user_random_id_2 = train_match_document['assistor_information'][user_id_2]['assistor_id_to_random_id']
         user_random_id_3 = train_match_document['assistor_information'][user_id_3]['assistor_id_to_random_id']
@@ -405,12 +406,12 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        train_message_document = train_message.search_train_message_document(task_id=task_id)
         situation_dict = train_message_document['rounds_1']['situation_dict']
         self.assertEqual(len(situation_dict), 3)
         for recipient_id in situation_dict:
             situation_id = situation_dict[recipient_id]['situation_id']
-            train_message_situation_document = train_mongoDB.search_train_message_situation_document(situation_id=situation_id)
+            train_message_situation_document = train_message_situation.search_train_message_situation_document(situation_id=situation_id)
             situation_content = train_message_situation_document['situation_content']
             sender_id = train_message_situation_document['sender_id']
             sender_random_id = train_message_situation_document['sender_random_id']
@@ -426,7 +427,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         
         return task_id, assistor_username_list, user_id_list
 
-    def unread_situation_two_users_helper(self, task_id, assistor_username_list, user_id_list):     
+    def unread_situation_two_users_helper(self, task_id, assistor_username_list, user_id_list, test_rounds_num=1):     
 
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
@@ -461,10 +462,10 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         # if sponsor_stop:
         #     return
         
-        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        train_message_document = train_message.search_train_message_document(task_id=task_id)
         cur_rounds_num = train_message_document['cur_rounds_num']
-
-        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        self.assertEqual(cur_rounds_num, test_rounds_num)
+        train_match_document = train_match.search_train_match_document(task_id=task_id)
         sponsor_random_id = train_match_document['sponsor_information'][user_id_1]['sponsor_id_to_random_id']
 
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
@@ -516,16 +517,16 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['send_output'], "send output successfully")
 
-        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        train_message_document = train_message.search_train_message_document(task_id=task_id)
         output_dict = train_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
 
         output_id = output_dict[user_id_2]['output_id']
-        train_message_output_document = train_mongoDB.search_train_message_output_document(output_id=output_id)
+        train_message_output_document = train_message_output.search_train_message_output_document(output_id=output_id)
         output_content = train_message_output_document['output_content']
         self.assertEqual(output_content, [[3,321,6], [88,5,6], [7,99,9]])
 
         output_id = output_dict[user_id_3]['output_id']
-        train_message_output_document = train_mongoDB.search_train_message_output_document(output_id=output_id)
+        train_message_output_document = train_message_output.search_train_message_output_document(output_id=output_id)
         output_content = train_message_output_document['output_content']
         self.assertEqual(output_content, [[6,321,6], [88,5,6], [7,87.6,9]])
 
@@ -535,7 +536,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         user_id_2 = user_id_list[1]
         user_id_3 = user_id_list[2]
 
-        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        train_message_document = train_message.search_train_message_document(task_id=task_id)
         cur_rounds_num = train_message_document['cur_rounds_num']
 
         # 14. sponsor check notification (unread output => 1)
@@ -557,11 +558,10 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         assert 'assistor_random_id_to_output_content_dict' in json_response
 
-        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        train_match_document = train_match.search_train_match_document(task_id=task_id)
         assistor_random_id_mapping = train_match_document['assistor_random_id_mapping']
 
         for assistor_random_id, output_content in assistor_random_id_mapping.items():
-
             assistor_id = assistor_random_id_mapping[assistor_random_id]
             if assistor_id == user_id_2:
                 self.assertEqual(output_content, [[3,321,6], [88,5,6], [7,99,9]])
@@ -575,8 +575,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         user_random_id_3 = assistor_information[user_id_3]['assistor_id_to_random_id']
 
         assistor_random_id_to_residual_dict = {}
-        assistor_random_id_to_residual_dict[user_random_id_2] = [[1,2]]
-        assistor_random_id_to_residual_dict[user_random_id_3] = [[1,2,3], [4,5,6]]
+        assistor_random_id_to_residual_dict[user_random_id_2] = [[1,2,3], [4,5,6], [7,8,9]]
+        assistor_random_id_to_residual_dict[user_random_id_3] = [[1,2], [3,4]]
 
         # 17. sponsor calls: send_situation(), goes into new round 
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -589,22 +589,22 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['message'], 'send situation successfully!')
 
-        train_message_document = train_mongoDB.search_train_message_document(task_id=task_id)
+        train_message_document = train_message.search_train_message_document(task_id=task_id)
         cur_rounds_num = train_message_document['cur_rounds_num']
         situation_dict = train_message_document['rounds_' + str(cur_rounds_num)]['situation_dict']
         self.assertEqual(len(situation_dict), 3)
         for recipient_id in situation_dict:
             situation_id = situation_dict[recipient_id]['situation_id']
-            train_message_situation_document = train_mongoDB.search_train_message_situation_document(situation_id=situation_id)
+            train_message_situation_document = train_message_situation.search_train_message_situation_document(situation_id=situation_id)
             situation_content = train_message_situation_document['situation_content']
             sender_id = train_message_situation_document['sender_id']
             sender_random_id = train_message_situation_document['sender_random_id']
 
             if recipient_id == user_id_2:
-                self.assertEqual(situation_content, [[1,2]])
+                self.assertEqual(situation_content, [[1,2,3], [4,5,6], [7,8,9]])
                 self.assertEqual(sender_id, user_id_1)
                 self.assertEqual(sender_random_id, user_random_id_1)
             elif recipient_id == user_id_3:
-                self.assertEqual(situation_content, [[1,2,3], [4,5,6]])
+                self.assertEqual(situation_content, [[1,2], [3,4]])
                 self.assertEqual(sender_id, user_id_1)
                 self.assertEqual(sender_random_id, user_random_id_1)

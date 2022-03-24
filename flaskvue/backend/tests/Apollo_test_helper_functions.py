@@ -6,8 +6,11 @@ from datetime import datetime, timedelta
 from bson import ObjectId
 from Items import create_app, pyMongo
 from tests import TestConfig
-from Items.main.mongoDB import mongoDB, train_mongoDB, test_mongoDB
 from Items.main.utils import generate_password
+
+from Items.main.mongoDB import mongoDB
+from Items.main.mongoDB import train_match, train_match_identifier, train_task, train_message, train_message_situation, train_message_output
+from Items.main.mongoDB import test_match, test_match_identifier, test_task, test_message, test_message_output
 
 class Test_Helper_API_TestCase(unittest.TestCase):
     def setUp(self):
@@ -148,7 +151,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         assistor_num = json_response['assistor_num']
 
         # check Train_Match database new rows, include sponsor to sponsor
-        train_match_document = train_mongoDB.search_train_match_document(task_id=task_id)
+        train_match_document = train_match.search_train_match_document(task_id=task_id)
         total_assistor_num = train_match_document['total_assistor_num']
         sponsor_id = train_match_document['sponsor_information']['sponsor_id']
         sponsor_information = train_match_document['sponsor_information']
@@ -169,7 +172,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(sponsor_terminate_id_dict), 0)
         self.assertEqual(len(assistor_terminate_id_dict), 0)
 
-        train_task_document = train_mongoDB.search_train_task_document(task_id=task_id)
+        train_task_document = train_task.search_train_task_document(task_id=task_id)
         task_name = train_task_document['task_name']
         task_description = train_task_document['task_description']
         task_mode = train_task_document['task_mode']
@@ -273,7 +276,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         assistor_num = json_response['assistor_num']
 
         # check Test_Match database new rows, include sponsor to sponsor
-        test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+        test_match_document = test_match.search_test_match_document(test_id=test_id)
         total_assistor_num = test_match_document['total_assistor_num']
         sponsor_id = test_match_document['sponsor_information']['sponsor_id']
         sponsor_information = test_match_document['sponsor_information']
@@ -295,12 +298,12 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(sponsor_terminate_id_dict), 0)
         self.assertEqual(len(assistor_terminate_id_dict), 0)
         
-        train_task_document = train_mongoDB.search_train_task_document(task_id=task_id)
+        train_task_document = train_task.search_train_task_document(task_id=task_id)
         test_task_list = train_task_document['test_task_list']
         self.assertEqual(len(test_task_list), 1)
         self.assertEqual(test_task_list[0], test_id)
 
-        test_task_document = test_mongoDB.search_test_task_document(test_id=test_id)
+        test_task_document = test_task.search_test_task_document(test_id=test_id)
         test_name = test_task_document['test_name']
         test_description = test_task_document['test_description']
         task_mode = test_task_document['task_mode']
@@ -375,12 +378,12 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(test_id, test_id_response)
 
         # test test_match_document
-        test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+        test_match_document = test_match.search_test_match_document(test_id=test_id)
         assistor_information = test_match_document['assistor_information']
         assert user_id_2 in assistor_information
         identifier_id = assistor_information[user_id_2]['identifier_id']
 
-        test_match_identifier_document = test_mongoDB.search_test_match_identifier_document(identifier_id=identifier_id)
+        test_match_identifier_document = test_match_identifier.search_test_match_identifier_document(identifier_id=identifier_id)
         identifier_content = test_match_identifier_document['identifier_content']
         self.assertEqual(set(identifier_content), set([4]))
 
@@ -400,12 +403,12 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(test_id, test_id_response)
 
         # test test_match_document
-        test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+        test_match_document = test_match.search_test_match_document(test_id=test_id)
         assistor_information = test_match_document['assistor_information']
         assert user_id_3 in assistor_information
         identifier_id = assistor_information[user_id_3]['identifier_id']
 
-        test_match_identifier_document = test_mongoDB.search_test_match_identifier_document(identifier_id=identifier_id)
+        test_match_identifier_document = test_match_identifier.search_test_match_identifier_document(identifier_id=identifier_id)
         identifier_content = test_match_identifier_document['identifier_content']
         self.assertEqual(set(identifier_content), set([8, 4]))
 
@@ -461,7 +464,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('assistor_random_id_to_identifier_content_dict'))
 
         # test test match identifier file
-        test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+        test_match_document = test_match.search_test_match_document(test_id=test_id)
         user_random_id_1 = test_match_document['sponsor_information'][user_id_1]['sponsor_id_to_random_id']
         user_random_id_2 = test_match_document['assistor_information'][user_id_2]['assistor_id_to_random_id']
         user_random_id_3 = test_match_document['assistor_information'][user_id_3]['assistor_id_to_random_id']
@@ -508,12 +511,12 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['send_test_output'], "send test output successfully")
-        test_message_document = test_mongoDB.search_test_message_document(test_id=test_id)
+        test_message_document = test_message.search_test_message_document(test_id=test_id)
         output_dict = test_message_document['rounds_1']['output_dict']
         self.assertEqual(len(output_dict), 1)
         output_id = output_dict[user_id_2]['output_id']
         
-        test_message_output_document = test_mongoDB.search_test_message_output_document(output_id=output_id)
+        test_message_output_document = test_message_output.search_test_message_output_document(output_id=output_id)
         output_content = test_message_output_document['output_content']
         self.assertEqual(output_content, [[[1,2,3], [4,5,6], [7,8,9]],[[2,3],[4,5]]])
 
@@ -536,12 +539,12 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['send_test_output'], "send test output successfully")
-        test_message_document = test_mongoDB.search_test_message_document(test_id=test_id)
+        test_message_document = test_message.search_test_message_document(test_id=test_id)
         output_dict = test_message_document['rounds_1']['output_dict']
         self.assertEqual(len(output_dict), 2)
         output_id = output_dict[user_id_3]['output_id']
         
-        test_message_output_document = test_mongoDB.search_test_message_output_document(output_id=output_id)
+        test_message_output_document = test_message_output.search_test_message_output_document(output_id=output_id)
         output_content = test_message_output_document['output_content']
         self.assertEqual(output_content, [[[6,321,6], [88,5,6], [7,87.6,9]],[[2]]])
 
@@ -571,7 +574,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         assert 'assistor_random_id_to_output_content_dict' in json_response
 
-        test_match_document = test_mongoDB.search_test_match_document(test_id=test_id)
+        test_match_document = test_match.search_test_match_document(test_id=test_id)
         assistor_random_id_mapping = test_match_document['assistor_random_id_mapping']
 
         sponsor_information = test_match_document['sponsor_information']

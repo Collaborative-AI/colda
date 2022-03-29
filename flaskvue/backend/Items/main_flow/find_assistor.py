@@ -123,14 +123,14 @@ def find_assistor(id):
     metric_name = data['metric_name']
     task_description = data['task_description']
 
-    assistor_id_list = []
+    assistor_id_dict = {}
     for username in assistor_username_list:
         user_document = mongoDB.search_user_document(user_id=None, username=username, 
                                                      email=None, key_indicator='username')
         if user_document is None:
             return jsonify("wrong username")
         assistor_user_id = user_document['user_id']
-        assistor_id_list.append(assistor_user_id)
+        assistor_id_dict[assistor_user_id] = None
 
     log(generate_msg('Sponsor training stage'), user_id, task_id)
     log(generate_msg('---- find_assistor begins'), user_id, task_id)
@@ -142,7 +142,7 @@ def find_assistor(id):
     print('identifier_id_1', identifier_id)
     sponsor_id = user_id
     # add new train_match document to Train_Match Table
-    train_match.create_train_match_document(task_id=task_id, total_assistor_num=len(assistor_id_list), sponsor_id=sponsor_id, 
+    train_match.create_train_match_document(task_id=task_id, total_assistor_num=len(assistor_id_dict), sponsor_id=sponsor_id, 
                                      sponsor_random_id=sponsor_random_id, identifier_id=identifier_id)
     
     # add new train_match_file document to Train_Match_File Table
@@ -153,7 +153,7 @@ def find_assistor(id):
     # add new train_task document to Train_Task Table
     train_task.create_train_task_document(task_id=task_id, task_name=task_name, task_description=task_description, 
                                              task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
-                                             sponsor_id=sponsor_id, assistor_id_list=assistor_id_list, test_task_list=[])
+                                             sponsor_id=sponsor_id, assistor_id_dict=assistor_id_dict, test_task_dict={})
 
     # update the participated_train_task in User Table
     pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
@@ -162,8 +162,8 @@ def find_assistor(id):
 
     print('-----sdfasdfsafss')
     # add notifications to all assistors
-    print('assistor_id_list', user_id, assistor_id_list)
-    for assistor_id in assistor_id_list:
+    print('assistor_id_dict', user_id, assistor_id_dict)
+    for assistor_id in assistor_id_dict:
         mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_request', 
                                                  id=task_id, sender_random_id=sponsor_random_id, 
                                                  role='assistor', cur_rounds_num=1, test_indicator='train')
@@ -173,7 +173,7 @@ def find_assistor(id):
 
     response = {
         'task_id': task_id, 
-        'assistor_num': len(assistor_id_list)
+        'assistor_num': len(assistor_id_dict)
     }
     return jsonify(response)
 
@@ -236,20 +236,22 @@ def find_test_assistor(id):
     test_name = data['test_name']
     test_description = data['test_description']
     
-    # obtain assistor_id_list
-    assistor_id_list = []
+    # obtain assistor_id_dict
+    assistor_id_dict = {}
     train_match_document = train_match.search_train_match_document(task_id=task_id)
     for assistor_id in train_match_document['assistor_information']:
-        assistor_id_list.append(assistor_id)
+        assistor_id_dict[assistor_id] = None
 
-    # update test_task_list    
-    train_task.update_train_task_document_test_task_list(task_id=task_id, test_id=test_id)
+    # update test_task_dict    
+    res = train_task.update_train_task_document_test_task_dict(task_id=task_id, test_id=test_id)
+    train_task_document = train_task.search_train_task_document(task_id=task_id)
+    print('fsdfasd', res, train_task_document)
 
     log(generate_msg('Sponsor testing stage'), user_id, task_id)
     log(generate_msg('---- find_test_assistor begins'), user_id, task_id, test_id)
     log(generate_msg('Test 1.1', 'sponsor find_assistor'), user_id, task_id, test_id)
     
-    print("assistor_id_list", assistor_id_list)
+    print("assistor_id_dict", assistor_id_dict)
 
     # sponsor_random_id is unique in each task    
     sponsor_random_id = obtain_unique_id()
@@ -257,7 +259,7 @@ def find_test_assistor(id):
     sponsor_id = user_id
 
     # add new train_match document to Train_Match Table
-    test_match.create_test_match_document(task_id=task_id, test_id=test_id, total_assistor_num=len(assistor_id_list), 
+    test_match.create_test_match_document(task_id=task_id, test_id=test_id, total_assistor_num=len(assistor_id_dict), 
                                             sponsor_id=sponsor_id, sponsor_random_id=sponsor_random_id, identifier_id=identifier_id)
 
     
@@ -270,10 +272,10 @@ def find_test_assistor(id):
     # add new train_task document to Train_Task Table
     test_task.create_test_task_document(test_id=test_id, task_id=task_id, test_name=test_name, test_description=test_description, 
                                            task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
-                                           sponsor_id=sponsor_id, assistor_id_list=assistor_id_list)
+                                           sponsor_id=sponsor_id, assistor_id_dict=assistor_id_dict)
     
     
-    for assistor_id in assistor_id_list:
+    for assistor_id in assistor_id_dict:
         mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_request', 
                                                   id=test_id, sender_random_id=sponsor_random_id, 
                                                   role='assistor', cur_rounds_num=1, test_indicator='test')
@@ -283,7 +285,7 @@ def find_test_assistor(id):
 
     response = {
         'task_id': task_id, 
-        'assistor_num': len(assistor_id_list),
+        'assistor_num': len(assistor_id_dict),
         'test_id': test_id
     }
     return jsonify(response)

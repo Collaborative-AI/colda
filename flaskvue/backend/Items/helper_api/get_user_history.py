@@ -3,25 +3,16 @@ import json
 import math
 import heapq
 
-from typing import Match
-
 from flask import Flask, session, request, g, current_app
-from flask.helpers import url_for
 from flask.json import jsonify
-from datetime import datetime
-from operator import itemgetter
 
-from Items import db, pyMongo
-# import BluePrint
 from Items.helper_api import helper_api_bp
-# from Items.models import User, Message, Matched
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
 from Items.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
-
 from Items.mongoDB import mongoDB
-from Items.mongoDB import train_match
-from Items.mongoDB import test_match
+from Items.mongoDB import train_task, train_match
+from Items.mongoDB import test_task
 
 @helper_api_bp.route('/get_user_history/<string:id>', methods=['GET'])
 @token_auth.login_required
@@ -33,18 +24,24 @@ def get_user_history(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
+    print('zheli')
     page = request.args.get('page', 1, type=int)
     per_page = min(
         request.args.get(
             'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
 
     participated_train_task = user_document['participated_train_task']
+    print('participated_train_taskddd', participated_train_task)
     participated_task = []
     for task_id in participated_train_task:
-        train_match_document = train_match.search_train_match_document(task_id=task_id)
-        task_name = train_match_document['task_name']
-        task_description = train_match_document['task_description']
-        timestamp = train_match_document['_id'].generation_time
+        train_task_document = train_task.search_train_task_document(task_id=task_id)
+        task_name = None
+        task_description = None
+        if 'task_name' in train_task_document:
+            task_name = train_task_document['task_name']
+        if 'task_description' in train_task_document:
+            task_description = train_task_document['task_description']
+        timestamp = train_task_document['_id'].generation_time
         sub_task = {
             'task_id': task_id,
             'task_name': task_name,
@@ -54,15 +51,23 @@ def get_user_history(id):
             'test_name': None,
             'test_description': None,
         }
+        print('timestamp', timestamp)
+        timestamp = timestamp.utcnow().timestamp()
+        print('current_time', timestamp, type(timestamp))
         heapq.heappush(participated_task, (-timestamp, sub_task))
 
-        test_task_list = train_match_document['test_task_list']
-        for test_id in test_task_list:
-            test_match_document = test_match.search_test_match_document(test_id=test_id)
-            test_name = test_match_document['test_name']
-            test_description = test_match_document['test_description']
+        print('train_task_document', train_task_document)
+        test_task_dict = train_task_document['test_task_dict']
+        for test_id in test_task_dict:
+            test_task_document = test_task.search_test_task_document(test_id=test_id)
+            test_name = None
+            test_description = None
+            if 'test_name' in test_task_document:
+                test_name = test_task_document['test_name']
+            if 'test_description' in test_task_document:
+                test_description = test_task_document['test_description']
             # obtain timestamp from ObjectID object
-            timestamp = test_match_document['_id'].generation_time
+            timestamp = test_task_document['_id'].generation_time
             sub_task = {
                 'task_id': None,
                 'task_name': None,
@@ -72,22 +77,26 @@ def get_user_history(id):
                 'test_name': test_name,
                 'test_description': test_description,
             }
+            timestamp = timestamp.utcnow().timestamp()
             heapq.heappush(participated_task, (-timestamp, sub_task))
     
     # sub_task with larger timestamp indicates the closer task
     # Put the closer task at front position
-    participated_sort_task = []
+    participated_sort_task_dict = {}
     while participated_task:
         _, sub_task = heapq.heappop(participated_task)
-        participated_sort_task.append(sub_task)
+        if sub_task['task_id'] == None:
+            participated_sort_task_dict[sub_task['test_id']] = sub_task
+        elif sub_task['test_id'] == None:
+            participated_sort_task_dict[sub_task['task_id']] = sub_task
     
     response = {
-        'items': participated_sort_task,
+        'participated_sort_task_dict': participated_sort_task_dict,
         '_meta': {
             'page': page,
             'per_page': per_page,
-            'total_pages': math.ceil(len(participated_sort_task) / per_page),
-            'total_items': len(participated_sort_task),
+            'total_pages': math.ceil(len(participated_sort_task_dict) / per_page),
+            'total_items': len(participated_sort_task_dict),
         },
     }
     return jsonify(response)
@@ -126,7 +135,22 @@ def check_sponsor(id):
 
 @helper_api_bp.route('/get_test_task_id_history/<string:id>', methods=['POST'])
 @token_auth.login_required
-def get_test_history_id(id):
+def get_test_task_id_history(id):
+
+    """
+    return test task ids belong to one train task id.
+
+    Parameters:
+        task_id - String.
+
+    Returns:
+        data - Dict{
+            "test_id_list": List[test_task_id]
+        }. 
+
+    Raises:
+        KeyError - raises an exception
+    """
 
     # find assistor algorithm, return all_assistor_id
     data = request.get_json()
@@ -142,9 +166,9 @@ def get_test_history_id(id):
         return error_response(403)
 
     task_id = data['task_id']
-    train_match_document = train_match.search_train_match_document(task_id=task_id)
+    train_task_document = train_task.search_train_task_document(task_id=task_id)
     
     response = {
-        "test_id_list": train_match_document['test_task_list']
+        "test_task_dict": train_task_document['test_task_dict']
     }    
     return jsonify(response)

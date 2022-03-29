@@ -70,7 +70,8 @@ def get_notifications(id):
     response = {
         'notification_result': copy.deepcopy(notification_document)
     }
-    # print('notification_response', response)
+    if 'new_token' in g.current_user:
+        response = add_new_token_to_response(response)
     return jsonify(response)
 
     # return_dict = {

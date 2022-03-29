@@ -217,8 +217,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         task_mode = train_task_document['task_mode']
         model_name = train_task_document['model_name']
         metric_name = train_task_document['metric_name']
-        assistor_id_list = train_task_document['assistor_id_list']
-        test_task_list = train_task_document['test_task_list']
+        assistor_id_dict = train_task_document['assistor_id_dict']
+        test_task_dict = train_task_document['test_task_dict']
 
         self.assertEqual(train_task_document['task_id'], task_id)
         self.assertEqual(task_name, 'unittest')
@@ -227,8 +227,11 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(model_name, 'LinearRegression')
         self.assertEqual(metric_name, 'RMSE')
         self.assertEqual(train_task_document['sponsor_id'], sponsor_id)
-        self.assertEqual(assistor_id_list, [user_id_2, user_id_3])
-        self.assertEqual(len(test_task_list), 0)
+        self.assertEqual(assistor_id_dict, {
+            user_id_2: None, 
+            user_id_3: None
+        })
+        self.assertEqual(len(test_task_dict), 0)
 
         assistor_username_list = ['unittest2', 'unittest3']
         user_id_list = [user_id_1, user_id_2, user_id_3]
@@ -328,7 +331,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         return task_id, assistor_username_list, user_id_list
 
-    def unread_match_id_two_users_helper(self, task_id, assistor_username_list, user_id_list):
+    def unread_match_identifier_two_users_helper(self, task_id, assistor_username_list, user_id_list):
         
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
@@ -340,8 +343,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_1 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_1['notification_result']['category']), 1)
-        self.assertEqual(len(json_response_1['notification_result']['category']['unread_match_id']['task_id_dict']), 1)
-        assert task_id in json_response_1['notification_result']['category']['unread_match_id']['task_id_dict']
+        self.assertEqual(len(json_response_1['notification_result']['category']['unread_match_identifier']['task_id_dict']), 1)
+        assert task_id in json_response_1['notification_result']['category']['unread_match_identifier']['task_id_dict']
 
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
@@ -349,8 +352,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_2 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_2['notification_result']['category']), 1)
-        self.assertEqual(len(json_response_2['notification_result']['category']['unread_match_id']['task_id_dict']), 1)
-        assert task_id in json_response_2['notification_result']['category']['unread_match_id']['task_id_dict']
+        self.assertEqual(len(json_response_2['notification_result']['category']['unread_match_identifier']['task_id_dict']), 1)
+        assert task_id in json_response_2['notification_result']['category']['unread_match_identifier']['task_id_dict']
 
         # User 3 cannot check the notification of user 2
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
@@ -363,10 +366,10 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_3['notification_result']['category']), 1)
-        self.assertEqual(len(json_response_3['notification_result']['category']['unread_match_id']['task_id_dict']), 1)
-        assert task_id in json_response_3['notification_result']['category']['unread_match_id']['task_id_dict']
+        self.assertEqual(len(json_response_3['notification_result']['category']['unread_match_identifier']['task_id_dict']), 1)
+        assert task_id in json_response_3['notification_result']['category']['unread_match_identifier']['task_id_dict']
 
-        # 6. sponsor and assistors call update_match_id_notification() (in unread_match_id.py) and check updated notification (unread match id => 0)
+        # 6. sponsor and assistors call update_match_id_notification() (in unread_match_identifier.py) and check updated notification (unread match id => 0)
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
         data = json.dumps({
             'task_id': task_id

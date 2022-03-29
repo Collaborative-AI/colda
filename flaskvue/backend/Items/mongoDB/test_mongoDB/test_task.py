@@ -8,7 +8,7 @@ class test_task:
 
     @classmethod
     def create_test_task_document(cls, test_id, task_id, test_name, test_description, task_mode, 
-                          model_name, metric_name, sponsor_id, assistor_id_list):
+                          model_name, metric_name, sponsor_id, assistor_id_dict):
         test_task_document = {
             'test_id': test_id,
             "task_id": task_id,
@@ -18,7 +18,7 @@ class test_task:
             "model_name": model_name,
             "metric_name": metric_name,
             "sponsor_id": sponsor_id,
-            "assistor_id_list": assistor_id_list,
+            "assistor_id_dict": assistor_id_dict,
         }
         return pyMongo.db.Test_Task.insert_one(test_task_document)
 

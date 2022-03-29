@@ -8,8 +8,8 @@ class train_task():
 
     @classmethod
     def create_train_task_document(cls, task_id, task_name, task_description, task_mode, 
-                          model_name, metric_name, sponsor_id, assistor_id_list,
-                          test_task_list):
+                          model_name, metric_name, sponsor_id, assistor_id_dict,
+                          test_task_dict):
         train_task_document = {
             "task_id": task_id,
             "task_name": task_name,
@@ -18,13 +18,15 @@ class train_task():
             "model_name": model_name,
             "metric_name": metric_name,
             "sponsor_id": sponsor_id,
-            "assistor_id_list": assistor_id_list,
-            "test_task_list": test_task_list,
+            "assistor_id_dict": assistor_id_dict,
+            "test_task_dict": test_task_dict,
         }
+        print('train_task_documentss', train_task_document)
         return pyMongo.db.Train_Task.insert_one(train_task_document)
         
     @classmethod
-    def update_train_task_document_test_task_list(cls, task_id, test_id):
-        return pyMongo.db.Train_Task.update_one({'task_id': task_id}, {'$push':{
-                   'test_task_list': test_id,
+    def update_train_task_document_test_task_dict(cls, task_id, test_id):
+        print('update_train_task_document_test_task_dict', test_id)
+        return pyMongo.db.Train_Task.update_one({'task_id': task_id}, {'$set':{
+                   'test_task_dict.' + test_id: None,
                }})

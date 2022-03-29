@@ -98,14 +98,14 @@ def match_identifier_content(id):
     remain_assistor_num = total_assistor_num - len(assistor_terminate_id_dict)
     if len(assistor_information) >= remain_assistor_num:
         log(generate_msg('2.3:', 'assistor matching_done', 'number of assistor:', len(assistor_information)), user_id, task_id)
-        # send unread_match_id notification to assistors
+        # send unread_match_identifier notification to assistors
         for assistor_id in assistor_information:
-            mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_match_id', 
+            mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_match_identifier', 
                                                        id=task_id, sender_random_id=sponsor_random_id, 
                                                        role='assistor', cur_rounds_num=1, test_indicator='train')
                                                         
-        # send unread_match_id notification to sponsor
-        mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_match_id', 
+        # send unread_match_identifier notification to sponsor
+        mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_match_identifier', 
                                                    id=task_id, sender_random_id=sponsor_random_id, 
                                                    role='sponsor', cur_rounds_num=1, test_indicator='train')
         log(generate_msg('2.4:', 'Server sends unread match id to all participants of this task (sponsor and all assistors)'), user_id, task_id)
@@ -200,12 +200,12 @@ def match_test_identifier_content(id):
     if len(assistor_information) >= remain_assistor_num:
         log(generate_msg('Test 2.3:', 'assistor matching_done', 'number of assistor:', len(assistor_information)), user_id, task_id, test_id)
         for assistor_id in assistor_information:
-            mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_match_id', 
+            mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_match_identifier', 
                                                       id=test_id, sender_random_id=sponsor_random_id, 
                                                       role='assistor', cur_rounds_num=1, test_indicator='test')
                                                         
-        # send unread_match_id notification to sponsor
-        mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_match_id', 
+        # send unread_match_identifier notification to sponsor
+        mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_match_identifier', 
                                                   id=test_id, sender_random_id=sponsor_random_id, 
                                                   role='sponsor', cur_rounds_num=1, test_indicator='test')
         log(generate_msg('Test 2.4:', 'Server sends unread match id to all participants of this test task'), user_id, task_id, test_id)

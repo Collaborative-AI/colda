@@ -2257,6 +2257,21 @@ export default {
     let getTime = window.performance;
     let startTime = getTime.now();
 
+    train_notification_category_name = new Set([
+      'unread_request',
+      'unread_match_identifier',
+      'unread_situation',
+      'unread_output',
+      'unread_train_stop',
+    ])
+
+    test_notification_category_name = new Set([
+      'unread_test_request',
+      'unread_test_match_identifier',
+      'unread_test_output',
+      'unread_test_stop',
+    ])
+
     $(function() {
       let since = 0
       let total_notifications_count = 0  // 总通知计数
@@ -2272,110 +2287,47 @@ export default {
 
       function polling() {
         console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
-
         if (window.localStorage.getItem('Apollo-token')) {
           // 如果用户已登录，才开始请求 API
           const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
           const user_id = payload.user_id
-          // const path = `/users/${user_id}/notifications/?since=${since}`
-          const path = `/users/${user_id}/notifications/`
-          console.log('euueiu')
 
-          axios.get(path)
+          axios.get(`/get_notifications/${user_id}`)
             .then((response) => {
               // handle success
-              
-              // for (let res of response.data){
-              //   if (res.task_id_list.length != 0){
-              //     console.log("response.data", res)
-              //   }
-              // }
-              for (let item of response.data){
-                // console.log('item', item, item.payload)
-                if (item.payload >= 1){
+              if ('new_token' in response.data){
+                window.localStorage.setItem('Apollo-token', response.data.new_token)
+              }
+              category = response.data.notification_result.category
+              for (let category_name of category){
+                if (category_name in train_notification_category_name){
+                  let task_id_dict = category[category_name]['task_id_dict']
+                  if (category_name == 'unread_request'){
+                    unread_request(task_id_dict)
+                  }else if (category_name == 'unread_match_identifier'){
+                    unread_match_identifier(task_id_dict)
+                  }else if (category_name == 'unread_situation'){
+                    unread_situation(task_id_dict)
+                  }else if (category_name == 'unread_output'){
+                    unread_output(task_id_dict)
+                  }else if (category_name == 'unread_train_stop'){
+                    
+                  }
+                }else if (category_name in test_notification_category_name){
+                  let test_id_dict = category[category_name]['test_id_dict']
+                  if (category_name == 'unread_test_request'){
+                    unread_test_request(test_id_dict)
+                  }else if (category_name == 'unread_test_match_identifier'){
+                    unread_test_match_identifier(test_id_dict)
+                  }else if (category_name == 'unread_test_output'){
+                    unread_test_output(test_id_dict)
+                  }else if (category_name == 'unread_test_stop'){
 
-        
-                  console.log("++++++++++++++++++++++++=", response.data)
+                  }
+                }
 
-                  const all_notifications = {
-                    response_data: response.data
-                  } 
-
-                  axios.post('/update_all_notifications/', all_notifications)
-                  .then((response) => {
-                    // train stage
-                    let unread_request_notification = response.data["unread request"]
-                    let unread_match_id_notification = response.data["unread match id"]
-                    let unread_situation_notification = response.data["unread situation"]
-                    let unread_output_notification = response.data["unread output"]
-
-                    // test stage
-                    let unread_test_request_notification = response.data["unread test request"]
-                    let unread_test_match_id_notification = response.data["unread test match id"]
-                    let unread_test_output_notification = response.data["unread test output"]
-
-
-                    console.log("unread_request_notification",unread_request_notification,
-                      unread_request_notification["check_dict"])
-                    console.log("unread_match_id_notification",unread_match_id_notification,
-                      unread_match_id_notification["check_dict"])
-                    console.log("unread_situation_notification",unread_situation_notification,
-                      unread_situation_notification["check_dict"])
-                    console.log("unread_output_notification",unread_output_notification,
-                      unread_output_notification["check_dict"])
-
-                    console.log("unread_test_request_notification",unread_test_request_notification,
-                      unread_test_request_notification["check_dict"])
-                    console.log("unread_test_match_id_notification",unread_test_match_id_notification,
-                      unread_test_match_id_notification["check_dict"])
-                    console.log("unread_test_output_notification",unread_test_output_notification,
-                      unread_test_output_notification["check_dict"])
-
-
-                    if (unread_request_notification["check_dict"] ){
-                        unread_request(unread_request_notification)
-                    }
-
-                    if (unread_match_id_notification["check_dict"]){
-                        unread_match_id(unread_match_id_notification)
-                    }
-
-                    if (unread_situation_notification["check_dict"]){
-                        unread_situation(unread_situation_notification)
-                    }
-
-                    if (unread_output_notification["rounds_dict"]){
-                        unread_output(unread_output_notification)
-                    }
-
-                    if (unread_test_request_notification["check_dict"]){
-                        unread_test_request(unread_test_request_notification)
-                    }
-
-                    if (unread_test_match_id_notification["check_dict"]){
-                        unread_test_match_id(unread_test_match_id_notification)
-                    }
-
-                    if (unread_test_output_notification["check_dict"]){
-                        unread_test_output(unread_test_output_notification)
-                    }
-                  }) // axios update_all_notification
-                  .catch((error) => {
-                    console.log(error)
-                  }) 
-
-                  break
-                } // if payload >= 1
               } // for loop
               
-
-              // console.log("-------------- new polling")
-              // total_notifications_count = unread_request_count + unread_match_id_count + unread_situation_count + unread_output_count + unread_messages_count
-              // // 每一次请求之后，根据 total_notifications_count 的值来显示或隐藏徽标
-              // $('#new_notifications_count').text(total_notifications_count)
-              // $('#new_notifications_count').css('visibility', total_notifications_count ? 'visible' : 'hidden');
-          
-              // complete update_all_notification
               setTimeout(function(){
                 polling()
               }, 8000)
@@ -2389,6 +2341,7 @@ export default {
               }, 8000)
               console.log(error)
             })
+
 
         } // if window has token
         else{

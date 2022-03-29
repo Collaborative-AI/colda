@@ -1,4 +1,4 @@
-1. unread_match_id.py中, '/users/<string:id>/identifier_content/' 返回值修改
+1. unread_match_identifier.py中, '/users/<string:id>/identifier_content/' 返回值修改
 
 2. unread_output.py中, get_user_test_output() 访问路径修改
    - send_situation中, 传输数据从residual_list修改为:     assistor_random_id_to_residual_dict:{
@@ -228,3 +228,8 @@
             "isSponsor": False, 
             "cur_rounds_num": cur_rounds_num
         }
+    5. url加前缀
+    6. 修改get_user_history返回的key, 'items' => 'participated_sort_task_dict'
+    7. Train_Task: assistor_id_list => assistor_id_dict, test_task_list => test_task_dict
+    8. Test_Task: assistor_id_list => assistor_id_dict
+    9. get_test_task_id_history 返回为'test_task_dict'

@@ -16,10 +16,14 @@ from Items.helper_api import helper_api_bp
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
 from Items.utils import get_log, log, generate_msg
+from Items.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 
-@helper_api_bp.route('/get_backend_log', methods=['POST'])
+from Items.mongoDB import mongoDB
+from Items.mongoDB import train_match
+
+@helper_api_bp.route('/get_backend_log/<string:id>', methods=['POST'])
 @token_auth.login_required
-def get_backend_log():
+def get_backend_log(id):
 
     """
     return log of current task. Must have task_id in data, Might have test_id in data.
@@ -28,7 +32,7 @@ def get_backend_log():
         task_id - String.
 
     Returns:
-        data - List[List[String, String, List[String]]]. List[String]: ['first log_interval\n', 'second\n', 'third']
+        data - Dict[Dict[String, String, List[String]]]. List[String]: ['first log_interval\n', 'second\n', 'third']
 
     Raises:
         KeyError - raises an exception
@@ -41,19 +45,28 @@ def get_backend_log():
     if 'task_id' not in data or not data.get('task_id'):
         return bad_request('task_id is required.')
 
+    user_id = obtain_user_id_from_token()
+    user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
+    # check if the caller of the function and the id is the same
+    if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
+        return error_response(403)
+
     task_id = data['task_id']
-
-    records = Matched.query.filter(Matched.task_id == task_id, Matched.assistor_id_pair == g.current_user.id).all()
+    train_match_document = train_match.search_train_match_document(task_id=task_id)
+    test_task_dict = train_match_document['test_task_dict']
     
-    res = []
-    for record in records:
-        if record.test_indicator == "train":
-            task_id = record.task_id
-            res.append([task_id, "train", get_log(g.current_user.id, task_id)])
-        elif record.test_indicator == "test":
-            task_id = record.task_id
-            test_id = record.test_id
-            res.append([test_id, "test", get_log(g.current_user.id, task_id, test_id)])
-
-    return jsonify(res)
+    response = {}
+    response[task_id] = {
+        'id': task_id,
+        'test_indicator': 'train',
+        'log_file': get_log(user_id, task_id)
+    }
+    for test_id in test_task_dict:
+        response[test_id] = {
+            'id': test_id,
+            'test_indicator': 'test',
+            'log_file': get_log(user_id, test_id)
+        }
+        
+    return jsonify(response)
 

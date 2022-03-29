@@ -104,7 +104,7 @@ class Test_Helper_Func_APITestCase(unittest.TestCase):
 
     #     headers = self.get_token_auth_headers('unittest', '123')
     #     list_content = [2,3]
-    #     data = json.dumps({'assistor_id_list': list_content})
+    #     data = json.dumps({'assistor_id_dict': list_content})
     #     response = self.client.post('/find_assistor/', headers=headers, data=data)
     #     self.assertEqual(response.status_code, 200)
 

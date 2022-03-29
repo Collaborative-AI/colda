@@ -111,7 +111,7 @@ class jwt_manipulation:
  
         # if the difference of time is greater than 10 mins, we dont update 
         # the token
-        if time_diff > 600:
+        if time_diff > 1000:
             return None
         
         token_payload = {

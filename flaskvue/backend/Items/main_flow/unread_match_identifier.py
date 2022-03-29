@@ -260,7 +260,7 @@ def send_situation(id):
         return jsonify({"message": "sponsor ends train task"})
 
     situation_dict = {}
-    assistor_id_list = []
+    running_assistor_id_dict = {}
     for assistor_random_id, residual in assistor_random_id_to_residual_dict.items():
 
         assistor_id = asssistor_random_id_mapping[assistor_random_id]
@@ -268,7 +268,7 @@ def send_situation(id):
         if assistor_id in assistor_terminate_id_dict:
             continue
         
-        assistor_id_list.append(assistor_id)
+        running_assistor_id_dict[assistor_id] = None
         sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
 
         situation_id = obtain_unique_id()
@@ -300,7 +300,7 @@ def send_situation(id):
         }})
 
     # send unread_situation notification to all assistors in this train task 
-    for assistor_id in assistor_id_list:
+    for assistor_id in running_assistor_id_dict:
         mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_situation', 
                                             id=task_id, sender_random_id=sponsor_random_id, 
                                             role='assistor', cur_rounds_num=1, test_indicator='train')
@@ -408,7 +408,7 @@ def send_test_output(id):
         print('xxxxxx')
         log(generate_msg('Test 3.4:"', 'assistor send_test_output done'), user_id, task_id, test_id)
 
-    log(generate_msg('----------------------- unread_test_match_id done\n'), user_id, task_id, test_id)
+    log(generate_msg('----------------------- unread_test_match_identifier done\n'), user_id, task_id, test_id)
     
     response = {
         "send_test_output": "send test output successfully"

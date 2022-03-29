@@ -59,7 +59,7 @@ class FindAPITestCase(unittest.TestCase):
         response = self.client.post('/find_assistor/', headers=headers)
         self.assertEqual(response.status_code, 400)
 
-        data = json.dumps({'assistor_id_list': None})
+        data = json.dumps({'assistor_id_dict': None})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 400)
 
@@ -89,7 +89,7 @@ class FindAPITestCase(unittest.TestCase):
 
         list_content = [2,3]
         file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
-        data = json.dumps({'assistor_id_list': list_content, 'id_file': file, 'task_id': task_id})
+        data = json.dumps({'assistor_id_dict': list_content, 'id_file': file, 'task_id': task_id})
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))

@@ -1,28 +1,23 @@
 # -*- coding: utf-8 -*-
 import re
 from operator import itemgetter
-from flask import Flask, session, request, g, current_app, render_template, flash
-from flask.helpers import url_for
-from flask.json import jsonify
-
-# from Items import db
-from Items import pyMongo
-from flask_cors import CORS, cross_origin
-# import BluePrint
-
-from Items.user import user_bp
-
 from datetime import datetime
 from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# from Items.models import User, Notification, Message
+from flask.json import jsonify
+from flask.helpers import url_for
+from flask_cors import CORS, cross_origin
+from flask import Flask, session, request, g, current_app, render_template, flash
+
+# from Items import db
+from Items import pyMongo
+from Items.user import user_bp
 from Items.exception import bad_request, error_response
 from Items.authentication import token_auth, basic_auth
 from Items.utils import obtain_user_id_from_token, obtain_unique_id
 from Items.utils import log, generate_msg, validate_password, send_email, generate_confirmation_token, confirm_token
 from Items.utils import generate_password, check_password, verify_token_user_id_and_function_caller_id
-
 from Items.mongoDB import mongoDB
 
 @user_bp.route('/users', methods=['POST'])
@@ -357,54 +352,3 @@ def delete_user(id):
       Delete a User. Implement Later
     '''
     return "Welcome to Delete!"
-
-
-# @user_bp.route('/users/<string:id>/history-messages/', methods=['GET'])
-# @token_auth.login_required
-# def get_user_history_messages(id):
-#     '''返回我与某个用户(由查询参数 from 获取)之间的所有私信记录'''
-#     user_id = obtain_user_id_from_token()
-#     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
-#     # check if the caller of the function and the id is the same
-#     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
-#         return error_response(403)
-
-#     page = request.args.get('page', 1, type=int)
-#     per_page = min(
-#         request.args.get(
-#             'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
-#     from_id = request.args.get('from', type=int)
-
-#     if not from_id:  # 必须提供聊天的对方用户的ID
-#         return bad_request('You must provide the user id of opposite site.')
-#     # 对方发给我的
-#     q1 = Message.query.filter(Message.sender_id == from_id, Message.recipient_id == id)
-#     # 我发给对方的
-#     q2 = Message.query.filter(Message.sender_id == id, Message.recipient_id == from_id)
-#     # 按时间正序排列构成完整的对话时间线
-#     history_messages = q1.union(q2).order_by(Message.timestamp)
-#     data = Message.to_collection_dict(history_messages, page, per_page, 'main.get_user_history_messages', id=id)
-#     # print("page",page,"length",len(data['items']))
-#     # 现在这一页的 data['items'] 包含对方发给我和我发给对方的
-#     # 需要创建一个新列表，只包含对方发给我的，用来查看哪些私信是新的
-#     recived_messages = [item for item in data['items'] if item['sender']['id'] != id]
-#     sent_messages = [item for item in data['items'] if item['sender']['id'] == id]
-#     # 然后，标记哪些私信是新的
-#     last_read_time = user.last_messages_read_time or datetime(1900, 1, 1)
-#     new_count = 0
-#     for item in recived_messages:
-#         if item['timestamp'] > last_read_time:
-#             item['is_new'] = True
-#             new_count += 1
-#     if new_count > 0:
-#         # 更新 last_messages_read_time 属性值为收到的私信列表最后一条(最近的)的时间
-#         user.last_messages_read_time = recived_messages[-1]['timestamp']
-#         db.session.commit()  # 先提交数据库，这样 user.new_recived_messages() 才会变化
-#         # 更新用户的新私信通知的计数
-#         user.add_notification('unread_messages_count', user.new_recived_messages())
-#         db.session.commit()
-#     # 最后，重新组合 data['items']，因为收到的新私信添加了 is_new 标记
-#     messages = recived_messages + sent_messages
-#     messages.sort(key=data['items'].index)  # 保持 messages 列表元素的顺序跟 data['items'] 一样
-#     data['items'] = messages
-#     return jsonify(data)

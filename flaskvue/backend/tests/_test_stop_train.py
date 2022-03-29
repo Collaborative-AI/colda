@@ -19,7 +19,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
 
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper_without_send_situation(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper_without_send_situation(task_id, list_content, assistor_random_id_list)
 
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'task_id': task_id})
@@ -95,7 +95,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
 
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper_without_send_situation(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper_without_send_situation(task_id, list_content, assistor_random_id_list)
 
         headers = self.get_token_auth_headers('unittest', '123')
         data = json.dumps({'task_id': task_id})
@@ -191,7 +191,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
 
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'task_id': task_id})
@@ -260,7 +260,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
 
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         
         headers = self.get_token_auth_headers('unittest', '123')
         data = json.dumps({'task_id': task_id})
@@ -337,7 +337,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
         
         
 
-    def test_train_stop_assistor_after_unread_match_id(self):
+    def test_train_stop_assistor_after_unread_match_identifier(self):
 
         '''
             Round: 0
@@ -352,7 +352,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
 
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         
         headers = self.get_token_auth_headers('unittest2', '123')
         data = json.dumps({'task_id': task_id})
@@ -377,7 +377,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
         queries = Message.query.filter(Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
         self.assertEqual(len(queries), len(list_content)+1)
     
-    def test_train_stop_sponsor_after_unread_match_id(self):
+    def test_train_stop_sponsor_after_unread_match_identifier(self):
 
         '''
             Round: 0
@@ -392,7 +392,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
 
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         
         headers = self.get_token_auth_headers('unittest', '123')
         data = json.dumps({'task_id': task_id})
@@ -429,7 +429,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
 
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         self.unread_situation_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
 
         queries = Message.query.filter(Message.assistor_id == 2, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
@@ -476,7 +476,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
 
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         self.unread_situation_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
 
         queries = Message.query.filter(Message.assistor_id == 2, Message.task_id == task_id, Message.rounds == 0, Message.test_indicator == "train").all()
@@ -521,7 +521,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
         # first round
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         self.unread_situation_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
         self.unread_output_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
 
@@ -570,7 +570,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
         # first round
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         self.unread_situation_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
         self.unread_output_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
 
@@ -621,7 +621,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
         # first round
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         self.unread_situation_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
         self.unread_output_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
 
@@ -680,7 +680,7 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
         # first round
         task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
         self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_id_two_users_helper(task_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper(task_id, list_content, assistor_random_id_list)
         self.unread_situation_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
         self.unread_output_two_users_helper(task_id, list_content, assistor_random_id_list, 0, False, False, False)
 

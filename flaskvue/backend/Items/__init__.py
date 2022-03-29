@@ -2,7 +2,12 @@
 from flask import Flask
 from Items.extensions import cors, db, migrate, mail, pyMongo
 from flask_mail import Mail
-from Items.main import main as main_blueprint
+# from Items.main import main as main_blueprint
+from Items.authentication import authentication_bp
+from Items.main_flow import main_flow_bp
+from Items.user import user_bp
+from Items.helper_api import helper_api_bp
+
 import pymysql
 # from flask_session import Session
 
@@ -36,7 +41,10 @@ def configure_blueprints(app):
     # 注册 blueprint
     # from .main import main as main_blueprint
     # print("main_blueprint", main_blueprint)
-    app.register_blueprint(main_blueprint)
+    app.register_blueprint(authentication_bp)
+    app.register_blueprint(main_flow_bp)
+    app.register_blueprint(user_bp)
+    app.register_blueprint(helper_api_bp)
 
 
 def configure_extensions(app):

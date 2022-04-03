@@ -29,6 +29,8 @@ def get_user_history(id):
     per_page = min(
         request.args.get(
             'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
+    # print('page', page)
+    # print('per_page', per_page)
 
     participated_train_task = user_document['participated_train_task']
     print('participated_train_taskddd', participated_train_task)

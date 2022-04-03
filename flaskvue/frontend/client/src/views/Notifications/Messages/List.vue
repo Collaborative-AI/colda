@@ -82,6 +82,7 @@
 import store from '../../../store'
 import Pagination from '../../../components/Pagination'
 import db from '../../../db'
+import {  add_prefix } from '../../../utils.js'
 
 // const store = require('../../../store').default
 // const Pagination = require('../../../components/Pagination.vue').default
@@ -183,8 +184,8 @@ export default {
         per_page = this.$route.query.per_page
       }
      
-      const path = `/get_user_history/?page=${page}&per_page=${per_page}`
-      this.$axios.get(path)
+      // const path = `/get_user_history/?page=${page}&per_page=${per_page}`
+      this.$axios.get(add_prefix(`/get_user_history/${vm.sharedState.user_id}/?page=${page}&per_page=${per_page}`))
         .then((response) => {
           // handle success
           vm.messages = response.data

@@ -1,12 +1,12 @@
-let log = window.require('electron-log');
+// let log = window.require('electron-log');
 // import {db} from './db'
 // console.log('dbdachu',db)
-const node_path = window.node_path ? window.node_path : window.require('path');
-console = log
-log.transports.file.resolvePath = () => node_path.join(__dirname, './main.log');
-console.log('chengle')
-log.info('chengle')
-Log('assistor ceshi', 'info')
+// const node_path = window.node_path ? window.node_path : window.require('path');
+// console = log
+// log.transports.file.resolvePath = () => node_path.join(__dirname, './main.log');
+// console.log('chengle')
+// log.info('chengle')
+// Log('assistor ceshi', 'info')
 
 
 export function generate_unittest_parameters(){
@@ -59,38 +59,68 @@ export function generate_message_string(){
   return message_list.join(" ")
 }
 
-
-export function Log(message, level){
-  console.log(message)
-  if (level == 'error'){
-    log.error(message);
+export function add_prefix(str){
+  console.log('print string', str)
+  let post = str.split("/")
+  console.log('post',post)
+  if (post[1] == 'tokens'){
+    return '/auth' + str
   }
-  else if (level == 'warn'){
-    log.warn(message);
+  if (post[1] == 'users'){
+    return '/user' + str
   }
-  else if (level == 'info'){
-    log.info(message);
+  if (post[1] == 'get_backend_log' || post[1] == 'check_sponsor'
+  || post[1] == 'get_test_task_id_history' || post[1] == 'get_user_history'){
+    return '/helper_api' + str
   }
-  else if (level == 'verbose'){
-    log.verbose(message);
-  }
-  else if (level == 'debug'){
-    log.debug(message);
-  }
-  else{
-    log.silly(message);
+  if (post[1] == 'get_notifications' || post[1] == 'match_identifier_content' 
+  || post[1] == 'add_train_pending' || post[1] == 'get_identifier_content'
+  || post[1] == 'send_situation' || post[1] == 'send_output'
+  || post[1] == 'get_situation_content' || post[1] == 'get_output_content'
+  || post[1] == 'match_test_identifier_content' || post[1] == 'add_test_pending'
+  || post[1] == 'get_test_identifier_content' || post[1] == 'send_test_output'
+  || post [1] == 'get_test_output_content' || post[1] == 'create_new_train_task'
+  || post[1] == 'stop_train_task' || post[1] == 'find_assistor'
+  || post[1] == 'create_new_test_task' || post[1] == 'find_test_assistor'
+  || post[1] == 'delete_pending' || post[1] == 'get_all_pending'){
+    let complete_path = '/main_flow' + str
+    console.log('complete', complete_path)
+    return complete_path
   }
   
 }
 
-export function check_if_notification_is_null(notification, name){
-  console.log(name,'qwedas', notification)
-  if (notification == null || notification == {}){
-    Log(name + 'is null')
-    return true
-  }
-  return false
-}
+// export function Log(message, level){
+//   console.log(message)
+//   if (level == 'error'){
+//     log.error(message);
+//   }
+//   else if (level == 'warn'){
+//     log.warn(message);
+//   }
+//   else if (level == 'info'){
+//     log.info(message);
+//   }
+//   else if (level == 'verbose'){
+//     log.verbose(message);
+//   }
+//   else if (level == 'debug'){
+//     log.debug(message);
+//   }
+//   else{
+//     log.silly(message);
+//   }
+  
+// }
+
+// export function check_if_notification_is_null(notification, name){
+//   console.log(name,'qwedas', notification)
+//   if (notification == null || notification == {}){
+//     Log(name + 'is null')
+//     return true
+//   }
+//   return false
+// }
 
 
 // export function sqlite3_run(sql, params) {

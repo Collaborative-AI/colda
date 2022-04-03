@@ -67,7 +67,7 @@
 <script>
 import store from '../../store'
 import db from '../../db'
-import {  handle_file_path, check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, change_db_param_to_string } from '../../utils.js'
+import {  handle_file_path, check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, change_db_param_to_string, add_prefix } from '../../utils.js'
 
 import { ex,fs,os,node_path,dialog } from '../../import_package.js'
 
@@ -111,7 +111,7 @@ export default {
   methods: {
     get_test_id (unittest_callbacks) {
       
-      this.$axios.get('/create_new_test_task/')
+      this.$axios.get(add_prefix('/create_new_test_task/'))
         .then((response) => {
           this.test_id = response.data.test_id
           let unittest_parameters = generate_unittest_parameters(this.test_id)
@@ -339,7 +339,7 @@ export default {
                 test_description: vm.test_description,
               }
               
-              vm.$axios.post(`/find_test_assistor/${vm.sharedState.user_id}`, payload)
+              vm.$axios.post(add_prefix(`/find_test_assistor/${vm.sharedState.user_id}`), payload)
                 .then((response) => {
                   
                   let unittest_parameters = generate_unittest_parameters(response.data)

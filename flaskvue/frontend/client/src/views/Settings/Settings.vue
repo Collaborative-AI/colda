@@ -7,7 +7,9 @@
           <!-- Profile Picture -->
           <div v-if="user" class="text-center g-pos-rel g-mb-30">
             <div class="g-width-100 g-height-100 mx-auto mb-3">
-              <img class="img-fluid rounded-circle g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="user._links.avatar" v-bind:alt="user.name || user.username">
+              <!-- <img class="img-fluid rounded-circle g-brd-around g-brd-gray-light-v4 g-pa-2" v-bind:src="user._links.avatar" v-bind:alt="user.name || user.username"> -->
+              <img class="img-fluid rounded-circle g-brd-around g-brd-gray-light-v4 g-pa-2"  v-bind:alt="user.name || user.username">
+
             </div>
 
             <span class="d-block g-font-weight-500">{{ user.name || user.username }}</span>
@@ -73,6 +75,7 @@
 
 <script>
 import store from '../../store'
+import { add_prefix } from '../../utils'
 // const store = require('../../store').default
 
 export default {
@@ -85,8 +88,8 @@ export default {
   },
   methods: {
     getUser (id) {
-      const path = `/users/${id}`
-      this.$axios.get(path)
+      // const path = `/users/${id}`
+      this.$axios.get(add_prefix(`/users/${vm.sharedState.user_id}`))
         .then((response) => {
           // handle success
           this.user = response.data

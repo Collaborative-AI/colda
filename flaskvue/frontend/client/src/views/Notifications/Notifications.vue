@@ -20,6 +20,7 @@
 <script>
 import store from '../../store'
 import $ from 'jquery'
+import { add_prefix } from '../../utils'
 
 // const store = require('../../store').default
 // const $ = require('jquery')
@@ -37,8 +38,8 @@ export default {
   },
   methods: {
     getUser (id) {
-      const path = `/users/${id}`
-      this.$axios.get(path)
+      // const path = `/users/${id}`
+      this.$axios.get(add_prefix(`/users/${vm.sharedState.user_id}`))
         .then((response) => {
           // handle success
           this.user = response.data
@@ -50,9 +51,9 @@ export default {
     },
     getUserNotifications (id) {
       let since = 0
-      const path = `/users/${id}/notifications/?since=${since}`
+      // const path = `/users/${id}/notifications/?since=${since}`
       // console.log("notification shua xin",since)
-      this.$axios.get(path)
+      this.$axios.get(add_prefix(`/users/${vm.sharedState.user_id}/`))
         .then((response) => {
           // handle success
           const len = response.data.length

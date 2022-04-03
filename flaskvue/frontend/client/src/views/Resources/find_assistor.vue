@@ -87,7 +87,7 @@
 
 <script>
 import store from '../../store.js'
-import { handle_file_path, check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, sqlite3_run, change_db_param_to_string } from '../../utils.js'
+import { handle_file_path, check_interaction, handle_assistor_username_list, handle_input_column_string, handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, sqlite3_run, change_db_param_to_string, add_prefix } from '../../utils.js'
 import { ex,fs,os,node_path,dialog,log } from '../../import_package.js'
 
 // const fs = window.fs ? window.fs : require('fs');
@@ -167,7 +167,7 @@ export default {
     },
 
     get_train_id (unittest_callbacks) {
-      this.$axios.get('/create_new_train_task/')
+      this.$axios.get(add_prefix(`/create_new_train_task/`))
         .then((response) => {
           this.task_id = response.data.task_id
           let unittest_parameters = generate_unittest_parameters(this.task_id)
@@ -379,7 +379,7 @@ export default {
           }
           // console.log('fins_assistor_data', find_assistor_data)
 
-          vm.$axios.post(`/find_assistor/${vm.sharedState.user_id}/`, find_assistor_data)
+          vm.$axios.post(add_prefix(`/find_assistor/${vm.sharedState.user_id}/`), find_assistor_data)
           .then((response) => {
             console.log('response!!', response.data)
             if (response.data == "wrong username"){

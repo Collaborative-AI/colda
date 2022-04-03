@@ -45,6 +45,7 @@
 <script>
 // import {request_withdata} from '@/network/request';
 // import axios from 'axios'
+import { add_prefix } from '../../utils'
 
 export default {
   name: 'Register', //this is the name of the component
@@ -122,14 +123,16 @@ export default {
         password: this.registerForm.password
       }
 
-      this.$axios.post('/users', payload)
+      this.$axios.post(add_prefix(`/users`), payload)
       .then((res) => {
         // Go to Login Page
         this.$toasted.success('Please verify your email.', { icon: 'fingerprint' })
-        this.$router.push({path: '/resend', query: {'username': this.loginForm.username}})
+        console.log('please verify email')
+        this.$router.push({path: '/resend', query: {'username': this.registerForm.username}})
         
       }).catch((error) => {
         console.log('error is', error)
+        console.log('error end')
         for (var field in error.response.data.message) {
           if (field == 'username') {
             this.registerForm.usernameError = error.response.data.message.username

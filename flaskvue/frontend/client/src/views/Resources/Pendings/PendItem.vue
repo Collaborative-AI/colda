@@ -66,7 +66,7 @@
 import store from '../../../store'
 import db from '../../../db'
 import { ex,fs,os,node_path,dialog } from '../../../import_package.js'
-import { handle_file_path, handle_input_column_string, check_assistor_interaction, handle_Algorithm_return_value, change_db_param_to_string, generate_unittest_parameters, execute_unittest_list } from '../../../utils'
+import { handle_file_path, handle_input_column_string, check_assistor_interaction, handle_Algorithm_return_value, change_db_param_to_string, generate_unittest_parameters, execute_unittest_list, add_prefix } from '../../../utils'
 
 // const fs = window.fs;
 // const ex = window.ex;
@@ -257,7 +257,7 @@ export default {
             }
             console.log('wokan4', vm.test_indicator)
 
-            vm.$axios.post('/delete_pending/', delete_pending)
+            vm.$axios.post(add_prefix(`/delete_pending/`), delete_pending)
               .then((response) => {
                 // handle success
                 console.log("delete_pending response", response.data)
@@ -307,7 +307,7 @@ export default {
                   file: hash_id_file_data,
                 }
                 
-                vm.$axios.post('/match_assistor_id/', match_assistor_id_data)
+                vm.$axios.post(add_prefix(`/match_identifier_content/`), match_assistor_id_data)
                   .then((response) => {
                     // handle success
                     console.log("2.2 assistor uploads id file")
@@ -423,7 +423,7 @@ export default {
               test_indicator: vm.test_indicator
             }
             console.log("222222")
-            vm.$axios.post('/delete_pending/', delete_pending)
+            vm.$axios.post(add_prefix(`/delete_pending/`), delete_pending)
               .then((response) => {
                 // handle success
                 console.log("delete_pending response", response.data)
@@ -475,7 +475,7 @@ export default {
                   task_id: task_id
                 }
 
-                vm.$axios.post('/match_test_assistor_id/', match_test_assistor_id_data)
+                vm.$axios.post(add_prefix(`/match_test_identifier_content/`), match_test_assistor_id_data)
                   .then((response) => {
                     // handle success
                     console.log("2.2 Test: assistor uploads id file")

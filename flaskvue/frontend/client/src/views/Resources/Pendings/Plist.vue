@@ -87,7 +87,7 @@
 <script>
 // import store from '../../../store.js'
 import store from '../../../store'
-import { generate_unittest_parameters, execute_unittest_list } from '../../../utils'
+import { generate_unittest_parameters, execute_unittest_list, add_prefix } from '../../../utils'
 // import db from '../../../db'
 // import { set } from 'vue/types/umd'
 // import penditem from "../Penditem.vue"
@@ -114,7 +114,7 @@ export default {
       if (vm.cur_pending_num != vm.sharedState.pending_num){
         vm.cur_pending_num = vm.sharedState.pending_num;
         console.log("----miemiemie")
-        vm.$axios.get('/get_all_pending/')
+        vm.$axios.get(add_prefix(`/get_all_pending/${vm.sharedState.user_id}/`))
         .then((response) => {
           // handle success
           console.log("get_all_pending response", response.data)

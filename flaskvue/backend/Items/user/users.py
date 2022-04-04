@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 from bson import ObjectId
+from bson.json_util import loads, dumps
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask.json import jsonify
@@ -84,7 +85,7 @@ def create_user():
     pyMongo.db.User.insert_one(user_document)
 
     token = generate_confirmation_token(email)
-    confirm_url = url_for('main.confirm_email', token=token, _external=True)
+    confirm_url = url_for('user.confirm_email', token=token, _external=True)
     html = render_template('activate.html', confirm_url=confirm_url)
     subject = "Please confirm your email"
     send_email(email, subject, html)
@@ -302,7 +303,8 @@ def get_user(id):
         response = {
             'user': g.current_user
         }
-        return jsonify(response)
+        # print('res1',response)
+        return jsonify(dumps(response))
     return None
 
 @user_bp.route('/users/<string:id>', methods=['PUT'])

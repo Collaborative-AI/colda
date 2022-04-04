@@ -36,7 +36,7 @@
 
 <script>
 import store from '../../store.js'
-import { execute_unittest_list } from '../../utils.js'
+import { execute_unittest_list, add_prefix } from '../../utils.js'
 // console.log('window44', window)
 // const store = require('../../store').default
 
@@ -111,9 +111,9 @@ export default {
       // // axios 实现Basic Auth需要在config中设置 auth 这个属性即可
       // this.$axios.post('/tokens', payload)
       console.log("!!!", this.loginForm.username)
-      const path = '/tokens'
+      const path = `/tokens`
       // axios 实现Basic Auth需要在config中设置 auth 这个属性即可
-      this.$axios.post(path, {}, {
+      this.$axios.post(add_prefix(path), {}, {
         auth: {
           'username': this.loginForm.username,
           'password': this.loginForm.password

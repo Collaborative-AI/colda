@@ -81,7 +81,7 @@ import $ from 'jquery'
 import db from '../db'
 // // console.log('dbzzzz', db)
 import authority from '../authority'
-import { handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, check_if_notification_is_null, change_db_param_to_string } from '../utils.js'
+import { handle_Algorithm_return_value, execute_unittest_list, generate_unittest_parameters, generate_message_string, Log, check_if_notification_is_null, change_db_param_to_string, add_prefix } from '../utils.js'
 
 // import axios from '../http'
 
@@ -313,7 +313,7 @@ export default {
               identifier_content: hash_id_file_data,
             }
             
-            vm.$axios.post(`/match_identifier_content/${vm.sharedState.user_id}/`, match_assistor_id_data)
+            vm.$axios.post(add_prefix(`/match_identifier_content/${vm.sharedState.user_id}/`), match_assistor_id_data)
               .then((response) => {
                 // handle success
 
@@ -349,7 +349,7 @@ export default {
         vm.$toasted.success("manual: Training Task " + task_id + " Request Received", { icon: 'fingerprint' })
         vm.$toasted.success("Please go to pending page", { icon: 'fingerprint' })
 
-        vm.$axios.post('/add_train_pending/', add_train_pending)
+        vm.$axios.post(add_prefix('/add_train_pending/'), add_train_pending)
           .then((response) => {
             // handle success
             console.log('zz99',response)
@@ -449,7 +449,7 @@ export default {
       
       // const path = `/users/${vm.sharedState.user_id}/match_id_file/`
 
-      vm.$axios.post(`/get_identifier_content/${vm.sharedState.user_id}/`, payload)
+      vm.$axios.post(add_prefix(`/get_identifier_content/${vm.sharedState.user_id}/`), payload)
         .then((response) => {
           // call back
           // iterate the match_id_file
@@ -626,7 +626,7 @@ export default {
 
             // send initial situation
             // async
-            vm.$axios.post(`/send_situation/${vm.sharedState.user_id}/`, send_situation_payload)
+            vm.$axios.post(add_prefix(`/send_situation/${vm.sharedState.user_id}/`), send_situation_payload)
               .then((response) => {
               // handle success
 
@@ -672,7 +672,7 @@ export default {
       }
       // const path = `/users/${vm.sharedState.user_id}/match_id_file/`
       // async
-      this.$axios.post(`get_identifier_content/${vm.sharedState.user_id}/`, payload)
+      this.$axios.post(add_prefix(`/get_identifier_content/${vm.sharedState.user_id}/`), payload)
         .then((response) => {
           
           // check users/user_id/match_id_file return value
@@ -962,7 +962,7 @@ export default {
 
         // send output
         // async
-        vm.$axios.post(`/send_output/${vm.sharedState.user_id}/`, Assistor_output_payload)
+        vm.$axios.post(add_prefix(`/send_output/${vm.sharedState.user_id}/`), Assistor_output_payload)
           .then((response) => {
           // handle success
           // console.log("4.5 Assistor sends output")
@@ -1007,7 +1007,7 @@ export default {
       }
       
       // const path = `/users/${vm.sharedState.user_id}/situation_file/`
-      vm.$axios.post(`/get_situation_content/${vm.sharedState.user_id}/`, payload)
+      vm.$axios.post(add_prefix(`/get_situation_content/${vm.sharedState.user_id}/`), payload)
         .then((response) => {
           // call back
           // store the situation file
@@ -1160,7 +1160,7 @@ export default {
       }
       // const url = `/users/${vm.sharedState.user_id}/output/`
 
-      this.$axios.post(`/get_output_content/${vm.sharedState.user_id}`, payload)
+      this.$axios.post(add_prefix(`/get_output_content/${vm.sharedState.user_id}`), payload)
         .then((response) => {
           // console.log("5.2 Sponsor gets output model")
           // vm.$toasted.success("5.2 Sponsor gets output model", { icon: 'fingerprint' })
@@ -1373,7 +1373,7 @@ export default {
 
         // send initial situation
         // async
-        vm.$axios.post(`/send_situation/${vm.sharedState.user_id}/`, payload1)
+        vm.$axios.post(add_prefix(`/send_situation/${vm.sharedState.user_id}/`), payload1)
           .then((response) => {
             // handle success
             // // console.log("5.6 Sponsor updates situation done", response)
@@ -1549,7 +1549,7 @@ export default {
                 identifier_content: test_hash_id_file_data,
               }
 
-              vm.$axios.post(`/match_test_identifier_content/${vm.sharedState.user_id}`, match_test_assistor_id_data)
+              vm.$axios.post(add_prefix(`/match_test_identifier_content/${vm.sharedState.user_id}`), match_test_assistor_id_data)
                 .then((response) => {
                   // handle success
                   // // console.log("2.2 Test: assistor uploads id file")
@@ -1587,7 +1587,7 @@ export default {
               }
             
 
-            vm.$axios.post('/add_test_pending/', add_test_pending)
+            vm.$axios.post(add_prefix('/add_test_pending/'), add_test_pending)
               .then((response) => {
                 // handle success
                 // // console.log("add_test_pending response", response.data)
@@ -1684,7 +1684,7 @@ export default {
       }
       
       // const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
-      vm.$axios.post(`/get_test_identifier_content/${vm.sharedState.user_id}/`, payload)
+      vm.$axios.post(add_prefix(`/get_test_identifier_content/${vm.sharedState.user_id}/`), payload)
         .then((response) => {
           // call back
           // iterate the match_id_file
@@ -1835,7 +1835,7 @@ export default {
       }
       // const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
       // async
-      vm.$axios.post(`get_test_identifier_content/${vm.sharedState.user_id}/`, payload)
+      vm.$axios.post(add_prefix(`get_test_identifier_content/${vm.sharedState.user_id}/`), payload)
         .then((response) => {
 
           let unittest_parameters = generate_unittest_parameters(response.data)
@@ -1980,7 +1980,7 @@ export default {
                 output_content: all_test_output,
               }
 
-              vm.$axios.post(`/send_test_output/${vm.sharedState.user_id}/`, send_test_output_payload)
+              vm.$axios.post(add_prefix(`/send_test_output/${vm.sharedState.user_id}/`), send_test_output_payload)
                 .then((response) => {
                 // handle success
                 let unittest_parameters = generate_unittest_parameters(response.data)
@@ -2067,7 +2067,7 @@ export default {
       }
 
       // const url = `/test_output/`
-      this.$axios.post(`get_test_output_content/${vm.sharedState.user_id}/`, payload)
+      this.$axios.post(add_prefix(`get_test_output_content/${vm.sharedState.user_id}/`), payload)
         .then((response) => {
           // console.log("4.2 Test: Sponsor gets assistors' Test output model")
           // vm.$toasted.success("4.2 Test: Sponsor gets assistors' Test output model", { icon: 'fingerprint' })
@@ -2257,7 +2257,7 @@ export default {
     let getTime = window.performance;
     let startTime = getTime.now();
 
-    train_notification_category_name = new Set([
+    let train_notification_category_name = new Set([
       'unread_request',
       'unread_match_identifier',
       'unread_situation',
@@ -2265,7 +2265,7 @@ export default {
       'unread_train_stop',
     ])
 
-    test_notification_category_name = new Set([
+    let test_notification_category_name = new Set([
       'unread_test_request',
       'unread_test_match_identifier',
       'unread_test_output',
@@ -2292,41 +2292,47 @@ export default {
           const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
           const user_id = payload.user_id
 
-          axios.get(`/get_notifications/${user_id}`)
+          
+          axios.get(add_prefix(`/get_notifications/${user_id}`))
             .then((response) => {
               // handle success
               if ('new_token' in response.data){
                 window.localStorage.setItem('Apollo-token', response.data.new_token)
               }
-              category = response.data.notification_result.category
-              for (let category_name of category){
-                if (category_name in train_notification_category_name){
-                  let task_id_dict = category[category_name]['task_id_dict']
-                  if (category_name == 'unread_request'){
-                    unread_request(task_id_dict)
-                  }else if (category_name == 'unread_match_identifier'){
-                    unread_match_identifier(task_id_dict)
-                  }else if (category_name == 'unread_situation'){
-                    unread_situation(task_id_dict)
-                  }else if (category_name == 'unread_output'){
-                    unread_output(task_id_dict)
-                  }else if (category_name == 'unread_train_stop'){
-                    
-                  }
-                }else if (category_name in test_notification_category_name){
-                  let test_id_dict = category[category_name]['test_id_dict']
-                  if (category_name == 'unread_test_request'){
-                    unread_test_request(test_id_dict)
-                  }else if (category_name == 'unread_test_match_identifier'){
-                    unread_test_match_identifier(test_id_dict)
-                  }else if (category_name == 'unread_test_output'){
-                    unread_test_output(test_id_dict)
-                  }else if (category_name == 'unread_test_stop'){
+              let category = response.data.notification_result.category
+              console.log('category is', category)
+              if (!category){
+                for (let category_name of category){
+                  if (category_name in train_notification_category_name){
+                    let task_id_dict = category[category_name]['task_id_dict']
+                    if (category_name == 'unread_request'){
+                      unread_request(task_id_dict)
+                    }else if (category_name == 'unread_match_identifier'){
+                      unread_match_identifier(task_id_dict)
+                    }else if (category_name == 'unread_situation'){
+                      unread_situation(task_id_dict)
+                    }else if (category_name == 'unread_output'){
+                      unread_output(task_id_dict)
+                    }else if (category_name == 'unread_train_stop'){
+                      
+                    }
+                  }else if (category_name in test_notification_category_name){
+                    let test_id_dict = category[category_name]['test_id_dict']
+                    if (category_name == 'unread_test_request'){
+                      unread_test_request(test_id_dict)
+                    }else if (category_name == 'unread_test_match_identifier'){
+                      unread_test_match_identifier(test_id_dict)
+                    }else if (category_name == 'unread_test_output'){
+                      unread_test_output(test_id_dict)
+                    }else if (category_name == 'unread_test_stop'){
 
+                    }
                   }
-                }
 
-              } // for loop
+                } // for loop
+
+              }
+              
               
               setTimeout(function(){
                 polling()

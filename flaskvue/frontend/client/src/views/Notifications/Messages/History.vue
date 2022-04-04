@@ -1592,7 +1592,7 @@ export default {
         task_id: this.task_id,
       }
 
-      this.$axios.post('/stop_train_task/', payload)
+      this.$axios.post(add_prefix(`/stop_train_task/`), payload)
         .then((response) => {
           console.log(response.data)
         })
@@ -1609,7 +1609,7 @@ export default {
       const payload = {
         task_id: task_id,
       }
-      this.$axios.post('/get_backend_log/', payload)
+      this.$axios.post(add_prefix(`/get_backend_log/`), payload)
         .then((response) => {
           // console.log('backend',response)
           vm.backend_log=response.data
@@ -1719,7 +1719,7 @@ export default {
         task_id: task_id,
       }
 
-      this.$axios.post('/check_sponsor/', payload)
+      this.$axios.post(add_prefix(`/check_sponsor/`), payload)
         .then((response) => {
           // console.log("response@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", response)
           if (response.data.result == "sponsor"){
@@ -1735,7 +1735,7 @@ export default {
           console.log(error)
         })
 
-        this.$axios.post('/get_test_history_id/', payload)
+        this.$axios.post(add_prefix(`/get_test_history_id/`), payload)
         .then((response) => {
           console.log('zz77',response)
           let test_id_list = response.data.test_id_list;

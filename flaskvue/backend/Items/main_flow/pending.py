@@ -109,22 +109,25 @@ def get_all_pending(id):
         return error_response(403)
 
     pending_document = mongoDB.search_pending_document(user_id=user_id)
-    task_dict = pending_document['task_dict']
+    print('pending_doc', pending_document)
 
     response = {}
-    response['all_pending_items'] = {}
-    for id in task_dict:
-        test_indicator = task_dict[id]['test_indicator']
-        if test_indicator == 'train':
-            train_match_document = train_match.search_train_match_document(task_id=id)
-            # remove ObjectId object, which cannot be transferred into json format
-            del train_match_document['_id']
-            response['all_pending_items'][id] = train_match_document
-        elif test_indicator == 'test':
-            test_match_document = test_match.search_test_match_document(test_id=id)
-            # remove ObjectId object, which cannot be transferred into json format
-            del test_match_document['_id']
-            response['all_pending_items'][id] = test_match_document
+    if pending_document != None:
+        response['all_pending_items'] = {}
+        task_dict = pending_document['task_dict']
+
+        for id in task_dict:
+            test_indicator = task_dict[id]['test_indicator']
+            if test_indicator == 'train':
+                train_match_document = train_match.search_train_match_document(task_id=id)
+                # remove ObjectId object, which cannot be transferred into json format
+                del train_match_document['_id']
+                response['all_pending_items'][id] = train_match_document
+            elif test_indicator == 'test':
+                test_match_document = test_match.search_test_match_document(test_id=id)
+                # remove ObjectId object, which cannot be transferred into json format
+                del test_match_document['_id']
+                response['all_pending_items'][id] = test_match_document
 
     return jsonify(response)
 

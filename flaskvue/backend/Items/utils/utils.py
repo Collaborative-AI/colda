@@ -1,15 +1,12 @@
 import errno
 import os
 import re
-import jwt
 import uuid
 import logging
 
-from bson import ObjectId
-from setting import Config
+
 from flask import current_app, g
 from flask_mail import Message
-from datetime import datetime, timedelta
 from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
 

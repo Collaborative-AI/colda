@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
-import json
-import uuid
-
-from flask import Flask, session, request, g, current_app
-from flask.helpers import url_for
+from flask import request
 from flask.json import jsonify
-from datetime import datetime
-from bson import ObjectId
-
 # from Items import db
 from Items import pyMongo
 

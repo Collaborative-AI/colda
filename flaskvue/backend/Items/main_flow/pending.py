@@ -1,21 +1,13 @@
 # -*- coding: utf-8 -*-
-from cgi import test
-import uuid
-import json
-
-from flask import Flask, session, request, g, current_app
-from flask.helpers import url_for
+from flask import request
 from flask.json import jsonify
-from datetime import datetime
 
-# from Items import db
-from Items import pyMongo
 # import BluePrint
 from Items.main_flow import main_flow_bp
-# from Items.models import User, Matched, Pending
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
 from Items.utils import log, generate_msg, obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
+
 from Items.mongoDB import mongoDB
 from Items.mongoDB import train_match
 from Items.mongoDB import test_match

@@ -1,7 +1,6 @@
 import os
 from datetime import timedelta
 from redis import Redis
-import pymysql
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))

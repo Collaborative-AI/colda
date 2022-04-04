@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-import json
 import math
 import heapq
 
-from flask import Flask, session, request, g, current_app
+from flask import request, current_app
 from flask.json import jsonify
 
 from Items.helper_api import helper_api_bp
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
 from Items.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
+
 from Items.mongoDB import mongoDB
 from Items.mongoDB import train_task, train_match
 from Items.mongoDB import test_task

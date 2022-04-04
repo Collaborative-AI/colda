@@ -3,7 +3,6 @@ import jwt
 from flask import g, jsonify, current_app
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from datetime import datetime, timedelta
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from Items import pyMongo
 from Items.authentication import authentication_bp

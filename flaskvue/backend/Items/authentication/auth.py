@@ -3,7 +3,6 @@ import jwt
 from flask import g, jsonify, current_app
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from datetime import datetime, timedelta
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from Items import pyMongo
 from Items.authentication import authentication_bp
@@ -125,10 +124,14 @@ class jwt_manipulation:
             # create time
             'iat': current_time
         }
+        # return jwt.encode(
+        #     token_payload,
+        #     current_app.config['SECRET_KEY'],
+        #     algorithm='HS256').decode('utf-8')
         return jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256').decode('utf-8')
+            algorithm='HS256')
 
     @classmethod
     def get_jwt(cls, user, expires_in=5000):
@@ -146,10 +149,15 @@ class jwt_manipulation:
             'iat': current_time
         }
 
+        # print('type', type(jwt))
+        # return jwt.encode(
+        #     token_payload,
+        #     current_app.config['SECRET_KEY'],
+        #     algorithm='HS256').decode('utf-8')
         return jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256').decode('utf-8')
+            algorithm='HS256')
 
     @classmethod
     def verify_jwt(cls, token):

@@ -1,57 +1,54 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
-from Items.extensions import cors, db, migrate, mail, pyMongo
+from Items.extensions import cors, mail, pyMongo
 from flask_mail import Mail
-# from Items.main import main as main_blueprint
+
 from Items.authentication import authentication_bp
 from Items.main_flow import main_flow_bp
 from Items.user import user_bp
 from Items.helper_api import helper_api_bp
 
-import pymysql
-# from flask_session import Session
 
-# mail = None
 
 def create_app(config_class=None):
     '''Factory Pattern: Create Flask app.'''
-    pymysql.install_as_MySQLdb()
-    app = Flask(__name__)
+    # pymysql.install_as_MySQLdb()
+    application = Flask(__name__)
 
     # Initialization flask app
-    configure_app(app, config_class)
-    configure_blueprints(app)
-    configure_extensions(app)
+    configure_app(application, config_class)
+    configure_blueprints(application)
+    configure_extensions(application)
 
-    configure_before_handlers(app)
-    configure_after_handlers(app)
-    configure_errorhandlers(app)
+    configure_before_handlers(application)
+    configure_after_handlers(application)
+    configure_errorhandlers(application)
     
-    return app
+    return application
 
 
-def configure_app(app, config_class):
-    app.config.from_object(config_class)
+def configure_app(application, config_class):
+    application.config.from_object(config_class)
     
     # 不检查路由中最后是否有斜杠/
-    app.url_map.strict_slashes = False
+    application.url_map.strict_slashes = False
 
 
-def configure_blueprints(app):
+def configure_blueprints(application):
     # 注册 blueprint
     # from .main import main as main_blueprint
     # print("main_blueprint", main_blueprint)
-    app.register_blueprint(authentication_bp)
-    app.register_blueprint(main_flow_bp)
-    app.register_blueprint(user_bp)
-    app.register_blueprint(helper_api_bp)
+    application.register_blueprint(authentication_bp)
+    application.register_blueprint(main_flow_bp)
+    application.register_blueprint(user_bp)
+    application.register_blueprint(helper_api_bp)
 
 
-def configure_extensions(app):
+def configure_extensions(application):
     '''Configures the extensions.'''
 
     # Enable CORS
-    cors.init_app(app)
+    cors.init_app(application)
 
     # Init Flask-SQLAlchemy
     # db.init_app(app)
@@ -60,16 +57,20 @@ def configure_extensions(app):
     # migrate.init_app(app, db)
 
     # Init email service
-    mail.init_app(app)
+    mail.init_app(application)
 
-    pyMongo.init_app(app)
+    pyMongo.init_app(application)
     create_MongoDB_Collections()
 
 def create_MongoDB_Collections():
-    print('pyMongo', pyMongo)
+    print('pyMongo', pyMongo, dir(pyMongo))
+    # print('db_name', pyMongo.sample_airbnb)
+    # print('db_name2', pyMongo.sample_airbnb.list_collection_names())
     # print('pymongo2', pyMongo.mysynspot_db)
     collection_list = pyMongo.db.list_collection_names()
+    print('collection_list', collection_list)
     if 'User' not in collection_list:
+        print('gggg')
         pyMongo.db.User.insert_one( { "user_id": 'placeholder' } )
         pyMongo.db.User.create_index([("user_id", 1)], unique=True)
         pyMongo.db.User.create_index([("username", 1)], unique=True)
@@ -112,17 +113,20 @@ def create_MongoDB_Collections():
     if 'Stop' not in collection_list:
         pyMongo.db.Stop.create_index([("stop_informed_user_id", 1)], unique=True)
 
-def configure_before_handlers(app):
+    collection_list = pyMongo.db.list_collection_names()
+    print('fffff', collection_list)
+    
+def configure_before_handlers(application):
     '''Configures the before request handlers'''
     pass
 
 
-def configure_after_handlers(app):
+def configure_after_handlers(application):
     '''Configures the after request handlers'''
     pass
 
 
-def configure_errorhandlers(app):
+def configure_errorhandlers(application):
     '''Configures the error handlers'''
     pass
 

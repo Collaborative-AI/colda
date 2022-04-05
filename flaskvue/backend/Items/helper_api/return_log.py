@@ -1,17 +1,9 @@
 # -*- coding: utf-8 -*-
-import uuid
-import json
-
-from flask import Flask, session, request, g, current_app
-from flask.helpers import url_for
+from flask import request
 from flask.json import jsonify
-from datetime import datetime
-
-from Items import db
 
 # import BluePrint
 from Items.helper_api import helper_api_bp
-
 # from Items.models import User, Matched, Pending
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth

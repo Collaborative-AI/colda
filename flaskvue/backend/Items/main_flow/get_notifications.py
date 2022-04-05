@@ -1,23 +1,18 @@
 # -*- coding: utf-8 -*-
-import json
 import copy
-import collections
-from collections import defaultdict
 
-from flask import Flask, session, request, g, current_app
-from flask.helpers import url_for
+from flask import g
 from flask.json import jsonify
-from datetime import datetime
 
 # from Items import db
 from Items import pyMongo
 # import BluePrint
 from Items.main_flow import main_flow_bp
-# from Items.models import User, Message, Matched, Notification, Stop
 from Items.exception import error_response, bad_request
 from Items.utils import obtain_user_id_from_token, add_new_token_to_response
 from Items.utils import verify_token_user_id_and_function_caller_id, log, generate_msg
 from Items.authentication import token_auth
+
 from Items.mongoDB import mongoDB
 
 

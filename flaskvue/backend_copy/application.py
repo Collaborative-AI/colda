@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from Items import create_app
-from Items.extensions import db
-# from Items.models import User, Notification, Message, Matched
-from setting import Config
+from config import Config
 
-app = create_app(Config)
+application = create_app(Config)
 
-@app.cli.command()
+@application.route('/')
+def hello_world():
+    return 'Hello, World!!!!WOW!!!'
+
+@application.cli.command()
 def test():
    # flask test
    # flask run
@@ -15,10 +17,9 @@ def test():
     tests = unittest.TestLoader().discover('tests') 
     unittest.TextTestRunner(verbosity=2).run(tests)
 
-@app.shell_context_processor
+@application.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'User': User, 'Notification': Notification, 'Message': Message, 'Matched': Matched}
-
+    pass
 
 
 

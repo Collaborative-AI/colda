@@ -1,7 +1,6 @@
 import os
 from datetime import timedelta
 from redis import Redis
-import pymysql
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -34,10 +33,15 @@ class Config(object):
     #     'sqlite:///' + os.path.join(basedir, 'app.db')
     
     # MongoDB
-    local_host = '127.0.0.1'
+    # local_host = '127.0.0.1'
     # Database_name = 'mysynspot_db'
-    Database_name = 'unittest_db'
-    MONGO_URI = "mongodb://%s:27017/%s" % (local_host, Database_name)
+    # Database_name = 'unittest_db'
+    # MONGO_URI = "mongodb://%s:27017/%s" % (local_host, Database_name)
+
+    password = 'AI-Apollo'
+    Database_name = 'synspot_db'
+    # Database_name = 'unittest_db'
+    MONGO_URI = 'mongodb+srv://diaoenmao-gmailcom:%s@synspot-cluster.iqgfk.mongodb.net/%s?retryWrites=true&w=majority' % (password, Database_name)
     # MONGO_URI = "mongodb://%s:27017" % (local_host)
     
     

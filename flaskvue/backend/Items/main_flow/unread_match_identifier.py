@@ -1,19 +1,11 @@
 # -*- coding: utf-8 -*-
-import uuid
-import json
-
-from sqlalchemy import update
-from flask import Flask, session, request, g, current_app
-from flask.helpers import url_for
+from flask import request
 from flask.json import jsonify
-from bson import ObjectId
-from datetime import datetime
 
 # from Items import db
 from Items import pyMongo
 # import BluePrint
 from Items.main_flow import main_flow_bp
-# from Items.models import User, Notification, Matched, Message
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
 from Items.utils import log, generate_msg, obtain_user_id_from_token, obtain_unique_id

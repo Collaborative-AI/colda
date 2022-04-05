@@ -4,7 +4,7 @@ import re
 import jwt
 import uuid
 
-from setting import Config
+from config import Config
 from flask import current_app, g
 from flask_mail import Message
 from datetime import datetime, timedelta

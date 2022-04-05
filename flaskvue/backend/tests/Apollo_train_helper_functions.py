@@ -2,7 +2,6 @@ import json
 import unittest
 
 from base64 import b64encode
-from datetime import datetime, timedelta
 from bson import ObjectId
 from Items import create_app, pyMongo
 from Items.utils import generate_password
@@ -29,22 +28,26 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.app_context.pop()  # 退出Flask应用上下文
 
     def drop_db_collections(self):
-        pyMongo.db.User.drop()
-        pyMongo.db.Notification.drop()
-        pyMongo.db.Pending.drop()
-        pyMongo.db.Train_Message.drop()
-        pyMongo.db.Train_Message_Situation.drop()
-        pyMongo.db.Train_Message_Output.drop()
-        pyMongo.db.Test_Message.drop()
-        pyMongo.db.Test_Message_Situation.drop()
-        pyMongo.db.Test_Message_Output.drop()
-        pyMongo.db.Train_Match.drop()
-        pyMongo.db.Train_Match_Identifier.drop()
-        pyMongo.db.Test_Match.drop()
-        pyMongo.db.Test_Match_Identifier.drop()
-        pyMongo.db.Train_Task.drop()
-        pyMongo.db.Test_Task.drop()
-        pyMongo.db.Stop.drop()
+        # print('ssads', dir(pyMongo.db))
+        # pyMongo.db.drop_collection()
+        for collecion_names in pyMongo.db.list_collection_names():
+            pyMongo.db.drop_collection(collecion_names)
+        # pyMongo.db.User.drop()
+        # pyMongo.db.Notification.drop()
+        # pyMongo.db.Pending.drop()
+        # pyMongo.db.Train_Message.drop()
+        # pyMongo.db.Train_Message_Situation.drop()
+        # pyMongo.db.Train_Message_Output.drop()
+        # pyMongo.db.Test_Message.drop()
+        # pyMongo.db.Test_Message_Situation.drop()
+        # pyMongo.db.Test_Message_Output.drop()
+        # pyMongo.db.Train_Match.drop()
+        # pyMongo.db.Train_Match_Identifier.drop()
+        # pyMongo.db.Test_Match.drop()
+        # pyMongo.db.Test_Match_Identifier.drop()
+        # pyMongo.db.Train_Task.drop()
+        # pyMongo.db.Test_Task.drop()
+        # pyMongo.db.Stop.drop()
 
     def get_basic_auth_headers(self, username, password):
         '''创建Basic Auth认证的headers'''

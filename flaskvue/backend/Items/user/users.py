@@ -1,24 +1,21 @@
 # -*- coding: utf-8 -*-
 import re
-from operator import itemgetter
-from datetime import datetime
 from bson import ObjectId
 from bson.json_util import loads, dumps
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask.json import jsonify
 from flask.helpers import url_for
-from flask_cors import CORS, cross_origin
-from flask import Flask, session, request, g, current_app, render_template, flash
+from flask import request, g, render_template, flash
 
 # from Items import db
 from Items import pyMongo
 from Items.user import user_bp
 from Items.exception import bad_request, error_response
 from Items.authentication import token_auth, basic_auth
-from Items.utils import obtain_user_id_from_token, obtain_unique_id
+from Items.utils import obtain_user_id_from_token
 from Items.utils import log, generate_msg, validate_password, send_email, generate_confirmation_token, confirm_token
-from Items.utils import generate_password, check_password, verify_token_user_id_and_function_caller_id
+from Items.utils import generate_password, verify_token_user_id_and_function_caller_id
 from Items.mongoDB import mongoDB
 
 @user_bp.route('/users', methods=['POST'])

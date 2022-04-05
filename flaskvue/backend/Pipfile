@@ -13,8 +13,9 @@ flask-cors = "*"
 flask-httpauth = "*"
 flask-mail = "*"
 flask-pymongo = "*"
-jwt = "*"
 python-dotenv = "*"
+pymongo = {extras = ["srv"], version = "*"}
+pyjwt = "*"
 
 [dev-packages]
 

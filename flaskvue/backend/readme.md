@@ -123,30 +123,40 @@ python manage.py runserver -d -h 127.0.0.1 -p 5000 -->
             command: flask run
 
 14. Elastic BeanStalk + MongoDB Atlas
-1. 总体介绍: https://docs.aws.amazon.com/zh_cn/prescriptive-guidance/latest/migration-mongodb-atlas/migration-mongodb-atlas.pdf
-2. MongoDB Atlas与其他云数据库对比: https://www.mongodb.com/cloud/atlas/compare
-3. 介绍serverless, 对比serverless和cluster https://www.mongodb.com/community/forums/t/frequently-asked-questions-atlas-serverless-instances/131992
-4. serverless模式收费标准: https://www.mongodb.com/docs/atlas/billing/serverless-instance-costs/
-5. serverless与cluster对比: https://www.mongodb.com/docs/atlas/choose-database-deployment-type/#std-label-ref-deployment-types
-6. cluster收费表格: https://www.mongodb.com/mongodb-on-aws-pricing
-7. shared限制: https://www.mongodb.com/docs/atlas/reference/free-shared-limitations/#std-label-atlas-free-tier
-8. dedicated vs shared: https://www.mongodb.com/docs/atlas/cluster-tier/
-9. 如何升级shared为dedicated: https://www.mongodb.com/docs/realm/reference/upgrade-shared-cluster/
-10. 总结: 三种类型: serverless / dedicated / shared
-    1. dedicated和shared为同一种类型(cluster)，都使用aws ec2部署. shared规格包括M0, M2, M5, dedicated包括更高级别的. (https://www.mongodb.com/mongodb-on-aws-pricing)
-    2. dedicated为shared的升级版（使用更大的内存，存储更多的数据，更好的CPU等）,同时拥有一些额外功能, 如sharded cluster（分片，提升扩展性）, database auditing(数据库审计，记录信息，如CRUD), Encryption at Rest using Customer Key Management(加密存储在硬盘的数据)等。注: 可随时升级 （shared限制: https://www.mongodb.com/docs/atlas/reference/free-shared-limitations/#std-label-atlas-free-tier）
-    3. serverless vs (dedicated / shared), serverless根据写入，读出，备份等操作的数据量收钱，价目表在(https://www.mongodb.com/docs/atlas/billing/serverless-instance-costs/), 读出为4KB当做一次read，$0.3/million, 写入为1KB当做一次, $1.25/million. 例子: 如果写入一个10MB的文件，即算为操作了10000次。同时serverless是新出的模式，有些功能尚未完善，如MongoDB Charts, Monitoring and alerting, Granular database auditing, Private networking, etc.
+    1. 总体介绍: https://docs.aws.amazon.com/zh_cn/prescriptive-guidance/latest/migration-mongodb-atlas/migration-mongodb-atlas.pdf
+    2. MongoDB Atlas与其他云数据库对比: https://www.mongodb.com/cloud/atlas/compare
+    3. 介绍serverless, 对比serverless和cluster https://www.mongodb.com/community/forums/t/frequently-asked-questions-atlas-serverless-instances/131992
+    4. serverless模式收费标准: https://www.mongodb.com/docs/atlas/billing/serverless-instance-costs/
+    5. serverless与cluster对比: https://www.mongodb.com/docs/atlas/choose-database-deployment-type/#std-label-ref-deployment-types
+    6. cluster收费表格: https://www.mongodb.com/mongodb-on-aws-pricing
+    7. shared限制: https://www.mongodb.com/docs/atlas/reference/free-shared-limitations/#std-label-atlas-free-tier
+    8. dedicated vs shared: https://www.mongodb.com/docs/atlas/cluster-tier/
+    9. 如何升级shared为dedicated: https://www.mongodb.com/docs/realm/reference/upgrade-shared-cluster/
+    10. 总结: 三种类型: serverless / dedicated / shared
+        1. dedicated和shared为同一种类型(cluster)，都使用aws ec2部署. shared规格包括M0, M2, M5, dedicated包括更高级别的. (https://www.mongodb.com/mongodb-on-aws-pricing)
+        2. dedicated为shared的升级版（使用更大的内存，存储更多的数据，更好的CPU等）,同时拥有一些额外功能, 如sharded cluster（分片，提升扩展性）, database auditing(数据库审计，记录信息，如CRUD), Encryption at Rest using Customer Key Management(加密存储在硬盘的数据)等。注: 可随时升级 （shared限制: https://www.mongodb.com/docs/atlas/reference/free-shared-limitations/#std-label-atlas-free-tier）
+        3. serverless vs (dedicated / shared), serverless根据写入，读出，备份等操作的数据量收钱，价目表在(https://www.mongodb.com/docs/atlas/billing/serverless-instance-costs/), 读出为4KB当做一次read，$0.3/million, 写入为1KB当做一次, $1.25/million. 例子: 如果写入一个10MB的文件，即算为操作了10000次。同时serverless是新出的模式，有些功能尚未完善，如MongoDB Charts, Monitoring and alerting, Granular database auditing, Private networking, etc.
 
-15. MongoDB模式 (https://blog.csdn.net/u014401141/article/details/78864419):
-    1. 备份，故障恢复
-        1. master slave (用于备份，故障恢复，读扩展)
-            1. 在数据库集群中要明确的知道谁是主服务器,主服务器只有一台.
-            2. 从服务器要知道自己的数据源也就是对应的主服务是谁.
-            3. –master用来确定主服务器,–slave 和 –source 来控制从服务器
-        2. replica set（推荐）
-            1. 该集群没有特定的主数据库。
-            2. 如果哪个主数据库宕机了，集群中就会推选出一个从属数据库作为主数据库顶上，这就具备了自动故障恢复功能
-    2. sharding (当数据量达到T级别，磁盘内存无法应对CRUD操作，需要应用分片技术应对瓶颈)
-        1. 路由: mongos.首先我们要了解”片键“的概念，也就是说拆分集合的依据是什么？按照什么键值进行拆分集合….好了，mongos就是一个路由服务器，它会根据管理员设置的“片键”将数据分摊到自己管理的mongod集群，数据和片的对应关系以及相应的配置信息保存在”config服务器”上。
-        2. 配置服务器:mongod普通的数据库，一般是一组而图中我们只画了一个，由路由管理。它的作用是记录对数据分片的规则，存储所有数据库元信息（路由、分片）的配置
-        3. 片区:具体的存储信息，根据路由配置的片键不同
+    15. MongoDB模式 (https://blog.csdn.net/u014401141/article/details/78864419):
+        1. 备份，故障恢复
+            1. master slave (用于备份，故障恢复，读扩展)
+                1. 在数据库集群中要明确的知道谁是主服务器,主服务器只有一台.
+                2. 从服务器要知道自己的数据源也就是对应的主服务是谁.
+                3. –master用来确定主服务器,–slave 和 –source 来控制从服务器
+            2. replica set（推荐）
+                1. 该集群没有特定的主数据库。
+                2. 如果哪个主数据库宕机了，集群中就会推选出一个从属数据库作为主数据库顶上，这就具备了自动故障恢复功能
+        2. sharding (当数据量达到T级别，磁盘内存无法应对CRUD操作，需要应用分片技术应对瓶颈)
+            1. 路由: mongos.首先我们要了解”片键“的概念，也就是说拆分集合的依据是什么？按照什么键值进行拆分集合….好了，mongos就是一个路由服务器，它会根据管理员设置的“片键”将数据分摊到自己管理的mongod集群，数据和片的对应关系以及相应的配置信息保存在”config服务器”上。
+            2. 配置服务器:mongod普通的数据库，一般是一组而图中我们只画了一个，由路由管理。它的作用是记录对数据分片的规则，存储所有数据库元信息（路由、分片）的配置
+            3. 片区:具体的存储信息，根据路由配置的片键不同
+
+15. MongoDB Atlas Tutorial:
+    https://www.mongodb.com/basics/mongodb-atlas-tutorial
+
+16. MongoDB Atlas Root User:
+    Username: diaoenmao-gmailcom
+    Password: AI-Apollo
+    mongodb+srv://diaoenmao-gmailcom:<password>@synspot-cluster.iqgfk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+    Replace <password> with the password for the diaoenmao-gmailcom user. Replace myFirstDatabase with the name of the database that connections will use by default. Ensure any option params are URL encoded.
+

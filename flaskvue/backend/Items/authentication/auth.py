@@ -122,10 +122,14 @@ class jwt_manipulation:
             # create time
             'iat': current_time
         }
+        # return jwt.encode(
+        #     token_payload,
+        #     current_app.config['SECRET_KEY'],
+        #     algorithm='HS256').decode('utf-8')
         return jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256').decode('utf-8')
+            algorithm='HS256')
 
     @classmethod
     def get_jwt(cls, user, expires_in=5000):
@@ -143,10 +147,15 @@ class jwt_manipulation:
             'iat': current_time
         }
 
+        # print('type', type(jwt))
+        # return jwt.encode(
+        #     token_payload,
+        #     current_app.config['SECRET_KEY'],
+        #     algorithm='HS256').decode('utf-8')
         return jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256').decode('utf-8')
+            algorithm='HS256')
 
     @classmethod
     def verify_jwt(cls, token):

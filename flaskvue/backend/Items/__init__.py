@@ -63,10 +63,14 @@ def configure_extensions(application):
     create_MongoDB_Collections()
 
 def create_MongoDB_Collections():
-    print('pyMongo', pyMongo)
+    print('pyMongo', pyMongo, dir(pyMongo))
+    # print('db_name', pyMongo.sample_airbnb)
+    # print('db_name2', pyMongo.sample_airbnb.list_collection_names())
     # print('pymongo2', pyMongo.mysynspot_db)
     collection_list = pyMongo.db.list_collection_names()
+    print('collection_list', collection_list)
     if 'User' not in collection_list:
+        print('gggg')
         pyMongo.db.User.insert_one( { "user_id": 'placeholder' } )
         pyMongo.db.User.create_index([("user_id", 1)], unique=True)
         pyMongo.db.User.create_index([("username", 1)], unique=True)
@@ -109,6 +113,9 @@ def create_MongoDB_Collections():
     if 'Stop' not in collection_list:
         pyMongo.db.Stop.create_index([("stop_informed_user_id", 1)], unique=True)
 
+    collection_list = pyMongo.db.list_collection_names()
+    print('fffff', collection_list)
+    
 def configure_before_handlers(application):
     '''Configures the before request handlers'''
     pass

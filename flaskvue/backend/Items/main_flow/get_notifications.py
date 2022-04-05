@@ -72,6 +72,9 @@ def get_notifications(id):
     }
     if 'new_token' in g.current_user:
         response = add_new_token_to_response(response)
+
+    print('cat1')
+    print('cat1res', response)
     return jsonify(response)
 
     # return_dict = {

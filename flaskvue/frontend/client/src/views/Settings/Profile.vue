@@ -167,7 +167,7 @@ export default {
       }
 
       // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(this.sharedState.user_id);
-      console.log('haha',row);
+      console.log('haha1',row);
       if (row != null){
           vm.default_file_path = row.default_file_path
           vm.default_id_column = row.default_id_column

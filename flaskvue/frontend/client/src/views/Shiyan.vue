@@ -85,6 +85,7 @@
 
 <script>
 //const { require } = window
+import { add_prefix } from '../utils.js'
 
 // node electron
 const fs = window.fs;
@@ -965,7 +966,7 @@ export default {
     },
 
     delete_all_rows() {
-      axios.get('/delete_all_rows/')
+      axios.get(add_prefix(`/delete_all_rows/`))
         .then((response) => {
         // handle success
         console.log("delete_all_rows", response)

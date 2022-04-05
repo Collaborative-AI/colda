@@ -39,6 +39,7 @@ export default {
   methods: {
     getUser (id) {
       // const path = `/users/${id}`
+      let vm = this
       this.$axios.get(add_prefix(`/users/${vm.sharedState.user_id}`))
         .then((response) => {
           // handle success
@@ -51,6 +52,7 @@ export default {
     },
     getUserNotifications (id) {
       let since = 0
+      let vm = this
       // const path = `/users/${id}/notifications/?since=${since}`
       // console.log("notification shua xin",since)
       this.$axios.get(add_prefix(`/users/${vm.sharedState.user_id}/`))

@@ -24,16 +24,16 @@ def get_user_history(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    print('zheli')
+    # print('zheli')
     page = request.args.get('page', 1, type=int)
     per_page = min(
         request.args.get(
             'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
-    # print('page', page)
-    # print('per_page', per_page)
+    print('page', page)
+    print('per_page', per_page)
 
     participated_train_task = user_document['participated_train_task']
-    print('participated_train_taskddd', participated_train_task)
+    # print('participated_train_taskddd', participated_train_task)
     participated_task = []
     for task_id in participated_train_task:
         train_task_document = train_task.search_train_task_document(task_id=task_id)
@@ -53,12 +53,12 @@ def get_user_history(id):
             'test_name': None,
             'test_description': None,
         }
-        print('timestamp', timestamp)
+        # print('timestamp', timestamp)
         timestamp = timestamp.utcnow().timestamp()
-        print('current_time', timestamp, type(timestamp))
+        # print('current_time', timestamp, type(timestamp))
         heapq.heappush(participated_task, (-timestamp, sub_task))
 
-        print('train_task_document', train_task_document)
+        # print('train_task_document', train_task_document)
         test_task_dict = train_task_document['test_task_dict']
         for test_id in test_task_dict:
             test_task_document = test_task.search_test_task_document(test_id=test_id)

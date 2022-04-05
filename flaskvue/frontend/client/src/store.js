@@ -12,7 +12,11 @@ export default {
       is_authenticated: window.localStorage.getItem('Apollo-token') ? true : false,
       // 用户登录后，就算刷新页面也能再次计算出 user_id
       user_id: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id : 0,
+      // user_id: 0,
+
       authority: window.localStorage.getItem('Apollo-token') ? JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).authority : 'user',
+      // authority: 'user',
+
       msg: [],
       pending_num: 0,
       // development

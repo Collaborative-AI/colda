@@ -214,15 +214,15 @@
 
 
 5. 补充: 
-    1. /check_sponsor/<string:id> 返回值为response = {
-        'role': role
+    1. /check_sponsor/<string:id> 返回值为response = {        c
+        'role': role  
     }
 
-    2. '/get_test_history_id/<string:id>' -> '/get_test_task_id_history/<string:id>'
+    2. '/get_test_history_id/<string:id>' -> '/get_test_task_id_history/<string:id>'  c
 
-    3. stop_train_task / stop_test_task in Notification Table
+    3. stop_train_task / stop_test_task in Notification Table   c
 
-    4. '/stop_train_task/<string:id>' 返回值:
+    4. '/stop_train_task/<string:id>' 返回值:       c
         response = {
             "message": "delete successfully", 
             "isSponsor": False, 

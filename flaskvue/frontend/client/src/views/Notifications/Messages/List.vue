@@ -11,7 +11,7 @@
                 <div class="box-title border-bottom p-3">
                     <h6 class="m-0">Paticipated Tasks <small v-if="messages">(Total: {{ messages._meta.total_items }} tasks, {{ messages._meta.total_pages }} pages)</small></h6>
                 </div>
-                <div class="box-body p-0" v-for="(message, index) in messages.items" v-bind:key="index">
+                <div class="box-body p-0" v-for="(message, index) in messages.participated_sort_task_dict" v-bind:key="index">
                     
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
                         <!-- <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div> -->

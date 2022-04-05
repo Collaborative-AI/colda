@@ -83,6 +83,8 @@ def verify_token(token):
         KeyError - raises an exception
     """
 
+    # print('token is', token)
+
     g.current_user, token_payload = jwt_manipulation.verify_jwt(token) if token else None
 
     if g.current_user:

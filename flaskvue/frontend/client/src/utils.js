@@ -22,7 +22,7 @@ export function change_db_param_to_string(db_parameters){
   for (let i = 0; i < db_parameters.length; i++){
     let db_param_i = db_parameters[i]
     if (db_param_i == undefined){
-      console.log('db_sentence_param_wrond', db_param_i)
+      console.log('db_sentence_param_wrong', db_param_i)
     }
     // console.log('db_param_i', db_param_i)
     if (db_param_i.length > 0){
@@ -59,10 +59,11 @@ export function generate_message_string(){
   return message_list.join(" ")
 }
 
-export function add_prefix(str){
+export function add_prefix(str, prefix){
   console.log('print string', str)
+  return '/' + prefix + str
   let post = str.split("/")
-  console.log('post',post)
+  // console.log('post',post)
   if (post[1] == 'tokens'){
     return '/auth' + str
   }
@@ -70,7 +71,8 @@ export function add_prefix(str){
     return '/user' + str
   }
   if (post[1] == 'get_backend_log' || post[1] == 'check_sponsor'
-  || post[1] == 'get_test_task_id_history' || post[1] == 'get_user_history'){
+  || post[1] == 'get_test_task_id_history' || post[1] == 'get_user_history'
+  || post[1] == 'delete_all_rows'){
     return '/helper_api' + str
   }
   if (post[1] == 'get_notifications' || post[1] == 'match_identifier_content' 

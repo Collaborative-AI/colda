@@ -30,7 +30,7 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                       
-                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user']) && sharedState.user_id<=2"  class="nav-item">
+                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user']) && sharedState.username != 'xie1'"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
                         </li>       
                         <!-- <button @click="test_axios()">123</button>              -->
@@ -165,6 +165,7 @@ export default {
       }
 
       let vm = this
+      console.log('jin unread request')
       // Log(generate_message_string("this.sharedState.receive_request", vm.sharedState.mode), 'info')
       // Log(generate_message_string("2.1 Update request notification response", unread_request_notification), 'info')
 
@@ -313,7 +314,7 @@ export default {
               identifier_content: hash_id_file_data,
             }
             
-            vm.$axios.post(add_prefix(`/match_identifier_content/${vm.sharedState.user_id}/`), match_assistor_id_data)
+            vm.$axios.post(add_prefix(`/match_identifier_content/${vm.sharedState.user_id}/`, `main_flow`), match_assistor_id_data)
               .then((response) => {
                 // handle success
 
@@ -2289,22 +2290,29 @@ export default {
         console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
         if (window.localStorage.getItem('Apollo-token')) {
           // 如果用户已登录，才开始请求 API
+          console.log('cat0', window.localStorage.getItem('Apollo-token').split('.'))
           const payload = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1]))
+          console.log('cat2', payload)
           const user_id = payload.user_id
+          console.log('cat3', user_id)
 
           
           axios.get(add_prefix(`/get_notifications/${user_id}`))
             .then((response) => {
               // handle success
-              if ('new_token' in response.data){
-                window.localStorage.setItem('Apollo-token', response.data.new_token)
-              }
+              // if ('new_token' in response.data){
+              //   window.localStorage.setItem('Apollo-token', response.data.new_token)
+              //   console.log('cat4')
+              // }
               let category = response.data.notification_result.category
               console.log('category is', category)
-              if (!category){
-                for (let category_name of category){
+              if (category){
+                console.log('cat1')
+                for (let category_name in category){
+                  console.log('jin0', category_name)
                   if (category_name in train_notification_category_name){
                     let task_id_dict = category[category_name]['task_id_dict']
+                    console.log('jin1')
                     if (category_name == 'unread_request'){
                       unread_request(task_id_dict)
                     }else if (category_name == 'unread_match_identifier'){
@@ -2314,7 +2322,7 @@ export default {
                     }else if (category_name == 'unread_output'){
                       unread_output(task_id_dict)
                     }else if (category_name == 'unread_train_stop'){
-                      
+                      console.log('train stop')
                     }
                   }else if (category_name in test_notification_category_name){
                     let test_id_dict = category[category_name]['test_id_dict']
@@ -2325,7 +2333,7 @@ export default {
                     }else if (category_name == 'unread_test_output'){
                       unread_test_output(test_id_dict)
                     }else if (category_name == 'unread_test_stop'){
-
+                      console.log('test stop')
                     }
                   }
 

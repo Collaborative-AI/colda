@@ -1,3 +1,0 @@
-commands:
-  command1:
-    command: flask run

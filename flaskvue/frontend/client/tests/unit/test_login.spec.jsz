@@ -18,6 +18,6 @@ describe('test_login', () => {
   // login_helper.login_second_user
   login_helper.login_first_user()
 
-  // login_helper.login_second_user()
+  login_helper.login_second_user()
   
 })

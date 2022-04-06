@@ -44,6 +44,7 @@ Database_name = 'mysynspot_db'
 MONGO_URI = "mongodb://%s:27017/%s" % (local_host, Database_name)
 mongodb://127.0.0.1:27017/mysynspot_db
 mongodb://127.0.0.1:27017/unittest_db
+mongodb+srv://diaoenmao-gmailcom:AI-Apollo@synspot-cluster.iqgfk.mongodb.net/synspot_db?retryWrites=true&w=majority
 2. In extensions.py, add:
 from flask_pymongo import PyMongo
 pyMongo = PyMongo()

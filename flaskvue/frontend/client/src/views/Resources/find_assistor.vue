@@ -167,7 +167,7 @@ export default {
     },
 
     get_train_id (unittest_callbacks) {
-      this.$axios.get(add_prefix(`/create_new_train_task/`))
+      this.$axios.get(add_prefix(`/create_new_train_task/`, `/main_flow`))
         .then((response) => {
           this.task_id = response.data.task_id
           let unittest_parameters = generate_unittest_parameters(this.task_id)
@@ -379,7 +379,7 @@ export default {
           }
           // console.log('fins_assistor_data', find_assistor_data)
 
-          vm.$axios.post(add_prefix(`/find_assistor/${vm.sharedState.user_id}/`), find_assistor_data)
+          vm.$axios.post(add_prefix(`/find_assistor/${vm.sharedState.user_id}/`, `/main_flow`), find_assistor_data)
           .then((response) => {
             console.log('response!!', response.data)
             if (response.data == "wrong username"){
@@ -402,13 +402,13 @@ export default {
             // handle success
             vm.$toasted.success(`Training task: ` + vm.task_id + ` Starts`, { icon: 'fingerprint' })
 
-            Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
-            Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'info')
-            Log(generate_message_string("Training Stage Starts\n"), 'info')
-            Log(generate_message_string("1.0 Find Assistor\n"), 'info')
-            Log(generate_message_string("1.1 Sponsor calls for help\n"), 'info')
-            Log(generate_message_string("1.2 Sponsor sends id file\n"), 'info')
-            Log(generate_message_string("1.3 Find Assistor Done\n"), 'info')
+            // //Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
+            // //Log(generate_message_string("Task ID: " + vm.task_id + "\n"), 'info')
+            // //Log(generate_message_string("Training Stage Starts\n"), 'info')
+            // //Log(generate_message_string("1.0 Find Assistor\n"), 'info')
+            // //Log(generate_message_string("1.1 Sponsor calls for help\n"), 'info')
+            // //Log(generate_message_string("1.2 Sponsor sends id file\n"), 'info')
+            // //Log(generate_message_string("1.3 Find Assistor Done\n"), 'info')
 
             // vm.$toasted.success(`Training: Finding Assistor Done`, { icon: 'fingerprint' })
 

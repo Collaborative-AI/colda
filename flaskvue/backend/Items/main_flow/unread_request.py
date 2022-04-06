@@ -66,7 +66,7 @@ def match_identifier_content(id):
     log(generate_msg('2.1:', 'assistor match_assistor_id begins'), user_id, task_id)
 
     same_identifiers = list(set(identifier_content) & set(sponsor_identifier_content))
-    print('same_identifiers', same_identifiers)
+    # print('same_identifiers', same_identifiers)
 
     assistor_random_id = obtain_unique_id()
     identifier_id = obtain_unique_id()

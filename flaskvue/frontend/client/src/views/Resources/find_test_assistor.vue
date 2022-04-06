@@ -111,7 +111,7 @@ export default {
   methods: {
     get_test_id (unittest_callbacks) {
       
-      this.$axios.get(add_prefix('/create_new_test_task/'))
+      this.$axios.get(add_prefix(`/create_new_test_task/`, `/main_flow`))
         .then((response) => {
           this.test_id = response.data.test_id
           let unittest_parameters = generate_unittest_parameters(this.test_id)
@@ -339,7 +339,7 @@ export default {
                 test_description: vm.test_description,
               }
               
-              vm.$axios.post(add_prefix(`/find_test_assistor/${vm.sharedState.user_id}`), payload)
+              vm.$axios.post(add_prefix(`/find_test_assistor/${vm.sharedState.user_id}`, `/main_flow`), payload)
                 .then((response) => {
                   
                   let unittest_parameters = generate_unittest_parameters(response.data)
@@ -356,13 +356,13 @@ export default {
                   // handle success
                   vm.$toasted.success(`Testing task: ` + vm.test_id + ` Starts`, { icon: 'fingerprint' })
                 
-                  Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
-                  Log(generate_message_string("Test ID: " + vm.test_id + "\n"), 'info')
-                  Log(generate_message_string("Testing Stage Starts\n"), 'info')
-                  Log(generate_message_string("1.0 Test: Find Test Assistor\n"), 'info')
-                  Log(generate_message_string("1.1 Test: Sponsor calls for help\n"), 'info')
-                  Log(generate_message_string("1.2 Test: Sponsor sends id file\n"), 'info')
-                  Log(generate_message_string("1.3 Test: Find Test Assistor Done\n"), 'info')
+                  //Log(generate_message_string("\nYou are SPONSOR\n"), 'info')
+                  //Log(generate_message_string("Test ID: " + vm.test_id + "\n"), 'info')
+                  //Log(generate_message_string("Testing Stage Starts\n"), 'info')
+                  //Log(generate_message_string("1.0 Test: Find Test Assistor\n"), 'info')
+                  //Log(generate_message_string("1.1 Test: Sponsor calls for help\n"), 'info')
+                  //Log(generate_message_string("1.2 Test: Sponsor sends id file\n"), 'info')
+                  //Log(generate_message_string("1.3 Test: Find Test Assistor Done\n"), 'info')
 
                   // vm.$toasted.success(`Testing: Find Assistor Done`, { icon: 'fingerprint' })
 

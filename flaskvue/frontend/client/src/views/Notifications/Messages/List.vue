@@ -185,7 +185,7 @@ export default {
       }
      
       // const path = `/get_user_history/?page=${page}&per_page=${per_page}`
-      this.$axios.get(add_prefix(`/get_user_history/${vm.sharedState.user_id}/?page=${page}&per_page=${per_page}`))
+      this.$axios.get(add_prefix(`/get_user_history/${vm.sharedState.user_id}/?page=${page}&per_page=${per_page}`, `/helper_api`))
         .then((response) => {
           // handle success
           vm.messages = response.data

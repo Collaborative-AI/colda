@@ -36,9 +36,11 @@ export function change_db_param_to_string(db_parameters){
 }
 
 export function execute_unittest_list(unittest_list, index, indicator, unittest_parameters){
-  console.log('execute_unittest_list',unittest_list)
+  console.log('execute_unittest_list',unittest_list, index, indicator, unittest_parameters)
   if (Array.isArray(unittest_list)) {
+    console.log('eee1')
     if (unittest_list.length > 1 && unittest_list[unittest_list.length-1] == indicator){
+      console.log('eee2')
       unittest_list[index](unittest_parameters)
       // console.log('zzzzzzz0',unittest_list)
       index += 1
@@ -61,34 +63,34 @@ export function generate_message_string(){
 
 export function add_prefix(str, prefix){
   console.log('print string', str)
-  return '/' + prefix + str
-  let post = str.split("/")
-  // console.log('post',post)
-  if (post[1] == 'tokens'){
-    return '/auth' + str
-  }
-  if (post[1] == 'users'){
-    return '/user' + str
-  }
-  if (post[1] == 'get_backend_log' || post[1] == 'check_sponsor'
-  || post[1] == 'get_test_task_id_history' || post[1] == 'get_user_history'
-  || post[1] == 'delete_all_rows'){
-    return '/helper_api' + str
-  }
-  if (post[1] == 'get_notifications' || post[1] == 'match_identifier_content' 
-  || post[1] == 'add_train_pending' || post[1] == 'get_identifier_content'
-  || post[1] == 'send_situation' || post[1] == 'send_output'
-  || post[1] == 'get_situation_content' || post[1] == 'get_output_content'
-  || post[1] == 'match_test_identifier_content' || post[1] == 'add_test_pending'
-  || post[1] == 'get_test_identifier_content' || post[1] == 'send_test_output'
-  || post [1] == 'get_test_output_content' || post[1] == 'create_new_train_task'
-  || post[1] == 'stop_train_task' || post[1] == 'find_assistor'
-  || post[1] == 'create_new_test_task' || post[1] == 'find_test_assistor'
-  || post[1] == 'delete_pending' || post[1] == 'get_all_pending'){
-    let complete_path = '/main_flow' + str
-    console.log('complete', complete_path)
-    return complete_path
-  }
+  return prefix + str
+  // let post = str.split("/")
+  // // console.log('post',post)
+  // if (post[1] == 'tokens'){
+  //   return '/auth' + str
+  // }
+  // if (post[1] == 'users'){
+  //   return '/user' + str
+  // }
+  // if (post[1] == 'get_backend_log' || post[1] == 'check_sponsor'
+  // || post[1] == 'get_test_task_id_history' || post[1] == 'get_user_history'
+  // || post[1] == 'delete_all_rows'){
+  //   return '/helper_api' + str
+  // }
+  // if (post[1] == 'get_notifications' || post[1] == 'match_identifier_content' 
+  // || post[1] == 'add_train_pending' || post[1] == 'get_identifier_content'
+  // || post[1] == 'send_situation' || post[1] == 'send_output'
+  // || post[1] == 'get_situation_content' || post[1] == 'get_output_content'
+  // || post[1] == 'match_test_identifier_content' || post[1] == 'add_test_pending'
+  // || post[1] == 'get_test_identifier_content' || post[1] == 'send_test_output'
+  // || post [1] == 'get_test_output_content' || post[1] == 'create_new_train_task'
+  // || post[1] == 'stop_train_task' || post[1] == 'find_assistor'
+  // || post[1] == 'create_new_test_task' || post[1] == 'find_test_assistor'
+  // || post[1] == 'delete_pending' || post[1] == 'get_all_pending'){
+  //   let complete_path = '/main_flow' + str
+  //   console.log('complete', complete_path)
+  //   return complete_path
+  // }
   
 }
 
@@ -115,14 +117,14 @@ export function add_prefix(str, prefix){
   
 // }
 
-// export function check_if_notification_is_null(notification, name){
-//   console.log(name,'qwedas', notification)
-//   if (notification == null || notification == {}){
-//     Log(name + 'is null')
-//     return true
-//   }
-//   return false
-// }
+export function check_if_notification_is_null(notification, name){
+  console.log(name,'qwedas', notification)
+  if (notification == null || notification == {}){
+    // Log(name + 'is null')
+    return true
+  }
+  return false
+}
 
 
 // export function sqlite3_run(sql, params) {

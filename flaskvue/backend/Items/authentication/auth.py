@@ -1,7 +1,10 @@
 import jwt
 
-from flask import g, jsonify, current_app
+from flask import g, current_app
+from flask.json import jsonify
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
+from bson.json_util import loads, dumps
+
 from datetime import datetime, timedelta
 
 from Items import pyMongo
@@ -36,7 +39,13 @@ def get_token():
         return jsonify(msg)
     
     token = jwt_manipulation.get_jwt(g.current_user)
-    return jsonify({'token': token})
+    print('token is', type(token), token)
+    print('token is 1', token.decode("utf-8"))
+    print('token is 2', dumps({'token': token.decode()}))
+    print('token is 3', jsonify(dumps({'token': token.decode()})))
+
+    
+    return jsonify({'token': token.decode("utf-8")})
 
 @basic_auth.verify_password
 def verify_password(username, password):

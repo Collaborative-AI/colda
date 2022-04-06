@@ -113,7 +113,7 @@ export default {
       console.log("!!!", this.loginForm.username)
       const path = `/tokens`
       // axios 实现Basic Auth需要在config中设置 auth 这个属性即可
-      this.$axios.post(add_prefix(path), {}, {
+      this.$axios.post(add_prefix(path, `/auth`), {}, {
         auth: {
           'username': this.loginForm.username,
           'password': this.loginForm.password
@@ -126,6 +126,7 @@ export default {
             this.$toasted.success(`Please verify your email`, { icon: 'fingerprint' })
 
           } else{
+            console.log('token is' ,response.data.token)
             window.localStorage.setItem('Apollo-token', response.data.token)
             store.loginAction()
 

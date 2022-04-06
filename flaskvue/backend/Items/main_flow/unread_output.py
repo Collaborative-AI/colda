@@ -79,6 +79,7 @@ def get_output_content(id):
     response = {
         'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict
     }
+    print ('output res', response)
     return jsonify(response)  
 
 

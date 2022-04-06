@@ -3,6 +3,8 @@ import copy
 
 from flask import g
 from flask.json import jsonify
+from bson.json_util import loads, dumps
+
 
 # from Items import db
 from Items import pyMongo
@@ -68,7 +70,7 @@ def get_notifications(id):
     if 'new_token' in g.current_user:
         response = add_new_token_to_response(response)
 
-    print('cat1')
+    print('cat1', type(response))
     print('cat1res', response)
     return jsonify(response)
 

@@ -157,24 +157,26 @@ export default {
       return Log_address
     },
 
-    unread_request(unread_request_notification, unittest_callbacks) {
-
+    unread_request(unread_request_task_id_dict, unittest_callbacks) {
+      // replace unread_request_notification with unread_request_task_id_dict
       // Only assistor will enter this function
-      if (check_if_notification_is_null(unread_request_notification, 'unread_request_notification')){
+      if (check_if_notification_is_null(unread_request_task_id_dict, 'unread_request_notification')){
         return
       }
 
       let vm = this
-      console.log('jin unread request')
-      // Log(generate_message_string("this.sharedState.receive_request", vm.sharedState.mode), 'info')
-      // Log(generate_message_string("2.1 Update request notification response", unread_request_notification), 'info')
+      console.log('jin unread request', unread_request_task_id_dict)
+      // //Log(generate_message_string("this.sharedState.receive_request", vm.sharedState.mode), 'info')
+      // //Log(generate_message_string("2.1 Update request notification response", unread_request_notification), 'info')
 
-      let cur_unread_request_Taskid_dict = unread_request_notification["check_dict"]
-      // Log(generate_message_string('cur_unread_request', unread_request_notification), 'info')
+      let cur_unread_request_Taskid_dict = unread_request_task_id_dict
+      console.log('jinn1', cur_unread_request_Taskid_dict)
+      // //Log(generate_message_string('cur_unread_request', unread_request_notification), 'info')
 
       // Unittest: check if testing task id in the cur_unread_request_Taskid_dict
       // // console.log('55555', unittest_callbacks)
       let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
+      console.log('unit1', unittest_parameters)
       execute_unittest_list(unittest_callbacks, 0, "unread_request_unittest", unittest_parameters)
 
       let select_sentence = 'SELECT * FROM User_Default_Table WHERE user_id= ?' 
@@ -188,7 +190,7 @@ export default {
       
 
       // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id= ?').get(vm.sharedState.user_id);
-      // Log(generate_message_string('55555',row), 'debug')
+      // //Log(generate_message_string('55555',row), 'debug')
 
       if (row == null){
         vm.sharedState.mode = "manual";
@@ -202,8 +204,8 @@ export default {
         // console.log('root shi', this.root)
         // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
         console.log("5552121", node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt'))
-        Log('assistor ceshi', 'info')
-        // Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
+        // Log('assistor ceshi', 'info')
+        // //Log(generate_message_string('navbar unread request mode', vm.sharedState.mode), 'debug')
 
         if (vm.sharedState.mode == 'auto'){
 
@@ -216,7 +218,7 @@ export default {
             console.log('err info',err);;
           }
             // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
-            // Log(generate_message_string('row kan', row), 'debug')
+            // //Log(generate_message_string('row kan', row), 'debug')
             console.log('row22', row)
             let default_file_path = row.default_file_path
             let default_id_column = row.default_id_column
@@ -290,10 +292,10 @@ export default {
             unittest_parameters = generate_unittest_parameters()
             execute_unittest_list(unittest_callbacks, 2, "unread_request_unittest", unittest_parameters)
 
-            Log(generate_message_string("\nYou are Assistor\n"), 'info')
-            Log(generate_message_string("Task ID: " + task_id + "\n"), 'info')
-            Log(generate_message_string("2.0 Unread Request Starts\n"), 'info')
-            Log(generate_message_string("2.1 Update the request notification\n"), 'info')
+            // //Log(generate_message_string("\nYou are Assistor\n"), 'info')
+            // //Log(generate_message_string("Task ID: " + task_id + "\n"), 'info')
+            // //Log(generate_message_string("2.0 Unread Request Starts\n"), 'info')
+            // //Log(generate_message_string("2.1 Update the request notification\n"), 'info')
 
             try {
               fs.appendFileSync(Log_address, "\n You are Assistor\n")
@@ -314,7 +316,7 @@ export default {
               identifier_content: hash_id_file_data,
             }
             
-            vm.$axios.post(add_prefix(`/match_identifier_content/${vm.sharedState.user_id}/`, `main_flow`), match_assistor_id_data)
+            vm.$axios.post(add_prefix(`/match_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), match_assistor_id_data)
               .then((response) => {
                 // handle success
 
@@ -322,8 +324,8 @@ export default {
                 let unittest_parameters = generate_unittest_parameters(response.data)
                 execute_unittest_list(unittest_callbacks, 3, "unread_request_unittest", unittest_parameters)
 
-                Log(generate_message_string("2.2 Assistor uploads match id file\n"), 'info')
-                Log(generate_message_string("2.3 Unread Request Done\n"), 'info')
+                // //Log(generate_message_string("2.2 Assistor uploads match id file\n"), 'info')
+                // //Log(generate_message_string("2.3 Unread Request Done\n"), 'info')
 
                 vm.$toasted.success( `auto: Training Task `+ task_id + ` Starts`, { icon: 'fingerprint' })
 
@@ -350,11 +352,11 @@ export default {
         vm.$toasted.success("manual: Training Task " + task_id + " Request Received", { icon: 'fingerprint' })
         vm.$toasted.success("Please go to pending page", { icon: 'fingerprint' })
 
-        vm.$axios.post(add_prefix('/add_train_pending/'), add_train_pending)
+        vm.$axios.post(add_prefix(`/add_train_pending/`, `/main_flow`), add_train_pending)
           .then((response) => {
             // handle success
             console.log('zz99',response)
-            // Log(generate_message_string("add_train_pending response", response.data), 'debug')
+            // //Log(generate_message_string("add_train_pending response", response.data), 'debug')
             let unittest_parameters = generate_unittest_parameters(response.data)
             execute_unittest_list(unittest_callbacks, 1, "unread_request_unittest", unittest_parameters)
           })
@@ -375,18 +377,19 @@ export default {
     },
 
 
-    unread_match_id(unread_match_id_notification, unittest_callbacks) {
-
+    unread_match_identifier(unread_match_id_task_id_dict, unittest_callbacks) {
+      // replace unread_match_id_notification with unread_match_id_task_id_dict
       let vm = this
 
-      if (check_if_notification_is_null(unread_match_id_notification, 'unread_match_id_notification')){
+      if (check_if_notification_is_null(unread_match_id_task_id_dict, 'unread_match_id_notification')){
         return
       }
 
       // console.log("3.1 Update match id notification response", unread_match_id_notification)
       // this.$toasted.success("3.1 Update the match id notification", { icon: 'fingerprint' })
 
-      let cur_unread_match_id_Taskid_dict = unread_match_id_notification["check_dict"]
+      let cur_unread_match_id_Taskid_dict = unread_match_id_task_id_dict
+      console.log('ppp1', cur_unread_match_id_Taskid_dict )
 
       // check if testing task id in the cur_unread_request_Taskid_dict
       let unittest_parameters = generate_unittest_parameters(cur_unread_match_id_Taskid_dict)
@@ -398,8 +401,8 @@ export default {
         // Log('sponsor ceshi3', 'info')
         const Log_address = this.handle_train_log_address(task_id)
 
-        Log(generate_message_string("3.0 Unread Match ID Starts\n"), 'info')
-        Log(generate_message_string("3.1 Update the match id notification\n"), 'info')
+        // //Log(generate_message_string("3.0 Unread Match ID Starts\n"), 'info')
+        // //Log(generate_message_string("3.1 Update the match id notification\n"), 'info')
 
         try {
           fs.appendFileSync(Log_address, "---- 3. Unread Match ID\n")
@@ -408,10 +411,10 @@ export default {
           console.log(err)
         }
 
-        let check_sponsor = cur_unread_match_id_Taskid_dict[task_id]
+        let check_sponsor = cur_unread_match_id_Taskid_dict[task_id]['role']
 
-        if (check_sponsor == 1){
-          Log(generate_message_string("3.2 Unread_match_id_sponsor\n"), 'info')
+        if (check_sponsor == 'sponsor'){
+          // //Log(generate_message_string("3.2 Unread_match_id_sponsor\n"), 'info')
           try {
             fs.appendFileSync(Log_address, "3.2 Unread_match_id_sponsor\n")
           } catch (err) {
@@ -420,7 +423,7 @@ export default {
           this.unread_match_id_sponsor(task_id, unittest_callbacks)
         }  
         else{
-          Log(generate_message_string("3.2 Unread_match_id_assistor\n"), 'info')
+          //Log(generate_message_string("3.2 Unread_match_id_assistor\n"), 'info')
           try {
             fs.appendFileSync(Log_address, "3.2 Unread_match_id_assistor\n")
           } catch (err) {
@@ -437,6 +440,7 @@ export default {
       // Create 'Local_Data/id/task_id/Match/' folder
       // const Match_folder = 'Local_Data/' + this.sharedState.user_id + '/' + task_id + '/' + 'Match/'
       let vm = this;
+      console.log('jin match id sponsor')
 
       // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
@@ -450,7 +454,7 @@ export default {
       
       // const path = `/users/${vm.sharedState.user_id}/match_id_file/`
 
-      vm.$axios.post(add_prefix(`/get_identifier_content/${vm.sharedState.user_id}/`), payload)
+      vm.$axios.post(add_prefix(`/get_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
         .then((response) => {
           // call back
           // iterate the match_id_file
@@ -459,7 +463,7 @@ export default {
           let unittest_parameters = generate_unittest_parameters(response.data)
           execute_unittest_list(unittest_callbacks, 1, "unread_match_id_unittest", unittest_parameters)
           
-          Log(generate_message_string("3.3 Sponsor gets matched id file\n"), 'info')
+          //Log(generate_message_string("3.3 Sponsor gets matched id file\n"), 'info')
     
           try {
             fs.appendFileSync(Log_address, "3.3 Sponsor gets matched id file\n")
@@ -470,7 +474,7 @@ export default {
           for(let i = 0;i < Object.keys(response.data.assistor_random_id_to_identifier_content_dict).length; i++){
 
             const from_id = Object.keys(response.data.assistor_random_id_to_identifier_content_dict)[i];
-            let cur_match_id_file = JSON.parse(Object.values(response.data.assistor_random_id_to_identifier_content_dict)[i]);
+            let cur_match_id_file = Object.values(response.data.assistor_random_id_to_identifier_content_dict)[i];
             cur_match_id_file = cur_match_id_file.join("\n")
 
             // Store match_id file from different assistor
@@ -498,7 +502,7 @@ export default {
             fs.writeFileSync(save_match_id_file_pos[2], cur_match_id_file)
             // console.log('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2]);
             // vm.$toasted.success('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2], { icon: 'fingerprint' })
-            Log(generate_message_string("3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"), 'info')
+            //Log(generate_message_string("3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"), 'info')
             try {
               fs.appendFileSync(Log_address, "3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
             } catch (err) {
@@ -527,7 +531,7 @@ export default {
 
             // console.log('3.5 Sponsor matches id to index');
             // vm.$toasted.success('3.5 Sponsor matches id to index', { icon: 'fingerprint' })
-            Log(generate_message_string("3.5 Sponsor matches id to index\n"), 'info')
+            //Log(generate_message_string("3.5 Sponsor matches id to index\n"), 'info')
 
             try {
               fs.appendFileSync(Log_address, "3.5 Sponsor matches id to index\n")
@@ -581,7 +585,7 @@ export default {
 
             // // console.log("param2 Sponsor makes residual finished")
             // vm.$toasted.success("3.6 Sponsor makes residual finished", { icon: 'fingerprint' })
-            Log(generate_message_string("3.6 Sponsor makes residual finished\n"), 'info')
+            //Log(generate_message_string("3.6 Sponsor makes residual finished\n"), 'info')
 
             try {
               fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
@@ -609,11 +613,12 @@ export default {
               let path_split = cur_path.split(node_path.sep);
               let assistor_random_id = path_split[path_split.length-1].split(".")[0];
               assistor_random_id_list.push(assistor_random_id);
-              
             }
+            console.log('qwq2', assistor_random_id_list)
+            console.log('qwq3', assistor_random_id_list)
             const assistor_random_id_to_residual_dict = {}
             for (let i = 0; i < assistor_random_id_list.length; i++){
-              assistor_random_id_to_residual_dict.assistor_random_id_list[i] = all_residual_data[i]
+              assistor_random_id_to_residual_dict[assistor_random_id_list[i]] = all_residual_data[i]
             }
 
             // // console.log("assistor_random_id_list", assistor_random_id_list)
@@ -627,7 +632,7 @@ export default {
 
             // send initial situation
             // async
-            vm.$axios.post(add_prefix(`/send_situation/${vm.sharedState.user_id}/`), send_situation_payload)
+            vm.$axios.post(add_prefix(`/send_situation/${vm.sharedState.user_id}/`, `/main_flow`), send_situation_payload)
               .then((response) => {
               // handle success
 
@@ -637,8 +642,8 @@ export default {
 
               // // console.log("3.7 Sponsor sends all situations", response)
               // vm.$toasted.success("3.7 Sponsor sends all situations", { icon: 'fingerprint' })
-              Log(generate_message_string("3.7 Sponsor sends all situations" + "\n"), 'info')
-              Log(generate_message_string("---- 3. Unread Match ID Done\n"), 'info')
+              //Log(generate_message_string("3.7 Sponsor sends all situations" + "\n"), 'info')
+              //Log(generate_message_string("---- 3. Unread Match ID Done\n"), 'info')
 
               // vm.$toasted.success(`Train: Unread Match ID Done`, { icon: 'fingerprint' })
 
@@ -662,6 +667,8 @@ export default {
     unread_match_id_assistor(task_id, unittest_callbacks) {
 
       let vm = this;
+      console.log('jin match id assisor')
+
 
       // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
@@ -673,8 +680,10 @@ export default {
       }
       // const path = `/users/${vm.sharedState.user_id}/match_id_file/`
       // async
-      this.$axios.post(add_prefix(`/get_identifier_content/${vm.sharedState.user_id}/`), payload)
+      this.$axios.post(add_prefix(`/get_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
         .then((response) => {
+
+          console.log('qwq1', response.data)
           
           // check users/user_id/match_id_file return value
           let unittest_parameters = generate_unittest_parameters(response.data)
@@ -682,7 +691,7 @@ export default {
           
           // // console.log("3.3 Assistor gets matched id file", response)
           // vm.$toasted.success("3.3 Assistor gets matched id file", { icon: 'fingerprint' })
-          Log(generate_message_string("3.3 Assistor gets matched id file\n"), 'info')
+          //Log(generate_message_string("3.3 Assistor gets matched id file\n"), 'info')
 
           try {
             fs.appendFileSync(Log_address, "3.3 Assistor gets matched id file\n")
@@ -691,7 +700,8 @@ export default {
           }
           
           const from_id = Object.keys(response.data.sponsor_random_id_to_identifier_content_dict);
-          let cur_match_id_file = JSON.parse(Object.values(response.data.sponsor_random_id_to_identifier_content_dict)[0]);
+          console.log('qwq2', Object.values(response.data.sponsor_random_id_to_identifier_content_dict)[0])
+          let cur_match_id_file = Object.values(response.data.sponsor_random_id_to_identifier_content_dict)[0];
           cur_match_id_file = cur_match_id_file.join("\n")
           
           // Store match_id file from sponsor
@@ -717,7 +727,7 @@ export default {
 
           // console.log('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos[2]);
           // vm.$toasted.success('3.4 Assistor Saved Matched id File at ' + save_match_id_file_pos[2], { icon: 'fingerprint' })
-          Log(generate_message_string("3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"), 'info')
+          //Log(generate_message_string("3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"), 'info')
 
           try {
             fs.appendFileSync(Log_address, "3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
@@ -744,8 +754,8 @@ export default {
 
           // console.log('3.5 Assistor matches id to index');
           // vm.$toasted.success('3.5 Assistor matches id to index', { icon: 'fingerprint' })
-          Log(generate_message_string("3.5 Assistor matches id to index\n"), 'info')
-          Log(generate_message_string("---- 3. Unread Match ID Done\n"), 'info')
+          //Log(generate_message_string("3.5 Assistor matches id to index\n"), 'info')
+          //Log(generate_message_string("---- 3. Unread Match ID Done\n"), 'info')
 
           // vm.$toasted.success(`Train: Unread Match ID Done`, { icon: 'fingerprint' })
 
@@ -768,19 +778,20 @@ export default {
         }) // axios get match_id_file
     },
 
-    unread_situation(unread_situation_notification, unittest_callbacks) {
+    unread_situation(unread_situation_task_id_dict, unittest_callbacks) {
 
       let vm = this
+      console.log('jin unread situation')
 
-      if (check_if_notification_is_null(unread_situation_notification, 'unread_situation_notification')){
+      if (check_if_notification_is_null(unread_situation_task_id_dict, 'unread_situation_notification')){
         return
       }
 
       // // console.log("4.1 Update the situation notification", unread_situation_notification)
       // this.$toasted.success("4.1 Update the situation notification", { icon: 'fingerprint' })
 
-      let cur_unread_situation_Taskid_dict = unread_situation_notification["check_dict"]
-      let cur_unread_situation_Rounds_dict = unread_situation_notification["rounds_dict"]
+      let cur_unread_situation_Taskid_dict = unread_situation_task_id_dict
+      // let cur_unread_situation_Rounds_dict = unread_situation_notification["rounds_dict"]
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_situation_Taskid_dict)
       execute_unittest_list(unittest_callbacks, 0, "unread_situation_unittest", unittest_parameters)
@@ -791,8 +802,8 @@ export default {
 
         
         const Log_address = this.handle_train_log_address(task_id)
-        Log(generate_message_string("---- 4. Unread Situation\n"), 'info')
-        Log(generate_message_string("4.1 Update the situation notification\n"), 'info')
+        //Log(generate_message_string("---- 4. Unread Situation\n"), 'info')
+        //Log(generate_message_string("4.1 Update the situation notification\n"), 'info')
 
         try {
           fs.appendFileSync(Log_address, "---- 4. Unread Situation\n")
@@ -801,11 +812,11 @@ export default {
           console.log(err)
         }
 
-        let check_sponsor = cur_unread_situation_Taskid_dict[task_id];
-        let rounds = cur_unread_situation_Rounds_dict[task_id];
+        let check_sponsor = cur_unread_situation_Taskid_dict[task_id]['role'];
+        let rounds = cur_unread_situation_Taskid_dict[task_id]['cur_rounds_num'];
 
         // check if the current client is sponsor or not of the specific task
-        if (check_sponsor == 1){
+        if (check_sponsor == 'sponsor'){
           this.unread_situation_sponsor(rounds, task_id, unittest_callbacks)
         }  
         else{
@@ -816,6 +827,7 @@ export default {
 
     unread_situation_sponsor(rounds, task_id, unittest_callbacks) {
       let vm = this;
+      console.log('jin unread situation sponsor')
       // console.log("4.2 Cur round is:" + rounds + task_id);
       // vm.$toasted.success("4.2 Cur round is:" + rounds +  task_id, { icon: 'fingerprint' })
       // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
@@ -823,7 +835,7 @@ export default {
     
       const Log_address = vm.handle_train_log_address(task_id)
 
-      Log(generate_message_string("4.2 Cur round is: " + rounds.toString() + "\n"), 'info')
+      //Log(generate_message_string("4.2 Cur round is: " + rounds.toString() + "\n"), 'info')
       
       try {
         fs.appendFileSync(Log_address, "4.2 Cur round is: " + rounds.toString() + "\n")
@@ -881,8 +893,8 @@ export default {
         }catch(err){
           console.log(err)
         }
-        Log(generate_message_string("4.3 Sponsor round " + rounds + " training done." + "\n"), 'info')
-        Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
+        //Log(generate_message_string("4.3 Sponsor round " + rounds + " training done." + "\n"), 'info')
+        //Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
 
         // vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
 
@@ -963,17 +975,18 @@ export default {
 
         // send output
         // async
-        vm.$axios.post(add_prefix(`/send_output/${vm.sharedState.user_id}/`), Assistor_output_payload)
+        vm.$axios.post(add_prefix(`/send_output/${vm.sharedState.user_id}/`, `/main_flow`), Assistor_output_payload)
           .then((response) => {
           // handle success
           // console.log("4.5 Assistor sends output")
+          console.log('rrr1', response )
 
           let unittest_parameters = generate_unittest_parameters(response.data)
           execute_unittest_list(unittest_callbacks, 4, "unread_situation_unittest", unittest_parameters) 
 
-          Log(generate_message_string("4.5 Assistor sends output\n"), 'info')
-          Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
-          Log(generate_message_string("---- Train stage done\n"), 'info')
+          //Log(generate_message_string("4.5 Assistor sends output\n"), 'info')
+          //Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
+          //Log(generate_message_string("---- Train stage done\n"), 'info')
 
           // vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
           if (rounds == vm.max_round){
@@ -998,6 +1011,7 @@ export default {
     unread_situation_assistor(rounds, task_id, unittest_callbacks) {
       
       let vm = this;
+      console.log('jin unread situation assistor')
       // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
@@ -1008,7 +1022,7 @@ export default {
       }
       
       // const path = `/users/${vm.sharedState.user_id}/situation_file/`
-      vm.$axios.post(add_prefix(`/get_situation_content/${vm.sharedState.user_id}/`), payload)
+      vm.$axios.post(add_prefix(`/get_situation_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
         .then((response) => {
           // call back
           // store the situation file
@@ -1018,7 +1032,7 @@ export default {
 
           // console.log("4.2 assistor gets situation file")
           // vm.$toasted.success("4.2 assistor gets situation file", { icon: 'fingerprint' })
-          Log(generate_message_string("4.2 assistor gets situation file\n"), 'info')
+          //Log(generate_message_string("4.2 assistor gets situation file\n"), 'info')
 
           try {
             fs.appendFileSync(Log_address, "4.2 assistor gets situation file\n")
@@ -1027,7 +1041,7 @@ export default {
           }
 
           const from_id = response.data.sender_random_id;
-          let cur_situation_file = JSON.parse(response.data.situation_content);
+          let cur_situation_file = response.data.situation_content;
 
           // Store residual file from sponsor
           let save_residual_file_pos = null;
@@ -1056,7 +1070,7 @@ export default {
 
           // console.log('4.3 Assistor Saved Residual File!');
           // vm.$toasted.success('4.3 Assistor Saved Residual File!', { icon: 'fingerprint' })
-          Log(generate_message_string("4.3 Assistor Saved Residual File!\n"), 'info')
+          //Log(generate_message_string("4.3 Assistor Saved Residual File!\n"), 'info')
 
           try {
             fs.appendFileSync(Log_address, "4.3 Assistor Saved Residual File!\n")
@@ -1107,12 +1121,13 @@ export default {
         })
     },
     
-    unread_output(unread_output_notification, unittest_callbacks) {
+    unread_output(unread_output_task_id_dict, unittest_callbacks) {
 
       let vm = this
+      console.log('jin unread output')
 
       // Only sponsor will enter this function
-      if (check_if_notification_is_null(unread_output_notification, 'unread_output_notification')){
+      if (check_if_notification_is_null(unread_output_task_id_dict, 'unread_output_notification')){
         return
       }
 
@@ -1120,17 +1135,18 @@ export default {
       // // console.log("5.1 Update the output notification", unread_output_notification)
       // this.$toasted.success("5.1 Update the output notification", { icon: 'fingerprint' })
 
-      let cur_unread_output_Rounds_dict = unread_output_notification["rounds_dict"]
+      // let cur_unread_output_Rounds_dict = unread_output_notification["rounds_dict"]
+      let cur_unread_output_Taskid_dict = unread_output_task_id_dict
 
-      let unittest_parameters = generate_unittest_parameters(cur_unread_output_Rounds_dict)
+      let unittest_parameters = generate_unittest_parameters(cur_unread_output_Taskid_dict)
       execute_unittest_list(unittest_callbacks, 0, "unread_output_unittest", unittest_parameters)
 
-      for (let task_id in cur_unread_output_Rounds_dict){
+      for (let task_id in cur_unread_output_Taskid_dict){
 
         // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
-        Log(generate_message_string("---- 5. Unread Output\n"), 'info')
-        Log(generate_message_string("5.1 Update the output notification\n"), 'info')
+        //Log(generate_message_string("---- 5. Unread Output\n"), 'info')
+        //Log(generate_message_string("5.1 Update the output notification\n"), 'info')
 
         const Log_address = this.handle_train_log_address(task_id)
         try {
@@ -1139,7 +1155,7 @@ export default {
         } catch (err) {
           console.log(err)
         }
-        let rounds = cur_unread_output_Rounds_dict[task_id];
+        let rounds = cur_unread_output_Taskid_dict[task_id]['cur_rounds_num'];
         this.unread_output_singleTask(rounds, task_id, unittest_callbacks);
       }
     },
@@ -1147,6 +1163,7 @@ export default {
     unread_output_singleTask(rounds, task_id, unittest_callbacks){
       
       let vm = this
+      console.log('jin output singletask')
 
       // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
@@ -1161,7 +1178,7 @@ export default {
       }
       // const url = `/users/${vm.sharedState.user_id}/output/`
 
-      this.$axios.post(add_prefix(`/get_output_content/${vm.sharedState.user_id}`), payload)
+      this.$axios.post(add_prefix(`/get_output_content/${vm.sharedState.user_id}`, `/main_flow`), payload)
         .then((response) => {
           // console.log("5.2 Sponsor gets output model")
           // vm.$toasted.success("5.2 Sponsor gets output model", { icon: 'fingerprint' })
@@ -1177,8 +1194,9 @@ export default {
             const from_id = Object.keys(response.data.assistor_random_id_to_output_content_dict)[i];
 
             // // console.log("cur_output^^^^^^^^", response.data.output[i])
-            let cur_output = JSON.parse(Object.values(response.data.assistor_random_id_to_output_content_dict)[i]);
-            // // console.log("cur_output^^^^^^^^1", cur_output)
+            let cur_output = Object.values(response.data.assistor_random_id_to_output_content_dict)[i];
+            console.log("cur_output^^^^^^^^1", cur_output)
+            cur_output = cur_output.join("\n")
 
             // Store the output from assistor
             let save_output_pos = null;
@@ -1187,6 +1205,7 @@ export default {
               save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
 
+              console.log('save output pos', save_output_pos)
               save_output_pos = save_output_pos.split("?")
               let indicator = handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
 
@@ -1208,7 +1227,7 @@ export default {
 
             // console.log('5.3 Sponsor saves Output model');
             // vm.$toasted.success('5.3 Sponsor saves Output model', { icon: 'fingerprint' })
-            Log(generate_message_string("5.3 Sponsor saves Output model\n"), 'info')
+            //Log(generate_message_string("5.3 Sponsor saves Output model\n"), 'info')
 
             try {
               fs.appendFileSync(Log_address, "5.3 Sponsor saves Output model\n")
@@ -1254,7 +1273,7 @@ export default {
     unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, vm, Log_address, task_mode, metric_name, waiting_start_time, unittest_callbacks){
       
       // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
-
+      console.log('jin output make result')
       let waiting_current_time = new Date();
       // let waiting_current_time = myDate.toLocaleTimeString(); 
       let time_interval = waiting_current_time.getTime() - waiting_start_time.getTime()
@@ -1300,7 +1319,7 @@ export default {
         // // console.log("jinlaile")
         // console.log("5.4 Sponsor makes result done.")
         // vm.$toasted.success("5.4 Sponsor makes result done.", { icon: 'fingerprint' })
-        Log(generate_message_string("5.4 Sponsor makes result done." + "\n"), 'info')
+        //Log(generate_message_string("5.4 Sponsor makes result done." + "\n"), 'info')
 
         try {
           fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
@@ -1310,7 +1329,7 @@ export default {
         
         // terminate
         // // console.log('max_round', rounds, vm.max_round)
-        Log(generate_message_string("---- Train stage done\n"), 'info')
+        //Log(generate_message_string("---- Train stage done\n"), 'info')
 
 
         if (rounds >= vm.max_round){
@@ -1342,7 +1361,7 @@ export default {
 
         // console.log("5.5 Sponsor makes residual finished")
         // vm.$toasted.success("5.5 Sponsor makes residual finished", { icon: 'fingerprint' })
-        Log(generate_message_string("5.5 Sponsor makes residual finished\n"), 'info')
+        //Log(generate_message_string("5.5 Sponsor makes residual finished\n"), 'info')
 
         try {
           fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
@@ -1364,7 +1383,7 @@ export default {
         }
         const assistor_random_id_to_residual_dict = {}
         for (let i = 0; i < assistor_random_id_list.length; i++){
-          assistor_random_id_to_residual_dict.assistor_random_id_list[i] = all_residual_data[i]
+          assistor_random_id_to_residual_dict[assistor_random_id_list[i]] = all_residual_data[i]
         }
 
         const payload1 = {
@@ -1374,15 +1393,15 @@ export default {
 
         // send initial situation
         // async
-        vm.$axios.post(add_prefix(`/send_situation/${vm.sharedState.user_id}/`), payload1)
+        vm.$axios.post(add_prefix(`/send_situation/${vm.sharedState.user_id}/`, `/main_flow`), payload1)
           .then((response) => {
             // handle success
             // // console.log("5.6 Sponsor updates situation done", response)
             let unittest_parameters = generate_unittest_parameters(response.data)
             execute_unittest_list(unittest_callbacks, 3, "unread_output_unittest", unittest_parameters)
             // vm.$toasted.success("5.6 Sponsor updates situation done", { icon: 'fingerprint' })
-            Log(generate_message_string("5.6 Sponsor updates situation done\n"), 'info')
-            Log(generate_message_string("---- 5. Unread Output Done\n"), 'info')
+            //Log(generate_message_string("5.6 Sponsor updates situation done\n"), 'info')
+            //Log(generate_message_string("---- 5. Unread Output Done\n"), 'info')
 
             // vm.$toasted.success(`Train: Unread Output Done`, { icon: 'fingerprint' })
             
@@ -1525,11 +1544,11 @@ export default {
                 console.log(err)
               }
 
-              Log(generate_message_string("\n You are Assistor\n"), 'info')
-              Log(generate_message_string("Test ID: " + test_id + "\n"), 'info')
-              Log(generate_message_string("----Test Stage: 2.Unread Test Request\n"), 'info')
-              Log(generate_message_string("2.1 Test: Update Test request notification\n"), 'info')
-              Log(generate_message_string("2.2 Test: Hashing Done\n"), 'info')
+              //Log(generate_message_string("\n You are Assistor\n"), 'info')
+              //Log(generate_message_string("Test ID: " + test_id + "\n"), 'info')
+              //Log(generate_message_string("----Test Stage: 2.Unread Test Request\n"), 'info')
+              //Log(generate_message_string("2.1 Test: Update Test request notification\n"), 'info')
+              //Log(generate_message_string("2.2 Test: Hashing Done\n"), 'info')
 
               try {
                 fs.appendFileSync(Log_address, "\n You are Assistor\n")
@@ -1550,7 +1569,7 @@ export default {
                 identifier_content: test_hash_id_file_data,
               }
 
-              vm.$axios.post(add_prefix(`/match_test_identifier_content/${vm.sharedState.user_id}`), match_test_assistor_id_data)
+              vm.$axios.post(add_prefix(`/match_test_identifier_content/${vm.sharedState.user_id}`, `/main_flow`), match_test_assistor_id_data)
                 .then((response) => {
                   // handle success
                   // // console.log("2.2 Test: assistor uploads id file")
@@ -1558,8 +1577,8 @@ export default {
                   unittest_parameters = generate_unittest_parameters(response.data)
                   execute_unittest_list(unittest_callbacks, 3, "unread_test_request_unittest", unittest_parameters)
 
-                  Log(generate_message_string("2.2 Test: assistor uploads id file\n"), 'info')
-                  Log(generate_message_string("----2. Unread Test Request Done\n"), 'info')
+                  //Log(generate_message_string("2.2 Test: assistor uploads id file\n"), 'info')
+                  //Log(generate_message_string("----2. Unread Test Request Done\n"), 'info')
 
                   // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
                   vm.$toasted.success(`Testing: Task ` + task_id + ` Testing Starts`, { icon: 'fingerprint' })
@@ -1588,7 +1607,7 @@ export default {
               }
             
 
-            vm.$axios.post(add_prefix('/add_test_pending/'), add_test_pending)
+            vm.$axios.post(add_prefix(`/add_test_pending/`, `/main_flow`), add_test_pending)
               .then((response) => {
                 // handle success
                 // // console.log("add_test_pending response", response.data)
@@ -1634,8 +1653,8 @@ export default {
 
         const Log_address = this.handle_test_log_address(task_id, test_id)
 
-        Log(generate_message_string("----3.Unread Test Match ID\n"), 'info')
-        Log(generate_message_string("3.1 Test: Update the Test match id notification\n"), 'info')
+        //Log(generate_message_string("----3.Unread Test Match ID\n"), 'info')
+        //Log(generate_message_string("3.1 Test: Update the Test match id notification\n"), 'info')
 
         try {
           fs.appendFileSync(Log_address, "----3.Unread Test Match ID\n")
@@ -1685,7 +1704,7 @@ export default {
       }
       
       // const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
-      vm.$axios.post(add_prefix(`/get_test_identifier_content/${vm.sharedState.user_id}/`), payload)
+      vm.$axios.post(add_prefix(`/get_test_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
         .then((response) => {
           // call back
           // iterate the match_id_file
@@ -1836,7 +1855,7 @@ export default {
       }
       // const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
       // async
-      vm.$axios.post(add_prefix(`get_test_identifier_content/${vm.sharedState.user_id}/`), payload)
+      vm.$axios.post(add_prefix(`get_test_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
         .then((response) => {
 
           let unittest_parameters = generate_unittest_parameters(response.data)
@@ -1981,7 +2000,7 @@ export default {
                 output_content: all_test_output,
               }
 
-              vm.$axios.post(add_prefix(`/send_test_output/${vm.sharedState.user_id}/`), send_test_output_payload)
+              vm.$axios.post(add_prefix(`/send_test_output/${vm.sharedState.user_id}/`, `/main_flow`), send_test_output_payload)
                 .then((response) => {
                 // handle success
                 let unittest_parameters = generate_unittest_parameters(response.data)
@@ -2068,7 +2087,7 @@ export default {
       }
 
       // const url = `/test_output/`
-      this.$axios.post(add_prefix(`get_test_output_content/${vm.sharedState.user_id}/`), payload)
+      this.$axios.post(add_prefix(`get_test_output_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
         .then((response) => {
           // console.log("4.2 Test: Sponsor gets assistors' Test output model")
           // vm.$toasted.success("4.2 Test: Sponsor gets assistors' Test output model", { icon: 'fingerprint' })
@@ -2240,7 +2259,7 @@ export default {
     // console.log("mounted @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2")
     // 轮询 /api/users/<int:id>/notifications/ 请求用户的新通知
     window.unread_request = this.unread_request;
-    window.unread_match_id = this.unread_match_id;
+    window.unread_match_identifier = this.unread_match_identifier;
     window.unread_situation = this.unread_situation;
     window.unread_output = this.unread_output;
 
@@ -2288,6 +2307,7 @@ export default {
 
       function polling() {
         console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
+        console.log('set0', 'set1', 'set2')
         if (window.localStorage.getItem('Apollo-token')) {
           // 如果用户已登录，才开始请求 API
           console.log('cat0', window.localStorage.getItem('Apollo-token').split('.'))
@@ -2297,7 +2317,7 @@ export default {
           console.log('cat3', user_id)
 
           
-          axios.get(add_prefix(`/get_notifications/${user_id}`))
+          axios.get(add_prefix(`/get_notifications/${user_id}`, `/main_flow`))
             .then((response) => {
               // handle success
               // if ('new_token' in response.data){
@@ -2310,21 +2330,28 @@ export default {
                 console.log('cat1')
                 for (let category_name in category){
                   console.log('jin0', category_name)
-                  if (category_name in train_notification_category_name){
+                  console.log('jin1', train_notification_category_name)
+                  console.log('jin2', train_notification_category_name.has(category_name))
+
+                  if (train_notification_category_name.has(category_name)){
                     let task_id_dict = category[category_name]['task_id_dict']
-                    console.log('jin1')
+                    console.log('jin3', category_name)
+                    console.log('jin4', task_id_dict)
                     if (category_name == 'unread_request'){
                       unread_request(task_id_dict)
                     }else if (category_name == 'unread_match_identifier'){
+                      console.log('jin5')
                       unread_match_identifier(task_id_dict)
                     }else if (category_name == 'unread_situation'){
+                      console.log('jin6')
                       unread_situation(task_id_dict)
                     }else if (category_name == 'unread_output'){
+                      console.log('jin7')
                       unread_output(task_id_dict)
                     }else if (category_name == 'unread_train_stop'){
                       console.log('train stop')
                     }
-                  }else if (category_name in test_notification_category_name){
+                  }else if (test_notification_category_name.has(category_name)){
                     let test_id_dict = category[category_name]['test_id_dict']
                     if (category_name == 'unread_test_request'){
                       unread_test_request(test_id_dict)

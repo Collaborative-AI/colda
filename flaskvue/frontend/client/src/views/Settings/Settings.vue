@@ -90,7 +90,7 @@ export default {
     getUser (id) {
       // const path = `/users/${id}`
       let vm = this
-      this.$axios.get(add_prefix(`/users/${vm.sharedState.user_id}`))
+      this.$axios.get(add_prefix(`/users/${vm.sharedState.user_id}`, `/user`))
         .then((response) => {
           // handle success
           this.user = response.data

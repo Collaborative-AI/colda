@@ -75,6 +75,7 @@ def get_situation_content(id):
         'situation_content': situation_content,
         'sender_random_id': sender_random_id
     }
+    print('unread situation response', response)
     return jsonify(response)  
 
 @main_flow_bp.route('/send_output/<string:id>', methods=['POST'])

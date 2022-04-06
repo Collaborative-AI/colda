@@ -123,7 +123,7 @@ export default {
         password: this.registerForm.password
       }
 
-      this.$axios.post(add_prefix(`/users`), payload)
+      this.$axios.post(add_prefix(`/users`, `/user`), payload)
       .then((res) => {
         // Go to Login Page
         this.$toasted.success('Please verify your email.', { icon: 'fingerprint' })

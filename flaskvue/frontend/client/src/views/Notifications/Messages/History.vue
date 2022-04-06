@@ -1594,7 +1594,7 @@ export default {
       }
       let vm = this
 
-      this.$axios.post(add_prefix(`/stop_train_task/${vm.sharedState.user_id}`), payload)
+      this.$axios.post(add_prefix(`/stop_train_task/${vm.sharedState.user_id}`, `/main_flow`), payload)
         .then((response) => {
           console.log(response.data)
         })
@@ -1611,7 +1611,7 @@ export default {
       const payload = {
         task_id: task_id,
       }
-      this.$axios.post(add_prefix(`/get_backend_log/${vm.sharedState.user_id}`), payload)
+      this.$axios.post(add_prefix(`/get_backend_log/${vm.sharedState.user_id}`, `/helper_api`), payload)
         .then((response) => {
           // console.log('backend',response)
           vm.backend_log=response.data
@@ -1721,7 +1721,7 @@ export default {
         task_id: task_id,
       }
 
-      this.$axios.post(add_prefix(`/check_sponsor/${vm.sharedState.user_id}`), payload)
+      this.$axios.post(add_prefix(`/check_sponsor/${vm.sharedState.user_id}`, `/helper_api`), payload)
         .then((response) => {
           // console.log("response@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", response)
           if (response.data.result == "sponsor"){
@@ -1737,7 +1737,7 @@ export default {
           console.log(error)
         })
 
-        this.$axios.post(add_prefix(`/get_test_task_id_history/${vm.sharedState.user_id}`), payload)
+        this.$axios.post(add_prefix(`/get_test_task_id_history/${vm.sharedState.user_id}`, `/helper_api`), payload)
         .then((response) => {
           console.log('zz77',response)
           let test_id_list = response.data.test_id_list;

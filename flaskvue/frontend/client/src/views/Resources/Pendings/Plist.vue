@@ -114,7 +114,7 @@ export default {
       if (vm.cur_pending_num != vm.sharedState.pending_num){
         vm.cur_pending_num = vm.sharedState.pending_num;
         console.log("----miemiemie")
-        vm.$axios.get(add_prefix(`/get_all_pending/${vm.sharedState.user_id}/`))
+        vm.$axios.get(add_prefix(`/get_all_pending/${vm.sharedState.user_id}/`, `/main_flow`))
         .then((response) => {
           // handle success
           console.log("get_all_pending response", response.data)

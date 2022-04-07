@@ -814,6 +814,7 @@ export default {
 
         let check_sponsor = cur_unread_situation_Taskid_dict[task_id]['role'];
         let rounds = cur_unread_situation_Taskid_dict[task_id]['cur_rounds_num'];
+        console.log('meilun', rounds)
 
         // check if the current client is sponsor or not of the specific task
         if (check_sponsor == 'sponsor'){
@@ -827,7 +828,7 @@ export default {
 
     unread_situation_sponsor(rounds, task_id, unittest_callbacks) {
       let vm = this;
-      console.log('jin unread situation sponsor')
+      console.log('jin unread situation sponsor', rounds)
       // console.log("4.2 Cur round is:" + rounds + task_id);
       // vm.$toasted.success("4.2 Cur round is:" + rounds +  task_id, { icon: 'fingerprint' })
       // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
@@ -867,13 +868,14 @@ export default {
         execute_unittest_list(unittest_callbacks, 1, "unread_situation_unittest", unittest_parameters)
 
         try{
-          
+          console.log('wolaile1', rounds)
           // This calling make_train would not cause order issue since the send_situation is sent by sponsor itself
           let train_output = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root 
             + ' --self_id ' + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds 
             + ' --dataset_path ' + train_file_path + ' --data_idx ' +train_data_column
             + ' --task_mode ' + 'regression' + ' --model_name ' + model_name, {encoding: 'utf8'})
           
+          console.log('tttt111', train_output)
           train_output = train_output.split("?")
           // // console.log('train_output1', train_output)
           let indicator = handle_Algorithm_return_value("train_output", train_output, "200", "make_train")
@@ -908,110 +910,10 @@ export default {
       }) // db
     },
 
-    unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks){
-      
-
-      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
-      console.log('unread_situation_assistor_train_part')
-      let waiting_current_time = new Date();
-      // let waiting_current_time = myDate.toLocaleTimeString(); 
-      let time_interval = waiting_current_time.getTime() - waiting_start_time.getTime()
-      // // console.log("time_interval", time_interval)
-      let leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
-      let leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
-      let minutes = Math.floor(leave2/(60*1000))  //间隔分钟
-      console.log('unread_situation_assistor_train_part2')
-      if (minutes > 30){
-        console.log('Waiting time interval exceeded')
-        dialog.showErrorBox('Sorry, the test stopped due to slow computation', 'Sorry')
-
-        return 
-      }
-      let Assistor_train_output_path = null;
-      // // console.log('wokan6', model_name )
-      // get response from make_train.py. 
-      let indicator = null;
-      console.log('unread_situation_assistor_train_part3')
-      try{
-        
-        Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
-          + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
-          + from_id + ' --dataset_path ' + train_file_path + ' --data_idx ' + train_data_column
-          + ' --task_mode ' + 'regression' + ' --model_name ' + model_name ,{encoding: 'utf8'})
-
-        Assistor_train_output_path = Assistor_train_output_path.split("?")
-        console.log('Assistor_train_output_path', Assistor_train_output_path)
-        indicator = handle_Algorithm_return_value("Assistor_train_output_path", Assistor_train_output_path, "200", "make_train")
-      }
-      catch(err){
-        console.log(err)
-      }
-
-      // There some situations that the sponsor sends unread_situation faster than the assistor writes and translate the match id file.
-      // We need to recall the function if the file is not prepared
-      if (indicator == false){
-        console.log("recall unread_situation_assistor_train_part")
-        setTimeout(function(){
-          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks)
-        }, 20000);
-      }else{
-        
-        // // console.log('Assistor_train_output_path', Assistor_train_output_path)
-        // console.log("4.4 Assistor round " + rounds + " training done.");
-        // vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
-        try {
-          fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
-        } catch (err) {
-          console.log(err)
-        }
-
-        let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path[2], {encoding:'utf8', flag:'r'});
-        Assistor_train_output_data = Assistor_train_output_data.split(/[\r\n]+/)
-
-        const Assistor_output_payload = {
-          task_id: task_id,
-          output_content: Assistor_train_output_data,
-        }
-
-        // send output
-        // async
-        vm.$axios.post(add_prefix(`/send_output/${vm.sharedState.user_id}/`, `/main_flow`), Assistor_output_payload)
-          .then((response) => {
-          // handle success
-          // console.log("4.5 Assistor sends output")
-          console.log('rrr1', response )
-
-          let unittest_parameters = generate_unittest_parameters(response.data)
-          execute_unittest_list(unittest_callbacks, 4, "unread_situation_unittest", unittest_parameters) 
-
-          //Log(generate_message_string("4.5 Assistor sends output\n"), 'info')
-          //Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
-          //Log(generate_message_string("---- Train stage done\n"), 'info')
-
-          // vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
-          if (rounds == vm.max_round){
-            vm.$toasted.success(`Training Stage Done`, { icon: 'fingerprint' })
-          }
-          
-          // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
-          try {
-            fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
-            fs.appendFileSync(Log_address, "---- 4. Unread Situation Done\n")
-            fs.appendFileSync(Log_address, "---- Train stage done\n")
-          } catch (err) {
-            console.log(err)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-
-      }
-    },
     unread_situation_assistor(rounds, task_id, unittest_callbacks) {
       
       let vm = this;
-      console.log('jin unread situation assistor')
+      console.log('jin unread situation assistor', rounds)
       // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_train_log_address(task_id)
@@ -1120,6 +1022,108 @@ export default {
           // handle error
         })
     },
+
+    unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks){
+      
+
+      // log.transports.file.resolvePath = () => node_path.join(this.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
+      console.log('unread_situation_assistor_train_part', rounds)
+      let waiting_current_time = new Date();
+      // let waiting_current_time = myDate.toLocaleTimeString(); 
+      let time_interval = waiting_current_time.getTime() - waiting_start_time.getTime()
+      // // console.log("time_interval", time_interval)
+      let leave1 = time_interval % (24*3600*1000) //计算天数后剩余的毫秒数
+      let leave2 = leave1 % (3600*1000)             //计算小时数后剩余的毫秒数
+      let minutes = Math.floor(leave2/(60*1000))  //间隔分钟
+      console.log('unread_situation_assistor_train_part2')
+      if (minutes > 30){
+        console.log('Waiting time interval exceeded')
+        dialog.showErrorBox('Sorry, the test stopped due to slow computation', 'Sorry')
+
+        return 
+      }
+      let Assistor_train_output_path = null;
+      // // console.log('wokan6', model_name )
+      // get response from make_train.py. 
+      let indicator = null;
+      console.log('unread_situation_assistor_train_part3')
+      try{
+        
+        Assistor_train_output_path = ex.execSync(vm.exe_position + ' make_train --root ' + vm.root + ' --self_id '
+          + vm.sharedState.user_id + ' --task_id ' + task_id + ' --round ' + rounds + ' --from_id ' 
+          + from_id + ' --dataset_path ' + train_file_path + ' --data_idx ' + train_data_column
+          + ' --task_mode ' + 'regression' + ' --model_name ' + model_name ,{encoding: 'utf8'})
+
+        Assistor_train_output_path = Assistor_train_output_path.split("?")
+        console.log('Assistor_train_output_path', Assistor_train_output_path)
+        indicator = handle_Algorithm_return_value("Assistor_train_output_path", Assistor_train_output_path, "200", "make_train")
+      }
+      catch(err){
+        console.log(err)
+      }
+
+      // There some situations that the sponsor sends unread_situation faster than the assistor writes and translate the match id file.
+      // We need to recall the function if the file is not prepared
+      if (indicator == false){
+        console.log("recall unread_situation_assistor_train_part")
+        setTimeout(function(){
+          vm.unread_situation_assistor_train_part(task_id, rounds, from_id, train_file_path, train_data_column, vm, Log_address, model_name, waiting_start_time, unittest_callbacks)
+        }, 20000);
+      }else{
+        
+        // // console.log('Assistor_train_output_path', Assistor_train_output_path)
+        // console.log("4.4 Assistor round " + rounds + " training done.");
+        // vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
+        try {
+          fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
+        } catch (err) {
+          console.log(err)
+        }
+
+        let Assistor_train_output_data = fs.readFileSync(Assistor_train_output_path[2], {encoding:'utf8', flag:'r'});
+        Assistor_train_output_data = Assistor_train_output_data.split(/[\r\n]+/)
+
+        const Assistor_output_payload = {
+          task_id: task_id,
+          output_content: Assistor_train_output_data,
+        }
+
+        // send output
+        // async
+        vm.$axios.post(add_prefix(`/send_output/${vm.sharedState.user_id}/`, `/main_flow`), Assistor_output_payload)
+          .then((response) => {
+          // handle success
+          // console.log("4.5 Assistor sends output")
+          console.log('rrr1', response )
+
+          let unittest_parameters = generate_unittest_parameters(response.data)
+          execute_unittest_list(unittest_callbacks, 4, "unread_situation_unittest", unittest_parameters) 
+
+          //Log(generate_message_string("4.5 Assistor sends output\n"), 'info')
+          //Log(generate_message_string("---- 4. Unread Situation Done\n"), 'info')
+          //Log(generate_message_string("---- Train stage done\n"), 'info')
+
+          // vm.$toasted.success(`Train: Unread Situation Done`, { icon: 'fingerprint' })
+          if (rounds == vm.max_round){
+            vm.$toasted.success(`Training Stage Done`, { icon: 'fingerprint' })
+          }
+          
+          // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
+          try {
+            fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
+            fs.appendFileSync(Log_address, "---- 4. Unread Situation Done\n")
+            fs.appendFileSync(Log_address, "---- Train stage done\n")
+          } catch (err) {
+            console.log(err)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      }
+    },
+
     
     unread_output(unread_output_task_id_dict, unittest_callbacks) {
 
@@ -1185,6 +1189,7 @@ export default {
 
           try {
             fs.appendFileSync(Log_address, "5.2 Sponsor gets output model\n")
+            console.log('log address', Log_address)
           } catch (err) {
             console.log(err)
           }
@@ -1202,6 +1207,7 @@ export default {
             let save_output_pos = null;
             try{
               // // console.log('train_cur_round',  rounds)
+              //!zhuyi
               save_output_pos = ex.execSync(vm.exe_position + ' save_output --root ' + vm.root + ' --self_id ' + vm.sharedState.user_id 
                 + ' --task_id '+ task_id + ' --mode train' + ' --from_id ' + from_id + ' --round ' + rounds, {encoding: 'utf8'})
 
@@ -1422,10 +1428,12 @@ export default {
     },
     
     
-    unread_test_request(unread_test_request_notification, unittest_callbacks) {
+    unread_test_request(unread_test_request_id_dict, unittest_callbacks) {
+
+      console.log('jin unread test request')
 
       // Only assistor will enter this function
-      if (check_if_notification_is_null(unread_test_request_notification, 'unread_test_request_notification')){
+      if (check_if_notification_is_null(unread_test_request_id_dict, 'unread_test_request_notification')){
         return
       }
 
@@ -1434,7 +1442,7 @@ export default {
       // // console.log("2.1 Update Test request notification response", unread_test_request_notification)
       // this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
-      let cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
+      let cur_unread_test_request_Testid_dict = unread_test_request_id_dict
       let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_request_Testid_dict, test_id_to_task_id)
@@ -2264,7 +2272,7 @@ export default {
     window.unread_output = this.unread_output;
 
     window.unread_test_request = this.unread_test_request;
-    window.unread_test_match_id = this.unread_test_match_id;
+    window.unread_test_match_id = this.unread_test_match_identifier;
     window.unread_test_output = this.unread_test_output;
 
     // window.unread_match_id_sponsor = this.unread_match_id_sponsor
@@ -2308,6 +2316,7 @@ export default {
       function polling() {
         console.log(`第${count}次开始 ${getTime.now() - startTime}`); // 显示开始时间
         console.log('set0', 'set1', 'set2')
+        // console.log('jin11', test_notification_category_name)
         if (window.localStorage.getItem('Apollo-token')) {
           // 如果用户已登录，才开始请求 API
           console.log('cat0', window.localStorage.getItem('Apollo-token').split('.'))
@@ -2329,9 +2338,12 @@ export default {
               if (category){
                 console.log('cat1')
                 for (let category_name in category){
-                  console.log('jin0', category_name)
+                  console.log('jin0', category_name, typeof(category_name))
                   console.log('jin1', train_notification_category_name)
+                  console.log('jin11', test_notification_category_name)
                   console.log('jin2', train_notification_category_name.has(category_name))
+                  console.log('jin22', test_notification_category_name.has(category_name))
+
 
                   if (train_notification_category_name.has(category_name)){
                     let task_id_dict = category[category_name]['task_id_dict']
@@ -2352,12 +2364,16 @@ export default {
                       console.log('train stop')
                     }
                   }else if (test_notification_category_name.has(category_name)){
+                    console.log('jin88')
                     let test_id_dict = category[category_name]['test_id_dict']
                     if (category_name == 'unread_test_request'){
+                      console.log('jin8')
                       unread_test_request(test_id_dict)
                     }else if (category_name == 'unread_test_match_identifier'){
+                      console.log('jin9')
                       unread_test_match_identifier(test_id_dict)
                     }else if (category_name == 'unread_test_output'){
+                      console.log('jin10')
                       unread_test_output(test_id_dict)
                     }else if (category_name == 'unread_test_stop'){
                       console.log('test stop')

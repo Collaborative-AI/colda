@@ -292,10 +292,11 @@ def send_situation(id):
         }})
 
     # send unread_situation notification to all assistors in this train task 
+    # !zhuyi
     for assistor_id in running_assistor_id_dict:
         mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_situation', 
                                             id=task_id, sender_random_id=sponsor_random_id, 
-                                            role='assistor', cur_rounds_num=1, test_indicator='train')
+                                            role='assistor', cur_rounds_num=cur_rounds_num, test_indicator='train')
 
     if cur_rounds_num == 1:
         log(generate_msg('3.4:"', 'sponsor adds unread situation to assistors done'), user_id, task_id)
@@ -303,9 +304,10 @@ def send_situation(id):
         log(generate_msg('5.4:"', 'sponsor adds unread situation to assistors done'), user_id, task_id)
     
     # send unread_situation notification to sponsor in this train task 
+    #!zhuyi
     mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_situation', 
                                         id=task_id, sender_random_id=sponsor_random_id, 
-                                        role='sponsor', cur_rounds_num=1, test_indicator='train')
+                                        role='sponsor', cur_rounds_num=cur_rounds_num, test_indicator='train')
 
     if cur_rounds_num == 1:
         log(generate_msg('3.5:"', 'sponsor add unread situation to sponsor done'), user_id, task_id)

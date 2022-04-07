@@ -1724,12 +1724,12 @@ export default {
       this.$axios.post(add_prefix(`/check_sponsor/${vm.sharedState.user_id}`, `/helper_api`), payload)
         .then((response) => {
           // console.log("response@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", response)
-          if (response.data.result == "sponsor"){
-            this.isSponsor = true
-            // console.log("#############1", this.isSponsor)
+          if (response.data['role'] == "sponsor"){
+            vm.isSponsor = true
+            console.log("#############1", this.isSponsor)
           }else{
-            this.isSponsor = false
-            // console.log("#############2", this.isSponsor)
+            vm.isSponsor = false
+            console.log("#############2", this.isSponsor)
           }
         })
         .catch((error) => {

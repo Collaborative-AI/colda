@@ -6,6 +6,7 @@ from flask.json import jsonify
 from Items.main_flow import main_flow_bp
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
+from Items.mongoDB.train_mongoDB.train_message_situation import train_message_situation
 from Items.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 from Items.utils import log, generate_msg
 
@@ -70,8 +71,13 @@ def get_output_content(id):
         output_id = output_dict[assistor_id]['output_id']
         train_message_output_document = train_message_output.search_train_message_output_document(output_id=output_id)
 
-        output_content = train_message_output_document['output_content']
         sender_random_id = train_message_output_document['sender_random_id']
+        
+        if train_message_output_document['is_large_file'] == False:
+            output_content = train_message_output_document['output_content']
+        elif train_message_output_document['is_large_file'] == True:
+            gridfs_file_id = train_message_output_document['output_content']
+            output_content = mongoDB.retrieve_large_file(base='fs', file_id=gridfs_file_id)
         assistor_random_id_to_output_content_dict[sender_random_id] = output_content
 
     log(generate_msg('5.2:"', 'sponsor get_user_output done'), user_id, task_id)
@@ -138,9 +144,17 @@ def get_test_output_content(id):
         output_id = output_dict[assistor_id]['output_id']
         test_message_output_document = test_message_output.search_test_message_output_document(output_id=output_id)
 
-        output_content = test_message_output_document['output_content']
         sender_random_id = test_message_output_document['sender_random_id']
+        
+        if test_message_output_document['is_large_file'] == False:
+            output_content = test_message_output_document['output_content']
+        elif test_message_output_document['is_large_file'] == True:
+            gridfs_file_id = test_message_output_document['output_content']
+            output_content = mongoDB.retrieve_large_file(base='fs', file_id=gridfs_file_id)
         assistor_random_id_to_output_content_dict[sender_random_id] = output_content
+    # Delete the test output content sent by the assistors
+    # We can delete the test message output when we have already retrieved it
+    test_message_output.delete_test_message_output_document(test_id=test_id)
 
     log(generate_msg('Test 5.1:', 'sponsor get_user_test_output done'), user_id, task_id, test_id)
     log(generate_msg('--------------------unread test output done\n'), user_id, task_id, test_id)

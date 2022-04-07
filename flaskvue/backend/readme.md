@@ -74,14 +74,9 @@ database_name = 'apollo_aws_mysql_unittest'
 
 .env: 系统环境变量
 
-<!-- python app.py runserver -d -r -h 0.0.0.0 -p 5000 (运行)
-python manage.py runserver -d -h 127.0.0.1 -p 5000 -->
-
-<!-- gunicorn: gunicorn --worker-class eventlet -w 1 module:app -->
 
 11. 上服务器:
     注掉create_unittest_user
-
 
 12. Docker教程:
     0. Basic concept:
@@ -122,28 +117,10 @@ python manage.py runserver -d -h 127.0.0.1 -p 5000 -->
         3. Create 1 Internet Gateway and attach it to VPC
         4. Create 1 public route table and associate 2 public subnets
         5. Add 0.0.0.0/0 to public route table
-    
-
-    8. Type in command: eb create synspot-env
-    9. To run app: eb open
-    10. Re-deploy app: eb deploy
+    13. Type in command: eb create synspot-env
+    14. To run app: eb open
+    15. Re-deploy app: eb deploy
         
-
-
-    10. eb create --vpc
-        0. Option Instruction: https://stackoverflow.com/questions/59746709/cannot-add-elasticbeanstalk-environment-created-with-eb-cli-to-a-vpc-this-envir
-        1. Enter the VPC ID: vpc-synspot
-        2. Do you want to associate a public IP address?: Y
-        3. Enter a comma-separated list of Amazon EC2 subnets: subnet-1, subnet-2
-        4. Enter a comma-separated list of Amazon ELB subnets: subnet-1, subnet-2
-        5. Do you want the load balancer to be public? (Select no for internal) (Y/n): Y
-        6. Enter a comma-separated list of Amazon VPC security groups: security-synspot
-    9. Reminder: run flask cli in AWS elastic beanstalk need some operations. (https://stackoverflow.com/questions/65729668/how-to-run-flask-cli-command-in-aws-elastic-beanstalk)     
-    10. create .ebextensions
-    11. add (https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/customize-containers-ec2.html#linux-commands):
-        commands:
-          command1:
-            command: flask run
 
 14. Elastic BeanStalk + MongoDB Atlas
     1. 总体介绍: https://docs.aws.amazon.com/zh_cn/prescriptive-guidance/latest/migration-mongodb-atlas/migration-mongodb-atlas.pdf
@@ -173,6 +150,12 @@ python manage.py runserver -d -h 127.0.0.1 -p 5000 -->
         1. 路由: mongos.首先我们要了解”片键“的概念，也就是说拆分集合的依据是什么？按照什么键值进行拆分集合….好了，mongos就是一个路由服务器，它会根据管理员设置的“片键”将数据分摊到自己管理的mongod集群，数据和片的对应关系以及相应的配置信息保存在”config服务器”上。
         2. 配置服务器:mongod普通的数据库，一般是一组而图中我们只画了一个，由路由管理。它的作用是记录对数据分片的规则，存储所有数据库元信息（路由、分片）的配置
         3. 片区:具体的存储信息，根据路由配置的片键不同
+    3. 储存模式为 Binary Serialized Document Format (BSON), 是类json的一种二进制形式的存储格式，简称Binary JSON
+
+16. MongoDB GridFS:
+    0. GridFS Documentation: https://www.mongodb.com/docs/manual/core/gridfs/
+    1. GridFS uses a default chunk size of 255 kB; that is, GridFS divides a file into chunks of 255 kB with the exception of the last chunk. The last chunk is only as large as necessary. 
+    2. One collection stores the file chunks, and the other stores file metadata.
 
 16. MongoDB Atlas Tutorial:
     https://www.mongodb.com/basics/mongodb-atlas-tutorial
@@ -184,8 +167,3 @@ python manage.py runserver -d -h 127.0.0.1 -p 5000 -->
     Replace <password> with the password for the diaoenmao-gmailcom user. Replace myFirstDatabase with the name of the database that connections will use by default. Ensure any option params are URL encoded.
 
 
-
-
-commands:
-  command1:
-    command: flask run

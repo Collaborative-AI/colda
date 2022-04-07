@@ -12,7 +12,7 @@ from Items.utils import log, generate_msg, obtain_user_id_from_token, obtain_uni
 from Items.utils import verify_token_user_id_and_function_caller_id
 
 from Items.mongoDB import mongoDB
-from Items.mongoDB import train_match, train_match_identifier, train_message, train_message_situation
+from Items.mongoDB import train_match, train_match_identifier, train_message, train_message_situation, train_message_output
 from Items.mongoDB import test_match, test_match_identifier, test_message, test_message_output
 
 @main_flow_bp.route('/get_identifier_content/<string:id>', methods=['POST'])
@@ -76,8 +76,12 @@ def get_identifier_content(id):
             assistor_random_id = assistor_information[assistor_id]['assistor_id_to_random_id']
 
             train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=identifier_id)
-            identifier_content = train_match_identifier_document['identifier_content']
-
+            if train_match_identifier_document['is_large_file'] == False:
+                identifier_content = train_match_identifier_document['identifier_content']
+            elif train_match_identifier_document['is_large_file'] == True:
+                gridfs_file_id = train_match_identifier_document['identifier_content']
+                identifier_content = mongoDB.retrieve_large_file(base='fs', file_id=gridfs_file_id)
+            
             assistor_random_id_to_identifier_content_dict[assistor_random_id] = identifier_content
 
         response = {
@@ -169,8 +173,12 @@ def get_test_identifier_content(id):
             assistor_random_id = assistor_information[assistor_id]['assistor_id_to_random_id']
 
             test_match_identifier_document = test_match_identifier.search_test_match_identifier_document(identifier_id=identifier_id)
-            identifier_content = test_match_identifier_document['identifier_content']
-
+            if test_match_identifier_document['is_large_file'] == False:
+                identifier_content = test_match_identifier_document['identifier_content']
+            elif test_match_identifier_document['is_large_file'] == True:
+                gridfs_file_id = test_match_identifier_document['identifier_content']
+                identifier_content = mongoDB.retrieve_large_file(base='fs', file_id=gridfs_file_id)
+            
             assistor_random_id_to_identifier_content_dict[assistor_random_id] = identifier_content
 
         response = {
@@ -269,9 +277,9 @@ def send_situation(id):
         }
 
         # assistor add train_message_situation to Train_Message_Situation Table
-        train_message_situation.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
-                                                              sender_random_id=sponsor_random_id, recipient_id=assistor_id, 
-                                                              situation_content=residual)
+        train_message_situation.create_train_message_situation_document(situation_id=situation_id, task_id=task_id, 
+                                                                        sender_id=sponsor_id, sender_random_id=sponsor_random_id, 
+                                                                        recipient_id=assistor_id, situation_content=residual)
 
     # sponsor also sends information to itself to trigger next stage
     situation_id = obtain_unique_id()
@@ -279,9 +287,9 @@ def send_situation(id):
         'situation_id': situation_id
     }
 
-    train_message_situation.create_train_message_situation_document(situation_id=situation_id, sender_id=sponsor_id, 
-                                                          sender_random_id=sponsor_random_id, recipient_id=sponsor_id, 
-                                                          situation_content=None)
+    train_message_situation.create_train_message_situation_document(situation_id=situation_id, task_id=task_id, 
+                                                                    sender_id=sponsor_id, sender_random_id=sponsor_random_id, 
+                                                                    recipient_id=sponsor_id, situation_content=None)
 
     if cur_rounds_num == 1:
         train_message.create_train_message_document(task_id=task_id, cur_rounds_num=cur_rounds_num, situation_dict=situation_dict)
@@ -290,6 +298,10 @@ def send_situation(id):
             'cur_rounds_num': cur_rounds_num,
             'rounds_' + str(cur_rounds_num) + '.situation_dict': situation_dict
         }})
+
+    # Delete the output content sent by the assistor
+    # When we need to update unread_situation, it means the unread_output stage is finished or we are at the first round
+    train_message_output.delete_train_message_output_document(task_id=task_id)
 
     # send unread_situation notification to all assistors in this train task 
     for assistor_id in running_assistor_id_dict:
@@ -377,9 +389,9 @@ def send_test_output(id):
     test_message.update_test_message_document(test_id=test_id, cur_rounds_num=cur_rounds_num, 
                                                     assistor_id=assistor_id, output_id=output_id)
 
-    test_message_output.create_test_message_output_document(output_id=output_id, sender_id=assistor_id,
-                                                     sender_random_id=assistor_random_id, recipient_id=sponsor_id,
-                                                     output_content=output_content)
+    test_message_output.create_test_message_output_document(output_id=output_id, test_id=test_id, sender_id=assistor_id,
+                                                            sender_random_id=assistor_random_id, recipient_id=sponsor_id,
+                                                            output_content=output_content)
 
     # check how many assistors are still participate in this train task
     remain_assistor_num = total_assistor_num - len(assistor_terminate_id_dict)

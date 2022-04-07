@@ -2,7 +2,7 @@ from base64 import b64encode
 from datetime import datetime, timedelta
 import json
 import unittest
-from Items import create_app, db, pyMongo
+from Items import create_app, pyMongo
 # from Items.models import User, Message, Notification, Matched
 from tests import TestConfig
 
@@ -11,7 +11,6 @@ class Test_Helper_Func_APITestCase(unittest.TestCase):
 
     def setUp(self):
         '''每个测试之前执行'''
-        print('hggfs')
         self.app = create_app(TestConfig)  # 创建Flask应用
         self.app_context = self.app.app_context()  # 激活(或推送)Flask应用上下文
         self.app_context.push()
@@ -22,7 +21,7 @@ class Test_Helper_Func_APITestCase(unittest.TestCase):
         '''每个测试之后执行'''
         # db.session.remove()
         # db.drop_all()  # 删除所有数据库表
-        self.drop_db_collections()
+        # self.drop_db_collections()
         self.app_context.pop()  # 退出Flask应用上下文
 
     def get_basic_auth_headers(self, username, password):
@@ -88,7 +87,7 @@ class Test_Helper_Func_APITestCase(unittest.TestCase):
     
     def test_mongo(self):
         
-        self.client.post('/ceshi_mongo')
+        self.client.post('helper_api/ceshi_mongo')
     # def test_delete_all_rows(self):
 
     #     u1 = User(username='unittest', email='john@163.com')

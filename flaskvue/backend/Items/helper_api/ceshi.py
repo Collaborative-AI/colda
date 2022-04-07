@@ -264,29 +264,119 @@ def ceshi_mongo():
     # (a,b,c) = xiaohanshu()
     # print(a,b,c)
 
-    record = {
-        'user_id': 'ceshi1',
-        'username': 'ceshi_shijian1', 
-        'email': 'gg1',
-        "information": [],
-    }
-    res = pyMongo.db.User.insert_one(record)
-    record = {
-        'user_id': 'ceshi2',
-        'username': 'ceshi_shijian2', 
-        'email': 'gg2',
-        "information": [],
-    }
-    res = pyMongo.db.User.insert_one(record)
+    # record = {
+    #     'user_id': 'ceshi1',
+    #     'username': 'ceshi_shijian1', 
+    #     'email': 'gg1',
+    #     "information": [],
+    # }
+    # res = pyMongo.db.User.insert_one(record)
+    # record = {
+    #     'user_id': 'ceshi2',
+    #     'username': 'ceshi_shijian2', 
+    #     'email': 'gg2',
+    #     "information": [],
+    # }
+    # res = pyMongo.db.User.insert_one(record)
 
-    ceshi_shijian1 = pyMongo.db.User.find_one({'username': 'ceshi_shijian1'})
-    print('ceshi_shijian1', ceshi_shijian1)
-    ceshi_shijian2 = pyMongo.db.User.find_one({'username': 'ceshi_shijian2'})
-    print('ceshi_shijian2', ceshi_shijian2)
-    ceshi_shijian1_time = ceshi_shijian1['_id'].generation_time
-    ceshi_shijian2_time = ceshi_shijian2['_id'].generation_time
-    print('time', ceshi_shijian1_time, ceshi_shijian2_time)
-    a = ceshi_shijian2_time > ceshi_shijian1_time
-    b = ceshi_shijian2_time == ceshi_shijian1_time  
-    print(a, b)
+    # ceshi_shijian1 = pyMongo.db.User.find_one({'username': 'ceshi_shijian1'})
+    # print('ceshi_shijian1', ceshi_shijian1)
+    # ceshi_shijian2 = pyMongo.db.User.find_one({'username': 'ceshi_shijian2'})
+    # print('ceshi_shijian2', ceshi_shijian2)
+    # ceshi_shijian1_time = ceshi_shijian1['_id'].generation_time
+    # ceshi_shijian2_time = ceshi_shijian2['_id'].generation_time
+    # print('time', ceshi_shijian1_time, ceshi_shijian2_time)
+    # a = ceshi_shijian2_time > ceshi_shijian1_time
+    # b = ceshi_shijian2_time == ceshi_shijian1_time  
+    # print(a, b)
+
+    print('sss', dir(pyMongo))
+    import sys
+
+
+    
+
+    # a = []
+    # for i in range(2):
+    #     a.append([])
+    #     for j in range(1250000):
+    #         a[-1].append(j)
+    
+    # print('sadfasd', sys.getsizeof(a))
+    
+    import bson
+    # data = bson.BSON.encode({'a': a})
+    # print('asdad', sys.getsizeof(data))
+    # # 16000000
+    # train_match_identifier_document = {
+    #     'suhai': a
+    # }
+    # pyMongo.db.Train_Match_Identifier.insert_one(train_match_identifier_document)
+
+    
+    import io
+    import json
+    from gridfs import GridFS
+    from io import BytesIO
+    # a = io.StringIO('12321')
+    # print('asdfasdf', a, dir(a))
+    
+    
+    # print('&&&', data)
+    # fileobj = BytesIO(b"these are the bytes")
+    # # res = pyMongo.save_file(filename="lihai", fileobj=fileobj, base='fs')
+    # res = pyMongo.save_file("lihai", fileobj, foo="bar")
+    # print('res', res)
+
+    # # print('###', dir(pyMongo.db))
+    # # gridfs = GridFS(pyMongo.db)
+    # # print('$$', dir(gridfs))
+
+    # # res = gridfs.exists({"filename": "lihai"})
+    # # print('res1', res)
+
+    # # res = pyMongo.send_file(filename='lihai', base='fs')
+    # res = pyMongo.send_file("lihai")
+    # print('res2', res)
+
+    # myfile = BytesIO(b"a" * 500 * 1024)
+    # pyMongo.save_file("myfile.txt", myfile, base='User')
+    # resp = pyMongo.send_file("myfile.txt", base="User")
+    # for key, val in resp.items():
+    #     print('sss', key, val)
+
+    # fileobj = BytesIO(b"these are the bytes")
+    a = [1,2,3]
+    data = bson.BSON.encode({'a': a})
+    # decoded_doc = bson.BSON(data).decode()
+    # print('decoded_doc', decoded_doc)
+    print('asdfad', type(data))
+    # print('asdfas', isinstance(data, bson.BSON))
+    fileobj = BytesIO(data)
+    id = pyMongo.save_file("my-file1.txt", fileobj)
+    print('dfdfs', id, type(id))
+    gridfs = GridFS(pyMongo.db)
+    gridfile = gridfs.find_one({"filename": "my-file1.txt"})
+    print('gsdfad', dir(gridfile))
+    # for key, val in gridfile.__dict__.items():
+    #     print('sss', key, val)
+
+    # res = gridfile.read()
+    # print('res', res, type(res))
+    # print('res2', bson.BSON(res).decode())
+
+    # b = pyMongo.db.User
+    # print('bbbb', b, dir(b))
+    # assert gridfile.content_type == "text/plain"
+
+    # a = fs.put(b"hello world")
+    # fs.get(a).read()
+    # data = json.dumps(a)
+    # print('data', dir(data))
+    # res = pyMongo.save_file(filename='lihai', fileobj=b"aaaa")
+    # print('res', res)
+    # res = pyMongo.send_file(filename='lihai')
+    # print('res2', res)
+
+    
     return 'gg'

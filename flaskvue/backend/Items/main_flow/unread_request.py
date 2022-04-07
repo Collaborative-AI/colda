@@ -50,6 +50,7 @@ def match_identifier_content(id):
 
     task_id = data.get('task_id')
     identifier_content = data.get('identifier_content')
+    # print('gdsgsdfsdf!!!!!', type(identifier_content))
     assistor_id = user_id
 
     train_match_document = train_match.search_train_match_document(task_id=task_id)
@@ -59,7 +60,11 @@ def match_identifier_content(id):
     sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
     train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=sponsor_identifier_id)
-    sponsor_identifier_content = train_match_identifier_document['identifier_content']
+    if train_match_identifier_document['is_large_file'] == False:
+        sponsor_identifier_content = train_match_identifier_document['identifier_content']
+    elif train_match_identifier_document['is_large_file'] == True:
+        gridfs_id = train_match_identifier_document['identifier_content']
+        sponsor_identifier_content = mongoDB.retrieve_large_file(base='fs', file_id=gridfs_id)
 
     log(generate_msg('Assistor training stage'), user_id, task_id)
     log(generate_msg('---- unread request begins'), user_id, task_id)
@@ -162,7 +167,11 @@ def match_test_identifier_content(id):
     sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
     test_match_identifier_document = test_match_identifier.search_test_match_identifier_document(identifier_id=sponsor_identifier_id)
-    sponsor_identifier_content = test_match_identifier_document['identifier_content']
+    if test_match_identifier_document['is_large_file'] == False:
+        sponsor_identifier_content = test_match_identifier_document['identifier_content']
+    elif test_match_identifier_document['is_large_file'] == True:
+        gridfs_id = test_match_identifier_document['identifier_content']
+        sponsor_identifier_content = mongoDB.retrieve_large_file(base='fs', file_id=gridfs_id)
     
     log(generate_msg('Assistor testing stage'), user_id, task_id, test_id)
     log(generate_msg('---- unread test request begins'), user_id, task_id, test_id)

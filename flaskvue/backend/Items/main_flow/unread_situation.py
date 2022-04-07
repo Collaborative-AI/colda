@@ -67,7 +67,11 @@ def get_situation_content(id):
     # obtain situation file from Train_Message_Situation table
     train_message_situation_document = train_message_situation.search_train_message_situation_document(situation_id=situation_id)
     sender_random_id = train_message_situation_document['sender_random_id']
-    situation_content = train_message_situation_document['situation_content']
+    if train_message_situation_document['is_large_file'] == False:
+        situation_content = train_message_situation_document['situation_content']
+    elif train_message_situation_document['is_large_file'] == True:
+        gridfs_file_id = train_message_situation_document['situation_content']
+        situation_content = mongoDB.retrieve_large_file(base='fs', file_id=gridfs_file_id)
 
     log(generate_msg('4.2:', 'assistor get_user_situation done'), user_id, task_id)
 
@@ -133,9 +137,9 @@ def send_output(id):
         {'rounds_' + str(cur_rounds_num) + '.output_dict.' + assistor_id + '.output_id': output_id
     }})
     print('output_content', output_content, user_id)
-    train_message_output.create_train_message_output_document(output_id=output_id, sender_id=assistor_id,
-                                                       sender_random_id=assistor_random_id, recipient_id=sponsor_id,
-                                                       output_content=output_content)
+    train_message_output.create_train_message_output_document(output_id=output_id, task_id=task_id, sender_id=assistor_id,
+                                                              sender_random_id=assistor_random_id, recipient_id=sponsor_id,
+                                                              output_content=output_content)
 
 
     # check how many assistors are still participate in this train task
@@ -146,6 +150,9 @@ def send_output(id):
     train_message_document = train_message.search_train_message_document(task_id=task_id)
     output_dict = train_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
     if len(output_dict) >= remain_assistor_num:
+        # Delete the situation content sent by the sponsor
+        # When we need to update unread_output, it means the unread_situation stage is finished 
+        train_message_situation.delete_train_message_situation_document(task_id=task_id)
         mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_output', 
                                                    id=task_id, sender_random_id=assistor_random_id, 
                                                    role='sponsor', cur_rounds_num=cur_rounds_num, test_indicator='train')

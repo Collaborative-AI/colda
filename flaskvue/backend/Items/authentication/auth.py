@@ -36,6 +36,7 @@ def get_token():
         return jsonify(msg)
     
     token = jwt_manipulation.get_jwt(g.current_user)
+    print('token!!!!', token)
     return jsonify({'token': token})
 
 @basic_auth.verify_password
@@ -129,7 +130,7 @@ class jwt_manipulation:
         return jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256')
+            algorithm='HS256').decode('utf-8')
 
     @classmethod
     def get_jwt(cls, user, expires_in=5000):
@@ -155,7 +156,7 @@ class jwt_manipulation:
         return jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256')
+            algorithm='HS256').decode('utf-8')
 
     @classmethod
     def verify_jwt(cls, token):

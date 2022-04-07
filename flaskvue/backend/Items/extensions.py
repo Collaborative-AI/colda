@@ -10,3 +10,6 @@ cors = CORS()
 mail = Mail()
 pyMongo = PyMongo()
 
+# import pymongo
+# pyMongo = pymongo()
+

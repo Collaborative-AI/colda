@@ -12,10 +12,10 @@ werkzeug = "*"
 flask-cors = "*"
 flask-httpauth = "*"
 flask-mail = "*"
-flask-pymongo = "*"
 python-dotenv = "*"
 pymongo = {extras = ["srv"], version = "*"}
 pyjwt = "*"
+flask-pymongo = "*"
 
 [dev-packages]
 

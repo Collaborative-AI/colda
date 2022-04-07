@@ -108,6 +108,7 @@ def find_assistor(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
+    print('666666666666')
     assistor_username_list = data['assistor_username_list']
     identifier_content = data['identifier_content']
     task_id = data['task_id']
@@ -138,10 +139,10 @@ def find_assistor(id):
     # add new train_match document to Train_Match Table
     train_match.create_train_match_document(task_id=task_id, total_assistor_num=len(assistor_id_dict), sponsor_id=sponsor_id, 
                                      sponsor_random_id=sponsor_random_id, identifier_id=identifier_id)
-    
-    # add new train_match_file document to Train_Match_File Table
+    print('777777777')
+    # add new train_match_identifier document to Train_Match_Identifier Table
     train_match_identifier.create_train_match_identifier_document(identifier_id=identifier_id, identifier_content=identifier_content)
-
+    print('88888888')
     log(generate_msg('1.2:', 'sponsor handles id data done'), user_id, task_id)
 
     # add new train_task document to Train_Task Table
@@ -272,7 +273,8 @@ def find_test_assistor(id):
     for assistor_id in assistor_id_dict:
         mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_request', 
                                                   id=test_id, sender_random_id=sponsor_random_id, 
-                                                  role='assistor', cur_rounds_num=1, test_indicator='test')
+                                                  role='assistor', cur_rounds_num=1, test_indicator='test',
+                                                  task_id=task_id)
     print('sdfsadfasdfascvv')
     log(generate_msg('Test 1.3:', 'sponsor adds all unread request to assistors'), user_id, task_id, test_id)
     log(generate_msg('---- sponsor find_test_assistor done \n'), user_id, task_id, test_id)

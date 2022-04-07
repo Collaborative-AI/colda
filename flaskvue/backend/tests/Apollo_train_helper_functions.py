@@ -1,5 +1,6 @@
 import json
 import unittest
+import collections
 
 from base64 import b64encode
 from bson import ObjectId
@@ -72,7 +73,49 @@ class Train_Helper_API_TestCase(unittest.TestCase):
             'Content-Type': 'application/json'
         }
     
-    def find_assistor_two_assistors_helper(self):
+    def retrieve_file_content(self, document, key):
+        if document['is_large_file'] == False:
+            file_content = document[key]
+        elif document['is_large_file'] == True:
+            gridfs_file_id = document[key]
+            file_content = mongoDB.retrieve_large_file(base='fs', file_id=gridfs_file_id)
+        return file_content
+
+    def init_train_user_file_content(self, indicator):
+        file_content_dict = collections.defaultdict(dict)
+        if indicator == 'small_data':
+            file_content_dict['user_1']['identifier_content'] = [8, 4, 3, 12, 16, 17]
+            file_content_dict['user_2']['identifier_content'] = [0, 4, 1, 12, 16, 17, 18]
+            file_content_dict['user_3']['identifier_content'] = [2, 3, 4, 5, 12, 18]
+
+            file_content_dict['user_1']['situation_content'] = None
+            file_content_dict['user_2']['situation_content'] = [[1,2,3], [4,5,6], [7,8,9]]
+            file_content_dict['user_3']['situation_content'] = [[1,2], [3,4]]
+
+            file_content_dict['user_1']['output_content'] = None
+            file_content_dict['user_2']['output_content'] = [[3,321,6], [88,5,6], [7,99,9]]
+            file_content_dict['user_3']['output_content'] = [[6,321,6], [88,5,6], [7,87.6,9]]
+        elif indicator == 'large_data':
+            file_content_dict['user_1']['identifier_content'] = [1 for _ in range(3000000)]
+            file_content_dict['user_2']['identifier_content'] = [1 for _ in range(3000000)]
+            file_content_dict['user_3']['identifier_content'] = [1 for _ in range(3000000)]
+
+            file_content_dict['user_1']['situation_content'] = [1 for _ in range(3000000)]
+            file_content_dict['user_2']['situation_content'] = [1 for _ in range(3000000)]
+            file_content_dict['user_3']['situation_content'] = [1 for _ in range(3000000)]
+
+            file_content_dict['user_1']['output_content'] = None
+            file_content_dict['user_2']['output_content'] = [1 for _ in range(3000000)]
+            file_content_dict['user_3']['output_content'] = [1 for _ in range(3000000)]
+
+        return file_content_dict
+    
+
+    # def set_user_file_content(self, user, content_key, content):
+    def find_assistor_two_assistors_helper(self, **kwargs):
+
+        file_content_dict = kwargs['file_content_dict']
+        user_1_identifier_content = file_content_dict['user_1']['identifier_content']
 
         # Check 1 sponsor with 2 assistors
         # Construct 2 new Matched rows
@@ -152,7 +195,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         # If we add non-exist username, such as unittest4, 'wrong username' will be returned
         assistor_username_list = ['unittest2', 'unittest4']
-        identifier_content = [8, 4, 3, 12, 16, 17]
+        identifier_content = user_1_identifier_content
         data = json.dumps({
             'assistor_username_list': assistor_username_list, 
             'identifier_content': identifier_content, 
@@ -170,7 +213,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
         assistor_username_list = ['unittest2', 'unittest3']
-        identifier_content = [8, 4, 3, 12, 16, 17]
+        identifier_content = user_1_identifier_content
         data = json.dumps({
             'assistor_username_list': assistor_username_list, 
             'identifier_content': identifier_content,      
@@ -211,8 +254,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(assistor_terminate_id_dict), 0)
 
         train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=sponsor_identifier_id)
-        identifier_content = train_match_identifier_document['identifier_content']
-        self.assertEqual(identifier_content, [8, 4, 3, 12, 16, 17])
+        identifier_content = self.retrieve_file_content(train_match_identifier_document, 'identifier_content')
+        self.assertEqual(identifier_content, user_1_identifier_content)
         
         train_task_document = train_task.search_train_task_document(task_id=task_id)
         task_name = train_task_document['task_name']
@@ -240,11 +283,16 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         user_id_list = [user_id_1, user_id_2, user_id_3]
         return task_id, assistor_username_list, user_id_list 
     
-    def unread_request_two_users_helper(self, task_id, assistor_username_list, user_id_list):
+    def unread_request_two_users_helper(self, task_id, assistor_username_list, user_id_list, **kwargs):
         
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
         user_id_3 = user_id_list[2]
+
+        file_content_dict = kwargs['file_content_dict']
+        user_1_identifier_content = file_content_dict['user_1']['identifier_content']
+        user_2_identifier_content = file_content_dict['user_2']['identifier_content']
+        user_3_identifier_content = file_content_dict['user_3']['identifier_content']
 
         # Check the Notification of user 1
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -278,7 +326,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         # 5. assistor uploads the ID file
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        identifier_content = [0, 4, 1, 12, 16, 17, 18]
+        identifier_content = user_2_identifier_content
         data = json.dumps({
             'task_id': task_id, 
             'identifier_content': identifier_content
@@ -298,8 +346,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         identifier_id = assistor_information[user_id_2]['identifier_id']
 
         train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=identifier_id)
-        identifier_content = train_match_identifier_document['identifier_content']
-        self.assertEqual(set(identifier_content), set([4,12,16,17]))
+        identifier_content = self.retrieve_file_content(train_match_identifier_document, 'identifier_content')
+        self.assertEqual(set(identifier_content), set(user_1_identifier_content) & set(user_2_identifier_content))
 
         # should not exist notification yet for sponsor
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -309,7 +357,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(json_response['notification_result']['category']), 0)
         
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        identifier_content = [2, 3, 4, 5, 12, 18]
+        identifier_content = user_3_identifier_content
         data = json.dumps({
             'task_id': task_id, 
             'identifier_content': identifier_content
@@ -329,16 +377,24 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         identifier_id = assistor_information[user_id_3]['identifier_id']
 
         train_match_identifier_document = train_match_identifier.search_train_match_identifier_document(identifier_id=identifier_id)
-        identifier_content = train_match_identifier_document['identifier_content']
-        self.assertEqual(set(identifier_content), set([3,4,12]))
+        identifier_content = self.retrieve_file_content(train_match_identifier_document, 'identifier_content')
+        self.assertEqual(set(identifier_content), set(user_1_identifier_content) & set(user_3_identifier_content))
 
         return task_id, assistor_username_list, user_id_list
 
-    def unread_match_identifier_two_users_helper(self, task_id, assistor_username_list, user_id_list):
+    def unread_match_identifier_two_users_helper(self, task_id, assistor_username_list, user_id_list, **kwargs):
         
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
         user_id_3 = user_id_list[2]
+
+        file_content_dict = kwargs['file_content_dict']
+        user_1_identifier_content = file_content_dict['user_1']['identifier_content']
+        user_2_identifier_content = file_content_dict['user_2']['identifier_content']
+        user_3_identifier_content = file_content_dict['user_3']['identifier_content']
+
+        user_2_situation_content = file_content_dict['user_2']['situation_content']
+        user_3_situation_content = file_content_dict['user_3']['situation_content']
 
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -389,8 +445,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         user_random_id_3 = train_match_document['assistor_information'][user_id_3]['assistor_id_to_random_id']
 
         assistor_random_id_to_identifier_content_dict = json_response['assistor_random_id_to_identifier_content_dict']
-        self.assertEqual(set(assistor_random_id_to_identifier_content_dict[user_random_id_2]), set([4, 12, 16, 17]))
-        self.assertEqual(set(assistor_random_id_to_identifier_content_dict[user_random_id_3]), set([3, 4, 12]))
+        self.assertEqual(set(assistor_random_id_to_identifier_content_dict[user_random_id_2]), set(user_1_identifier_content) & set(user_2_identifier_content))
+        self.assertEqual(set(assistor_random_id_to_identifier_content_dict[user_random_id_3]), set(user_1_identifier_content) & set(user_3_identifier_content))
 
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         data = json.dumps({
@@ -402,7 +458,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('sponsor_random_id_to_identifier_content_dict'))
         sponsor_random_id_to_identifier_content_dict = json_response['sponsor_random_id_to_identifier_content_dict']
         # test idendifier content
-        self.assertEqual(set(sponsor_random_id_to_identifier_content_dict[user_random_id_1]), set([4, 12, 16, 17]))
+        self.assertEqual(set(sponsor_random_id_to_identifier_content_dict[user_random_id_1]), set(user_1_identifier_content) & set(user_2_identifier_content))
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
         data = json.dumps({
@@ -414,12 +470,12 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertIsNotNone(json_response.get('sponsor_random_id_to_identifier_content_dict'))
         sponsor_random_id_to_identifier_content_dict = json_response['sponsor_random_id_to_identifier_content_dict']
         # test idendifier content
-        self.assertEqual(set(sponsor_random_id_to_identifier_content_dict[user_random_id_1]), set([3, 4, 12]))
+        self.assertEqual(set(sponsor_random_id_to_identifier_content_dict[user_random_id_1]), set(user_1_identifier_content) & set(user_3_identifier_content))
 
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
         assistor_random_id_to_residual_dict = {}
-        assistor_random_id_to_residual_dict[user_random_id_2] = [[1,2,3], [4,5,6], [7,8,9]]
-        assistor_random_id_to_residual_dict[user_random_id_3] = [[1,2], [3,4]]
+        assistor_random_id_to_residual_dict[user_random_id_2] = user_2_situation_content
+        assistor_random_id_to_residual_dict[user_random_id_3] = user_3_situation_content
         data = json.dumps({
             'task_id': task_id,
             'assistor_random_id_to_residual_dict': assistor_random_id_to_residual_dict
@@ -435,26 +491,33 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         for recipient_id in situation_dict:
             situation_id = situation_dict[recipient_id]['situation_id']
             train_message_situation_document = train_message_situation.search_train_message_situation_document(situation_id=situation_id)
-            situation_content = train_message_situation_document['situation_content']
+            situation_content = self.retrieve_file_content(train_message_situation_document, 'situation_content')
             sender_id = train_message_situation_document['sender_id']
             sender_random_id = train_message_situation_document['sender_random_id']
 
             if recipient_id == user_id_2:
-                self.assertEqual(situation_content, [[1,2,3], [4,5,6], [7,8,9]])
+                self.assertEqual(situation_content, user_2_situation_content)
                 self.assertEqual(sender_id, user_id_1)
                 self.assertEqual(sender_random_id, user_random_id_1)
             elif recipient_id == user_id_3:
-                self.assertEqual(situation_content, [[1,2], [3,4]])
+                self.assertEqual(situation_content, user_3_situation_content)
                 self.assertEqual(sender_id, user_id_1)
                 self.assertEqual(sender_random_id, user_random_id_1)
         
         return task_id, assistor_username_list, user_id_list
 
-    def unread_situation_two_users_helper(self, task_id, assistor_username_list, user_id_list, test_rounds_num=1):     
+    def unread_situation_two_users_helper(self, task_id, assistor_username_list, user_id_list, test_rounds_num=1, **kwargs):     
 
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
         user_id_3 = user_id_list[2]
+
+        file_content_dict = kwargs['file_content_dict']
+        user_2_situation_content = file_content_dict['user_2']['situation_content']
+        user_3_situation_content = file_content_dict['user_3']['situation_content']
+
+        user_2_output_content = file_content_dict['user_2']['output_content']
+        user_3_output_content = file_content_dict['user_3']['output_content']
 
         # 11. sponsor and assistors check notification (unread situation => 1)
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -501,7 +564,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         json_response_2 = json.loads(response.get_data(as_text=True))
         situation_content = json_response_2['situation_content']
         sender_random_id = json_response_2['sender_random_id']
-        self.assertEqual(situation_content, [[1,2,3], [4,5,6], [7,8,9]])
+        self.assertEqual(situation_content, user_2_situation_content)
         self.assertEqual(sender_random_id, sponsor_random_id)
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
@@ -514,12 +577,12 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         json_response_3 = json.loads(response.get_data(as_text=True))
         situation_content = json_response_3['situation_content']
         sender_random_id = json_response_3['sender_random_id']
-        self.assertEqual(situation_content, [[1,2], [3,4]])
+        self.assertEqual(situation_content, user_3_situation_content)
         self.assertEqual(sender_random_id, sponsor_random_id)
 
 
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
-        output_content = [[3,321,6], [88,5,6], [7,99,9]]
+        output_content = user_2_output_content
         data = json.dumps({
             'task_id': task_id, 
             'output_content': output_content
@@ -530,7 +593,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(json_response['send_output'], "send output successfully")
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
-        output_content = [[6,321,6], [88,5,6], [7,87.6,9]]
+        output_content = user_3_output_content
         data = json.dumps({
             'task_id': task_id, 
             'output_content': output_content
@@ -545,19 +608,26 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         output_id = output_dict[user_id_2]['output_id']
         train_message_output_document = train_message_output.search_train_message_output_document(output_id=output_id)
-        output_content = train_message_output_document['output_content']
-        self.assertEqual(output_content, [[3,321,6], [88,5,6], [7,99,9]])
+        output_content = self.retrieve_file_content(train_message_output_document, 'output_content')
+        self.assertEqual(output_content, user_2_output_content)
 
         output_id = output_dict[user_id_3]['output_id']
         train_message_output_document = train_message_output.search_train_message_output_document(output_id=output_id)
-        output_content = train_message_output_document['output_content']
-        self.assertEqual(output_content, [[6,321,6], [88,5,6], [7,87.6,9]])
+        output_content = self.retrieve_file_content(train_message_output_document, 'output_content')
+        self.assertEqual(output_content, user_3_output_content)
 
-    def unread_output_two_users_helper(self, task_id, assistor_username_list, user_id_list):
+    def unread_output_two_users_helper(self, task_id, assistor_username_list, user_id_list, **kwargs):
 
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
         user_id_3 = user_id_list[2]
+
+        file_content_dict = kwargs['file_content_dict']
+        user_2_situation_content = file_content_dict['user_2']['situation_content']
+        user_3_situation_content = file_content_dict['user_3']['situation_content']
+
+        user_2_output_content = file_content_dict['user_2']['output_content']
+        user_3_output_content = file_content_dict['user_3']['output_content']
 
         train_message_document = train_message.search_train_message_document(task_id=task_id)
         cur_rounds_num = train_message_document['cur_rounds_num']
@@ -587,9 +657,9 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         for assistor_random_id, output_content in assistor_random_id_mapping.items():
             assistor_id = assistor_random_id_mapping[assistor_random_id]
             if assistor_id == user_id_2:
-                self.assertEqual(output_content, [[3,321,6], [88,5,6], [7,99,9]])
+                self.assertEqual(output_content, user_2_output_content)
             elif assistor_id == user_id_3:
-                self.assertEqual(output_content, [[6,321,6], [88,5,6], [7,87.6,9]])
+                self.assertEqual(output_content, user_3_output_content)
 
         sponsor_information = train_match_document['sponsor_information']
         assistor_information = train_match_document['assistor_information']
@@ -598,8 +668,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         user_random_id_3 = assistor_information[user_id_3]['assistor_id_to_random_id']
 
         assistor_random_id_to_residual_dict = {}
-        assistor_random_id_to_residual_dict[user_random_id_2] = [[1,2,3], [4,5,6], [7,8,9]]
-        assistor_random_id_to_residual_dict[user_random_id_3] = [[1,2], [3,4]]
+        assistor_random_id_to_residual_dict[user_random_id_2] = user_2_situation_content
+        assistor_random_id_to_residual_dict[user_random_id_3] = user_3_situation_content
 
         # 17. sponsor calls: send_situation(), goes into new round 
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -619,15 +689,15 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         for recipient_id in situation_dict:
             situation_id = situation_dict[recipient_id]['situation_id']
             train_message_situation_document = train_message_situation.search_train_message_situation_document(situation_id=situation_id)
-            situation_content = train_message_situation_document['situation_content']
+            situation_content = self.retrieve_file_content(train_message_situation_document, 'situation_content')
             sender_id = train_message_situation_document['sender_id']
             sender_random_id = train_message_situation_document['sender_random_id']
 
             if recipient_id == user_id_2:
-                self.assertEqual(situation_content, [[1,2,3], [4,5,6], [7,8,9]])
+                self.assertEqual(situation_content, user_2_situation_content)
                 self.assertEqual(sender_id, user_id_1)
                 self.assertEqual(sender_random_id, user_random_id_1)
             elif recipient_id == user_id_3:
-                self.assertEqual(situation_content, [[1,2], [3,4]])
+                self.assertEqual(situation_content, user_3_situation_content)
                 self.assertEqual(sender_id, user_id_1)
                 self.assertEqual(sender_random_id, user_random_id_1)

@@ -57,7 +57,7 @@ class mongoDB():
         return gridfile
 
     @classmethod
-    def update_notification_document(cls, user_id, notification_name, id, sender_random_id, role, cur_rounds_num, test_indicator):
+    def update_notification_document(cls, user_id, notification_name, id, sender_random_id, role, cur_rounds_num, test_indicator, task_id=None):
         if not isinstance(user_id, str):
             return False
         elif not isinstance(notification_name, str):
@@ -78,14 +78,20 @@ class mongoDB():
 
         if test_indicator == 'train':
             base_key = 'category' + '.' + notification_name + '.' + 'task_id_dict' + '.' + id 
+            return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
+                base_key + '.sender_random_id': sender_random_id,
+                base_key + '.role': role,
+                base_key + '.cur_rounds_num': cur_rounds_num,
+            }})
         elif test_indicator == 'test':
             base_key = 'category' + '.' + notification_name + '.' + 'test_id_dict' + '.' + id 
-
-        return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
-            base_key + '.sender_random_id': sender_random_id,
-            base_key + '.role': role,
-            base_key + '.cur_rounds_num': cur_rounds_num,
-        }})
+            return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
+                base_key + '.sender_random_id': sender_random_id,
+                base_key + '.role': role,
+                base_key + '.cur_rounds_num': cur_rounds_num,
+                base_key + '.task_id': task_id,
+            }})
+        
         
     @classmethod
     def search_user_document(cls, user_id, username, email, key_indicator):

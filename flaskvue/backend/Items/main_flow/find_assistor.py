@@ -273,7 +273,8 @@ def find_test_assistor(id):
     for assistor_id in assistor_id_dict:
         mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_request', 
                                                   id=test_id, sender_random_id=sponsor_random_id, 
-                                                  role='assistor', cur_rounds_num=1, test_indicator='test')
+                                                  role='assistor', cur_rounds_num=1, test_indicator='test',
+                                                  task_id=task_id)
     print('sdfsadfasdfascvv')
     log(generate_msg('Test 1.3:', 'sponsor adds all unread request to assistors'), user_id, task_id, test_id)
     log(generate_msg('---- sponsor find_test_assistor done \n'), user_id, task_id, test_id)

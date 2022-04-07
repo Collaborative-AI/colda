@@ -406,7 +406,8 @@ def send_test_output(id):
         print('gggggggggggggg')
         mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_output', 
                                             id=test_id, sender_random_id=assistor_random_id, 
-                                            role='sponsor', cur_rounds_num=cur_rounds_num, test_indicator='test')
+                                            role='sponsor', cur_rounds_num=cur_rounds_num, test_indicator='test',
+                                            task_id=task_id)
         log(generate_msg('Test 3.4:"', 'assistor uploads all test output'), user_id, task_id, test_id)
     else:
         print('xxxxxx')

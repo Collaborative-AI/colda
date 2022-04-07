@@ -199,12 +199,15 @@ def match_test_identifier_content(id):
         for assistor_id in assistor_information:
             mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_match_identifier', 
                                                       id=test_id, sender_random_id=sponsor_random_id, 
-                                                      role='assistor', cur_rounds_num=1, test_indicator='test')
+                                                      role='assistor', cur_rounds_num=1, test_indicator='test',
+                                                      task_id=task_id)
                                                         
         # send unread_match_identifier notification to sponsor
         mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_test_match_identifier', 
                                                   id=test_id, sender_random_id=sponsor_random_id, 
-                                                  role='sponsor', cur_rounds_num=1, test_indicator='test')
+                                                  role='sponsor', cur_rounds_num=1, test_indicator='test',
+                                                  task_id=task_id)
+                                                  
         log(generate_msg('Test 2.4:', 'Server sends unread match id to all participants of this test task'), user_id, task_id, test_id)
 
     if len(assistor_information) >= remain_assistor_num:

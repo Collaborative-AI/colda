@@ -5,6 +5,8 @@ from Items import pyMongo
 from Items.helper_api import helper_api_bp
 from Items.authentication import token_auth
 
+from Items.mongoDB import mongoDB
+
 # @helper_api_bp.route('/ceshi', methods=['GET'])
 @helper_api_bp.route('/changshi', methods=['GET'])
 def changshi():
@@ -63,109 +65,117 @@ def ceshi(ID,value):
 def create_unittest_user():
     data = request.get_json()
     username = data['username']
-
-    if User.query.filter_by(username = username).first():
+    password = data['password']
+    email = data['email']
+    if mongoDB.search_user_document(user_id=None, username=username, email=None, key_indicator='username'):
         return 'repetition'
 
-    user = User()
-    user.from_dict(data, new_user=True)
-    user.confirmed = 'true'
-    db.session.add(user)
-    db.session.commit()
+    user_document = {
+        'username': username,
+        'password': password,
+        'email': email,
+        'confirm_email': True,
+    }
+    mongoDB.create_user_document(user_document=user_document)
 
-    return 'gg'
+    return 'done'
 
 # @helper_api_bp.route('/ceshi', methods=['GET'])
 @helper_api_bp.route('/delete_unittest_db/', methods=['GET'])
 def delete_unittest_db():
-  
-  # Message, Matched, Notification
-  queries = Matched.query.all()
-  for row in queries:
-      db.session.delete(row)
-      db.session.commit()
+    collection_list = pyMongo.db.list_collection_names()
+    for collection_name in collection_list:
+        if collection_name != 'User':
+            pyMongo.db.drop_collection(collection_name)
 
-  Messages = Message.query.all()
-  for row in Messages:
-      db.session.delete(row)
-      db.session.commit()
+    return 'done'
+#   # Message, Matched, Notification
+#   queries = Matched.query.all()
+#   for row in queries:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Notifications = Notification.query.all()
-  for row in Notifications:
-      db.session.delete(row)
-      db.session.commit()
+#   Messages = Message.query.all()
+#   for row in Messages:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Pendings = Pending.query.all()
-  for row in Pendings:
-      db.session.delete(row)
-      db.session.commit()
+#   Notifications = Notification.query.all()
+#   for row in Notifications:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Users = User.query.all()
-  for row in Users:
-      db.session.delete(row)
-      db.session.commit()
+#   Pendings = Pending.query.all()
+#   for row in Pendings:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  return "gg"
+#   Users = User.query.all()
+#   for row in Users:
+#       db.session.delete(row)
+#       db.session.commit()
+
+#   return "gg"
 
 # @helper_api_bp.route('/ceshi', methods=['GET'])
-@helper_api_bp.route('/delete_all_rows/', methods=['GET'])
-@token_auth.login_required
-def delete_all_rows():
+# @helper_api_bp.route('/delete_all_rows/', methods=['GET'])
+# @token_auth.login_required
+# def delete_all_rows():
   
-  # Message, Matched, Notification
-  queries = Matched.query.all()
-  for row in queries:
-      db.session.delete(row)
-      db.session.commit()
+#   # Message, Matched, Notification
+#   queries = Matched.query.all()
+#   for row in queries:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Messages = Message.query.all()
-  for row in Messages:
-      db.session.delete(row)
-      db.session.commit()
+#   Messages = Message.query.all()
+#   for row in Messages:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Notifications = Notification.query.all()
-  for row in Notifications:
-      db.session.delete(row)
-      db.session.commit()
+#   Notifications = Notification.query.all()
+#   for row in Notifications:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Pendings = Pending.query.all()
-  for row in Pendings:
-      db.session.delete(row)
-      db.session.commit()
+#   Pendings = Pending.query.all()
+#   for row in Pendings:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  return "done"
+#   return "done"
 
-@helper_api_bp.route('/delete_test_rows/', methods=['GET'])
-@token_auth.login_required
-def delete_test_rows():
+# @helper_api_bp.route('/delete_test_rows/', methods=['GET'])
+# @token_auth.login_required
+# def delete_test_rows():
   
-  # Message, Matched, Notification
-  queries = Matched.query.filter(Matched.test_indicator == "test").all()
-  for row in queries:
-      db.session.delete(row)
-      db.session.commit()
+#   # Message, Matched, Notification
+#   queries = Matched.query.filter(Matched.test_indicator == "test").all()
+#   for row in queries:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Messages = Message.query.filter(Message.test_indicator == "test").all()
-  for row in Messages:
-      db.session.delete(row)
-      db.session.commit()
+#   Messages = Message.query.filter(Message.test_indicator == "test").all()
+#   for row in Messages:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Notifications = Notification.query.all()
-  for row in Notifications:
-      db.session.delete(row)
-      db.session.commit()
+#   Notifications = Notification.query.all()
+#   for row in Notifications:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Stops = Stop.query.all()
-  for row in Stops:
-      db.session.delete(row)
-      db.session.commit()
+#   Stops = Stop.query.all()
+#   for row in Stops:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  Pendings = Pending.query.all()
-  for row in Pendings:
-      db.session.delete(row)
-      db.session.commit()
+#   Pendings = Pending.query.all()
+#   for row in Pendings:
+#       db.session.delete(row)
+#       db.session.commit()
 
-  return "done"
+#   return "done"
 
 
 @helper_api_bp.route('/ceshi_mongo/', methods=['POST', 'GET'])

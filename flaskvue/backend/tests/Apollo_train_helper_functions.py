@@ -527,6 +527,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(json_response_1['notification_result']['category']), 1)
         self.assertEqual(len(json_response_1['notification_result']['category']['unread_situation']['task_id_dict']), 1)
         assert task_id in json_response_1['notification_result']['category']['unread_situation']['task_id_dict']
+        self.assertEqual(json_response_1['notification_result']['category']['unread_situation']['task_id_dict'][task_id]['cur_rounds_num'], test_rounds_num)
 
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         response = self.client.get('/main_flow/get_notifications/' + user_id_2, headers=headers)
@@ -535,6 +536,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(json_response_2['notification_result']['category']), 1)
         self.assertEqual(len(json_response_2['notification_result']['category']['unread_situation']['task_id_dict']), 1)
         assert task_id in json_response_2['notification_result']['category']['unread_situation']['task_id_dict']
+        self.assertEqual(json_response_2['notification_result']['category']['unread_situation']['task_id_dict'][task_id]['cur_rounds_num'], test_rounds_num)
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
         response = self.client.get('/main_flow/get_notifications/' + user_id_3, headers=headers)
@@ -543,7 +545,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(json_response_3['notification_result']['category']), 1)
         self.assertEqual(len(json_response_3['notification_result']['category']['unread_situation']['task_id_dict']), 1)
         assert task_id in json_response_3['notification_result']['category']['unread_situation']['task_id_dict']
-        
+        self.assertEqual(json_response_3['notification_result']['category']['unread_situation']['task_id_dict'][task_id]['cur_rounds_num'], test_rounds_num)
+
         # if sponsor_stop, everything of this round will be cleaned and we cant get into the Sponsor_situation_training_done() or send_output() function
         # if sponsor_stop:
         #     return
@@ -616,8 +619,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         output_content = self.retrieve_file_content(train_message_output_document, 'output_content')
         self.assertEqual(output_content, user_3_output_content)
 
-    def unread_output_two_users_helper(self, task_id, assistor_username_list, user_id_list, **kwargs):
-
+    def unread_output_two_users_helper(self, task_id, assistor_username_list, user_id_list, test_rounds_num=1, **kwargs):
+        
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
         user_id_3 = user_id_list[2]
@@ -631,6 +634,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         train_message_document = train_message.search_train_message_document(task_id=task_id)
         cur_rounds_num = train_message_document['cur_rounds_num']
+        self.assertEqual(cur_rounds_num, test_rounds_num)
 
         # 14. sponsor check notification (unread output => 1)
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -640,6 +644,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(json_response_1['notification_result']['category']), 1)
         self.assertEqual(len(json_response_1['notification_result']['category']['unread_output']['task_id_dict']), 1)
         assert task_id in json_response_1['notification_result']['category']['unread_output']['task_id_dict']
+        self.assertEqual(json_response_1['notification_result']['category']['unread_output']['task_id_dict'][task_id]['cur_rounds_num'], test_rounds_num)
         
         # 16. sponsor calls: get_user_output() (in unread_output.py), gets output files
         data = json.dumps({
@@ -684,6 +689,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         train_message_document = train_message.search_train_message_document(task_id=task_id)
         cur_rounds_num = train_message_document['cur_rounds_num']
+        self.assertEqual(cur_rounds_num, test_rounds_num+1)
         situation_dict = train_message_document['rounds_' + str(cur_rounds_num)]['situation_dict']
         self.assertEqual(len(situation_dict), 3)
         for recipient_id in situation_dict:

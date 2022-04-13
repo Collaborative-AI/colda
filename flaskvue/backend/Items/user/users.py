@@ -300,11 +300,13 @@ def get_user(id):
 
     user_id = obtain_user_id_from_token()
     if verify_token_user_id_and_function_caller_id(user_id, id):
+        current_user_information = g.current_user
+        # delete ObjectID to jsonify
+        del current_user_information['_id']
         response = {
-            'user': g.current_user
+            'user': current_user_information
         }
-        # print('res1',response)
-        return jsonify(dumps(response))
+        return jsonify(response)
     return None
 
 @user_bp.route('/users/<string:id>', methods=['PUT'])

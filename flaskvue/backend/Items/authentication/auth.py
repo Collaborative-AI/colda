@@ -39,13 +39,20 @@ def get_token():
         return jsonify(msg)
     
     token = jwt_manipulation.get_jwt(g.current_user)
-    print('token is', type(token), token)
-    print('token is 1', token.decode("utf-8"))
-    print('token is 2', dumps({'token': token.decode()}))
-    print('token is 3', jsonify(dumps({'token': token.decode()})))
-
-    
-    return jsonify({'token': token.decode("utf-8")})
+    # print('token is', type(token), token)
+    # print('token is 1', token.decode("utf-8"))
+    # print('token is 2', dumps({'token': token.decode()}))
+    # print('token is 3', jsonify(dumps({'token': token.decode()})))
+    if isinstance(token, str):
+        response = {
+            'token': token
+        }
+    else:
+        response = {
+            'token': token.decode("utf-8")
+        }
+    return jsonify(response)
+    # return jsonify({'token': token.decode("utf-8")})
 
 @basic_auth.verify_password
 def verify_password(username, password):
@@ -140,7 +147,7 @@ class jwt_manipulation:
         return jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256').decode('utf-8')
+            algorithm='HS256')
 
     @classmethod
     def get_jwt(cls, user, expires_in=5000):
@@ -163,10 +170,16 @@ class jwt_manipulation:
         #     token_payload,
         #     current_app.config['SECRET_KEY'],
         #     algorithm='HS256').decode('utf-8')
+        # a = jwt.encode(
+        #     token_payload,
+        #     current_app.config['SECRET_KEY'],
+        #     algorithm='HS256')
+        # print('aaaaaa', a, type(a))
+
         return jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256').decode('utf-8')
+            algorithm='HS256')
 
     @classmethod
     def verify_jwt(cls, token):

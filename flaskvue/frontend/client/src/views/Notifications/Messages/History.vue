@@ -1625,6 +1625,7 @@ export default {
     
     getLog(task_id) {
       let vm = this
+      console.log('hoho',this.root)
       const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
       if(fs.existsSync(train_log_address)){
         let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
@@ -2206,6 +2207,7 @@ export default {
 
     let new_root = store.changeroot()
     this.root = new_root.root;
+    console.log('zxz',this.root)
     this.exe_position = new_root.exe_position
     this.getLog(this.$route.query.from)
     this.checkSponsor(this.$route.query.from)

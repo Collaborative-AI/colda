@@ -15,7 +15,7 @@ from Items.extensions import mail
 
 def add_new_token_to_response(response):
     if g.current_user['new_token'] != None:
-        response['new_token'] = g.current_user['new_token'].decode('utf-8')
+        response['new_token'] = g.current_user['new_token']
     else:
         response['new_token'] = g.current_user['new_token']
     return response

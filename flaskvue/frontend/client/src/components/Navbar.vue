@@ -1443,16 +1443,17 @@ export default {
       // this.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
       let cur_unread_test_request_Testid_dict = unread_test_request_id_dict
-      let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
+      // let test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
 
-      let unittest_parameters = generate_unittest_parameters(cur_unread_test_request_Testid_dict, test_id_to_task_id)
-      execute_unittest_list(unittest_callbacks, 0, "unread_test_request_unittest", unittest_parameters)
+      // let unittest_parameters = generate_unittest_parameters(cur_unread_test_request_Testid_dict, test_id_to_task_id)
+      // execute_unittest_list(unittest_callbacks, 0, "unread_test_request_unittest", unittest_parameters)
          
       // let row = vm.$db.prepare('SELECT * FROM User_Default_Table WHERE user_id = ?').get(vm.sharedState.user_id);
       // // console.log("retrieve_setting_mode_row", row)
 
       for (let test_id in cur_unread_test_request_Testid_dict){
-        let task_id = test_id_to_task_id[test_id]
+        // let task_id = test_id_to_task_id[test_id]
+        let task_id = cur_unread_test_request_Testid_dict[test_id]['task_id']
         // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
      
         // // console.log('unread test request mode', vm.sharedState.mode)
@@ -1589,7 +1590,7 @@ export default {
                   //Log(generate_message_string("----2. Unread Test Request Done\n"), 'info')
 
                   // vm.$toasted.success(`2.2 Test: assistor uploads id file`, { icon: 'fingerprint' })
-                  vm.$toasted.success(`Testing: Task ` + task_id + ` Testing Starts`, { icon: 'fingerprint' })
+                  // vm.$toasted.success(`Testing: Task ` + task_id + ` Testing Starts`, { icon: 'fingerprint' })
 
                   try {
                     fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
@@ -1637,25 +1638,27 @@ export default {
       } // for loop
     },
 
-    unread_test_match_id(unread_test_match_id_notification, unittest_callbacks) {
+    unread_test_match_identifier(unread_test_match_id_dict, unittest_callbacks) {
       let vm = this
-      if (check_if_notification_is_null(unread_test_match_id_notification, 'unread_test_match_id_notification')){
+      console.log('jin unread test match identifier')
+      if (check_if_notification_is_null(unread_test_match_id_dict, 'unread_test_match_id_notification')){
         return
       }
 
       // // console.log("3.1 Update Test match id notification response", unread_test_match_id_notification)
       // this.$toasted.success("3.1 Update the Test match id notification", { icon: 'fingerprint' })
 
-      let cur_unread_test_match_id_Testid_dict = unread_test_match_id_notification["check_dict"]
-      let test_id_to_task_id = unread_test_match_id_notification["test_id_to_task_id"]
-      let max_rounds_dict = unread_test_match_id_notification["max_rounds"]
+      let cur_unread_test_match_id_Testid_dict = unread_test_match_id_dict
+      // let test_id_to_task_id = unread_test_match_id_notification["test_id_to_task_id"]
+      // let max_rounds_dict = unread_test_match_id_notification["max_rounds"]
       // // console.log("max_rounds_dict", max_rounds_dict)
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_match_id_Testid_dict)
       execute_unittest_list(unittest_callbacks, 0, "unread_test_match_id_unittest", unittest_parameters)
 
       for (let test_id in cur_unread_test_match_id_Testid_dict){
-        let task_id = test_id_to_task_id[test_id]
+        // let task_id = test_id_to_task_id[test_id]
+        let task_id = cur_unread_test_match_id_Testid_dict[test_id]['task_id']
 
         // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
@@ -1671,11 +1674,12 @@ export default {
           console.log(err)
         }
 
-        let check_sponsor = cur_unread_test_match_id_Testid_dict[test_id]
-        let cur_max_round = max_rounds_dict[test_id]
-        // // console.log("test_id, max_round", test_id, cur_max_round)
+        let check_sponsor = cur_unread_test_match_id_Testid_dict[test_id]['role']
+        // let cur_max_round = max_rounds_dict[test_id]
+        let cur_max_round = vm.max_round
+        console.log("tin1", check_sponsor, cur_max_round)
 
-        if (check_sponsor == 1){
+        if (check_sponsor == 'sponsor'){
           // console.log("3.2 Unread_test_match_id_sponsor")
           try {
             fs.appendFileSync(Log_address, "3.2 Test: Unread_test_match_id_sponsor\n")
@@ -1699,6 +1703,7 @@ export default {
     unread_test_match_id_sponsor(task_id, test_id, max_rounds, unittest_callbacks) {
 
       let vm = this;
+      console.log('jin test match sponsor')
 
       // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
@@ -1730,8 +1735,8 @@ export default {
 
           for(let i = 0;i < Object.values(response.data.assistor_random_id_to_identifier_content_dict).length; i++){
             
-            const from_id = object.keys(response.data.assistor_random_id_to_identifier_content_dict)[i];
-            let cur_match_id_file = JSON.parse(Object.values(response.data.assistor_random_id_to_identifier_content_dict)[i]);
+            const from_id = Object.keys(response.data.assistor_random_id_to_identifier_content_dict)[i];
+            let cur_match_id_file = Object.values(response.data.assistor_random_id_to_identifier_content_dict)[i];
             cur_match_id_file = cur_match_id_file.join('\n');
             // // console.log('sponsor_match', cur_match_id_file)
             // Store match_id file from different assistor
@@ -1852,6 +1857,8 @@ export default {
 
       let vm = this;
 
+      console.log('jin test match assistor')
+
       // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
       const Log_address = vm.handle_test_log_address(task_id, test_id)
@@ -1863,7 +1870,7 @@ export default {
       }
       // const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
       // async
-      vm.$axios.post(add_prefix(`get_test_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
+      vm.$axios.post(add_prefix(`/get_test_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
         .then((response) => {
 
           let unittest_parameters = generate_unittest_parameters(response.data)
@@ -1878,7 +1885,7 @@ export default {
           }
 
           const from_id = Object.keys(response.data.sponsor_random_id_to_identifier_content_dict);
-          let cur_match_id_file = JSON.parse(Object.values(response.data.sponsor_random_id_to_identifier_content_dict)[0]);
+          let cur_match_id_file = Object.values(response.data.sponsor_random_id_to_identifier_content_dict)[0];
           cur_match_id_file = cur_match_id_file.join('\n');
           // // console.log('assistor_match', cur_match_id_file)
 
@@ -2045,25 +2052,27 @@ export default {
         }) // axios get test_match_id file
     },
 
-    unread_test_output(unread_test_output_notification, unittest_callbacks) {
+    unread_test_output(unread_test_output_test_id_dict, unittest_callbacks) {
       
       let vm = this;
+      console.log('jin unread test output')
       // only sponsor will enter this function
-      if (check_if_notification_is_null(unread_test_output_notification, 'unread_test_output_notification')){
+      if (check_if_notification_is_null(unread_test_output_test_id_dict, 'unread_test_output_notification')){
         return
       }
 
       // console.log("4.1 Update Test output notification", unread_test_output_notification)
       // this.$toasted.success("4.1 Update Test output notification", { icon: 'fingerprint' })
 
-      let cur_unread_test_output_Testid_dict = unread_test_output_notification["check_dict"]
-      let test_id_to_task_id = unread_test_output_notification["test_id_to_task_id"]
+      let cur_unread_test_output_Testid_dict = unread_test_output_test_id_dict
+      // let test_id_to_task_id = unread_test_output_notification["test_id_to_task_id"]
 
       let unittest_parameters = generate_unittest_parameters(cur_unread_test_output_Testid_dict)
       execute_unittest_list(unittest_callbacks, 0, "unread_test_output_unittest", unittest_parameters)
 
       for (let test_id in cur_unread_test_output_Testid_dict){
-        let task_id = test_id_to_task_id[test_id]
+        // let task_id = test_id_to_task_id[test_id]
+        let task_id = cur_unread_test_output_Testid_dict[test_id]['task_id']
 
         // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
@@ -2085,6 +2094,7 @@ export default {
       const Log_address = this.handle_test_log_address(task_id, test_id)
 
       let vm = this
+      console.log('jin unread test output single task')
       // Obtain output from assistors
       // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
@@ -2095,7 +2105,7 @@ export default {
       }
 
       // const url = `/test_output/`
-      this.$axios.post(add_prefix(`get_test_output_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
+      this.$axios.post(add_prefix(`/get_test_output_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
         .then((response) => {
           // console.log("4.2 Test: Sponsor gets assistors' Test output model")
           // vm.$toasted.success("4.2 Test: Sponsor gets assistors' Test output model", { icon: 'fingerprint' })
@@ -2109,7 +2119,7 @@ export default {
           for(let i = 0;i < Object.values(response.data.assistor_random_id_to_output_content_dict).length; i++){
 
             const from_id = Object.keys(response.data.assistor_random_id_to_output_content_dict)[i];
-            let multiple_outputs_from_one_assistor = JSON.parse(Object.values(response.data.assistor_random_id_to_output_content_dict)[i]);
+            let multiple_outputs_from_one_assistor = Object.values(response.data.assistor_random_id_to_output_content_dict)[i];
             // // console.log("multiple_outputs_from_one_assistor", multiple_outputs_from_one_assistor)
 
             for (let j = 0; j < multiple_outputs_from_one_assistor.length; j++){
@@ -2184,7 +2194,8 @@ export default {
         return 
       }
 
-      let max_round = JSON.parse(response.data.output[0]).length;
+      // let max_round = JSON.parse(response.data.output[0]).length;
+      let max_round = vm.max_round
       // // console.log("unread_test_output_max_round", JSON.parse(response.data.output[0]))
       // // console.log("max_round", max_round)
 
@@ -2272,7 +2283,7 @@ export default {
     window.unread_output = this.unread_output;
 
     window.unread_test_request = this.unread_test_request;
-    window.unread_test_match_id = this.unread_test_match_identifier;
+    window.unread_test_match_identifier = this.unread_test_match_identifier;
     window.unread_test_output = this.unread_test_output;
 
     // window.unread_match_id_sponsor = this.unread_match_id_sponsor

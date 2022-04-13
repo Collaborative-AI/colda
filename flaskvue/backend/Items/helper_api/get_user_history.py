@@ -101,7 +101,7 @@ def get_user_history(id):
             'total_items': len(participated_sort_task_dict),
         },
     }
-    print('list1', response)
+    # print('list1', response)
     return jsonify(response)
 
 @helper_api_bp.route('/check_sponsor/<string:id>', methods=['POST'])

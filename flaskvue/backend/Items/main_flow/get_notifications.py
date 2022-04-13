@@ -67,7 +67,7 @@ def get_notifications(id):
     response = {
         'notification_result': copy.deepcopy(notification_document)
     }
-    if 'new_token' in g.current_user:
+    if 'new_token' in g.current_user and g.current_user['new_token'] != None:
         response = add_new_token_to_response(response)
 
     print('cat1', type(response))

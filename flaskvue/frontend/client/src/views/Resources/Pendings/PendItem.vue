@@ -257,7 +257,7 @@ export default {
             }
             console.log('wokan4', vm.test_indicator)
 
-            vm.$axios.post(add_prefix(`/delete_pending/`, `/main_flow`), delete_pending)
+            vm.$axios.post(add_prefix(`/delete_pending/${vm.sharedState.user_id}/`, `/main_flow`), delete_pending)
               .then((response) => {
                 // handle success
                 console.log("delete_pending response", response.data)
@@ -307,7 +307,7 @@ export default {
                   file: hash_id_file_data,
                 }
                 
-                vm.$axios.post(add_prefix(`/match_identifier_content/`, `/main_flow`), match_assistor_id_data)
+                vm.$axios.post(add_prefix(`/match_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), match_assistor_id_data)
                   .then((response) => {
                     // handle success
                     console.log("2.2 assistor uploads id file")
@@ -423,7 +423,7 @@ export default {
               test_indicator: vm.test_indicator
             }
             console.log("222222")
-            vm.$axios.post(add_prefix(`/delete_pending/`, `/main_flow`), delete_pending)
+            vm.$axios.post(add_prefix(`/delete_pending/${vm.sharedState.user_id}/`, `/main_flow`), delete_pending)
               .then((response) => {
                 // handle success
                 console.log("delete_pending response", response.data)
@@ -475,7 +475,7 @@ export default {
                   task_id: task_id
                 }
 
-                vm.$axios.post(add_prefix(`/match_test_identifier_content/`, `/main_flow`), match_test_assistor_id_data)
+                vm.$axios.post(add_prefix(`/match_test_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), match_test_assistor_id_data)
                   .then((response) => {
                     // handle success
                     console.log("2.2 Test: assistor uploads id file")
@@ -538,7 +538,7 @@ export default {
         test_indicator: vm.test_indicator
       }
 
-      vm.$axios.post(add_prefiex(`/delete_pending/`, `/main_flow`), delete_pending)
+      vm.$axios.post(add_prefiex(`/delete_pending/${vm.sharedState.user_id}/`, `/main_flow`), delete_pending)
         .then((response) => {
           // handle success
           console.log("delete_pending response", response.data)

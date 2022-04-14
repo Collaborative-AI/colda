@@ -122,6 +122,7 @@ def get_all_pending(id):
                 train_match_document = train_match.search_train_match_document(task_id=id)
                 # remove ObjectId object, which cannot be transferred into json format
                 del train_match_document['_id']
+                print('train match doc is', train_match_document)
                 response['all_pending_items'][id] = train_match_document
             elif test_indicator == 'test':
                 test_match_document = test_match.search_test_match_document(test_id=id)

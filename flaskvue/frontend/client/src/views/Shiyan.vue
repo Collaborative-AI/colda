@@ -966,7 +966,7 @@ export default {
     },
 
     delete_all_rows() {
-      axios.get(add_prefix(`/delete_all_rows/`))
+      axios.get(add_prefix(`/delete_unittest_db/`, `helper_api`))
         .then((response) => {
         // handle success
         console.log("delete_all_rows", response)

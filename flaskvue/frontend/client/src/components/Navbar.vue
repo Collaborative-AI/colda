@@ -352,7 +352,7 @@ export default {
         vm.$toasted.success("manual: Training Task " + task_id + " Request Received", { icon: 'fingerprint' })
         vm.$toasted.success("Please go to pending page", { icon: 'fingerprint' })
 
-        vm.$axios.post(add_prefix(`/add_train_pending/`, `/main_flow`), add_train_pending)
+        vm.$axios.post(add_prefix(`/add_train_pending/${vm.sharedState.user_id}/`, `/main_flow`), add_train_pending)
           .then((response) => {
             // handle success
             console.log('zz99',response)

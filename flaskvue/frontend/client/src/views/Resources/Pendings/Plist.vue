@@ -14,7 +14,7 @@
                         <!-- <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div> -->
                         <div class="font-weight-bold mr-3">
                             <div class="text-truncate">Task Name: {{ pend.pending_task_name }}</div>
-                            <div class="small">Task ID:  {{ pend.pending_task_id }}</div>
+                            <div class="small">Task ID:  {{ pend.task_id }}</div>
                             <div class='small'>Test ID: {{ pend.pending_test_id }}</div>
                             <div class='small'>Task Mode: {{ pend.pending_task_mode }}</div>
                             <div class='small'>Model Name: {{ pend.pending_model_name }}</div>
@@ -37,7 +37,7 @@
                             <div class="text-right text-muted pt-1">
                               <router-link v-bind:to="{ name: 'PendItem', params: { 
                                                         task_description: pend.pending_task_description, 
-                                                        task_id: pend.pending_task_id, 
+                                                        task_id: pend.task_id, 
                                                         task_name: pend.pending_task_name, 
                                                         task_mode: pend.pending_task_mode,
                                                         model_name: pend.pending_model_name,

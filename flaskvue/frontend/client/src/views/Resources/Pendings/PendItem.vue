@@ -304,7 +304,7 @@ export default {
 
                 const match_assistor_id_data = {
                   task_id: task_id,
-                  file: hash_id_file_data,
+                  identifier_content: hash_id_file_data,
                 }
                 
                 vm.$axios.post(add_prefix(`/match_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), match_assistor_id_data)
@@ -470,7 +470,7 @@ export default {
                 test_hash_id_file_data = test_hash_id_file_data.split(/[\r\n]+/)
 
                 const match_test_assistor_id_data = {
-                  file: test_hash_id_file_data,
+                  identifier_content: test_hash_id_file_data,
                   test_id: test_id,
                   task_id: task_id
                 }
@@ -570,7 +570,14 @@ export default {
       this.model_name = this.$route.params.model_name,
       this.metric_name = this.$route.params.metric_name,
       this.test_id = this.$route.params.test_id
-      this.test_indicator = this.$route.params.test_indicator
+      if (this.test_id == undefined){
+        this.test_indicator = 'train'
+      }
+      else{
+        this.test_indicator = 'test'
+      }
+      // this.test_indicator = this.$route.params.test_indicator
+      console.log('test indicator is', this.test_indicator)
       this.test_description = this.$route.params.test_description
 
       console.log('wudi', this.task_description,

@@ -142,8 +142,8 @@ def dalete_pending(id):
         return bad_request('You must post JSON data.')
     if 'task_id' not in data:
         return bad_request('task_id is required.')
-    if 'test_id' not in data:
-        return bad_request('test_id is required.')
+    # if 'test_id' not in data:
+    #     return bad_request('test_id is required.')
     if 'test_indicator' not in data or not data.get('test_indicator'):
         return bad_request('test_indicator is required.')
 
@@ -154,7 +154,9 @@ def dalete_pending(id):
         return error_response(403)
 
     task_id = data['task_id']
-    test_id = data['test_id']
+    # print('data is', data)
+    if 'test_id' in data:
+        test_id = data['test_id']
     test_indicator = data['test_indicator']
 
     id = None

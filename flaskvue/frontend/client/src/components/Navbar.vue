@@ -1616,7 +1616,7 @@ export default {
               }
             
 
-            vm.$axios.post(add_prefix(`/add_test_pending/`, `/main_flow`), add_test_pending)
+            vm.$axios.post(add_prefix(`/add_test_pending/${vm.sharedState.user_id}/`, `/main_flow`), add_test_pending)
               .then((response) => {
                 // handle success
                 // // console.log("add_test_pending response", response.data)

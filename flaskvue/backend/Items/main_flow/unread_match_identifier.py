@@ -354,10 +354,13 @@ def send_test_output(id):
 
     Parameters:
         task_id - String. The id of current train task
+        test_id - String. The id of current test task
         output_content - List
        
     Returns:
-        {"send_test_output": "send test output successfully"}
+        {
+            "send_test_output": "send test output successfully"
+        }
 
     Raises:
         KeyError - raises an exception

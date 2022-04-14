@@ -9,8 +9,8 @@ from Items.authentication import token_auth
 from Items.utils import log, generate_msg, obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 
 from Items.mongoDB import mongoDB
-from Items.mongoDB import train_match
-from Items.mongoDB import test_match
+from Items.mongoDB import train_match, train_task
+from Items.mongoDB import test_match, test_task
 
 @main_flow_bp.route('/add_train_pending/<string:id>', methods=['POST'])
 @token_auth.login_required
@@ -119,15 +119,15 @@ def get_all_pending(id):
         for id in task_dict:
             test_indicator = task_dict[id]['test_indicator']
             if test_indicator == 'train':
-                train_match_document = train_match.search_train_match_document(task_id=id)
+                train_task_document = train_task.search_train_task_document(task_id=id)
                 # remove ObjectId object, which cannot be transferred into json format
-                del train_match_document['_id']
-                response['all_pending_items'][id] = train_match_document
+                del train_task_document['_id']
+                response['all_pending_items'][id] = train_task_document
             elif test_indicator == 'test':
-                test_match_document = test_match.search_test_match_document(test_id=id)
+                test_task_document = test_task.search_test_task_document(test_id=id)
                 # remove ObjectId object, which cannot be transferred into json format
-                del test_match_document['_id']
-                response['all_pending_items'][id] = test_match_document
+                del test_task_document['_id']
+                response['all_pending_items'][id] = test_task_document
 
     return jsonify(response)
 

@@ -158,7 +158,7 @@ def get_test_output_content(id):
     test_message_output.delete_test_message_output_document(test_id=test_id)
 
     log(generate_msg('Test 5.1:', 'sponsor get_user_test_output done'), user_id, task_id, test_id)
-    log(generate_msg('--------------------unread test output done\n'), user_id, task_id, test_id)
+    log(generate_msg('---- unread test output done\n'), user_id, task_id, test_id)
 
     response = {
         'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict

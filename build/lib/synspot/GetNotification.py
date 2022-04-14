@@ -38,28 +38,28 @@ class GetNotification():
         """
 
         unread_request_notification = update_all_notifications_data["unread request"]
-        unread_match_id_notification = update_all_notifications_data["unread match id"]
+        unread_match_identifier_notification = update_all_notifications_data["unread match id"]
         unread_situation_notification = update_all_notifications_data["unread situation"]
         unread_output_notification = update_all_notifications_data["unread output"]
 
         unread_test_request_notification = update_all_notifications_data["unread test request"]
-        unread_test_match_id_notification = update_all_notifications_data["unread test match id"]
+        unread_test_match_identifier_notification = update_all_notifications_data["unread test match id"]
         unread_test_output_notification = update_all_notifications_data["unread test output"]
 
         print("unread_request_notification", unread_request_notification)
-        print("unread_match_id_notification", unread_match_id_notification)
+        print("unread_match_identifier_notification", unread_match_identifier_notification)
         print("unread_situation_notification", unread_situation_notification)
         print("unread_output_notification", unread_output_notification)
 
         print("unread_test_request_notification", unread_test_request_notification)
-        print("unread_test_match_id_notification", unread_test_match_id_notification)
+        print("unread_test_match_identifier_notification", unread_test_match_identifier_notification)
         print("unread_test_output_notification", unread_test_output_notification)
 
         if unread_request_notification:
             self.default_trainRequest.unread_request(unread_request_notification)
 
-        if unread_match_id_notification:
-            self.default_trainRequest.unread_match_id(unread_match_id_notification)
+        if unread_match_identifier_notification:
+            self.default_trainRequest.unread_match_identifier(unread_match_identifier_notification)
 
         if unread_situation_notification:
             self.default_trainRequest.unread_situation(unread_situation_notification)
@@ -70,8 +70,8 @@ class GetNotification():
         if unread_test_request_notification:
             self.default_testRequest.unread_test_request(unread_test_request_notification)
 
-        if unread_test_match_id_notification:
-            self.default_testRequest.unread_test_match_id(unread_test_match_id_notification)
+        if unread_test_match_identifier_notification:
+            self.default_testRequest.unread_test_match_identifier(unread_test_match_identifier_notification)
 
         if unread_test_output_notification:
             self.default_testRequest.unread_test_output(unread_test_output_notification)

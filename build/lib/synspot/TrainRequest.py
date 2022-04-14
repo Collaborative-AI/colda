@@ -259,12 +259,12 @@ class TrainRequest():
         print('Assistor: Training task_id: ', task_id, ' is running')
         return 'unread_request successfully'
 
-    def unread_match_id(self, unread_match_id_notification: dict):
+    def unread_match_identifier(self, unread_match_identifier_notification: dict):
 
         """
-        Handle the unread_match_id. Consider sponsor and assistor, different functions will be called
+        Handle the unread_match_identifier. Consider sponsor and assistor, different functions will be called
 
-        :param unread_match_id_notification: Dictionary.
+        :param unread_match_identifier_notification: Dictionary.
 
         :returns: String. 'unread match id done'
 
@@ -274,34 +274,34 @@ class TrainRequest():
         # obtain some important information
         user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
 
-        cur_unread_match_id_Taskid_dict = unread_match_id_notification["check_dict"]
-        for task_id in cur_unread_match_id_Taskid_dict:
+        cur_unread_match_identifier_Taskid_dict = unread_match_identifier_notification["check_dict"]
+        for task_id in cur_unread_match_identifier_Taskid_dict:
 
             msg = ["----3. Unread Match ID\n", "3.1 Update the match id notification\n"]
             log_helper(msg, root, user_id, task_id)
 
-            check_sponsor = cur_unread_match_id_Taskid_dict[task_id]
+            check_sponsor = cur_unread_match_identifier_Taskid_dict[task_id]
             if check_sponsor == check_sponsor_class.sponsor:
-                msg = ["3.2 Unread_match_id_sponsor\n"]
+                msg = ["3.2 unread_match_identifier_sponsor\n"]
                 log_helper(msg, root, user_id, task_id)
 
-                self.unread_match_id_sponsor(task_id)
+                self.unread_match_identifier_sponsor(task_id)
             elif check_sponsor == check_sponsor_class.assistor:
-                msg = ["3.2 Unread_match_id_assistor\n"]
+                msg = ["3.2 unread_match_identifier_assistor\n"]
                 log_helper(msg, root, user_id, task_id)
 
-                self.unread_match_id_assistor(task_id)
+                self.unread_match_identifier_assistor(task_id)
 
         return 'unread match id done'
 
-    def unread_match_id_sponsor(self, task_id: str):
+    def unread_match_identifier_sponsor(self, task_id: str):
 
         """
-        Handle the unread_match_id of sponsor.
+        Handle the unread_match_identifier of sponsor.
 
         :param task_id: String.
 
-        :returns: String. 'unread_match_id_sponsor successfully'
+        :returns: String. 'unread_match_identifier_sponsor successfully'
 
         :exception OSError: Placeholder.
         """
@@ -400,16 +400,16 @@ class TrainRequest():
         log_helper(msg, root, user_id, task_id)
 
         print('Sponsor: Training task_id: ', task_id, ' is running')
-        return 'unread_match_id_sponsor successfully'
+        return 'unread_match_identifier_sponsor successfully'
 
-    def unread_match_id_assistor(self, task_id: str):
+    def unread_match_identifier_assistor(self, task_id: str):
 
         """
-        Handle the unread_match_id of assistor.
+        Handle the unread_match_identifier of assistor.
 
         :param task_id: String.
 
-        :returns: String. 'unread_match_id_assistor successfully'
+        :returns: String. 'unread_match_identifier_assistor successfully'
 
         :exception OSError: Placeholder.
         """
@@ -459,7 +459,7 @@ class TrainRequest():
         log_helper(msg, root, user_id, task_id)
 
         print('Assistor: Training task_id: ', task_id, ' is running')
-        return 'unread_match_id_assistor successfully'
+        return 'unread_match_identifier_assistor successfully'
 
     def unread_situation(self, unread_situation_notification: dict):
 
@@ -476,15 +476,15 @@ class TrainRequest():
         # obtain important information
         user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
 
-        cur_unread_match_id_Taskid_dict = unread_situation_notification["check_dict"]
+        cur_unread_match_identifier_Taskid_dict = unread_situation_notification["check_dict"]
         cur_unread_situation_Rounds_dict = unread_situation_notification["rounds_dict"]
 
-        for task_id in cur_unread_match_id_Taskid_dict:
+        for task_id in cur_unread_match_identifier_Taskid_dict:
 
             msg = ["-------------------------- 4. Unread Situation\n", "4.1 Update the situation notification\n"]
             log_helper(msg, root, user_id, task_id)
 
-            check_sponsor = cur_unread_match_id_Taskid_dict[task_id]
+            check_sponsor = cur_unread_match_identifier_Taskid_dict[task_id]
             rounds = cur_unread_situation_Rounds_dict[task_id]
 
             if check_sponsor == check_sponsor_class.sponsor:

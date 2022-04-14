@@ -239,37 +239,37 @@ class TestRequest:
         print('Assistor: Testing test_id: ', test_id, ' is running')
         return 'unread_test_request done'
 
-    def unread_test_match_id(self, unread_test_match_id_notification: dict, unittest_callbacks=None):
+    def unread_test_match_identifier(self, unread_test_match_identifier_notification: dict, unittest_callbacks=None):
         """
-        Handle the unread_test_match_id. Two situations needed to be considered: sponsor and assistor
+        Handle the unread_test_match_identifier. Two situations needed to be considered: sponsor and assistor
 
-        :param unread_test_match_id_notification: Dictionary.
+        :param unread_test_match_identifier_notification: Dictionary.
 
         :returns: None
 
         :exception OSError: Placeholder.
         """
 
-        cur_unread_test_match_id_Testid_dict = unread_test_match_id_notification["check_dict"]
-        test_id_to_task_id = unread_test_match_id_notification["test_id_to_task_id"]
-        max_rounds_dict = unread_test_match_id_notification["max_rounds"]
+        cur_unread_test_match_identifier_Testid_dict = unread_test_match_identifier_notification["check_dict"]
+        test_id_to_task_id = unread_test_match_identifier_notification["test_id_to_task_id"]
+        max_rounds_dict = unread_test_match_identifier_notification["max_rounds"]
 
-        for test_id in cur_unread_test_match_id_Testid_dict:
+        for test_id in cur_unread_test_match_identifier_Testid_dict:
             task_id = test_id_to_task_id[test_id]
-            check_sponsor = cur_unread_test_match_id_Testid_dict[test_id]
+            check_sponsor = cur_unread_test_match_identifier_Testid_dict[test_id]
             max_round = max_rounds_dict[test_id]
 
             if check_sponsor == check_sponsor_class.sponsor:
-                self.unread_test_match_id_sponsor(task_id, test_id, max_round, unittest_callbacks)
+                self.unread_test_match_identifier_sponsor(task_id, test_id, max_round, unittest_callbacks)
             elif check_sponsor == check_sponsor_class.assistor:
-                self.unread_test_match_id_assistor(task_id, test_id, max_round, unittest_callbacks)
+                self.unread_test_match_identifier_assistor(task_id, test_id, max_round, unittest_callbacks)
 
-        return 'unread_test_match_id done'
+        return 'unread_test_match_identifier done'
 
-    def unread_test_match_id_sponsor(self, task_id: str, test_id: str, max_round: int, unittest_callbacks):
+    def unread_test_match_identifier_sponsor(self, task_id: str, test_id: str, max_round: int, unittest_callbacks):
 
         """
-        Handle the unread_test_match_id of sponsor.
+        Handle the unread_test_match_identifier of sponsor.
 
         :param task_id: String.
         :param test_id: String.
@@ -341,10 +341,10 @@ class TestRequest:
         print('Sponsor: Testing test_id: ', test_id, ' is running')
         return
 
-    def unread_test_match_id_assistor(self, task_id: str, test_id: str, cur_max_round: int, unittest_callbacks):
+    def unread_test_match_identifier_assistor(self, task_id: str, test_id: str, cur_max_round: int, unittest_callbacks):
 
         """
-        Handle the unread_test_match_id of assistor.
+        Handle the unread_test_match_identifier of assistor.
 
         :param task_id: String.
         :param test_id: String.

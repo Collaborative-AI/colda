@@ -65,4 +65,36 @@ class Network():
             self.__token = None
         except:
             print('Logout procedure wrong')
-        
+        return
+
+    def process_url(self, prefix, url, suffix=None):
+        """
+        Process url
+
+        :returns: String
+
+        :exception OSError: Placeholder.
+        """
+        if suffix == None:
+            return self.add_prefix_to_url(prefix, url)
+        return self.add_suffix_to_url(self.add_prefix_to_url(prefix, url), suffix)
+
+    def add_prefix_to_url(self, prefix, url):
+        """
+        Add prefix to url. Currently, prefix is the blueprint in backend(flask)
+
+        :returns: String
+
+        :exception OSError: Placeholder.
+        """
+        return '/' + prefix + url
+
+    def add_suffix_to_url(self, url, suffix):
+        """
+        Add suffix to url. Currently, suffix is user_id
+
+        :returns: String
+
+        :exception OSError: Placeholder.
+        """
+        return url + '/' + suffix

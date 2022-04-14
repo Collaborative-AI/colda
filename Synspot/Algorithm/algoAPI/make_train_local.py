@@ -1,9 +1,9 @@
 import numpy as np
 import os
 import synspot
-from synspot.algorithm.utils import save, log, parse_idx
-from synspot.algorithm.models import Model
-from synspot.algorithm.metrics import Metric
+from synspot.algorithm.algoAPI.utils import save, log, parse_idx
+from synspot.algorithm.algoAPI.models import Model
+from synspot.algorithm.algoAPI.metrics import Metric
 
 def make_train_local(root, self_id, task_id, dataset_path, data_idx, target_idx, skip_header, task_mode, model_name, metric_name):
 

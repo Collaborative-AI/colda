@@ -1,5 +1,5 @@
 import os
-from synspot.algorithm.utils import makedir_exist_ok
+from synspot.algorithm.algoAPI.utils import makedir_exist_ok
 
 
 def save_output(root, self_id, task_id, mode, test_id, round, from_id):

@@ -24,6 +24,11 @@ from .GetNotification import GetNotification
 from synspot.database import Database
 from synspot.network import Network
 from synspot.personalinformation import PersonalInformation
+
+from synspot.algorithm.customFactory import FixedParameterFactory, OptimizerTrainedParameteFactory, OwnFunctionFactory
+from synspot.algorithm.algoStrategy import AlgoConcreteStategy
+
+from collections.abc import Callable
 # from .Database_class_helper import database_strategy_interface
 # from Algorithm import log
 # from .Network import Network
@@ -33,6 +38,7 @@ from synspot.personalinformation import PersonalInformation
 # from synspot import Get_Notification
 # from synspot import Database_class
 import threading
+from typing import List, Tuple, Dict
 
 _default_authorization = Authorization.get_Authorization_instance()
 _default_trainRequest = TrainRequest.get_TrainRequest_instance()
@@ -44,7 +50,6 @@ _default_database = Database.get_Database_instance()
 
 def userRegister(username: str, email: str, password: str):
     return _default_authorization.userRegister(username, password)
-    
     
 def userLogin(username: str, password: str):
     res = _default_authorization.userLogin(username, password)
@@ -82,7 +87,6 @@ def start_Collaboration():
 
 def end_Collaboration():
     return _default_getNotification.end_Collaboration()
-    
 
 def set_default_data_path(default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None):
     PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
@@ -155,6 +159,29 @@ def store_database(path, mode='pickle'):
     else:
         raise ValueError('Not valid save mode')
     return True
+
+# https://juejin.cn/post/6844903503660335112
+def set_train_stage_custom_handler(handler_type: str, OwnFunction: Dict[Callable[[], None]]=None):
+    if handler_type == 'fixedParameter':
+        custom = FixedParameterFactory.create_custom()
+    elif handler_type == 'optimizerTrainedParameter':
+        custom = OptimizerTrainedParameteFactory.create_custom()
+    elif handler_type == 'ownFunctionParameter':
+        custom = OwnFunctionFactory.create_custom(OwnFunction=OwnFunction)
+    
+    AlgoConcreteStategy._train_custom = custom
+    return
+
+def set_test_stage_custom_handler(handler_type: str, OwnFunction: Dict[Callable[[], None]]=None):
+    if handler_type == 'fixedParameter':
+        custom = FixedParameterFactory.create_custom()
+    elif handler_type == 'optimizerTrainedParameter':
+        custom = OptimizerTrainedParameteFactory.create_custom()
+    elif handler_type == 'ownFunctionParameter':
+        custom = OwnFunctionFactory.create_custom(OwnFunction=OwnFunction)
+    
+    AlgoConcreteStategy._test_custom = custom
+    return
 
 def get_pending_requests():
     pass

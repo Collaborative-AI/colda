@@ -15,7 +15,7 @@ Task ID: 8c2bbbcc-d662-46df-9557-43c1696cb316
 
 3.1 Update the match id notification
 
-3.2 Unread_match_id_sponsor
+3.2 unread_match_identifier_sponsor
 
 3.3 Sponsor gets matched id file
 

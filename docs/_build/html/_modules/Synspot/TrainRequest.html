@@ -340,12 +340,12 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_request successfully&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_match_id"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_match_id_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_match_identifier"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_match_identifier">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_match_identifier_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the unread_match_id. Consider sponsor and assistor, different functions will be called</span>
+<span class="sd">        Handle the unread_match_identifier. Consider sponsor and assistor, different functions will be called</span>
 
-<span class="sd">        :param unread_match_id_notification: Dictionary.</span>
+<span class="sd">        :param unread_match_identifier_notification: Dictionary.</span>
 
 <span class="sd">        :returns: String. &#39;unread match id done&#39;</span>
 
@@ -355,34 +355,34 @@
         <span class="c1"># obtain some important information</span>
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_train_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">cur_unread_match_id_Taskid_dict</span> <span class="o">=</span> <span class="n">unread_match_id_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">cur_unread_match_id_Taskid_dict</span><span class="p">:</span>
+        <span class="n">cur_unread_match_identifier_Taskid_dict</span> <span class="o">=</span> <span class="n">unread_match_identifier_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">cur_unread_match_identifier_Taskid_dict</span><span class="p">:</span>
 
             <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;----3. Unread Match ID</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;3.1 Update the match id notification</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
             <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
-            <span class="n">check_sponsor</span> <span class="o">=</span> <span class="n">cur_unread_match_id_Taskid_dict</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
+            <span class="n">check_sponsor</span> <span class="o">=</span> <span class="n">cur_unread_match_identifier_Taskid_dict</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">check_sponsor</span> <span class="o">==</span> <span class="n">check_sponsor_class</span><span class="o">.</span><span class="n">sponsor</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;3.2 Unread_match_id_sponsor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;3.2 unread_match_identifier_sponsor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
                 <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">unread_match_id_sponsor</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unread_match_identifier_sponsor</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">check_sponsor</span> <span class="o">==</span> <span class="n">check_sponsor_class</span><span class="o">.</span><span class="n">assistor</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;3.2 Unread_match_id_assistor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;3.2 unread_match_identifier_assistor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
                 <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">unread_match_id_assistor</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unread_match_identifier_assistor</span><span class="p">(</span><span class="n">task_id</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="s1">&#39;unread match id done&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_match_id_sponsor"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_match_id_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_match_identifier_sponsor"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_match_identifier_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_identifier_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the unread_match_id of sponsor.</span>
+<span class="sd">        Handle the unread_match_identifier of sponsor.</span>
 
 <span class="sd">        :param task_id: String.</span>
 
-<span class="sd">        :returns: String. &#39;unread_match_id_sponsor successfully&#39;</span>
+<span class="sd">        :returns: String. &#39;unread_match_identifier_sponsor successfully&#39;</span>
 
 <span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -481,16 +481,16 @@
         <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;unread_match_id_sponsor successfully&#39;</span></div>
+        <span class="k">return</span> <span class="s1">&#39;unread_match_identifier_sponsor successfully&#39;</span></div>
 
-<div class="viewcode-block" id="TrainRequest.unread_match_id_assistor"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_match_id_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_id_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainRequest.unread_match_identifier_assistor"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_match_identifier_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_match_identifier_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the unread_match_id of assistor.</span>
+<span class="sd">        Handle the unread_match_identifier of assistor.</span>
 
 <span class="sd">        :param task_id: String.</span>
 
-<span class="sd">        :returns: String. &#39;unread_match_id_assistor successfully&#39;</span>
+<span class="sd">        :returns: String. &#39;unread_match_identifier_assistor successfully&#39;</span>
 
 <span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -540,7 +540,7 @@
         <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Training task_id: &#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;unread_match_id_assistor successfully&#39;</span></div>
+        <span class="k">return</span> <span class="s1">&#39;unread_match_identifier_assistor successfully&#39;</span></div>
 
 <div class="viewcode-block" id="TrainRequest.unread_situation"><a class="viewcode-back" href="../../reference/TrainRequest.html#synspot.TrainRequest.TrainRequest.unread_situation">[docs]</a>    <span class="k">def</span> <span class="nf">unread_situation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_situation_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 
@@ -557,15 +557,15 @@
         <span class="c1"># obtain important information</span>
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_train_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">cur_unread_match_id_Taskid_dict</span> <span class="o">=</span> <span class="n">unread_situation_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
+        <span class="n">cur_unread_match_identifier_Taskid_dict</span> <span class="o">=</span> <span class="n">unread_situation_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
         <span class="n">cur_unread_situation_Rounds_dict</span> <span class="o">=</span> <span class="n">unread_situation_notification</span><span class="p">[</span><span class="s2">&quot;rounds_dict&quot;</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">cur_unread_match_id_Taskid_dict</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">cur_unread_match_identifier_Taskid_dict</span><span class="p">:</span>
 
             <span class="n">msg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-------------------------- 4. Unread Situation</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;4.1 Update the situation notification</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
             <span class="n">log_helper</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">)</span>
 
-            <span class="n">check_sponsor</span> <span class="o">=</span> <span class="n">cur_unread_match_id_Taskid_dict</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
+            <span class="n">check_sponsor</span> <span class="o">=</span> <span class="n">cur_unread_match_identifier_Taskid_dict</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
             <span class="n">rounds</span> <span class="o">=</span> <span class="n">cur_unread_situation_Rounds_dict</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">check_sponsor</span> <span class="o">==</span> <span class="n">check_sponsor_class</span><span class="o">.</span><span class="n">sponsor</span><span class="p">:</span>

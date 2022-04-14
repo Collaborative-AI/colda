@@ -320,37 +320,37 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Assistor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;unread_test_request done&#39;</span></div>
 
-<div class="viewcode-block" id="TestRequest.unread_test_match_id"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_match_id_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_match_identifier"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_match_identifier">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unread_test_match_identifier_notification</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the unread_test_match_id. Two situations needed to be considered: sponsor and assistor</span>
+<span class="sd">        Handle the unread_test_match_identifier. Two situations needed to be considered: sponsor and assistor</span>
 
-<span class="sd">        :param unread_test_match_id_notification: Dictionary.</span>
+<span class="sd">        :param unread_test_match_identifier_notification: Dictionary.</span>
 
 <span class="sd">        :returns: None</span>
 
 <span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">cur_unread_test_match_id_Testid_dict</span> <span class="o">=</span> <span class="n">unread_test_match_id_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
-        <span class="n">test_id_to_task_id</span> <span class="o">=</span> <span class="n">unread_test_match_id_notification</span><span class="p">[</span><span class="s2">&quot;test_id_to_task_id&quot;</span><span class="p">]</span>
-        <span class="n">max_rounds_dict</span> <span class="o">=</span> <span class="n">unread_test_match_id_notification</span><span class="p">[</span><span class="s2">&quot;max_rounds&quot;</span><span class="p">]</span>
+        <span class="n">cur_unread_test_match_identifier_Testid_dict</span> <span class="o">=</span> <span class="n">unread_test_match_identifier_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
+        <span class="n">test_id_to_task_id</span> <span class="o">=</span> <span class="n">unread_test_match_identifier_notification</span><span class="p">[</span><span class="s2">&quot;test_id_to_task_id&quot;</span><span class="p">]</span>
+        <span class="n">max_rounds_dict</span> <span class="o">=</span> <span class="n">unread_test_match_identifier_notification</span><span class="p">[</span><span class="s2">&quot;max_rounds&quot;</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">test_id</span> <span class="ow">in</span> <span class="n">cur_unread_test_match_id_Testid_dict</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">test_id</span> <span class="ow">in</span> <span class="n">cur_unread_test_match_identifier_Testid_dict</span><span class="p">:</span>
             <span class="n">task_id</span> <span class="o">=</span> <span class="n">test_id_to_task_id</span><span class="p">[</span><span class="n">test_id</span><span class="p">]</span>
-            <span class="n">check_sponsor</span> <span class="o">=</span> <span class="n">cur_unread_test_match_id_Testid_dict</span><span class="p">[</span><span class="n">test_id</span><span class="p">]</span>
+            <span class="n">check_sponsor</span> <span class="o">=</span> <span class="n">cur_unread_test_match_identifier_Testid_dict</span><span class="p">[</span><span class="n">test_id</span><span class="p">]</span>
             <span class="n">max_round</span> <span class="o">=</span> <span class="n">max_rounds_dict</span><span class="p">[</span><span class="n">test_id</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">check_sponsor</span> <span class="o">==</span> <span class="n">check_sponsor_class</span><span class="o">.</span><span class="n">sponsor</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">unread_test_match_id_sponsor</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">max_round</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unread_test_match_identifier_sponsor</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">max_round</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">check_sponsor</span> <span class="o">==</span> <span class="n">check_sponsor_class</span><span class="o">.</span><span class="n">assistor</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">unread_test_match_id_assistor</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">max_round</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unread_test_match_identifier_assistor</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">max_round</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="s1">&#39;unread_test_match_id done&#39;</span></div>
+        <span class="k">return</span> <span class="s1">&#39;unread_test_match_identifier done&#39;</span></div>
 
-<div class="viewcode-block" id="TestRequest.unread_test_match_id_sponsor"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_match_id_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_match_identifier_sponsor"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_match_identifier_sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_identifier_sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the unread_test_match_id of sponsor.</span>
+<span class="sd">        Handle the unread_test_match_identifier of sponsor.</span>
 
 <span class="sd">        :param task_id: String.</span>
 <span class="sd">        :param test_id: String.</span>
@@ -422,10 +422,10 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Testing test_id: &#39;</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="TestRequest.unread_test_match_id_assistor"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_match_id_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_id_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cur_max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
+<div class="viewcode-block" id="TestRequest.unread_test_match_identifier_assistor"><a class="viewcode-back" href="../../reference/TestRequest.html#synspot.TestRequest.TestRequest.unread_test_match_identifier_assistor">[docs]</a>    <span class="k">def</span> <span class="nf">unread_test_match_identifier_assistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cur_max_round</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unittest_callbacks</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Handle the unread_test_match_id of assistor.</span>
+<span class="sd">        Handle the unread_test_match_identifier of assistor.</span>
 
 <span class="sd">        :param task_id: String.</span>
 <span class="sd">        :param test_id: String.</span>

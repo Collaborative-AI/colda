@@ -33,9 +33,31 @@ class Authorization():
 
         return cls.__authorization_instance
 
+    def process_token(self, token: str):
+        """
+        Process token from backend and Set correlated attributes
+
+        :returns: True
+
+        :exception OSError: Placeholder.
+        """
+        # split token (token has 3 parts)
+        temp = token.split('.')
+        # add padding to base64 string
+        temp[1] = handle_base64_padding(temp[1])
+        # get user_id
+        user_id = str(json.loads(base64.b64decode(temp[1]))['user_id'])
+        print('login user_id', user_id)
+
+        self.Network_instance.token = token
+        self.PersonalInformation_instance.user_id = user_id
+
+        return True
+
+
     def userRegister(self, username: str, email:str, password: str):
 
-        url = self.base_url + "/users/"
+        url = self.base_url + self.Network_instance.process_url(prefix='user', url='/users')
         data = {
             'username': username,
             'email': email,
@@ -71,7 +93,7 @@ class Authorization():
         :exception OSError: Placeholder.
         """
 
-        url = self.base_url + "/tokens"
+        url = self.base_url + self.Network_instance.process_url(prefix='auth', url='/tokens')
         print('url', url, username, password)
         try:
             token_response = requests.post(url, auth=(username, password))
@@ -81,18 +103,9 @@ class Authorization():
        
         print('token_response', token_response)
         token_response_text = json.loads(token_response.text)
-
-        token = token_response_text["token"]        
-        # split token (token has 3 parts)
-        temp = token.split('.')
-        # add padding to base64 string
-        temp[1] = handle_base64_padding(temp[1])
-        # get user_id
-        user_id = str(json.loads(base64.b64decode(temp[1]))['user_id'])
-        print('login user_id', user_id)
-
-        self.Network_instance.token = token
-        self.PersonalInformation_instance.user_id = user_id
+        token = token_response_text["token"] 
+        self.process_token(token)
+        
         
         return True
 

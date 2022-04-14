@@ -2,8 +2,25 @@ import json
 import numpy as np
 
 from .error import check_Algorithm_return_value
-from .algorithm import log
+from .algorithm.algoAPI import log
 
+def obtain_notification_information(notification_dict_value, test_indicator='train'):
+    if test_indicator == 'train':
+        sender_random_id = notification_dict_value['sender_random_id']
+        role = notification_dict_value['role']
+        cur_rounds_num = notification_dict_value['cur_rounds_num']
+        return sender_random_id, role, cur_rounds_num
+    elif test_indicator == 'test':
+        sender_random_id = notification_dict_value['sender_random_id']
+        role = notification_dict_value['role']
+        cur_rounds_num = notification_dict_value['cur_rounds_num']
+        test_id = notification_dict_value['task_id']
+        return sender_random_id, role, cur_rounds_num, test_id
+
+class check_sponsor_class:
+    sponsor = 1
+    assistor = 0
+    
 def log_helper(msg, root, user_id, task_id):
     """
     Append the msg to log file

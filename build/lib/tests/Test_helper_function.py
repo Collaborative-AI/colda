@@ -35,16 +35,16 @@ class Test_helper_function:
         unread_test_request_res = _default_testRequest.unread_test_request(unread_test_request_notification)
         assert unread_test_request_res == 'unread_test_request done'
 
-    def unread_test_match_id_sponsor_helper(self, unread_test_match_id_notification, unittest_strategy):
+    def unread_test_match_identifier_sponsor_helper(self, unread_test_match_identifier_notification, unittest_strategy):
         _default_unittest_strategy_interface.unittest_strategy = unittest_strategy
-        unread_test_match_id_sponsor_res = _default_testRequest.unread_test_match_id(unread_test_match_id_notification, _default_unittest_strategy_interface.get_unread_test_sponsor_match_id_test())   
-        assert unread_test_match_id_sponsor_res == 'unread_test_match_id done'
+        unread_test_match_identifier_sponsor_res = _default_testRequest.unread_test_match_identifier(unread_test_match_identifier_notification, _default_unittest_strategy_interface.get_unread_test_sponsor_match_id_test())   
+        assert unread_test_match_identifier_sponsor_res == 'unread_test_match_identifier done'
     
-    def unread_test_match_id_assistor_helper(self, unread_test_match_id_notification, unittest_strategy):
+    def unread_test_match_identifier_assistor_helper(self, unread_test_match_identifier_notification, unittest_strategy):
         _default_unittest_strategy_interface.unittest_strategy = unittest_strategy
-        unread_test_match_id_assistor_res = _default_testRequest.unread_test_match_id(unread_test_match_id_notification, _default_unittest_strategy_interface.get_unread_test_assistor_match_id_test())   
-        print('unread_test_match_id_assistor_res', unread_test_match_id_assistor_res)
-        assert unread_test_match_id_assistor_res == 'unread_test_match_id done'
+        unread_test_match_identifier_assistor_res = _default_testRequest.unread_test_match_identifier(unread_test_match_identifier_notification, _default_unittest_strategy_interface.get_unread_test_assistor_match_id_test())   
+        print('unread_test_match_identifier_assistor_res', unread_test_match_identifier_assistor_res)
+        assert unread_test_match_identifier_assistor_res == 'unread_test_match_identifier done'
     
     def unread_test_output(self, unread_test_output_notification, unittest_strategy):
         _default_unittest_strategy_interface.unittest_strategy = unittest_strategy

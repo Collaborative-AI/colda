@@ -2,9 +2,7 @@ import numpy as np
 import os
 import json
 import collections
-from synspot.algorithm.utils import load, makedir_exist_ok, parse_idx
-import json
-
+from synspot.algorithm.algoAPI.utils import load, makedir_exist_ok, parse_idx
 
 def make_test(root, self_id, task_id, test_id, round, from_id, dataset_path, data_idx, skip_header):
 

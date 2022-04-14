@@ -1,7 +1,7 @@
 import numpy as np
 import os
-from synspot.algorithm.utils import load, log, parse_idx
-from synspot.algorithm.metrics import Metric
+from synspot.algorithm.algoAPI.utils import load, log, parse_idx
+from synspot.algorithm.algoAPI.metrics import Metric
 
 def make_test_local(root,self_id, task_id, test_id, dataset_path, data_idx, target_idx, skip_header, task_mode, metric_name):
 

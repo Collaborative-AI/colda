@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, accuracy_score, f1_score, roc_auc_score
-from synspot.algorithm.utils import softmax
+from synspot.algorithm.algoAPI.utils import softmax
 
 
 class Metric:

@@ -34,19 +34,19 @@ class Test_unread_test_output(Train_helper_function, Test_helper_function):
         assert "unread request" in update_all_notifications_data.keys()
         self.unread_request_helper(update_all_notifications_data["unread request"])
         
-        # unread_match_id_assistor
+        # unread_match_identifier_assistor
         self.second_user_login()
         set_default_data_path(default_mode=testing_data['default_mode'], default_task_mode=testing_data['default_task_mode'], default_model_name=testing_data['default_model_name'], default_file_path=testing_data['default_file_path'],
                             default_id_column=testing_data['default_id_column'], default_data_column=testing_data['default_data_column'])
         update_all_notifications_data = self.start_Collaboration()
         assert "unread match id" in update_all_notifications_data.keys()
-        self.unread_match_id_assistor_helper(update_all_notifications_data["unread match id"])
+        self.unread_match_identifier_assistor_helper(update_all_notifications_data["unread match id"])
 
-        # unread_match_id_sponsor
+        # unread_match_identifier_sponsor
         self.first_user_login()
         update_all_notifications_data = self.start_Collaboration()
         assert "unread match id" in update_all_notifications_data
-        self.unread_match_id_sponsor_helper(update_all_notifications_data["unread match id"])
+        self.unread_match_identifier_sponsor_helper(update_all_notifications_data["unread match id"])
         
         # self.second_user_login()
         # set_default_data_path(default_mode=testing_data['default_mode'], default_task_mode=testing_data['default_task_mode'], default_model_name=testing_data['default_model_name'], default_file_path=testing_data['default_file_path'],
@@ -88,19 +88,19 @@ class Test_unread_test_output(Train_helper_function, Test_helper_function):
         assert "unread test request" in update_all_notifications_data.keys()
         self.unread_test_request_helper(update_all_notifications_data["unread test request"])
 
-        # unread_test_match_id_sponsor
+        # unread_test_match_identifier_sponsor
         self.first_user_login()
         update_all_notifications_data = self.start_Collaboration()
         assert "unread test match id" in update_all_notifications_data.keys()
-        self.unread_test_match_id_sponsor_helper(update_all_notifications_data["unread test match id"], unittest_strategy=Regression_1s_1a())
+        self.unread_test_match_identifier_sponsor_helper(update_all_notifications_data["unread test match id"], unittest_strategy=Regression_1s_1a())
 
-        # unread_test_match_id_assistor
+        # unread_test_match_identifier_assistor
         self.second_user_login()
         set_default_data_path(default_mode=testing_data['default_mode'], default_task_mode=testing_data['default_task_mode'], default_model_name=testing_data['default_model_name'], default_file_path=testing_data['default_file_path'],
                             default_id_column=testing_data['default_id_column'], default_data_column=testing_data['default_data_column'])
         update_all_notifications_data = self.start_Collaboration()
         assert "unread test match id" in update_all_notifications_data.keys()
-        self.unread_test_match_id_assistor_helper(update_all_notifications_data["unread test match id"], unittest_strategy=Regression_1s_1a())
+        self.unread_test_match_identifier_assistor_helper(update_all_notifications_data["unread test match id"], unittest_strategy=Regression_1s_1a())
 
         # unread_test_output
         self.first_user_login()

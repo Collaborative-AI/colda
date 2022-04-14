@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import hashlib
-from synspot.algorithm.utils import makedir_exist_ok, parse_idx
+from synspot.algorithm.algoAPI.utils import makedir_exist_ok, parse_idx
 
 
 def make_hash(root, self_id, task_id, mode, test_id, dataset_path, id_idx, skip_header):

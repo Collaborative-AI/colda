@@ -1,23 +1,68 @@
+from urllib.robotparser import RobotFileParser
 import requests
 import json
 import time
 import threading
 import numpy as np
 
+from abc import ABC, abstractmethod
 from synspot.network import Network
 from synspot.personalinformation import PersonalInformation
 from synspot.database import Database
 from .error import check_Algorithm_return_value
-from .utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value
+from .utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value, check_sponsor_class, obtain_notification_information
 
-from .algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
+from .algorithm.algoAPI import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
 # from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
 
-class check_sponsor_class:
-    sponsor = 1
-    assistor = 0
+class AbstractTestRequest(ABC):
+    """
+    The Strategy interface declares operations common to all supported versions
+    of some algorithm.
 
-class TestRequest:
+    The Context uses this interface to call the algorithm defined by Concrete
+    Strategies.
+    """
+
+    @classmethod
+    @abstractmethod
+    def get_TestRequest_instance(cls):
+        pass
+
+    @abstractmethod
+    def handleTestRequest(self, *args):
+        pass
+    
+    @abstractmethod
+    def unread_test_request(self, *args):
+        pass
+
+    @abstractmethod
+    def unread_test_match_identifier(self, *args):
+        pass
+
+    @abstractmethod
+    def unread_test_match_identifier_sponsor(self, *args):
+        pass
+
+    @abstractmethod
+    def unread_test_match_identifier_assistor(self, *args):
+        pass
+
+    @abstractmethod
+    def unread_test_output(self, *args):
+        pass
+
+    @abstractmethod
+    def unread_test_output_singleTask(self, *args):
+        pass
+    
+    @abstractmethod
+    def unread_test_output_make_eval_helper(self, *args):
+        pass
+
+
+class TestRequest(AbstractTestRequest):
     __TestRequest_instance = None
 
     def __init__(self):
@@ -36,7 +81,7 @@ class TestRequest:
 
         return cls.__TestRequest_instance
 
-    def __obtain_important_information(self, get_test_id):
+    def __obtain_important_information(self, get_test_id=False):
         """
         Obtain the information we need: user_id, root, token, task_id
 
@@ -94,7 +139,7 @@ class TestRequest:
         :exception OSError: Placeholder.
         """
 
-        url = self.base_url + "/create_new_test_task/"
+        url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url="/create_new_test_task")
         token = self.Network_instance.token
         try:
             get_test_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
@@ -151,7 +196,7 @@ class TestRequest:
         test_hash_id_file_data = load_file(test_hash_id_file_address[2])
 
         # call find assistor in server
-        url = self.base_url + "/find_test_assistor/"
+        url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url="/find_test_assistor", suffix=user_id)
         data = {
             "task_id": task_id,
             "task_name": task_name,
@@ -161,7 +206,7 @@ class TestRequest:
             'task_mode': task_mode,
             'model_name': model_name,
             'metric_name': metric_name,
-            'id_file': test_hash_id_file_data,
+            'identifier_content': test_hash_id_file_data,
         }
         try:
             find_test_assistor_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
@@ -173,12 +218,12 @@ class TestRequest:
         print('Sponsor: Testing test_id: ', test_id, ' is running')
         return ('handleTestRequest successfully', test_id)
 
-    def unread_test_request(self, unread_test_request_notification: dict):
+    def unread_test_request(self, test_id_dict: dict):
 
         """
         Handle the unread test request for three default mode: ["passive", "active", "auto"]
 
-        :param unread_test_request_notification: Dictionary.
+        :param test_id_dict: Dictionary.
 
         :returns: None
 
@@ -191,18 +236,14 @@ class TestRequest:
         user_id, default_mode, default_task_mode, default_model_name, default_file_path, default_id_column, default_data_column = self.Database_instance.get_User_Default_Table(user_id)
         print('zhei', user_id, default_mode, default_task_mode, default_file_path, default_id_column, default_data_column, default_model_name)
 
-        cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
-        test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
+        # cur_unread_test_request_Testid_dict = unread_test_request_notification["check_dict"]
+        # test_id_to_task_id = unread_test_request_notification["test_id_to_task_id"]
 
-        if default_mode == "manual":
-            # Insert to DB
-            pass
-
-        elif default_mode == "auto":
+        if default_mode == "auto":
             # get default path
+            for test_id in test_id_dict:
 
-            for test_id in cur_unread_test_request_Testid_dict:
-                task_id = test_id_to_task_id[test_id]
+                sender_random_id, role, cur_rounds_num, task_id = obtain_notification_information(notification_dict_value=test_id_dict[test_id], test_indicator='test')
 
                 # Insert default into User_Assistor_Table
                 store_User_Assistor_Table_res = self.Database_instance.store_User_Assistor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator, mode=default_mode, task_mode=default_task_mode, model_name=default_model_name, 
@@ -211,7 +252,9 @@ class TestRequest:
                 # assert store_User_Assistor_Table_res == 'User_Assistor_Table stores successfully'
 
                 # call make_hash in Algorithm module
-                test_hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, dataset_path=default_file_path, id_idx=default_id_column, skip_header=self.skip_header_default)
+                test_hash_id_file_address = make_hash(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
+                                                      test_id=test_id, dataset_path=default_file_path, id_idx=default_id_column, 
+                                                      skip_header=self.skip_header_default)
                 print('sssss')
                 # assert test_hash_id_file_address is not None
                 _, test_hash_id_file_address = handle_Algorithm_return_value("test_hash_id_file_address", test_hash_id_file_address, "200", "make_hash")
@@ -221,11 +264,11 @@ class TestRequest:
                 # we need string type with \n between ids.
                 test_hash_id_file_data = load_file(test_hash_id_file_address[2])
 
-                url = self.base_url + "/match_test_assistor_id/"
+                url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url="/match_test_identifier_content", suffix=user_id)
                 data = {
-                    "file": test_hash_id_file_data,
                     'task_id': task_id,
                     "test_id": test_id,
+                    "identifier_content": test_hash_id_file_data,
                 }
                 try:
                     match_test_assistor_id_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
@@ -233,43 +276,47 @@ class TestRequest:
                                                     testing_key_value_pair=[('test_id', None), ('stored', 'assistor test match id stored')])
                 except:
                     print('match_test_assistor_id_res wrong')
+        elif default_mode == "manual":
+            # Insert to DB
+            pass
         else:
             print('default_mode wrong')
 
         print('Assistor: Testing test_id: ', test_id, ' is running')
         return 'unread_test_request done'
 
-    def unread_test_match_id(self, unread_test_match_id_notification: dict, unittest_callbacks=None):
+    def unread_test_match_identifier(self, test_id_dict: dict, unittest_callbacks=None):
         """
-        Handle the unread_test_match_id. Two situations needed to be considered: sponsor and assistor
+        Handle the unread_test_match_identifier. Two situations needed to be considered: sponsor and assistor
 
-        :param unread_test_match_id_notification: Dictionary.
+        :param test_id_dict: Dictionary.
 
         :returns: None
 
         :exception OSError: Placeholder.
         """
 
-        cur_unread_test_match_id_Testid_dict = unread_test_match_id_notification["check_dict"]
-        test_id_to_task_id = unread_test_match_id_notification["test_id_to_task_id"]
-        max_rounds_dict = unread_test_match_id_notification["max_rounds"]
+        # cur_unread_test_match_identifier_Testid_dict = unread_test_match_identifier_notification["check_dict"]
+        # test_id_to_task_id = unread_test_match_identifier_notification["test_id_to_task_id"]
+        # max_rounds_dict = unread_test_match_identifier_notification["max_rounds"]
 
-        for test_id in cur_unread_test_match_id_Testid_dict:
-            task_id = test_id_to_task_id[test_id]
-            check_sponsor = cur_unread_test_match_id_Testid_dict[test_id]
-            max_round = max_rounds_dict[test_id]
+        for test_id in test_id_dict:
+            sender_random_id, role, cur_rounds_num, task_id = obtain_notification_information(notification_dict_value=test_id_dict[test_id], test_indicator='test')
 
-            if check_sponsor == check_sponsor_class.sponsor:
-                self.unread_test_match_id_sponsor(task_id, test_id, max_round, unittest_callbacks)
-            elif check_sponsor == check_sponsor_class.assistor:
-                self.unread_test_match_id_assistor(task_id, test_id, max_round, unittest_callbacks)
+            # 要修改
+            max_round = 2
 
-        return 'unread_test_match_id done'
+            if role == check_sponsor_class.sponsor:
+                self.unread_test_match_identifier_sponsor(task_id, test_id, max_round, unittest_callbacks)
+            elif role == check_sponsor_class.assistor:
+                self.unread_test_match_identifier_assistor(task_id, test_id, max_round, unittest_callbacks)
 
-    def unread_test_match_id_sponsor(self, task_id: str, test_id: str, max_round: int, unittest_callbacks):
+        return 'unread_test_match_identifier done'
+
+    def unread_test_match_identifier_sponsor(self, task_id: str, test_id: str, max_round: int, unittest_callbacks):
 
         """
-        Handle the unread_test_match_id of sponsor.
+        Handle the unread_test_match_identifier of sponsor.
 
         :param task_id: String.
         :param test_id: String.
@@ -284,7 +331,7 @@ class TestRequest:
         user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
         
         # initiate a request to get test_match_id_file
-        url = self.base_url + "/users/" + user_id + "/test_match_id_file"
+        url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url="/get_test_identifier_content", suffix=user_id)
         data = {
             "task_id": task_id,
             "test_id": test_id,
@@ -292,45 +339,43 @@ class TestRequest:
         try:
             sponsor_get_test_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             sponsor_get_test_match_id_file_res = load_json_data(json_data=sponsor_get_test_match_id_file_res, json_data_name='sponsor_get_test_match_id_file_res', 
-                                                    testing_key_value_pair=[('match_id_file', None), ('assistor_random_id_pair', None)])
+                                                    testing_key_value_pair=[('assistor_random_id_to_identifier_content_dict', None)])
             print('sponsor_get_test_match_id_file_res', sponsor_get_test_match_id_file_res)
         except:
             print('sponsor_get_test_match_id_file_res wrong')
-    
-        match_id_file_list = load_json_data(sponsor_get_test_match_id_file_res["match_id_file"], 'sponsor_get_test_match_id_file_res["match_id_file"]')
-        assistor_random_id_pair_list = load_json_data(sponsor_get_test_match_id_file_res["assistor_random_id_pair"], 'sponsor_get_test_match_id_file_res["assistor_random_id_pair"]')
-        print('match_id_file_list', match_id_file_list, type(match_id_file_list), len(match_id_file_list))
-        for i in range(len(match_id_file_list)):
-            from_id = assistor_random_id_pair_list[i]
-            cur_match_id_file = match_id_file_list[i]
 
+        assistor_random_id_to_identifier_content_dict = load_json_data(sponsor_get_test_match_id_file_res['assistor_random_id_to_identifier_content_dict'],
+                                                                        'sponsor_get_test_match_id_file_res[assistor_random_id_to_identifier_content_dict]' )
+
+        for assistor_random_id, identifier_content in assistor_random_id_to_identifier_content_dict.items():
             # call save_match_id
             test_save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
-                                                    test_id=test_id, from_id=from_id)
+                                                    test_id=test_id, from_id=assistor_random_id)
             # assert test_save_match_id_file_pos is not None
             _, test_save_match_id_file_pos = handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos,
                                                                    "200", "save_match_id")
             # assert test_save_match_id_file_pos is not None
 
             # write file
-            save_file(test_save_match_id_file_pos[2], cur_match_id_file)
+            save_file(test_save_match_id_file_pos[2], identifier_content)
             msg = ["Test: 3.4 Sponsor Saved Matched id File at " + test_save_match_id_file_pos[2] + "\n"]
             log_helper(msg, root, user_id, task_id)
 
             # call make_match_idx
-            test_make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, from_id=from_id)
+            test_make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, from_id=assistor_random_id)
             # assert test_make_match_idx_done is not None
             _, test_make_match_idx_done = handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
             # assert test_make_match_idx_done is not None
-            print('from_id', from_id, cur_match_id_file)
+            print('from_id', assistor_random_id, identifier_content)
         # Get information from User Sponsor Table
         task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
         print("test_file_path", test_file_path, test_data_column)
 
         # call make_test
         print('max_round', max_round)
-        print('make_test', root, user_id, task_id, test_id, max_round, from_id, test_file_path, test_data_column, self.skip_header_default)
-        test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, from_id=None, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
+        test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, 
+                              round=max_round, from_id=None, dataset_path=test_file_path, data_idx=test_data_column, 
+                              skip_header=self.skip_header_default)
         # assert test_done is not None
         _, test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
         # assert test_done is not None
@@ -341,10 +386,10 @@ class TestRequest:
         print('Sponsor: Testing test_id: ', test_id, ' is running')
         return
 
-    def unread_test_match_id_assistor(self, task_id: str, test_id: str, cur_max_round: int, unittest_callbacks):
+    def unread_test_match_identifier_assistor(self, task_id: str, test_id: str, cur_max_round: int, unittest_callbacks):
 
         """
-        Handle the unread_test_match_id of assistor.
+        Handle the unread_test_match_identifier of assistor.
 
         :param task_id: String.
         :param test_id: String.
@@ -358,7 +403,7 @@ class TestRequest:
         # obtain basic information
         user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
 
-        url = self.base_url + "/users/" + user_id + "/test_match_id_file"
+        url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url="/get_test_identifier_content", suffix=user_id)
         data = {
             "task_id": task_id,
             "test_id": test_id,
@@ -366,42 +411,44 @@ class TestRequest:
         try:
             assistor_get_test_match_id_file_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             assistor_get_test_match_id_file_res = load_json_data(json_data=assistor_get_test_match_id_file_res, json_data_name='assistor_get_test_match_id_file_res', 
-                                                    testing_key_value_pair=[('match_id_file', None), ('sponsor_random_id', None)])
+                                                    testing_key_value_pair=[('sponsor_random_id_to_identifier_content_dict', None)])
         except:
             print('assistor_get_test_match_id_file_res wrong')
-  
-        from_id = load_json_data(assistor_get_test_match_id_file_res["sponsor_random_id"][0], 'assistor_get_test_match_id_file_res["sponsor_random_id"][0]')
-        cur_match_id_file = load_json_data(assistor_get_test_match_id_file_res["match_id_file"][0], 'assistor_get_test_match_id_file_res["match_id_file"][0]')
+
+        sponsor_random_id_to_identifier_content_dict = load_json_data(assistor_get_test_match_id_file_res['sponsor_random_id_to_identifier_content_dict'], 'assistor_get_test_match_id_file_res[sponsor_random_id_to_identifier_content_dict]')
+        sponsor_random_id = next(iter(sponsor_random_id_to_identifier_content_dict))
+        identifier_content = sponsor_random_id_to_identifier_content_dict[sponsor_random_id]
 
         # call test_save_match_id
         test_save_match_id_file_pos = save_match_id(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, 
-                                                    test_id=test_id, from_id=from_id)
+                                                    test_id=test_id, from_id=sponsor_random_id)
         # assert test_save_match_id_file_pos is not None
         _, test_save_match_id_file_pos = handle_Algorithm_return_value("test_save_match_id_file_pos", test_save_match_id_file_pos,
                                                                 "200", "save_match_id")
         # assert test_save_match_id_file_pos is not None
 
         # save match id file to designated position
-        save_file(test_save_match_id_file_pos[2], cur_match_id_file)
+        save_file(test_save_match_id_file_pos[2], identifier_content)
         msg = ["3.4 Assistor Saved Matched id File at " + test_save_match_id_file_pos[2] + "\n"]
         log_helper(msg, root, user_id, task_id)
 
         # call make_match_idx
-        test_make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, from_id=from_id)
+        test_make_match_idx_done = make_match_idx(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, from_id=sponsor_random_id)
         # assert test_make_match_idx_done is not None
         _, test_make_match_idx_done = handle_Algorithm_return_value("test_make_match_idx_done", test_make_match_idx_done, "200", "make_match_idx")
         # assert test_make_match_idx_done is not None
 
         msg = ["3.5 Assistor matches id to index\n"]
         log_helper(msg, root, user_id, task_id)
-        msg = ["-------------------------- 3. Unread Match ID Done\n"]
+        msg = ["---- 3. Unread Match ID Done\n"]
         log_helper(msg, root, user_id, task_id)
 
         # select select_default_test_data_path from db
         mode, task_mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column = self.Database_instance.get_User_Assistor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
 
         # call make test
-        test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=cur_max_round, from_id=from_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
+        test_done = make_test(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=cur_max_round, 
+                              from_id=sponsor_random_id, dataset_path=test_file_path, data_idx=test_data_column, skip_header=self.skip_header_default)
         # assert test_done is not None
         _, test_done = handle_Algorithm_return_value("test_done", test_done, "200", "make_test")
         # assert test_done is not None
@@ -416,9 +463,9 @@ class TestRequest:
             data = load_file(make_test_lists[i])
             all_test_output.append(data)
 
-        url = self.base_url + "/send_test_output/"
+        url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url="/send_test_output", suffix=user_id)
         data = {
-            "output": all_test_output,
+            "output_content": all_test_output,
             "test_id": test_id,
             "task_id": task_id,
         }
@@ -433,23 +480,20 @@ class TestRequest:
         return
 
 
-    def unread_test_output(self, unread_test_output_notification: dict, unittest_callbacks=None):
+    def unread_test_output(self, test_id_dict: dict, unittest_callbacks=None):
 
         """
         Handle the unread_test_output.
 
-        :param unread_test_output_notification: Dictionary.
+        :param test_id_dict: Dictionary.
 
         :returns: None
 
         :exception OSError: Placeholder.
         """
 
-        cur_unread_test_output_Testid_dict = unread_test_output_notification["check_dict"]
-        test_id_to_task_id = unread_test_output_notification["test_id_to_task_id"]
-
-        for test_id in cur_unread_test_output_Testid_dict:
-            task_id = test_id_to_task_id[test_id]
+        for test_id in test_id_dict:
+            sender_random_id, role, cur_rounds_num, task_id = obtain_notification_information(notification_dict_value=test_id_dict[test_id], test_indicator='test')
             self.unread_test_output_singleTask(task_id, test_id, unittest_callbacks)
             print('Sponsor: Testing test_id: ', test_id, ' is running')
             print('Sponsor: Testing test_id: ', test_id, ' done')
@@ -472,7 +516,7 @@ class TestRequest:
         # obtain some important information
         user_id, root, token, _ = self.__obtain_important_information(get_test_id=False)
 
-        url = self.base_url + "/test_output/"
+        url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url="/get_test_output_content", suffix=user_id)
         data = {
             "task_id": task_id,
             "test_id": test_id,
@@ -480,27 +524,25 @@ class TestRequest:
         try:
             sponsor_get_test_output_res = requests.post(url, json=data, headers={'Authorization': 'Bearer ' + token})
             sponsor_get_test_output_res = load_json_data(json_data=sponsor_get_test_output_res, json_data_name='sponsor_get_test_output_res', 
-                                                    testing_key_value_pair=[('output', None), ('sender_random_ids_list', None)])
+                                                    testing_key_value_pair=[('assistor_random_id_to_output_content_dict', None)])
         except:
             print('sponsor_get_test_output_res wrong')
 
-        output = load_json_data(sponsor_get_test_output_res["output"], 'sponsor_get_test_output_res["output"]')
-        print('asss', output)
-        sender_random_ids_list = load_json_data(sponsor_get_test_output_res["sender_random_ids_list"], 'sponsor_get_test_output_res["sender_random_ids_list"]')
+        assistor_random_id_to_output_content_dict = load_json_data(sponsor_get_test_output_res['assistor_random_id_to_output_content_dict'], 
+                                                                  'sponsor_get_test_output_res[assistor_random_id_to_output_content_dict]')
 
         # iterate the match_id_file
         # List[List[List]] structure: [[[data from one assistor],[data from one assistor]],[[data from another assistor],[data from another assistor]]]
-        max_round = 1
-        for i in range(len(output)):
-            from_id = sender_random_ids_list[i]
-            multiple_outputs_from_one_assistor = load_json_data(json_data=output[i], json_data_name='output[i]')
-            max_round = max(len(multiple_outputs_from_one_assistor), max_round)
+        for assistor_random_id, output_content in assistor_random_id_to_output_content_dict.items():
+            multiple_outputs_from_one_assistor = load_json_data(json_data=output_content, json_data_name='output[i]')
+            max_round = max(len(multiple_outputs_from_one_assistor), 1)
 
             for j in range(len(multiple_outputs_from_one_assistor)):
+                cur_round = j+1
                 cur_output = multiple_outputs_from_one_assistor[j]
 
                 # call save_output
-                test_save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, round=(j+1), from_id=from_id)
+                test_save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=test_id, round=cur_round, from_id=assistor_random_id)
                 # assert test_save_output_pos is not None
                 _, test_save_output_pos = handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
                 # assert test_save_output_pos is not None
@@ -510,7 +552,6 @@ class TestRequest:
         print('max_round', max_round)
         waiting_start_time = time.time()
         self.unread_test_output_make_eval_helper(task_id, test_id, max_round, waiting_start_time, unittest_callbacks)
-
         return
 
     def unread_test_output_make_eval_helper(self, task_id: str, test_id: str, max_round: int, waiting_start_time: float, unittest_callbacks):
@@ -538,7 +579,9 @@ class TestRequest:
         task_mode, model_name, metric_name, test_name, test_description, test_file_path, test_id_column, test_data_column, test_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, test_id=test_id, test_indicator=self.test_indicator)
 
         # call make_eval
-        eval_done = make_eval(root=root, self_id=user_id, task_id=task_id, test_id=test_id, round=max_round, dataset_path=test_file_path, target_idx=test_target_column, skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name, task_path=None)
+        eval_done = make_eval(root=root, self_id=user_id, task_id=task_id, test_id=test_id, 
+                              round=max_round, dataset_path=test_file_path, target_idx=test_target_column, skip_header=self.skip_header_default, 
+                              task_mode=task_mode, metric_name=metric_name, task_path=None)
         # assert eval_done is not None
         eval_done_indicator, eval_done = handle_Algorithm_return_value("eval_done", eval_done, "200", "make_eval")
         # assert eval_done is not None

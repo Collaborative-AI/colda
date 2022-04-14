@@ -15,7 +15,7 @@ Task ID: 376820a0-4c76-44bb-bb5a-25479552aeef
 
 3.1 Update the match id notification
 
-3.2 Unread_match_id_assistor
+3.2 unread_match_identifier_assistor
 
 3.3 Assistor gets matched id file
 

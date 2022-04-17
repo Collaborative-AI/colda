@@ -10,6 +10,7 @@ const dialog = console.log
 // const log = require('electron-log')
 // const log = console.log
 
+
 import Login from '../../../src/views/Auth/Login.vue'
 import Navbar from '../../../src/components/Navbar.vue'
 import Profile from '../../../src/views/Settings/Profile.vue'
@@ -98,14 +99,16 @@ unittest_parameters.model_name = 'linear'
 unittest_parameters.metric_name = 'MAD_RMSE_R2'
 // unittest_parameters.metric_name = 'Accuracy_F1'
 // profile.vue
-unittest_parameters.default_file_path = null
+// unittest_parameters.default_file_path = null
 // unittest_parameters.default_file_path = "/Users/qile/Documents/Apollo_Data/data/Wine_2_123_1.0/1/all/dataset.csv"
-// unittest_parameters.default_file_path = "/Users/xianjianxie/Downloads/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
+unittest_parameters.default_file_path = "/Users/xianjianxie/Documents/Apollo_Data/processed/BostonHousing/BostonHousing_2_123_1.0/1/all/dataset.csv"
 unittest_parameters.default_id_column = "1"
-// unittest_parameters.default_data_column = "2-7"//bostonhousing, wine
-unittest_parameters.default_data_column = "2-10"//kchousing
-unittest_parameters.default_mode = null
-unittest_parameters.default_model_name = null
+unittest_parameters.default_data_column = "2-7"//bostonhousing, wine
+// unittest_parameters.default_data_column = "2-10"//kchousing
+unittest_parameters.default_mode = 'regression'
+unittest_parameters.default_model_name = 'linear'
+
+console.log('zhixing1')
 
 function modify_parameter(param, val){
   unittest_parameters[param] = val
@@ -136,8 +139,8 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
       // res = "/Users/qile/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
       // res = "C://Users//Lucky//Desktop//Apollo//Apollo_Data//data//BostonHousing_" + total_participants + "_123_" + match_ratio + "//" + user_id + "//" + folder_indicator + "//dataset.csv"
       // res = "/Users/xianjianxie/Documents/Apollo_Data/data/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-      // res = "/Users/xianjianxie/Documents/Apollo_Data/processed/BostonHousing/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-      res = "/Users/xianjianxie/Documents/Apollo_Data/processed/KCHousing/KCHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      res = "/Users/xianjianxie/Documents/Apollo_Data/processed/BostonHousing/BostonHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+      // res = "/Users/xianjianxie/Documents/Apollo_Data/processed/KCHousing/KCHousing_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
     } else if (sponsor_mode == 'classification'){
       // res = "/Users/qile/Documents/Apollo_Data/data/Wine_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
@@ -155,8 +158,8 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
 
   function generate_default_data_column(){
     if (total_participants == 2){
-      // return '2-7'// bostonhousing,wine
-      return '2-10'// kchousing
+      return '2-7'// bostonhousing,wine
+      // return '2-10'// kchousing
     } else if (total_participants == 3){
       return '2-5'
     }
@@ -173,10 +176,15 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
   let default_id_column_object = {}
   let default_data_column_object = {}
   let default_model_name_object = {}
+  console.log('zhixing2')
 
   for (let i = 2; i < assistor_num+2; i++){
     let path_user_id = (i-1).toString()
     let cur_user_id = i.toString()
+    if (i == 2){
+      cur_user_id = '625866120dc09d8d9f866e2d'
+    }
+    console.log('user id is', cur_user_id)
     default_file_path_object[cur_user_id] = generate_data_path("1", "all")
     default_id_column_object[cur_user_id] = generate_default_id_column()
     default_data_column_object[cur_user_id] = generate_default_data_column()
@@ -187,7 +195,8 @@ function switch_default_values(sponsor_mode, assistor_num, match_ratio, default_
   unittest_parameters.default_id_column = default_id_column_object
   unittest_parameters.default_data_column = default_data_column_object
   unittest_parameters.default_model_name = default_model_name_object
- 
+  
+  console.log('default file path is', unittest_parameters.default_file_path['625866120dc09d8d9f866e2d'])
   if (total_participants == 2){
     unittest_parameters.train_data_column = "2-8"
     unittest_parameters.train_target_column = "9"

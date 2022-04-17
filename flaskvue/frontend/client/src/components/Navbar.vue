@@ -174,7 +174,7 @@ export default {
       // //Log(generate_message_string('cur_unread_request', unread_request_notification), 'info')
 
       // Unittest: check if testing task id in the cur_unread_request_Taskid_dict
-      // // console.log('55555', unittest_callbacks)
+      console.log('55555', unittest_callbacks)
       let unittest_parameters = generate_unittest_parameters(cur_unread_request_Taskid_dict)
       console.log('unit1', unittest_parameters)
       execute_unittest_list(unittest_callbacks, 0, "unread_request_unittest", unittest_parameters)
@@ -1430,7 +1430,7 @@ export default {
     
     unread_test_request(unread_test_request_id_dict, unittest_callbacks) {
 
-      console.log('jin unread test request')
+      console.log('jin unread test request', unread_test_request_id_dict)
 
       // Only assistor will enter this function
       if (check_if_notification_is_null(unread_test_request_id_dict, 'unread_test_request_notification')){

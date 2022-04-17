@@ -183,15 +183,18 @@ export default {
       let vm = this;
       let both_path_validation = true
       let path = vm.default_file_path
+      console.log('jinlai111')
 
       if (handle_file_path(path) == false){
-        dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
+        // zanshizhudiao
+        console.log('jinlai222')
+        // dialog.showErrorBox('Data Path not Correct, Please do not contain space', 'Sorry')
         return
       }
 
       try {
         
-        console.log('path', path)
+        console.log('path111', path)
         fs.statSync(path);
 
         fs.readFile(path, 'utf8' , (err, data) => {

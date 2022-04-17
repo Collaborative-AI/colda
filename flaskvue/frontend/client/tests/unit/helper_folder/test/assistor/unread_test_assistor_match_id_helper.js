@@ -227,7 +227,7 @@ function unread_test_assistor_match_id(sponsor_mode, assistor_mode, verify_algo)
     cur_parameters.push(unread_test_assistor_match_id_6)
     cur_parameters.push('unread_test_match_id_unittest')
 
-    Navbar_wrapper.vm.unread_test_match_id(unittest_parameters.unread_test_match_id_notification, cur_parameters)
+    Navbar_wrapper.vm.unread_test_match_identifier(unittest_parameters.unread_test_match_id_notification, cur_parameters)
   })
 }
 

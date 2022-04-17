@@ -158,6 +158,7 @@ export function handle_Algorithm_return_value(name, return_val, first_val, secon
 }
 
 export function handle_file_path(file_path){
+  console.log('file path is', file_path)
   if (file_path == undefined || file_path == ''){
     return false
   }

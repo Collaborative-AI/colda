@@ -33,12 +33,12 @@ function unread_test_output(sponsor_mode, assistor_mode, verify_algo){
           "1": {
             "MAD": 3.54763,
             "RMSE": 5.21270,
-            "R2": 0.46997,
+            "R2": 0.67182,
           },
           "2": {
             "MAD": 3.54221,
             "RMSE": 5.19744,
-            "R2": 0.45141,
+            "R2": 0.67374,
           }
         }
         

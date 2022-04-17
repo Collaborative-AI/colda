@@ -54,56 +54,56 @@ describe('test_unread_output', () => {
   // default_train_data_column
   profile_helper.onSubmit()
   //assistor gets notification
-  // notification_helper.update_notification()
-  // //assistor runs unread request
-  // unread_request_helper.unread_request()
-  // //assistor logouts
-  // logout_helper.logout()
+  notification_helper.update_notification()
+  //assistor runs unread request
+  unread_request_helper.unread_request()
+  //assistor logouts
+  logout_helper.logout()
 
-  // //assistor logins
-  // login_helper.login_second_user()
-  // //assistor gets nofification
-  // notification_helper.update_notification()
-  // //sponsor runs unread match id
-  // unread_assistor_match_id_helper.unread_assistor_match_id()
-  // //assistor logouts
-  // logout_helper.logout()
+  //assistor logins
+  login_helper.login_second_user()
+  //assistor gets nofification
+  notification_helper.update_notification()
+  //sponsor runs unread match id
+  unread_assistor_match_id_helper.unread_assistor_match_id()
+  //assistor logouts
+  logout_helper.logout()
 
-  // //sponsor logins
-  // login_helper.login_first_user()
-  // //sponsor gets nofification
-  // notification_helper.update_notification()
-  // //sponsor runs unread match id
-  // unread_sponsor_match_id_helper.unread_sponsor_match_id()
-  // //sponsor logouts
-  // logout_helper.logout()
+  //sponsor logins
+  login_helper.login_first_user()
+  //sponsor gets nofification
+  notification_helper.update_notification()
+  //sponsor runs unread match id
+  unread_sponsor_match_id_helper.unread_sponsor_match_id()
+  //sponsor logouts
+  logout_helper.logout()
 
-  // for (let current_round = 1; current_round <= max_round; current_round++){
-  //   //sponsor logins
-  //   login_helper.login_first_user()
-  //   //sponsor gets nofification
-  //   notification_helper.update_notification()
-  //   //sponsor runs unread situation
-  //   unread_sponsor_situation_helper.unread_sponsor_situation()
-  //   //sponsor logouts
-  //   logout_helper.logout()
+  for (let current_round = 1; current_round <= max_round; current_round++){
+    //sponsor logins
+    login_helper.login_first_user()
+    //sponsor gets nofification
+    notification_helper.update_notification()
+    //sponsor runs unread situation
+    unread_sponsor_situation_helper.unread_sponsor_situation()
+    //sponsor logouts
+    logout_helper.logout()
 
-  //   //assistor logins
-  //   login_helper.login_second_user()
-  //   //assistor gets nofification
-  //   notification_helper.update_notification()
-  //   //assistor runs unread situation
-  //   unread_assistor_situation_helper.unread_assistor_situation()
-  //   //sponsor logouts
-  //   logout_helper.logout()
+    //assistor logins
+    login_helper.login_second_user()
+    //assistor gets nofification
+    notification_helper.update_notification()
+    //assistor runs unread situation
+    unread_assistor_situation_helper.unread_assistor_situation()
+    //sponsor logouts
+    logout_helper.logout()
 
-  //   //sponsor logins
-  //   login_helper.login_first_user()
-  //   //sponsor gets nofification
-  //   notification_helper.update_notification()
-  //   //sponsor runs unread output
-  //   unread_output_helper.unread_output(current_round, max_round)
-  //   //sponsor logouts
-  //   logout_helper.logout()
-  // }
+    //sponsor logins
+    login_helper.login_first_user()
+    //sponsor gets nofification
+    notification_helper.update_notification()
+    //sponsor runs unread output
+    unread_output_helper.unread_output(current_round, max_round)
+    //sponsor logouts
+    logout_helper.logout()
+  }
 })

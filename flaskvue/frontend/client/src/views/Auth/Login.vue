@@ -142,7 +142,7 @@ export default {
             }
             }
             
-            console.log('chongfeng ')
+            console.log('chongfeng ', unittest_callbacks)
             execute_unittest_list(unittest_callbacks, 0, "Login_unittest")
           }
           

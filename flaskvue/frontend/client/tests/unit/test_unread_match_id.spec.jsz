@@ -52,21 +52,21 @@ describe('test_unread_match_id', () => {
   logout_helper.logout()
   // assistor logins
   
-  // login_helper.login_second_user()
-  // //assistor gets nofification
-  // notification_helper.update_notification()
-  // //sponsor runs unread match id
-  // unread_assistor_match_id_helper.unread_assistor_match_id()
-  // logout_helper.logout()
+  login_helper.login_second_user()
+  //assistor gets nofification
+  notification_helper.update_notification()
+  //assistor runs unread match id
+  unread_assistor_match_id_helper.unread_assistor_match_id()
+  logout_helper.logout()
 
   
   // //sponsor logins
-  // login_helper.login_first_user()
+  login_helper.login_first_user()
   // // sponsor gets nofification
-  // notification_helper.update_notification()
+  notification_helper.update_notification()
   // //sponsor runs unread match id
-  // unread_sponsor_match_id_helper.unread_sponsor_match_id()
-  // logout_helper.logout()
+  unread_sponsor_match_id_helper.unread_sponsor_match_id()
+  logout_helper.logout()
   
 })
 

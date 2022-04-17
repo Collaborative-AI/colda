@@ -6,6 +6,8 @@ const Database = require('better-sqlite3');
 // // console.log('12123', window.db)
 const db = new Database('../Apollo_Client_data.db', { verbose: null });
 import {unittest_parameters} from './Apollo_unittest_init'
+import { add_prefix } from '../../../src/utils.js'
+
 
 let retrieve_User_Assistor_Table_record = function(user_id, task_id, test_indicator, test_id=null){
   if (test_id != null){
@@ -171,7 +173,7 @@ function update_notifications(response){
 }
 
 function delete_db(){
-  return axios.get('/delete_all_rows/')
+  return axios.get(add_prefix(`/delete_unittest_db/`, `helper_api`))
 }
 
 // function create_unittest_user(username, password){

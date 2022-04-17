@@ -3,6 +3,7 @@ from flask import request
 from flask.json import jsonify
 
 # import BluePrint
+from Items import pyMongo
 from Items.main_flow import main_flow_bp
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
@@ -84,6 +85,11 @@ def match_identifier_content(id):
     
     log(generate_msg('2.2:', 'assistor matching', user_id), user_id, task_id)
     
+    # update the participated_train_task in User Table
+    pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
+        'participated_train_task.' + task_id + '.role': 'assistor'
+    }})
+
     train_match_document = train_match.search_train_match_document(task_id=task_id)
     assistor_information = train_match_document['assistor_information']
     total_assistor_num = train_match_document['total_assistor_num']

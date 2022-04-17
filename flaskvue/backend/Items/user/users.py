@@ -161,7 +161,7 @@ def resend():
     email = user_document['email']
 
     token = generate_confirmation_token(email)
-    confirm_url = url_for('main.confirm_email', token=token, _external=True)
+    confirm_url = url_for('user.confirm_email', token=token, _external=True)
     html = render_template('activate.html', confirm_url=confirm_url)
     subject = "Please confirm your email"
     send_email(email, subject, html)
@@ -209,7 +209,7 @@ def forgot():
         return bad_request(message)
 
     token = generate_confirmation_token(email)
-    reset_url = url_for('main.forgot_new', token=token, _external=True)
+    reset_url = url_for('user.forgot_new', token=token, _external=True)
     html = render_template('reset.html',
                             username=username,
                             reset_url=reset_url)
@@ -263,7 +263,7 @@ def forgot_new(token):
         if not validate_password_indicator:
             msg = ('New password must follow the following instructions:\n' + ' At least 8 characters. At most 25 characters\n'
                 + 'A mixture of both uppercase and lowercase letters\n' + 'A mixture of letters and numbers' + 'Inclusion of at least one special character, e.g., ! @')
-            confirm_url = url_for('main.forgot_new', token=token, msg=msg, _external=True)
+            confirm_url = url_for('user.forgot_new', token=token, msg=msg, _external=True)
             return render_template('forgot_new.html', confirm_url=confirm_url)
 
  
@@ -277,7 +277,7 @@ def forgot_new(token):
     else:
         print('123token', token)
         msg = 'Hello ' + user_document['username']
-        confirm_url = url_for('main.forgot_new', token=token, _external=True)
+        confirm_url = url_for('user.forgot_new', token=token, _external=True)
         print("/forgot/new/<token>_confirm_url", confirm_url)
         return render_template('forgot_new.html', confirm_url=confirm_url, msg=msg, token=token)
 

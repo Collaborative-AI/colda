@@ -1717,7 +1717,7 @@ export default {
     // },
     checkSponsor(task_id) {
       let vm = this
-      // console.log('checksponsor')
+      console.log('checksponsor', task_id)
       const payload = {
         task_id: task_id,
       }
@@ -1741,24 +1741,24 @@ export default {
         this.$axios.post(add_prefix(`/get_test_task_id_history/${vm.sharedState.user_id}`, `/helper_api`), payload)
         .then((response) => {
           console.log('zz77',response)
-          let test_id_list = response.data.test_id_list;
+          let test_task_dict = response.data.test_task_dict;
           
-          for (let i = 0; i < test_id_list.length; i++){
-            const test_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + test_id_list[i] + '/log.txt'
-            console.log('zz76',test_log_address)
-            if(fs.existsSync(test_log_address)){
-              console.log('zz75',test_log_address)
+          // for (let i = 0; i < Object.keys(test_task_dict).length; i++){
+          const test_log_address = this.root + '/' + this.sharedState.user_id + '/task/' + task_id + '/' + 'test/' + vm.test_id + '/log.txt'
+          console.log('zz76',test_log_address)
+          if(fs.existsSync(test_log_address)){
+            console.log('zz75',test_log_address)
 
-              let test_log_content = fs.readFileSync(test_log_address, {encoding:'utf8', flag:'r'});
-              test_log_content = test_log_content.split("\n")
-              for (let i = 0; i < test_log_content.length; i++){
-                if (vm.test_id == null){
-                  break
-                }
-                this.messages.push(test_log_content[i])
-                }
+            let test_log_content = fs.readFileSync(test_log_address, {encoding:'utf8', flag:'r'});
+            test_log_content = test_log_content.split("\n")
+            for (let i = 0; i < test_log_content.length; i++){
+              if (vm.test_id == null){
+                break
               }
-          }
+              this.messages.push(test_log_content[i])
+              }
+            }
+          // }
           vm.draw_chart()
             // vm.$nextTick(vm.draw_chart())
 

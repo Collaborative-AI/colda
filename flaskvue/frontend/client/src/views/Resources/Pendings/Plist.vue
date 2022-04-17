@@ -13,15 +13,15 @@
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
                         <!-- <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div> -->
                         <div class="font-weight-bold mr-3">
-                            <div class="text-truncate">Task Name: {{ pend.pending_task_name }}</div>
-                            <div class="small">Task ID:  {{ pend.pending_task_id }}</div>
-                            <div class='small'>Test ID: {{ pend.pending_test_id }}</div>
-                            <div class='small'>Task Mode: {{ pend.pending_task_mode }}</div>
-                            <div class='small'>Model Name: {{ pend.pending_model_name }}</div>
-                            <div class='small'>Metric Name: {{ pend.pending_metric_name }}</div>
+                            <div class="text-truncate">Task Name: {{ pend.task_name }}</div>
+                            <div class="small">Task ID:  {{ pend.task_id }}</div>
+                            <div class='small'>Test ID: {{ pend.test_id }}</div>
+                            <div class='small'>Task Mode: {{ pend.task_mode }}</div>
+                            <div class='small'>Model Name: {{ pend.model_name }}</div>
+                            <div class='small'>Metric Name: {{ pend.metric_name }}</div>
 
                             <div class="small">Task Description:  {{ pend.pending_task_description }}</div>
-                            <div v-if="pend.pending_test_indicator == 'test'" class="small">Test Description:  {{ pend.pending_test_description }}</div>
+                            <div v-if="pend.pending_test_indicator == 'test'" class="small">Test Description:  {{ pend.test_description }}</div>
                         </div>
                         <span class="ml-auto mb-auto">
                             <!-- <div class="btn-group">
@@ -36,15 +36,14 @@
                             <br />
                             <div class="text-right text-muted pt-1">
                               <router-link v-bind:to="{ name: 'PendItem', params: { 
-                                                        task_description: pend.pending_task_description, 
-                                                        task_id: pend.pending_task_id, 
-                                                        task_name: pend.pending_task_name, 
-                                                        task_mode: pend.pending_task_mode,
-                                                        model_name: pend.pending_model_name,
-                                                        metric_name: pend.pending_metric_name,
-                                                        test_id: pend.pending_test_id,  
-                                                        test_indicator: pend.pending_test_indicator,
-                                                        test_description: pend.pending_test_description } }">
+                                                        task_description: pend.task_description, 
+                                                        task_id: pend.task_id, 
+                                                        task_name: pend.task_name, 
+                                                        task_mode: pend.task_mode,
+                                                        model_name: pend.model_name,
+                                                        metric_name: pend.metric_name,
+                                                        test_id: pend.test_id, 
+                                                        test_description: pend.test_description } }">
                                 <button class="btn btn-block u-btn-outline-primary g-rounded-20 g-px-10">Details</button>
                               </router-link>
                             </div>
@@ -101,6 +100,7 @@ export default {
       sharedState: store.state,
       pending: "",
       cur_pending_num: -10000,
+      // test_indicator: ""
     }
   },
 
@@ -119,6 +119,12 @@ export default {
           // handle success
           console.log("get_all_pending response", response.data)
           vm.pending = response.data.all_pending_items
+          // if (vm.pending.test_id == undefined){
+          //   vm.test_indicator = 'train'
+          // }
+          // else{
+          //   vm.test_indicator = 'test'
+          // }
 
           let unittest_parameters = generate_unittest_parameters(response.data)
           execute_unittest_list(unittest_callbacks, 0, "plist_unittest", unittest_parameters)

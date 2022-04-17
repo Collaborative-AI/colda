@@ -307,6 +307,7 @@ def get_user(id):
             'user': current_user_information
         }
         return jsonify(response)
+        # return jsonify(dumps(response))
     return None
 
 @user_bp.route('/users/<string:id>', methods=['PUT'])

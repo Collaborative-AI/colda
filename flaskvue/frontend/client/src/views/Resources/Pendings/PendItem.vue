@@ -257,7 +257,7 @@ export default {
             }
             console.log('wokan4', vm.test_indicator)
 
-            vm.$axios.post(add_prefix(`/delete_pending/`, `/main_flow`), delete_pending)
+            vm.$axios.post(add_prefix(`/delete_pending/${vm.sharedState.user_id}/`, `/main_flow`), delete_pending)
               .then((response) => {
                 // handle success
                 console.log("delete_pending response", response.data)
@@ -304,10 +304,10 @@ export default {
 
                 const match_assistor_id_data = {
                   task_id: task_id,
-                  file: hash_id_file_data,
+                  identifier_content: hash_id_file_data,
                 }
                 
-                vm.$axios.post(add_prefix(`/match_identifier_content/`, `/main_flow`), match_assistor_id_data)
+                vm.$axios.post(add_prefix(`/match_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), match_assistor_id_data)
                   .then((response) => {
                     // handle success
                     console.log("2.2 assistor uploads id file")
@@ -423,7 +423,7 @@ export default {
               test_indicator: vm.test_indicator
             }
             console.log("222222")
-            vm.$axios.post(add_prefix(`/delete_pending/`, `/main_flow`), delete_pending)
+            vm.$axios.post(add_prefix(`/delete_pending/${vm.sharedState.user_id}/`, `/main_flow`), delete_pending)
               .then((response) => {
                 // handle success
                 console.log("delete_pending response", response.data)
@@ -470,12 +470,12 @@ export default {
                 test_hash_id_file_data = test_hash_id_file_data.split(/[\r\n]+/)
 
                 const match_test_assistor_id_data = {
-                  file: test_hash_id_file_data,
+                  identifier_content: test_hash_id_file_data,
                   test_id: test_id,
                   task_id: task_id
                 }
 
-                vm.$axios.post(add_prefix(`/match_test_identifier_content/`, `/main_flow`), match_test_assistor_id_data)
+                vm.$axios.post(add_prefix(`/match_test_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), match_test_assistor_id_data)
                   .then((response) => {
                     // handle success
                     console.log("2.2 Test: assistor uploads id file")
@@ -538,7 +538,7 @@ export default {
         test_indicator: vm.test_indicator
       }
 
-      vm.$axios.post(add_prefiex(`/delete_pending/`, `/main_flow`), delete_pending)
+      vm.$axios.post(add_prefiex(`/delete_pending/${vm.sharedState.user_id}/`, `/main_flow`), delete_pending)
         .then((response) => {
           // handle success
           console.log("delete_pending response", response.data)
@@ -570,7 +570,14 @@ export default {
       this.model_name = this.$route.params.model_name,
       this.metric_name = this.$route.params.metric_name,
       this.test_id = this.$route.params.test_id
-      this.test_indicator = this.$route.params.test_indicator
+      if (this.test_id == undefined){
+        this.test_indicator = 'train'
+      }
+      else{
+        this.test_indicator = 'test'
+      }
+      // this.test_indicator = this.$route.params.test_indicator
+      console.log('test indicator is', this.test_indicator)
       this.test_description = this.$route.params.test_description
 
       console.log('wudi', this.task_description,

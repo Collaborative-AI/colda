@@ -8,9 +8,11 @@ function unread_request(){
     let unread_request_1 = (data) => {
       try{
         let request_dict = data[0]  
+        console.log('rrrqqq0', request_dict)
         expect(request_dict[unittest_parameters.task_id]).not.toBeNull()
   
         console.log(generate_unittest_log('unread_request'))
+        console.log('rrrqqq1')
       }catch (error){
         console.log(error)
       }
@@ -87,6 +89,7 @@ function unread_request(){
       cur_parameters.push(unread_request_4)
     }
     cur_parameters.push('unread_request_unittest')
+    console.log('dachu1', cur_parameters, unittest_parameters.unread_request_notification)
 
     Navbar_wrapper.vm.unread_request(unittest_parameters.unread_request_notification, cur_parameters)    
   })

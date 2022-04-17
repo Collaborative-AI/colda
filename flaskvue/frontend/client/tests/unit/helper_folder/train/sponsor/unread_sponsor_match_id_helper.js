@@ -69,7 +69,7 @@ function unread_sponsor_match_id(){
     cur_parameters.push(unread_sponsor_match_id_4)
     cur_parameters.push(unread_sponsor_match_id_5)
     cur_parameters.push('unread_match_id_unittest')
-    Navbar_wrapper.vm.unread_match_id(unittest_parameters.unread_match_id_notification, cur_parameters)
+    Navbar_wrapper.vm.unread_match_identifier(unittest_parameters.unread_match_id_notification, cur_parameters)
   })
 }
 

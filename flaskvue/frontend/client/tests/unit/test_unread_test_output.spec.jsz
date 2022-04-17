@@ -153,8 +153,8 @@ describe('test_unread_test_match_id', () => {
   notification_helper.update_notification()
   // //sponsor unread test output
   unread_test_output_helper.unread_test_output()
-  //sponsor logouts
-  logout_helper.logout()
+  // //sponsor logouts
+  // logout_helper.logout()
 
  
 

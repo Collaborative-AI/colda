@@ -47,7 +47,7 @@ function unread_assistor_match_id(){
     cur_parameters.push(unread_assistor_match_id_2)
     cur_parameters.push(unread_assistor_match_id_3)
     cur_parameters.push('unread_match_id_unittest')
-    Navbar_wrapper.vm.unread_match_id(unittest_parameters.unread_match_id_notification, cur_parameters)
+    Navbar_wrapper.vm.unread_match_identifier(unittest_parameters.unread_match_id_notification, cur_parameters)
   })
 }
 

@@ -37,16 +37,18 @@ def get_user_history(id):
     participated_task = []
     for task_id in participated_train_task:
         train_task_document = train_task.search_train_task_document(task_id=task_id)
+        if train_task_document == None:
+            continue
         task_name = None
         task_description = None
-        if train_task_document != None and 'task_name' in train_task_document:
+        if 'task_name' in train_task_document:
             task_name = train_task_document['task_name']
-        if train_task_document != None and 'task_description' in train_task_document:
+        if 'task_description' in train_task_document:
             task_description = train_task_document['task_description']
-        if train_task_document != None:
-            timestamp = train_task_document['_id'].generation_time
+        timestamp = train_task_document['_id'].generation_time
         sub_task = {
             'task_id': task_id,
+            'timestamp': timestamp,
             'task_name': task_name,
             'task_description': task_description,
             'test_indicator': 'train',
@@ -65,17 +67,19 @@ def get_user_history(id):
             test_task_dict = train_task_document['test_task_dict']
             for test_id in test_task_dict:
                 test_task_document = test_task.search_test_task_document(test_id=test_id)
+                if test_task_document == None:
+                    continue
                 test_name = None
                 test_description = None
-                if test_task_document != None and 'test_name' in test_task_document:
+                if 'test_name' in test_task_document:
                     test_name = test_task_document['test_name']
-                if test_task_document != None and 'test_description' in test_task_document:
+                if 'test_description' in test_task_document:
                     test_description = test_task_document['test_description']
                 # obtain timestamp from ObjectID object
-                if test_task_document != None:
-                    timestamp = test_task_document['_id'].generation_time
+                timestamp = test_task_document['_id'].generation_time
                 sub_task = {
                     'task_id': task_id,
+                    'timestamp': timestamp,
                     'task_name': None,
                     'task_description': None,
                     'test_indicator': 'test',

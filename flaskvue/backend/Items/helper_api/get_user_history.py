@@ -70,7 +70,7 @@ def get_user_history(id):
                 test_task_document = test_task.search_test_task_document(test_id=test_id)
                 if test_task_document == None:
                     continue
-                
+
                 test_name = None
                 test_description = None
                 if 'test_name' in test_task_document:
@@ -100,7 +100,7 @@ def get_user_history(id):
         _, sub_task = heapq.heappop(participated_task)
         if sub_task['test_indicator'] == 'test':
             participated_sort_task_dict[sub_task['test_id']] = sub_task
-        elif sub_task['test_id'] == None:
+        elif sub_task['test_indicator'] == 'train':
             participated_sort_task_dict[sub_task['task_id']] = sub_task
     
     response = {

@@ -47,6 +47,7 @@ def get_user_history(id):
         if 'task_description' in train_task_document:
             task_description = train_task_document['task_description']
         timestamp = train_task_document['_id'].generation_time
+        timestamp = timestamp.utcnow().timestamp()
         sub_task = {
             'task_id': task_id,
             'timestamp': timestamp,
@@ -59,7 +60,7 @@ def get_user_history(id):
         }
         # print('timestamp', timestamp)
         # if train_task_document != None:
-        #     timestamp = timestamp.utcnow().timestamp()
+        #     
         # print('current_time', timestamp, type(timestamp))
         heapq.heappush(participated_task, (-timestamp, sub_task))
 
@@ -79,6 +80,7 @@ def get_user_history(id):
                     test_description = test_task_document['test_description']
                 # obtain timestamp from ObjectID object
                 timestamp = test_task_document['_id'].generation_time
+                timestamp = timestamp.utcnow().timestamp()
                 sub_task = {
                     'task_id': task_id,
                     'timestamp': timestamp,
@@ -90,7 +92,7 @@ def get_user_history(id):
                     'test_description': test_description,
                 }
                 # if test_task_document != None:
-                #     timestamp = timestamp.utcnow().timestamp()
+                
                 heapq.heappush(participated_task, (-timestamp, sub_task))
     
     # sub_task with larger timestamp indicates the closer task

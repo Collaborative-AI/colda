@@ -39,6 +39,7 @@ def get_user_history(id):
         train_task_document = train_task.search_train_task_document(task_id=task_id)
         if train_task_document == None:
             continue
+
         task_name = None
         task_description = None
         if 'task_name' in train_task_document:
@@ -57,10 +58,10 @@ def get_user_history(id):
             'test_description': None,
         }
         # print('timestamp', timestamp)
-        if train_task_document != None:
-            timestamp = timestamp.utcnow().timestamp()
+        # if train_task_document != None:
+        #     timestamp = timestamp.utcnow().timestamp()
         # print('current_time', timestamp, type(timestamp))
-            heapq.heappush(participated_task, (-timestamp, sub_task))
+        heapq.heappush(participated_task, (-timestamp, sub_task))
 
         # print('train_task_document', train_task_document)
         if train_task_document != None:
@@ -69,6 +70,7 @@ def get_user_history(id):
                 test_task_document = test_task.search_test_task_document(test_id=test_id)
                 if test_task_document == None:
                     continue
+                
                 test_name = None
                 test_description = None
                 if 'test_name' in test_task_document:
@@ -87,9 +89,9 @@ def get_user_history(id):
                     'test_name': test_name,
                     'test_description': test_description,
                 }
-                if test_task_document != None:
-                    timestamp = timestamp.utcnow().timestamp()
-                    heapq.heappush(participated_task, (-timestamp, sub_task))
+                # if test_task_document != None:
+                #     timestamp = timestamp.utcnow().timestamp()
+                heapq.heappush(participated_task, (-timestamp, sub_task))
     
     # sub_task with larger timestamp indicates the closer task
     # Put the closer task at front position

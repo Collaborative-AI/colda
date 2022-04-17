@@ -27,7 +27,7 @@
                             <div v-if="message.test_indicator == 'test' " class="small">Test Description:  {{ message.test_description }}</div>
 
 
-                            <div class="small">{{ $moment(message.match_id_timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</div>
+                            <div class="small">{{ $moment(message.timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</div>
 
                             
                         </div>

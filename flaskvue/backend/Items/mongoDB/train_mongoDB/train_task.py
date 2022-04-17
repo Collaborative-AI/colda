@@ -8,10 +8,11 @@ class train_task():
 
     @classmethod
     def create_train_task_document(cls, task_id, task_name, task_description, task_mode, 
-                          model_name, metric_name, sponsor_id, assistor_id_dict,
+                          model_name, metric_name, sponsor_id, assistor_id_dict, test_indicator,
                           test_task_dict):
         train_task_document = {
             "task_id": task_id,
+            'test_indicator': test_indicator,
             "task_name": task_name,
             "task_description": task_description,
             "task_mode": task_mode,

@@ -148,7 +148,8 @@ def find_assistor(id):
     # add new train_task document to Train_Task Table
     train_task.create_train_task_document(task_id=task_id, task_name=task_name, task_description=task_description, 
                                              task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
-                                             sponsor_id=sponsor_id, assistor_id_dict=assistor_id_dict, test_task_dict={})
+                                             sponsor_id=sponsor_id, assistor_id_dict=assistor_id_dict, test_indicator='train', 
+                                             test_task_dict={})
 
     # update the participated_train_task in User Table
     pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
@@ -267,7 +268,7 @@ def find_test_assistor(id):
     # add new train_task document to Train_Task Table
     test_task.create_test_task_document(test_id=test_id, task_id=task_id, test_name=test_name, test_description=test_description, 
                                            task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
-                                           sponsor_id=sponsor_id, assistor_id_dict=assistor_id_dict)
+                                           sponsor_id=sponsor_id, assistor_id_dict=assistor_id_dict, test_indicator='test')
     
     
     for assistor_id in assistor_id_dict:

@@ -13,7 +13,8 @@
                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
                         <!-- <div class="dropdown-list-image mr-3"><img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" /></div> -->
                         <div class="font-weight-bold mr-3">
-                            <div class="text-truncate">Task Name: {{ pend.task_name }}</div>
+                            <div v-if="pend.test_indicator == 'train'" class="text-truncate">Task Name: {{ pend.task_name }}</div>
+                            <div v-if="pend.test_indicator == 'test'" class="text-truncate">Test Name: {{ pend.test_name }}</div>
                             <div class="small">Task ID:  {{ pend.task_id }}</div>
                             <div class='small'>Test ID: {{ pend.test_id }}</div>
                             <div class='small'>Task Mode: {{ pend.task_mode }}</div>

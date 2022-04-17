@@ -4,6 +4,8 @@ import heapq
 
 from flask import request, current_app
 from flask.json import jsonify
+from datetime import datetime
+
 
 from Items.helper_api import helper_api_bp
 from Items.exception import error_response, bad_request
@@ -47,10 +49,13 @@ def get_user_history(id):
         if 'task_description' in train_task_document:
             task_description = train_task_document['task_description']
         timestamp = train_task_document['_id'].generation_time
-        print('timestamp type is', type(timestamp))
+        str_timestamp = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+        timestamp = timestamp.timestamp()
+        # print('timestamp is', str_timestamp)
+        # print('timestamp type is', type(timestamp))
         sub_task = {
             'task_id': task_id,
-            'timestamp': timestamp,
+            'timestamp': str_timestamp,
             'task_name': task_name,
             'task_description': task_description,
             'test_indicator': 'train',
@@ -60,7 +65,7 @@ def get_user_history(id):
         }
         # print('timestamp', timestamp)
         # if train_task_document != None:
-            # timestamp = timestamp.utcnow().timestamp()
+        #     
         # print('current_time', timestamp, type(timestamp))
         heapq.heappush(participated_task, (-timestamp, sub_task))
 
@@ -71,7 +76,7 @@ def get_user_history(id):
                 test_task_document = test_task.search_test_task_document(test_id=test_id)
                 if test_task_document == None:
                     continue
-                
+
                 test_name = None
                 test_description = None
                 if 'test_name' in test_task_document:
@@ -80,9 +85,12 @@ def get_user_history(id):
                     test_description = test_task_document['test_description']
                 # obtain timestamp from ObjectID object
                 timestamp = test_task_document['_id'].generation_time
+                str_timestamp = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+                timestamp = timestamp.timestamp()
+                # print('timestamp is', str_timestamp)
                 sub_task = {
                     'task_id': task_id,
-                    'timestamp': timestamp,
+                    'timestamp': str_timestamp,
                     'task_name': None,
                     'task_description': None,
                     'test_indicator': 'test',
@@ -91,7 +99,7 @@ def get_user_history(id):
                     'test_description': test_description,
                 }
                 # if test_task_document != None:
-                #     timestamp = timestamp.utcnow().timestamp()
+                
                 heapq.heappush(participated_task, (-timestamp, sub_task))
     
     # sub_task with larger timestamp indicates the closer task
@@ -101,7 +109,7 @@ def get_user_history(id):
         _, sub_task = heapq.heappop(participated_task)
         if sub_task['test_indicator'] == 'test':
             participated_sort_task_dict[sub_task['test_id']] = sub_task
-        elif sub_task['test_id'] == None:
+        elif sub_task['test_indicator'] == 'train':
             participated_sort_task_dict[sub_task['task_id']] = sub_task
     
     response = {

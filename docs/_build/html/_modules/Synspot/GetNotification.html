@@ -34,7 +34,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../index.html" class="icon icon-home"> Synspot
-            <img src="../../_static/Synspot.jpg" class="logo" alt="Logo"/>
+            <img src="../../_static/Synspot.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -46,11 +46,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../handbook/index.html">Handbook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../releasenotes/index.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../deprecations.html">Deprecations and removals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html">Quick Setup Guide</a></li>
 </ul>
 
@@ -119,28 +115,28 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">unread_request_notification</span> <span class="o">=</span> <span class="n">update_all_notifications_data</span><span class="p">[</span><span class="s2">&quot;unread request&quot;</span><span class="p">]</span>
-        <span class="n">unread_match_identifier_notification</span> <span class="o">=</span> <span class="n">update_all_notifications_data</span><span class="p">[</span><span class="s2">&quot;unread match id&quot;</span><span class="p">]</span>
+        <span class="n">unread_match_id_notification</span> <span class="o">=</span> <span class="n">update_all_notifications_data</span><span class="p">[</span><span class="s2">&quot;unread match id&quot;</span><span class="p">]</span>
         <span class="n">unread_situation_notification</span> <span class="o">=</span> <span class="n">update_all_notifications_data</span><span class="p">[</span><span class="s2">&quot;unread situation&quot;</span><span class="p">]</span>
         <span class="n">unread_output_notification</span> <span class="o">=</span> <span class="n">update_all_notifications_data</span><span class="p">[</span><span class="s2">&quot;unread output&quot;</span><span class="p">]</span>
 
         <span class="n">unread_test_request_notification</span> <span class="o">=</span> <span class="n">update_all_notifications_data</span><span class="p">[</span><span class="s2">&quot;unread test request&quot;</span><span class="p">]</span>
-        <span class="n">unread_test_match_identifier_notification</span> <span class="o">=</span> <span class="n">update_all_notifications_data</span><span class="p">[</span><span class="s2">&quot;unread test match id&quot;</span><span class="p">]</span>
+        <span class="n">unread_test_match_id_notification</span> <span class="o">=</span> <span class="n">update_all_notifications_data</span><span class="p">[</span><span class="s2">&quot;unread test match id&quot;</span><span class="p">]</span>
         <span class="n">unread_test_output_notification</span> <span class="o">=</span> <span class="n">update_all_notifications_data</span><span class="p">[</span><span class="s2">&quot;unread test output&quot;</span><span class="p">]</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_request_notification&quot;</span><span class="p">,</span> <span class="n">unread_request_notification</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_match_identifier_notification&quot;</span><span class="p">,</span> <span class="n">unread_match_identifier_notification</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_match_id_notification&quot;</span><span class="p">,</span> <span class="n">unread_match_id_notification</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_situation_notification&quot;</span><span class="p">,</span> <span class="n">unread_situation_notification</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_output_notification&quot;</span><span class="p">,</span> <span class="n">unread_output_notification</span><span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_test_request_notification&quot;</span><span class="p">,</span> <span class="n">unread_test_request_notification</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_test_match_identifier_notification&quot;</span><span class="p">,</span> <span class="n">unread_test_match_identifier_notification</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_test_match_id_notification&quot;</span><span class="p">,</span> <span class="n">unread_test_match_id_notification</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unread_test_output_notification&quot;</span><span class="p">,</span> <span class="n">unread_test_output_notification</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">unread_request_notification</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">default_trainRequest</span><span class="o">.</span><span class="n">unread_request</span><span class="p">(</span><span class="n">unread_request_notification</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">unread_match_identifier_notification</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">default_trainRequest</span><span class="o">.</span><span class="n">unread_match_identifier</span><span class="p">(</span><span class="n">unread_match_identifier_notification</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unread_match_id_notification</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_trainRequest</span><span class="o">.</span><span class="n">unread_match_id</span><span class="p">(</span><span class="n">unread_match_id_notification</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">unread_situation_notification</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">default_trainRequest</span><span class="o">.</span><span class="n">unread_situation</span><span class="p">(</span><span class="n">unread_situation_notification</span><span class="p">)</span>
@@ -151,8 +147,8 @@
         <span class="k">if</span> <span class="n">unread_test_request_notification</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">default_testRequest</span><span class="o">.</span><span class="n">unread_test_request</span><span class="p">(</span><span class="n">unread_test_request_notification</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">unread_test_match_identifier_notification</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">default_testRequest</span><span class="o">.</span><span class="n">unread_test_match_identifier</span><span class="p">(</span><span class="n">unread_test_match_identifier_notification</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unread_test_match_id_notification</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_testRequest</span><span class="o">.</span><span class="n">unread_test_match_id</span><span class="p">(</span><span class="n">unread_test_match_id_notification</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">unread_test_output_notification</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">default_testRequest</span><span class="o">.</span><span class="n">unread_test_output</span><span class="p">(</span><span class="n">unread_test_output_notification</span><span class="p">)</span>

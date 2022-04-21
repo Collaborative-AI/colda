@@ -5,4 +5,10 @@ Synspot/1/
 Synspot/2/
 
 # mac generated file
-.DS_Store
+*.DS_Store
+
+# 
+../.idea/
+
+# 
+../.ipynb_checkpoints/

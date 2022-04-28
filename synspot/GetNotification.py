@@ -1,5 +1,5 @@
-from .TrainRequest import TrainRequest, Network, PersonalInformation
-from .TestRequest import TestRequest
+from .workflow.train_workflow import TrainRequest, Network, PersonalInformation
+from .workflow.test_workflow import TestRequest
 from .authorization import Authorization
 import json
 import requests

@@ -7,8 +7,8 @@ Test suite for the synspot package.
 from typing import List
 from abc import ABC, abstractmethod
 
-from synspot.TrainRequest import TrainRequest
-from synspot.TestRequest import TestRequest
+from synspot.workflow.train_workflow import TrainRequest
+from synspot.workflow.test_workflow import TestRequest
 from synspot.authorization import Authorization
 from synspot.GetNotification import GetNotification
 from synspot.personalinformation import PersonalInformation

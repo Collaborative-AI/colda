@@ -1,1 +1,1 @@
-from .Authorization import Authorization
+from .authorization import Authorization

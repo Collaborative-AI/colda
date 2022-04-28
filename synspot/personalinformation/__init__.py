@@ -1,1 +1,5 @@
-from .PersonalInformation import PersonalInformation
+from .personal_information import PersonalInformation
+
+__all__ = [
+    'PersonalInformation'
+]

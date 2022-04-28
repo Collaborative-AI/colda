@@ -1,7 +1,7 @@
 import numpy as np
 import os
 from synspot.algorithm.utils import save, makedir_exist_ok, parse_idx
-from synspot.algorithm.models import Model
+from synspot.algorithm.model.models import Model
 
 def make_train(root, self_id, task_id, round, dataset_path, data_idx, skip_header, task_mode, model_name, from_id=None):
     # return "300?make_train assistor cannot find match idx file"

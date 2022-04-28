@@ -17,16 +17,16 @@ import pickle
 import requests
 # import Algorithm
 
-from .TrainRequest import TrainRequest
-from .TestRequest import TestRequest
+from .workflow.train_workflow import TrainRequest
+from .workflow.test_workflow import TestRequest
 from synspot.authorization import Authorization
 from .GetNotification import GetNotification
 from synspot.database import Database
 from synspot.network import Network
 from synspot.personalinformation import PersonalInformation
 
-from synspot.algorithm.customFactory import FixedParameterFactory, OptimizerTrainedParameteFactory, OwnFunctionFactory
-from synspot.algorithm.algoStrategy import AlgoConcreteStategy
+from synspot.algorithm.custom.custom_factory import FixedParameterFactory, OptimizerTrainedParameteFactory, OwnFunctionFactory
+from synspot.algorithm.strategy.test_algorithm import AlgoConcreteStategy
 
 from collections.abc import Callable
 # from .Database_class_helper import database_strategy_interface

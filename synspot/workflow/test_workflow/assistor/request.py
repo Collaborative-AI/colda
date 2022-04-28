@@ -1,0 +1,3 @@
+class TestAssistorRequest:
+
+    pass

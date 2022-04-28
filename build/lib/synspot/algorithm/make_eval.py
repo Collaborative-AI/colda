@@ -3,7 +3,7 @@ import os
 import json
 import collections
 from synspot.algorithm.utils import log, parse_idx
-from synspot.algorithm.metrics import Metric
+from synspot.algorithm.metric.metrics import Metric
 
 def make_eval(root, self_id, task_id, test_id, round, dataset_path, target_idx, skip_header, task_mode, metric_name, task_path):
 

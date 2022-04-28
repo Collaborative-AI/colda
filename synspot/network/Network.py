@@ -16,7 +16,7 @@ class Network():
         return cls.__Network_instance
 
     @property
-    def base_url(self):
+    def base_url(self) -> str:
         """
         Get base url that is the ipv4 address of AWS server and return base url
 
@@ -27,7 +27,7 @@ class Network():
         return self.__baseURL
 
     @property
-    def token(self):
+    def token(self) -> str:
         """
         Return the token
 
@@ -39,7 +39,7 @@ class Network():
         return self.__token
 
     @token.setter
-    def token(self, token: str):
+    def token(self, token: str) -> bool:
         """
         Set token to new token
 
@@ -51,9 +51,9 @@ class Network():
         """
         self.__token = token
         # print("new_token", self.__token)
-        return 
+        return True
 
-    def logout(self):
+    def logout(self) -> None:
         """
         Handle user logout by setting the __token to None
 
@@ -67,7 +67,7 @@ class Network():
             print('Logout procedure wrong')
         return
 
-    def process_url(self, prefix, url, suffix=None):
+    def process_url(self, prefix: str, url: str, suffix: str = None) -> str:
         """
         Process url
 
@@ -79,7 +79,7 @@ class Network():
             return self.add_prefix_to_url(prefix, url)
         return self.add_suffix_to_url(self.add_prefix_to_url(prefix, url), suffix)
 
-    def add_prefix_to_url(self, prefix, url):
+    def add_prefix_to_url(self, prefix: str, url: str) -> str:
         """
         Add prefix to url. Currently, prefix is the blueprint in backend(flask)
 
@@ -89,7 +89,7 @@ class Network():
         """
         return '/' + prefix + url
 
-    def add_suffix_to_url(self, url, suffix):
+    def add_suffix_to_url(self, url: str, suffix: str) -> str:
         """
         Add suffix to url. Currently, suffix is user_id
 

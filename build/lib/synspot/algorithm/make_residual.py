@@ -1,7 +1,7 @@
 import numpy as np
 import os
 from synspot.algorithm.utils import makedir_exist_ok, log, parse_idx
-from synspot.algorithm.metrics import Metric
+from synspot.algorithm.metric.metrics import Metric
 
 
 def make_residual(root, self_id, task_id, round, dataset_path, target_idx, skip_header, task_mode, metric_name):

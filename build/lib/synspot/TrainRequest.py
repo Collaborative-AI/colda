@@ -63,10 +63,7 @@ class TrainRequest():
         token = self.Network_instance.token
         # assert token is not None
 
-        task_id = None
-        if get_train_id:
-            task_id = self.__get_train_id()
-        return user_id, root, token, task_id
+        return user_id, root, token
 
     def handleTrainRequest(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, 
                             train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str, task_description: str):
@@ -96,31 +93,7 @@ class TrainRequest():
                             train_data_column=train_data_column, train_target_column=train_target_column, task_mode=task_mode,
                             model_name=model_name, metric_name=metric_name, task_name=task_name, task_description=task_description)
 
-    def __get_train_id(self):
-        
-        """
-        Get new Task id for this task
-
-        :returns: new_task_id. String. The new task id of new task
-
-        :exception OSError: 
-        """
-
-        url = self.base_url + "/create_new_train_task/"
-        token = self.Network_instance.token
-        try:
-            get_train_id_response = requests.get(url, headers = {'Authorization': 'Bearer ' + token})
-        except:
-            print('get_train_id_response wrong')
-
-        get_train_id_response_text = load_json_data(json_data=get_train_id_response, json_data_name='get_train_id_response', 
-                                                    testing_key_value_pair=[('task_id', None)])
-
-        new_task_id = get_train_id_response_text["task_id"]
-        # assert new_task_id is not None
-
-        return new_task_id
-
+    
 
     def __find_assistor(self, maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str=None, task_description: str=None):
         

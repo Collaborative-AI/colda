@@ -1,0 +1,32 @@
+import { modify_unittest_user_helper } from './helper_folder/Apollo_modify_unittest_user_helper'
+
+
+jest.setTimeout(10000);
+
+afterAll(() => {
+  window.localStorage.removeItem('Apollo-token')
+  console.log('afterAll')
+});
+
+describe('create_unittest_user', () => {
+  
+  let username_1 = 'xie1'
+  let password_1 = 'Xie1@123'
+
+  let username_2 = 'xie2'
+  let password_2 = 'Xie2@123'
+
+  let username_3 = 'leq1'
+  let password_3 = 'Leq1@123'
+
+  let username_4 = 'leq2'
+  let password_4 = 'Leq2@123'
+
+  modify_unittest_user_helper.set_unittest_user(username_1, password_1)
+  modify_unittest_user_helper.set_unittest_user(username_2, password_2)
+  modify_unittest_user_helper.set_unittest_user(username_3, password_3)
+  modify_unittest_user_helper.set_unittest_user(username_4, password_4)
+
+  // modify_unittest_user_helper.delete_unittest_db()
+  
+})

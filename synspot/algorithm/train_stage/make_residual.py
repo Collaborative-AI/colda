@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 import os
 
@@ -6,15 +8,22 @@ from synspot.algorithm.base import BaseAlgorithm
 from synspot.algorithm.utils import makedir_exist_ok, log, parse_idx
 from synspot.algorithm.metric.metrics import Metric
 
+from typing import (
+    Any,
+    Union,
+    overload,
+)
+
+
 class MakeResidual(BaseAlgorithm):
     '''
     Calculate Residual
     '''
     
+    @overload
     @classmethod
     def make_residual(
         cls, 
-        root: str, 
         self_id: str, 
         task_id: str, 
         round: str, 
@@ -22,47 +31,85 @@ class MakeResidual(BaseAlgorithm):
         target_idx: str, 
         skip_header: str, 
         task_mode: str, 
-        metric_name: str
-    ) -> None:
+        metric_name: str,
+        last_round_result: None
+    ) -> np.ndarray:
+        ...
+
+    @overload
+    @classmethod
+    def make_residual(
+        cls, 
+        self_id: str, 
+        task_id: str, 
+        round: str, 
+        dataset_path: str, 
+        target_idx: str, 
+        skip_header: str, 
+        task_mode: str, 
+        metric_name: str,
+        last_round_result: Any
+    ) -> np.ndarray:
+        ...
+    
+    @classmethod
+    def make_residual(
+        cls, 
+        self_id: str, 
+        task_id: str, 
+        round: str, 
+        dataset_path: str, 
+        target_idx: str, 
+        skip_header: str, 
+        task_mode: str, 
+        metric_name: str,
+        last_round_result: Union(Any, None) = None
+    ) -> np.ndarray:
 
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
         target_idx = parse_idx(target_idx)
         target = dataset[:, target_idx]
         if round == 1:
-            output = make_init(task_mode, target)
-            round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
-            makedir_exist_ok(round_path)
-            np.savetxt(os.path.join(round_path, 'result.csv'), output, delimiter=",")
+            output = cls.make_init(task_mode, target)
+            # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
+            # makedir_exist_ok(round_path)
+            # np.savetxt(os.path.join(round_path, 'result.csv'), output, delimiter=",")
             output = output.repeat(target.shape[0], axis=0)
-            residual = compute_residual(task_mode, output, target)
+            residual = cls.compute_residual(task_mode, output, target)
             metric = Metric(task_mode, metric_name)
             eval = metric.eval(output, target)
             msg = 'Train Round: 0, {}'.format(eval)
-            log(msg, root, self_id, task_id)
+            log(msg, cls.__root, self_id, task_id)
         else:
-            round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
-            result = np.genfromtxt(os.path.join(round_path, 'result.csv'), delimiter=',')
-            result = result.reshape(result.shape[0], -1)
-            residual = compute_residual(task_mode, result, target)
-        residual_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'residual')
-        makedir_exist_ok(residual_path)
-        np.savetxt(os.path.join(residual_path, '{}.csv'.format(self_id)), residual, delimiter=",")
-        matched_idx_path = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx')
-        self_from_idx_files = os.listdir(matched_idx_path)
-        assistor_residual_path = []
-        for i in range(len(self_from_idx_files)):
-            self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, str(self_from_idx_files[i])),
-                                            delimiter=',').astype(np.int64)
-            assistor_residual_path_i = os.path.join(residual_path, str(self_from_idx_files[i]))
-            np.savetxt(assistor_residual_path_i, residual[self_from_idx_i,], delimiter=",")
-            assistor_residual_path.append(assistor_residual_path_i)
-        assistor_residual_path = '?'.join(assistor_residual_path)
-        return '200?make_residual?{}'.format(assistor_residual_path)
+            # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
+            '''
+            需要传入参数
+            '''
+            # result = np.genfromtxt(os.path.join(round_path, 'result.csv'), delimiter=',')
+            last_round_result = last_round_result.reshape(last_round_result.shape[0], -1)
+            residual = cls.compute_residual(task_mode, last_round_result, target)
+        # residual_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'residual')
+        # makedir_exist_ok(residual_path)
+        # np.savetxt(os.path.join(residual_path, '{}.csv'.format(self_id)), residual, delimiter=",")
+        # matched_idx_path = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx')
+        # self_from_idx_files = os.listdir(matched_idx_path)
+        # assistor_residual_path = []
+        # for i in range(len(self_from_idx_files)):
+        #     self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, str(self_from_idx_files[i])),
+        #                                     delimiter=',').astype(np.int64)
+        #     assistor_residual_path_i = os.path.join(residual_path, str(self_from_idx_files[i]))
+        #     # np.savetxt(assistor_residual_path_i, residual[self_from_idx_i,], delimiter=",")
+        #     assistor_residual_path.append(assistor_residual_path_i)
+        # assistor_residual_path = '?'.join(assistor_residual_path)
+        # return '200?make_residual?{}'.format(assistor_residual_path)
 
+        return residual
 
+    @classmethod
     def make_init(
-        self, task_mode, target
-    ) -> None:
+        cls, task_mode: str, target: str
+    ) -> np.ndarray:
+
         if task_mode == 'regression':
             init = np.mean(target, axis=0, keepdims=True)
         elif task_mode == 'classification':
@@ -73,13 +120,14 @@ class MakeResidual(BaseAlgorithm):
             raise ValueError('Not valid task mode')
         return init
 
-
+    @classmethod
     def compute_residual(
-        self,
-        task_mode, 
-        output, 
-        target
-    ) -> None:
+        cls,
+        task_mode: str, 
+        output: np.ndarray, 
+        target: np.ndarray,
+    ) -> np.ndarray:
+
         if task_mode == 'regression':
             residual = - 2 * (output - target)
         elif task_mode == 'classification':

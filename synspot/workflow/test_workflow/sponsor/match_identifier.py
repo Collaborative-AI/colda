@@ -1,4 +1,7 @@
+from __future__ import annotations
 
-class TestSponsorMatchIdentifier:
+from synspot.workflow.base import BaseWorkflow
+
+class TestSponsorMatchIdentifier(BaseWorkflow):
 
     pass

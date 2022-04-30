@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 synspot
 ~~~~~~
@@ -38,7 +40,14 @@ from collections.abc import Callable
 # from synspot import Get_Notification
 # from synspot import Database_class
 import threading
-from typing import List, Tuple, Dict
+from typing import (
+    List, 
+    Tuple, 
+    Dict,
+    Literal
+)
+
+Default_Mode = Literal['auto', 'manual']
 
 _default_authorization = Authorization.get_Authorization_instance()
 _default_trainRequest = TrainRequest.get_TrainRequest_instance()
@@ -74,10 +83,10 @@ def callForTrain(maxRound: int, assistors: list, train_file_path: str, train_id_
                             metric_name=metric_name, task_name=task_name, task_description=task_description)
     return
 
-def callForTest(task_id: str, test_file_path: str, test_id_column: str, test_data_column: str, 
+def callForTest(train_id: str, test_file_path: str, test_id_column: str, test_data_column: str, 
                             test_target_column: str, test_name: str=None, test_description: str=None):
     testRequest_instance = _default_testRequest.get_TestRequest_instance()
-    testRequest_instance.handleTestRequest(task_id=task_id, test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column, 
+    testRequest_instance.handleTestRequest(train_id=train_id, test_file_path=test_file_path, test_id_column=test_id_column, test_data_column=test_data_column, 
                             test_target_column=test_target_column, test_name=test_name, test_description=test_description)
     return
 
@@ -88,7 +97,7 @@ def start_Collaboration():
 def end_Collaboration():
     return _default_getNotification.end_Collaboration()
 
-def set_default_data_path(default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None):
+def set_default_data_path(default_mode: Default_Mode, default_task_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None):
     PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
     user_id = PersonalInformation_instance.user_id
     if user_id == None:
@@ -105,12 +114,12 @@ def clean_db():
     except:
         print('delete_db_res wrong')
 
-def get_all_task_id_as_sponsor():
+def get_all_train_id_as_sponsor():
     try:
-        res = _default_database.get_all_task_id_as_sponsor()
+        res = _default_database.get_all_train_id_as_sponsor()
         print('resff', res)
     except:
-        print('get_all_task_id_as_sponsor wrong')
+        print('get_all_train_id_as_sponsor wrong')
     else:
         return res
     
@@ -122,11 +131,11 @@ def get_all_test_id_as_sponsor():
     else:
         return res
 
-def get_all_task_id_as_assistor():
+def get_all_train_id_as_assistor():
     try:
-        res = _default_database.get_all_task_id_as_assistor()
+        res = _default_database.get_all_train_id_as_assistor()
     except:
-        print('get_all_task_id_as_assistor wrong')
+        print('get_all_train_id_as_assistor wrong')
     else:
         return res
 
@@ -138,8 +147,8 @@ def get_all_test_id_as_assistor():
     else:
         return res
 
-def get_all_task_id():
-    return get_all_task_id_as_sponsor() + get_all_task_id_as_assistor()
+def get_all_train_id():
+    return get_all_train_id_as_sponsor() + get_all_train_id_as_assistor()
 
 def get_all_test_id():
     return get_all_test_id_as_sponsor() + get_all_test_id_as_assistor()

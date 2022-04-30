@@ -1,3 +1,4 @@
+from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
@@ -16,55 +17,43 @@ class AbstractTrainMainWorkflow(ABC):
         pass
 
     @abstractmethod
-    def handleTrainRequest(self, *args):
+    def find_assistor(self, *args):
         pass
     
     @abstractmethod
-    def unread_request(self, *args):
+    def train_assistor_request(self, *args):
         pass
 
     @abstractmethod
-    def unread_match_identifier(self, *args):
+    def train_match_identifier(self, *args):
         pass
 
     @abstractmethod
-    def unread_match_identifier_sponsor(self, *args):
+    def train_sponsor_match_identifier(self, *args):
         pass
 
     @abstractmethod
-    def unread_match_identifier_assistor(self, *args):
+    def train_assistor_match_identifier(self, *args):
         pass
 
     @abstractmethod
-    def unread_situation(self, *args):
+    def train_situation(self, *args):
         pass
 
     @abstractmethod
-    def unread_situation_sponsor(self, *args):
+    def train_sponsor_situation(self, *args):
         pass
     
     @abstractmethod
-    def unread_situation_assistor_train_part(self, *args):
+    def train_assistor_situation(self, *args):
         pass
 
     @abstractmethod
-    def unread_situation_assistor(self, *args):
+    def train_output(self, *args):
         pass
 
     @abstractmethod
-    def unread_output(self, *args):
-        pass
-
-    @abstractmethod
-    def unread_output_singleTask(self, *args):
-        pass
-
-    @abstractmethod
-    def unread_output_make_result_helper(self, *args):
-        pass
-
-    @abstractmethod
-    def unread_train_stop(self, *args):
+    def stop_train(self, *args):
         pass
 
 class AbstractTestMainWorkflow(ABC):

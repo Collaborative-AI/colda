@@ -1,4 +1,7 @@
+from __future__ import annotations
 
-class TestSponsorOutput:
+from synspot.workflow.base import BaseWorkflow
+
+class TestSponsorOutput(BaseWorkflow):
 
     pass

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from typing import final, overload
 
@@ -195,35 +197,35 @@ from typing import final, overload
 # a.fuji()
 import collections
 import random
-class lihai:
-    lihai1 = 7
+# class lihai:
+#     lihai1 = 7
 
-class Database:
-    __Database_instance = None
+# class Database:
+#     __Database_instance = None
 
-    # def __init__(self):
-    #     self.__temp_database = collections.defaultdict(dict)
-    #     self.ceshi_num = 0
+#     # def __init__(self):
+#     #     self.__temp_database = collections.defaultdict(dict)
+#     #     self.ceshi_num = 0
 
-    @classmethod
-    def get_Database_instance(cls):
-        if cls.__Database_instance == None:
-            cls.__Database_instance = Database()
+#     @classmethod
+#     def get_Database_instance(cls):
+#         if cls.__Database_instance == None:
+#             cls.__Database_instance = Database()
 
-            # cls.__Database_instance.__temp_database['5'] = random.random()
-        return cls.__Database_instance
+#             # cls.__Database_instance.__temp_database['5'] = random.random()
+#         return cls.__Database_instance
 
-    @classmethod
-    def get_data(cls):
-        return cls.__Database_instance
+#     @classmethod
+#     def get_data(cls):
+#         return cls.__Database_instance
     
-    # def change_ceshi_num(self):
-    #     self.ceshi_num = 5
+#     # def change_ceshi_num(self):
+#     #     self.ceshi_num = 5
 
-instance_1 = Database.get_Database_instance()
-print(hex(id(instance_1)))
-res = hex(id(Database.get_Database_instance()))
-print(f'res, {res}')
+# instance_1 = Database.get_Database_instance()
+# print(hex(id(instance_1)))
+# res = hex(id(Database.get_Database_instance()))
+# print(f'res, {res}')
 
 # instance_2 = Database.get_Database_instance()
 # instance_2.change_ceshi_num()
@@ -245,3 +247,193 @@ print(f'res, {res}')
 
 # a = CECSCESCEE()
 # a.ceshi()
+
+# a = 5
+
+# print(f'sss: {a}')
+# print(f"sss: {a}")
+
+# from typing import (
+#     Union,
+#     Any,
+# )
+
+# JSONType = Union(
+#     dict[str, str],
+#     list[dict],
+#     list[Any]
+# )
+  
+
+# def a(cc: list[str]):
+#     print(cc)
+
+# a(['1', 2])
+
+
+# a = {'a':{'aa':5}, 'b':{'bb':6}}
+
+# for key,val in a.items():
+#     print(key, val)
+#     print(type(key), type(val))
+
+
+# import numpy as np
+
+# a = np.array(1)
+# print(a, type(a))
+
+# def ceshi(a: np.ndarray[int]):
+#     print('fsdfsd', a)
+
+# ceshi(a)
+
+import collections
+
+from typing import (
+    Any,
+    Hashable,
+    TypeVar,
+    Literal,
+    Union
+)
+
+DictKey = TypeVar('DictKey', bound=Hashable)
+DictValue = TypeVar("DictValue", bound=Any)
+Store_Type = Literal['append', 'one_access']
+
+
+class DictHelper:
+
+    @classmethod
+    def is_key_in_dict(
+        cls,
+        key: DictKey, 
+        container: dict
+    ) -> bool:
+
+        if key in container:
+            return True
+        return False
+
+    @classmethod
+    def generate_dict_key(
+        cls, user_id: str, task_id: str
+    ) -> tuple[str, str]:
+
+        return (user_id, task_id)
+
+    @classmethod
+    def append_type(
+        cls,
+        key: DictKey, 
+        value: Union(dict[DictKey, DictValue], list[DictValue]),
+        container: dict[DictKey, DictValue],
+    ) -> None:
+
+        if key not in container:
+            container[key] = value
+        else:
+            if isinstance(container[key], dict) and isinstance(value, dict):
+                for sub_key, sub_value in value.items():
+                    container[key][sub_key] = sub_value
+            elif isinstance(container[key], list) and isinstance(value, list):
+                container[key].append(value)
+        return
+
+    @classmethod
+    def one_access_type(
+        cls,
+        key: DictKey, 
+        value: DictValue,
+        container: dict[DictKey, DictValue]
+    ) -> None:
+        if key not in container:
+            container[key] = value
+        else:
+            print('error')
+        return None
+
+    @classmethod
+    def store_value(
+        cls,
+        key: DictKey, 
+        value: DictValue,
+        container: dict[DictKey, DictValue],
+        store_type: Store_Type = 'one_access'
+    ) -> None:
+
+        if store_type == 'one_access':
+            cls.one_access_type(key, value, container)
+        elif store_type == 'append':
+            cls.append_type(key, value, container)
+        else:
+            print('store type wrong')
+        return
+
+    @classmethod
+    def get_value(
+        cls,
+        key: DictKey, 
+        container: dict[DictKey, DictValue]
+    ) -> DictValue:
+        
+        if key not in container:
+            '''
+            warning
+            '''
+            pass
+        return container[key]
+# a = ['5', '6']
+
+# print('\n'.join(a))
+
+# from synspot.utils.dict_helper import DictHelper
+
+# a = collections.defaultdict(dict)
+
+# value = {
+#     6:8
+# }
+
+# DictHelper.store_value(
+#     key=5,
+#     value=value,
+#     container=a
+# )
+
+# print(f'sss: {a}')
+
+# value = {
+#     9:10
+# }
+
+# # DictHelper.store_value(
+# #     key=5,
+# #     value=value,
+# #     container=a,
+# #     store_type='append'
+# # )
+
+# # print(f'sss: {a}')
+
+
+# b = {}
+# b[5] = 6
+
+def ceshi(a):
+    print(a)
+
+class A:
+    def wudi(self, a):
+        print(f'aaaa: {a}')
+
+class B(A):
+    def __init__(self):
+        self.__a = 666
+    
+    def diaoyong(self):
+        ceshi(self.__a)
+
+b = B()
+b.diaoyong()

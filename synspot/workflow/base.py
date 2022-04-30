@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from synspot.network import Network
 from synspot.personalinformation import PersonalInformation
 
@@ -25,11 +27,22 @@ from synspot.database import (
 
 from typing import (
     final,
-    Tuple
+    Union,
+    Any,
+    Final,
+)
+
+JSONType = Union(
+    dict[str, Any],
+    list[dict],
+    list[Any]
 )
 
 
 class BaseWorkflow:
+    __skip_header: Final[int] = 1
+    __initial_round_num: Final[int] = 1
+
     __Network_instance = Network.get_Network_instance()
     __PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
 
@@ -46,7 +59,7 @@ class BaseWorkflow:
 
     @final
     @classmethod
-    def _get_important_information(cls) -> Tuple[str, str, str]:
+    def _get_important_information(cls) -> tuple[str, str, str]:
         """
         Obtain the information we need: user_id, root, token, task_id
 
@@ -66,6 +79,11 @@ class BaseWorkflow:
     
     @final
     @classmethod
+    def _get_default_mode(cls) -> str:
+        return cls.__PersonalInformation_instance.default_mode
+
+    @final
+    @classmethod
     def _get_base_url(cls) -> str:
         base_url = cls.__Network_instance.base_url
         return base_url
@@ -78,7 +96,39 @@ class BaseWorkflow:
         url: str,
         suffix: str = None
     ) -> str:
-        return cls.__Network_instance.process_url(prefix=prefix, url=url)
+        return cls._get_base_url() + cls.__Network_instance.process_url(prefix=prefix, url=url, suffix=suffix)
 
+    @final
+    @classmethod
+    def _get_request(
+        cls, url: str, token: str, request_name: str
+    ) -> dict[str, Union(list[str], str)]:
+
+        network_response = cls.__Network_instance.get_request(
+            url=url,
+            token=token,
+            request_name=request_name
+        )
+
+        return cls.__Network_instance.load_network_response(network_response)
+    
+    @final
+    @classmethod
+    def _post_request(
+        cls, 
+        url: str, 
+        token: str, 
+        request_name: str,
+        data: dict[str, Union(list[str], str)]
+    ) -> dict[str, Union(list[str], str)]:
+
+        network_response = cls.__Network_instance.post_request(
+            url=url,
+            token=token,
+            request_name=request_name,
+            data=data
+        )
+
+        return cls.__Network_instance.load_network_response(network_response)
 
 

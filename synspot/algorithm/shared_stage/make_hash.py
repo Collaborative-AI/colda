@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import numpy as np
 import hashlib
@@ -13,9 +15,6 @@ class MakeHash(BaseAlgorithm):
 
     def make_hash(
         self,
-        self_id: str, 
-        task_id: str, 
-        test_id: str, 
         dataset_path: str, 
         id_idx: str, 
         skip_header: int, 

@@ -1,10 +1,21 @@
-import numpy as np
+from __future__ import annotations
+
 import os
 import synspot
+import numpy as np
+
 from synspot.algorithm.base import BaseAlgorithm
-from synspot.algorithm.utils import save, log, parse_idx
+
+from synspot.algorithm.utils import (
+    save, 
+    log, 
+    parse_idx
+)
+
 from synspot.algorithm.model.models import Model
+
 from synspot.algorithm.metric.metrics import Metric
+
 
 class MakeTrainLocal(BaseAlgorithm):
     '''

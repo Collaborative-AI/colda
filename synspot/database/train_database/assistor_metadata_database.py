@@ -8,9 +8,7 @@ from synspot.database.base import BaseDatabase
 
 from synspot.database.abstract_database import AbstractMetadataDatabase
 
-from synspot.database.utils import (
-    generate_database_key
-)
+from synspot.utils import DictHelper
 
 from typing import (
     Type,
@@ -33,19 +31,12 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         return cls.__TrainAssistorMetadataDatabase_instance
 
     def get_all_records(self) -> List[Tuple[str, str]]:
-
-        all_records = []
-        for key in self.__temp_database:
-            # key is a tuple
-            if len(key) >= 2:
-                all_records.append(key)
-
-        return all_records
+        return DictHelper.get_all_key_value_pairs(container=self.__temp_database)
 
     def store_record(
         self, 
         user_id: str, 
-        task_id: str, 
+        train_id: str, 
         mode: str, 
         task_mode: str, 
         model_name: str, 
@@ -76,31 +67,35 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         :exception OSError: Placeholder.
         """
 
-        try:
-            key = generate_database_key(user_id, task_id)
-            if key not in self.__temp_database:
-                self.__temp_database[key] = collections.defaultdict(dict)
 
-            cur_class_name = self.__class__.__name__
-            self.__temp_database[key]['user_id'] = user_id
-            self.__temp_database[key]['task_id'] = task_id
-            self.__temp_database[key]['mode'] = mode
-            self.__temp_database[key]['task_mode'] = task_mode
-            self.__temp_database[key]['model_name'] = model_name
-            self.__temp_database[key]['train_file_path'] = train_file_path
-            self.__temp_database[key]['train_id_column'] = train_id_column
-            self.__temp_database[key]['train_data_column'] = train_data_column
-            self.__temp_database[key]['task_name'] = task_name
-            self.__temp_database[key]['task_description'] = task_description
-            
-        except:
-            print('User_Assistor_Table stores false')
+        key = DictHelper.generate_dict_key(user_id, train_id)
+        if key not in self.__temp_database:
+            self.__temp_database[key] = collections.defaultdict(dict)
+
+        value = {
+            'user_id': user_id,
+            'train_id': train_id,
+            'mode': mode,
+            'task_mode': task_mode,
+            'model_name': model_name,
+            'train_file_path': train_file_path,
+            'train_id_column': train_id_column,
+            'train_data_column': train_data_column,
+            'task_name': task_name,
+            'task_description': task_description
+        }
+        DictHelper.store_value(
+            key=key,
+            value=value,
+            container=self.__temp_database
+        )
+
         return 'User_Assistor_Table stores successfully'
     
     def get_record(
         self, 
         user_id: str, 
-        task_id: str, 
+        train_id: str, 
     ) -> None:
         
         """
@@ -123,28 +118,28 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         :exception OSError: Placeholder.
         """
 
-        if not task_id:
-            raise RuntimeError('Use task_id or test_id to retrieve User_Assistor_Table')
+        if not train_id:
+            raise RuntimeError('Use train_id or test_id to retrieve User_Assistor_Table')
 
-        key = generate_database_key(user_id, task_id)
-        cur_class_name = self.__class__.__name__
+        key = DictHelper.generate_dict_key(user_id, train_id)
         if key not in self.__temp_database:
-            print(f'{cur_class_name} does not contain the record')
+            print(f'{self.__class__.__name__} does not contain the record')
 
-        try:
-            user_id = self.__temp_database[key]['user_id']
-            task_id = self.__temp_database[key]['task_id']
-            mode = self.__temp_database[key]['mode']
-            task_mode = self.__temp_database[key]['task_mode']
-            model_name = self.__temp_database[key]['model_name']
-            train_file_path = self.__temp_database[key]['train_file_path']
-            train_id_column = self.__temp_database[key]['train_id_column']
-            train_data_column = self.__temp_database[key]['train_data_column']
-            task_name = self.__temp_database[key]['task_name']
-            task_description = self.__temp_database[key]['task_description']     
-        except:
-            print('get User_Assistor_Table false')
-
-        return mode, task_mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column
+        assistor_metadata = DictHelper.get_value(
+            key=key,
+            container=self.__temp_database
+        )
+        user_id = assistor_metadata['user_id']
+        train_id = assistor_metadata['train_id']
+        mode = assistor_metadata['mode']
+        task_mode = assistor_metadata['task_mode']
+        model_name = assistor_metadata['model_name']
+        train_file_path = assistor_metadata['train_file_path']
+        train_id_column = assistor_metadata['train_id_column']
+        train_data_column = assistor_metadata['train_data_column']
+        task_name = assistor_metadata['task_name']
+        task_description = assistor_metadata['task_description']     
+        
+        return train_id, mode, task_mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column
        
    

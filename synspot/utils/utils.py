@@ -3,53 +3,27 @@ from __future__ import annotations
 import json
 import numpy as np
 
-from synspot.algorithm import log
+from ..error import check_Algorithm_return_value
+from ..algorithm import log
 
 from typing import (
-    Union
+    Any,
+    Hashable,
+    TypeVar
 )
 
 class check_sponsor_class:
     sponsor: int = 1
     assistor: int = 0
 
-def obtain_notification_information(
-    notification_dict: dict[str, str], 
-    test_indicator: str = 'train'
-) -> Union(tuple(str, str, str), tuple(str, str, str, str)):
 
-    if test_indicator == 'train':
-        sender_random_id = notification_dict['sender_random_id']
-        role = notification_dict['role']
-        cur_rounds_num = notification_dict['cur_rounds_num']
 
-        return sender_random_id, role, cur_rounds_num
-    elif test_indicator == 'test':
-        sender_random_id = notification_dict['sender_random_id']
-        role = notification_dict['role']
-        cur_rounds_num = notification_dict['cur_rounds_num']
-        test_id = notification_dict['train_id']
 
-        return sender_random_id, role, cur_rounds_num, test_id
+def to_string(
+    msg: Any
+) -> str:
 
-def check_Algorithm_return_value(check_list, first_val, second_val):
-    """
-    :param first_val: String. The first val needs to check.
-    :param second_val: String. The second val needs to check.
-
-    :returns: Boolean
-
-    :exception OSError: Placeholder.
-    """
-    if first_val:
-        if check_list[0] != first_val:
-            return False
-
-    if second_val:
-        if check_list[1] != second_val:
-            return False
-
-    return True
+    return str(msg)
 
 
 def log_helper(msg, root, user_id, task_id):
@@ -81,6 +55,8 @@ def check_status_code(response, status_code):
         return True
 
     return False
+
+
 
 def load_file(file_address):
     """

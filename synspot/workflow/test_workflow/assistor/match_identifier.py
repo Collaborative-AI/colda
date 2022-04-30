@@ -1,4 +1,7 @@
+from __future__ import annotations
 
-class TestAssistorMatchIdentifier:
+from synspot.workflow.base import BaseWorkflow
+
+class TestAssistorMatchIdentifier(BaseWorkflow):
 
     pass

@@ -1,13 +1,18 @@
+from __future__ import annotations
 
-class TrainSponsorOutput:
+import requests
+
+from synspot.workflow.base import BaseWorkflow
+
+class TrainSponsorOutput(BaseWorkflow):
 
     
-    def unread_output_singleTask(self, task_id: str, rounds: int):
+    def unread_output_singleTask(self, train_id: str, rounds: int):
 
         """
         Handle the single task of unread output.
 
-        :param task_id: String. Task id of current task
+        :param train_id: String. Task id of current task
         :param rounds: Integer. Current Round
 
         :returns: None
@@ -19,7 +24,7 @@ class TrainSponsorOutput:
 
         url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url="/get_output_content", suffix=user_id)
         data = {
-            "task_id": task_id,
+            "train_id": train_id,
             "rounds": rounds
         }
         try:
@@ -30,7 +35,7 @@ class TrainSponsorOutput:
             print('sponsor_get_output_res wrong')
 
         msg = ["5.2 Sponsor gets output model\n"]
-        log_helper(msg, root, user_id, task_id)
+        log_helper(msg, root, user_id, train_id)
 
         assistor_random_id_to_output_content_dict = load_json_data(sponsor_get_output_res['assistor_random_id_to_output_content_dict'], 'sponsor_get_output_res[assistor_random_id_to_output_content_dict]')
 
@@ -39,7 +44,7 @@ class TrainSponsorOutput:
             cur_output = output_content
             print("from_id", from_id)
             # call save_output
-            save_output_pos = save_output(root=root, self_id=user_id, task_id=task_id, mode=self.test_indicator, test_id=None, round=rounds, from_id=from_id)
+            save_output_pos = save_output(root=root, self_id=user_id, train_id=train_id, mode=self.test_indicator, test_id=None, round=rounds, from_id=from_id)
             # assert save_output_pos is not None
             _, save_output_pos = handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
             # assert save_output_pos is not None
@@ -50,21 +55,21 @@ class TrainSponsorOutput:
             save_file(save_output_pos[2], cur_output)
 
             msg = ["5.3 Sponsor saves Output model\n"]
-            log_helper(msg, root, user_id, task_id)
+            log_helper(msg, root, user_id, train_id)
 
             # get train_file_path, train_target_column from User_Sponsor_Table
-            task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, task_id=task_id, test_indicator=self.test_indicator)
+            task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, train_id=train_id, test_indicator=self.test_indicator)
             print('zzzz', task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column)
             waiting_start_time = time.time()
-            self.unread_output_make_result_helper(task_id, rounds, train_file_path, train_target_column, task_mode, metric_name, waiting_start_time)
+            self.unread_output_make_result_helper(train_id, rounds, train_file_path, train_target_column, task_mode, metric_name, waiting_start_time)
 
         return
 
-    def unread_output_make_result_helper(self, task_id: str, rounds: int, train_file_path: str, train_target_column: str, task_mode: str, metric_name: str, waiting_start_time: float):
+    def unread_output_make_result_helper(self, train_id: str, rounds: int, train_file_path: str, train_target_column: str, task_mode: str, metric_name: str, waiting_start_time: float):
         """
         Helper Function. Dealing with the order issue
 
-        :param task_id: String. Task id of current task
+        :param train_id: String. Task id of current task
         :param rounds: Integer. Current Round
         :param train_file_path: String. The file path of train file
         :param train_target_column: String. The selected data column of train file
@@ -81,7 +86,7 @@ class TrainSponsorOutput:
         user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
 
         # call make_result
-        make_result_done = make_result(root=root, self_id=user_id, task_id=task_id, round=rounds, 
+        make_result_done = make_result(root=root, self_id=user_id, train_id=train_id, round=rounds, 
                                        dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default, 
                                        task_mode=task_mode, metric_name=metric_name)
         # assert make_result_done is not None
@@ -89,22 +94,22 @@ class TrainSponsorOutput:
         # assert make_result_done is not None
 
         if make_result_done_indicator == False:
-            args = [task_id, rounds, train_file_path, train_target_column, task_mode, metric_name, waiting_start_time]
+            args = [train_id, rounds, train_file_path, train_target_column, task_mode, metric_name, waiting_start_time]
             print('unread_output_make_result_helper callback')
             threading.Timer(30, self.unread_output_make_result_helper, args)
         elif make_result_done_indicator == True:
             msg = ["5.4 Sponsor makes result done." + "\n"]
-            log_helper(msg, root, user_id, task_id)
+            log_helper(msg, root, user_id, train_id)
 
             if rounds >= self.maxRound:
                 msg = ["---- Train Stage Ends\n"]
-                log_helper(msg, root, user_id, task_id)
-                print('Sponsor: Training task_id: ', task_id, ' ends')
+                log_helper(msg, root, user_id, train_id)
+                print('Sponsor: Training train_id: ', train_id, ' ends')
                 return
             else:
 
                 # call make_residual
-                make_residual_multiple_paths = make_residual(root=root, self_id=user_id, task_id=task_id, round=(rounds+1), 
+                make_residual_multiple_paths = make_residual(root=root, self_id=user_id, train_id=train_id, round=(rounds+1), 
                                                              dataset_path=train_file_path, target_idx=train_target_column, 
                                                              skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
                 # assert make_residual_multiple_paths is not None
@@ -112,7 +117,7 @@ class TrainSponsorOutput:
                 # assert make_residual_multiple_paths is not None
 
                 msg = ["5.5 Sponsor makes residual finished\n"]
-                log_helper(msg, root, user_id, task_id)
+                log_helper(msg, root, user_id, train_id)
 
                 residual_paths = make_residual_multiple_paths[2:]
                 assistor_random_id_to_residual_dict = {}
@@ -129,7 +134,7 @@ class TrainSponsorOutput:
                 
                 url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url="/send_situation", suffix=user_id)
                 data = {
-                    "task_id": task_id,
+                    "train_id": train_id,
                     "assistor_random_id_to_residual_dict": assistor_random_id_to_residual_dict,
                 }
                 try:
@@ -140,7 +145,7 @@ class TrainSponsorOutput:
                     print('send_situation_res wrong')
 
                 msg = ["5.6 Sponsor updates situation done\n", "-------------------------- 5. Unread Output Done\n"]
-                log_helper(msg, root, user_id, task_id)
+                log_helper(msg, root, user_id, train_id)
                 
-                print('Sponsor: Training task_id: ', task_id, ' is running')
+                print('Sponsor: Training train_id: ', train_id, ' is running')
                 return 'unread_output successfully'

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import requests
 import json
 import base64
@@ -5,7 +7,7 @@ import base64
 from synspot.network import Network
 from synspot.personalinformation import PersonalInformation
 from synspot.database import Database
-from synspot.utils import handle_base64_padding, load_json_data, check_status_code
+from synspot.utils.utils import handle_base64_padding, load_json_data, check_status_code
 # from Get_Notification import
 
 # from urllib.request import quote, unquote

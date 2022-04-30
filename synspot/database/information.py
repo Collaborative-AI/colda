@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import collections
 
 from synspot.database.train_database.assistor_metadata_database import TrainAssistorDatabase
@@ -9,15 +11,15 @@ from typing import(
 )
 
 from synspot.database.database_factory import(
-    GetDefaultDatabase,
-    GetTrainSponsorDatabase,
-    GetTrainAssistorDatabase,
-    GetTestSponsorDatabase,
-    GetTestAssistorDatabase
+    GetDefaultMetadataDatabase,
+    GetTrainSponsorMetadataDatabase,
+    GetTrainAssistorMetadataDatabase,
+    GetTestSponsorMetadataDatabase,
+    GetTestAssistorMetadataDatabase
 )
 
 
-def get_all_task_id_as_sponsor() -> List[str]:
+def get_all_train_id_as_sponsor() -> List[str]:
 
     """
     start task with all assistors
@@ -40,13 +42,13 @@ def get_all_task_id_as_sponsor() -> List[str]:
     """
 
     user_id = get_user_id()
-    all_task_ids = []
-    for database in (GetTrainSponsorDatabase.get_database()):
+    all_train_ids = []
+    for database in (GetTrainSponsorMetadataDatabase.get_database()):
         for record in database.get_all_records():
             if record[0] == user_id:
-                all_task_ids.append(record[1])
+                all_train_ids.append(record[1])
 
-    return all_task_ids
+    return all_train_ids
 
 def get_all_test_id_as_sponsor() -> List[str]:
 
@@ -72,7 +74,7 @@ def get_all_test_id_as_sponsor() -> List[str]:
 
     user_id = get_user_id()
     all_test_ids = []
-    for database in (GetTestSponsorDatabase.get_database()):
+    for database in (GetTestSponsorMetadataDatabase.get_database()):
         for record in database.get_all_records():
             if record[0] == user_id:
                 all_test_ids.append(record[1])
@@ -80,7 +82,7 @@ def get_all_test_id_as_sponsor() -> List[str]:
     return all_test_ids
 
 
-def get_all_task_id_as_assistor() -> List[str]:
+def get_all_train_id_as_assistor() -> List[str]:
 
     """
     start task with all assistors
@@ -103,13 +105,13 @@ def get_all_task_id_as_assistor() -> List[str]:
     """
 
     user_id = get_user_id()
-    all_task_ids = []
-    for database in (GetTrainAssistorDatabase.get_database()):
+    all_train_ids = []
+    for database in (GetTrainAssistorMetadataDatabase.get_database()):
         for record in database.get_all_records():
             if record[0] == user_id:
-                all_task_ids.append(record[1])
+                all_train_ids.append(record[1])
 
-    return all_task_ids
+    return all_train_ids
 
 def get_all_test_id_as_assistor() -> List[str]:
 
@@ -135,7 +137,7 @@ def get_all_test_id_as_assistor() -> List[str]:
 
     user_id = get_user_id()
     all_test_ids = []
-    for database in (GetTestAssistorDatabase.get_database()):
+    for database in (GetTestAssistorMetadataDatabase.get_database()):
         for record in database.get_all_records():
             if record[0] == user_id:
                 all_test_ids.append(record[1])

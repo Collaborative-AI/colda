@@ -1,4 +1,6 @@
 import os
+from __future__ import annotations
+
 import numpy as np
 
 from synspot.algorithm.base import BaseAlgorithm
@@ -18,16 +20,10 @@ class MakeMatchIdx(BaseAlgorithm):
 
     def make_match_idx(
         self, 
-        root: str, 
-        self_id: str, 
-        task_id: str, 
-        mode: str, 
-        test_id: str, 
-        from_id: str,
-        self_id_data: Union(List[str], Any),
-        from_id_data: Union(List[str], Any),
-    ) -> List[str]:
-        pass
+        self_id_data: List[str],
+        from_id_data: List[str],
+    ) -> np.ndarray: #np.ndarryd[str]
+        
         # if mode == 'train':
         #     self_id_path = os.path.join(root, self_id, 'task', task_id, mode, 'id', '{}.csv'.format(self_id))
         #     from_id_path = os.path.join(root, self_id, 'task', task_id, mode, 'id', '{}.csv'.format(from_id))

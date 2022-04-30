@@ -1,6 +1,7 @@
 """
 Expose public exceptions & warnings
 """
+from __future__ import annotations
 
 from pandas._config.config import OptionError  # noqa:F401
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .workflow.train_workflow import TrainRequest, Network, PersonalInformation
 from .workflow.test_workflow import TestRequest
 from .authorization import Authorization
@@ -56,13 +58,13 @@ class GetNotification():
         for category_name in notification_category:
             if category_name in self.train_notification_category_name or category_name in self.test_notification_category_name:
                 if category_name == 'unread_request':
-                    self.default_trainRequest.unread_request(notification_category[category_name]['task_id_dict'])
+                    self.default_trainRequest.unread_request(notification_category[category_name]['train_id_dict'])
                 elif category_name == 'unread_match_identifier':
-                    self.default_trainRequest.unread_match_identifier(notification_category[category_name]['task_id_dict'])
+                    self.default_trainRequest.unread_match_identifier(notification_category[category_name]['train_id_dict'])
                 elif category_name == 'unread_situation':
-                    self.default_trainRequest.unread_situation(notification_category[category_name]['task_id_dict'])
+                    self.default_trainRequest.unread_situation(notification_category[category_name]['train_id_dict'])
                 elif category_name == 'unread_output':
-                    self.default_trainRequest.unread_output(notification_category[category_name]['task_id_dict'])
+                    self.default_trainRequest.unread_output(notification_category[category_name]['train_id_dict'])
                 elif category_name == 'unread_train_stop':
                     pass
                 elif category_name == 'unread_test_request':

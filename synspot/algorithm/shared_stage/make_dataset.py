@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import shutil
 import numpy as np
@@ -9,8 +11,6 @@ from synspot.algorithm.utils import (
     makedir_exist_ok, 
     save,
 )
-
-from typing import List
     
 
 class MakeDataset(BaseAlgorithm):
@@ -22,7 +22,7 @@ class MakeDataset(BaseAlgorithm):
         num_users: int, 
         task_id: str, 
         match_rate: float = 0.5,
-        normalize: int = 1,
+        normalize: bool = True,
     ) -> bool:
 
         np.random.seed(task_id)
@@ -89,7 +89,8 @@ class MakeDataset(BaseAlgorithm):
 
     def split_dataset(
         self, data_name: str, num_users: int
-    ) -> List[np.ndarray]:
+    ) -> list[np.ndarray]:
+
         data_shape = {'Blob': [10], 'Iris': [4], 'Diabetes': [10], 'BostonHousing': [13], 'Wine': [13],
                     'BreastCancer': [30], 'KCHousing': [18], 'CreditCard': [29], 'MedicalInsurance': [6]}
         num_features = data_shape[data_name][-1]
@@ -100,6 +101,7 @@ class MakeDataset(BaseAlgorithm):
     def make_data(
         self, data_name: str, normalize: int
     ) -> np.ndarray:
+
         if data_name == 'Blob':
             from sklearn.datasets import make_blobs
             n_samples, n_features = 100, 10

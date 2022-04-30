@@ -1,6 +1,6 @@
 from .information import (
-    get_all_task_id_as_sponsor,
-    get_all_task_id_as_assistor,
+    get_all_train_id_as_sponsor,
+    get_all_train_id_as_assistor,
     get_all_test_id_as_sponsor,
     get_all_test_id_as_assistor
 )
@@ -16,8 +16,8 @@ from .database_factory import (
 )
 
 __all__ = [
-    'get_all_task_id_as_sponsor',
-    'get_all_task_id_as_assistor',
+    'get_all_train_id_as_sponsor',
+    'get_all_train_id_as_assistor',
     'get_all_test_id_as_sponsor',
     'get_all_test_id_as_assistor',
     'GetDefaultMetadataDatabase',

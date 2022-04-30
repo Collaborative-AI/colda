@@ -1,15 +1,12 @@
 from __future__ import annotations
 
-
 import collections
 
 from synspot.database.base import BaseDatabase
 
 from synspot.database.abstract_database import AbstractMetadataDatabase
 
-from synspot.database.utils import (
-    generate_database_key
-)
+from synspot.utils.dict_helper import DictHelper
 
 from typing import (
     Type,
@@ -34,7 +31,7 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
     def store_record(
         self, 
         user_id: str, 
-        task_id: str, 
+        train_id: str, 
         mode: str, 
         task_mode: str, 
         model_name: str, 
@@ -66,26 +63,30 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         :exception OSError: Placeholder.
         """
 
-        try:
-            key = generate_database_key(user_id, test_id)
-            if key not in self.__temp_database:
-                self.__temp_database[key] = collections.defaultdict(dict)
+        
+        key = DictHelper.generate_dict_key(user_id, test_id)
+        if key not in self.__temp_database:
+            self.__temp_database[key] = collections.defaultdict(dict)
 
-            cur_class_name = self.__class__.__name__
-            self.__temp_database[key]['user_id'] = user_id
-            self.__temp_database[key]['task_id'] = task_id
-            self.__temp_database[key]['mode'] = mode
-            self.__temp_database[key]['task_mode'] = task_mode
-            self.__temp_database[key]['model_name'] = model_name
-            self.__temp_database[key]['test_id'] = test_id
-            self.__temp_database[key]['test_file_path'] = test_file_path
-            self.__temp_database[key]['test_id_column'] = test_id_column
-            self.__temp_database[key]['test_data_column'] = test_data_column
-            self.__temp_database[key]['test_name'] = test_name
-            self.__temp_database[key]['test_description'] = test_description
+        value = {
+            'user_id': user_id,
+            'train_id': train_id,
+            'mode': mode,
+            'task_mode': task_mode,
+            'model_name': model_name,
+            'test_id': test_id,
+            'test_file_path': test_file_path,
+            'test_id_column': test_id_column,
+            'test_data_column': test_data_column,
+            'test_name': test_name,
+            'test_description': test_description
+        }
+        DictHelper.store_value(
+            key=key,
+            value=value,
+            container=self.__temp_database
+        )
             
-        except:
-            print('User_Assistor_Table stores false')
         return 'User_Assistor_Table stores successfully'
     
     def get_all_records(self) -> List[Tuple[str, str]]:
@@ -124,28 +125,28 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         :exception OSError: Placeholder.
         """
 
-        if not task_id and not test_id:
+        if not not test_id:
             raise RuntimeError('Use task_id or test_id to retrieve User_Assistor_Table')
 
-        key = generate_database_key(user_id, test_id)
-        cur_class_name = self.__class__.__name__
+        key = DictHelper.generate_dict_key(user_id, test_id)
         if key not in self.__temp_database:
-            print(f'{cur_class_name} does not contain the record')
+            print(f'{self.__class__.__name__} does not contain the record')
 
-        try:
-            user_id = self.__temp_database[key]['user_id']
-            task_id = self.__temp_database[key]['task_id']
-            mode = self.__temp_database[key]['mode']
-            task_mode = self.__temp_database[key]['task_mode']
-            model_name = self.__temp_database[key]['model_name']
-            test_id = self.__temp_database[key]['test_id']
-            test_file_path = self.__temp_database[key]['test_file_path']
-            test_id_column = self.__temp_database[key]['test_id_column']
-            test_data_column = self.__temp_database[key]['test_data_column']
-            test_name = self.__temp_database[key]['test_name']
-            test_description = self.__temp_database[key]['test_description']
-        except:
-            print('get User_Assistor_Table false')
+        assistor_metadata = DictHelper.get_value(
+            key=key,
+            container=self.__temp_database
+        )
+        user_id = assistor_metadata['user_id']
+        train_id = assistor_metadata['train_id']
+        mode = assistor_metadata['mode']
+        task_mode = assistor_metadata['task_mode']
+        model_name = assistor_metadata['model_name']
+        test_id = assistor_metadata['test_id']
+        test_file_path = assistor_metadata['test_file_path']
+        test_id_column = assistor_metadata['test_id_column']
+        test_data_column = assistor_metadata['test_data_column']
+        test_name = assistor_metadata['test_name']
+        test_description = assistor_metadata['test_description'] 
 
-        return mode, task_mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column
+        return train_id, mode, task_mode, model_name, test_name, test_description, test_file_path, test_id_column, test_data_column
     

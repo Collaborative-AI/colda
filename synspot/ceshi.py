@@ -421,19 +421,66 @@ class DictHelper:
 # b = {}
 # b[5] = 6
 
-def ceshi(a):
-    print(a)
+# def ceshi(a):
+#     print(a)
 
-class A:
-    def wudi(self, a):
-        print(f'aaaa: {a}')
+# class A:
+#     def wudi(self, a):
+#         print(f'aaaa: {a}')
 
-class B(A):
-    def __init__(self):
-        self.__a = 666
+# class B(A):
+#     def __init__(self):
+#         self.__a = 666
     
-    def diaoyong(self):
-        ceshi(self.__a)
+#     def diaoyong(self):
+#         ceshi(self.__a)
 
-b = B()
-b.diaoyong()
+# b = B()
+# b.diaoyong()
+
+# def a(a,b,c):
+#     print(a,b,c)
+
+# a(5, None, 6)
+
+
+# from __future__ import annotations
+
+import json
+import requests
+
+# from .utils import ParseJson
+
+from typing import (
+    Union,
+    Any,
+)
+
+# JSONType = Union(
+#     dict[str, Any],
+#     list[dict],
+#     list[Any]
+# )
+    
+
+
+# a = {}
+# print(a['5'])
+
+def ceshi(**kwargs):
+    ceshi2(
+        helper=helper,
+        user
+    )
+
+
+def ceshi2(
+    helper: str,
+    user: str,
+):
+    print(f'fasdf:{user, helper}')
+
+ceshi(
+    user='shima',
+    helper='wudi',
+)

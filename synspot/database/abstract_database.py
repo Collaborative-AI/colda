@@ -10,15 +10,15 @@ class AbstractMetadataDatabase(ABC):
         pass
     
     @abstractmethod
-    def get_all_records(self, *args):
+    def get_all_records(self, **kwargs):
         pass
 
     @abstractmethod
-    def store_record(self, *args):
+    def store_record(self, **kwargs):
         pass
     
     @abstractmethod
-    def get_record(self, *args):
+    def get_record(self, **kwargs):
         pass
 
 
@@ -30,13 +30,13 @@ class AbstractAlgorithmDatabase(ABC):
         pass
     
     @abstractmethod
-    def get_all_records(self, *args):
+    def get_all_records(self, **kwargs):
         pass
 
     @abstractmethod
-    def store_record(self, *args):
+    def store_record(self, **kwargs):
         pass
     
     @abstractmethod
-    def get_record(self, *args):
+    def get_record(self, **kwargs):
         pass

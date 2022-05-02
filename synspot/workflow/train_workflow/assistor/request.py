@@ -2,18 +2,22 @@ from __future__ import annotations
 
 import requests
 
-from synspot.workflow.base import BaseWorkflow
+from synspot.workflow.train_base import TrainBaseWorkflow
 
 from synspot.workflow.utils import (
-    load_json_data,
-    log_helper,
     obtain_notification_information
 )
 
-class TrainAssistorRequest(BaseWorkflow):
+from typing import Any
+
+
+class TrainAssistorRequest(TrainBaseWorkflow):
 
     @classmethod
-    def train_assistor_request(cls, train_id, train_id_dict):
+    def train_assistor_request(
+        cls, train_id: str, train_id_dict: dict[str, Any]
+    ) -> None:
+
         default_mode = cls._get_default_mode()
         user_id, root, token = cls._get_important_information()
         print(f'Default_mode: {default_mode}')
@@ -21,63 +25,52 @@ class TrainAssistorRequest(BaseWorkflow):
         sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict=train_id_dict)
         
         if default_mode == "auto":
-            default_record = cls.__DefaultMetadataDatabase_instance.get_record(user_id=user_id)
 
-            user_id = default_record[0]
-            default_mode = default_record[1]
-            default_task_mode = default_record[2]
-            default_model_name = default_record[3]
-            default_file_path = default_record[4]
-            default_id_column = default_record[5]
-            default_data_column = default_record[6]
+            default_record = cls._get_database_record(
+                database_type='default_metadata',
+                user_id=user_id
+            )
+
+            default_mode = default_record[0]
+            default_task_mode = default_record[1]
+            default_model_name = default_record[2]
+            default_file_path = default_record[3]
+            default_id_column = default_record[4]
+            default_data_column = default_record[5]
             
-            # assert store_User_Assistor_Table_res == 'User_Assistor_Table stores successfully'
-
-            # hash_id_file_address = make_hash(root=root, self_id=user_id, train_id=train_id, mode=self.test_indicator, 
-            #                                 test_id=None, dataset_path=default_file_path, id_idx=default_id_column, skip_header=self.skip_header_default)
-            # # assert hash_id_file_address is not None
-            # _, hash_id_file_address = handle_Algorithm_return_value("hash_id_file_address", hash_id_file_address, "200", "make_hash")
-            # print('hash_id_file_address', hash_id_file_address)
-            # # assert hash_id_file_address is not None
-
-            # hash_id_file_data = load_file(hash_id_file_address[2])
-
-            hash_id_file_data = cls.__TrainAlgorithm_instance.make_hash(
-                # self_id=user_id, 
-                # train_id=train_id, 
-                # mode=self.test_indicator, 
-                # test_id=None, 
+            encrypted_identifier = cls._encrypt_identifier(
                 dataset_path=default_file_path, 
                 id_idx=default_id_column, 
                 skip_header=cls.__skip_header
             )
 
             # add log
-            msg = [
-                "\n You are Assistor \n", 
-                f"Task ID: {train_id} \n", 
-                "---- 2. Unread Request \n", 
-                "2.1 Update the request notification \n"
+            msgs = [
+                "You are Assistor", 
+                f"Train ID: {train_id}", 
+                "---- 2. Unread Request", 
+                "2.1 Update the request notification"
             ]
-            log_helper(msg, root, user_id, train_id)
+            cls._store_log(
+                user_id=user_id,
+                task_id=train_id,
+                msgs=msgs
+            )
             
-            url = cls._process_url(prefix='main_flow', url="/match_identifier_content", suffix=user_id)
-
             data = {
                 "train_id": train_id,
-                "identifier_content": hash_id_file_data
+                "identifier_content": encrypted_identifier
             }
-            match_identifier_content_response = cls._post_request(
-                url=url,
+            match_identifier_content_response = cls._post_request_chaining(
                 token=token,
-                request_name='match_identifier_content',
-                data=data
+                data=data,
+                url_prefix=cls.__url_prefix,
+                url_root='match_identifier_content',
+                url_suffix=user_id
             )
 
-            match_assistor_id_res = load_json_data(json_data=match_assistor_id_res, json_data_name='match_assistor_id_res', 
-                                                        testing_key_value_pair=[('stored', 'assistor match id stored')])
-            
-            res = cls.__TrainAssistorMetadataDatabase_instance.store_record(
+            cls._store_database_record(
+                database_type='train_assistor_metadata',
                 user_id=user_id, 
                 train_id=train_id, 
                 mode=default_mode, 
@@ -87,22 +80,27 @@ class TrainAssistorRequest(BaseWorkflow):
                 train_id_column=default_id_column, 
                 train_data_column=default_data_column, 
                 task_name=None, 
-                task_description=None,               
+                task_description=None,   
             )
 
-            res = cls.__TrainAlgorithmDatabase_instance.store_record(
+            cls._store_database_record(
+                database_type='train_algorithm',
                 user_id=user_id, 
                 train_id=train_id, 
-                algorithm_data_name='hash_id_file_data',
-                algorithm_data=hash_id_file_data
+                algorithm_data_name='encrypted_identifier',
+                algorithm_data=encrypted_identifier
             )
 
             # add log
-            msg = [
-                "2.2 assistor uploads id file \n", 
-                "---- 2. Unread Request Done \n"
+            msgs = [
+                "2.2 assistor uploads id file", 
+                "---- 2. Unread Request Done"
             ]
-            log_helper(msg, root, user_id, train_id)
+            cls._store_log(
+                user_id=user_id,
+                task_id=train_id,
+                msgs=msgs
+            )
 
         elif default_mode == "manual":
             pass

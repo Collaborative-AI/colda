@@ -1,28 +1,17 @@
 from __future__ import annotations
 
+import time
+import threading
 from synspot.network import Network
 from synspot.personalinformation import PersonalInformation
+from synspot.utils.log import GetWorkflowLog
+from synspot.algorithm.strategy import BaseAlgorithmStrategy
 
-from synspot.algorithm.strategy import (
-    TrainAlgorithm,
-    TestAlgorithm
-)
+from synspot.database.strategy import DatabaseOperator
 
-from synspot.database import (
-    GetDefaultMetadataDatabase,
-    GetTrainSponsorMetadataDatabase,
-    GetTrainAssistorMetadataDatabase,
-    GetTrainAlgorithmDatabase,
-)
-
-from synspot.database import (
-    GetDefaultMetadataDatabase,
-    GetTrainSponsorMetadataDatabase,
-    GetTrainAssistorMetadataDatabase,
-    GetTrainAlgorithmDatabase,
-    GetTestSponsorMetadataDatabase,
-    GetTestAssistorMetadataDatabase,
-    GetTestAlgorithmDatabase
+from synspot._typing import (
+    Train_Database_Type,
+    Test_Database_Type
 )
 
 from typing import (
@@ -32,30 +21,19 @@ from typing import (
     Final,
 )
 
-JSONType = Union(
-    dict[str, Any],
-    list[dict],
-    list[Any]
-)
-
 
 class BaseWorkflow:
     __skip_header: Final[int] = 1
     __initial_round_num: Final[int] = 1
+    __url_prefix: Final[str] = 'main_flow'
 
-    __Network_instance = Network.get_Network_instance()
-    __PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
+    __Network_instance = Network.get_instance()
+    __PersonalInformation_instance = PersonalInformation.get_instance()
+    
+    __DatabaseOperator_instance = DatabaseOperator.get_instance()
+    __BaseAlgorithm_instance = BaseAlgorithmStrategy()
 
-    __DefaultMetadataDatabase_instance = GetDefaultMetadataDatabase.get_database()
-    __TrainSponsorMetadataDatabase_instance = GetTrainSponsorMetadataDatabase.get_database()
-    __TrainAssistorMetadataDatabase_instance = GetTrainAssistorMetadataDatabase.get_database()
-    __TrainAlgorithmDatabase_instance = GetTrainAlgorithmDatabase.get_database()
-    __TestSponsorMetadataDatabase_instance = GetTestSponsorMetadataDatabase.get_database()
-    __TestAssistorMetadataDatabase_instance = GetTestAssistorMetadataDatabase.get_database()
-    __TestAlgorithmDatabase_instance = GetTestAlgorithmDatabase.get_database()
-
-    __TrainAlgorithm_instance = TrainAlgorithm.get_algorithm_instance()
-    __TestAlgorithm_instance = TestAlgorithm.get_algorithm_instance()
+    __log = GetWorkflowLog.get_log()
 
     @final
     @classmethod
@@ -81,54 +59,178 @@ class BaseWorkflow:
     @classmethod
     def _get_default_mode(cls) -> str:
         return cls.__PersonalInformation_instance.default_mode
-
-    @final
-    @classmethod
-    def _get_base_url(cls) -> str:
-        base_url = cls.__Network_instance.base_url
-        return base_url
     
     @final
     @classmethod
-    def _process_url(
-        cls,
-        prefix: str,
-        url: str,
-        suffix: str = None
-    ) -> str:
-        return cls._get_base_url() + cls.__Network_instance.process_url(prefix=prefix, url=url, suffix=suffix)
-
-    @final
-    @classmethod
-    def _get_request(
-        cls, url: str, token: str, request_name: str
+    def _get_request_chaining(
+        cls, 
+        token: str, 
+        url_prefix: str,
+        url_root: str,
+        url_suffix: str = None,
     ) -> dict[str, Union(list[str], str)]:
+
+        url = cls.__Network_instance.process_url(
+            url_prefix=url_prefix, 
+            url_root=url_root, 
+            url_suffix=url_suffix
+        )
 
         network_response = cls.__Network_instance.get_request(
             url=url,
             token=token,
-            request_name=request_name
+            request_name=url_root
         )
 
         return cls.__Network_instance.load_network_response(network_response)
     
     @final
     @classmethod
-    def _post_request(
+    def _post_request_chaining(
         cls, 
-        url: str, 
         token: str, 
-        request_name: str,
-        data: dict[str, Union(list[str], str)]
+        data: dict[str, Union(list[str], str)],
+        url_prefix: str,
+        url_root: str,
+        url_suffix: str = None,
     ) -> dict[str, Union(list[str], str)]:
+
+        url = cls.__Network_instance.process_url(
+            url_prefix=url_prefix, 
+            url_root=url_root, 
+            url_suffix=url_suffix
+        )
 
         network_response = cls.__Network_instance.post_request(
             url=url,
             token=token,
-            request_name=request_name,
+            request_name=url_root,
             data=data
         )
 
         return cls.__Network_instance.load_network_response(network_response)
 
+    @final
+    @classmethod
+    def _store_log(
+        cls,
+        user_id: str,
+        task_id: str,
+        msgs: list[str],
+    ) -> None:
+
+        cls.__log.store_log(
+            user_id=user_id,
+            task_id=task_id,
+            msgs=msgs
+        )
+        return None
+
+    @final
+    @classmethod
+    def _store_database_record(
+        cls,
+        database_type: Union(Train_Database_Type, Test_Database_Type),
+        **kwargs,
+    ) -> None:
+
+        cls.__DatabaseOperator_instance.set_database(
+            database_type=database_type
+        )
+
+        cls.__DatabaseOperator_instance.store_record(
+            **kwargs
+        )
+        
+        return 
+    
+    @final
+    @classmethod
+    def _get_database_record(
+        cls,
+        database_type: Union(Train_Database_Type, Test_Database_Type),
+        **kwargs,
+    ) -> tuple[Any]:
+
+        cls.__DatabaseOperator_instance.set_database(
+            database_type=database_type
+        )
+
+        return cls.__DatabaseOperator_instance.get_record(
+            **kwargs
+        )
+
+    @final
+    @classmethod
+    def _encrypt_identifier(
+        cls,
+        dataset_path: str,
+        id_idx: str,
+        skip_header: int
+    ) -> None:
+
+        encrypted_identifer = cls.__BaseAlgorithm_instance.make_hash(
+                # self_id=user_id, 
+                # train_id=train_id, 
+                # mode=self.test_indicator, 
+                # test_id=None, 
+                dataset_path=dataset_path, 
+                id_idx=id_idx, 
+                skip_header=skip_header
+            )
+        return encrypted_identifer
+    
+    @final
+    @classmethod
+    def _match_identifier(
+        cls,
+        self_id_data: list[str],
+        from_id_data: list[str]
+    ) -> list[str]:
+
+        matched_identifier = cls.__BaseAlgorithm_instance.make_match_idx(
+            self_id_data=self_id_data,
+            from_id_data=from_id_data
+        )
+        return matched_identifier
+
+    @final
+    @classmethod
+    def _async_checker(
+        cls,
+        database_type: str,
+        user_id: str,
+        train_id: str,
+        algorithm_data_name: str,
+        waiting_start_time: type[time.time()]
+    ) -> bool:
+
+        if not cls._get_database_record(
+            database_type=database_type,
+            user_id=user_id,
+            train_id=train_id,
+            algorithm_data_name=algorithm_data_name
+        ):
+
+            waiting_current_time = time.time()
+            time_interval = waiting_current_time - waiting_start_time
+            if time_interval > 30 * 60:
+                print('Sorry, the test stopped due to slow computation')
+                return False
+
+            args = [
+                database_type,
+                user_id,
+                train_id,
+                algorithm_data_name,
+                waiting_start_time
+            ]
+            threading.Timer(
+                30, 
+                cls._async_checker, 
+                args)
+
+        return True
+
+    
 

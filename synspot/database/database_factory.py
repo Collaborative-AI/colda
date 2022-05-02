@@ -17,7 +17,7 @@ from synspot.database.test_database import (
 from synspot.database.default_database import DefaultMetadataDatabase
 
 
-class DatabaseAbstractFactory(ABC):
+class AbstractDatabaseFactory(ABC):
     """
     Abstract Factory
     """
@@ -27,7 +27,7 @@ class DatabaseAbstractFactory(ABC):
         pass
 
 
-class GetDefaultMetadataDatabase(DatabaseAbstractFactory):
+class GetDefaultMetadataDatabase(AbstractDatabaseFactory):
     """
     Concrete Factory
     """
@@ -36,7 +36,7 @@ class GetDefaultMetadataDatabase(DatabaseAbstractFactory):
         return DefaultMetadataDatabase.get_database_instance()
 
 
-class GetTrainSponsorMetadataDatabase(DatabaseAbstractFactory):
+class GetTrainSponsorMetadataDatabase(AbstractDatabaseFactory):
     """
     Concrete Factory
     """
@@ -45,7 +45,7 @@ class GetTrainSponsorMetadataDatabase(DatabaseAbstractFactory):
         return TrainSponsorMetadataDatabase.get_database_instance()
 
 
-class GetTrainAssistorMetadataDatabase(DatabaseAbstractFactory):
+class GetTrainAssistorMetadataDatabase(AbstractDatabaseFactory):
     """
     Concrete Factory
     """
@@ -54,7 +54,7 @@ class GetTrainAssistorMetadataDatabase(DatabaseAbstractFactory):
         return TrainAssistorMetadataDatabase.get_database_instance()
 
 
-class GetTrainAlgorithmDatabase(DatabaseAbstractFactory):
+class GetTrainAlgorithmDatabase(AbstractDatabaseFactory):
     """
     Concrete Factory
     """
@@ -63,7 +63,7 @@ class GetTrainAlgorithmDatabase(DatabaseAbstractFactory):
         return TrainAlgorithmDatabase.get_database_instance()
 
 
-class GetTestSponsorMetadataDatabase(DatabaseAbstractFactory):
+class GetTestSponsorMetadataDatabase(AbstractDatabaseFactory):
     """
     Concrete Factory
     """
@@ -72,7 +72,7 @@ class GetTestSponsorMetadataDatabase(DatabaseAbstractFactory):
         return TestSponsorMetadataDatabase.get_database_instance()
 
 
-class GetTestAssistorMetadataDatabase(DatabaseAbstractFactory):
+class GetTestAssistorMetadataDatabase(AbstractDatabaseFactory):
     """
     Concrete Factory
     """
@@ -81,7 +81,7 @@ class GetTestAssistorMetadataDatabase(DatabaseAbstractFactory):
         return TestAssistorMetadataDatabase.get_database_instance()
 
 
-class GetTestAlgorithmDatabase(DatabaseAbstractFactory):
+class GetTestAlgorithmDatabase(AbstractDatabaseFactory):
     """
     Concrete Factory
     """

@@ -1,4 +1,4 @@
-from .default_database import DefaultMetadataDatabase
+from .default_metadata_database import DefaultMetadataDatabase
 
 __all__ = [
     'DefaultMetadataDatabase'

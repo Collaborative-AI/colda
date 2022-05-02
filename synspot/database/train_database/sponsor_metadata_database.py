@@ -8,12 +8,6 @@ from synspot.database.abstract_database import AbstractMetadataDatabase
 
 from synspot.utils import DictHelper
 
-from typing import (
-    Type,
-    List,
-    Tuple
-)
-
 
 class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
     __TrainSponsorMetadataDatabase_instance = None
@@ -22,13 +16,13 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_database_instance(cls) -> Type[TrainSponsorMetadataDatabase]:
+    def get_database_instance(cls) -> type[TrainSponsorMetadataDatabase]:
         if cls.__TrainSponsorMetadataDatabase_instance == None:
             cls.__TrainSponsorMetadataDatabase_instance = TrainSponsorMetadataDatabase()
 
         return cls.__TrainSponsorMetadataDatabase_instance
 
-    def get_all_records(self) -> List[Tuple[str, str]]:
+    def get_all_records(self) -> list[tuple[str, str]]:
         return DictHelper.get_all_key_value_pairs(container=self.__temp_database)
         
     def store_record(
@@ -129,17 +123,61 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             key=key,
             container=self.__temp_database
         )
-        user_id = sponsor_metadata['user_id']
-        train_id = sponsor_metadata['train_id']
-        task_mode = sponsor_metadata['task_mode']
-        model_name = sponsor_metadata['model_name']
-        metric_name = sponsor_metadata['metric_name']
-        train_file_path = sponsor_metadata['train_file_path']
-        train_id_column = sponsor_metadata['train_id_column']
-        train_data_column = sponsor_metadata['train_data_column']
-        train_target_column = sponsor_metadata['train_target_column']
-        task_name = sponsor_metadata['task_name']
-        task_description = sponsor_metadata['task_description'] 
+
+        user_id = DictHelper.get_value(
+            key='user_id',
+            container=sponsor_metadata
+        )
+
+        train_id = DictHelper.get_value(
+            key='train_id',
+            container=sponsor_metadata
+        )
+
+        task_mode = DictHelper.get_value(
+            key='task_mode',
+            container=sponsor_metadata
+        )
+
+        model_name = DictHelper.get_value(
+            key='model_name',
+            container=sponsor_metadata
+        )
+
+        metric_name = DictHelper.get_value(
+            key='metric_name',
+            container=sponsor_metadata
+        )
+
+        train_file_path = DictHelper.get_value(
+            key='train_file_path',
+            container=sponsor_metadata
+        )
+
+        train_id_column = DictHelper.get_value(
+            key='train_id_column',
+            container=sponsor_metadata
+        )
+
+        train_data_column = DictHelper.get_value(
+            key='train_data_column',
+            container=sponsor_metadata
+        )
+
+        train_target_column = DictHelper.get_value(
+            key='train_target_column',
+            container=sponsor_metadata
+        )
+
+        task_name = DictHelper.get_value(
+            key='task_name',
+            container=sponsor_metadata
+        )
+
+        task_description = DictHelper.get_value(
+            key='task_description',
+            container=sponsor_metadata
+        )
 
         return task_mode, model_name, metric_name, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description
        

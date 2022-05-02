@@ -8,7 +8,6 @@ from synspot.algorithm.base import BaseAlgorithm
 from synspot.database import Database
 
 from typing import (
-    List,
     Any,
     Union
 )
@@ -20,8 +19,8 @@ class MakeMatchIdx(BaseAlgorithm):
 
     def make_match_idx(
         self, 
-        self_id_data: List[str],
-        from_id_data: List[str],
+        self_id_data: list[str],
+        from_id_data: list[str],
     ) -> np.ndarray: #np.ndarryd[str]
         
         # if mode == 'train':

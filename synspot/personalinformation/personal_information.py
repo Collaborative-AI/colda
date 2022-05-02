@@ -12,7 +12,7 @@ class PersonalInformation:
         self.__exe_position = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'dist', 'run', 'run')
         
     @classmethod
-    def get_PersonalInformation_instance(cls):
+    def get_instance(cls):
         if cls.__PersonalInformation_instance == None:
             cls.__PersonalInformation_instance = PersonalInformation()
 

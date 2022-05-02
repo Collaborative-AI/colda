@@ -7,7 +7,6 @@ from synspot.utils.log.abstract_log import AbstractLog
 
 from synspot.utils.utils import (
     to_string,
-    generate_dict_key
 )
 
 from synspot.utils.dict_helper import DictHelper
@@ -21,10 +20,10 @@ class AlgorithmLog(BaseLog, AbstractLog):
     __AlgorithmLog_instance = None
 
     def __init__(self):
-        self.__algorithm_log = collections.defaultdict(dict)
+        self.__algorithm_log = collections.defaultdict(list)
 
     @classmethod
-    def get_AlgorithmLog_instance(cls) -> type[AlgorithmLog]:
+    def get_instance(cls) -> type[AlgorithmLog]:
         if cls.__AlgorithmLog_instance == None:
             cls.__AlgorithmLog_instance = AlgorithmLog()
 
@@ -37,24 +36,39 @@ class AlgorithmLog(BaseLog, AbstractLog):
         msgs: list[str]
     ) -> None:
 
-        key = generate_dict_key(user_id, task_id)
-        if not DictHelper.is_key_in_dict(user_id, self.__algorithm_log):
-            self.__algorithm_log[user_id] = collections.defaultdict(list)
+        key = DictHelper.generate_dict_key(user_id, task_id)
+        if not DictHelper.is_key_in_dict(key, self.__algorithm_log):
+            self.__algorithm_log[key] = collections.defaultdict(list)
 
         if isinstance(msgs, list):
             for msg in msgs:
                 msg_str = to_string(msg)
-                self.__algorithm_log[user_id][task_id].append(msg_str)
+                DictHelper.store_value(
+                    key=key,
+                    value=msg_str,
+                    container=self.__algorithm_log,
+                    store_type='append'
+                )
         else:
+            '''
+            error
+            '''            
             pass
 
         return 
 
     def get_log(
-        self, user_id, task_id
+        self, user_id: str, task_id: str
     ) -> str:
 
-        pass
+        key = DictHelper.generate_dict_key(user_id, task_id)
+        log = DictHelper.get_value(
+            key=key,
+            container=self.__algorithm_log,
+        )
+
+        log = '\n'.join(log)
+        return log
 
     def get_all_logs(self, user_id):
         pass

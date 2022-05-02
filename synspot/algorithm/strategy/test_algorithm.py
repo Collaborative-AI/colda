@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from synspot.algorithm.strategy.base import BaseAlgorithm
+from synspot.algorithm.strategy.base import BaseAlgorithmStrategy
 
-from synspot.algorithm.strategy.abstract_algorithm import AbstractTestAlgorithmStrategy
+from synspot.algorithm.strategy.abstract_algorithm_strategy import AbstractTestAlgorithmStrategy
 
 from synspot.algorithm.test_stage import (
     MakeEval,
@@ -10,25 +10,19 @@ from synspot.algorithm.test_stage import (
     MakeTest,
 )
 
-from synspot.algorithm.custom.custom_factory import FixedParameterFactory
-
-from typing import (
-    Type,
-    List,
-    Tuple
-)
+from synspot.algorithm.custom.custom_factory import GetTestFixedParameter
 
 
-class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithm):
+class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
     __TestAlgorithm_instance = None
     # strategy pattern
     # 传给他不同的行为，algo使用
 
     def __init__(self) -> None:
-        self.__test_custom = FixedParameterFactory.create_custom()
+        self.__test_custom = GetTestFixedParameter.create_custom()
 
     @classmethod
-    def get_algorithm_instance(cls) -> Type[TestAlgorithm]:
+    def get_instance(cls) -> type[TestAlgorithm]:
         if cls.__TestAlgorithm_instance == None:
             cls.__TestAlgorithm_instance = TestAlgorithm()
 
@@ -52,11 +46,11 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithm):
 
         self.__test_custom = test_custom
 
-    def make_test_local(self, *args):
-        return MakeTestLocal.make_test_local(*args)
+    def make_test_local(self, **kwargs):
+        return MakeTestLocal.make_test_local(**kwargs)
 
-    def make_test(self, *args):
-        return self.__test_custom.make_test(*args)
+    def make_test(self, **kwargs):
+        return self.__test_custom.make_test(**kwargs)
 
-    def make_eval(self, *args):
-        return self.__test_custom.make_eval(*args)
+    def make_eval(self, **kwargs):
+        return self.__test_custom.make_eval(**kwargs)

@@ -9,9 +9,6 @@ from synspot.database.abstract_database import AbstractAlgorithmDatabase
 from synspot.utils import DictHelper
 
 from typing import (
-    Type,
-    List,
-    Tuple,
     Union,
     Any
 )
@@ -24,7 +21,7 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_database_instance(cls) -> Type[TrainAlgorithmDatabase]:
+    def get_database_instance(cls) -> type[TrainAlgorithmDatabase]:
         if cls.__TrainAlgorithmDatabase_instance == None:
             cls.__TrainAlgorithmDatabase_instance = TrainAlgorithmDatabase()
 
@@ -35,7 +32,7 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         user_id: str, 
         train_id: str, 
         algorithm_data_name: str,
-        algorithm_data: Union(List[str], List[List[str]], Any),
+        algorithm_data: Union(list[str], list[list[str]], Any),
     ) -> None:
         
         """

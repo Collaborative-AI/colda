@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from synspot.algorithm.strategy.base import BaseAlgorithm
+from synspot.algorithm.strategy.base import BaseAlgorithmStrategy
 
-from synspot.algorithm.strategy.abstract_algorithm import AbstractTrainAlgorithmStrategy
+from synspot.algorithm.strategy.abstract_algorithm_strategy import AbstractTrainAlgorithmStrategy
 
 from synspot.algorithm.train_stage import (
     MakeResidual,
@@ -12,25 +12,19 @@ from synspot.algorithm.train_stage import (
     SaveResidual,
 )
 
-from synspot.algorithm.custom.custom_factory import FixedParameterFactory
-
-from typing import (
-    Type,
-    List,
-    Tuple
-)
+from synspot.algorithm.custom.custom_factory import GetTrainFixedParameter
 
 
-class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithm):
+class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
     __TrainAlgorithm_instance = None
     # strategy pattern
     # 传给他不同的行为，algo使用
 
     def __init__(self) -> None:
-        self.__train_custom = FixedParameterFactory.create_custom()
+        self.__train_custom = GetTrainFixedParameter.create_custom()
 
     @classmethod
-    def get_algorithm_instance(cls) -> Type[TrainAlgorithm]:
+    def get_instance(cls) -> type[TrainAlgorithm]:
         if cls.__TrainAlgorithm_instance == None:
             cls.__TrainAlgorithm_instance = TrainAlgorithm()
 
@@ -54,18 +48,18 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithm):
 
         self.__train_custom = train_custom
 
-    def make_train_local(self, *args):
-        return MakeTrainLocal.make_train_local(*args)
+    def make_train_local(self, **kwargs):
+        return MakeTrainLocal.make_train_local(**kwargs)
     
-    def make_residual(self, *args):
-        return MakeResidual.make_residual(*args)
+    def make_residual(self, **kwargs):
+        return MakeResidual.make_residual(**kwargs)
     
-    def save_residual(self, *args):
-        return SaveResidual.save_residual(*args)
+    def save_residual(self, **kwargs):
+        return SaveResidual.save_residual(**kwargs)
     
-    def make_train(self, *args):
-        return self.__train_custom.make_train(*args)
+    def make_train(self, **kwargs):
+        return self.__train_custom.make_train(**kwargs)
 
-    def make_result(self, *args):
-        return self.__train_custom.make_result(*args)
+    def make_result(self, **kwargs):
+        return self.__train_custom.make_result(**kwargs)
 

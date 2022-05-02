@@ -10,11 +10,8 @@ from typing import (
     Any,
 )
 
-JSONType = Union[
-    dict[str, Any],
-    list[dict],
-    list[Any]
-]
+from synspot._typing import JSONType
+
 
 class Network():
     __Network_instance = None
@@ -27,7 +24,7 @@ class Network():
         self.__baseURL = 'http://3.145.140.55'
 
     @classmethod
-    def get_Network_instance(cls) -> type[Network]:
+    def get_instance(cls) -> type[Network]:
         if cls.__Network_instance == None:
             cls.__Network_instance = Network()
 
@@ -86,7 +83,7 @@ class Network():
         return
 
     def add_prefix_to_url(
-        self, prefix: str, url: str
+        self, url_prefix: str, url_root: str
     ) -> str:
 
         """
@@ -96,10 +93,11 @@ class Network():
 
         :exception OSError: Placeholder.
         """
-        return '/' + prefix + url
+
+        return f'/{url_prefix}/{url_root}'
 
     def add_suffix_to_url(
-        self, url: str, suffix: str
+        self, url_root: str, url_suffix: str
     ) -> str:
 
         """
@@ -109,13 +107,14 @@ class Network():
 
         :exception OSError: Placeholder.
         """
-        return url + '/' + suffix
+        # return url + '/' + suffix
+        return f'{url_root}/{url_suffix}'
 
     def process_url(
         self, 
-        prefix: str, 
-        url: str, 
-        suffix: str = None
+        url_prefix: str, 
+        url_root: str, 
+        url_suffix: str = None
     ) -> str:
 
         """
@@ -125,9 +124,9 @@ class Network():
 
         :exception OSError: Placeholder.
         """
-        if suffix == None:
-            return self.add_prefix_to_url(prefix, url)
-        return self.add_suffix_to_url(self.add_prefix_to_url(prefix, url), suffix)
+        if url_suffix == None:
+            return self.base_url + self.add_prefix_to_url(url_prefix, url_root)
+        return self.base_url + self.add_suffix_to_url(self.add_prefix_to_url(url_prefix, url_root), url_suffix)
 
     def get_request(
         self, url: str, token: str, request_name: str

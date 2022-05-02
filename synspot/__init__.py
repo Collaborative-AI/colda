@@ -19,6 +19,7 @@ import pickle
 import requests
 # import Algorithm
 
+import synspot
 from .workflow.train_workflow import TrainRequest
 from .workflow.test_workflow import TestRequest
 from synspot.authorization import Authorization

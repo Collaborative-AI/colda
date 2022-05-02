@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import numpy as np
 
-from synspot.algorithm import log
+from synspot.utils import DictHelper
 
 from typing import (
     Union
@@ -16,21 +16,33 @@ class check_sponsor_class:
 def obtain_notification_information(
     notification_dict: dict[str, str], 
     test_indicator: str = 'train'
-) -> Union(tuple(str, str, str), tuple(str, str, str, str)):
+) -> Union(tuple(str, str, int), tuple(str, str, int, str)):
+
+    sender_random_id = DictHelper.get_value(
+        key='sender_random_id',
+        container=notification_dict
+    )
+
+    role = DictHelper.get_value(
+        key='role',
+        container=notification_dict
+    )
+
+    cur_rounds_num = DictHelper.get_value(
+        key='cur_rounds_num',
+        container=notification_dict
+    )
 
     if test_indicator == 'train':
-        sender_random_id = notification_dict['sender_random_id']
-        role = notification_dict['role']
-        cur_rounds_num = notification_dict['cur_rounds_num']
-
         return sender_random_id, role, cur_rounds_num
     elif test_indicator == 'test':
-        sender_random_id = notification_dict['sender_random_id']
-        role = notification_dict['role']
-        cur_rounds_num = notification_dict['cur_rounds_num']
-        test_id = notification_dict['train_id']
 
-        return sender_random_id, role, cur_rounds_num, test_id
+        train_id = DictHelper.get_value(
+            key='train_id',
+            container=notification_dict
+        )
+
+        return sender_random_id, role, cur_rounds_num, train_id
 
 def check_Algorithm_return_value(check_list, first_val, second_val):
     """
@@ -50,20 +62,6 @@ def check_Algorithm_return_value(check_list, first_val, second_val):
             return False
 
     return True
-
-
-def log_helper(msg, root, user_id, task_id):
-    """
-    Append the msg to log file
-
-    :param msg: List[String]. The name of current return_val
-
-    :returns: None
-
-    :exception OSError: Placeholder.
-    """
-    for item in msg:
-        log(item, root, user_id, task_id)
 
 
 def check_status_code(response, status_code):

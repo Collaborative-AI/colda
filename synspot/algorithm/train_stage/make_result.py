@@ -10,44 +10,62 @@ from synspot.algorithm.metric.metrics import Metric
 
 class MakeResult(BaseAlgorithm):
 
+    @classmethod
     def make_result(
-        self, 
-        root, 
-        self_id, 
-        task_id, 
+        cls, 
+        # root, 
+        # self_id, 
+        # task_id, 
         round, 
         dataset_path, 
         target_idx, 
         skip_header, 
         task_mode, 
-        metric_name
+        metric_name,
+        sponsor_output,
+        assistor_output_contents,
+        sponsor_matched_identifers,
+        last_round_result,
     ) -> None:
 
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
         target_idx = parse_idx(target_idx)
         target = dataset[:, target_idx]
-        output_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'output')
-        matched_idx_path = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx')
-        round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round')
-        output = np.genfromtxt(os.path.join(output_path, '{}.csv'.format(self_id)), delimiter=',')
+        # output_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'output')
+        # matched_idx_path = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx')
+        # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round')
+        # output = np.genfromtxt(os.path.join(output_path, '{}.csv'.format(self_id)), delimiter=',')
+        output = sponsor_output
         output = output.reshape(output.shape[0], -1)
         count = np.ones((output.shape[0], 1))
-        output_files = os.listdir(output_path)
-        for i in range(len(output_files)):
-            from_id_i = os.path.splitext(output_files[i])[0]
-            if from_id_i != self_id:
-                output_i_path = os.path.join(output_path, output_files[i])
-                if not os.path.exists(output_i_path):
-                    return "300?make_result sponsor cannot find train output file"
+        # output_files = os.listdir(output_path)
+        
+        # for i in range(len(output_files)):
+        #     from_id_i = os.path.splitext(output_files[i])[0]
+        #     if from_id_i != self_id:
+        #         output_i_path = os.path.join(output_path, output_files[i])
+        #         if not os.path.exists(output_i_path):
+        #             return "300?make_result sponsor cannot find train output file"
                     
-                output_i = np.genfromtxt(os.path.join(output_path, output_files[i]), delimiter=',')
-                output_i = output_i.reshape(output_i.shape[0], -1)
-                self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, '{}.csv'.format(from_id_i)),
-                                                delimiter=',').astype(np.int64)
-                output[self_from_idx_i,] = output[self_from_idx_i,] + output_i
-                count[self_from_idx_i,] = count[self_from_idx_i,] + 1
+        #         output_i = np.genfromtxt(os.path.join(output_path, output_files[i]), delimiter=',')
+        #         output_i = output_i.reshape(output_i.shape[0], -1)
+        #         self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, '{}.csv'.format(from_id_i)),
+        #                                         delimiter=',').astype(np.int64)
+        #         output[self_from_idx_i,] = output[self_from_idx_i,] + output_i
+        #         count[self_from_idx_i,] = count[self_from_idx_i,] + 1
+
+        for assistor_random_id, assistor_output_content in assistor_output_contents.items():
+            # output_i = np.genfromtxt(os.path.join(output_path, output_files[i]), delimiter=',')
+            assistor_output_content = assistor_output_content.reshape(assistor_output_content.shape[0], -1)
+            # self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, '{}.csv'.format(from_id_i)),
+            #                                 delimiter=',').astype(np.int64)
+            self_from_idx_id = sponsor_matched_identifers[assistor_random_id]
+            output[self_from_idx_id,] = output[self_from_idx_id,] + assistor_output_content
+            count[self_from_idx_id,] = count[self_from_idx_id,] + 1
         output = output / count
-        result = np.genfromtxt(os.path.join(round_path, str(round - 1), 'result.csv'), delimiter=',')
+        # result = np.genfromtxt(os.path.join(round_path, str(round - 1), 'result.csv'), delimiter=',')
+
+        result = last_round_result
         if round == 1:
             if len(result.shape) == 0:
                 result = result.reshape(-1)
@@ -55,20 +73,20 @@ class MakeResult(BaseAlgorithm):
                 result = result.reshape(1, -1)
         result = result.reshape(result.shape[0], -1)
         alpha = np.ones(1)
-        func_ = minimize(result_func, alpha, (task_mode, result, output, target))
+        func_ = minimize(cls.result_func, alpha, (task_mode, result, output, target))
         alpha = func_.x
-        np.savetxt(os.path.join(round_path, str(round), 'alpha.csv'), alpha, delimiter=",")
+        # np.savetxt(os.path.join(round_path, str(round), 'alpha.csv'), alpha, delimiter=",")
         result = result + alpha * output
-        np.savetxt(os.path.join(round_path, str(round), 'result.csv'), result, delimiter=",")
+        # np.savetxt(os.path.join(round_path, str(round), 'result.csv'), result, delimiter=",")
         metric = Metric(task_mode, metric_name)
         eval = metric.eval(result, target)
         msg = 'Train Round: {}, {}, Alpha: {}'.format(round, eval, alpha.item())
-        log(msg, root, self_id, task_id)
-        return '200?make_result?complete'
+        # log(msg, root, self_id, task_id)
+        return alpha, result
 
-
+    @classmethod
     def result_func(
-        self,
+        cls,
         alpha, 
         task_mode, 
         history, 

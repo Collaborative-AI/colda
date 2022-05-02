@@ -1,11 +1,11 @@
-from .information import (
+from synspot.database.information import (
     get_all_train_id_as_sponsor,
     get_all_train_id_as_assistor,
     get_all_test_id_as_sponsor,
     get_all_test_id_as_assistor
 )
 
-from .database_factory import (
+from synspot.database.database_factory import (
     GetDefaultMetadataDatabase,
     GetTrainSponsorMetadataDatabase,
     GetTrainAssistorMetadataDatabase,

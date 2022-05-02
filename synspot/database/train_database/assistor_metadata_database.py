@@ -10,12 +10,6 @@ from synspot.database.abstract_database import AbstractMetadataDatabase
 
 from synspot.utils import DictHelper
 
-from typing import (
-    Type,
-    List,
-    Tuple
-)
-
 
 class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
     __TrainAssistorMetadataDatabase_instance = None
@@ -24,13 +18,13 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_database_instance(cls) -> Type[TrainAssistorMetadataDatabase]:
+    def get_database_instance(cls) -> type[TrainAssistorMetadataDatabase]:
         if cls.__TrainAssistorMetadataDatabase_instance == None:
             cls.__TrainAssistorMetadataDatabase_instance = TrainAssistorMetadataDatabase()
 
         return cls.__TrainAssistorMetadataDatabase_instance
 
-    def get_all_records(self) -> List[Tuple[str, str]]:
+    def get_all_records(self) -> list[tuple[str, str]]:
         return DictHelper.get_all_key_value_pairs(container=self.__temp_database)
 
     def store_record(
@@ -129,16 +123,56 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             key=key,
             container=self.__temp_database
         )
-        user_id = assistor_metadata['user_id']
-        train_id = assistor_metadata['train_id']
-        mode = assistor_metadata['mode']
-        task_mode = assistor_metadata['task_mode']
-        model_name = assistor_metadata['model_name']
-        train_file_path = assistor_metadata['train_file_path']
-        train_id_column = assistor_metadata['train_id_column']
-        train_data_column = assistor_metadata['train_data_column']
-        task_name = assistor_metadata['task_name']
-        task_description = assistor_metadata['task_description']     
+
+        user_id = DictHelper.get_value(
+            key='user_id',
+            container=assistor_metadata
+        )
+
+        train_id = DictHelper.get_value(
+            key='train_id',
+            container=assistor_metadata
+        )
+
+        mode = DictHelper.get_value(
+            key='mode',
+            container=assistor_metadata
+        )
+
+        task_mode = DictHelper.get_value(
+            key='task_mode',
+            container=assistor_metadata
+        )
+
+        model_name = DictHelper.get_value(
+            key='model_name',
+            container=assistor_metadata
+        )
+
+        train_file_path = DictHelper.get_value(
+            key='train_file_path',
+            container=assistor_metadata
+        )
+
+        train_id_column = DictHelper.get_value(
+            key='train_id_column',
+            container=assistor_metadata
+        )
+
+        train_data_column = DictHelper.get_value(
+            key='train_data_column',
+            container=assistor_metadata
+        )
+
+        task_name = DictHelper.get_value(
+            key='task_name',
+            container=assistor_metadata
+        )
+
+        task_description = DictHelper.get_value(
+            key='task_description',
+            container=assistor_metadata
+        )  
         
         return train_id, mode, task_mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column
        

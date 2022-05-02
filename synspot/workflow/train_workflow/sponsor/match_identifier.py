@@ -2,99 +2,99 @@ from __future__ import annotations
 
 import json
 import requests
+import collections
+from synspot import database
 
-from synspot.workflow.base import BaseWorkflow
+from synspot.workflow.train_base import TrainBaseWorkflow
 
 from synspot.utils import(
-    log_helper,
     ParseJson
 )
 
-class TrainSponsorMatchIdentifier(BaseWorkflow):
+from typing import Any
+
+
+class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
 
     @classmethod
-    def train_sponsor_match_identifier(cls, train_id, train_id_dict):
+    def train_sponsor_match_identifier(
+            cls, train_id: str, train_id_dict: dict[str, Any]
+        ) -> None:
 
         user_id, root, token = cls._get_important_information()
-        url = cls._process_url(prefix='main_flow', url="/get_identifier_content", suffix=user_id)
-
+        
         data = {
             "train_id": train_id,
         }
-        get_identifier_content_response = cls._post_request(
-            url=url,
+        get_identifier_content_response = cls._post_request_chaining(
             token=token,
-            request_name='get_identifier_content',
-            data=data
+            data=data,
+            url_prefix=cls.__url_prefix,
+            url_root='get_identifier_content',
+            url_suffix=user_id
         )
-
-        # 验证
-        sponsor_get_match_id_file_res = load_json_data(json_data=sponsor_get_match_id_file_res, json_data_name='sponsor_get_match_id_file_res', 
-                                                            testing_key_value_pair=[('assistor_random_id_to_identifier_content_dict', None)])
 
         msg = [
             "3.3 Sponsor gets matched id file \n"
         ]
-        log_helper(msg, root, user_id, train_id)
+        cls._store_log(
+            user_id=user_id,
+            task_id=train_id,
+            msgs=msg
+        )
 
-        assistor_random_id_to_identifier_content_dict = sponsor_get_match_id_file_res['assistor_random_id_to_identifier_content_dict']
-        # match_id_file_list = load_json_data(sponsor_get_match_id_file_res["match_id_file"], 'sponsor_get_match_id_file_res["match_id_file"]')
-        # print("match_id_file_list", match_id_file_list)
-        # assistor_random_id_pair_list = load_json_data(sponsor_get_match_id_file_res["assistor_random_id_pair"], 'sponsor_get_match_id_file_res["assistor_random_id_pair"]')
+        assistor_random_id_to_identifier_content_dict = get_identifier_content_response['assistor_random_id_to_identifier_content_dict']
 
-        matching_identifers = []
+        sponsor_matched_identifers = collections.defaultdict(list)
         for assistor_random_id, identifier_content in assistor_random_id_to_identifier_content_dict.items():
-            from_id = assistor_random_id
-            # need to json load each item again to gain list
             assistor_identifier_data = ParseJson.load_json_recursion(identifier_content)
-            # cur_match_id_file = "\n".join(cur_match_id_file)
 
-            # call save_match_id
-            # save_match_id_file_pos = save_match_id(root=root, self_id=user_id, train_id=train_id, mode=self.test_indicator, 
-            #                                         test_id=None, from_id=from_id)
-            # # assert save_match_id_file_pos is not None
-            # _, save_match_id_file_pos = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos,
-            #                                                        "200", "save_match_id")
-            # # assert save_match_id_file_pos is not None
-
-            # # write file
-            # save_file(save_match_id_file_pos[2], cur_match_id_file)
-
-            msg = ["3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"]
-            log_helper(msg, root, user_id, train_id)
-
+            # msg = ["3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2]]
+            # cls._store_log(
+            #     user_id=user_id,
+            #     task_id=train_id,
+            #     msgs=msg
+            # )
             
-            sponsor_identifier_data = cls.__TrainAlgorithmDatabase_instance.get_record(
+            sponsor_identifier_data = cls._get_database_record(
+                database_type='train_algorithm',
                 user_id=user_id, 
                 train_id=train_id, 
-                algorithm_data_name='hash_id_file_data',
+                algorithm_data_name='encrypted_identifer',
             )
 
-            # call make_match_idx to match identifier
-            matching_identifer = cls.__TrainAlgorithm_instance.make_match_idx(
+            sponsor_matched_identifer = cls._match_identifier(
                 self_id_data=sponsor_identifier_data,
                 from_id_data=assistor_identifier_data
             )
-            matching_identifers.append(matching_identifer)
 
-        cls.__TrainAlgorithmDatabase_instance.store_record(
+            sponsor_matched_identifers[assistor_random_id] = sponsor_matched_identifer
+
+        cls._store_database_record(
+            database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name='sponsor_matching_identifer',
-            algorithm_data=matching_identifers
+            algorithm_data_name='sponsor_matched_identifers',
+            algorithm_data=sponsor_matched_identifers
         )
+
         # assert make_match_idx_done is not None
         # _, make_match_idx_done = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
         # assert make_match_idx_done is not None
 
-        msg = [
-            "3.5 Sponsor matches id to index \n"
+        msgs = [
+            "3.5 Sponsor matches id to index"
         ]
-        log_helper(msg, root, user_id, train_id)
+        cls._store_log(
+            user_id=user_id,
+            task_id=train_id,
+            msgs=msgs
+        )
 
         # get the metadata of this task that stored before
         # get train target column
-        sponsor_metadata_record = cls.__TrainSponsorMetadataDatabase_instance.get_record(
+        sponsor_metadata_record = cls._get_database_record(
+            database_type='train_sponsor_metadata',
             user_id=user_id,
             train_id=train_id
         )
@@ -111,7 +111,7 @@ class TrainSponsorMatchIdentifier(BaseWorkflow):
         print("train_file_path", train_file_path, train_target_column)
 
         # call make residual
-        sponsor_residual = cls.__TrainAlgorithm_instance.make_residual(
+        sponsor_residual = cls._calculate_residual(
             self_id=user_id, 
             train_id=train_id, 
             round=cls.__initial_round_num, 
@@ -122,50 +122,50 @@ class TrainSponsorMatchIdentifier(BaseWorkflow):
             metric_name=metric_name,
             last_round_result=None,
         )
-        # make_residual_multiple_paths = make_residual()
-        # assert make_residual_multiple_paths is not None
-        # _, make_residual_multiple_paths = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
-        # assert make_residual_multiple_paths is not None
+
+        cls._store_database_record(
+            database_type='train_algorithm',
+            user_id=user_id,
+            train_id=train_id,
+            algorithm_data_name='sponsor_residual',
+            algorithm_data=sponsor_residual
+        )
 
         msg = [
-            "3.6 Sponsor makes residual finished \n"
+            "3.6 Sponsor makes residual finished"
         ]
-        log_helper(msg, root, user_id, train_id)
+        cls._store_log(
+            user_id=user_id,
+            task_id=train_id,
+            msgs=msg
+        )
 
         # residual_paths = make_residual_multiple_paths[2].split("?")
         assistor_random_id_to_residual_dict = {}
         for assistor_random_id in assistor_random_id_to_identifier_content_dict.keys():
             assistor_random_id_to_residual_dict[assistor_random_id] = sponsor_residual
 
-        # for i in range(len(residual_paths)):
-        #     cur_residual_path_data = load_file(residual_paths[i])
-        #     # cur_residual_path_data = "\n".join(cur_residual_path_data)
-
-        #     cur_path = residual_paths[i]
-        #     path_split = os.path.split(cur_path)
-        #     assistor_random_id = path_split[-1].split(".")[0]
-        #     assistor_random_id_to_residual_dict[assistor_random_id] = cur_residual_path_data
-
-        url = cls._process_url(prefix='main_flow', url="/send_situation", suffix=user_id)
         data = {
             "train_id": train_id,
             "assistor_random_id_to_residual_dict": assistor_random_id_to_residual_dict
         }
-        send_situation_response = cls._post_request(
-            url=url,
+        send_situation_response = cls._post_request_chaining(
             token=token,
-            request_name='send_situation',
-            data=data
+            data=data,
+            url_prefix=cls.__url_prefix,
+            url_root='send_situation',
+            url_suffix=user_id
         )
-        
-        send_situation_res = load_json_data(json_data=send_situation_res, json_data_name='send_situation_res', 
-                                            testing_key_value_pair=[('message', 'send situation successfully!')])
 
         msg = [
-            "3.7 Sponsor sends all situations \n", 
-            "---- 3. Unread Match ID Done \n"
+            "3.7 Sponsor sends all situations", 
+            "---- 3. Unread Match ID Done"
         ]
-        log_helper(msg, root, user_id, train_id)
+        cls._store_log(
+            user_id=user_id,
+            task_id=train_id,
+            msgs=msg
+        )
 
         print('Sponsor: Training train_id: ', train_id, ' is running')
         return 'unread_match_identifier_sponsor successfully'

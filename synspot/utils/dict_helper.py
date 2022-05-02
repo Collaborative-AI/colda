@@ -1,17 +1,17 @@
+from __future__ import annotations
+
 import copy
 import collections
 
 from typing import (
-    Any,
-    Hashable,
-    TypeVar,
-    Literal,
     Union
 )
 
-DictKey = TypeVar('DictKey', bound=Hashable)
-DictValue = TypeVar("DictValue", bound=Any)
-Store_Type = Literal['append', 'one_access']
+from synspot._typing import (
+    DictKey,
+    DictValue,
+    Dict_Store_Type
+)
 
 
 class DictHelper:
@@ -72,7 +72,7 @@ class DictHelper:
         key: DictKey, 
         value: DictValue,
         container: dict[DictKey, DictValue],
-        store_type: Store_Type = 'one_access'
+        store_type: Dict_Store_Type = 'one_access'
     ) -> None:
 
         if store_type == 'one_access':

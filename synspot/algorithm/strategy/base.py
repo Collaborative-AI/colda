@@ -10,20 +10,20 @@ from synspot.algorithm.shared_stage import (
     SaveOutput,
 )
 
-class BaseAlgorithm:
+class BaseAlgorithmStrategy:
 
     @final
-    def make_hash(self, *args):
-        return MakeHash.make_hash(*args)
+    def make_hash(self, **kwargs):
+        return MakeHash.make_hash(**kwargs)
 
     @final
-    def make_match_idx(self, *args):
-        return MakeMatchIdx.make_match_idx(*args)
+    def make_match_idx(self, **kwargs):
+        return MakeMatchIdx.make_match_idx(**kwargs)
 
     @final
-    def save_match_id(self, *args):
-        return SaveMatchId.save_match_id(*args)
+    def save_match_id(self, **kwargs):
+        return SaveMatchId.save_match_id(**kwargs)
 
     @final
-    def save_output(self, *args):
-        return SaveOutput.save_output(*args)
+    def save_output(self, **kwargs):
+        return SaveOutput.save_output(**kwargs)

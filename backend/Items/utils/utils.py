@@ -244,7 +244,7 @@ def validate_password(password):
     # 匹配小写字母的正则
     lower_regex = re.compile(r'[a-z]')
     # 匹配字符
-    symbol_regex = re.compile(r'[~!@#\$%\^&\*\(\)\+=\|\\\}\]\{\[:;<,>\?\/""+]')
+    # symbol_regex = re.compile(r'[~!@#\$%\^&\*\(\)\+=\|\\\}\]\{\[:;<,>\?\/""+]')
     
 
     if len(digit_regex.findall(password)) < 1: # 判断是否包含至少一位数字
@@ -259,9 +259,9 @@ def validate_password(password):
         return False, 'Need at least 1 lowercase letter'
     # print("3", len(lower_regex.findall(password)))
 
-    if len(symbol_regex.findall(password)) < 1: # 判断是否包含字符
-        return False, 'Need at least 1 symbol'
-    print("4", len(symbol_regex.findall(password)))
+    # if len(symbol_regex.findall(password)) < 1: # 判断是否包含字符
+    #     return False, 'Need at least 1 symbol'
+    # print("4", len(symbol_regex.findall(password)))
 
     # if not re.fullmatch(r'[A-Za-z0-9[~!@#\$%\^&\*\(\)\+=\|\\\}\]\{\[:;<,>\?\/""]+]', password):
     #     return False, 'please fit in A-Za-z0-9[~!@#\$%\^&\*\(\)\+=\|\\\}\]\{\[:;<,>\?\/""]+ range'

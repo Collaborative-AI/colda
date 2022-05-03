@@ -57,9 +57,9 @@ def create_user():
     user_document = pyMongo.db.User.find_one({'username': username})
     if user_document:
         message['username'] = 'Please use a different username.'
-    user_document = pyMongo.db.User.find_one({'email': email})
-    if user_document:
-        message['email'] = 'Please use a different email address.'
+    # user_document = pyMongo.db.User.find_one({'email': email})
+    # if user_document:
+    #     message['email'] = 'Please use a different email address.'
     
     validate_password_indicator, return_message = validate_password(password)
     print('register', validate_password_indicator, return_message)

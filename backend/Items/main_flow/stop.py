@@ -23,7 +23,7 @@ def stop_train_task(id):
     If the user is assistor, it will not receive any message from this train task.
 
     Parameters:
-       task_id - String. The id of train task
+       train_id - String. The id of train task
        
     Returns:
         If sponsor:
@@ -46,10 +46,10 @@ def stop_train_task(id):
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
 
-    task_id = data.get('task_id')
+    train_id = data.get('train_id')
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -59,7 +59,7 @@ def stop_train_task(id):
 
     # check if the current client is the sponsor
     isSponsor = False
-    train_match_document = train_match.search_train_match_document(task_id=task_id)
+    train_match_document = train_match.search_train_match_document(train_id=train_id)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
     assistor_information = train_match_document['assistor_information']
     sponsor_information = train_match_document['sponsor_information']
@@ -70,7 +70,7 @@ def stop_train_task(id):
 
     # get recent round
     cur_rounds_num = None
-    train_message_document = train_message.search_train_message_document(task_id=task_id)
+    train_message_document = train_message.search_train_message_document(train_id=train_id)
     # if train_message_document is None, it means it is the first round of this train_task
     if train_message_document is None:
         cur_rounds_num = 1
@@ -82,17 +82,29 @@ def stop_train_task(id):
         # train_mongoDB.delete_rounds_in_train_message_output_document(task_id=task_id, cur_rounds_num=cur_rounds_num, role='sponsor')
         
         # put sponsor in sponsor_terminate_id_dict
-        train_match.update_user_stop_in_train_match_document(task_id=task_id, user_id=user_id, role='sponsor')
+        train_match.update_user_stop_in_train_match_document(train_id=train_id, user_id=user_id, role='sponsor')
 
         # add stop notification to all sponsor and assistors' notification table
         for assistor_id in assistor_information:
-            mongoDB.update_notification_document(user_id=assistor_id, notification_name='stop_train_task', 
-                                                       id=task_id, sender_random_id=sponsor_random_id, 
-                                                       role='assistor', cur_rounds_num=cur_rounds_num, test_indicator='train')
+            mongoDB.update_notification_document(
+                user_id=assistor_id, 
+                notification_name='stop_train_task', 
+                train_id=train_id, 
+                sender_random_id=sponsor_random_id, 
+                role='assistor', 
+                cur_rounds_num=cur_rounds_num, 
+                test_indicator='train'
+            )
 
-        mongoDB.update_notification_document(user_id=sponsor_id, notification_name='stop_train_task', 
-                                                       id=task_id, sender_random_id=sponsor_random_id, 
-                                                       role='sponsor', cur_rounds_num=cur_rounds_num, test_indicator='train')
+        mongoDB.update_notification_document(
+            user_id=sponsor_id, 
+            notification_name='stop_train_task', 
+            train_id=train_id, 
+            sender_random_id=sponsor_random_id, 
+            role='sponsor', 
+            cur_rounds_num=cur_rounds_num, 
+            test_indicator='train'
+        )
    
         response = {
             "message": "delete successfully", 
@@ -104,14 +116,20 @@ def stop_train_task(id):
         # train_mongoDB.delete_rounds_in_train_message_output_document(task_id=task_id, cur_rounds_num=cur_rounds_num)
         
         # put sponsor in sponsor_terminate_id_dict
-        train_match.update_user_stop_in_train_match_document(task_id=task_id, user_id=user_id, role='assistor')
+        train_match.update_user_stop_in_train_match_document(train_id=train_id, user_id=user_id, role='assistor')
         assistor_id = user_id
         assistor_random_id = asssistor_random_id_mapping[assistor_id]
 
         # add stop notification to its notification table
-        mongoDB.update_notification_document(user_id=assistor_id, notification_name='stop_train_task', 
-                                                   id=task_id, sender_random_id=assistor_random_id, 
-                                                   role='assistor', cur_rounds_num=cur_rounds_num, test_indicator='train')
+        mongoDB.update_notification_document(
+            user_id=assistor_id, 
+            notification_name='stop_train_task', 
+            train_id=train_id, 
+            sender_random_id=assistor_random_id, 
+            role='assistor', 
+            cur_rounds_num=cur_rounds_num, 
+            test_indicator='train'
+        )
    
         response = {
             "message": "delete successfully", 
@@ -157,7 +175,10 @@ def stop_test_task(id):
         return bad_request('You must post JSON data.')
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
 
+    train_id = data.get('train_id')
     test_id = data.get('test_id')
 
     user_id = obtain_user_id_from_token()
@@ -195,13 +216,27 @@ def stop_test_task(id):
 
         # add stop notification to all sponsor and assistors' notification table
         for assistor_id in assistor_information:
-            mongoDB.update_notification_document(user_id=assistor_id, notification_name='stop_test_task', 
-                                                       id=test_id, sender_random_id=sponsor_random_id, 
-                                                       role='assistor', cur_rounds_num=cur_rounds_num, test_indicator='test')
+            mongoDB.update_notification_document(
+                user_id=assistor_id, 
+                notification_name='stop_test_task', 
+                train_id=train_id, 
+                sender_random_id=sponsor_random_id, 
+                role='assistor', 
+                cur_rounds_num=cur_rounds_num, 
+                test_indicator='test',
+                test_id=test_id
+            )
 
-        mongoDB.update_notification_document(user_id=sponsor_id, notification_name='stop_test_task', 
-                                                       id=test_id, sender_random_id=sponsor_random_id, 
-                                                       role='sponsor', cur_rounds_num=cur_rounds_num, test_indicator='test')
+        mongoDB.update_notification_document(
+            user_id=sponsor_id, 
+            notification_name='stop_test_task', 
+            train_id=train_id, 
+            sender_random_id=sponsor_random_id, 
+            role='sponsor', 
+            cur_rounds_num=cur_rounds_num, 
+            test_indicator='test',
+            test_id=test_id
+        )
    
         response = {
             "message": "delete successfully", 
@@ -218,9 +253,16 @@ def stop_test_task(id):
         assistor_random_id = asssistor_random_id_mapping[assistor_id]
 
         # add stop notification to its notification table
-        mongoDB.update_notification_document(user_id=assistor_id, notification_name='stop_test_task', 
-                                                   id=test_id, sender_random_id=assistor_random_id, 
-                                                   role='assistor', cur_rounds_num=cur_rounds_num, test_indicator='test')
+        mongoDB.update_notification_document(
+            user_id=assistor_id, 
+            notification_name='stop_test_task', 
+            train_id=train_id, 
+            sender_random_id=assistor_random_id, 
+            role='assistor', 
+            cur_rounds_num=cur_rounds_num, 
+            test_indicator='test',
+            test_id=test_id
+        )
    
         response = {
             "message": "delete successfully", 

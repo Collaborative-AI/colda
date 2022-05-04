@@ -25,15 +25,15 @@ def create_new_train_task():
         None
 
     Returns:
-        task_id - String. String task_id
+        train_id - String. String train_id
 
     Raises:
         KeyError - raises an exception
     """
 
-    task_id = obtain_unique_id()
+    train_id = obtain_unique_id()
 
-    response = {"task_id": task_id}
+    response = {"train_id": train_id}
     return jsonify(response)
 
 @main_flow_bp.route('/create_new_test_task', methods=['GET'])
@@ -68,12 +68,12 @@ def find_assistor(id):
     Parameters:
         assistor_username_list - List[String]. The username of assistors for this task. 
         id_file - String. The matching id file sent by sponsor
-        task_id - String. The id of task
+        train_id - String. The id of task
         task_name - String. The name of task, which could be None.
         task_description - String. The description of task, which could be None.
 
     Returns:
-        data - Dict. { task_id - String: The id of task, assistor_num - Integer: The number of assistors in this task }
+        data - Dict. { train_id - String: The id of task, assistor_num - Integer: The number of assistors in this task }
 
     Raises:
         KeyError - raises an exception
@@ -88,8 +88,8 @@ def find_assistor(id):
         return bad_request('assistor_username_list is required.')
     if 'identifier_content' not in data or not data.get('identifier_content'):
         return bad_request('identifier_content is required.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
     if 'task_mode' not in data:
         return bad_request('task_mode is required.')
     if 'model_name' not in data:
@@ -111,7 +111,7 @@ def find_assistor(id):
     print('666666666666')
     assistor_username_list = data['assistor_username_list']
     identifier_content = data['identifier_content']
-    task_id = data['task_id']
+    train_id = data['train_id']
     task_name = data['task_name']
     task_mode = data['task_mode']
     model_name = data['model_name']
@@ -127,9 +127,9 @@ def find_assistor(id):
         assistor_user_id = user_document['user_id']
         assistor_id_dict[assistor_user_id] = None
 
-    log(generate_msg('Sponsor training stage'), user_id, task_id)
-    log(generate_msg('---- find_assistor begins'), user_id, task_id)
-    log(generate_msg('1.1', 'sponsor find_assistor'), user_id, task_id)
+    log(generate_msg('Sponsor training stage'), user_id, train_id)
+    log(generate_msg('---- find_assistor begins'), user_id, train_id)
+    log(generate_msg('1.1', 'sponsor find_assistor'), user_id, train_id)
 
     # sponsor_random_id is unique in each task    
     sponsor_random_id = obtain_unique_id()
@@ -137,38 +137,57 @@ def find_assistor(id):
     print('identifier_id_1', identifier_id)
     sponsor_id = user_id
     # add new train_match document to Train_Match Table
-    train_match.create_train_match_document(task_id=task_id, total_assistor_num=len(assistor_id_dict), sponsor_id=sponsor_id, 
-                                     sponsor_random_id=sponsor_random_id, identifier_id=identifier_id)
+    train_match.create_train_match_document(
+        train_id=train_id, 
+        total_assistor_num=len(assistor_id_dict), 
+        sponsor_id=sponsor_id, 
+        sponsor_random_id=sponsor_random_id, 
+        identifier_id=identifier_id
+    )
     print('777777777')
     # add new train_match_identifier document to Train_Match_Identifier Table
     train_match_identifier.create_train_match_identifier_document(identifier_id=identifier_id, identifier_content=identifier_content)
     print('88888888')
-    log(generate_msg('1.2:', 'sponsor handles id data done'), user_id, task_id)
+    log(generate_msg('1.2:', 'sponsor handles id data done'), user_id, train_id)
 
     # add new train_task document to Train_Task Table
-    train_task.create_train_task_document(task_id=task_id, task_name=task_name, task_description=task_description, 
-                                             task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
-                                             sponsor_id=sponsor_id, assistor_id_dict=assistor_id_dict, test_indicator='train', 
-                                             test_task_dict={})
+    train_task.create_train_task_document(
+        train_id=train_id, 
+        task_name=task_name, 
+        task_description=task_description, 
+        task_mode=task_mode, 
+        model_name=model_name, 
+        metric_name=metric_name, 
+        sponsor_id=sponsor_id, 
+        assistor_id_dict=assistor_id_dict, 
+        test_indicator='train', 
+        test_id_of_train_id_dict={}
+    )
 
     # update the participated_train_task in User Table
     pyMongo.db.User.update_one({'user_id': user_id}, {'$set':{
-        'participated_train_task.' + task_id + '.role': 'sponsor'
+        'participated_train_task.' + train_id + '.role': 'sponsor'
     }})
 
     print('-----sdfasdfsafss')
     # add notifications to all assistors
     print('assistor_id_dict', user_id, assistor_id_dict)
     for assistor_id in assistor_id_dict:
-        mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_request', 
-                                                 id=task_id, sender_random_id=sponsor_random_id, 
-                                                 role='assistor', cur_rounds_num=1, test_indicator='train')
+        mongoDB.update_notification_document(
+            user_id=assistor_id, 
+            notification_name='unread_request', 
+            train_id=train_id, 
+            sender_random_id=sponsor_random_id, 
+            role='assistor', 
+            cur_rounds_num=1, 
+            test_indicator='train'
+        )
     print('sdfsadfasdfascvv')
-    log(generate_msg('1.3:', 'sponsor adds all unread request to assistors'), user_id, task_id)
-    log(generate_msg('---- sponsor find assistor done \n'), user_id, task_id)
+    log(generate_msg('1.3:', 'sponsor adds all unread request to assistors'), user_id, train_id)
+    log(generate_msg('---- sponsor find assistor done \n'), user_id, train_id)
 
     response = {
-        'task_id': task_id, 
+        'train_id': train_id, 
         'assistor_num': len(assistor_id_dict)
     }
     return jsonify(response)
@@ -184,13 +203,13 @@ def find_test_assistor(id):
     Parameters:
         assistor_username_list - List[String]. The username of assistors for this task. 
         id_file - String. The matching id file sent by sponsor
-        task_id - String. The id of task
+        train_id - String. The id of task
         test_id - String. The id of test
         test_name - String. The name of test, which could be None.
         test_description - String. The description of test, which could be None.
 
     Returns:
-        data - Dict. { task_id - String: The id of task, assistor_num - Integer: The number of assistors in this task, test_id - String: The id of test }
+        data - Dict. { train_id - String: The id of task, assistor_num - Integer: The number of assistors in this task, test_id - String: The id of test }
 
     Raises:
         KeyError - raises an exception
@@ -200,8 +219,8 @@ def find_test_assistor(id):
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
     if 'identifier_content' not in data or not data.get('identifier_content'):
@@ -223,7 +242,7 @@ def find_test_assistor(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    task_id = data['task_id']
+    train_id = data['train_id']
     test_id = data['test_id']
     identifier_content = data['identifier_content']
     task_mode = data['task_mode']
@@ -234,18 +253,18 @@ def find_test_assistor(id):
     
     # obtain assistor_id_dict
     assistor_id_dict = {}
-    train_match_document = train_match.search_train_match_document(task_id=task_id)
+    train_match_document = train_match.search_train_match_document(train_id=train_id)
     for assistor_id in train_match_document['assistor_information']:
         assistor_id_dict[assistor_id] = None
 
     # update test_task_dict    
-    res = train_task.update_train_task_document_test_task_dict(task_id=task_id, test_id=test_id)
-    train_task_document = train_task.search_train_task_document(task_id=task_id)
+    res = train_task.update_train_task_document_test_id_of_train_id_dict(train_id=train_id, test_id=test_id)
+    train_task_document = train_task.search_train_task_document(train_id=train_id)
     print('fsdfasd', res, train_task_document)
 
-    log(generate_msg('Sponsor testing stage'), user_id, task_id)
-    log(generate_msg('---- find_test_assistor begins'), user_id, task_id, test_id)
-    log(generate_msg('Test 1.1', 'sponsor find_assistor'), user_id, task_id, test_id)
+    log(generate_msg('Sponsor testing stage'), user_id, train_id)
+    log(generate_msg('---- find_test_assistor begins'), user_id, train_id, test_id)
+    log(generate_msg('Test 1.1', 'sponsor find_assistor'), user_id, train_id, test_id)
     
     print("assistor_id_dict", assistor_id_dict)
 
@@ -255,33 +274,57 @@ def find_test_assistor(id):
     sponsor_id = user_id
 
     # add new train_match document to Train_Match Table
-    test_match.create_test_match_document(task_id=task_id, test_id=test_id, total_assistor_num=len(assistor_id_dict), 
-                                            sponsor_id=sponsor_id, sponsor_random_id=sponsor_random_id, identifier_id=identifier_id)
+    test_match.create_test_match_document(
+        train_id=train_id, 
+        test_id=test_id, 
+        total_assistor_num=len(assistor_id_dict), 
+        sponsor_id=sponsor_id, 
+        sponsor_random_id=sponsor_random_id, 
+        identifier_id=identifier_id
+    )
 
     
     # add new train_match_file document to Train_Match_File Table
-    test_match_identifier.create_test_match_identifier_document(identifier_id=identifier_id, identifier_content=identifier_content)
+    test_match_identifier.create_test_match_identifier_document(
+        identifier_id=identifier_id, 
+        identifier_content=identifier_content
+    )
     
     
-    log(generate_msg('Test 1.2', 'sponsor handles id data done'), user_id, task_id, test_id)
+    log(generate_msg('Test 1.2', 'sponsor handles id data done'), user_id, train_id, test_id)
 
     # add new train_task document to Train_Task Table
-    test_task.create_test_task_document(test_id=test_id, task_id=task_id, test_name=test_name, test_description=test_description, 
-                                           task_mode=task_mode, model_name=model_name, metric_name=metric_name, 
-                                           sponsor_id=sponsor_id, assistor_id_dict=assistor_id_dict, test_indicator='test')
+    test_task.create_test_task_document(
+        test_id=test_id, 
+        train_id=train_id, 
+        test_name=test_name, 
+        test_description=test_description, 
+        task_mode=task_mode, 
+        model_name=model_name, 
+        metric_name=metric_name, 
+        sponsor_id=sponsor_id, 
+        assistor_id_dict=assistor_id_dict, 
+        test_indicator='test'
+    )
     
     
     for assistor_id in assistor_id_dict:
-        mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_test_request', 
-                                                  id=test_id, sender_random_id=sponsor_random_id, 
-                                                  role='assistor', cur_rounds_num=1, test_indicator='test',
-                                                  task_id=task_id)
+        mongoDB.update_notification_document(
+            user_id=assistor_id, 
+            notification_name='unread_test_request', 
+            train_id=train_id, 
+            sender_random_id=sponsor_random_id, 
+            role='assistor', 
+            cur_rounds_num=1, 
+            test_indicator='test',
+            test_id=test_id
+        )
     print('sdfsadfasdfascvv')
-    log(generate_msg('Test 1.3:', 'sponsor adds all unread request to assistors'), user_id, task_id, test_id)
-    log(generate_msg('---- sponsor find_test_assistor done \n'), user_id, task_id, test_id)
+    log(generate_msg('Test 1.3:', 'sponsor adds all unread request to assistors'), user_id, train_id, test_id)
+    log(generate_msg('---- sponsor find_test_assistor done \n'), user_id, train_id, test_id)
 
     response = {
-        'task_id': task_id, 
+        'train_id': train_id, 
         'assistor_num': len(assistor_id_dict),
         'test_id': test_id
     }

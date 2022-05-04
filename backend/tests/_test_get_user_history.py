@@ -85,15 +85,19 @@ class FindAPITestCase(unittest.TestCase):
         response = self.client.get('/create_new_train_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        task_id = json_response['task_id']
+        train_id = json_response['train_id']
 
         list_content = [2,3]
         file = [['a','b','c'],[0,1,2],[4,5,6],[1,3,6]]
-        data = json.dumps({'assistor_id_dict': list_content, 'id_file': file, 'task_id': task_id})
+        data = json.dumps({
+            'assistor_id_dict': list_content, 
+            'id_file': file, 
+            'train_id': train_id
+        })
         response = self.client.post('/find_assistor/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['task_id'], task_id)
+        self.assertEqual(json_response['train_id'], train_id)
         assistor_num = json_response['assistor_num']
 
         # check Matched database new rows, include sponsor to sponsor

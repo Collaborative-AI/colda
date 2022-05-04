@@ -8,12 +8,21 @@ class train_message_output(mongoDB):
         return pyMongo.db.Train_Message_Output.find_one({'output_id': output_id})
 
     @classmethod
-    def create_train_message_output_document(cls, output_id, task_id, sender_id, sender_random_id, recipient_id, output_content):
+    def create_train_message_output_document(
+        cls, 
+        output_id, 
+        train_id, 
+        sender_id, 
+        sender_random_id, 
+        recipient_id, 
+        output_content
+    ):
+
         indicator, BSON_file = cls.if_file_size_exceed_limit(file=output_content)
         if not indicator:
             train_message_output_document = {
                 'output_id': output_id,
-                'task_id': task_id, 
+                'train_id': train_id, 
                 'sender_id': sender_id,
                 'sender_random_id': sender_random_id,
                 'recipient_id': recipient_id,
@@ -24,7 +33,7 @@ class train_message_output(mongoDB):
             file_id = cls.store_large_file(BSON_file=BSON_file)
             train_message_output_document = {
                 'output_id': output_id,
-                'task_id': task_id, 
+                'train_id': train_id, 
                 'sender_id': sender_id,
                 'sender_random_id': sender_random_id,
                 'recipient_id': recipient_id,
@@ -34,9 +43,9 @@ class train_message_output(mongoDB):
         return pyMongo.db.Train_Message_Output.insert_one(train_message_output_document)
 
     @classmethod
-    def delete_train_message_output_document(cls, task_id, base='fs'):
+    def delete_train_message_output_document(cls, train_id, base='fs'):
         train_message_output_document = {
-            'task_id': task_id,
+            'train_id': train_id,
         }
         documents = pyMongo.db.Train_Message_Output.find(train_message_output_document)
 

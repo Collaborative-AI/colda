@@ -83,7 +83,7 @@ def create_MongoDB_Collections():
         pyMongo.db.Pending.create_index([("user_id", 1)], unique=True)
 
     if 'Train_Message' not in collection_list:
-        pyMongo.db.Train_Message.create_index([("task_id", 1)], unique=True)
+        pyMongo.db.Train_Message.create_index([("train_id", 1)], unique=True)
     if 'Train_Message_Situation' not in collection_list:
         pyMongo.db.Train_Message_Situation.create_index([("situation_id", 1)], unique=True)
     if 'Train_Message_Output' not in collection_list:
@@ -97,7 +97,7 @@ def create_MongoDB_Collections():
         pyMongo.db.Test_Message_Output.create_index([("output_id", 1)], unique=True)
     
     if 'Train_Match' not in collection_list:
-        pyMongo.db.Train_Match.create_index([("task_id", 1)], unique=True)
+        pyMongo.db.Train_Match.create_index([("train_id", 1)], unique=True)
     if 'Train_Match_Identifier' not in collection_list:
         pyMongo.db.Train_Match_Identifier.create_index([("identifier_id", 1)], unique=True)
 
@@ -107,7 +107,7 @@ def create_MongoDB_Collections():
         pyMongo.db.Test_Match_Identifier.create_index([("identifier_id", 1)], unique=True)
     
     if 'Train_Task' not in collection_list:
-        pyMongo.db.Train_Task.create_index([("task_id", 1)], unique=True)
+        pyMongo.db.Train_Task.create_index([("train_id", 1)], unique=True)
     if 'Test_Task' not in collection_list:
         pyMongo.db.Test_Task.create_index([("test_id", 1)], unique=True)
     if 'Stop' not in collection_list:

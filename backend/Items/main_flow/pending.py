@@ -20,7 +20,7 @@ def add_train_pending(id):
     Synspot adds train task to the pending when the assistor operation mode is manual
 
     Parameters:
-        task_id - String. The id of current train task
+        train_id - String. The id of current train task
        
     Returns:
         {"message": "add train pending successfully"}
@@ -32,8 +32,8 @@ def add_train_pending(id):
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -41,8 +41,12 @@ def add_train_pending(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    task_id = data.get('task_id')
-    mongoDB.update_pending_document(user_id=user_id, id=task_id, test_indicator='train')
+    train_id = data.get('train_id')
+    mongoDB.update_pending_document(
+        user_id=user_id, 
+        task_id=train_id, 
+        test_indicator='train'
+    )
     
     response = {
         'message': 'add train pending successfully'
@@ -78,7 +82,11 @@ def add_test_pending(id):
         return error_response(403)
 
     test_id = data.get('test_id')
-    test_idhhh = mongoDB.update_pending_document(user_id=user_id, id=test_id, test_indicator='test')
+    test_idhhh = mongoDB.update_pending_document(
+        user_id=user_id, 
+        task_id=test_id, 
+        test_indicator='test'
+    )
 
     response = {
         'message': 'add test pending successfully'
@@ -116,18 +124,18 @@ def get_all_pending(id):
         response['all_pending_items'] = {}
         task_dict = pending_document['task_dict']
 
-        for id in task_dict:
-            test_indicator = task_dict[id]['test_indicator']
+        for task_id in task_dict:
+            test_indicator = task_dict[task_id]['test_indicator']
             if test_indicator == 'train':
-                train_task_document = train_task.search_train_task_document(task_id=id)
+                train_task_document = train_task.search_train_task_document(train_id=task_id)
                 # remove ObjectId object, which cannot be transferred into json format
                 del train_task_document['_id']
-                response['all_pending_items'][id] = train_task_document
+                response['all_pending_items'][task_id] = train_task_document
             elif test_indicator == 'test':
-                test_task_document = test_task.search_test_task_document(test_id=id)
+                test_task_document = test_task.search_test_task_document(test_id=task_id)
                 # remove ObjectId object, which cannot be transferred into json format
                 del test_task_document['_id']
-                response['all_pending_items'][id] = test_task_document
+                response['all_pending_items'][task_id] = test_task_document
 
     return jsonify(response)
 
@@ -135,13 +143,13 @@ def get_all_pending(id):
 @token_auth.login_required
 def dalete_pending(id):
     '''
-     Delete the specific task_id or test_id in pending
+     Delete the specific train_id or test_id in pending
     '''
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data:
-        return bad_request('task_id is required.')
+    if 'train_id' not in data:
+        return bad_request('train_id is required.')
     # if 'test_id' not in data:
     #     return bad_request('test_id is required.')
     if 'test_indicator' not in data or not data.get('test_indicator'):
@@ -153,18 +161,18 @@ def dalete_pending(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    task_id = data['task_id']
+    train_id = data['train_id']
     # print('data is', data)
     if 'test_id' in data:
         test_id = data['test_id']
     test_indicator = data['test_indicator']
 
-    id = None
+    task_id = None
     if test_indicator == 'train':
-        id = task_id
+        task_id = train_id
     elif test_indicator == 'test':
-        id = test_id
-    mongoDB.delete_pending_document_field(user_id=user_id, id=id)
+        task_id = test_id
+    mongoDB.delete_pending_document_field(user_id=user_id, task_id=task_id)
 
     response = {
         'message': 'delete successfully'

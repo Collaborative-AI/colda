@@ -37,8 +37,8 @@ def get_user_history(id):
     participated_train_task = user_document['participated_train_task']
     # print('participated_train_taskddd', participated_train_task)
     participated_task = []
-    for task_id in participated_train_task:
-        train_task_document = train_task.search_train_task_document(task_id=task_id)
+    for train_id in participated_train_task:
+        train_task_document = train_task.search_train_task_document(train_id=train_id)
         if train_task_document == None:
             continue
 
@@ -54,7 +54,7 @@ def get_user_history(id):
         # print('timestamp is', str_timestamp)
         # print('timestamp type is', type(timestamp))
         sub_task = {
-            'task_id': task_id,
+            'train_id': train_id,
             'timestamp': str_timestamp,
             'task_name': task_name,
             'task_description': task_description,
@@ -71,8 +71,8 @@ def get_user_history(id):
 
         # print('train_task_document', train_task_document)
         if train_task_document != None:
-            test_task_dict = train_task_document['test_task_dict']
-            for test_id in test_task_dict:
+            test_id_of_train_id_dict = train_task_document['test_id_of_train_id_dict']
+            for test_id in test_id_of_train_id_dict:
                 test_task_document = test_task.search_test_task_document(test_id=test_id)
                 if test_task_document == None:
                     continue
@@ -89,7 +89,7 @@ def get_user_history(id):
                 timestamp = timestamp.timestamp()
                 # print('timestamp is', str_timestamp)
                 sub_task = {
-                    'task_id': task_id,
+                    'train_id': train_id,
                     'timestamp': str_timestamp,
                     'task_name': None,
                     'task_description': None,
@@ -110,7 +110,7 @@ def get_user_history(id):
         if sub_task['test_indicator'] == 'test':
             participated_sort_task_dict[sub_task['test_id']] = sub_task
         elif sub_task['test_indicator'] == 'train':
-            participated_sort_task_dict[sub_task['task_id']] = sub_task
+            participated_sort_task_dict[sub_task['train_id']] = sub_task
     
     response = {
         'participated_sort_task_dict': participated_sort_task_dict,
@@ -131,8 +131,8 @@ def check_sponsor(id):
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
     
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -140,9 +140,9 @@ def check_sponsor(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    task_id = data['task_id']
+    train_id = data['train_id']
     
-    task_match_document = train_match.search_train_match_document(task_id=task_id)
+    task_match_document = train_match.search_train_match_document(train_id=train_id)
     sponsor_id = task_match_document['sponsor_information']['sponsor_id']
 
     if sponsor_id == user_id:
@@ -156,19 +156,19 @@ def check_sponsor(id):
     return jsonify(response)
 
 
-@helper_api_bp.route('/get_test_task_id_history/<string:id>', methods=['POST'])
+@helper_api_bp.route('/get_test_id_of_train_id_history/<string:id>', methods=['POST'])
 @token_auth.login_required
-def get_test_task_id_history(id):
+def get_test_id_of_train_id_history(id):
 
     """
     return test task ids belong to one train task id.
 
     Parameters:
-        task_id - String.
+        train_id - String.
 
     Returns:
         data - Dict{
-            "test_id_list": List[test_task_id]
+            "test_id_list": List[train_id]
         }. 
 
     Raises:
@@ -179,8 +179,8 @@ def get_test_task_id_history(id):
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
     
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -188,10 +188,10 @@ def get_test_task_id_history(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    task_id = data['task_id']
-    train_task_document = train_task.search_train_task_document(task_id=task_id)
+    train_id = data['train_id']
+    train_task_document = train_task.search_train_task_document(train_id=train_id)
     
     response = {
-        "test_task_dict": train_task_document['test_task_dict']
+        "test_id_of_train_id_dict": train_task_document['test_id_of_train_id_dict']
     }    
     return jsonify(response)

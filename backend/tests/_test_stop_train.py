@@ -17,12 +17,12 @@ class Stop_Train_API_TestCase(Train_Helper_API_TestCase):
         '''
         
 
-        task_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
-        self.unread_request_two_users_helper(task_id, list_content, assistor_random_id_list)
-        self.unread_match_identifier_two_users_helper_without_send_situation(task_id, list_content, assistor_random_id_list)
+        train_id, list_content, assistor_random_id_list = self.find_assistor_two_assistors_helper()
+        self.unread_request_two_users_helper(train_id, list_content, assistor_random_id_list)
+        self.unread_match_identifier_two_users_helper_without_send_situation(train_id, list_content, assistor_random_id_list)
 
         headers = self.get_token_auth_headers('unittest2', '123')
-        data = json.dumps({'task_id': task_id})
+        data = json.dumps({'train_id': train_id})
         response = self.client.post('/stop_train_task/', headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))

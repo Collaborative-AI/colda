@@ -98,14 +98,14 @@ def generate_msg(*args):
     
     return " ".join(res)
 
-def get_log(self_id, task_id, test_id=None):
+def get_log(self_id, train_id, test_id=None):
 
     """
     read log file and return content of log file.
 
     Parameters:
        self_id - id of current user
-       task_id - task_id of task
+       train_id - train_id of task
        test_id - test_id of test
 
     Returns:
@@ -119,17 +119,17 @@ def get_log(self_id, task_id, test_id=None):
     root = os.path.join(root, 'log_file')
 
     self_id = str(self_id)
-    task_id = str(task_id)
+    train_id = str(train_id)
     if test_id:
         test_id = str(test_id)
 
     if test_id is None:
-        log_path = os.path.join(root, self_id, 'task', task_id, 'train', 'current_task.log')
+        log_path = os.path.join(root, self_id, 'task', train_id, 'train', 'current_task.log')
         f = open(log_path, "r")
         return f.readlines()
             
     else:
-        log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'current_test.log')
+        log_path = os.path.join(root, self_id, 'task', train_id, 'test', test_id, 'current_test.log')
         f = open(log_path, "r")
         return f.readlines() 
 
@@ -169,7 +169,7 @@ def generate_logger(log_path):
     return logger
 
 
-def log(msg, self_id, task_id, test_id=None):
+def log(msg, self_id, train_id, test_id=None):
     
     """
     Use python logging module to store the log information. The output level of the logging
@@ -177,7 +177,7 @@ def log(msg, self_id, task_id, test_id=None):
 
     Parameters:
        self_id - id of current user
-       task_id - task_id of task
+       train_id - train_id of task
        test_id - test_id of test
 
     Returns:
@@ -191,18 +191,18 @@ def log(msg, self_id, task_id, test_id=None):
     root = os.path.join(root, 'log_file')
     
     self_id = str(self_id)
-    task_id = str(task_id)
+    train_id = str(train_id)
     if test_id:
         test_id = str(test_id)
 
     log_path = None
     if test_id is None:
-        makedir_exist_ok(os.path.join(root, self_id, 'task', task_id, 'train'))
-        log_path = os.path.join(root, self_id, 'task', task_id, 'train', 'current_task.log')
+        makedir_exist_ok(os.path.join(root, self_id, 'task', train_id, 'train'))
+        log_path = os.path.join(root, self_id, 'task', train_id, 'train', 'current_task.log')
         
     else:
-        makedir_exist_ok(os.path.join(root, self_id, 'task', task_id, 'test', test_id))
-        log_path = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'current_test.log')
+        makedir_exist_ok(os.path.join(root, self_id, 'task', train_id, 'test', test_id))
+        log_path = os.path.join(root, self_id, 'task', train_id, 'test', test_id, 'current_test.log')
 
     file = open(log_path,'w')
     file.close()

@@ -7,12 +7,24 @@ class test_task:
         return pyMongo.db.Test_Task.find_one({'test_id': test_id})
 
     @classmethod
-    def create_test_task_document(cls, test_id, task_id, test_name, test_description, task_mode, 
-                          model_name, metric_name, sponsor_id, assistor_id_dict, test_indicator):
+    def create_test_task_document(
+        cls, 
+        test_id, 
+        train_id, 
+        test_name, 
+        test_description, 
+        task_mode, 
+        model_name, 
+        metric_name, 
+        sponsor_id, 
+        assistor_id_dict, 
+        test_indicator
+    ):
+
         test_task_document = {
             'test_id': test_id,
             'test_indicator': test_indicator,
-            "task_id": task_id,
+            "train_id": train_id,
             "test_name": test_name,
             "test_description": test_description,
             "task_mode": task_mode,

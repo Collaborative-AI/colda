@@ -7,11 +7,19 @@ class test_match:
         return pyMongo.db.Test_Match.find_one({'test_id': test_id})
         
     @classmethod
-    def create_test_match_document(cls, test_id, task_id, total_assistor_num, sponsor_id, 
-                           sponsor_random_id, identifier_id):
+    def create_test_match_document(
+        cls, 
+        test_id, 
+        train_id, 
+        total_assistor_num, 
+        sponsor_id, 
+        sponsor_random_id, 
+        identifier_id
+    ):
+
         test_match_document = {
             'test_id': test_id,
-            'task_id': task_id,
+            'train_id': train_id,
             'total_assistor_num': total_assistor_num,
             'sponsor_information': {
                 "sponsor_id": sponsor_id,

@@ -18,10 +18,10 @@ from Items.mongoDB import train_match
 def get_backend_log(id):
 
     """
-    return log of current task. Must have task_id in data, Might have test_id in data.
+    return log of current task. Must have train_id in data, Might have test_id in data.
 
     Parameters:
-        task_id - String.
+        train_id - String.
 
     Returns:
         data - Dict[Dict[String, String, List[String]]]. List[String]: ['first log_interval\n', 'second\n', 'third']
@@ -34,8 +34,8 @@ def get_backend_log(id):
     print('data',data)
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -43,15 +43,15 @@ def get_backend_log(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    task_id = data['task_id']
-    train_match_document = train_match.search_train_match_document(task_id=task_id)
+    train_id = data['train_id']
+    train_match_document = train_match.search_train_match_document(train_id=train_id)
     test_task_dict = train_match_document['test_task_dict']
     
     response = {}
-    response[task_id] = {
-        'id': task_id,
+    response[train_id] = {
+        'id': train_id,
         'test_indicator': 'train',
-        'log_file': get_log(user_id, task_id)
+        'log_file': get_log(user_id, train_id)
     }
     for test_id in test_task_dict:
         response[test_id] = {

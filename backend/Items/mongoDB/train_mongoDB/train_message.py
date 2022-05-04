@@ -3,13 +3,19 @@ from Items import pyMongo
 class train_message():
 
     @classmethod
-    def search_train_message_document(cls, task_id):
-        return pyMongo.db.Train_Message.find_one({'task_id': task_id})
+    def search_train_message_document(cls, train_id):
+        return pyMongo.db.Train_Message.find_one({'train_id': train_id})
         
     @classmethod
-    def create_train_message_document(cls, task_id, cur_rounds_num, situation_dict):
+    def create_train_message_document(
+        cls, 
+        train_id, 
+        cur_rounds_num, 
+        situation_dict
+    ):
+
         train_message_document = {
-            'task_id': task_id,
+            'train_id': train_id,
             'cur_rounds_num': cur_rounds_num,
             'rounds_' + str(cur_rounds_num): {
                 'situation_dict': situation_dict,

@@ -22,7 +22,7 @@ def get_output_content(id):
     Sponsor gets outputs of assistors. Only sponsor enters this function.
 
     Parameters:
-        task_id - String. The id of task
+        train_id - String. The id of task
         rounds - String. The round number
 
     Returns:
@@ -37,8 +37,8 @@ def get_output_content(id):
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
     if 'rounds' not in data:
         return bad_request('rounds is required.')
 
@@ -48,22 +48,22 @@ def get_output_content(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    task_id = data.get('task_id')
+    train_id = data.get('train_id')
     rounds = data.get('rounds')
     sponsor_id = user_id
 
     # if caller is not sponsor, it should not enter this function
-    task_match_document = train_match.search_train_match_document(task_id=task_id)
+    task_match_document = train_match.search_train_match_document(train_id=train_id)
     sponsor_id = task_match_document['sponsor_information']['sponsor_id']
     if sponsor_id != user_id:
         return error_response(403)
 
-    log(generate_msg('---- unread situation begins'), user_id, task_id)
-    log(generate_msg('---- unread situation done (no function pass server)\n'), user_id, task_id)
-    log(generate_msg('---- unread output begins'), user_id, task_id)
-    log(generate_msg('5.1:"', 'sponsor get_user_output start'), user_id, task_id)
+    log(generate_msg('---- unread situation begins'), user_id, train_id)
+    log(generate_msg('---- unread situation done (no function pass server)\n'), user_id, train_id)
+    log(generate_msg('---- unread output begins'), user_id, train_id)
+    log(generate_msg('5.1:"', 'sponsor get_user_output start'), user_id, train_id)
 
-    train_message_document = train_message.search_train_message_document(task_id=task_id)
+    train_message_document = train_message.search_train_message_document(train_id=train_id)
     output_dict = train_message_document['rounds_' + str(rounds)]['output_dict']
 
     assistor_random_id_to_output_content_dict = {}
@@ -80,7 +80,7 @@ def get_output_content(id):
             output_content = mongoDB.retrieve_large_file(base='fs', file_id=gridfs_file_id)
         assistor_random_id_to_output_content_dict[sender_random_id] = output_content
 
-    log(generate_msg('5.2:"', 'sponsor get_user_output done'), user_id, task_id)
+    log(generate_msg('5.2:"', 'sponsor get_user_output done'), user_id, train_id)
 
     response = {
         'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict
@@ -98,7 +98,7 @@ def get_test_output_content(id):
     test stage will only have 1 round
 
     Parameters:
-        task_id - String. The id of train task
+        train_id - String. The id of train task
         test_id - String. The id of test task
 
     Returns:
@@ -113,8 +113,8 @@ def get_test_output_content(id):
     data = request.get_json()
     if not data:
         return bad_request('You must post JSON data.')
-    if 'task_id' not in data or not data.get('task_id'):
-        return bad_request('task_id is required.')
+    if 'train_id' not in data or not data.get('train_id'):
+        return bad_request('train_id is required.')
     if 'test_id' not in data or not data.get('test_id'):
         return bad_request('test_id is required.')
 
@@ -125,7 +125,7 @@ def get_test_output_content(id):
         return error_response(403)
 
     test_id = data.get('test_id')
-    task_id = data.get('task_id')
+    train_id = data.get('train_id')
     sponsor_id = user_id
 
     # if caller is not sponsor, it should not enter this function
@@ -134,8 +134,8 @@ def get_test_output_content(id):
     if sponsor_id != user_id:
         return error_response(403)
 
-    log(generate_msg('---- unread test output begins'), user_id, task_id, test_id)
-    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), user_id, task_id, test_id)
+    log(generate_msg('---- unread test output begins'), user_id, train_id, test_id)
+    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output start'), user_id, train_id, test_id)
 
     test_message_document = test_message.search_test_message_document(test_id=test_id)
     output_dict = test_message_document['rounds_1']['output_dict']
@@ -157,8 +157,8 @@ def get_test_output_content(id):
     # We can delete the test message output when we have already retrieved it
     test_message_output.delete_test_message_output_document(test_id=test_id)
 
-    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output done'), user_id, task_id, test_id)
-    log(generate_msg('---- unread test output done\n'), user_id, task_id, test_id)
+    log(generate_msg('Test 5.1:', 'sponsor get_user_test_output done'), user_id, train_id, test_id)
+    log(generate_msg('---- unread test output done\n'), user_id, train_id, test_id)
 
     response = {
         'assistor_random_id_to_output_content_dict': assistor_random_id_to_output_content_dict

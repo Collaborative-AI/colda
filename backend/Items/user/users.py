@@ -30,7 +30,7 @@ def create_user():
         password - String.
 
     Returns:
-        data - Dict. { task_id - String: The id of task, assistor_num - Integer: The number of assistors in this task }
+        data - Dict. 
 
     Raises:
         KeyError - raises an exception

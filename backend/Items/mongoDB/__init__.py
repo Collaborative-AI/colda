@@ -57,12 +57,23 @@ class mongoDB():
         return gridfile
 
     @classmethod
-    def update_notification_document(cls, user_id, notification_name, id, sender_random_id, role, cur_rounds_num, test_indicator, task_id=None):
+    def update_notification_document(
+        cls, 
+        user_id, 
+        notification_name, 
+        train_id, 
+        sender_random_id, 
+        role, 
+        cur_rounds_num, 
+        test_indicator, 
+        test_id=None
+    ):
+
         if not isinstance(user_id, str):
             return False
         elif not isinstance(notification_name, str):
             return False
-        elif not isinstance(id, str):
+        elif not isinstance(train_id, str):
             return False
         elif not isinstance(sender_random_id, str):
             return False
@@ -77,19 +88,20 @@ class mongoDB():
             pyMongo.db.Notification.insert_one({'user_id': user_id})
 
         if test_indicator == 'train':
-            base_key = 'category' + '.' + notification_name + '.' + 'task_id_dict' + '.' + id 
+            base_key = f'category.{notification_name}.train_id_dict.{train_id}'
+            print('base_key$$$', base_key)
             return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
-                base_key + '.sender_random_id': sender_random_id,
-                base_key + '.role': role,
-                base_key + '.cur_rounds_num': cur_rounds_num,
+                f'{base_key}.sender_random_id': sender_random_id,
+                f'{base_key}.role': role,
+                f'{base_key}.cur_rounds_num': cur_rounds_num,
             }})
         elif test_indicator == 'test':
-            base_key = 'category' + '.' + notification_name + '.' + 'test_id_dict' + '.' + id 
+            base_key = f'category.{notification_name}.test_id_dict.{test_id}'
             return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
-                base_key + '.sender_random_id': sender_random_id,
-                base_key + '.role': role,
-                base_key + '.cur_rounds_num': cur_rounds_num,
-                base_key + '.task_id': task_id,
+                f'{base_key}.sender_random_id': sender_random_id,
+                f'{base_key}.role': role,
+                f'{base_key}.cur_rounds_num': cur_rounds_num,
+                f'{base_key}.train_id': train_id,
             }})
         
         
@@ -123,18 +135,18 @@ class mongoDB():
         return pyMongo.db.Pending.insert_one(pending_document)
 
     @classmethod
-    def update_pending_document(cls, user_id, id, test_indicator):
+    def update_pending_document(cls, user_id, task_id, test_indicator):
         if cls.search_pending_document(user_id) == None:
             cls.create_pending_document(user_id)
         print('id, test_indicator', id, test_indicator)
         return pyMongo.db.Pending.update_one({'user_id': user_id}, {'$set':{
-            'task_dict.' + id + '.test_indicator': test_indicator
+            f'task_dict.{task_id}.test_indicator': test_indicator
         }})
     
     @classmethod
-    def delete_pending_document_field(cls, user_id, id):
+    def delete_pending_document_field(cls, user_id, task_id):
         return pyMongo.db.Pending.update_one({'user_id': user_id}, {'$unset':{
-            'task_dict.' + id: ""
+            f'task_dict.{task_id}': ""
         }})
     
     @classmethod

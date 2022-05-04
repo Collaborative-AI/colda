@@ -182,14 +182,14 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         response = self.client.get('/main_flow/create_new_train_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        task_id = json_response['task_id']
+        train_id = json_response['train_id']
 
         assistor_username_list = ['unittest2', 'unittest3']
         identifier_content = user_1_identifier_content
         data = json.dumps({
             'assistor_username_list': assistor_username_list, 
             'identifier_content': identifier_content, 
-            'task_id': task_id, 
+            'train_id': train_id, 
             'task_mode': 'regression', 
             'model_name': 'LinearRegression', 
             'metric_name': 'RMSE',
@@ -199,11 +199,11 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         response = self.client.post('/main_flow/find_assistor/' + user_id_1, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['task_id'], task_id)
+        self.assertEqual(json_response['train_id'], train_id)
         assistor_num = json_response['assistor_num']
 
         # check Train_Match database new rows, include sponsor to sponsor
-        train_match_document = train_match.search_train_match_document(task_id=task_id)
+        train_match_document = train_match.search_train_match_document(train_id=train_id)
         total_assistor_num = train_match_document['total_assistor_num']
         sponsor_id = train_match_document['sponsor_information']['sponsor_id']
         sponsor_information = train_match_document['sponsor_information']
@@ -215,7 +215,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
         sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
-        self.assertEqual(train_match_document['task_id'], task_id)
+        self.assertEqual(train_match_document['train_id'], train_id)
         self.assertEqual(total_assistor_num, assistor_num)
         self.assertEqual(sponsor_id, user_id_1)
         self.assertEqual(sponsor_random_id_mapping[sponsor_random_id], sponsor_id)
@@ -224,16 +224,16 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(sponsor_terminate_id_dict), 0)
         self.assertEqual(len(assistor_terminate_id_dict), 0)
 
-        train_task_document = train_task.search_train_task_document(task_id=task_id)
+        train_task_document = train_task.search_train_task_document(train_id=train_id)
         task_name = train_task_document['task_name']
         task_description = train_task_document['task_description']
         task_mode = train_task_document['task_mode']
         model_name = train_task_document['model_name']
         metric_name = train_task_document['metric_name']
         assistor_id_dict = train_task_document['assistor_id_dict']
-        test_task_dict = train_task_document['test_task_dict']
+        test_id_of_train_id_dict = train_task_document['test_id_of_train_id_dict']
 
-        self.assertEqual(train_task_document['task_id'], task_id)
+        self.assertEqual(train_task_document['train_id'], train_id)
         self.assertEqual(task_name, 'unittest')
         self.assertEqual(task_description, 'unittest_desciption')
         self.assertEqual(task_mode, 'regression')
@@ -244,36 +244,36 @@ class Test_Helper_API_TestCase(unittest.TestCase):
             user_id_2: None, 
             user_id_3: None
         })
-        self.assertEqual(len(test_task_dict), 0)
+        self.assertEqual(len(test_id_of_train_id_dict), 0)
 
         # 5. assistor uploads the ID file
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         identifier_content = user_2_identifier_content
         data = json.dumps({
-            'task_id': task_id, 
+            'train_id': train_id, 
             'identifier_content': identifier_content
         })
         response = self.client.post('/main_flow/match_identifier_content/' + user_id_2, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         stored = json_response['stored']
-        task_id_response = json_response['task_id']
+        train_id_response = json_response['train_id']
         self.assertEqual(stored, "assistor match id stored")
-        self.assertEqual(task_id, task_id_response)
+        self.assertEqual(train_id, train_id_response)
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
         identifier_content = user_3_identifier_content
         data = json.dumps({
-            'task_id': task_id, 
+            'train_id': train_id, 
             'identifier_content': identifier_content
         })
         response = self.client.post('/main_flow/match_identifier_content/' + user_id_3, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         stored = json_response['stored']
-        task_id_response = json_response['task_id']
+        train_id_response = json_response['train_id']
         self.assertEqual(stored, "assistor match id stored")
-        self.assertEqual(task_id, task_id_response)
+        self.assertEqual(train_id, train_id_response)
 
         # should not exist notification yet for sponsor
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -288,8 +288,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_2 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_2['notification_result']['category']), 2)
-        self.assertEqual(len(json_response_2['notification_result']['category']['unread_request']['task_id_dict']), 1)
-        assert task_id in json_response_2['notification_result']['category']['unread_request']['task_id_dict']
+        self.assertEqual(len(json_response_2['notification_result']['category']['unread_request']['train_id_dict']), 1)
+        assert train_id in json_response_2['notification_result']['category']['unread_request']['train_id_dict']
 
         # User 3 cannot check the notification of user 2
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
@@ -302,8 +302,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_3['notification_result']['category']), 2)
-        self.assertEqual(len(json_response_3['notification_result']['category']['unread_request']['task_id_dict']), 1)
-        assert task_id in json_response_3['notification_result']['category']['unread_request']['task_id_dict']
+        self.assertEqual(len(json_response_3['notification_result']['category']['unread_request']['train_id_dict']), 1)
+        assert train_id in json_response_3['notification_result']['category']['unread_request']['train_id_dict']
 
         # create test id
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -315,7 +315,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         identifier_content = user_1_identifier_content
         data = json.dumps({
             'identifier_content': identifier_content, 
-            'task_id': task_id, 
+            'train_id': train_id, 
             'test_id': test_id,
             'task_mode': 'regression', 
             'model_name': 'LinearRegression', 
@@ -326,7 +326,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         response = self.client.post('/main_flow/find_test_assistor/' + user_id_1, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
-        self.assertEqual(json_response['task_id'], task_id)
+        self.assertEqual(json_response['train_id'], train_id)
         self.assertEqual(json_response['test_id'], test_id)
         assistor_num = json_response['assistor_num']
 
@@ -343,7 +343,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
         sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
-        self.assertEqual(test_match_document['task_id'], task_id)
+        self.assertEqual(test_match_document['train_id'], train_id)
         self.assertEqual(test_match_document['test_id'], test_id)
         self.assertEqual(total_assistor_num, assistor_num)
         self.assertEqual(sponsor_id, user_id_1)
@@ -353,10 +353,10 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(sponsor_terminate_id_dict), 0)
         self.assertEqual(len(assistor_terminate_id_dict), 0)
         
-        train_task_document = train_task.search_train_task_document(task_id=task_id)
-        test_task_dict = train_task_document['test_task_dict']
-        self.assertEqual(len(test_task_dict), 1)
-        assert test_id in test_task_dict
+        train_task_document = train_task.search_train_task_document(train_id=train_id)
+        test_id_of_train_id_dict = train_task_document['test_id_of_train_id_dict']
+        self.assertEqual(len(test_id_of_train_id_dict), 1)
+        assert test_id in test_id_of_train_id_dict
 
         test_task_document = test_task.search_test_task_document(test_id=test_id)
         test_name = test_task_document['test_name']
@@ -366,7 +366,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         metric_name = test_task_document['metric_name']
         assistor_id_dict = test_task_document['assistor_id_dict']
 
-        self.assertEqual(train_task_document['task_id'], task_id)
+        self.assertEqual(train_task_document['train_id'], train_id)
         self.assertEqual(test_name, 'unittest')
         self.assertEqual(test_description, 'unittest_desciption')
         self.assertEqual(task_mode, 'regression')
@@ -380,9 +380,9 @@ class Test_Helper_API_TestCase(unittest.TestCase):
 
         assistor_username_list = ['unittest2', 'unittest3']
         user_id_list = [user_id_1, user_id_2, user_id_3]
-        return task_id, test_id, assistor_username_list, user_id_list
+        return train_id, test_id, assistor_username_list, user_id_list
 
-    def unread_test_request_two_users_helper(self, task_id, test_id, assistor_username_list, user_id_list, **kwargs):
+    def unread_test_request_two_users_helper(self, train_id, test_id, assistor_username_list, user_id_list, **kwargs):
         
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
@@ -428,7 +428,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         identifier_content = user_2_identifier_content
         data = json.dumps({
-            'task_id': task_id, 
+            'train_id': train_id, 
             'test_id': test_id,
             'identifier_content': identifier_content
         })
@@ -453,7 +453,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
         identifier_content = user_3_identifier_content
         data = json.dumps({
-            'task_id': task_id, 
+            'train_id': train_id, 
             'test_id': test_id,
             'identifier_content': identifier_content
         })
@@ -475,9 +475,9 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         identifier_content = self.retrieve_file_content(test_match_identifier_document, 'identifier_content')
         self.assertEqual(set(identifier_content), set(user_1_identifier_content) & set(user_3_identifier_content))
 
-        return task_id, test_id, assistor_username_list, user_id_list
+        return train_id, test_id, assistor_username_list, user_id_list
 
-    def unread_test_match_identifier_two_users_helper(self, task_id, test_id, assistor_username_list, user_id_list, **kwargs):
+    def unread_test_match_identifier_two_users_helper(self, train_id, test_id, assistor_username_list, user_id_list, **kwargs):
 
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
@@ -526,7 +526,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         # 6. sponsor and assistors call update_match_id_notification() (in unread_match_identifier.py) and check updated notification (unread match id => 0)
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
         data = json.dumps({
-            'task_id': task_id,
+            'train_id': train_id,
             'test_id': test_id,
         })
         response = self.client.post('/main_flow/get_test_identifier_content/' + user_id_1, headers=headers, data=data)
@@ -546,7 +546,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
 
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         data = json.dumps({
-            'task_id': task_id,
+            'train_id': train_id,
             'test_id': test_id,
         })
         response = self.client.post('/main_flow/get_test_identifier_content/' + user_id_2, headers=headers, data=data)
@@ -559,7 +559,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
 
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
         data = json.dumps({
-            'task_id': task_id,
+            'train_id': train_id,
             'test_id': test_id,
         })
         response = self.client.post('/main_flow/get_test_identifier_content/' + user_id_3, headers=headers, data=data)
@@ -576,7 +576,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         data = json.dumps({
             'output_content': output_content, 
             'test_id': test_id, 
-            'task_id': task_id
+            'train_id': train_id
         })
         response = self.client.post('/main_flow/send_test_output/' + user_id_2, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -604,7 +604,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         data = json.dumps({
             'output_content': output_content, 
             'test_id': test_id, 
-            'task_id': task_id
+            'train_id': train_id
         })
         response = self.client.post('/main_flow/send_test_output/' + user_id_3, headers=headers, data=data)
         self.assertEqual(response.status_code, 200)
@@ -620,7 +620,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(output_content, user_3_output_content)
 
 
-    def unread_test_output_two_users_helper(self, task_id, test_id, assistor_username_list, user_id_list, **kwargs):
+    def unread_test_output_two_users_helper(self, train_id, test_id, assistor_username_list, user_id_list, **kwargs):
 
         user_id_1 = user_id_list[0]
         user_id_2 = user_id_list[1]
@@ -641,7 +641,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         
         # 16. sponsor calls: get_user_output() (in unread_output.py), gets output files
         data = json.dumps({
-            'task_id': task_id, 
+            'train_id': train_id, 
             'test_id': test_id,
         })
         response = self.client.post('/main_flow/get_test_output_content/' + user_id_1, headers=headers, data=data)

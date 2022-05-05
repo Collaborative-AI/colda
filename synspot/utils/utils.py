@@ -3,8 +3,6 @@ from __future__ import annotations
 import json
 import numpy as np
 
-from ..error import check_Algorithm_return_value
-from ..algorithm import log
 
 from typing import (
     Any,
@@ -15,8 +13,6 @@ from typing import (
 class check_sponsor_class:
     sponsor: int = 1
     assistor: int = 0
-
-
 
 
 def to_string(

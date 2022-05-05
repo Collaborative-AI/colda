@@ -6,10 +6,6 @@ from synspot.database.base import BaseDatabase
 
 from synspot.database.abstract_database import AbstractAlgorithmDatabase
 
-from synspot.database.utils import (
-    generate_database_key
-)
-
 from typing import (
     Type,
     List,
@@ -26,7 +22,7 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_database_instance(cls) -> Type[TestAlgorithmDatabase]:
+    def get_instance(cls) -> Type[TestAlgorithmDatabase]:
         if cls.__TestAlgorithmDatabase_instance == None:
             cls.__TestAlgorithmDatabase_instance = TestAlgorithmDatabase()
 

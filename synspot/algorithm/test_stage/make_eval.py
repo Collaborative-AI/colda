@@ -18,8 +18,9 @@ from typing import List
 
 class MakeEval(BaseAlgorithm):
 
+    @classmethod
     def make_eval(
-        self, 
+        cls, 
         root: str, 
         self_id: str, 
         task_id: str, 

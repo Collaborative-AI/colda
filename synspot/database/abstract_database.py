@@ -6,7 +6,7 @@ class AbstractMetadataDatabase(ABC):
 
     @classmethod
     @abstractmethod
-    def get_database_instance(cls):
+    def get_instance(cls):
         pass
     
     @abstractmethod
@@ -26,7 +26,7 @@ class AbstractAlgorithmDatabase(ABC):
 
     @classmethod
     @abstractmethod
-    def get_database_instance(cls):
+    def get_instance(cls):
         pass
     
     @abstractmethod

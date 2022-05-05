@@ -21,17 +21,29 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             cls, train_id: str, train_id_dict: dict[str, Any]
         ) -> None:
 
+        msgs = [
+            "---- 3. Unread Match ID", 
+            "3.1 Update the match id notification",
+            "3.2 unread_match_identifier_sponsor",
+        ]
+        cls._store_log(
+            user_id=user_id,
+            task_id=train_id,
+            msgs=msgs
+        )
+
         user_id, root, token = cls._get_important_information()
         
         data = {
             "train_id": train_id,
         }
         get_identifier_content_response = cls._post_request_chaining(
-            token=token,
+            task_id=train_id,
             data=data,
-            url_prefix=cls.__url_prefix,
+            url_prefix=cls._url_prefix,
             url_root='get_identifier_content',
-            url_suffix=user_id
+            url_suffix=user_id,
+            status_code=200
         )
 
         msg = [
@@ -111,16 +123,24 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         print("train_file_path", train_file_path, train_target_column)
 
         # call make residual
-        sponsor_residual = cls._calculate_residual(
+        sponsor_result, sponsor_residual = cls._calculate_residual(
             self_id=user_id, 
             train_id=train_id, 
-            round=cls.__initial_round_num, 
+            round=cls._initial_round_num, 
             dataset_path=train_file_path, 
             target_idx=train_target_column, 
-            skip_header=cls.__skip_header, 
+            skip_header=cls._skip_header, 
             task_mode=task_mode, 
             metric_name=metric_name,
             last_round_result=None,
+        )
+
+        cls._store_database_record(
+            database_type='train_algorithm',
+            user_id=user_id,
+            train_id=train_id,
+            algorithm_data_name='sponsor_result',
+            algorithm_data=sponsor_result
         )
 
         cls._store_database_record(
@@ -150,11 +170,12 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             "assistor_random_id_to_residual_dict": assistor_random_id_to_residual_dict
         }
         send_situation_response = cls._post_request_chaining(
-            token=token,
+            task_id=train_id,
             data=data,
-            url_prefix=cls.__url_prefix,
+            url_prefix=cls._url_prefix,
             url_root='send_situation',
-            url_suffix=user_id
+            url_suffix=user_id,
+            status_code=200
         )
 
         msg = [
@@ -168,4 +189,4 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         )
 
         print('Sponsor: Training train_id: ', train_id, ' is running')
-        return 'unread_match_identifier_sponsor successfully'
+        return True

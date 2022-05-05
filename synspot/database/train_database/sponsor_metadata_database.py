@@ -16,7 +16,7 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_database_instance(cls) -> type[TrainSponsorMetadataDatabase]:
+    def get_instance(cls) -> type[TrainSponsorMetadataDatabase]:
         if cls.__TrainSponsorMetadataDatabase_instance == None:
             cls.__TrainSponsorMetadataDatabase_instance = TrainSponsorMetadataDatabase()
 
@@ -61,8 +61,8 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         """
 
         key = DictHelper.generate_dict_key(user_id, train_id)
-        if key not in self.__temp_database:
-            self.__temp_database[key] = collections.defaultdict(dict)
+        # if key not in self.__temp_database:
+        #     self.__temp_database[key] = collections.defaultdict(dict)
 
         value = {
             'user_id': user_id,
@@ -77,13 +77,15 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             'task_name': task_name,
             'task_description': task_description
         }
-        DictHelper.store_value(
+        store_res = DictHelper.store_value(
             key=key,
             value=value,
             container=self.__temp_database
         )
-        
-        return 'User_Assistor_Table stores successfully'
+        if store_res == True:
+            return f'{self.__class__.__name__} stores {key} successfully!' 
+        else:
+            return store_res
     
     def get_record(
         self, 

@@ -13,7 +13,7 @@ class AbstractTrainMainWorkflow(ABC):
 
     @classmethod
     @abstractmethod
-    def get_TrainRequest_instance(cls):
+    def get_instance(cls):
         pass
 
     @abstractmethod
@@ -67,7 +67,7 @@ class AbstractTestMainWorkflow(ABC):
 
     @classmethod
     @abstractmethod
-    def get_TestRequest_instance(cls):
+    def get_instance(cls):
         pass
 
     @abstractmethod

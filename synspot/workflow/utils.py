@@ -64,21 +64,7 @@ def check_Algorithm_return_value(check_list, first_val, second_val):
     return True
 
 
-def check_status_code(response, status_code):
-    """
-    start task with all assistors
 
-    :param file_address: Integer. Maximum training round
-    :param file_content: List. The List of assistors' usernames
-
-    :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
-
-    :exception OSError: Placeholder.
-    """
-    if response.status_code == status_code:
-        return True
-
-    return False
 
 def load_file(file_address):
     """
@@ -150,19 +136,3 @@ def handle_Algorithm_return_value(name, return_val, first_val, second_val):
 
     return indicator, return_val
 
-def handle_base64_padding(base64_string):
-    """
-    If the length of the base64 string is not multiple of 3, add '=' or '==' behind
-
-    :param base64_string: String. part of token
-
-    :returns: base64_string - String. Processed String
-
-    :exception OSError: Placeholder.
-    """
-    print('length', len(base64_string))
-    num = len(base64_string)%4
-    if num != 0:
-        base64_string = base64_string + '=' * (4-num)
-    print('length_after', len(base64_string))
-    return base64_string

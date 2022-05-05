@@ -33,7 +33,7 @@ class GetDefaultMetadataDatabase(AbstractDatabaseFactory):
     """
     @classmethod
     def get_database(cls):
-        return DefaultMetadataDatabase.get_database_instance()
+        return DefaultMetadataDatabase.get_instance()
 
 
 class GetTrainSponsorMetadataDatabase(AbstractDatabaseFactory):
@@ -42,7 +42,7 @@ class GetTrainSponsorMetadataDatabase(AbstractDatabaseFactory):
     """
     @classmethod
     def get_database(cls):
-        return TrainSponsorMetadataDatabase.get_database_instance()
+        return TrainSponsorMetadataDatabase.get_instance()
 
 
 class GetTrainAssistorMetadataDatabase(AbstractDatabaseFactory):
@@ -51,7 +51,7 @@ class GetTrainAssistorMetadataDatabase(AbstractDatabaseFactory):
     """
     @classmethod
     def get_database(cls):
-        return TrainAssistorMetadataDatabase.get_database_instance()
+        return TrainAssistorMetadataDatabase.get_instance()
 
 
 class GetTrainAlgorithmDatabase(AbstractDatabaseFactory):
@@ -60,7 +60,7 @@ class GetTrainAlgorithmDatabase(AbstractDatabaseFactory):
     """
     @classmethod
     def get_database(cls):
-        return TrainAlgorithmDatabase.get_database_instance()
+        return TrainAlgorithmDatabase.get_instance()
 
 
 class GetTestSponsorMetadataDatabase(AbstractDatabaseFactory):
@@ -69,7 +69,7 @@ class GetTestSponsorMetadataDatabase(AbstractDatabaseFactory):
     """
     @classmethod
     def get_database(cls):
-        return TestSponsorMetadataDatabase.get_database_instance()
+        return TestSponsorMetadataDatabase.get_instance()
 
 
 class GetTestAssistorMetadataDatabase(AbstractDatabaseFactory):
@@ -78,7 +78,7 @@ class GetTestAssistorMetadataDatabase(AbstractDatabaseFactory):
     """
     @classmethod
     def get_database(cls):
-        return TestAssistorMetadataDatabase.get_database_instance()
+        return TestAssistorMetadataDatabase.get_instance()
 
 
 class GetTestAlgorithmDatabase(AbstractDatabaseFactory):
@@ -87,4 +87,4 @@ class GetTestAlgorithmDatabase(AbstractDatabaseFactory):
     """
     @classmethod
     def get_database(cls):
-        return TestAlgorithmDatabase.get_database_instance()
+        return TestAlgorithmDatabase.get_instance()

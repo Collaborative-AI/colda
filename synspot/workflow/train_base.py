@@ -6,11 +6,12 @@ from synspot.algorithm.strategy import TrainAlgorithm
 
 from typing import (
     final,
-    Any
+    Any,
+    Final
 )
 
 
-class TrainBaseWorkflow(BaseWorkflow):    
+class TrainBaseWorkflow(BaseWorkflow):  
     __TrainAlgorithm_instance = TrainAlgorithm.get_instance()
 
     @final

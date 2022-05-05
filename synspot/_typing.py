@@ -12,17 +12,22 @@ from typing import (
     Sequence,
     TypeVar,
     Union,
+    List,
+    Dict
 )
 
 JSONType = Union[
-    dict[str, Any],
-    list[dict],
-    list[Any]
+    Dict[str, Any],
+    List[Any]
 ]
 
 DictKey = TypeVar('DictKey', bound=Hashable)
 DictValue = TypeVar("DictValue", bound=Any)
-Dict_Store_Type = Literal['append', 'one_access']
+Dict_Store_Type = Literal[
+    'append', 
+    'one_access',
+    'multiple_access'
+]
 
 Train_Database_Type = Literal[
     'default_metadata',
@@ -42,3 +47,5 @@ Role = Literal[
     'sponsor',
     'assistor',
 ]
+
+Default_Mode = Literal['auto', 'manual']

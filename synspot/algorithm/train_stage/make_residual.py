@@ -64,17 +64,20 @@ class MakeResidual(BaseAlgorithm):
         task_mode: str, 
         metric_name: str,
         last_round_result: Union(Any, None) = None
-    ) -> np.ndarray:
+    ) -> tuple[list[Any], list[Any]]:
 
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
         target_idx = parse_idx(target_idx)
         target = dataset[:, target_idx]
+        
+        init_round_result = np.array()
         if round == 1:
             output = cls.make_init(task_mode, target)
             # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
             # makedir_exist_ok(round_path)
             # np.savetxt(os.path.join(round_path, 'result.csv'), output, delimiter=",")
             output = output.repeat(target.shape[0], axis=0)
+            init_round_result = output
             residual = cls.compute_residual(task_mode, output, target)
             metric = Metric(task_mode, metric_name)
             eval = metric.eval(output, target)
@@ -102,8 +105,9 @@ class MakeResidual(BaseAlgorithm):
         #     assistor_residual_path.append(assistor_residual_path_i)
         # assistor_residual_path = '?'.join(assistor_residual_path)
         # return '200?make_residual?{}'.format(assistor_residual_path)
-
-        return residual
+        init_round_result = init_round_result.tolist()
+        residual = residual.tolist()
+        return init_round_result, residual
 
     @classmethod
     def make_init(

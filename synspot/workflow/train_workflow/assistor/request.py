@@ -17,7 +17,8 @@ class TrainAssistorRequest(TrainBaseWorkflow):
     def train_assistor_request(
         cls, train_id: str, train_id_dict: dict[str, Any]
     ) -> None:
-
+        print('#####request_train', train_id)
+        print('dictt',train_id_dict)
         default_mode = cls._get_default_mode()
         user_id, root, token = cls._get_important_information()
         print(f'Default_mode: {default_mode}')
@@ -41,7 +42,7 @@ class TrainAssistorRequest(TrainBaseWorkflow):
             encrypted_identifier = cls._encrypt_identifier(
                 dataset_path=default_file_path, 
                 id_idx=default_id_column, 
-                skip_header=cls.__skip_header
+                skip_header=cls._skip_header
             )
 
             # add log
@@ -62,11 +63,12 @@ class TrainAssistorRequest(TrainBaseWorkflow):
                 "identifier_content": encrypted_identifier
             }
             match_identifier_content_response = cls._post_request_chaining(
-                token=token,
+                task_id=train_id,
                 data=data,
-                url_prefix=cls.__url_prefix,
+                url_prefix=cls._url_prefix,
                 url_root='match_identifier_content',
-                url_suffix=user_id
+                url_suffix=user_id,
+                status_code=200
             )
 
             cls._store_database_record(
@@ -108,4 +110,4 @@ class TrainAssistorRequest(TrainBaseWorkflow):
             print('unread request: wrong mode')
 
         print('Assistor: Training train_id: ', train_id, ' is running')
-        return 'unread_request successfully'
+        return True

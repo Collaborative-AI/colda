@@ -1,7 +1,7 @@
-from .train_workflow import TrainWorkflow
-from .test_workflow import TestWorkflow
+from synspot.workflow.train_main_workflow import TrainMainWorkflow
+from synspot.workflow.test_main_workflow import TestMainWorkflow
 
 __all__ = [
-    'TrainWorkflow',
-    'TestWorkflow'
+    'TrainMainWorkflow',
+    'TestMainWorkflow'
 ]

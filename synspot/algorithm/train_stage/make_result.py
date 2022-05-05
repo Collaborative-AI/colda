@@ -16,7 +16,7 @@ class MakeResult(BaseAlgorithm):
         # root, 
         # self_id, 
         # task_id, 
-        round, 
+        rounds, 
         dataset_path, 
         target_idx, 
         skip_header, 

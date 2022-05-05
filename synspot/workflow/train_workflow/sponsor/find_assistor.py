@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import requests
 
+from synspot.workflow.base import BaseWorkflow
 from synspot.workflow.train_base import TrainBaseWorkflow
 
 from synspot.utils.log import GetWorkflowLog
@@ -23,9 +24,11 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
         _, _, token = cls._get_important_information()
 
         create_new_train_task_response = cls._get_request_chaining(
-            token=token,
-            url_prefix=cls.__url_prefix,
-            url_root='create_new_train_task'
+            task_id=None,
+            url_prefix=cls._url_prefix,
+            url_root='create_new_train_task',
+            url_suffix=None,
+            status_code=200
         )
         new_train_id = create_new_train_task_response["train_id"]
         return new_train_id
@@ -53,25 +56,28 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
         encrypted_identifer = cls._encrypt_identifier(
             dataset_path=train_file_path, 
             id_idx=train_id_column, 
-            skip_header=cls.__skip_header
+            skip_header=cls._skip_header
         )        
 
         data = {
             "identifier_content": encrypted_identifer,
             "train_id": train_id,
-            "task_name": task_name,
             "task_mode": task_mode,
             "model_name": model_name,
             "metric_name": metric_name,
-            "assistor_username_list": assistors,   
+            "assistor_username_list": assistors,
+            "task_name": task_name,   
             "task_description": task_description
         }
+        for key,value in data.items():
+            print('%%%%', key, value, type(value))
         find_assistor_response = cls._post_request_chaining(
-            token=token,
+            task_id=train_id,
             data=data,
-            url_prefix=cls.__url_prefix,
+            url_prefix=cls._url_prefix,
             url_root='find_assistor',
-            url_suffix=user_id
+            url_suffix=user_id,
+            status_code=200
         )
 
         cls._store_database_record(
@@ -114,4 +120,4 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
 
         print('Training train_id: ', train_id)
         print('Sponsor: Training train_id: ', train_id, ' is running')
-        return ('handleTrainRequest successfully', train_id)
+        return (True, train_id)

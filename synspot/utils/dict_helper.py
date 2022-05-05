@@ -13,6 +13,7 @@ from synspot._typing import (
     Dict_Store_Type
 )
 
+from synspot.error import DuplicateKeyError
 
 class DictHelper:
 
@@ -40,7 +41,7 @@ class DictHelper:
         key: DictKey, 
         value: Union(dict[DictKey, DictValue], list[DictValue]),
         container: dict[DictKey, DictValue],
-    ) -> None:
+    ) -> bool:
 
         if key not in container:
             container[key] = copy.deepcopy(value)
@@ -51,7 +52,7 @@ class DictHelper:
             elif isinstance(container[key], list) and isinstance(value, list):
                 for sub_value in value:
                     container[key].append(sub_value)
-        return
+        return True
 
     @classmethod
     def one_access_type(
@@ -59,12 +60,23 @@ class DictHelper:
         key: DictKey, 
         value: DictValue,
         container: dict[DictKey, DictValue]
-    ) -> None:
+    ) -> Union[bool, type[DuplicateKeyError]]:
         if key not in container:
             container[key] = copy.deepcopy(value)
+            return True
         else:
-            print('error')
-        return None
+            return DuplicateKeyError
+
+    @classmethod
+    def multiple_access_type(
+        cls,
+        key: DictKey, 
+        value: DictValue,
+        container: dict[DictKey, DictValue]
+    ) -> Union[bool, type[DuplicateKeyError]]:
+
+        container[key] = copy.deepcopy(value)
+        return True
 
     @classmethod
     def store_value(
@@ -76,9 +88,11 @@ class DictHelper:
     ) -> None:
 
         if store_type == 'one_access':
-            cls.one_access_type(key, value, container)
+            return cls.one_access_type(key, value, container)
         elif store_type == 'append':
-            cls.append_type(key, value, container)
+            return cls.append_type(key, value, container)
+        elif store_type == 'multiple_access':
+            return cls.multiple_access_type(key, value, container)
         else:
             print('store type wrong')
         return
@@ -92,9 +106,13 @@ class DictHelper:
         
         if key not in container:
             '''
-            warning
+            warning: no key in container
             '''
-            pass
+            print(')))', key)
+            for key, val in container.items():
+                print('^^^^', key, val)
+            return 
+        
         return container[key]
     
     @classmethod

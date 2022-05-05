@@ -1,11 +1,9 @@
-import os
 from __future__ import annotations
+import os
 
 import numpy as np
 
 from synspot.algorithm.base import BaseAlgorithm
-
-from synspot.database import Database
 
 from typing import (
     Any,
@@ -17,8 +15,9 @@ class MakeMatchIdx(BaseAlgorithm):
     Match the identifier from other participants with 
     '''
 
+    @classmethod
     def make_match_idx(
-        self, 
+        cls, 
         self_id_data: list[str],
         from_id_data: list[str],
     ) -> np.ndarray: #np.ndarryd[str]

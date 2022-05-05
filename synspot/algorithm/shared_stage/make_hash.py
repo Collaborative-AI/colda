@@ -8,22 +8,21 @@ from synspot.algorithm.base import BaseAlgorithm
 
 from synspot.algorithm.utils import parse_idx
 
-from typing import List
-
 
 class MakeHash(BaseAlgorithm):
 
+    @classmethod
     def make_hash(
-        self,
+        cls,
         dataset_path: str, 
         id_idx: str, 
         skip_header: int, 
-    ) -> List[str]:
+    ) -> list[str]:
 
         dataset = np.genfromtxt(dataset_path, delimiter=',', dtype=np.str_, skip_header=skip_header)
         id_idx = parse_idx(id_idx)
         id = dataset[:, id_idx]
-        hash_id = np.array(list(map(self.hash, id)))
+        hash_id = np.array(list(map(cls.hash, id)))
         # if mode == 'default':
         #     hash_id_path = os.path.join(root, self_id, mode, 'id')
         #     makedir_exist_ok(hash_id_path)
@@ -52,12 +51,13 @@ class MakeHash(BaseAlgorithm):
         #     return '300?make_hash?not valid mode'
             
         # return '200?make_hash?{}'.format(hash_id_path)
+        hash_id = hash_id.tolist()
         return hash_id
 
 
-
+    @classmethod
     def hash(
-        self, input: str
+        cls, input: str
     ) -> str:
         output = hashlib.sha256(str(input).encode('utf-8'))
         output = output.hexdigest()

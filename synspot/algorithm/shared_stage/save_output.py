@@ -4,7 +4,6 @@ import os
 
 from synspot.algorithm.base import BaseAlgorithm
 
-from synspot.database import Database
 
 # from synspot.algorithm.utils import makedir_exist_ok
 

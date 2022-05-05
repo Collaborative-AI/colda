@@ -19,17 +19,29 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
     ) -> None:
         # initiate a request
 
+        msgs = [
+            "---- 3. Unread Match ID", 
+            "3.1 Update the match id notification",
+            "3.2 unread_match_identifier_assistor",
+        ]
+        cls._store_log(
+            user_id=user_id,
+            task_id=train_id,
+            msgs=msgs
+        )
+
         user_id, root, token = cls._get_important_information()
         
         data = {
             "train_id": train_id,
         }
         get_identifier_content_response = cls._post_request_chaining(
-            token=token,
+            task_id=train_id,
             data=data,
-            url_prefix=cls.__url_prefix,
+            url_prefix=cls._url_prefix,
             url_root='get_identifier_content',
-            url_suffix=user_id
+            url_suffix=user_id,
+            status_code=200
         )
         
         msgs = ["3.3 Assistor gets matched id file"]
@@ -82,5 +94,5 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
         )
 
         print('Assistor: Training train_id: ', train_id, ' is running')
-        return 'unread_match_identifier_assistor successfully'
-    pass
+        return True
+    

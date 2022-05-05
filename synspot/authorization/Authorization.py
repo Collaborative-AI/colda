@@ -6,36 +6,34 @@ import base64
 
 from synspot.network import Network
 from synspot.personalinformation import PersonalInformation
-from synspot.database import Database
-from synspot.utils.utils import handle_base64_padding, load_json_data, check_status_code
-# from Get_Notification import
 
-# from urllib.request import quote, unquote
-# import atob
+from synspot.authorization.utils import (
+    handle_base64_padding
+)
+
 
 class Authorization():
+    
     __authorization_instance = None
 
     def __init__(self):
-        self.Network_instance = Network.get_Network_instance()
-        self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
-        self.Database_instance = Database.get_Database_instance()
+        # self.__url_prefix: Final[str] = 'user'
+
+        self.Network_instance = Network.get_instance()
+        self.PersonalInformation_instance = PersonalInformation.get_instance()
+        # self.Database_instance = Database.get_Database_instance()
         self.base_url = self.Network_instance.base_url
 
-    def __obtain_important_information(self):
-        root = self.PersonalInformation_instance.root
-        # assert root is not None
-
-        return root
-
     @classmethod
-    def get_Authorization_instance(cls):
+    def get_instance(cls) -> type[Authorization]:
         if cls.__authorization_instance == None:
             cls.__authorization_instance = Authorization()
 
         return cls.__authorization_instance
 
-    def process_token(self, token: str):
+    def process_token(
+        self, token: str
+    ) -> bool:
         """
         Process token from backend and Set correlated attributes
 
@@ -57,32 +55,45 @@ class Authorization():
         return True
 
 
-    def userRegister(self, username: str, email:str, password: str):
-
-        url = self.base_url + self.Network_instance.process_url(prefix='user', url='/users')
+    def userRegister(
+        self, 
+        username: str, 
+        email:str, 
+        password: str
+    ) -> bool:
+        
         data = {
             'username': username,
             'email': email,
             'password': password
         }
+        user_register_res = self.Network_instance.post_request_chaining(
+            data=data,
+            url_prefix='user',
+            url_root='users',
+            url_suffix=None,
+            status_code=201
+        )
 
-        res = None
-        try:
-            user_register_res = requests.post(url, json=data)
-            if check_status_code(user_register_res, 201):
-                res = 'Please confirm your email'
-            else:
-                user_register_res = load_json_data(json_data=user_register_res, json_data_name='user_register_res')
-                res = user_register_res['message'] 
-                print('Register Instruction', user_register_res)
-                return False
-        except:
-            print('user_register_res wrong')
+        # res = None
+        # try:
+        #     user_register_res = requests.post(url, json=data)
+        #     if check_status_code(user_register_res, 201):
+        #         res = 'Please confirm your email'
+        #     else:
+        #         user_register_res = load_json_data(json_data=user_register_res, json_data_name='user_register_res')
+        #         res = user_register_res['message'] 
+        #         print('Register Instruction', user_register_res)
+        #         return False
+        # except:
+        #     print('user_register_res wrong')
 
         return True
 
 
-    def userLogin(self, username: str, password: str):
+    def userLogin(
+        self, username: str, password: str
+    ) -> bool:
 
         """
         Get Token through HTTP authorization's Basic Auth when first time login. Update __token in Network class
@@ -95,8 +106,13 @@ class Authorization():
         :exception OSError: Placeholder.
         """
 
-        url = self.base_url + self.Network_instance.process_url(prefix='auth', url='/tokens')
-        print('url', url, username, password)
+        url = self.Network_instance.process_url(
+            url_prefix='auth', 
+            url_root='tokens',
+            url_suffix=None,
+        )
+
+        # print('url', url, username, password)
         try:
             token_response = requests.post(url, auth=(username, password))
         except:
@@ -107,7 +123,6 @@ class Authorization():
         token_response_text = json.loads(token_response.text)
         token = token_response_text["token"] 
         self.process_token(token)
-        
         
         return True
 

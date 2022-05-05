@@ -7,49 +7,20 @@ import time
 import threading
 import numpy as np
 
-from synspot.network import Network
-from synspot.personalinformation import PersonalInformation
-from synspot.database import Database
-from synspot.workflow.base import AbstractTestMainWorkflow
-
-from synspot.workflow.train_workflow.sponsor import (
-    TrainSponsorFindAssistor,
-    TrainSponsorMatchIdentifier,
-    TrainSponsorSituation,
-    TrainSponsorOutput
-)
-
-from synspot.workflow.train_workflow.assistor import (
-    TrainAssistorRequest,
-    TrainAssistorMatchIdentifier,
-    TrainAssistorSituation
-)
-
-from ..error import check_Algorithm_return_value
-from ..utils.utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value, check_sponsor_class, obtain_notification_information
-
-from ..algorithm import make_eval, make_test, make_hash, save_match_id, make_match_idx, make_residual, make_train, save_output, make_result, save_residual, log
-# from Database import Session, User_Default_Path, User_Chosen_Path, User_Pending_Page, assign_value_to_user_chosen_path_instance
-
+from synspot.workflow.abstract_workflow import AbstractTestMainWorkflow
 
 class TestMainWorkflow(AbstractTestMainWorkflow):
-    __TestRequest_instance = None
+    __TestMainWorkflow_instance = None
 
     def __init__(self):
-        self.Network_instance = Network.get_Network_instance()
-        self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
-        self.Database_instance = Database.get_Database_instance()
-
-        self.base_url = self.Network_instance.base_url
-        self.skip_header_default = 1
-        self.test_indicator = 'test'
+        pass
 
     @classmethod
-    def get_TestRequest_instance(cls):
-        if cls.__TestRequest_instance == None:
-            cls.__TestRequest_instance = TestRequest()
+    def get_instance(cls) -> type[TestMainWorkflow]:
+        if cls.__TestMainWorkflow_instance == None:
+            cls.__TestMainWorkflow_instance = TestMainWorkflow()
 
-        return cls.__TestRequest_instance
+        return cls.__TestMainWorkflow_instance
 
     def __obtain_important_information(self, get_test_id=False):
         """

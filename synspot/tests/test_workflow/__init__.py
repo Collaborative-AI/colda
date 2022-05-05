@@ -7,21 +7,24 @@ Test suite for the synspot package.
 from typing import List
 from abc import ABC, abstractmethod
 
-from synspot.workflow.train_workflow import TrainRequest
-from synspot.workflow.test_workflow import TestRequest
+from synspot.workflow import (
+    TrainMainWorkflow,
+    TestMainWorkflow
+)
+    
 from synspot.authorization import Authorization
 from synspot.GetNotification import GetNotification
 from synspot.personalinformation import PersonalInformation
 from synspot.network import Network
-from synspot import set_default_data_path, get_all_task_id_as_sponsor, get_all_test_id_as_sponsor, get_all_task_id_as_assistor, get_all_test_id_as_assistor
-from synspot import get_all_task_id, get_all_test_id
+# from synspot import set_default_data_path, get_all_task_id_as_sponsor, get_all_test_id_as_sponsor, get_all_task_id_as_assistor, get_all_test_id_as_assistor
+# from synspot import get_all_task_id, get_all_test_id
 
-_default_authorization = Authorization.get_Authorization_instance()
-_default_trainRequest = TrainRequest.get_TrainRequest_instance()
-_default_testRequest = TestRequest.get_TestRequest_instance()
-_default_getNotification = GetNotification.get_GetNotification_instance()
-_default_PersonalInformation = PersonalInformation.get_PersonalInformation_instance()
-_default_Network = Network.get_Network_instance()
+_default_authorization = Authorization.get_instance()
+_default_trainMainWorkflow = TrainMainWorkflow.get_instance()
+_default_testMainWorkflow = TestMainWorkflow.get_instance()
+_default_getNotification = GetNotification.get_instance()
+_default_PersonalInformation = PersonalInformation.get_instance()
+_default_Network = Network.get_instance()
 # _default_testRequest = TestRequest.get_TestRequest_instance()
 # _default_get_notification = Get_Notification.get_Get_notification_instance()
 
@@ -43,9 +46,9 @@ match_ratio = '1.0'
 user_id = '0'
 folder_indicator = 'train'
 if testing_data['sponsor_mode'] == 'regression':
-    testing_data['train_file_path'] = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['train_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 elif testing_data['sponsor_mode'] == 'classification':
-    testing_data['train_file_path'] = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['train_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
 testing_data['maxRound'] = 2
 testing_data['assistors'] = ['xie2']
@@ -60,9 +63,9 @@ testing_data['task_description'] = 'lihaideceshi'
 
 folder_indicator = 'test'
 if testing_data['sponsor_mode'] == 'regression':
-    testing_data['test_file_path'] = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['test_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 elif testing_data['sponsor_mode'] == 'classification':
-    testing_data['test_file_path'] = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['test_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 testing_data['test_id_column'] = '1'
 testing_data['test_data_column'] = '2-8'
 testing_data['test_target_column'] = '9'
@@ -80,9 +83,9 @@ match_ratio = '1.0'
 user_id = '1'
 folder_indicator = 'all'
 if testing_data['default_task_mode'] == 'regression':
-    testing_data['default_file_path'] = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['default_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 elif testing_data['default_task_mode'] == 'classification':
-    testing_data['default_file_path'] = "/Users/qile/Documents/Apollo_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['default_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
 testing_data['default_id_column'] = '1'
 testing_data['default_data_column'] = '2-7'

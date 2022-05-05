@@ -8,8 +8,10 @@ from synspot.algorithm.base import BaseAlgorithm
 from synspot.algorithm.utils import load, makedir_exist_ok, parse_idx
 
 class MakeTest(BaseAlgorithm):
+
+    @classmethod
     def make_test(
-        self, 
+        cls, 
         root, 
         self_id, 
         task_id, 

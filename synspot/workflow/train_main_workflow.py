@@ -1,19 +1,10 @@
 from __future__ import annotations
 
-from gettext import find
-from unittest import skip
-import numpy as np
-import requests
-import threading
-import json
-import os
-import time
-import argparse
-import subprocess
-
 from synspot.workflow.abstract_workflow import AbstractTrainMainWorkflow
 
-from ..utils.utils import log_helper, load_json_data, load_file, save_file, handle_Algorithm_return_value, check_sponsor_class, obtain_notification_information
+from synspot.workflow.utils import (
+    obtain_notification_information
+)
 
 from synspot.workflow.train_workflow.sponsor import (
     TrainSponsorFindAssistor,
@@ -28,20 +19,17 @@ from synspot.workflow.train_workflow.assistor import (
     TrainAssistorSituation
 )
 
+from synspot.workflow.utils import check_sponsor_class
+
 
 class TrainMainWorkflow(AbstractTrainMainWorkflow):
     __TrainMainWorkflow_instance = None
 
     def __init__(self):
-        
-        self.maxRound = 2
-        self.initial_round = 1
-        # self.assistor_task_mode = 'regression'
-        # self.exe_position = self.PersonalInformation_instance.exe_position
-        # self.root = self.PersonalInformation_instance.root
+        pass
 
     @classmethod
-    def get_TrainMainWorkflow_instance(cls) -> type[TrainMainWorkflow]:
+    def get_instance(cls) -> type[TrainMainWorkflow]:
         if cls.__TrainMainWorkflow_instance == None:
             cls.__TrainMainWorkflow_instance = TrainMainWorkflow()
 
@@ -60,7 +48,7 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         train_target_column: str, 
         task_name: str = None, 
         task_description: str = None
-    ) -> None:
+    ) -> tuple[bool, str]:
         
         """
         start task with all assistors
@@ -83,7 +71,7 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         """
 
         return TrainSponsorFindAssistor.find_assistor(
-            maxRound=self.maxRound,
+            maxRound=maxRound,
             assistors=assistors,
             train_file_path=train_file_path,
             train_id_column=train_id_column,
@@ -96,10 +84,9 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
             task_description=task_description
         )
         
-
     def train_assistor_request(
         self, train_id_dicts: dict[dict[str, str]]
-    ) -> None:
+    ) -> bool:
 
         """
         Handle the unread request for three default mode: ["passive", "active", "auto"]
@@ -113,13 +100,14 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
 
         for train_id, train_id_dict in train_id_dicts.items():
             TrainAssistorRequest.train_assistor_request(
-                train_id=train_id, train_id_dict=train_id_dict
+                train_id=train_id, 
+                train_id_dict=train_id_dict
             )
-        
+        return True
 
     def train_match_identifier(
-        self, train_id_dicts: dict
-    ) -> None:
+        self, train_id_dicts: dict[dict[str, str]]
+    ) -> bool:
 
         """
         Handle the unread_match_identifier. Consider sponsor and assistor, different functions will be called
@@ -133,26 +121,25 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
 
         # cur_unread_match_identifier_Taskid_dict = unread_match_identifier_notification["check_dict"]
         for train_id, train_id_dict in train_id_dicts.items():
-            sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict_value=train_id_dict)
-            msg = ["---- 3. Unread Match ID\n", "3.1 Update the match id notification\n"]
-            log_helper(msg, root, user_id, train_id)
+            sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict_value=train_id_dict)            
 
             if role == check_sponsor_class.sponsor:
-                msg = ["3.2 unread_match_identifier_sponsor\n"]
-                log_helper(msg, root, user_id, train_id)
-
-                self.train_sponsor_match_identifier(train_id, train_id_dict)
+                self.train_sponsor_match_identifier(
+                    train_id=train_id, 
+                    train_id_dict=train_id_dict
+                )
             elif role == check_sponsor_class.assistor:
-                msg = ["3.2 unread_match_identifier_assistor\n"]
-                log_helper(msg, root, user_id, train_id)
+                print('train_assistor_match_identifier')
+                self.train_assistor_match_identifier(
+                    train_id=train_id, 
+                    train_id_dict=train_id_dict
+                )
 
-                self.train_assistor_match_identifier(train_id, train_id_dict)
-
-        return 'unread match id done'
+        return True
 
     def train_sponsor_match_identifier(
         self, train_id: str, train_id_dict: dict[str, str]
-    ) -> None:
+    ) -> bool:
 
         """
         Handle the unread_match_identifier of sponsor.
@@ -164,15 +151,14 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         :exception OSError: Placeholder.
         """
 
-        TrainSponsorMatchIdentifier.train_sponsor_match_identifier(
-            train_id=train_id, train_id_dict=train_id_dict
+        return TrainSponsorMatchIdentifier.train_sponsor_match_identifier(
+            train_id=train_id, 
+            train_id_dict=train_id_dict
         )
-
         
-
     def train_assistor_match_identifier(
         self, train_id: str, train_id_dict: dict[str, str]
-    ) -> None:
+    ) -> bool:
 
         """
         Handle the unread_match_identifier of assistor.
@@ -184,14 +170,14 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         :exception OSError: Placeholder.
         """
 
-        TrainAssistorMatchIdentifier.train_assistor_match_identifier(
-            train_id=train_id, train_id_dict=train_id_dict
+        return TrainAssistorMatchIdentifier.train_assistor_match_identifier(
+            train_id=train_id, 
+            train_id_dict=train_id_dict
         )
 
-
     def train_situation(
-        self, train_id_dict: dict
-    ) -> None:
+        self, train_id_dicts: dict[dict[str, str]]
+    ) -> bool:
 
         """
         Handle the unread_situation. Two situations needed to be considered: sponsor and assistor
@@ -203,23 +189,24 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         :exception OSError: Placeholder.
         """
 
-        # obtain important information
-        user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
-
-        for train_id in train_id_dict:
-            sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict_value=train_id_dict[train_id])
-            msg = ["---- 4. Unread Situation\n", "4.1 Update the situation notification\n"]
-            log_helper(msg, root, user_id, train_id)
+        for train_id, train_id_dict in train_id_dicts.items():
+            _, role, _ = obtain_notification_information(notification_dict_value=train_id_dicts[train_id])
 
             if role == check_sponsor_class.sponsor:
-                self.unread_situation_sponsor(train_id, cur_rounds_num)
+                self.train_sponsor_situation(
+                    train_id=train_id, 
+                    train_id_dict=train_id_dict,
+                )
             elif role == check_sponsor_class.assistor:
-                self.unread_situation_assistor(train_id, cur_rounds_num)
+                self.train_assistor_situation(
+                    train_id=train_id, 
+                    train_id_dict=train_id_dict
+                )
+        return True
 
-        return 'unread situation done'
-
-
-    def train_sponsor_situation(self, train_id: str, rounds: int):
+    def train_sponsor_situation(
+        self, train_id: str, train_id_dict: dict
+    ) -> bool:
 
         """
         Handle the unread situation of sponsor.
@@ -231,13 +218,11 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
 
         :exception OSError: Placeholder.
         """
+        return TrainSponsorSituation.train_sponsor_situation(train_id, train_id_dict)
 
-        # obtain basic information
-        user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
-        
-        
-
-    def train_assistor_situation(self, train_id: str, rounds: int):
+    def train_assistor_situation(
+        self, train_id: str, train_id_dict: dict
+    ) -> bool:
 
         """
         Handle the unread situation of assistor.
@@ -250,12 +235,14 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         :exception OSError: Placeholder.
         """
 
-        # obtain basic information
-        user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
+        return TrainAssistorSituation.train_assistor_situation(
+            train_id=train_id, 
+            train_id_dict=train_id_dict
+        )
 
-       
-
-    def train_output(self, train_id_dict: dict):
+    def train_output(
+        self, train_id: str, train_id_dicts: dict[dict[str, str]]
+    ) -> bool:
 
         """
         Handle the unread_output.
@@ -267,17 +254,13 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         :exception OSError: Placeholder.
         """
 
-        user_id, root, token, _ = self.__obtain_important_information(get_train_id=False)
-        for train_id in train_id_dict:
-            sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict_value=train_id_dict[train_id])
-            msg = ["---- 5. Unread Output\n", "5.1 Update the output notification\n"]
-            log_helper(msg, root, user_id, train_id)
-
-            self.unread_output_singleTask(train_id, cur_rounds_num)
+        for train_id, train_id_dict in train_id_dicts.items():
+            TrainSponsorOutput.train_sponsor_output(
+                train_id=train_id,
+                train_id_dict=train_id_dict
+            )
             
-        return 'unread output done'
-
-    
+        return True
 
     def stop_train(self, unread_train_stop_notification: dict):
         """
@@ -289,7 +272,6 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
 
         :exception OSError: Placeholder.
         """
-
         return
 
 

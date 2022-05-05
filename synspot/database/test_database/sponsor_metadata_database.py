@@ -22,7 +22,7 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_database_instance(cls) -> Type[TestSponsorMetadataDatabase]:
+    def get_instance(cls) -> Type[TestSponsorMetadataDatabase]:
         if cls.__TestSponsorMetadataDatabase_instance == None:
             cls.__TestSponsorMetadataDatabase_instance = TestSponsorMetadataDatabase()
 

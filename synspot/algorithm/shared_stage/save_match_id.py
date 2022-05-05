@@ -4,7 +4,6 @@ import os
 
 from synspot.algorithm.base import BaseAlgorithm
 
-from synspot.database import Database
 
 class SaveMatchId(BaseAlgorithm):
     '''

@@ -298,189 +298,264 @@ from typing import (
     Union
 )
 
-DictKey = TypeVar('DictKey', bound=Hashable)
-DictValue = TypeVar("DictValue", bound=Any)
-Store_Type = Literal['append', 'one_access']
+# DictKey = TypeVar('DictKey', bound=Hashable)
+# DictValue = TypeVar("DictValue", bound=Any)
+# Store_Type = Literal['append', 'one_access']
 
 
-class DictHelper:
+# class DictHelper:
 
-    @classmethod
-    def is_key_in_dict(
-        cls,
-        key: DictKey, 
-        container: dict
-    ) -> bool:
+#     @classmethod
+#     def is_key_in_dict(
+#         cls,
+#         key: DictKey, 
+#         container: dict
+#     ) -> bool:
 
-        if key in container:
-            return True
-        return False
+#         if key in container:
+#             return True
+#         return False
 
-    @classmethod
-    def generate_dict_key(
-        cls, user_id: str, task_id: str
-    ) -> tuple[str, str]:
+#     @classmethod
+#     def generate_dict_key(
+#         cls, user_id: str, task_id: str
+#     ) -> tuple[str, str]:
 
-        return (user_id, task_id)
+#         return (user_id, task_id)
 
-    @classmethod
-    def append_type(
-        cls,
-        key: DictKey, 
-        value: Union(dict[DictKey, DictValue], list[DictValue]),
-        container: dict[DictKey, DictValue],
-    ) -> None:
+#     @classmethod
+#     def append_type(
+#         cls,
+#         key: DictKey, 
+#         value: Union(dict[DictKey, DictValue], list[DictValue]),
+#         container: dict[DictKey, DictValue],
+#     ) -> None:
 
-        if key not in container:
-            container[key] = value
-        else:
-            if isinstance(container[key], dict) and isinstance(value, dict):
-                for sub_key, sub_value in value.items():
-                    container[key][sub_key] = sub_value
-            elif isinstance(container[key], list) and isinstance(value, list):
-                container[key].append(value)
-        return
+#         if key not in container:
+#             container[key] = value
+#         else:
+#             if isinstance(container[key], dict) and isinstance(value, dict):
+#                 for sub_key, sub_value in value.items():
+#                     container[key][sub_key] = sub_value
+#             elif isinstance(container[key], list) and isinstance(value, list):
+#                 container[key].append(value)
+#         return
 
-    @classmethod
-    def one_access_type(
-        cls,
-        key: DictKey, 
-        value: DictValue,
-        container: dict[DictKey, DictValue]
-    ) -> None:
-        if key not in container:
-            container[key] = value
-        else:
-            print('error')
-        return None
+#     @classmethod
+#     def one_access_type(
+#         cls,
+#         key: DictKey, 
+#         value: DictValue,
+#         container: dict[DictKey, DictValue]
+#     ) -> None:
+#         if key not in container:
+#             container[key] = value
+#         else:
+#             print('error')
+#         return None
 
-    @classmethod
-    def store_value(
-        cls,
-        key: DictKey, 
-        value: DictValue,
-        container: dict[DictKey, DictValue],
-        store_type: Store_Type = 'one_access'
-    ) -> None:
+#     @classmethod
+#     def store_value(
+#         cls,
+#         key: DictKey, 
+#         value: DictValue,
+#         container: dict[DictKey, DictValue],
+#         store_type: Store_Type = 'one_access'
+#     ) -> None:
 
-        if store_type == 'one_access':
-            cls.one_access_type(key, value, container)
-        elif store_type == 'append':
-            cls.append_type(key, value, container)
-        else:
-            print('store type wrong')
-        return
+#         if store_type == 'one_access':
+#             cls.one_access_type(key, value, container)
+#         elif store_type == 'append':
+#             cls.append_type(key, value, container)
+#         else:
+#             print('store type wrong')
+#         return
 
-    @classmethod
-    def get_value(
-        cls,
-        key: DictKey, 
-        container: dict[DictKey, DictValue]
-    ) -> DictValue:
+#     @classmethod
+#     def get_value(
+#         cls,
+#         key: DictKey, 
+#         container: dict[DictKey, DictValue]
+#     ) -> DictValue:
         
-        if key not in container:
-            '''
-            warning
-            '''
-            pass
-        return container[key]
-# a = ['5', '6']
+#         if key not in container:
+#             '''
+#             warning
+#             '''
+#             pass
+#         return container[key]
+# # a = ['5', '6']
 
-# print('\n'.join(a))
+# # print('\n'.join(a))
 
-# from synspot.utils.dict_helper import DictHelper
+# # from synspot.utils.dict_helper import DictHelper
 
-# a = collections.defaultdict(dict)
+# # a = collections.defaultdict(dict)
 
-# value = {
-#     6:8
-# }
-
-# DictHelper.store_value(
-#     key=5,
-#     value=value,
-#     container=a
-# )
-
-# print(f'sss: {a}')
-
-# value = {
-#     9:10
-# }
+# # value = {
+# #     6:8
+# # }
 
 # # DictHelper.store_value(
 # #     key=5,
 # #     value=value,
-# #     container=a,
-# #     store_type='append'
+# #     container=a
 # # )
 
 # # print(f'sss: {a}')
 
+# # value = {
+# #     9:10
+# # }
 
-# b = {}
-# b[5] = 6
+# # # DictHelper.store_value(
+# # #     key=5,
+# # #     value=value,
+# # #     container=a,
+# # #     store_type='append'
+# # # )
 
-# def ceshi(a):
-#     print(a)
+# # # print(f'sss: {a}')
 
-# class A:
-#     def wudi(self, a):
-#         print(f'aaaa: {a}')
 
-# class B(A):
-#     def __init__(self):
-#         self.__a = 666
+# # b = {}
+# # b[5] = 6
+
+# # def ceshi(a):
+# #     print(a)
+
+# # class A:
+# #     def wudi(self, a):
+# #         print(f'aaaa: {a}')
+
+# # class B(A):
+# #     def __init__(self):
+# #         self.__a = 666
     
-#     def diaoyong(self):
-#         ceshi(self.__a)
+# #     def diaoyong(self):
+# #         ceshi(self.__a)
 
-# b = B()
-# b.diaoyong()
+# # b = B()
+# # b.diaoyong()
 
-# def a(a,b,c):
+# # def a(a,b,c):
+# #     print(a,b,c)
+
+# # a(5, None, 6)
+
+
+# # from __future__ import annotations
+
+# import json
+# import requests
+
+# # from .utils import ParseJson
+
+# from typing import (
+#     Union,
+#     Any,
+# )
+
+# # JSONType = Union(
+# #     dict[str, Any],
+# #     list[dict],
+# #     list[Any]
+# # )
+    
+
+
+# # a = {}
+# # print(a['5'])
+
+# def ceshi(**kwargs):
+#     ceshi2(
+#         helper=helper,
+#         user
+#     )
+
+
+# def ceshi2(
+#     helper: str,
+#     user: str,
+# ):
+#     print(f'fasdf:{user, helper}')
+
+# ceshi(
+#     user='shima',
+#     helper='wudi',
+# )
+
+# def a(
+#     a,
+#     b = None,
+#     c = 200,
+# ):
 #     print(a,b,c)
 
-# a(5, None, 6)
+# a(5, 10)
 
+# class ceshi:
+#     def __init__(self):
+#         self.__database_operator = None
 
-# from __future__ import annotations
+#     @property
+#     def database(self):
+#         """
+#         The Context maintains a reference to one of the Strategy objects. The
+#         Context does not know the concrete class of a strategy. It should work
+#         with all strategies via the Strategy interface.
+#         """
 
-import json
-import requests
+#         return self.__database_operator
 
-# from .utils import ParseJson
+#     @database.setter
+#     def database(self, database) -> None:
+#         """
+#         Usually, the Context allows replacing a Strategy object at runtime.
+#         """
 
-from typing import (
-    Union,
-    Any,
-)
-
-# JSONType = Union(
-#     dict[str, Any],
-#     list[dict],
-#     list[Any]
-# )
+#         self.__database_operator = database
+#         print(self.__database_operator)
     
+#     def fuyu(self, x):
+#         self.database
+
+# a = ceshi()
+# a.database = 'wudi'
+# a.fuyu('shima')
 
 
-# a = {}
-# print(a['5'])
-
-def ceshi(**kwargs):
-    ceshi2(
-        helper=helper,
-        user
-    )
+# def ceshi(**kwargs):
+#     ceshi2(
+#         **kwargs
+#     )
 
 
-def ceshi2(
-    helper: str,
-    user: str,
-):
-    print(f'fasdf:{user, helper}')
+# def ceshi2(
+#     helper: str,
+#     user: str,
+#     wudi: str,
+# ):
+#     print(f'fasdf:{user, helper}')
 
-ceshi(
-    user='shima',
-    helper='wudi',
-)
+# ceshi(
+#     user='shima',
+# )
+
+
+class parent:
+    __ceshi = 5
+
+    @classmethod
+    def fulei(cls):
+        print('yyy')
+
+class child(parent):
+
+    @classmethod
+    def dayin(cls):
+        # super().__init__()
+        # print(parent.__ceshi)
+        cls.fulei()
+
+child.dayin()

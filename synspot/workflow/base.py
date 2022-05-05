@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 import threading
+from urllib import request
 from synspot.network import Network
 from synspot.personalinformation import PersonalInformation
 from synspot.utils.log import GetWorkflowLog
@@ -14,6 +15,13 @@ from synspot._typing import (
     Test_Database_Type
 )
 
+import warnings
+
+from synspot.error import (
+    StatusCodeWarning,
+    StatusCodeError
+)
+
 from typing import (
     final,
     Union,
@@ -23,9 +31,10 @@ from typing import (
 
 
 class BaseWorkflow:
-    __skip_header: Final[int] = 1
-    __initial_round_num: Final[int] = 1
-    __url_prefix: Final[str] = 'main_flow'
+    _skip_header: Final[int] = 1
+    _initial_round_num: Final[int] = 1
+    _url_prefix: Final[str] = 'main_flow'
+    _maxRound: Final[int] = 3
 
     __Network_instance = Network.get_instance()
     __PersonalInformation_instance = PersonalInformation.get_instance()
@@ -64,51 +73,47 @@ class BaseWorkflow:
     @classmethod
     def _get_request_chaining(
         cls, 
-        token: str, 
+        task_id: str,
         url_prefix: str,
         url_root: str,
-        url_suffix: str = None,
+        url_suffix: str,
+        status_code: int,
     ) -> dict[str, Union(list[str], str)]:
 
-        url = cls.__Network_instance.process_url(
-            url_prefix=url_prefix, 
-            url_root=url_root, 
-            url_suffix=url_suffix
+        request_response = cls.__Network_instance.get_request_chaining(
+            url_prefix=url_prefix,
+            url_root=url_root,
+            url_suffix=url_suffix,
+            status_code=status_code,
         )
 
-        network_response = cls.__Network_instance.get_request(
-            url=url,
-            token=token,
-            request_name=url_root
+        if request_response == StatusCodeError:
+            warnings.warn(
+            f"{task_id}'s network get request to {url_root} goes wrong", 
+            StatusCodeWarning
         )
+        
+        return request_response
 
-        return cls.__Network_instance.load_network_response(network_response)
-    
     @final
     @classmethod
     def _post_request_chaining(
         cls, 
-        token: str, 
+        task_id: str,
         data: dict[str, Union(list[str], str)],
         url_prefix: str,
         url_root: str,
-        url_suffix: str = None,
+        url_suffix: str,
+        status_code: int,
     ) -> dict[str, Union(list[str], str)]:
 
-        url = cls.__Network_instance.process_url(
-            url_prefix=url_prefix, 
-            url_root=url_root, 
-            url_suffix=url_suffix
+        return cls.__Network_instance.post_request_chaining(
+            data=data,
+            url_prefix=url_prefix,
+            url_root=url_root,
+            url_suffix=url_suffix,
+            status_code=status_code
         )
-
-        network_response = cls.__Network_instance.post_request(
-            url=url,
-            token=token,
-            request_name=url_root,
-            data=data
-        )
-
-        return cls.__Network_instance.load_network_response(network_response)
 
     @final
     @classmethod

@@ -16,7 +16,7 @@ from synspot.database.database_factory import (
 
 from typing import Union
 
-from _typing import (
+from synspot._typing import (
     Train_Database_Type,
     Test_Database_Type
 )
@@ -28,7 +28,7 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
     # 传给他不同的行为，algo使用
 
     def __init__(self) -> None:
-        self.__database = GetDefaultMetadataDatabase.get_database()
+        self.__database_operator = GetDefaultMetadataDatabase.get_database()
 
     @classmethod
     def get_instance(cls) -> type[DatabaseOperator]:
@@ -45,7 +45,7 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         with all strategies via the Strategy interface.
         """
 
-        return self.__database
+        return self.__database_operator
 
     @database.setter
     def database(self, database) -> None:
@@ -53,31 +53,31 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         Usually, the Context allows replacing a Strategy object at runtime.
         """
 
-        self.__database = database
+        self.__database_operator = database
 
     def set_database(
         self, database_type: Union(Train_Database_Type, Test_Database_Type)
     ) -> None:
         if database_type == 'default_metadata':
-            self.database(GetDefaultMetadataDatabase.get_database())
+            self.__database_operator = GetDefaultMetadataDatabase.get_database()
         elif database_type == 'train_sponsor_metadata':
-            self.database(GetTrainSponsorMetadataDatabase.get_database())
+            self.__database_operator = GetTrainSponsorMetadataDatabase.get_database()
         elif database_type == 'train_assistor_metadata':
-            self.database(GetTrainAssistorMetadataDatabase.get_database())
+            self.__database_operator = GetTrainAssistorMetadataDatabase.get_database()
         elif database_type == 'train_algorithm':
-            self.database(GetTrainAlgorithmDatabase.get_database())
+            self.__database_operator = GetTrainAlgorithmDatabase.get_database()
         elif database_type == 'test_sponsor_metadata':
-            self.database(GetTestSponsorMetadataDatabase.get_database())
+            self.__database_operator = GetTestSponsorMetadataDatabase.get_database()
         elif database_type == 'test_assistor_metadata':
-            self.database(GetTestAssistorMetadataDatabase.get_database())
+            self.__database_operator = GetTestAssistorMetadataDatabase.get_database()
         elif database_type == 'test_algorithm':
-            self.database(GetTestAlgorithmDatabase.get_database())
+            self.__database_operator = GetTestAlgorithmDatabase.get_database()
 
     def get_all_records(self, **kwargs):
-        return self.__database.get_all_records(**kwargs)
+        return self.__database_operator.get_all_records(**kwargs)
     
     def store_record(self, **kwargs):
-        return self.__database.store_record(**kwargs)
+        return self.__database_operator.store_record(**kwargs)
     
     def get_record(self, **kwargs):
-        return self.__database.get_record(**kwargs)
+        return self.__database_operator.get_record(**kwargs)

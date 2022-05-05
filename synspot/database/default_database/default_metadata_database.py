@@ -16,7 +16,7 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_database_instance(cls) -> type[DefaultMetadataDatabase]:
+    def get_instance(cls) -> type[DefaultMetadataDatabase]:
         if cls.__DefaultMetadataDatabase_instance == None:
             cls.__DefaultMetadataDatabase_instance = DefaultMetadataDatabase()
 
@@ -56,9 +56,9 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         :exception OSError: Placeholder.
         """
 
-        if user_id not in self.__temp_database:
-            self.__temp_database[user_id] = collections.defaultdict(dict)
-
+        # if user_id not in self.__temp_database:
+        #     self.__temp_database[user_id] = collections.defaultdict(dict)
+        key = user_id
         value = {
             'default_mode': default_mode,
             'default_task_mode': default_task_mode,
@@ -67,13 +67,17 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             'default_id_column': default_id_column,
             'default_data_column': default_data_column,
         }
-        DictHelper.store_value(
-            key=user_id,
+        store_res = DictHelper.store_value(
+            key=key,
             value=value,
-            container=self.__temp_database
+            container=self.__temp_database,
+            store_type='multiple_access'
         )
 
-        return True
+        if store_res == True:
+            return f'{self.__class__.__name__} stores {key} successfully!' 
+        else:
+            return store_res
 
     def get_record(
         self, user_id: str

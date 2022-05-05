@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import collections
 
-from pyrsistent import T
-
 from synspot.database.base import BaseDatabase
 
 from synspot.database.abstract_database import AbstractMetadataDatabase
@@ -18,7 +16,7 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_database_instance(cls) -> type[TrainAssistorMetadataDatabase]:
+    def get_instance(cls) -> type[TrainAssistorMetadataDatabase]:
         if cls.__TrainAssistorMetadataDatabase_instance == None:
             cls.__TrainAssistorMetadataDatabase_instance = TrainAssistorMetadataDatabase()
 
@@ -63,8 +61,8 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
 
 
         key = DictHelper.generate_dict_key(user_id, train_id)
-        if key not in self.__temp_database:
-            self.__temp_database[key] = collections.defaultdict(dict)
+        # if key not in self.__temp_database:
+        #     self.__temp_database[key] = collections.defaultdict(dict)
 
         value = {
             'user_id': user_id,
@@ -78,13 +76,16 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             'task_name': task_name,
             'task_description': task_description
         }
-        DictHelper.store_value(
+
+        store_res = DictHelper.store_value(
             key=key,
             value=value,
             container=self.__temp_database
         )
-
-        return 'User_Assistor_Table stores successfully'
+        if store_res == True:
+            return f'{self.__class__.__name__} stores {key} successfully!' 
+        else:
+            return store_res
     
     def get_record(
         self, 
@@ -174,6 +175,6 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             container=assistor_metadata
         )  
         
-        return train_id, mode, task_mode, model_name, task_name, task_description, train_file_path, train_id_column, train_data_column
+        return train_id, mode, task_mode, model_name, train_file_path, train_id_column, train_data_column, task_name, task_description,
        
    

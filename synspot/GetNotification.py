@@ -1,12 +1,19 @@
 from __future__ import annotations
 
-from .workflow.train_workflow import TrainRequest, Network, PersonalInformation
-from .workflow.test_workflow import TestRequest
-from .authorization import Authorization
 import json
 import requests
 import threading
 import time
+
+from synspot.workflow import (
+    TrainMainWorkflow,
+    TestMainWorkflow
+)
+
+from synspot.network import Network
+from synspot.personalinformation import PersonalInformation
+from synspot.authorization import Authorization
+
 
 class GetNotification():
     __GetNotification_instance = None
@@ -14,13 +21,12 @@ class GetNotification():
     def __init__(self):
         self.__stop_indicator = None
 
-        self.Network_instance = Network.get_Network_instance()
-        self.PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
-        self.Authorization_instance = Authorization.get_Authorization_instance()
-        self.base_url = self.Network_instance.base_url
+        self.__Network_instance = Network.get_instance()
+        self.__PersonalInformation_instance = PersonalInformation.get_instance()
+        self.__Authorization_instance = Authorization.get_instance()
 
-        self.default_trainRequest = TrainRequest.get_TrainRequest_instance()
-        self.default_testRequest = TestRequest.get_TestRequest_instance()
+        self.__default_trainMainWorkflow = TrainMainWorkflow.get_instance()
+        self.__default_testMainWorkflow = TestMainWorkflow.get_instance()
 
         self.train_notification_category_name = {
             'unread_request',
@@ -36,14 +42,17 @@ class GetNotification():
             'unread_test_output',
             'unread_test_stop',
         }
+
     @classmethod
-    def get_GetNotification_instance(cls):
+    def get_instance(cls) -> type[GetNotification]:
         if cls.__GetNotification_instance == None:
             cls.__GetNotification_instance = GetNotification()
 
         return cls.__GetNotification_instance
 
-    def __distribute_notification(self, notification_category: dict):
+    def __distribute_notification(
+        self, notification_category: dict
+    ) -> True:
 
         """
         Handle the short polling response data and call corresponding functions
@@ -58,29 +67,40 @@ class GetNotification():
         for category_name in notification_category:
             if category_name in self.train_notification_category_name or category_name in self.test_notification_category_name:
                 if category_name == 'unread_request':
-                    self.default_trainRequest.unread_request(notification_category[category_name]['train_id_dict'])
+                    self.__default_trainMainWorkflow.train_assistor_request(
+                        notification_category[category_name]['train_id_dicts']
+                    )
                 elif category_name == 'unread_match_identifier':
-                    self.default_trainRequest.unread_match_identifier(notification_category[category_name]['train_id_dict'])
+                    self.__default_trainMainWorkflow.train_match_identifier(
+                        notification_category[category_name]['train_id_dicts']
+                    )
                 elif category_name == 'unread_situation':
-                    self.default_trainRequest.unread_situation(notification_category[category_name]['train_id_dict'])
+                    self.__default_trainMainWorkflow.train_situation(
+                        notification_category[category_name]['train_id_dicts']
+                    )
                 elif category_name == 'unread_output':
-                    self.default_trainRequest.unread_output(notification_category[category_name]['train_id_dict'])
+                    self.__default_trainMainWorkflow.train_output(
+                        notification_category[category_name]['train_id_dicts']
+                    )
                 elif category_name == 'unread_train_stop':
                     pass
                 elif category_name == 'unread_test_request':
-                    self.default_testRequest.unread_test_request(notification_category[category_name]['test_id_dict'])
+                    self.__default_testMainWorkflow.unread_test_request(
+                        notification_category[category_name]['test_id_dicts']
+                    )
                 elif category_name == 'unread_test_match_identifier':
-                    self.default_testRequest.unread_test_match_identifier(notification_category[category_name]['test_id_dict'])
+                    self.__default_testMainWorkflow.unread_test_match_identifier(
+                        notification_category[category_name]['test_id_dicts']
+                    )
                 elif category_name == 'unread_test_output':
-                    self.default_testRequest.unread_test_output(notification_category[category_name]['test_id_dict'])
+                    self.__default_testMainWorkflow.unread_test_output(
+                        notification_category[category_name]['test_id_dicts']
+                    )
                 elif category_name == 'unread_test_stop':
                     pass
             
-
                 print("category_name: ", category_name, notification_category[category_name])
-
-        return
-
+        return True
 
     def start_Collaboration(self):
 
@@ -93,39 +113,37 @@ class GetNotification():
         """
         if self.__stop_indicator == None:
             self.__stop_indicator = False
-        user_id = self.PersonalInformation_instance.user_id
+        user_id = self.__PersonalInformation_instance.user_id
 
-        url = self.base_url + self.Network_instance.process_url(prefix='main_flow', url='/users', suffix=user_id)
-
-        token = self.Network_instance.token
+        token = self.__Network_instance.token
         if not token:
             print('Please Login First')
             return
 
-        try:
-            short_polling_res = requests.get(url, headers={'Authorization': 'Bearer ' + token})
-            print("short_polling_res", short_polling_res)
-        except:
-            print('short_polling_res wrong')
+        short_polling_res = self.__Network_instance.get_request_chaining(
+            url_prefix='main_flow',
+            url_root='get_notifications',
+            url_suffix=user_id,
+            status_code=200,
+        )
+        print(f'short_polling_res: {short_polling_res}')
+        if 'new_token' in short_polling_res and short_polling_res['new_token'] != None:
+            new_token = short_polling_res['new_token']
+            self.__Authorization_instance.process_token(new_token)
 
-        # update new token if response_data['new_token'] is not None
-        response_data = json.loads(short_polling_res.text)
-        if 'new_token' in response_data and response_data['new_token'] != None:
-            new_token = response_data['new_token']
-            self.Authorization_instance.process_token(new_token)
-
-        notification_category = response_data['notification_result']['category']
-        self.__distribute_notification(notification_category)
+        notification_category = short_polling_res['notification_result']['category']
+        
 
         # for unittest
-        # return update_all_notifications_data
-    
+        return notification_category
+        
+        self.__distribute_notification(notification_category)
         
         # for running, comment back
-        if not self.__stop_indicator:
-            print('lihjai a ')
-            timer = threading.Timer(10, self.start_Collaboration)
-            timer.start()
+        # if not self.__stop_indicator:
+        #     print('lihjai a ')
+        #     timer = threading.Timer(10, self.start_Collaboration)
+        #     timer.start()
         return
 
     def end_Collaboration(self):

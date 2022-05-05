@@ -21,11 +21,14 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_database_instance(cls) -> type[TrainAlgorithmDatabase]:
+    def get_instance(cls) -> type[TrainAlgorithmDatabase]:
         if cls.__TrainAlgorithmDatabase_instance == None:
             cls.__TrainAlgorithmDatabase_instance = TrainAlgorithmDatabase()
 
         return cls.__TrainAlgorithmDatabase_instance
+
+    def get_all_records(self) -> list[tuple[str, str]]:
+        return DictHelper.get_all_key_value_pairs(container=self.__temp_database)
 
     def store_record(
         self, 
@@ -47,19 +50,20 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         """
 
         key = DictHelper.generate_dict_key(user_id, train_id)
-        if key not in self.__temp_database:
-            self.__temp_database[key] = collections.defaultdict(dict)
+        # if key not in self.__temp_database:
+        #     self.__temp_database[key] = collections.defaultdict(dict)
         
         value = {
             algorithm_data_name: algorithm_data
         }
-        DictHelper.store_value(
+        store_res = DictHelper.store_value(
             key=key,
             value=value,
-            container=self.__temp_database
+            container=self.__temp_database,
+            store_type='append'
         )
-            
-        return 'User_Assistor_Table stores successfully'
+        if store_res == True:
+            return f'{self.__class__.__name__} stores {key} successfully!' 
     
     def get_record(
         self, 
@@ -96,12 +100,13 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         key = DictHelper.generate_dict_key(user_id, train_id)
         if key not in self.__temp_database:
             print(f'{self.__class__.__name__} does not contain the record')
+            return '666666'
 
         algorithm_data = DictHelper.get_value(
             key=algorithm_data_name,
             container=self.__temp_database[key]
         )
-
+        
         return algorithm_data
        
    

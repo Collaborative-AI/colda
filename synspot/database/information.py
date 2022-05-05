@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import collections
 
-from synspot.database.train_database.assistor_metadata_database import TrainAssistorDatabase
-
 from .utils import get_user_id
 
 from typing import(

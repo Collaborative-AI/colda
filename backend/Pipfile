@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-gunicorn = "==20.1.0"
 flask = "*"
 redis = "*"
 jinja2 = "*"
@@ -16,6 +15,7 @@ python-dotenv = "*"
 pymongo = {extras = ["srv"], version = "*"}
 pyjwt = "*"
 flask-pymongo = "*"
+gunicorn = "*"
 
 [dev-packages]
 

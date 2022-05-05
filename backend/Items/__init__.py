@@ -74,7 +74,7 @@ def create_MongoDB_Collections():
         pyMongo.db.User.insert_one( { "user_id": 'placeholder' } )
         pyMongo.db.User.create_index([("user_id", 1)], unique=True)
         pyMongo.db.User.create_index([("username", 1)], unique=True)
-        pyMongo.db.User.create_index([("email", 1)], unique=True)
+        # pyMongo.db.User.create_index([("email", 1)], unique=True)
 
     if 'Notification' not in collection_list:
         pyMongo.db.Notification.create_index([("user_id", 1)], unique=True)

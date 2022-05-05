@@ -88,7 +88,7 @@ class mongoDB():
             pyMongo.db.Notification.insert_one({'user_id': user_id})
 
         if test_indicator == 'train':
-            base_key = f'category.{notification_name}.train_id_dict.{train_id}'
+            base_key = f'category.{notification_name}.train_id_dicts.{train_id}'
             print('base_key$$$', base_key)
             return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
                 f'{base_key}.sender_random_id': sender_random_id,
@@ -96,7 +96,7 @@ class mongoDB():
                 f'{base_key}.cur_rounds_num': cur_rounds_num,
             }})
         elif test_indicator == 'test':
-            base_key = f'category.{notification_name}.test_id_dict.{test_id}'
+            base_key = f'category.{notification_name}.test_id_dicts.{test_id}'
             return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
                 f'{base_key}.sender_random_id': sender_random_id,
                 f'{base_key}.role': role,
@@ -106,7 +106,13 @@ class mongoDB():
         
         
     @classmethod
-    def search_user_document(cls, user_id, username, email, key_indicator):
+    def search_user_document(
+        cls, 
+        user_id, 
+        username, 
+        email, 
+        key_indicator
+    ):
         if key_indicator == 'user_id':
             return pyMongo.db.User.find_one({'user_id': user_id})
         elif key_indicator == 'username':

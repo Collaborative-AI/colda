@@ -21,8 +21,15 @@ class train_match():
         return pyMongo.db.Train_Match.find_one({'train_id': train_id})
 
     @classmethod
-    def create_train_match_document(cls, train_id, total_assistor_num, sponsor_id, 
-                                            sponsor_random_id, identifier_id):
+    def create_train_match_document(
+        cls, 
+        train_id, 
+        total_assistor_num, 
+        sponsor_id, 
+        sponsor_random_id, 
+        identifier_id
+    ):
+    
         train_match_document = {
             "train_id": train_id,
             'total_assistor_num': total_assistor_num,

@@ -1,11 +1,20 @@
 from flask import request
-
+from bson import ObjectId
 from Items import pyMongo
 # import BluePrint
 from Items.helper_api import helper_api_bp
 from Items.authentication import token_auth
-
+from Items.utils import generate_password
 from Items.mongoDB import mongoDB
+
+@helper_api_bp.route('/testing_get', methods=['GET'])
+# @token_auth.login_required
+def testing_get():
+  return 'test successfully!'
+
+@helper_api_bp.route('/testing_post', methods=['POST'])
+def testing_post():
+  return 'test successfully!'
 
 # @helper_api_bp.route('/ceshi', methods=['GET'])
 @helper_api_bp.route('/changshi', methods=['GET'])
@@ -68,11 +77,18 @@ def create_unittest_user():
     password = data['password']
     email = data['email']
     if mongoDB.search_user_document(user_id=None, username=username, email=None, key_indicator='username'):
-        return 'repetition'
+        return 'done'
+
+    password_hash = generate_password(password)
+
+    newObjectId = ObjectId()
 
     user_document = {
+        '_id': newObjectId,
+        'user_id': str(newObjectId),
         'username': username,
         'password': password,
+        'password_hash': password_hash,
         'email': email,
         'confirm_email': True,
     }

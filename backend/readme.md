@@ -96,6 +96,7 @@ database_name = 'apollo_aws_mysql_unittest'
     6. Change ur entryfile to application.py and the flask instance to application
     7. Type in your command: export FLASK_APP=application.py
     8. Type in command: eb init -p python-3.8 synspot --region us-east-2
+        eb init --profile <profilename> (switch profile, not needed in first time)
     9. (Optional) If you meet: You have not yet set up your credentials or your credentials are incorrect
         You must provide your credentials.
         (aws-access-id): from step 6 => https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html => https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys

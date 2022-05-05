@@ -55,6 +55,7 @@ def match_identifier_content(id):
     assistor_id = user_id
 
     train_match_document = train_match.search_train_match_document(train_id=train_id)
+    print('train_match_document', train_match_document)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
     sponsor_information = train_match_document['sponsor_information']
     sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']

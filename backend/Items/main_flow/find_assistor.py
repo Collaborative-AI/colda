@@ -78,7 +78,7 @@ def find_assistor(id):
     Raises:
         KeyError - raises an exception
     """
-
+    print('shuai')
     # check the data sent by the sponsor
     data = request.get_json()
     # print('data', data)

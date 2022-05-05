@@ -70,7 +70,7 @@ def verify_password(username, password):
     Raises:
         KeyError - raises an exception
     """
-
+    print('password')
     user = pyMongo.db.User.find_one({'username': username})
     if user is None:
         return False
@@ -98,7 +98,7 @@ def verify_token(token):
         KeyError - raises an exception
     """
 
-    # print('token is', token)
+    print('token is!!!!!', token)
 
     g.current_user, token_payload = jwt_manipulation.verify_jwt(token) if token else None
 
@@ -133,8 +133,8 @@ class jwt_manipulation:
         
         token_payload = {
             'user_id': user['user_id'],
-            'user_name': user['name'] if user['name'] else user['username'],
-            'authority_level': user['authority_level'] if user['authority_level'] else 'user',
+            'user_name': user['name'] if 'name' in user else user['username'],
+            'authority_level': user['authority_level'] if 'authority_level' in user else 'user',
             # expiration time
             'exp': expiration_time,
             # create time
@@ -157,8 +157,8 @@ class jwt_manipulation:
         # float
         token_payload = {
             'user_id': user['user_id'],
-            'user_name': user['name'] if user['name'] else user['username'],
-            'authority_level': user['authority_level'] if user['authority_level'] else 'user',
+            'user_name': user['name'] if 'name' in user else user['username'],
+            'authority_level': user['authority_level'] if 'authority_level' in user else 'user',
             # expiration time
             'exp': expiration_time,
             # create time

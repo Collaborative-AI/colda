@@ -1,11 +1,20 @@
 from __future__ import annotations
 
 import json
+import copy
+import numpy as np
+
+from synspot._typing import Serializable_Datatype
 
 from typing import (
     Any
 )
 
+from synspot.utils.dtypes.api import (
+    is_numpy,
+    is_dict_like,
+    is_list
+)
 
 class ParseJson:
 
@@ -26,21 +35,12 @@ class ParseJson:
         :exception OSError: Placeholder.
         """
 
-        if isinstance(data, list):
-            return False
-        elif isinstance(data, int):
-            return False
-        elif isinstance(data, tuple):
-            return False    
-        elif isinstance(data, dict):
-            return False
-
         try:
             json.loads(data)
         except:
             return False
-
-        return True
+        else:
+            return True
 
     @classmethod
     def load_json_recursion(
@@ -54,11 +54,67 @@ class ParseJson:
         if cls.is_json(data):
             data = json.loads(data)
         
-        if not isinstance(data, dict):
-            return data
+        if not is_dict_like(data):
+            return copy.deepcopy(data)
 
         processed_data = {}
         for key, value in data.items():
             processed_data[key] = cls.load_json_recursion(value)    
+
+        return processed_data
+    
+    @classmethod
+    def is_serializable(
+        cls,
+        data: Any
+    ) -> bool:
+
+        # if isinstance(data, (np.ndarray, np.generic)):
+        #     return False
+        # return True
+
+        try:
+            json.dumps(data)
+        except:
+            return False
+        else:
+            return True
+
+    @classmethod
+    def change_datatype_to_serializable(
+        cls,
+        data: Any
+    ) -> Serializable_Datatype:
+
+        if is_numpy(data):
+            return copy.deepcopy(data.tolist())
+            
+        return data
+
+    @classmethod
+    def make_data_serializable(
+        cls,
+        data: Any
+    ) -> Serializable_Datatype:
+
+        if data is None:
+            return None
+
+        if cls.is_serializable(data):
+            return copy.deepcopy(data)
+        
+        data = cls.change_datatype_to_serializable(data)
+
+        # processed_data = None
+        if is_dict_like(data):
+            processed_data = {}
+            for key, value in data.items():
+                processed_data[key] = cls.make_data_serializable(value)    
+        elif is_list(data):
+            processed_data = []
+            for i in range(len(data)):
+                processed_data.append(cls.make_data_serializable(data[i])) 
+        else:
+            return data
 
         return processed_data

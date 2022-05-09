@@ -14,7 +14,7 @@ from synspot.workflow import (
     
 from synspot.authorization import Authorization
 from synspot.GetNotification import GetNotification
-from synspot.personalinformation import PersonalInformation
+from synspot.pi import PI
 from synspot.network import Network
 # from synspot import set_default_data_path, get_all_task_id_as_sponsor, get_all_test_id_as_sponsor, get_all_task_id_as_assistor, get_all_test_id_as_assistor
 # from synspot import get_all_task_id, get_all_test_id
@@ -23,7 +23,7 @@ _default_authorization = Authorization.get_instance()
 _default_trainMainWorkflow = TrainMainWorkflow.get_instance()
 _default_testMainWorkflow = TestMainWorkflow.get_instance()
 _default_getNotification = GetNotification.get_instance()
-_default_PersonalInformation = PersonalInformation.get_instance()
+_default_PI = PI.get_instance()
 _default_Network = Network.get_instance()
 # _default_testRequest = TestRequest.get_TestRequest_instance()
 # _default_get_notification = Get_Notification.get_Get_notification_instance()

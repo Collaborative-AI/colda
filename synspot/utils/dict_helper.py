@@ -13,7 +13,11 @@ from synspot._typing import (
     Dict_Store_Type
 )
 
-from synspot.error import DuplicateKeyError
+from synspot.error import (
+    DuplicateKeyError,
+    DictValueNotFound
+)
+
 
 class DictHelper:
 
@@ -108,10 +112,15 @@ class DictHelper:
             '''
             warning: no key in container
             '''
-            print(')))', key)
+            print('warning: no key in container)')
+            print('warning: no key in container)')
+            print('warning: no key in container)')
+            print('warning: no key in container)')
+            print('warning: no key in container)')
+            print('warning: no key in container)')
             for key, val in container.items():
-                print('^^^^', key, val)
-            return 
+                print('^^^^', key)
+            return DictValueNotFound
         
         return container[key]
     

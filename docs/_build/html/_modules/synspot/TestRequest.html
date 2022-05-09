@@ -82,7 +82,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">synspot.network</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">synspot.personalinformation</span> <span class="kn">import</span> <span class="n">PersonalInformation</span>
+<span class="kn">from</span> <span class="nn">synspot.PI</span> <span class="kn">import</span> <span class="n">PI</span>
 <span class="kn">from</span> <span class="nn">synspot.database</span> <span class="kn">import</span> <span class="n">Database</span>
 <span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">check_Algorithm_return_value</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">log_helper</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">save_file</span><span class="p">,</span> <span class="n">handle_Algorithm_return_value</span>
@@ -99,7 +99,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PI_instance</span> <span class="o">=</span> <span class="n">PI</span><span class="o">.</span><span class="n">get_PI_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="n">get_Database_instance</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">base_url</span>
@@ -123,9 +123,9 @@
 
 <span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">user_id</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PI_instance</span><span class="o">.</span><span class="n">user_id</span>
         <span class="c1"># assert user_id is not None</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">root</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PI_instance</span><span class="o">.</span><span class="n">root</span>
         <span class="c1"># assert root is not None</span>
         <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">token</span>
         <span class="c1"># assert token is not None</span>

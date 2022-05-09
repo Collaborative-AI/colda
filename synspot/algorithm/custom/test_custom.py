@@ -10,41 +10,49 @@ from synspot.algorithm.test_stage import (
 
 class AbstractTestCustom(ABC):
 
+    @classmethod
     @abstractmethod
-    def make_test(self, *args):
+    def make_test(cls, **kwargs):
         pass
 
+    @classmethod
     @abstractmethod
-    def make_eval(self, *args):
+    def make_eval(cls, **kwargs):
         pass
 
 
 class TestFixedParameter(AbstractTestCustom):
 
-    def make_test(self, *args):
-        return MakeTest.make_test(*args)
+    @classmethod
+    def make_test(cls, **kwargs):
+        return MakeTest.make_test(**kwargs)
     
-    def make_eval(self, *args):
-        return MakeEval.make_eval(*args)
+    @classmethod
+    def make_eval(cls, **kwargs):
+        return MakeEval.make_eval(**kwargs)
 
 
 class TestOptimizedParameter(AbstractTestCustom):
 
-    def make_test(self, *args):
-        return MakeTest.make_test(*args)
-        
-    def make_eval(self, *args):
-        return MakeEval.make_eval(*args)
+    @classmethod
+    def make_test(cls, **kwargs):
+        return MakeTest.make_test(**kwargs)
+    
+    @classmethod
+    def make_eval(cls, **kwargs):
+        return MakeEval.make_eval(**kwargs)
 
 
 class TestOwnFunction(AbstractTestCustom):
     
-    def __init__(self, OwnFunction):
-        self.OwnFunction = OwnFunction
-        
-    def make_test(self, *args):
-        return self.OwnFunction['MakeTest'].make_test(*args)
-        
-    def make_eval(self, *args):
-        return self.OwnFunction['MakeEval'].make_eval(*args)
+    def __init__(cls, OwnFunction):
+        cls.OwnFunction = OwnFunction
+    
+    @classmethod
+    def make_test(cls, **kwargs):
+        return cls.OwnFunction['MakeTest'].make_test(**kwargs)
+
+    @classmethod    
+    def make_eval(cls, **kwargs):
+        return cls.OwnFunction['MakeEval'].make_eval(**kwargs)
         

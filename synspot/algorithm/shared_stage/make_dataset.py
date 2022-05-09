@@ -84,7 +84,7 @@ class MakeDataset(BaseAlgorithm):
                                                                                                         id_i_idx,
                                                                                                         data_i_idx,
                                                                                                         target_i_idx))
-        return True
+        return (True, )
 
 
     def split_dataset(

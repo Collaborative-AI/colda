@@ -6,12 +6,14 @@ import numpy as np
 from synspot.utils import DictHelper
 
 from typing import (
-    Union
+    Union,
+    Final
 )
 
+
 class check_sponsor_class:
-    sponsor: int = 1
-    assistor: int = 0
+    sponsor: Final[str] = 'sponsor'
+    assistor: Final[str] = 'assistor'
 
 def obtain_notification_information(
     notification_dict: dict[str, str], 

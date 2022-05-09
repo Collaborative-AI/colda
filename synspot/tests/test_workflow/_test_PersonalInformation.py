@@ -9,35 +9,35 @@ import json
 from typing import Any, Dict, List
 from copy import deepcopy
 
-from Synspot.PersonalInformation import PersonalInformation
+from Synspot.PI import PI
 import pytest
 
-class TestPersonalInformation:
+class TestPI:
     def get_instance(self):
-        PersonalInformation_instance = PersonalInformation()
-        return PersonalInformation_instance
+        PI_instance = PI()
+        return PI_instance
 
     def test_set_user_id(self):
-        PersonalInformation_instance = self.get_instance()
+        PI_instance = self.get_instance()
         user_id = 'ceshi'
-        PersonalInformation_instance.user_id = user_id
-        assert PersonalInformation_instance.user_id == user_id
+        PI_instance.user_id = user_id
+        assert PI_instance.user_id == user_id
 
     def test_default_mode(self):
-        PersonalInformation_instance = self.get_instance()
-        default_mode = PersonalInformation_instance.default_mode
+        PI_instance = self.get_instance()
+        default_mode = PI_instance.default_mode
         assert default_mode == 'manual'
 
     def test_set_wrong_default_mode(self):
-        PersonalInformation_instance = self.get_instance()
+        PI_instance = self.get_instance()
         with pytest.raises(Exception):
             default_mode = 'zz'
-            PersonalInformation_instance.default_mode = default_mode
+            PI_instance.default_mode = default_mode
     
     def test_set_default_mode(self):
-        PersonalInformation_instance = self.get_instance()
+        PI_instance = self.get_instance()
         default_mode = 'auto'
-        PersonalInformation_instance.default_mode = default_mode
-        assert PersonalInformation_instance.default_mode == default_mode
+        PI_instance.default_mode = default_mode
+        assert PI_instance.default_mode == default_mode
 
     

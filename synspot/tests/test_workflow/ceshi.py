@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import final, overload
+from typing import Dict, final, overload
 
 # class A(ABC):
 #     @abstractmethod
@@ -543,19 +543,281 @@ from typing import (
 # )
 
 
-class parent:
-    __ceshi = 5
+# class parent:
+#     __ceshi = 5
+
+#     @classmethod
+#     def fulei(cls):
+#         print('yyy')
+
+# class child(parent):
+
+#     @classmethod
+#     def dayin(cls):
+#         # super().__init__()
+#         # print(parent.__ceshi)
+#         cls.fulei()
+import json
+import copy
+import numpy as np
+def check(data):
+    try:
+        json.dumps(data)
+    except:
+        return False
+    else:
+        return True
+
+# child.dayin()
+
+class ParseJson:
 
     @classmethod
-    def fulei(cls):
-        print('yyy')
+    def is_json(
+        cls,
+        data: Any
+    ) -> bool:
 
-class child(parent):
+        """
+        start task with all assistors
+
+        :param file_address: Integer. Maximum training round
+        :param file_content: List. The List of assistors' usernames
+
+        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
+
+        :exception OSError: Placeholder.
+        """
+
+        if isinstance(data, list):
+            return False
+        elif isinstance(data, int):
+            return False
+        elif isinstance(data, tuple):
+            return False    
+        elif isinstance(data, dict):
+            return False
+
+        try:
+            json.loads(data)
+        except:
+            return False
+
+        return True
 
     @classmethod
-    def dayin(cls):
-        # super().__init__()
-        # print(parent.__ceshi)
-        cls.fulei()
+    def load_json_recursion(
+        cls,
+        data: Any,
+    ) -> dict[Any]:
 
-child.dayin()
+        if data is None:
+            return None
+
+        if cls.is_json(data):
+            data = json.loads(data)
+        
+        if not isinstance(data, dict):
+            return data
+
+        processed_data = {}
+        for key, value in data.items():
+            processed_data[key] = cls.load_json_recursion(value)    
+
+        return processed_data
+    
+    @classmethod
+    def is_serializable(
+        cls,
+        data: Any
+    ) -> bool:
+
+        # if isinstance(data, (np.ndarray, np.generic)):
+        #     return False
+        # return True
+
+        try:
+            json.dumps(data)
+        except:
+            return False
+        else:
+            return True
+
+    @classmethod
+    def make_data_serializable(
+        cls,
+        data: Any
+    ) -> Any:
+
+        if data is None:
+            return None
+
+        if cls.is_serializable(data):
+            return copy.deepcopy(data)
+        
+        if isinstance(data, (np.ndarray, np.generic)):
+            return copy.deepcopy(data.tolist())
+
+        # processed_data = None
+        if isinstance(data, dict):
+            processed_data = {}
+            for key, value in data.items():
+                processed_data[key] = cls.make_data_serializable(value)    
+        elif isinstance(data, list):
+            processed_data = []
+            for i in range(len(data)):
+                processed_data.append(cls.make_data_serializable(data[i])) 
+
+        return processed_data
+
+# from synspot.utils import ParseJson
+
+# a = np.array(5)
+# b = np.array(6)
+# c = [a,b]
+# res = check(c)
+# print(res)
+# c = ParseJson.make_data_serializable(c)
+# print('ccc', c)
+# res = check(c)
+# print(res)
+# def is_json(myjson):
+#   try:
+#     json.loads(myjson)
+#   except ValueError as e:
+#     return False
+#   return True
+
+# aa = json.dumps(
+#     {
+#         '8': {
+#             5: 7
+#         }
+#     },
+# )
+# a = {
+#     '5': aa,
+#     'wudi': [
+#         1,2,3
+#     ]
+# }
+
+# b = json.dumps(a)
+# print(b, type(b), is_json(b))
+# # c = b.json()
+# c = json.loads(b)
+# print(c, type(c))
+# d = c['5']
+# print(d, type(d), is_json(d))
+
+
+# print(a,type(a))
+# b = json.dumps(a)
+# c = json.dumps(b)
+# print(a,type(a))
+# print(b,type(b))
+# print(c,type(c))
+
+# def a(*args):
+#     # print(args, type(args))
+#     # print(5 in args)
+#     return 5,6,7,8
+# b = a()
+
+# print(b)
+
+class DictValueNotFound(ValueError):
+    """
+    Error raised when the value cannot found in corresponding dict key
+    """
+    pass
+
+# print(DictValueNotFound == a.all())
+# a = np.array([1,2,3])
+# print('aaaa', a)
+# print(len(a), len(DictValueNotFound))
+# print( (DictValueNotFound == a).all() )
+# print(type(DictValueNotFound))
+# print(type(a))
+# print(type([1,2,3]))
+# print(type(5))
+# print(DictValueNotFound == a.tolist())
+# print(type(a) == DictValueNotFound)
+# print(DictValueNotFound == [1,2,3])
+# def is_numpy(obj) -> bool:
+#     if isinstance(obj, (np.ndarray, np.generic)):
+#         return True
+#     return False
+
+# def if_response_valid(
+#     *args
+# ) -> bool:
+#     print('if_response_valid1', args)
+
+#     args = [val.tolist() if is_numpy(val) else val for val in args]
+#     print('if_response_valid2', args)
+#     if DictValueNotFound in args:
+#         return False
+#     return True
+
+# res = if_response_valid(a)
+
+# print(res)
+
+
+# a = [[5,6,7,8]]
+
+# b = [a, [5,6]]
+
+# print(DictValueNotFound == b)
+
+# def ceshi(**kwargs):
+    # for key, val in kwargs.items():
+    #     print(key, val)
+    #     if val == 'lihai':
+    #         kwargs[key] = 'lihaima'
+
+    # for key, val in kwargs.items():
+    #     print(key, val)
+        # if val == 'lihai':
+        #     val = 'lihaima'
+#     return (
+#         wudi='wudi',
+#         lihai='lihai',
+#     )
+
+# ceshi(
+#     wudi='wudi',
+#     lihai='lihai'
+# )
+
+# def ceshi1(**kwargs):
+#     print(kwargs)
+#     return kwargs
+
+# def ceshi2(**kwargs):
+#     print(kwargs)
+
+# res = ceshi1(
+#     wudi='wudi',
+#     lihai='lihai'
+# )
+# print('res', res)
+# ceshi2(**res)
+
+# def ceshi():
+#     return (5, 6, 7)
+
+# res = ceshi()
+# print(res, type(res))
+# for val in res:
+#     print(val)
+
+# def ceshi2(*args):
+#     print(args)
+
+# ceshi2(*res)
+
+a = (5,6,7)
+b = json.dumps(a)
+print(b, type(b))

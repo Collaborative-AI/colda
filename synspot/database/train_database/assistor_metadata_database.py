@@ -175,6 +175,29 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             container=assistor_metadata
         )  
         
-        return train_id, mode, task_mode, model_name, train_file_path, train_id_column, train_data_column, task_name, task_description,
+        if not super().if_db_response_valid(
+            train_id, 
+            mode, 
+            task_mode, 
+            model_name, 
+            train_file_path, 
+            train_id_column, 
+            train_data_column, 
+            task_name, 
+            task_description
+        ):
+            return super().dict_value_not_found()
+        
+        return (
+            train_id, 
+            mode, 
+            task_mode,
+            model_name, 
+            train_file_path, 
+            train_id_column, 
+            train_data_column, 
+            task_name, 
+            task_description
+        )
        
    

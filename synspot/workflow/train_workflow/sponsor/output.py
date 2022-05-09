@@ -30,24 +30,26 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         :exception OSError: Placeholder.
         """
 
+        user_id = super()._get_user_id()
+        sender_random_id, role, cur_rounds_num = obtain_notification_information(
+            notification_dict=train_id_dict
+        )
+
         msgs = [
             "---- 5. Unread Output", 
             "5.1 Update the output notification"
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
         )
 
-        user_id, root, token = cls._get_important_information()
-        sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict=train_id_dict)
-
         data = {
             "train_id": train_id,
             "rounds": cur_rounds_num
         }
-        get_output_content_response = cls._post_request_chaining(
+        get_output_content_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
             url_prefix=cls._url_prefix,
@@ -57,7 +59,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         )
 
         msgs = ["5.2 Sponsor gets output model"]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
@@ -83,13 +85,13 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             # msg = ["5.3 Sponsor saves Output model\n"]
             # log_helper(msg, root, user_id, train_id)
             assistor_output_contents[assistor_random_id] = output_content
-            # cls._store_database_record(
+            # super()._store_database_record(
             #     database_type='train_algorithm'
             # )
             # get train_file_path, train_target_column from User_Sponsor_Table
             # task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, train_id=train_id, test_indicator=self.test_indicator)
         
-        if cls._async_checker(
+        if super()._async_checker(
             database_type='train_algorithm', 
             user_id=user_id, 
             train_id=train_id,
@@ -100,7 +102,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         
         cls.train_calculate_result(
             user_id=user_id,
-            token=token,
             train_id=train_id, 
             rounds=cur_rounds_num,
             assistor_output_contents=assistor_output_contents
@@ -112,7 +113,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
     def train_calculate_result(
         cls, 
         user_id: str,
-        token: str,
         train_id: str, 
         rounds: int, 
         assistor_output_contents: dict[str, Any]
@@ -131,7 +131,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         :exception OSError: Placeholder.
         """
 
-        sponsor_metadata_record = cls._get_database_record(
+        sponsor_metadata_record = super()._get_database_record(
             database_type='train_sponsor_metadata',
             user_id=user_id,
             train_id=train_id
@@ -146,21 +146,21 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         task_name = sponsor_metadata_record[7]
         task_description = sponsor_metadata_record[8]
 
-        sponsor_trained_cooperative_model_output = cls._get_database_record(
+        sponsor_trained_cooperative_model_output = super()._get_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
             algorithm_data_name='trained_cooperative_model_output',
         )
 
-        sponsor_matched_identifers = cls._get_database_record(
+        sponsor_matched_identifers = super()._get_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
             algorithm_data_name='sponsor_matched_identifers',
         )
 
-        sponsor_result = cls._get_database_record(
+        sponsor_result = super()._get_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -168,7 +168,8 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         )
 
         # Calculate result for current round
-        sponsor_result = cls._calculate_result(
+        print('&&%%%%', type(assistor_output_contents))
+        sponsor_alpha_result, sponsor_result = super()._calculate_result(
             rounds=rounds, 
             dataset_path=train_file_path, 
             target_idx=train_target_column, 
@@ -187,7 +188,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         # make_result_done_indicator, make_result_done = handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
         # assert make_result_done is not None
 
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -196,15 +197,15 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         )
 
         msgs = ["5.4 Sponsor makes result done"]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
         )
 
-        if rounds >= cls.__maxRound:
+        if rounds >= cls._maxRound:
             msgs = ["---- Train Stage Ends"]
-            cls._store_log(
+            super()._store_log(
                 user_id=user_id,
                 task_id=train_id,
                 msgs=msgs
@@ -214,7 +215,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         else:
             cls.train_calculate_next_round_residual(
                 user_id=user_id,
-                token=token,
                 train_id=train_id,
                 train_file_path=train_file_path,
                 train_target_column=train_target_column,
@@ -228,7 +228,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
     def train_calculate_next_round_residual(
         cls,
         user_id: str,
-        token: str,
         train_id: str,
         train_file_path: str,
         train_target_column: str,
@@ -238,7 +237,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         last_round_result: Any
     ) -> None:
 
-        sponsor_residual = cls._calculate_residual(
+        sponsor_residual = super()._calculate_residual(
             self_id=user_id, 
             train_id=train_id, 
             round=cls._initial_round_num, 
@@ -259,7 +258,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         # assert make_residual_multiple_paths is not None
 
         msgs = ["5.5 Sponsor makes residual finished"]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
@@ -287,7 +286,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             "train_id": train_id,
             "assistor_random_id_to_residual_dict": assistor_random_id_to_residual_dict,
         }
-        send_situation_response = cls._post_request_chaining(
+        send_situation_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
             url_prefix=cls._url_prefix,
@@ -300,7 +299,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             "5.6 Sponsor updates situation done", 
             "---- 5. Unread Output Done"
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs

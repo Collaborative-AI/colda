@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import os
 
-class PersonalInformation:
-    __PersonalInformation_instance = None
+class PI:
+    __PI_instance = None
 
     def __init__(self):
         self.__default_mode = None
@@ -12,11 +12,11 @@ class PersonalInformation:
         self.__exe_position = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'dist', 'run', 'run')
         
     @classmethod
-    def get_instance(cls):
-        if cls.__PersonalInformation_instance == None:
-            cls.__PersonalInformation_instance = PersonalInformation()
+    def get_instance(cls) -> type[PI]:
+        if cls.__PI_instance == None:
+            cls.__PI_instance = PI()
 
-        return cls.__PersonalInformation_instance
+        return cls.__PI_instance
 
     @property
     def user_id(self) -> str:

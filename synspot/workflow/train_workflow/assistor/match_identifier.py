@@ -18,24 +18,23 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
         cls, train_id: str, train_id_dict: dict[str, Any]
     ) -> None:
         # initiate a request
+        user_id = super()._get_user_id()
 
         msgs = [
             "---- 3. Unread Match ID", 
             "3.1 Update the match id notification",
             "3.2 unread_match_identifier_assistor",
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
         )
 
-        user_id, root, token = cls._get_important_information()
-        
         data = {
             "train_id": train_id,
         }
-        get_identifier_content_response = cls._post_request_chaining(
+        get_identifier_content_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
             url_prefix=cls._url_prefix,
@@ -45,7 +44,7 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
         )
         
         msgs = ["3.3 Assistor gets matched id file"]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
@@ -58,19 +57,20 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
         sponsor_random_id = next(iter(sponsor_random_id_to_identifier_content_dict))
         sponsor_identifier_data = sponsor_random_id_to_identifier_content_dict[sponsor_random_id]
         
-        assistor_identifier_data = cls._get_database_record(
+        assistor_identifier_data = super()._get_database_record(
             database_type='train_algorithm',
             user_id=user_id, 
             train_id=train_id, 
-            algorithm_data_name='encrypted_identifer',
+            algorithm_data_name='encrypted_identifier',
         )
 
-        assistor_matched_identifer = cls._match_identifier(
-            self_id_data=sponsor_identifier_data,
-            from_id_data=assistor_identifier_data
+        print('assistor_encrypted_identifier', assistor_identifier_data)
+        assistor_matched_identifer = super()._match_identifier(
+            self_id_data=assistor_identifier_data,
+            from_id_data=sponsor_identifier_data
         )
 
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -87,7 +87,7 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
             "3.5 Assistor matches id to index", 
             "---- 3. Unread Match ID Done"
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs

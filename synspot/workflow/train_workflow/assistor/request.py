@@ -20,14 +20,16 @@ class TrainAssistorRequest(TrainBaseWorkflow):
         print('#####request_train', train_id)
         print('dictt',train_id_dict)
         default_mode = cls._get_default_mode()
-        user_id, root, token = cls._get_important_information()
+        user_id = super()._get_user_id()
         print(f'Default_mode: {default_mode}')
 
-        sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict=train_id_dict)
+        sender_random_id, role, cur_rounds_num = obtain_notification_information(
+            notification_dict=train_id_dict
+        )
         
         if default_mode == "auto":
 
-            default_record = cls._get_database_record(
+            default_record = super()._get_database_record(
                 database_type='default_metadata',
                 user_id=user_id
             )
@@ -39,12 +41,12 @@ class TrainAssistorRequest(TrainBaseWorkflow):
             default_id_column = default_record[4]
             default_data_column = default_record[5]
             
-            encrypted_identifier = cls._encrypt_identifier(
+            assistor_encrypted_identifier = super()._encrypt_identifier(
                 dataset_path=default_file_path, 
                 id_idx=default_id_column, 
                 skip_header=cls._skip_header
             )
-
+            print('assistor_encrypted_identifier', assistor_encrypted_identifier)
             # add log
             msgs = [
                 "You are Assistor", 
@@ -52,7 +54,7 @@ class TrainAssistorRequest(TrainBaseWorkflow):
                 "---- 2. Unread Request", 
                 "2.1 Update the request notification"
             ]
-            cls._store_log(
+            super()._store_log(
                 user_id=user_id,
                 task_id=train_id,
                 msgs=msgs
@@ -60,9 +62,9 @@ class TrainAssistorRequest(TrainBaseWorkflow):
             
             data = {
                 "train_id": train_id,
-                "identifier_content": encrypted_identifier
+                "identifier_content": assistor_encrypted_identifier
             }
-            match_identifier_content_response = cls._post_request_chaining(
+            match_identifier_content_response = super()._post_request_chaining(
                 task_id=train_id,
                 data=data,
                 url_prefix=cls._url_prefix,
@@ -71,7 +73,7 @@ class TrainAssistorRequest(TrainBaseWorkflow):
                 status_code=200
             )
 
-            cls._store_database_record(
+            super()._store_database_record(
                 database_type='train_assistor_metadata',
                 user_id=user_id, 
                 train_id=train_id, 
@@ -85,12 +87,12 @@ class TrainAssistorRequest(TrainBaseWorkflow):
                 task_description=None,   
             )
 
-            cls._store_database_record(
+            super()._store_database_record(
                 database_type='train_algorithm',
                 user_id=user_id, 
                 train_id=train_id, 
                 algorithm_data_name='encrypted_identifier',
-                algorithm_data=encrypted_identifier
+                algorithm_data=assistor_encrypted_identifier
             )
 
             # add log
@@ -98,7 +100,7 @@ class TrainAssistorRequest(TrainBaseWorkflow):
                 "2.2 assistor uploads id file", 
                 "---- 2. Unread Request Done"
             ]
-            cls._store_log(
+            super()._store_log(
                 user_id=user_id,
                 task_id=train_id,
                 msgs=msgs

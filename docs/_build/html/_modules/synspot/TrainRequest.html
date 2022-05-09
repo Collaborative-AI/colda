@@ -87,7 +87,7 @@
 <span class="kn">import</span> <span class="nn">subprocess</span>
 
 <span class="kn">from</span> <span class="nn">synspot.network</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">synspot.personalinformation</span> <span class="kn">import</span> <span class="n">PersonalInformation</span>
+<span class="kn">from</span> <span class="nn">synspot.PI</span> <span class="kn">import</span> <span class="n">PI</span>
 <span class="kn">from</span> <span class="nn">synspot.database</span> <span class="kn">import</span> <span class="n">Database</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">log_helper</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">save_file</span><span class="p">,</span> <span class="n">handle_Algorithm_return_value</span>
 <span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">check_Algorithm_return_value</span>
@@ -104,7 +104,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="o">.</span><span class="n">get_PersonalInformation_instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PI_instance</span> <span class="o">=</span> <span class="n">PI</span><span class="o">.</span><span class="n">get_PI_instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Database_instance</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="n">get_Database_instance</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">base_url</span>
@@ -113,8 +113,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">initial_round</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_indicator</span> <span class="o">=</span> <span class="s1">&#39;train&#39;</span>
         <span class="c1"># self.assistor_task_mode = &#39;regression&#39;</span>
-        <span class="c1"># self.exe_position = self.PersonalInformation_instance.exe_position</span>
-        <span class="c1"># self.root = self.PersonalInformation_instance.root</span>
+        <span class="c1"># self.exe_position = self.PI_instance.exe_position</span>
+        <span class="c1"># self.root = self.PI_instance.root</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_TrainRequest_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -133,9 +133,9 @@
 
 <span class="sd">        :exception OSError: Placeholder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">user_id</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PI_instance</span><span class="o">.</span><span class="n">user_id</span>
         <span class="c1"># assert user_id is not None</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">root</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PI_instance</span><span class="o">.</span><span class="n">root</span>
         <span class="c1"># assert root is not None</span>
         <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span><span class="o">.</span><span class="n">token</span>
         <span class="c1"># assert token is not None</span>
@@ -285,7 +285,7 @@
         <span class="c1"># obtain some important information</span>
         <span class="n">user_id</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obtain_important_information</span><span class="p">(</span><span class="n">get_train_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         
-        <span class="n">default_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PersonalInformation_instance</span><span class="o">.</span><span class="n">default_mode</span>
+        <span class="n">default_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PI_instance</span><span class="o">.</span><span class="n">default_mode</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;default_mode&#39;</span><span class="p">,</span> <span class="n">default_mode</span><span class="p">)</span>
         <span class="n">cur_unread_request_Taskid_dict</span> <span class="o">=</span> <span class="n">unread_request_notification</span><span class="p">[</span><span class="s2">&quot;check_dict&quot;</span><span class="p">]</span>
         <span class="n">cur_unread_request_info_dict</span> <span class="o">=</span> <span class="n">unread_request_notification</span><span class="p">[</span><span class="s2">&quot;info_dict&quot;</span><span class="p">]</span>

@@ -5,7 +5,7 @@ import json
 import base64
 
 from synspot.network import Network
-from synspot.personalinformation import PersonalInformation
+from synspot.pi import PI
 
 from synspot.authorization.utils import (
     handle_base64_padding
@@ -20,7 +20,7 @@ class Authorization():
         # self.__url_prefix: Final[str] = 'user'
 
         self.Network_instance = Network.get_instance()
-        self.PersonalInformation_instance = PersonalInformation.get_instance()
+        self.PI_instance = PI.get_instance()
         # self.Database_instance = Database.get_Database_instance()
         self.base_url = self.Network_instance.base_url
 
@@ -50,7 +50,7 @@ class Authorization():
         print('login user_id', user_id)
 
         self.Network_instance.token = token
-        self.PersonalInformation_instance.user_id = user_id
+        self.PI_instance.user_id = user_id
 
         return True
 
@@ -129,14 +129,14 @@ class Authorization():
     def userLogout(self):
         """
         Handle user logout by deleting the information in the instances of Network, 
-        PersonalInformation, and Database_class.
+        PI, and Database_class.
 
         :returns: None
 
         :exception OSError: Placeholder.
         """
         self.Network_instance.logout()
-        self.PersonalInformation_instance.logout()
+        self.PI_instance.logout()
         self.Database_instance.logout()
         return 
 

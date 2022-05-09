@@ -3,17 +3,11 @@ from __future__ import annotations
 import json
 import numpy as np
 
-
 from typing import (
     Any,
     Hashable,
     TypeVar
 )
-
-class check_sponsor_class:
-    sponsor: int = 1
-    assistor: int = 0
-
 
 def to_string(
     msg: Any

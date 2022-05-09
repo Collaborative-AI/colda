@@ -13,7 +13,7 @@ from . import testing_data
 from . import _default_testRequest
 from . import _default_authorization
 from . import _default_getNotification
-from . import _default_PersonalInformation
+from . import _default_PI
 from . import _default_Network
 
 from . import unittest_strategy_interface

@@ -29,14 +29,14 @@ from synspot.authorization import Authorization
 from synspot.GetNotification import GetNotification
 from synspot.database.strategy import DatabaseOperator
 from synspot.network import Network
-from synspot.personalinformation import PersonalInformation
+from synspot.pi import PI
 
 
 
 # from .Database_class_helper import database_strategy_interface
 # from Algorithm import log
 # from .Network import Network
-# from synspot import TrainRequest, PersonalInformation
+# from synspot import TrainRequest, PI
 # from synspot import Authorization
 # from synspot import TestRequest
 # from synspot import Get_Notification
@@ -52,14 +52,14 @@ from typing import (
 from synspot._typing import Default_Mode
 
 _default_network = Network.get_instance()
-_default_personalinformation = PersonalInformation.get_instance()
+_default_PI = PI.get_instance()
 _default_DatabaseOperator = DatabaseOperator.get_instance()
 # _default_authorization = Authorization.get_instance()
 # _default_TrainMainWorkflow = TrainMainWorkflow.get_instance()
 # _default_TestMainWorkflow = TestMainWorkflow.get_instance()
 # _default_getNotification = GetNotification.get_instance()
 # _default_network = Network.get_instance()
-# _default_personalinformation = PersonalInformation.get_instance()
+# _default_PI = PI.get_instance()
 
 
 # def userRegister(username: str, email: str, password: str):
@@ -111,11 +111,11 @@ def set_default_data_path(
     default_data_column: str=None
 ) -> None:
 
-    PersonalInformation_instance = PersonalInformation.get_instance()
-    user_id = PersonalInformation_instance.user_id
+    PI_instance = PI.get_instance()
+    user_id = PI_instance.user_id
     if user_id == None:
         return 'Please Login first'
-    PersonalInformation_instance.default_mode = default_mode
+    PI_instance.default_mode = default_mode
     _default_DatabaseOperator.set_database(database_type='default_metadata')
     return _default_DatabaseOperator.store_record(
         user_id=user_id, 

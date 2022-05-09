@@ -181,6 +181,29 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             container=sponsor_metadata
         )
 
-        return task_mode, model_name, metric_name, train_file_path, train_id_column, train_data_column, train_target_column, task_name, task_description
+        if not super().if_db_response_valid(
+            task_mode, 
+            model_name, 
+            metric_name, 
+            train_file_path, 
+            train_id_column, 
+            train_data_column, 
+            train_target_column, 
+            task_name, 
+            task_description
+        ):
+            return super().dict_value_not_found()
+
+        return (
+            task_mode, 
+            model_name, 
+            metric_name, 
+            train_file_path, 
+            train_id_column, 
+            train_data_column, 
+            train_target_column, 
+            task_name, 
+            task_description
+        )
        
    

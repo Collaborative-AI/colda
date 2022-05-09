@@ -49,17 +49,17 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
         self.__train_custom = train_custom
 
     def make_train_local(self, **kwargs):
-        return MakeTrainLocal.make_train_local(**kwargs)
+        return self.algorithm_process(MakeTrainLocal.make_train_local, **kwargs)
     
     def make_residual(self, **kwargs):
-        return MakeResidual.make_residual(**kwargs)
+        return self.algorithm_process(MakeResidual.make_residual, **kwargs)
     
     def save_residual(self, **kwargs):
-        return SaveResidual.save_residual(**kwargs)
+        return self.algorithm_process(SaveResidual.save_residual, **kwargs)
     
     def make_train(self, **kwargs):
-        return self.__train_custom.make_train(**kwargs)
+        return self.algorithm_process(self.__train_custom.make_train, **kwargs)
 
     def make_result(self, **kwargs):
-        return self.__train_custom.make_result(**kwargs)
+        return self.algorithm_process(self.__train_custom.make_result, **kwargs)
 

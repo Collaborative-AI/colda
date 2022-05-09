@@ -6,7 +6,7 @@ from __future__ import annotations
 from urllib.error import HTTPError
 
 
-class StatusCodeWarning(HTTPError):
+class StatusCodeWarning(Warning):
     '''
     Warning raised when status code of network response is not matching
     '''
@@ -23,7 +23,12 @@ class DuplicateKeyError(ValueError):
 
     pass
 
+class DictValueNotFound(ValueError):
+    """
+    Error raised when the value cannot found in corresponding dict key
+    """
 
+    pass
 
 # from pandas._config.config import OptionError  # noqa:F401
 

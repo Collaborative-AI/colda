@@ -121,8 +121,11 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
 
         # cur_unread_match_identifier_Taskid_dict = unread_match_identifier_notification["check_dict"]
         for train_id, train_id_dict in train_id_dicts.items():
-            sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict_value=train_id_dict)            
+            sender_random_id, role, cur_rounds_num = obtain_notification_information(
+                notification_dict=train_id_dict
+            )            
 
+            print('**********', sender_random_id, role, cur_rounds_num)
             if role == check_sponsor_class.sponsor:
                 self.train_sponsor_match_identifier(
                     train_id=train_id, 
@@ -190,7 +193,9 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         """
 
         for train_id, train_id_dict in train_id_dicts.items():
-            _, role, _ = obtain_notification_information(notification_dict_value=train_id_dicts[train_id])
+            _, role, _ = obtain_notification_information(
+                notification_dict=train_id_dict
+            )
 
             if role == check_sponsor_class.sponsor:
                 self.train_sponsor_situation(
@@ -241,7 +246,7 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         )
 
     def train_output(
-        self, train_id: str, train_id_dicts: dict[dict[str, str]]
+        self, train_id_dicts: dict[dict[str, str]]
     ) -> bool:
 
         """

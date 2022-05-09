@@ -32,9 +32,9 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
 
         :exception OSError: Placeholder.
         """
-        user_id = self.PersonalInformation_instance.user_id
+        user_id = self.PI_instance.user_id
         # assert user_id is not None
-        root = self.PersonalInformation_instance.root
+        root = self.PI_instance.root
         # assert root is not None
         token = self.Network_instance.token
         # assert token is not None

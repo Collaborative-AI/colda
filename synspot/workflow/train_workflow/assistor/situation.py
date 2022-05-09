@@ -17,24 +17,26 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         cls, train_id: str, train_id_dict: dict[str, Any]
     ) -> None:
 
+        user_id = super()._get_user_id()
+        sender_random_id, role, cur_rounds_num = obtain_notification_information(
+            notification_dict=train_id_dict
+        )
+
         msgs = [
             "---- 4. Unread Situation", 
             "4.1 Update the situation notification"
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
         )
         
-        user_id, root, token = cls._get_important_information()
-        sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict=train_id_dict)
-
         data = {
             "train_id": train_id,
             "rounds": cur_rounds_num
         }
-        get_situation_content_response = cls._post_request_chaining(
+        get_situation_content_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
             url_prefix=cls._url_prefix,
@@ -43,7 +45,6 @@ class TrainAssistorSituation(TrainBaseWorkflow):
             status_code=200
         )
 
-        
         # handle response from above request
         situation_content = get_situation_content_response['situation_content']
         sender_random_id = get_situation_content_response['sender_random_id']
@@ -66,7 +67,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
 
         # select train_data_path 
 
-        if cls._async_checker(
+        if super()._async_checker(
             database_type='train_algorithm', 
             user_id=user_id, 
             train_id=train_id,
@@ -77,7 +78,6 @@ class TrainAssistorSituation(TrainBaseWorkflow):
 
         return cls.train_cooperative_model(
             user_id=user_id,
-            token=token,
             train_id=train_id,
             rounds=cur_rounds_num,
             sender_random_id=sender_random_id,
@@ -88,7 +88,6 @@ class TrainAssistorSituation(TrainBaseWorkflow):
     def train_cooperative_model(
         cls, 
         user_id: str,
-        token: str,
         train_id: str, 
         rounds: int, 
         sender_random_id: str, 
@@ -108,7 +107,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         :exception OSError: Placeholder.
         """
         
-        train_assistor_metadata = cls._get_database_record(
+        train_assistor_metadata = super()._get_database_record(
             database_type='train_assistor_metadata',
             user_id=user_id,
             train_id=train_id
@@ -124,14 +123,14 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         task_name = train_assistor_metadata[7] 
         task_description = train_assistor_metadata[8]
 
-        assistor_matched_identifer = cls._get_database_record(
+        assistor_matched_identifer = super()._get_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
             algorithm_data_name='assistor_matched_identifer'
         )
         
-        trained_cooperative_model, trained_cooperative_model_output = cls._train_cooperative_model(
+        trained_cooperative_model, trained_cooperative_model_output = super()._train_cooperative_model(
             dataset_path=train_file_path,
             data_idx=train_data_column,
             skip_header=cls._skip_header,
@@ -143,7 +142,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         )
 
         # Store trained_cooperative_model for further testing
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -168,7 +167,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         msgs = [
             f'4.4 Assistor round {rounds} training done'
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
@@ -191,9 +190,9 @@ class TrainAssistorSituation(TrainBaseWorkflow):
 
         data = {
             "train_id": train_id,
-            "output_content": trained_cooperative_model
+            "output_content": trained_cooperative_model_output
         }
-        send_output_response = cls._post_request_chaining(
+        send_output_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
             url_prefix=cls._url_prefix,
@@ -207,7 +206,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
             '---- 4. Unread Situation Done', 
             '---- Train stage done'
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs

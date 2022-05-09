@@ -23,29 +23,23 @@ class TrainSponsorSituation(TrainBaseWorkflow):
             cls, train_id: str, train_id_dict: dict[str, Any]
         ) -> None:
 
+        user_id = super()._get_user_id()
+        sender_random_id, role, cur_rounds_num = obtain_notification_information(
+            notification_dict=train_id_dict
+        )
+
         msgs = [
             "---- 4. Unread Situation", 
-            "4.1 Update the situation notification"
-        ]
-        cls._store_log(
-            user_id=user_id,
-            task_id=train_id,
-            msgs=msgs
-        )
-
-        user_id, root, token = cls._get_important_information()
-        sender_random_id, role, cur_rounds_num = obtain_notification_information(notification_dict=train_id_dict)
-
-        msgs = [
+            "4.1 Update the situation notification",
             f'4.2 Current round is: {cur_rounds_num}'
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
         )
 
-        sponsor_metadata_record = cls._get_database_record(
+        sponsor_metadata_record = super()._get_database_record(
             database_type='train_sponsor_metadata',
             user_id=user_id,
             train_id=train_id
@@ -60,7 +54,7 @@ class TrainSponsorSituation(TrainBaseWorkflow):
         task_name = sponsor_metadata_record[7]
         task_description = sponsor_metadata_record[8]
 
-        sponsor_residual = cls._get_database_record(
+        sponsor_residual = super()._get_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -68,7 +62,7 @@ class TrainSponsorSituation(TrainBaseWorkflow):
         )
 
         # train cooperative model using residual of current round as target
-        trained_cooperative_model, trained_cooperative_model_output = cls._train_cooperative_model(
+        trained_cooperative_model, trained_cooperative_model_output = super()._train_cooperative_model(
             dataset_path=train_file_path, 
             data_idx=train_data_column, 
             skip_header=cls._skip_header, 
@@ -80,7 +74,7 @@ class TrainSponsorSituation(TrainBaseWorkflow):
         )
 
         # Store trained_cooperative_model for further testing
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -89,7 +83,7 @@ class TrainSponsorSituation(TrainBaseWorkflow):
         )
 
         # Store trained_cooperative_model_output for calculating result
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -101,7 +95,7 @@ class TrainSponsorSituation(TrainBaseWorkflow):
             f'4.3 Sponsor round {cur_rounds_num} training done',
             '---- 4. Unread Situation Done'
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs

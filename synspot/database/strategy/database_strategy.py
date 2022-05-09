@@ -73,11 +73,17 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         elif database_type == 'test_algorithm':
             self.__database_operator = GetTestAlgorithmDatabase.get_database()
 
-    def get_all_records(self, **kwargs):
+    def get_all_records(
+        self, **kwargs
+    ) -> list:
         return self.__database_operator.get_all_records(**kwargs)
     
-    def store_record(self, **kwargs):
+    def store_record(
+        self, **kwargs
+    ) -> list:
         return self.__database_operator.store_record(**kwargs)
     
-    def get_record(self, **kwargs):
+    def get_record(
+        self, **kwargs
+    ) -> list:
         return self.__database_operator.get_record(**kwargs)

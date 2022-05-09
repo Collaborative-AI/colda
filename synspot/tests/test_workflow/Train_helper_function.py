@@ -20,7 +20,7 @@ from synspot.tests.test_workflow import testing_data
 from synspot.tests.test_workflow import _default_trainMainWorkflow
 from synspot.tests.test_workflow import _default_authorization
 from synspot.tests.test_workflow import _default_getNotification
-from synspot.tests.test_workflow import _default_PersonalInformation
+from synspot.tests.test_workflow import _default_PI
 from synspot.tests.test_workflow import _default_Network
 
 

@@ -56,7 +56,7 @@ class MakeResidual(BaseAlgorithm):
     def make_residual(
         cls, 
         self_id: str, 
-        task_id: str, 
+        train_id: str, 
         round: str, 
         dataset_path: str, 
         target_idx: str, 
@@ -64,13 +64,13 @@ class MakeResidual(BaseAlgorithm):
         task_mode: str, 
         metric_name: str,
         last_round_result: Union(Any, None) = None
-    ) -> tuple[list[Any], list[Any]]:
+    ) -> tuple[np.ndarray[Any], np.ndarray[Any]]:
 
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
         target_idx = parse_idx(target_idx)
         target = dataset[:, target_idx]
         
-        init_round_result = np.array()
+        init_round_result = None
         if round == 1:
             output = cls.make_init(task_mode, target)
             # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
@@ -81,8 +81,7 @@ class MakeResidual(BaseAlgorithm):
             residual = cls.compute_residual(task_mode, output, target)
             metric = Metric(task_mode, metric_name)
             eval = metric.eval(output, target)
-            msg = 'Train Round: 0, {}'.format(eval)
-            log(msg, cls.__root, self_id, task_id)
+            # log(msg, cls.__root, self_id, train_id)
         else:
             # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
             '''
@@ -104,9 +103,7 @@ class MakeResidual(BaseAlgorithm):
         #     # np.savetxt(assistor_residual_path_i, residual[self_from_idx_i,], delimiter=",")
         #     assistor_residual_path.append(assistor_residual_path_i)
         # assistor_residual_path = '?'.join(assistor_residual_path)
-        # return '200?make_residual?{}'.format(assistor_residual_path)
-        init_round_result = init_round_result.tolist()
-        residual = residual.tolist()
+        # return '200?make_residual?{}'.format(assistor_residual_path)             
         return init_round_result, residual
 
     @classmethod

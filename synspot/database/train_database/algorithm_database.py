@@ -107,6 +107,11 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
             container=self.__temp_database[key]
         )
         
+        if not super().if_db_response_valid(
+            algorithm_data, 
+        ):
+            return super().dict_value_not_found()
+
         return algorithm_data
        
    

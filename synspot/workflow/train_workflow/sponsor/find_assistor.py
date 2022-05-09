@@ -21,9 +21,9 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
         :exception OSError: 
         """
 
-        _, _, token = cls._get_important_information()
+        user_id = super()._get_user_id()
 
-        create_new_train_task_response = cls._get_request_chaining(
+        create_new_train_task_response = super()._get_request_chaining(
             task_id=None,
             url_prefix=cls._url_prefix,
             url_root='create_new_train_task',
@@ -50,10 +50,10 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
     ) -> None:
 
         train_id = cls.__get_train_id()
-        user_id, root, token = cls._get_important_information()
+        user_id = super()._get_user_id()
         
         # call make_hash in Algorithm module
-        encrypted_identifer = cls._encrypt_identifier(
+        encrypted_identifer = super()._encrypt_identifier(
             dataset_path=train_file_path, 
             id_idx=train_id_column, 
             skip_header=cls._skip_header
@@ -71,7 +71,7 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
         }
         for key,value in data.items():
             print('%%%%', key, value, type(value))
-        find_assistor_response = cls._post_request_chaining(
+        find_assistor_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
             url_prefix=cls._url_prefix,
@@ -80,7 +80,7 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
             status_code=200
         )
 
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_sponsor_metadata',
             user_id=user_id, 
             train_id=train_id, 
@@ -95,7 +95,7 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
             task_description=task_description, 
         )
         
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id, 
             train_id=train_id, 
@@ -112,7 +112,7 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
             "1.1 Sponsor calls for help", 
             "1.2 Sponsor sends id file"
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs

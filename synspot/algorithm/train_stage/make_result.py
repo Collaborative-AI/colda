@@ -22,8 +22,8 @@ class MakeResult(BaseAlgorithm):
         skip_header, 
         task_mode, 
         metric_name,
-        sponsor_output,
-        assistor_output_contents,
+        sponsor_trained_cooperative_model_output,
+        assistor_trained_cooperative_model_outputs,
         sponsor_matched_identifers,
         last_round_result,
     ) -> None:
@@ -35,7 +35,7 @@ class MakeResult(BaseAlgorithm):
         # matched_idx_path = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx')
         # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round')
         # output = np.genfromtxt(os.path.join(output_path, '{}.csv'.format(self_id)), delimiter=',')
-        output = sponsor_output
+        output = sponsor_trained_cooperative_model_output
         output = output.reshape(output.shape[0], -1)
         count = np.ones((output.shape[0], 1))
         # output_files = os.listdir(output_path)
@@ -53,8 +53,8 @@ class MakeResult(BaseAlgorithm):
         #                                         delimiter=',').astype(np.int64)
         #         output[self_from_idx_i,] = output[self_from_idx_i,] + output_i
         #         count[self_from_idx_i,] = count[self_from_idx_i,] + 1
-
-        for assistor_random_id, assistor_output_content in assistor_output_contents.items():
+        print('!!!assistor_trained_cooperative_model_outputs', assistor_trained_cooperative_model_outputs, type(assistor_trained_cooperative_model_outputs))
+        for assistor_random_id, assistor_output_content in assistor_trained_cooperative_model_outputs.items():
             # output_i = np.genfromtxt(os.path.join(output_path, output_files[i]), delimiter=',')
             assistor_output_content = assistor_output_content.reshape(assistor_output_content.shape[0], -1)
             # self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, '{}.csv'.format(from_id_i)),
@@ -64,7 +64,7 @@ class MakeResult(BaseAlgorithm):
             count[self_from_idx_id,] = count[self_from_idx_id,] + 1
         output = output / count
         # result = np.genfromtxt(os.path.join(round_path, str(round - 1), 'result.csv'), delimiter=',')
-
+        
         result = last_round_result
         if round == 1:
             if len(result.shape) == 0:

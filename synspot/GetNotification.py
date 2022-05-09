@@ -11,7 +11,7 @@ from synspot.workflow import (
 )
 
 from synspot.network import Network
-from synspot.personalinformation import PersonalInformation
+from synspot.pi import PI
 from synspot.authorization import Authorization
 
 
@@ -22,7 +22,7 @@ class GetNotification():
         self.__stop_indicator = None
 
         self.__Network_instance = Network.get_instance()
-        self.__PersonalInformation_instance = PersonalInformation.get_instance()
+        self.__PI_instance = PI.get_instance()
         self.__Authorization_instance = Authorization.get_instance()
 
         self.__default_trainMainWorkflow = TrainMainWorkflow.get_instance()
@@ -113,7 +113,7 @@ class GetNotification():
         """
         if self.__stop_indicator == None:
             self.__stop_indicator = False
-        user_id = self.__PersonalInformation_instance.user_id
+        user_id = self.__PI_instance.user_id
 
         token = self.__Network_instance.token
         if not token:

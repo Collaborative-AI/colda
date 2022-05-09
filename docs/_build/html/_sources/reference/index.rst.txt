@@ -8,7 +8,7 @@ Reference
    authorization
    database
    network
-   personalinformation
+   PI
 
    error
    GetNotification

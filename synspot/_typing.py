@@ -48,4 +48,19 @@ Role = Literal[
     'assistor',
 ]
 
-Default_Mode = Literal['auto', 'manual']
+Default_Mode = Literal[
+    'auto', 
+    'manual'
+]
+
+Serializable_Datatype = Union[
+    dict,
+    list,
+    tuple,
+    str,
+    int,
+    float,
+    bool,
+    None,
+    
+]

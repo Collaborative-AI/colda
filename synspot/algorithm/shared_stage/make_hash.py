@@ -17,7 +17,7 @@ class MakeHash(BaseAlgorithm):
         dataset_path: str, 
         id_idx: str, 
         skip_header: int, 
-    ) -> list[str]:
+    ) -> np.ndarray:
 
         dataset = np.genfromtxt(dataset_path, delimiter=',', dtype=np.str_, skip_header=skip_header)
         id_idx = parse_idx(id_idx)
@@ -51,8 +51,7 @@ class MakeHash(BaseAlgorithm):
         #     return '300?make_hash?not valid mode'
             
         # return '200?make_hash?{}'.format(hash_id_path)
-        hash_id = hash_id.tolist()
-        return hash_id
+        return (hash_id, )
 
 
     @classmethod

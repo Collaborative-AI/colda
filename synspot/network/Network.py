@@ -158,7 +158,7 @@ class Network():
         else:
             return request_response
 
-    
+
     def load_network_response(
         self,
         network_response: JSONType,
@@ -175,11 +175,14 @@ class Network():
         :exception OSError: Placeholder.
         """
         
+        # print('pre_network_response', network_response.json())
+
         if hasattr(network_response, 'text'):
             network_response = network_response.text
 
-        network_response = ParseJson.load_json_recursion(network_response)
         
+        network_response = ParseJson.load_json_recursion(network_response)
+        # print('post_network_response', network_response)
         # if isinstance(json_data, dict):
         #     print('json_data', json_data.keys())
         # assert json_data is not None
@@ -234,7 +237,10 @@ class Network():
             url_root=url_root, 
             url_suffix=url_suffix
         )
-        print('##post_url', url)
+        # print('##post_url1', url, data)
+        data = ParseJson.make_data_serializable(data)
+        # print('##post_url2', data)
+
         network_response = self.post_request(
             url=url,
             token=self.__token,

@@ -2,19 +2,13 @@ from __future__ import annotations
 
 import collections
 
-from .utils import get_user_id
+from synspot.database.utils import get_user_id
 
 from typing import(
     List
 )
 
-from synspot.database.database_factory import(
-    GetDefaultMetadataDatabase,
-    GetTrainSponsorMetadataDatabase,
-    GetTrainAssistorMetadataDatabase,
-    GetTestSponsorMetadataDatabase,
-    GetTestAssistorMetadataDatabase
-)
+from synspot.database.strategy import DatabaseOperator
 
 
 def get_all_train_id_as_sponsor() -> List[str]:
@@ -41,10 +35,9 @@ def get_all_train_id_as_sponsor() -> List[str]:
 
     user_id = get_user_id()
     all_train_ids = []
-    for database in (GetTrainSponsorMetadataDatabase.get_database()):
-        for record in database.get_all_records():
-            if record[0] == user_id:
-                all_train_ids.append(record[1])
+    DatabaseOperator.set_database(database_type='train_assistor_metadata')
+    for record_key, record_val in DatabaseOperator.get_all_records().items():
+        all_trains_ids = 5
 
     return all_train_ids
 
@@ -142,7 +135,6 @@ def get_all_test_id_as_assistor() -> List[str]:
 
     return all_test_ids
 
-    
 def logout():
     """
     Handle user logout by setting the __temp_database to collections.defaultdict(dict)

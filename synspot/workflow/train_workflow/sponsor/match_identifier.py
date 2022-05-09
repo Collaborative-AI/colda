@@ -20,24 +20,24 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
     def train_sponsor_match_identifier(
             cls, train_id: str, train_id_dict: dict[str, Any]
         ) -> None:
+        print('train_sponsor_match_identifier')
+        user_id = super()._get_user_id()
 
         msgs = [
             "---- 3. Unread Match ID", 
             "3.1 Update the match id notification",
             "3.2 unread_match_identifier_sponsor",
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
         )
-
-        user_id, root, token = cls._get_important_information()
         
         data = {
             "train_id": train_id,
         }
-        get_identifier_content_response = cls._post_request_chaining(
+        get_identifier_content_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
             url_prefix=cls._url_prefix,
@@ -49,7 +49,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         msg = [
             "3.3 Sponsor gets matched id file \n"
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msg
@@ -62,27 +62,27 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             assistor_identifier_data = ParseJson.load_json_recursion(identifier_content)
 
             # msg = ["3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2]]
-            # cls._store_log(
+            # super()._store_log(
             #     user_id=user_id,
             #     task_id=train_id,
             #     msgs=msg
             # )
             
-            sponsor_identifier_data = cls._get_database_record(
+            sponsor_identifier_data = super()._get_database_record(
                 database_type='train_algorithm',
                 user_id=user_id, 
                 train_id=train_id, 
                 algorithm_data_name='encrypted_identifer',
             )
 
-            sponsor_matched_identifer = cls._match_identifier(
+            sponsor_matched_identifer = super()._match_identifier(
                 self_id_data=sponsor_identifier_data,
                 from_id_data=assistor_identifier_data
             )
 
             sponsor_matched_identifers[assistor_random_id] = sponsor_matched_identifer
 
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -97,7 +97,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         msgs = [
             "3.5 Sponsor matches id to index"
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msgs
@@ -105,7 +105,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
 
         # get the metadata of this task that stored before
         # get train target column
-        sponsor_metadata_record = cls._get_database_record(
+        sponsor_metadata_record = super()._get_database_record(
             database_type='train_sponsor_metadata',
             user_id=user_id,
             train_id=train_id
@@ -123,7 +123,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         print("train_file_path", train_file_path, train_target_column)
 
         # call make residual
-        sponsor_result, sponsor_residual = cls._calculate_residual(
+        sponsor_result, sponsor_residual = super()._calculate_residual(
             self_id=user_id, 
             train_id=train_id, 
             round=cls._initial_round_num, 
@@ -135,7 +135,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             last_round_result=None,
         )
 
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -143,7 +143,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             algorithm_data=sponsor_result
         )
 
-        cls._store_database_record(
+        super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
@@ -154,7 +154,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         msg = [
             "3.6 Sponsor makes residual finished"
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msg
@@ -169,7 +169,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             "train_id": train_id,
             "assistor_random_id_to_residual_dict": assistor_random_id_to_residual_dict
         }
-        send_situation_response = cls._post_request_chaining(
+        send_situation_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
             url_prefix=cls._url_prefix,
@@ -182,11 +182,11 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             "3.7 Sponsor sends all situations", 
             "---- 3. Unread Match ID Done"
         ]
-        cls._store_log(
+        super()._store_log(
             user_id=user_id,
             task_id=train_id,
             msgs=msg
         )
-
+        print('sponsor_match_id_done')
         print('Sponsor: Training train_id: ', train_id, ' is running')
         return True

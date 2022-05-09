@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>synspot.personalinformation.PersonalInformation &mdash; Synspot 0.0.0 documentation</title>
+  <title>synspot.PI.PI &mdash; Synspot 0.0.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
@@ -65,7 +65,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>synspot.personalinformation.PersonalInformation</li>
+      <li>synspot.PI.PI</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,11 +74,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for synspot.personalinformation.PersonalInformation</h1><div class="highlight"><pre>
+  <h1>Source code for synspot.PI.PI</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<div class="viewcode-block" id="PersonalInformation"><a class="viewcode-back" href="../../../reference/personalinformation.html#synspot.personalinformation.PersonalInformation">[docs]</a><span class="k">class</span> <span class="nc">PersonalInformation</span><span class="p">:</span>
-    <span class="n">__PersonalInformation_instance</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="viewcode-block" id="PI"><a class="viewcode-back" href="../../../reference/PI.html#synspot.PI.PI">[docs]</a><span class="k">class</span> <span class="nc">PI</span><span class="p">:</span>
+    <span class="n">__PI_instance</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__default_mode</span> <span class="o">=</span> <span class="kc">None</span>
@@ -87,11 +87,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__exe_position</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">)</span>
         
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_PersonalInformation_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__PersonalInformation_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">__PersonalInformation_instance</span> <span class="o">=</span> <span class="n">PersonalInformation</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_PI_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__PI_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">__PI_instance</span> <span class="o">=</span> <span class="n">PI</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__PersonalInformation_instance</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__PI_instance</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -191,7 +191,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exe_position</span>
 
-<div class="viewcode-block" id="PersonalInformation.logout"><a class="viewcode-back" href="../../../reference/personalinformation.html#synspot.personalinformation.PersonalInformation.logout">[docs]</a>    <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PI.logout"><a class="viewcode-back" href="../../../reference/PI.html#synspot.PI.PI.logout">[docs]</a>    <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle user logout by setting the __default_mode and __user_id to None</span>
 

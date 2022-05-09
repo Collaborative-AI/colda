@@ -87,7 +87,7 @@ import collections
 from typing import List
 from abc import ABC, abstractmethod
 
-from .PersonalInformation import PersonalInformation
+from .PI import PI
 from .Database_class import Database_class
 
 class Strategy(ABC):
@@ -149,9 +149,9 @@ class database_strategy_interface():
         self._database_strategy = database_strategy
 
     def execute_strategy(self):
-        PersonalInformation_instance = PersonalInformation.get_PersonalInformation_instance()
+        PI_instance = PI.get_PI_instance()
         Database_class_instance = Database_class.get_Database_class_instance()
-        user_id = self.PersonalInformation_instance.user_id
+        user_id = self.PI_instance.user_id
         assert user_id is not None
 
         return self._database_strategy.search_database(user_id, Database_class_instance)

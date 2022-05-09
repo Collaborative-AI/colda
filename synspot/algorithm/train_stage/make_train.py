@@ -32,7 +32,7 @@ class MakeTrain(BaseAlgorithm):
         cur_round_residual: Any,
         role: Role,
         matched_identifier: Any = None,
-    ) -> None:
+    ) -> tuple[Any, np.ndarray]:
 
         # return "300?make_train assistor cannot find match idx file"
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
@@ -66,4 +66,5 @@ class MakeTrain(BaseAlgorithm):
         # makedir_exist_ok(output_path)
         # output_path = os.path.join(output_path, '{}.csv'.format(self_id))
         # np.savetxt(output_path, output, delimiter=",")
+        # output = output.tolist()
         return model, output

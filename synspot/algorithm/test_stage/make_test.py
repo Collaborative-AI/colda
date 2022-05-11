@@ -1,61 +1,83 @@
 from __future__ import annotations
 
-import numpy as np
 import os
 import json
 import collections
+import numpy as np
+
 from synspot.algorithm.base import BaseAlgorithm
-from synspot.algorithm.utils import load, makedir_exist_ok, parse_idx
+
+from synspot.algorithm.utils import parse_idx
+
+from synspot._typing import Role
+
+from typing import Any
+
 
 class MakeTest(BaseAlgorithm):
+
+    '''
+    Utilize the model of every round to get test output of new data of every round
+    '''
 
     @classmethod
     def make_test(
         cls, 
-        root, 
-        self_id, 
-        task_id, 
-        test_id, 
-        round, 
-        from_id, 
-        dataset_path, 
-        data_idx, 
-        skip_header
-    ) -> None:
+        # root, 
+        # self_id, 
+        # task_id, 
+        # test_id, 
+        user_id: str,
+        test_id: str,
+        max_round: int, 
+        matched_identifier: dict[str],
+        trained_models_of_each_round: dict[str, Any],
+        # from_id, 
+        dataset_path: str, 
+        data_idx: str, 
+        skip_header: int,
+        role: Role,
+    ) -> dict[str, Any]:
 
-        res = []
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
-        res.append(dataset)
-        res.append('$$$$$$')
         data_idx = parse_idx(data_idx)
-        res.append(data_idx)
-        res.append('$$$$$$')
         data = dataset[:, data_idx]
-        res.append(data)
-        res.append('$$$$$$')
-        if from_id is not None:
-            self_from_idx = np.genfromtxt(
-                os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'matched_idx', '{}.csv'.format(from_id)),
-                delimiter=',').astype(np.int64)
+
+        if role == 'assistor':
+        # if from_id is not None:
+            # self_from_idx = np.genfromtxt(
+            #     os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'matched_idx', '{}.csv'.format(from_id)),
+            #     delimiter=',').astype(np.int64)
+            self_from_idx = matched_identifier
             data = data[self_from_idx]
-            res.append(data)
-            res.append('$$$$$$')
+  
         # print('make_test_data', data)
-        output_path = []
+        # output_path = []
         make_test_res = collections.defaultdict(list)
-        for i in range(1, round + 1):
-            model = load(os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(i), 'model.pkl'))
-            print('model', i, model)
-            output = model.predict(data)
+        outputs = {}
+        for i in range(1, max_round + 1):
+            # model = load(os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(i), 'model.pkl'))
+            # print('model', i, model)
+            model = trained_models_of_each_round[i]
+            outputs[f'rounds_{i}'] = model.predict(data)
             for j in range(4):
-                make_test_res[i].append(output[j][0])
-            output_path_i = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'round', str(i), 'output')
-            print('output_path_i', output_path_i)
-            makedir_exist_ok(output_path_i)
-            output_path_i = os.path.join(output_path_i, '{}.csv'.format(self_id))
-            np.savetxt(output_path_i, output, delimiter=",")
-            output_path.append(output_path_i)
-        output_path = '?'.join(output_path)
-        make_test_res = json.dumps(make_test_res)
-        return '200?make_test?{make_test_res}?{output_path}?{res}'.format(make_test_res = make_test_res, output_path = output_path, res=res)
+                # make_test_res[i].append(output[j][0])
+                make_test_res[i].append(outputs[f'rounds_{i}'][j][0])
+                
+            # output_path_i = os.path.join(root, self_id, 'task', task_id, 'test', test_id, 'round', str(i), 'output')
+            # print('output_path_i', output_path_i)
+            # makedir_exist_ok(output_path_i)
+            # output_path_i = os.path.join(output_path_i, '{}.csv'.format(self_id))
+            # np.savetxt(output_path_i, output, delimiter=",")
+            # output_path.append(output_path_i)
+        super()._store_log(
+            user_id=user_id,
+            task_id=test_id,
+            msgs=make_test_res,
+            log_category='make_test',
+        )
+        # output_path = '?'.join(output_path)
+        # make_test_res = json.dumps(make_test_res)
+        # return '200?make_test?{make_test_res}?{output_path}?{res}'.format(make_test_res = make_test_res, output_path = output_path, res=res)
+        return outputs
     

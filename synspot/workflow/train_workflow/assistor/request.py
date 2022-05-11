@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import requests
-
 from synspot.workflow.train_base import TrainBaseWorkflow
 
 from synspot.workflow.utils import (
@@ -44,7 +42,7 @@ class TrainAssistorRequest(TrainBaseWorkflow):
             assistor_encrypted_identifier = super()._encrypt_identifier(
                 dataset_path=default_file_path, 
                 id_idx=default_id_column, 
-                skip_header=cls._skip_header
+                skip_header=super()._skip_header
             )
             print('assistor_encrypted_identifier', assistor_encrypted_identifier)
             # add log
@@ -67,7 +65,7 @@ class TrainAssistorRequest(TrainBaseWorkflow):
             match_identifier_content_response = super()._post_request_chaining(
                 task_id=train_id,
                 data=data,
-                url_prefix=cls._url_prefix,
+                url_prefix=super()._url_prefix,
                 url_root='match_identifier_content',
                 url_suffix=user_id,
                 status_code=200
@@ -91,7 +89,7 @@ class TrainAssistorRequest(TrainBaseWorkflow):
                 database_type='train_algorithm',
                 user_id=user_id, 
                 train_id=train_id, 
-                algorithm_data_name='encrypted_identifier',
+                algorithm_data_name='assistor_encrypted_identifier',
                 algorithm_data=assistor_encrypted_identifier
             )
 

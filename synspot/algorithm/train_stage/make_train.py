@@ -1,20 +1,23 @@
 from __future__ import annotations
 
-import numpy as np
 import os
+import numpy as np
+
 from synspot.algorithm.base import BaseAlgorithm
-from synspot.algorithm.utils import save, makedir_exist_ok, parse_idx
+
+from synspot.algorithm.utils import parse_idx
+
 from synspot.algorithm.model.models import Model
 
 from typing import Any
 
 from synspot._typing import Role
 
+
 class MakeTrain(BaseAlgorithm):
+    
     '''
-    
-    要 matched idx, residual
-    
+    Train the model
     '''
 
     @classmethod
@@ -41,8 +44,8 @@ class MakeTrain(BaseAlgorithm):
         data = data.reshape(data.shape[0], -1)
         # target = np.genfromtxt(os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'residual',
         #                                     '{}.csv'.format(self_id)), delimiter=',')
-        target = cur_round_residual
-        target = target.reshape(target.shape[0], -1)
+        # target = cur_round_residual
+        cur_round_residual = cur_round_residual.reshape(cur_round_residual.shape[0], -1)
 
         # assostor
         if role == 'assistor':
@@ -59,12 +62,12 @@ class MakeTrain(BaseAlgorithm):
             # self_from_idx = matched_identifier
             data = data[matched_identifier]
         model = Model(task_mode, model_name)
-        model.fit(data, target)
+        model.fit(data, cur_round_residual)
         # save(model, os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'model.pkl'))
-        output = model.predict(data)
+        trained_output = model.predict(data)
         # output_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'output')
         # makedir_exist_ok(output_path)
         # output_path = os.path.join(output_path, '{}.csv'.format(self_id))
         # np.savetxt(output_path, output, delimiter=",")
         # output = output.tolist()
-        return model, output
+        return model, trained_output

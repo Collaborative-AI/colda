@@ -19,7 +19,7 @@ from synspot.workflow.train_workflow.assistor import (
     TrainAssistorSituation
 )
 
-from synspot.workflow.utils import check_sponsor_class
+from synspot.workflow.utils import CheckSponsor
 
 
 class TrainMainWorkflow(AbstractTrainMainWorkflow):
@@ -126,12 +126,12 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
             )            
 
             print('**********', sender_random_id, role, cur_rounds_num)
-            if role == check_sponsor_class.sponsor:
+            if role == CheckSponsor.sponsor:
                 self.train_sponsor_match_identifier(
                     train_id=train_id, 
                     train_id_dict=train_id_dict
                 )
-            elif role == check_sponsor_class.assistor:
+            elif role == CheckSponsor.assistor:
                 print('train_assistor_match_identifier')
                 self.train_assistor_match_identifier(
                     train_id=train_id, 
@@ -197,12 +197,12 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
                 notification_dict=train_id_dict
             )
 
-            if role == check_sponsor_class.sponsor:
+            if role == CheckSponsor.sponsor:
                 self.train_sponsor_situation(
                     train_id=train_id, 
                     train_id_dict=train_id_dict,
                 )
-            elif role == check_sponsor_class.assistor:
+            elif role == CheckSponsor.assistor:
                 self.train_assistor_situation(
                     train_id=train_id, 
                     train_id_dict=train_id_dict

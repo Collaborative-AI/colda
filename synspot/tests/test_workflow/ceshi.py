@@ -818,6 +818,9 @@ class DictValueNotFound(ValueError):
 
 # ceshi2(*res)
 
-a = (5,6,7)
-b = json.dumps(a)
-print(b, type(b))
+a = [1,2,3]
+
+def ceshi(*args):
+    print(args)
+
+ceshi(None)

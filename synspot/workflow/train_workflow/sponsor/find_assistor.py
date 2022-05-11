@@ -1,11 +1,6 @@
 from __future__ import annotations
 
-import requests
-
-from synspot.workflow.base import BaseWorkflow
 from synspot.workflow.train_base import TrainBaseWorkflow
-
-from synspot.utils.log import GetWorkflowLog
 
 
 class TrainSponsorFindAssistor(TrainBaseWorkflow):
@@ -21,11 +16,9 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
         :exception OSError: 
         """
 
-        user_id = super()._get_user_id()
-
         create_new_train_task_response = super()._get_request_chaining(
             task_id=None,
-            url_prefix=cls._url_prefix,
+            url_prefix=super()._url_prefix,
             url_root='create_new_train_task',
             url_suffix=None,
             status_code=200
@@ -53,14 +46,14 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
         user_id = super()._get_user_id()
         
         # call make_hash in Algorithm module
-        encrypted_identifer = super()._encrypt_identifier(
+        sponsor_encrypted_identifer = super()._encrypt_identifier(
             dataset_path=train_file_path, 
             id_idx=train_id_column, 
-            skip_header=cls._skip_header
+            skip_header=super()._skip_header
         )        
 
         data = {
-            "identifier_content": encrypted_identifer,
+            "identifier_content": sponsor_encrypted_identifer,
             "train_id": train_id,
             "task_mode": task_mode,
             "model_name": model_name,
@@ -69,12 +62,11 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
             "task_name": task_name,   
             "task_description": task_description
         }
-        for key,value in data.items():
-            print('%%%%', key, value, type(value))
+
         find_assistor_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
-            url_prefix=cls._url_prefix,
+            url_prefix=super()._url_prefix,
             url_root='find_assistor',
             url_suffix=user_id,
             status_code=200
@@ -99,8 +91,8 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
             database_type='train_algorithm',
             user_id=user_id, 
             train_id=train_id, 
-            algorithm_data_name='encrypted_identifer',
-            algorithm_data=encrypted_identifer
+            algorithm_data_name='sponsor_encrypted_identifer',
+            algorithm_data=sponsor_encrypted_identifer
         )
 
         # Record the history to log file

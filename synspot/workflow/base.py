@@ -30,12 +30,14 @@ from typing import (
     Final,
 )
 
+from synspot._typing import Stage
+
 
 class BaseWorkflow:
     _skip_header: Final[int] = 1
     _initial_round_num: Final[int] = 1
     _url_prefix: Final[str] = 'main_flow'
-    _maxRound: Final[int] = 3
+    _max_round: Final[int] = 3
 
     __Network_instance = Network.get_instance()
     __PI_instance = PI.get_instance()
@@ -214,17 +216,26 @@ class BaseWorkflow:
         cls,
         database_type: str,
         user_id: str,
-        train_id: str,
+        task_id: str,
         algorithm_data_name: str,
+        stage: Stage,
         waiting_start_time: type[time.time()]
     ) -> bool:
 
-        res = cls._get_database_record(
-            database_type=database_type,
-            user_id=user_id,
-            train_id=train_id,
-            algorithm_data_name=algorithm_data_name
-        )
+        if stage == 'train':
+            res = cls._get_database_record(
+                database_type=database_type,
+                user_id=user_id,
+                train_id=task_id,
+                algorithm_data_name=algorithm_data_name
+            )
+        elif stage == 'test':
+            res = cls._get_database_record(
+                database_type=database_type,
+                user_id=user_id,
+                test_id=task_id,
+                algorithm_data_name=algorithm_data_name
+            )
         print('((((((', res, type(res))
         if res == DictValueNotFound:
 
@@ -237,13 +248,13 @@ class BaseWorkflow:
             args = [
                 database_type,
                 user_id,
-                train_id,
+                task_id,
                 algorithm_data_name,
                 waiting_start_time
             ]
             threading.Timer(
                 15, 
-                super()._async_checker, 
+                cls._async_checker, 
                 args
             )
 

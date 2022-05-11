@@ -6,10 +6,9 @@ from synspot.database.base import BaseDatabase
 
 from synspot.database.abstract_database import AbstractAlgorithmDatabase
 
+from synspot.utils import DictHelper
+
 from typing import (
-    Type,
-    List,
-    Tuple,
     Union,
     Any
 )
@@ -22,7 +21,7 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         self.__temp_database = collections.defaultdict(dict)
 
     @classmethod
-    def get_instance(cls) -> Type[TestAlgorithmDatabase]:
+    def get_instance(cls) -> type[TestAlgorithmDatabase]:
         if cls.__TestAlgorithmDatabase_instance == None:
             cls.__TestAlgorithmDatabase_instance = TestAlgorithmDatabase()
 
@@ -31,9 +30,9 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
     def store_record(
         self, 
         user_id: str, 
-        task_id: str, 
+        test_id: str, 
         algorithm_data_name: str,
-        algorithm_data: Union(List[str], List[List[str]], Any),
+        algorithm_data: Union(list[str], list[list[str]], Any),
     ) -> None:
         
         """
@@ -47,20 +46,24 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         :exception OSError: Placeholder.
         """
 
-        try:
-            key = generate_database_key(user_id, task_id)
-            if key not in self.__temp_database:
-                self.__temp_database[key] = collections.defaultdict(dict)
+        key = DictHelper.generate_dict_key(user_id, test_id, algorithm_data_name)
 
-            self.__temp_database[key][algorithm_data_name] = algorithm_data
-        except:
-            print('User_Assistor_Table stores false')
-        return 'User_Assistor_Table stores successfully'
+        store_res = DictHelper.store_value(
+            key=key,
+            value=algorithm_data,
+            container=self.__temp_database,
+            store_type='append'
+        )
+        if store_res == True:
+            return f'{self.__class__.__name__} stores {key} successfully!' 
+        else:
+            return f'{self.__class__.__name__} failed to stores {key}'
+
     
     def get_record(
         self, 
         user_id: str, 
-        task_id: str, 
+        test_id: str, 
         algorithm_data_name: str,
     ) -> None:
         
@@ -84,19 +87,25 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         :exception OSError: Placeholder.
         """
 
-        if not task_id:
-            raise RuntimeError('Use task_id or test_id to retrieve User_Assistor_Table')
+        if not test_id:
+            raise RuntimeError('Use test_id to retrieve User_Assistor_Table')
         if not algorithm_data_name:
             print('placeholder')
             
-        key = generate_database_key(user_id, task_id)
+        key = DictHelper.generate_dict_key(user_id, test_id, algorithm_data_name)
         if key not in self.__temp_database:
             print(f'{self.__class__.__name__} does not contain the record')
+            return '666666'
 
-        try:
-            algorithm_data = self.__temp_database[key][algorithm_data_name]
-        except:
-            print('get User_Assistor_Table false')
+        algorithm_data = DictHelper.get_value(
+            key=algorithm_data_name,
+            container=self.__temp_database[key]
+        )
+        
+        if not super().if_db_response_valid(
+            algorithm_data, 
+        ):
+            return super().dict_value_not_found()
 
         return algorithm_data
        

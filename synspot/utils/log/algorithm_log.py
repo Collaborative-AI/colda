@@ -15,6 +15,11 @@ from typing import (
     Union
 )
 
+from synspot.utils.dtypes.api import (
+    is_list,
+    is_dict_like
+)
+
 
 class AlgorithmLog(BaseLog, AbstractLog):
     __AlgorithmLog_instance = None
@@ -33,14 +38,13 @@ class AlgorithmLog(BaseLog, AbstractLog):
         self, 
         user_id: str, 
         task_id: str, 
-        msgs: list[str]
+        msgs: list[str],
+        log_category: str='main_test',
     ) -> None:
 
-        key = DictHelper.generate_dict_key(user_id, task_id)
-        if not DictHelper.is_key_in_dict(key, self.__algorithm_log):
-            self.__algorithm_log[key] = collections.defaultdict(list)
+        key = DictHelper.generate_dict_key(user_id, task_id, log_category)
 
-        if isinstance(msgs, list):
+        if is_list(msgs):
             for msg in msgs:
                 msg_str = to_string(msg)
                 DictHelper.store_value(
@@ -49,19 +53,29 @@ class AlgorithmLog(BaseLog, AbstractLog):
                     container=self.__algorithm_log,
                     store_type='append'
                 )
+        elif is_dict_like(msgs):
+            DictHelper.store_value(
+                key=key,
+                value=msgs,
+                container=self.__algorithm_log,
+                store_type='append'
+            )
         else:
             '''
             error
-            '''            
-            pass
+            '''
 
         return 
 
     def get_log(
-        self, user_id: str, task_id: str
+        self, 
+        user_id: str, 
+        task_id: str,
+        log_category: str='main_test',
     ) -> str:
 
-        key = DictHelper.generate_dict_key(user_id, task_id)
+        key = DictHelper.generate_dict_key(user_id, task_id, log_category)
+        
         log = DictHelper.get_value(
             key=key,
             container=self.__algorithm_log,

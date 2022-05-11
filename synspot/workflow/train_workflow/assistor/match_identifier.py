@@ -1,12 +1,6 @@
 from __future__ import annotations
 
-import requests
-
 from synspot.workflow.train_base import TrainBaseWorkflow
-
-from synspot.utils import(
-    ParseJson
-)
 
 from typing import Any
 
@@ -37,7 +31,7 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
         get_identifier_content_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
-            url_prefix=cls._url_prefix,
+            url_prefix=super()._url_prefix,
             url_root='get_identifier_content',
             url_suffix=user_id,
             status_code=200
@@ -55,19 +49,19 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
 
         # get the first key of sponsor_random_id_to_identifier_content_dict
         sponsor_random_id = next(iter(sponsor_random_id_to_identifier_content_dict))
-        sponsor_identifier_data = sponsor_random_id_to_identifier_content_dict[sponsor_random_id]
+        sponsor_encrypted_identifer = sponsor_random_id_to_identifier_content_dict[sponsor_random_id]
         
-        assistor_identifier_data = super()._get_database_record(
+        assistor_encrypted_identifier = super()._get_database_record(
             database_type='train_algorithm',
             user_id=user_id, 
             train_id=train_id, 
-            algorithm_data_name='encrypted_identifier',
+            algorithm_data_name='assistor_encrypted_identifier',
         )
 
-        print('assistor_encrypted_identifier', assistor_identifier_data)
+        print('assistor_encrypted_identifier', assistor_encrypted_identifier)
         assistor_matched_identifer = super()._match_identifier(
-            self_id_data=assistor_identifier_data,
-            from_id_data=sponsor_identifier_data
+            self_id_data=assistor_encrypted_identifier,
+            from_id_data=sponsor_encrypted_identifer
         )
 
         super()._store_database_record(
@@ -93,6 +87,6 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
             msgs=msgs
         )
 
-        print('Assistor: Training train_id: ', train_id, ' is running')
+        print(f'Assistor: Training train_id: {train_id} is running')
         return True
     

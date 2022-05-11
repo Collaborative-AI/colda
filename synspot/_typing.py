@@ -21,7 +21,7 @@ JSONType = Union[
     List[Any]
 ]
 
-DictKey = TypeVar('DictKey', bound=Hashable)
+DictKey = TypeVar('DictKey', List[Hashable], Hashable)
 DictValue = TypeVar("DictValue", bound=Any)
 Dict_Store_Type = Literal[
     'append', 
@@ -62,5 +62,9 @@ Serializable_Datatype = Union[
     float,
     bool,
     None,
-    
+]
+
+Stage = [
+    'train',
+    'test'
 ]

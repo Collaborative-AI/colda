@@ -65,7 +65,6 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         #     self.__temp_database[key] = collections.defaultdict(dict)
 
         value = {
-            'user_id': user_id,
             'train_id': train_id,
             'mode': mode,
             'task_mode': task_mode,
@@ -85,7 +84,7 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         if store_res == True:
             return f'{self.__class__.__name__} stores {key} successfully!' 
         else:
-            return store_res
+            return f'{self.__class__.__name__} failed to stores {key}'
     
     def get_record(
         self, 
@@ -114,20 +113,13 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         """
 
         if not train_id:
-            raise RuntimeError('Use train_id or test_id to retrieve User_Assistor_Table')
+            raise RuntimeError('Use train_id to retrieve User_Assistor_Table')
 
-        key = DictHelper.generate_dict_key(user_id, train_id)
-        if key not in self.__temp_database:
-            print(f'{self.__class__.__name__} does not contain the record')
+        key = DictHelper.generate_dict_key(user_id, train_id)            
 
         assistor_metadata = DictHelper.get_value(
             key=key,
             container=self.__temp_database
-        )
-
-        user_id = DictHelper.get_value(
-            key='user_id',
-            container=assistor_metadata
         )
 
         train_id = DictHelper.get_value(
@@ -186,6 +178,7 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             task_name, 
             task_description
         ):
+            print(f'{self.__class__.__name__} does not contain the record')
             return super().dict_value_not_found()
         
         return (

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import time
-import requests
 
 from synspot.workflow.train_base import TrainBaseWorkflow
 
@@ -52,7 +51,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         get_output_content_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
-            url_prefix=cls._url_prefix,
+            url_prefix=super()._url_prefix,
             url_root='get_output_content',
             url_suffix=user_id,
             status_code=200
@@ -66,36 +65,13 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         )
 
         assistor_random_id_to_output_content_dict = get_output_content_response['assistor_random_id_to_output_content_dict']
-        assistor_output_contents = {}
-        for assistor_random_id, output_content in assistor_random_id_to_output_content_dict.items():
-            # from_id = assistor_random_id
-            # cur_output = output_content
-            # print("from_id", from_id)
-            # call save_output
-            # save_output_pos = save_output(root=root, self_id=user_id, train_id=train_id, mode=self.test_indicator, test_id=None, round=rounds, from_id=from_id)
-            # # assert save_output_pos is not None
-            # _, save_output_pos = handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
-            # assert save_output_pos is not None
-
-            # write file
-            # cur_output = json.loads(output[i]).split("\n")
-            # print("cur_output", type(cur_output), cur_output)
-            # save_file(save_output_pos[2], cur_output)
-
-            # msg = ["5.3 Sponsor saves Output model\n"]
-            # log_helper(msg, root, user_id, train_id)
-            assistor_output_contents[assistor_random_id] = output_content
-            # super()._store_database_record(
-            #     database_type='train_algorithm'
-            # )
-            # get train_file_path, train_target_column from User_Sponsor_Table
-            # task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, train_id=train_id, test_indicator=self.test_indicator)
         
         if super()._async_checker(
             database_type='train_algorithm', 
             user_id=user_id, 
-            train_id=train_id,
-            algorithm_data_name=f'trained_cooperative_model_rounds_{cur_rounds_num}',
+            task_id=train_id,
+            algorithm_data_name=['trained_cooperative_model', 'rounds_{cur_rounds_num}'],
+            stage='train',
             waiting_start_time=time.time()
         ) == False:
             return
@@ -103,8 +79,8 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         cls.train_calculate_result(
             user_id=user_id,
             train_id=train_id, 
-            rounds=cur_rounds_num,
-            assistor_output_contents=assistor_output_contents
+            cur_rounds_num=cur_rounds_num,
+            assistor_random_id_to_output_content_dict=assistor_random_id_to_output_content_dict
         )
         
         return
@@ -114,8 +90,8 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         cls, 
         user_id: str,
         train_id: str, 
-        rounds: int, 
-        assistor_output_contents: dict[str, Any]
+        cur_rounds_num: int, 
+        assistor_random_id_to_output_content_dict: dict[str, Any]
     ) -> None:
 
         """
@@ -136,15 +112,16 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             user_id=user_id,
             train_id=train_id
         )
-        task_mode = sponsor_metadata_record[0]
-        model_name = sponsor_metadata_record[1]
-        metric_name = sponsor_metadata_record[2]
-        train_file_path = sponsor_metadata_record[3]
-        train_id_column = sponsor_metadata_record[4]
-        train_data_column = sponsor_metadata_record[5]
-        train_target_column = sponsor_metadata_record[6]
-        task_name = sponsor_metadata_record[7]
-        task_description = sponsor_metadata_record[8]
+        train_id = sponsor_metadata_record[0]
+        task_mode = sponsor_metadata_record[1]
+        model_name = sponsor_metadata_record[2]
+        metric_name = sponsor_metadata_record[3]
+        train_file_path = sponsor_metadata_record[4]
+        train_id_column = sponsor_metadata_record[5]
+        train_data_column = sponsor_metadata_record[6]
+        train_target_column = sponsor_metadata_record[7]
+        task_name = sponsor_metadata_record[8]
+        task_description = sponsor_metadata_record[9]
 
         sponsor_trained_cooperative_model_output = super()._get_database_record(
             database_type='train_algorithm',
@@ -164,20 +141,20 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name='sponsor_result',
+            algorithm_data_name=['sponsor_trained_result', 'rounds_0'],
         )
 
         # Calculate result for current round
-        print('&&%%%%', type(assistor_output_contents))
+        print('&&%%%%', type(assistor_random_id_to_output_content_dict))
         sponsor_alpha_result, sponsor_result = super()._calculate_result(
-            rounds=rounds, 
+            rounds=cur_rounds_num, 
             dataset_path=train_file_path, 
             target_idx=train_target_column, 
-            skip_header=cls._skip_header, 
+            skip_header=super()._skip_header, 
             task_mode=task_mode, 
             metric_name=metric_name,
             sponsor_trained_cooperative_model_output=sponsor_trained_cooperative_model_output,
-            assistor_trained_cooperative_model_outputs=assistor_output_contents,
+            assistor_trained_cooperative_model_outputs=assistor_random_id_to_output_content_dict,
             sponsor_matched_identifers=sponsor_matched_identifers,
             last_round_result=sponsor_result,
         )
@@ -192,7 +169,15 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name='sponsor_result',
+            algorithm_data_name=['sponsor_trained_alpha', f'rounds_{cur_rounds_num}'],
+            algorithm_data=sponsor_alpha_result
+        )
+
+        super()._store_database_record(
+            database_type='train_algorithm',
+            user_id=user_id,
+            train_id=train_id,
+            algorithm_data_name=['sponsor_trained_result', f'rounds_{cur_rounds_num}'],
             algorithm_data=sponsor_result
         )
 
@@ -243,7 +228,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             round=cls._initial_round_num, 
             dataset_path=train_file_path, 
             target_idx=train_target_column, 
-            skip_header=cls._skip_header, 
+            skip_header=super()._skip_header, 
             task_mode=task_mode, 
             metric_name=metric_name,
             last_round_result=last_round_result,
@@ -289,7 +274,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         send_situation_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
-            url_prefix=cls._url_prefix,
+            url_prefix=super()._url_prefix,
             url_root='send_situation',
             url_suffix=user_id,
             status_code=200

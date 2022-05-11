@@ -17,7 +17,8 @@ from typing import (
 
 class MakeResidual(BaseAlgorithm):
     '''
-    Calculate Residual
+    Calculate Residual.
+    Residual is used as target for the following training step.
     '''
     
     @overload
@@ -63,7 +64,7 @@ class MakeResidual(BaseAlgorithm):
         skip_header: str, 
         task_mode: str, 
         metric_name: str,
-        last_round_result: Union(Any, None) = None
+        last_round_result: Union[Any, None] = None
     ) -> tuple[np.ndarray[Any], np.ndarray[Any]]:
 
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
@@ -72,15 +73,15 @@ class MakeResidual(BaseAlgorithm):
         
         init_round_result = None
         if round == 1:
-            output = cls.make_init(task_mode, target)
+            init_round_result = cls.make_init(task_mode, target)
             # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
             # makedir_exist_ok(round_path)
             # np.savetxt(os.path.join(round_path, 'result.csv'), output, delimiter=",")
-            output = output.repeat(target.shape[0], axis=0)
-            init_round_result = output
-            residual = cls.compute_residual(task_mode, output, target)
+            init_round_result = init_round_result.repeat(target.shape[0], axis=0)
+
+            residual = cls.compute_residual(task_mode, init_round_result, target)
             metric = Metric(task_mode, metric_name)
-            eval = metric.eval(output, target)
+            eval = metric.eval(init_round_result, target)
             # log(msg, cls.__root, self_id, train_id)
         else:
             # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
@@ -108,7 +109,7 @@ class MakeResidual(BaseAlgorithm):
 
     @classmethod
     def make_init(
-        cls, task_mode: str, target: str
+        cls, task_mode: str, target: list[str]
     ) -> np.ndarray:
 
         if task_mode == 'regression':

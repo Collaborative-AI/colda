@@ -11,7 +11,7 @@ from typing import (
 )
 
 
-class check_sponsor_class:
+class CheckSponsor:
     sponsor: Final[str] = 'sponsor'
     assistor: Final[str] = 'assistor'
 

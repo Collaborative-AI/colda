@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-import json
-import requests
 import collections
-from synspot import database
 
 from synspot.workflow.train_base import TrainBaseWorkflow
 
@@ -40,14 +37,14 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         get_identifier_content_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
-            url_prefix=cls._url_prefix,
+            url_prefix=super()._url_prefix,
             url_root='get_identifier_content',
             url_suffix=user_id,
             status_code=200
         )
 
         msg = [
-            "3.3 Sponsor gets matched id file \n"
+            "3.3 Sponsor gets matched id file"
         ]
         super()._store_log(
             user_id=user_id,
@@ -57,10 +54,14 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
 
         assistor_random_id_to_identifier_content_dict = get_identifier_content_response['assistor_random_id_to_identifier_content_dict']
 
+        sponsor_encrypted_identifer = super()._get_database_record(
+            database_type='train_algorithm',
+            user_id=user_id, 
+            train_id=train_id, 
+            algorithm_data_name='sponsor_encrypted_identifer',
+        )
         sponsor_matched_identifers = collections.defaultdict(list)
-        for assistor_random_id, identifier_content in assistor_random_id_to_identifier_content_dict.items():
-            assistor_identifier_data = ParseJson.load_json_recursion(identifier_content)
-
+        for assistor_random_id, assistor_encrypted_identifer in assistor_random_id_to_identifier_content_dict.items():
             # msg = ["3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2]]
             # super()._store_log(
             #     user_id=user_id,
@@ -68,16 +69,9 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             #     msgs=msg
             # )
             
-            sponsor_identifier_data = super()._get_database_record(
-                database_type='train_algorithm',
-                user_id=user_id, 
-                train_id=train_id, 
-                algorithm_data_name='encrypted_identifer',
-            )
-
             sponsor_matched_identifer = super()._match_identifier(
-                self_id_data=sponsor_identifier_data,
-                from_id_data=assistor_identifier_data
+                self_id_data=sponsor_encrypted_identifer,
+                from_id_data=assistor_encrypted_identifer
             )
 
             sponsor_matched_identifers[assistor_random_id] = sponsor_matched_identifer
@@ -110,15 +104,16 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             user_id=user_id,
             train_id=train_id
         )
-        task_mode = sponsor_metadata_record[0]
-        model_name = sponsor_metadata_record[1]
-        metric_name = sponsor_metadata_record[2]
-        train_file_path = sponsor_metadata_record[3]
-        train_id_column = sponsor_metadata_record[4]
-        train_data_column = sponsor_metadata_record[5]
-        train_target_column = sponsor_metadata_record[6]
-        task_name = sponsor_metadata_record[7]
-        task_description = sponsor_metadata_record[8]
+        train_id = sponsor_metadata_record[0]
+        task_mode = sponsor_metadata_record[1]
+        model_name = sponsor_metadata_record[2]
+        metric_name = sponsor_metadata_record[3]
+        train_file_path = sponsor_metadata_record[4]
+        train_id_column = sponsor_metadata_record[5]
+        train_data_column = sponsor_metadata_record[6]
+        train_target_column = sponsor_metadata_record[7]
+        task_name = sponsor_metadata_record[8]
+        task_description = sponsor_metadata_record[9]
         
         print("train_file_path", train_file_path, train_target_column)
 
@@ -129,7 +124,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             round=cls._initial_round_num, 
             dataset_path=train_file_path, 
             target_idx=train_target_column, 
-            skip_header=cls._skip_header, 
+            skip_header=super()._skip_header, 
             task_mode=task_mode, 
             metric_name=metric_name,
             last_round_result=None,
@@ -139,7 +134,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name='sponsor_result',
+            algorithm_data_name=['sponsor_trained_result', 'rounds_0'],
             algorithm_data=sponsor_result
         )
 
@@ -172,7 +167,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         send_situation_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
-            url_prefix=cls._url_prefix,
+            url_prefix=super()._url_prefix,
             url_root='send_situation',
             url_suffix=user_id,
             status_code=200

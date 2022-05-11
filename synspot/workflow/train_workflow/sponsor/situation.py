@@ -44,15 +44,16 @@ class TrainSponsorSituation(TrainBaseWorkflow):
             user_id=user_id,
             train_id=train_id
         )
-        task_mode = sponsor_metadata_record[0]
-        model_name = sponsor_metadata_record[1]
-        metric_name = sponsor_metadata_record[2]
-        train_file_path = sponsor_metadata_record[3]
-        train_id_column = sponsor_metadata_record[4]
-        train_data_column = sponsor_metadata_record[5]
-        train_target_column = sponsor_metadata_record[6]
-        task_name = sponsor_metadata_record[7]
-        task_description = sponsor_metadata_record[8]
+        train_id = sponsor_metadata_record[0]
+        task_mode = sponsor_metadata_record[1]
+        model_name = sponsor_metadata_record[2]
+        metric_name = sponsor_metadata_record[3]
+        train_file_path = sponsor_metadata_record[4]
+        train_id_column = sponsor_metadata_record[5]
+        train_data_column = sponsor_metadata_record[6]
+        train_target_column = sponsor_metadata_record[7]
+        task_name = sponsor_metadata_record[8]
+        task_description = sponsor_metadata_record[9]
 
         sponsor_residual = super()._get_database_record(
             database_type='train_algorithm',
@@ -65,7 +66,7 @@ class TrainSponsorSituation(TrainBaseWorkflow):
         trained_cooperative_model, trained_cooperative_model_output = super()._train_cooperative_model(
             dataset_path=train_file_path, 
             data_idx=train_data_column, 
-            skip_header=cls._skip_header, 
+            skip_header=super()._skip_header, 
             task_mode=task_mode, 
             model_name=model_name,
             cur_round_residual=sponsor_residual,
@@ -78,7 +79,7 @@ class TrainSponsorSituation(TrainBaseWorkflow):
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name=f'trained_cooperative_model_rounds_{cur_rounds_num}',
+            algorithm_data_name=['trained_cooperative_model', 'rounds_{cur_rounds_num}'],
             algorithm_data=trained_cooperative_model
         )
 

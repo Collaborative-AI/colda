@@ -39,7 +39,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         get_situation_content_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
-            url_prefix=cls._url_prefix,
+            url_prefix=super()._url_prefix,
             url_root='get_situation_content',
             url_suffix=user_id,
             status_code=200
@@ -70,8 +70,9 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         if super()._async_checker(
             database_type='train_algorithm', 
             user_id=user_id, 
-            train_id=train_id,
+            task_id=train_id,
             algorithm_data_name='assistor_matched_identifer',
+            stage='train',
             waiting_start_time=time.time()
         ) == False:
             return
@@ -112,7 +113,6 @@ class TrainAssistorSituation(TrainBaseWorkflow):
             user_id=user_id,
             train_id=train_id
         )
-
         train_id = train_assistor_metadata[0]
         mode = train_assistor_metadata[1]
         task_mode = train_assistor_metadata[2] 
@@ -133,7 +133,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         trained_cooperative_model, trained_cooperative_model_output = super()._train_cooperative_model(
             dataset_path=train_file_path,
             data_idx=train_data_column,
-            skip_header=cls._skip_header,
+            skip_header=super()._skip_header,
             task_mode=task_mode,
             model_name=model_name,
             cur_round_residual=situation_content,
@@ -146,7 +146,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name=f'trained_cooperative_model_rounds_{rounds}',
+            algorithm_data_name=['trained_cooperative_model', 'rounds_{rounds}'],
             algorithm_data=trained_cooperative_model
         )
         
@@ -195,7 +195,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         send_output_response = super()._post_request_chaining(
             task_id=train_id,
             data=data,
-            url_prefix=cls._url_prefix,
+            url_prefix=super()._url_prefix,
             url_root='send_output',
             url_suffix=user_id,
             status_code=200
@@ -212,5 +212,5 @@ class TrainAssistorSituation(TrainBaseWorkflow):
             msgs=msgs
         )
         
-        print('Assistor: Training train_id: ', train_id, ' is running')
+        print(f'Assistor: Training train_id: {train_id} is running')
         return True

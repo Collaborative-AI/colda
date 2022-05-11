@@ -64,6 +64,8 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         )
         if store_res == True:
             return f'{self.__class__.__name__} stores {key} successfully!' 
+        else:
+            return f'{self.__class__.__name__} failed to stores {key}'
     
     def get_record(
         self, 
@@ -93,7 +95,7 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         """
 
         if not train_id:
-            raise RuntimeError('Use train_id or test_id to retrieve User_Assistor_Table')
+            raise RuntimeError('Use train_id to retrieve User_Assistor_Table')
         if not algorithm_data_name:
             print('placeholder')
             

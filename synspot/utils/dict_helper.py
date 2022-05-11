@@ -18,6 +18,8 @@ from synspot.error import (
     DictValueNotFound
 )
 
+from synspot.utils.dtypes.api import is_list
+
 
 class DictHelper:
 
@@ -34,10 +36,16 @@ class DictHelper:
 
     @classmethod
     def generate_dict_key(
-        cls, user_id: str, task_id: str
+        cls, 
+        user_id: str, 
+        task_id: str,
+        *args,
     ) -> tuple[str, str]:
 
-        return (user_id, task_id)
+        key = [(user_id, task_id)]
+        for val in args:
+            key.append(val)
+        return key
 
     @classmethod
     def append_type(
@@ -47,7 +55,7 @@ class DictHelper:
         container: dict[DictKey, DictValue],
     ) -> bool:
 
-        if key not in container:
+        if not DictHelper.is_key_in_dict(key, container):
             container[key] = copy.deepcopy(value)
         else:
             if isinstance(container[key], dict) and isinstance(value, dict):
@@ -65,7 +73,8 @@ class DictHelper:
         value: DictValue,
         container: dict[DictKey, DictValue]
     ) -> Union[bool, type[DuplicateKeyError]]:
-        if key not in container:
+
+        if not DictHelper.is_key_in_dict(key, container):
             container[key] = copy.deepcopy(value)
             return True
         else:
@@ -83,6 +92,45 @@ class DictHelper:
         return True
 
     @classmethod
+    def process_key_recursion(
+        cls,
+        key: DictKey,
+        container: dict[DictKey, DictValue],
+    ) -> tuple[DictKey, dict[DictKey, DictValue]]:
+
+        if not is_list(key):
+            return key, container
+
+        if len(key) == 1:
+            return key[0], container
+            
+        if not DictHelper.is_key_in_dict(key[0], container):
+            container[key[0]] = {}
+    
+        container = container[key.pop(0)]    
+        return cls.process_key(
+            key=key,
+            container=container
+        )
+
+    @classmethod
+    def process_key(
+        cls,
+        key: DictKey,
+        container: dict[DictKey, DictValue],
+    ) -> tuple[DictKey, dict[DictKey, DictValue]]:
+        
+        '''
+        Maintain pointer at the top of the container
+        '''
+
+        temp = container
+        return cls.process_key_recursion(
+            key=key,
+            container=temp
+        )
+        
+    @classmethod
     def store_value(
         cls,
         key: DictKey, 
@@ -91,6 +139,7 @@ class DictHelper:
         store_type: Dict_Store_Type = 'one_access'
     ) -> None:
 
+        key, container = cls.process_key(key, container)
         if store_type == 'one_access':
             return cls.one_access_type(key, value, container)
         elif store_type == 'append':
@@ -102,13 +151,57 @@ class DictHelper:
         return
 
     @classmethod
+    def get_value_recursion(
+        cls,
+        key: DictKey, 
+        container: dict[DictKey, DictValue]
+    ) -> DictValue:
+
+        '''
+        Maintain pointer at the top of the container
+        '''
+        print('sub_container1', key, container)
+        if len(key) == 1:
+            return key[0], container
+        
+        cur_key = key.pop(0)
+        if not DictHelper.is_key_in_dict(key, container):
+            '''
+            warning: no key in container
+            '''
+            print('warning: no key in container)')
+            print('warning: no key in container)')
+            print('warning: no key in container)')
+            print('warning: no key in container)')
+            print('warning: no key in container)')
+            print('warning: no key in container)')
+            for key, val in container.items():
+                print('---', key)
+            return DictValueNotFound
+        container = container[cur_key] 
+        print('sub_container', container)
+        return cls.get_value_recursion(
+            key=key,
+            container=container
+        )
+        
+    @classmethod
     def get_value(
         cls,
         key: DictKey, 
         container: dict[DictKey, DictValue]
     ) -> DictValue:
         
-        if key not in container:
+        if is_list(key):
+            temp = container
+            key, container = cls.get_value_recursion(
+                key=key,
+                container=temp
+            )
+            print('container', container)
+
+        print('____', key, container, container[key])
+        if not DictHelper.is_key_in_dict(key, container):
             '''
             warning: no key in container
             '''
@@ -129,4 +222,5 @@ class DictHelper:
         cls,
         container: dict[DictKey, DictValue]
     ) -> dict[DictKey, DictValue]:
+
         return copy.deepcopy(container)

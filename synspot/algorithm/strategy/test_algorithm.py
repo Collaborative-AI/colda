@@ -47,10 +47,10 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
         self.__test_custom = test_custom
 
     def make_test_local(self, **kwargs):
-        return MakeTestLocal.make_test_local(**kwargs)
+        return self.algorithm_process(MakeTestLocal.make_test_local, **kwargs)
 
     def make_test(self, **kwargs):
-        return self.__test_custom.make_test(**kwargs)
+        return self.algorithm_process(self.__test_custom.make_test, **kwargs)
 
     def make_eval(self, **kwargs):
-        return self.__test_custom.make_eval(**kwargs)
+        return self.algorithm_process(self.__test_custom.make_eval, **kwargs)

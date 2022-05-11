@@ -65,7 +65,6 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         #     self.__temp_database[key] = collections.defaultdict(dict)
 
         value = {
-            'user_id': user_id,
             'train_id': train_id,
             'task_mode': task_mode,
             'model_name': model_name,
@@ -85,7 +84,7 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         if store_res == True:
             return f'{self.__class__.__name__} stores {key} successfully!' 
         else:
-            return store_res
+            return f'{self.__class__.__name__} failed to stores {key}'
     
     def get_record(
         self, 
@@ -118,17 +117,12 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
 
         key = DictHelper.generate_dict_key(user_id, train_id)
         cur_class_name = self.__class__.__name__
-        if key not in self.__temp_database:
-            print(f'{cur_class_name} does not contain the record')
+        # if key not in self.__temp_database:
+        #     print(f'{cur_class_name} does not contain the record')
 
         sponsor_metadata = DictHelper.get_value(
             key=key,
             container=self.__temp_database
-        )
-
-        user_id = DictHelper.get_value(
-            key='user_id',
-            container=sponsor_metadata
         )
 
         train_id = DictHelper.get_value(
@@ -182,6 +176,7 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         )
 
         if not super().if_db_response_valid(
+            train_id,
             task_mode, 
             model_name, 
             metric_name, 
@@ -192,9 +187,11 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             task_name, 
             task_description
         ):
+            print(f'{cur_class_name} does not contain the record')
             return super().dict_value_not_found()
 
         return (
+            train_id,
             task_mode, 
             model_name, 
             metric_name, 

@@ -11,6 +11,10 @@ from synspot.utils.utils import (
 
 from synspot.utils.dict_helper import DictHelper
 
+from synspot.utils.dtypes.api import (
+    is_list,
+    is_dict_like
+)
 
 class WorkflowLog(BaseLog, AbstractLog):
     __WorkflowLog_instance = None
@@ -33,10 +37,8 @@ class WorkflowLog(BaseLog, AbstractLog):
     ) -> None:
 
         key = DictHelper.generate_dict_key(user_id, task_id)
-        if not DictHelper.is_key_in_dict(key, self.__workflow_log):
-            self.__workflow_log[key] = collections.defaultdict(list)
 
-        if isinstance(msgs, list):
+        if is_list(msgs):
             for msg in msgs:
                 msg_str = to_string(msg)
                 DictHelper.store_value(
@@ -45,11 +47,17 @@ class WorkflowLog(BaseLog, AbstractLog):
                     container=self.__workflow_log,
                     store_type='append'
                 )
+        elif is_dict_like(msgs):
+            DictHelper.store_value(
+                key=key,
+                value=msgs,
+                container=self.__workflow_log,
+                store_type='append'
+            )
         else:
             '''
             error
-            '''            
-            pass
+            '''
 
         return 
 

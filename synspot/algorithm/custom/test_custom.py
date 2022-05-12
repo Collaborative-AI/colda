@@ -50,9 +50,9 @@ class TestOwnFunction(AbstractTestCustom):
     
     @classmethod
     def make_test(cls, **kwargs):
-        return cls.OwnFunction['MakeTest'].make_test(**kwargs)
+        return cls.OwnFunction['MakeTest'](**kwargs)
 
     @classmethod    
     def make_eval(cls, **kwargs):
-        return cls.OwnFunction['MakeEval'].make_eval(**kwargs)
+        return cls.OwnFunction['MakeEval'](**kwargs)
         

@@ -15,11 +15,13 @@ from synspot.pi import PI
 from synspot.authorization import Authorization
 
 
-class GetNotification():
-    __GetNotification_instance = None
+class ShortPolling():
+    __ShortPolling_instance = None
 
     def __init__(self):
-        self.__stop_indicator = None
+        self.shortpolling = {
+            'running': False
+        }
 
         self.__Network_instance = Network.get_instance()
         self.__PI_instance = PI.get_instance()
@@ -44,15 +46,15 @@ class GetNotification():
         }
 
     @classmethod
-    def get_instance(cls) -> type[GetNotification]:
-        if cls.__GetNotification_instance == None:
-            cls.__GetNotification_instance = GetNotification()
+    def get_instance(cls) -> type[ShortPolling]:
+        if cls.__ShortPolling_instance == None:
+            cls.__ShortPolling_instance = ShortPolling()
 
-        return cls.__GetNotification_instance
+        return cls.__ShortPolling_instance
 
     def __distribute_notification(
         self, notification_category: dict
-    ) -> True:
+    ) -> bool:
 
         """
         Handle the short polling response data and call corresponding functions
@@ -85,15 +87,15 @@ class GetNotification():
                 elif category_name == 'unread_train_stop':
                     pass
                 elif category_name == 'unread_test_request':
-                    self.__default_testMainWorkflow.unread_test_request(
+                    self.__default_testMainWorkflow.test_assistor_request(
                         notification_category[category_name]['test_id_dicts']
                     )
                 elif category_name == 'unread_test_match_identifier':
-                    self.__default_testMainWorkflow.unread_test_match_identifier(
+                    self.__default_testMainWorkflow.test_match_identifier(
                         notification_category[category_name]['test_id_dicts']
                     )
                 elif category_name == 'unread_test_output':
-                    self.__default_testMainWorkflow.unread_test_output(
+                    self.__default_testMainWorkflow.test_output(
                         notification_category[category_name]['test_id_dicts']
                     )
                 elif category_name == 'unread_test_stop':
@@ -102,7 +104,14 @@ class GetNotification():
                 print("category_name: ", category_name, notification_category[category_name])
         return True
 
-    def start_Collaboration(self):
+    def start_cooperation(self):
+        if self.shortpolling['running'] == False:
+            self.shortpolling['running'] = True
+            self.__polling()
+
+        return 
+
+    def __polling(self):
 
         """
         Short Polling for new Notifications
@@ -111,8 +120,10 @@ class GetNotification():
 
         :exception OSError: Placeholder.
         """
-        if self.__stop_indicator == None:
-            self.__stop_indicator = False
+        
+        if not self.shortpolling['running']:
+            return 'polling is running'
+
         user_id = self.__PI_instance.user_id
 
         token = self.__Network_instance.token
@@ -133,21 +144,17 @@ class GetNotification():
 
         notification_category = short_polling_res['notification_result']['category']
         
-
         # for unittest
-        return notification_category
+        # return notification_category
         
         self.__distribute_notification(notification_category)
         
         # for running, comment back
-        # if not self.__stop_indicator:
-        #     print('lihjai a ')
-        #     timer = threading.Timer(10, self.start_Collaboration)
-        #     timer.start()
+        timer = threading.Timer(10, self.__polling)
+        timer.start()
         return
 
-    def end_Collaboration(self):
-        self.__stop_indicator = True
-        time.sleep(15)
+    def end_cooperation(self):
+        self.shortpolling['running'] = False
         return True
 

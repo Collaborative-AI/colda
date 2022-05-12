@@ -11,6 +11,12 @@ from typing import(
 from synspot.database.strategy import DatabaseOperator
 
 
+def get_all_train_id():
+    return get_all_train_id_as_sponsor() + get_all_train_id_as_assistor()
+
+def get_all_test_id():
+    return get_all_test_id_as_sponsor() + get_all_test_id_as_assistor()
+
 def get_all_train_id_as_sponsor() -> List[str]:
 
     """
@@ -35,9 +41,10 @@ def get_all_train_id_as_sponsor() -> List[str]:
 
     user_id = get_user_id()
     all_train_ids = []
-    DatabaseOperator.set_database(database_type='train_assistor_metadata')
+    DatabaseOperator.set_database(database_type='train_sponsor_metadata')
     for record_key, record_val in DatabaseOperator.get_all_records().items():
-        all_trains_ids = 5
+        if user_id == record_key[0]:
+            all_train_ids.append(record_val['train_id'])
 
     return all_train_ids
 
@@ -65,10 +72,10 @@ def get_all_test_id_as_sponsor() -> List[str]:
 
     user_id = get_user_id()
     all_test_ids = []
-    for database in (GetTestSponsorMetadataDatabase.get_database()):
-        for record in database.get_all_records():
-            if record[0] == user_id:
-                all_test_ids.append(record[1])
+    DatabaseOperator.set_database(database_type='test_sponsor_metadata')
+    for record_key, record_val in DatabaseOperator.get_all_records().items():
+        if user_id == record_key[0]:
+            all_test_ids.append(record_val['test_id'])
 
     return all_test_ids
 
@@ -97,10 +104,10 @@ def get_all_train_id_as_assistor() -> List[str]:
 
     user_id = get_user_id()
     all_train_ids = []
-    for database in (GetTrainAssistorMetadataDatabase.get_database()):
-        for record in database.get_all_records():
-            if record[0] == user_id:
-                all_train_ids.append(record[1])
+    DatabaseOperator.set_database(database_type='train_assistor_metadata')
+    for record_key, record_val in DatabaseOperator.get_all_records().items():
+        if user_id == record_key[0]:
+            all_train_ids.append(record_val['train_id'])
 
     return all_train_ids
 
@@ -128,10 +135,10 @@ def get_all_test_id_as_assistor() -> List[str]:
 
     user_id = get_user_id()
     all_test_ids = []
-    for database in (GetTestAssistorMetadataDatabase.get_database()):
-        for record in database.get_all_records():
-            if record[0] == user_id:
-                all_test_ids.append(record[1])
+    DatabaseOperator.set_database(database_type='test_assistor_metadata')
+    for record_key, record_val in DatabaseOperator.get_all_records().items():
+        if user_id == record_key[0]:
+            all_test_ids.append(record_val['test_id'])
 
     return all_test_ids
 

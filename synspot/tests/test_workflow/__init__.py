@@ -13,7 +13,7 @@ from synspot.workflow import (
 )
     
 from synspot.authorization import Authorization
-from synspot.GetNotification import GetNotification
+from synspot.short_polling.polling import ShortPolling
 from synspot.pi import PI
 from synspot.network import Network
 from synspot.utils.log import GetAlgorithmLog
@@ -23,7 +23,7 @@ from synspot.utils.log import GetAlgorithmLog
 _default_authorization = Authorization.get_instance()
 _default_trainMainWorkflow = TrainMainWorkflow.get_instance()
 _default_testMainWorkflow = TestMainWorkflow.get_instance()
-_default_getNotification = GetNotification.get_instance()
+_default_ShortPolling = ShortPolling.get_instance()
 _default_PI = PI.get_instance()
 _default_Network = Network.get_instance()
 # _default_algorithm_log = GetAlgorithmLog.get_log()

@@ -50,10 +50,10 @@ class TrainOwnFunction(AbstractTrainCustom):
 
     @classmethod
     def make_train(cls, **kwargs):
-        return cls.OwnFunction['MakeTrain'].make_train(**kwargs)
+        return cls.OwnFunction['MakeTrain'](**kwargs)
     
     @classmethod
     def make_result(cls, **kwargs):
-        return cls.OwnFunction['MakeResult'].make_result(**kwargs)
+        return cls.OwnFunction['MakeResult'](**kwargs)
 
         

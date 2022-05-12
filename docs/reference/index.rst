@@ -11,7 +11,7 @@ Reference
    PI
 
    error
-   GetNotification
+   ShortPolling
    StopRequest
    TestRequest
    TrainRequest

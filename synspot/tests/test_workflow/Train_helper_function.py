@@ -20,7 +20,7 @@ from synspot.tests.test_workflow import testing_data
 from synspot.tests.test_workflow import _default_trainMainWorkflow
 from synspot.tests.test_workflow import _default_unittest_strategy
 from synspot.tests.test_workflow import _default_authorization
-from synspot.tests.test_workflow import _default_getNotification
+from synspot.tests.test_workflow import _default_ShortPolling
 from synspot.tests.test_workflow import _default_PI
 from synspot.tests.test_workflow import _default_Network
 from synspot.algorithm.api import AlgorithmAPI
@@ -57,7 +57,7 @@ class Train_helper_function:
         return _default_PI.user_id
 
     def get_notification(self):
-        return _default_getNotification.start_Collaboration()
+        return _default_ShortPolling.start_Collaboration()
 
     # def set_max_round(self, num):
     #     BaseWorkflow._max_round = num

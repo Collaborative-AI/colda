@@ -939,14 +939,112 @@ def is_float(obj) -> bool:
 # print(b, type(b))
 
 
-a = [6, 5]
-a = np.array(a)
-# a = np.array(a, type(a[0]))
-b = {5: a}
-print(is_serializable(b))
+# a = [6, 5]
+# a = np.array(a)
+# # a = np.array(a, type(a[0]))
+# b = {5: a}
+# print(is_serializable(b))
 
-b[5] = b[5].tolist()
-print(is_serializable(b))
+# b[5] = b[5].tolist()
+# print(is_serializable(b))
 # d = 5
 
 # print(type(d) == int)
+
+# class wudi:
+#     stop = False
+
+#     @classmethod
+#     def ceshi(cls):
+#         if cls.stop == False:
+#             print('wudi')
+#             cls.stop = True
+
+# wudi.ceshi()
+# wudi.ceshi()
+
+
+
+# # Code to execute in an independent thread
+# def countdown(n, started_evt):
+#     print('countdown starting')
+#     started_evt.set()
+#     while n > 0:
+#         print('T-minus', n)
+#         n -= 1
+#         time.sleep(5)
+
+# # Create the event object that will be used to signal startup
+# started_evt = Event()
+
+# # Launch the thread and pass the startup event
+# print('Launching countdown')
+# t = Thread(target=countdown, args=(10,started_evt))
+# t.start()
+
+# # Wait for the thread to start
+# started_evt.wait()
+# print('countdown is running')
+
+import threading
+from threading import Thread, Event
+import time
+
+class Ceshi:
+    __temp_instance = None
+
+    def __init__(self):
+        self.stop_indicator = False
+        # self.timer = None
+        self.shortpolling = {'running': False}
+
+    @classmethod
+    def get_instance(cls):
+        if cls.__temp_instance == None:
+            cls.__temp_instance = Ceshi()
+
+        return cls.__temp_instance
+
+    def start_helper(self, x):
+        if self.shortpolling['running'] == False:
+            self.shortpolling['running'] = True
+            self.__start(x)
+
+        return 
+
+    def __start(self, x):
+        # if self.stop_indicator == False and self.timer == None:
+        # if self.shortpolling['running'] == None:
+        print('zzzz', x)
+        if self.shortpolling['running'] == True:
+            self.timer = threading.Timer(5, self.__start, args=([x+1]))
+            # self.shortpolling['running'] = True
+            self.timer.start()
+
+        return
+    
+    def end(self):
+        self.shortpolling['running'] = False
+        # self.timer = None
+        return
+
+
+_a = Ceshi()
+
+def kaishi():
+    # a = Ceshi()
+    print('wudi', id(_a))
+    _a.start_helper(0)
+    _a.start_helper(-10000)
+
+def jieshu():
+    # a = Ceshi()
+    print('wudi', id(_a))
+    _a.end()
+
+import sys
+if __name__ == '__main__':
+    globals()[sys.argv[1]]()
+    time.sleep(20)
+    globals()[sys.argv[2]]()
+# python -c 'import foo; print foo.hello()'

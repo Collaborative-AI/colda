@@ -237,9 +237,11 @@ class Network():
             url_root=url_root, 
             url_suffix=url_suffix
         )
-        # print('##post_url1', url, data)
+        print('##post_url1', url, data)
         data = ParseJson.make_data_serializable(data)
-        # print('##post_url2', data)
+        print('##post_url2', data)
+        for key,val in data.items():
+            print(type(val))
 
         network_response = self.post_request(
             url=url,

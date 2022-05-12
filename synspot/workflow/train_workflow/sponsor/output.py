@@ -1,4 +1,5 @@
 from __future__ import annotations
+from re import L
 
 import time
 
@@ -70,21 +71,19 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             database_type='train_algorithm', 
             user_id=user_id, 
             task_id=train_id,
-            algorithm_data_name=['trained_cooperative_model', 'rounds_{cur_rounds_num}'],
+            algorithm_data_name=['trained_cooperative_model', f'rounds_{cur_rounds_num}'],
             stage='train',
             waiting_start_time=time.time()
         ) == False:
             return
         
-        cls.train_calculate_result(
+        return cls.train_calculate_result(
             user_id=user_id,
             train_id=train_id, 
             cur_rounds_num=cur_rounds_num,
             assistor_random_id_to_output_content_dict=assistor_random_id_to_output_content_dict
         )
         
-        return
-
     @classmethod
     def train_calculate_result(
         cls, 
@@ -141,12 +140,14 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name=['sponsor_trained_result', 'rounds_0'],
+            algorithm_data_name=['sponsor_trained_result', f'rounds_{cur_rounds_num-1}'],
         )
 
         # Calculate result for current round
         print('&&%%%%', type(assistor_random_id_to_output_content_dict))
         sponsor_alpha_result, sponsor_result = super()._calculate_result(
+            user_id=user_id,
+            train_id=train_id,
             rounds=cur_rounds_num, 
             dataset_path=train_file_path, 
             target_idx=train_target_column, 
@@ -188,7 +189,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             msgs=msgs
         )
 
-        if rounds >= cls._maxRound:
+        if cur_rounds_num >= super()._max_round:
             msgs = ["---- Train Stage Ends"]
             super()._store_log(
                 user_id=user_id,
@@ -198,13 +199,14 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             print('Sponsor: Training train_id: ', train_id, ' ends')
             return
         else:
-            cls.train_calculate_next_round_residual(
+            return cls.train_calculate_next_round_residual(
                 user_id=user_id,
                 train_id=train_id,
                 train_file_path=train_file_path,
                 train_target_column=train_target_column,
                 task_mode=task_mode,
                 metric_name=metric_name,
+                cur_rounds_num=cur_rounds_num,
                 sponsor_matched_identifers=sponsor_matched_identifers,
                 last_round_result=sponsor_result
             )
@@ -218,22 +220,25 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         train_target_column: str,
         task_mode: str,
         metric_name: str,
+        cur_rounds_num: int,
         sponsor_matched_identifers: Any,
         last_round_result: Any
     ) -> None:
 
-        sponsor_residual = super()._calculate_residual(
+        print('daozheli1')
+        new_rounds_num = cur_rounds_num + 1
+        _, residual_dict = super()._calculate_residual(
             self_id=user_id, 
             train_id=train_id, 
-            round=cls._initial_round_num, 
+            round=new_rounds_num, 
             dataset_path=train_file_path, 
             target_idx=train_target_column, 
             skip_header=super()._skip_header, 
             task_mode=task_mode, 
             metric_name=metric_name,
+            sponsor_matched_identifers=sponsor_matched_identifers,
             last_round_result=last_round_result,
         )
-
         # call make_residual
         # make_residual_multiple_paths = make_residual(root=root, self_id=user_id, train_id=train_id, round=(rounds+1), 
         #                                                 dataset_path=train_file_path, target_idx=train_target_column, 
@@ -241,7 +246,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         # assert make_residual_multiple_paths is not None
         # _, make_residual_multiple_paths = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
         # assert make_residual_multiple_paths is not None
-
+        print('daozheli2', residual_dict)
         msgs = ["5.5 Sponsor makes residual finished"]
         super()._store_log(
             user_id=user_id,
@@ -265,7 +270,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         
         assistor_random_id_to_residual_dict = {}
         for assistor_random_id in sponsor_matched_identifers.keys():
-            assistor_random_id_to_residual_dict[assistor_random_id] = sponsor_residual
+            assistor_random_id_to_residual_dict[assistor_random_id] = residual_dict[assistor_random_id]
 
         data = {
             "train_id": train_id,
@@ -279,6 +284,26 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             url_suffix=user_id,
             status_code=200
         )
+        print('daozheli3')
+        
+        res = cls._get_all_database_records(
+            database_type='train_algorithm'
+        )
+        # print(res[(user_id, train_id)]['sponsor_residual'])
+
+        cls._store_database_record(
+            database_type='train_algorithm',
+            user_id=user_id,
+            train_id=train_id,
+            algorithm_data_name='residual_dict',
+            algorithm_data=residual_dict
+        )
+
+        print('daozheli3.5')
+        res = cls._get_all_database_records(
+            database_type='train_algorithm'
+        )
+        # print(res[(user_id, train_id)]['sponsor_residual'])
 
         msgs = [
             "5.6 Sponsor updates situation done", 
@@ -289,6 +314,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             task_id=train_id,
             msgs=msgs
         )
-        
+        print('daozheli4')
         print('Sponsor: Training train_id: ', train_id, ' is running')
         return True

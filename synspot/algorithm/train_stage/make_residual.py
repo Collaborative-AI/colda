@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-import numpy as np
 import os
+import copy
+import numpy as np
 
 from pyrsistent import b
 from synspot.algorithm.base import BaseAlgorithm
@@ -33,6 +34,7 @@ class MakeResidual(BaseAlgorithm):
         skip_header: str, 
         task_mode: str, 
         metric_name: str,
+        sponsor_matched_identifers: dict[str, Any],
         last_round_result: None
     ) -> np.ndarray:
         ...
@@ -49,6 +51,7 @@ class MakeResidual(BaseAlgorithm):
         skip_header: str, 
         task_mode: str, 
         metric_name: str,
+        sponsor_matched_identifers: dict[str, Any],
         last_round_result: Any
     ) -> np.ndarray:
         ...
@@ -64,6 +67,7 @@ class MakeResidual(BaseAlgorithm):
         skip_header: str, 
         task_mode: str, 
         metric_name: str,
+        sponsor_matched_identifers: dict[str, Any],
         last_round_result: Union[Any, None] = None
     ) -> tuple[np.ndarray[Any], np.ndarray[Any]]:
 
@@ -77,11 +81,13 @@ class MakeResidual(BaseAlgorithm):
             # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
             # makedir_exist_ok(round_path)
             # np.savetxt(os.path.join(round_path, 'result.csv'), output, delimiter=",")
-            init_round_result = init_round_result.repeat(target.shape[0], axis=0)
 
-            residual = cls.compute_residual(task_mode, init_round_result, target)
+            temp_init_round_result = copy.deepcopy(init_round_result)
+            temp_init_round_result = temp_init_round_result.repeat(target.shape[0], axis=0)
+
+            residual = cls.compute_residual(task_mode, temp_init_round_result, target)
             metric = Metric(task_mode, metric_name)
-            eval = metric.eval(init_round_result, target)
+            eval = metric.eval(temp_init_round_result, target)
             # log(msg, cls.__root, self_id, train_id)
         else:
             # round_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round - 1))
@@ -91,21 +97,28 @@ class MakeResidual(BaseAlgorithm):
             # result = np.genfromtxt(os.path.join(round_path, 'result.csv'), delimiter=',')
             last_round_result = last_round_result.reshape(last_round_result.shape[0], -1)
             residual = cls.compute_residual(task_mode, last_round_result, target)
+        print('8989', residual)
         # residual_path = os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'residual')
         # makedir_exist_ok(residual_path)
         # np.savetxt(os.path.join(residual_path, '{}.csv'.format(self_id)), residual, delimiter=",")
         # matched_idx_path = os.path.join(root, self_id, 'task', task_id, 'train', 'matched_idx')
         # self_from_idx_files = os.listdir(matched_idx_path)
         # assistor_residual_path = []
-        # for i in range(len(self_from_idx_files)):
-        #     self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, str(self_from_idx_files[i])),
-        #                                     delimiter=',').astype(np.int64)
-        #     assistor_residual_path_i = os.path.join(residual_path, str(self_from_idx_files[i]))
-        #     # np.savetxt(assistor_residual_path_i, residual[self_from_idx_i,], delimiter=",")
-        #     assistor_residual_path.append(assistor_residual_path_i)
+        residual_dict = {}
+        residual_dict['sponsor'] = copy.deepcopy(residual)
+        for assistor_random_id, sponsor_matched_identifer in sponsor_matched_identifers.items():
+        # for i in range(len(matched_identifier)):
+            self_from_idx_i = sponsor_matched_identifer
+            # self_from_idx_i = np.genfromtxt(os.path.join(matched_idx_path, str(self_from_idx_files[i])),
+            #                                 delimiter=',').astype(np.int64)
+
+            # assistor_residual_path_i = os.path.join(residual_path, str(self_from_idx_files[i]))
+            residual_dict[assistor_random_id] = copy.deepcopy(residual[self_from_idx_i,])
+            # np.savetxt(assistor_residual_path_i, residual[self_from_idx_i,], delimiter=",")
+            # assistor_residual_path.append(assistor_residual_path_i)
         # assistor_residual_path = '?'.join(assistor_residual_path)
         # return '200?make_residual?{}'.format(assistor_residual_path)             
-        return init_round_result, residual
+        return init_round_result, residual_dict
 
     @classmethod
     def make_init(

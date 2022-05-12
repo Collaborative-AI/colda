@@ -30,7 +30,7 @@ class GetNotification():
 
         self.train_notification_category_name = {
             'unread_request',
-            'unread_match_identifierentifier',
+            'unread_match_identifier',
             'unread_situation',
             'unread_output',
             'unread_train_stop',
@@ -38,7 +38,7 @@ class GetNotification():
 
         self.test_notification_category_name = {
             'unread_test_request',
-            'unread_test_match_identifierentifier',
+            'unread_test_match_identifier',
             'unread_test_output',
             'unread_test_stop',
         }

@@ -64,22 +64,22 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
         sponsor_encrypted_identifier = sponsor_random_id_to_identifier_content_dict[sponsor_random_id]
         
         assistor_encrypted_identifier = super()._get_database_record(
-            database_type='train_algorithm',
+            database_type='test_algorithm',
             user_id=user_id, 
-            train_id=train_id, 
+            test_id=test_id, 
             algorithm_data_name='assistor_encrypted_identifier',
         )
 
-        print('assistor_encrypted_identifier', assistor_encrypted_identifier)
+        # print('assistor_encrypted_identifier', assistor_encrypted_identifier)
         assistor_matched_identifer = super()._match_identifier(
             self_id_data=assistor_encrypted_identifier,
             from_id_data=sponsor_encrypted_identifier
         )
 
         super()._store_database_record(
-            database_type='train_algorithm',
+            database_type='test_algorithm',
             user_id=user_id,
-            train_id=train_id,
+            test_id=test_id,
             algorithm_data_name='assistor_matched_identifer',
             algorithm_data=assistor_matched_identifer
         )
@@ -105,16 +105,17 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
             user_id=user_id,
             test_id=test_id
         )
+        print('@@@_______', test_assistor_metadata)
         train_id = test_assistor_metadata[0]
         mode = test_assistor_metadata[1]
         task_mode = test_assistor_metadata[2] 
         model_name = test_assistor_metadata[3] 
         test_id = test_assistor_metadata[4]
-        test_file_path = test_assistor_metadata[4] 
-        test_id_column = test_assistor_metadata[5] 
-        test_data_column = test_assistor_metadata[6]
-        test_name = test_assistor_metadata[7] 
-        test_description = test_assistor_metadata[8]
+        test_file_path = test_assistor_metadata[5] 
+        test_id_column = test_assistor_metadata[6] 
+        test_data_column = test_assistor_metadata[7]
+        test_name = test_assistor_metadata[8] 
+        test_description = test_assistor_metadata[9]
 
         trained_models_of_each_round = super()._get_database_record(
             database_type='train_algorithm',
@@ -140,6 +141,7 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
             "test_id": test_id,
             "output_content": test_cooperative_model_outputs,
         }
+        print('test_cooperative_model_outputs', test_cooperative_model_outputs, type(test_cooperative_model_outputs))
         send_test_output_response = super()._post_request_chaining(
             task_id=test_id,
             data=data,
@@ -159,6 +161,6 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
             msgs=msgs
         )
 
-        print(f'Assistor: Training train_id: {train_id} is running')
+        print(f'Assistor: Testing test_id: {test_id} is running')
         return True
     

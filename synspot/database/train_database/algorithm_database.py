@@ -49,23 +49,22 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         :exception OSError: Placeholder.
         """
 
-        key = DictHelper.generate_dict_key(user_id, train_id)
+        key = DictHelper.generate_dict_key(user_id, train_id, algorithm_data_name)
         # if key not in self.__temp_database:
         #     self.__temp_database[key] = collections.defaultdict(dict)
-        
-        value = {
-            algorithm_data_name: algorithm_data
-        }
+        print('***', key)
+        temp_key = str(key)
+
         store_res = DictHelper.store_value(
             key=key,
-            value=value,
+            value=algorithm_data,
             container=self.__temp_database,
-            store_type='append'
+            store_type='multiple_access'
         )
         if store_res == True:
-            return f'{self.__class__.__name__} stores {key} successfully!' 
+            return f'{self.__class__.__name__} stores {temp_key} successfully!' 
         else:
-            return f'{self.__class__.__name__} failed to stores {key}'
+            return store_res
     
     def get_record(
         self, 
@@ -99,19 +98,20 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         if not algorithm_data_name:
             print('placeholder')
             
-        key = DictHelper.generate_dict_key(user_id, train_id)
-        if key not in self.__temp_database:
-            print(f'{self.__class__.__name__} does not contain the record')
-            return '666666'
+        key = DictHelper.generate_dict_key(user_id, train_id, algorithm_data_name)
+        # if key not in self.__temp_database:
+        #     print(f'{self.__class__.__name__} does not contain the record')
+        #     return '666666'
 
         algorithm_data = DictHelper.get_value(
-            key=algorithm_data_name,
-            container=self.__temp_database[key]
+            key=key,
+            container=self.__temp_database
         )
         
         if not super().if_db_response_valid(
             algorithm_data, 
         ):
+            print(f'{self.__class__.__name__} does not contain the record')
             return super().dict_value_not_found()
 
         return algorithm_data

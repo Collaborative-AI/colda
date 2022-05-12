@@ -36,7 +36,9 @@ class MakeTrain(BaseAlgorithm):
         role: Role,
         matched_identifier: Any = None,
     ) -> tuple[Any, np.ndarray]:
-
+        
+        # print('cur_round_residual', cur_round_residual, type(cur_round_residual))
+        # print('-----')
         # return "300?make_train assistor cannot find match idx file"
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
         data_idx = parse_idx(data_idx)
@@ -60,8 +62,13 @@ class MakeTrain(BaseAlgorithm):
             #     delimiter=',').astype(np.int64)
 
             # self_from_idx = matched_identifier
+            # print('assistor_matched_identifier', type(matched_identifier))
+            # print(type(matched_identifier[0]))
             data = data[matched_identifier]
         model = Model(task_mode, model_name)
+        # print('66661', data)
+        # print('66662', cur_round_residual)
+        # print('66663', data.shape, cur_round_residual.shape)
         model.fit(data, cur_round_residual)
         # save(model, os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'model.pkl'))
         trained_output = model.predict(data)
@@ -70,4 +77,12 @@ class MakeTrain(BaseAlgorithm):
         # output_path = os.path.join(output_path, '{}.csv'.format(self_id))
         # np.savetxt(output_path, output, delimiter=",")
         # output = output.tolist()
+        print(')()***', dataset_path)
+        print(data_idx)
+        print(skip_header)
+        print(task_mode)
+        print(model_name)
+        print(cur_round_residual)
+        print(role)
+        print(matched_identifier)
         return model, trained_output

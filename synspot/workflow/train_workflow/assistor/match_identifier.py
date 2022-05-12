@@ -45,8 +45,9 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
         )
         
         # handle the response from request, assistor only has one match_id_file. 
-        sponsor_random_id_to_identifier_content_dict = get_identifier_content_response['sponsor_random_id_to_identifier_content_dict']
-
+        sponsor_random_id_to_identifier_content_dict = get_identifier_content_response[
+            'sponsor_random_id_to_identifier_content_dict'
+        ]
         # get the first key of sponsor_random_id_to_identifier_content_dict
         sponsor_random_id = next(iter(sponsor_random_id_to_identifier_content_dict))
         sponsor_encrypted_identifer = sponsor_random_id_to_identifier_content_dict[sponsor_random_id]
@@ -57,8 +58,7 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
             train_id=train_id, 
             algorithm_data_name='assistor_encrypted_identifier',
         )
-
-        print('assistor_encrypted_identifier', assistor_encrypted_identifier)
+        # print('assistor_encrypted_identifier', assistor_encrypted_identifier)
         assistor_matched_identifer = super()._match_identifier(
             self_id_data=assistor_encrypted_identifier,
             from_id_data=sponsor_encrypted_identifer

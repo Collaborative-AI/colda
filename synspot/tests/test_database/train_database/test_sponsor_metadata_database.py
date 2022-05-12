@@ -9,7 +9,7 @@ class TestTrainSponsorMetadataDatabase:
     @pytest.mark.usefixtures('DatabaseOperator_instance')
     @pytest.mark.parametrize("test_record, expected_res", [
         (('test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test'), 
-        "TrainSponsorMetadataDatabase stores ('test', 'test') successfully!"),
+        "TrainSponsorMetadataDatabase stores [('test', 'test')] successfully!"),
         (('test', 'test', 'test2', 'test', 'test', 'test', 'test', 'test', 'test'), 
         DuplicateKeyError)
     ])
@@ -31,7 +31,7 @@ class TestTrainSponsorMetadataDatabase:
     
     @pytest.mark.usefixtures('DatabaseOperator_instance')
     @pytest.mark.parametrize("test_record, expected_res", [
-        (('test', 'test'), ('test', 'test', 'test', 'test', 'test', 'test', 'test', None, None)),
+        (('test', 'test'), ('test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', None, None)),
     ])
     def test_get_record(self, DatabaseOperator_instance, test_record, expected_res):
         DatabaseOperator_instance.set_database(database_type='train_sponsor_metadata')

@@ -4,7 +4,9 @@ from synspot.utils.dtypes.inference import (
     is_dict_like,
     is_list_like,
     is_tuple,
-    is_list
+    is_list,
+    is_integer,
+    is_float
 )
 
 __all__ = [
@@ -12,5 +14,7 @@ __all__ = [
     'is_dict_like',
     'is_list_like',
     'is_tuple',
-    'is_list'
+    'is_list',
+    'is_integer',
+    'is_float'
 ]

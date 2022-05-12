@@ -12,7 +12,7 @@ import pandas as pd
 from pandas.api.types import is_dict_like as pandas_is_dict_like
 from pandas.api.types import is_integer as pandas_is_integer
 from pandas.api.types import is_list_like as pandas_is_list_like
-# from pandas.api.types import is_integer as pandas_is_integer
+from pandas.api.types import is_float as pandas_is_float
 
 def is_numpy(obj) -> bool:
     return isinstance(obj, (np.ndarray, np.generic))
@@ -28,3 +28,12 @@ def is_tuple(obj) -> bool:
 
 def is_list(obj) -> bool:
     return isinstance(obj, list)
+
+def is_integer(obj) -> bool:
+    return pandas_is_integer(obj)
+
+def is_float(obj) -> bool:
+    return pandas_is_float(obj)
+
+
+

@@ -118,7 +118,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         print("train_file_path", train_file_path, train_target_column)
 
         # call make residual
-        sponsor_result, sponsor_residual = super()._calculate_residual(
+        sponsor_trained_result, residual_dict = super()._calculate_residual(
             self_id=user_id, 
             train_id=train_id, 
             round=cls._initial_round_num, 
@@ -127,23 +127,24 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             skip_header=super()._skip_header, 
             task_mode=task_mode, 
             metric_name=metric_name,
+            sponsor_matched_identifers=sponsor_matched_identifers,
             last_round_result=None,
         )
-
+        print('~~sponsor_trained_result', sponsor_trained_result, len(sponsor_trained_result))
         super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
             algorithm_data_name=['sponsor_trained_result', 'rounds_0'],
-            algorithm_data=sponsor_result
+            algorithm_data=sponsor_trained_result
         )
 
         super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name='sponsor_residual',
-            algorithm_data=sponsor_residual
+            algorithm_data_name='residual_dict',
+            algorithm_data=residual_dict
         )
 
         msg = [
@@ -158,7 +159,8 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         # residual_paths = make_residual_multiple_paths[2].split("?")
         assistor_random_id_to_residual_dict = {}
         for assistor_random_id in assistor_random_id_to_identifier_content_dict.keys():
-            assistor_random_id_to_residual_dict[assistor_random_id] = sponsor_residual
+            assistor_random_id_to_residual_dict[assistor_random_id] = residual_dict[assistor_random_id]
+            print('8989000', residual_dict[assistor_random_id])
 
         data = {
             "train_id": train_id,

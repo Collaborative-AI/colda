@@ -48,9 +48,9 @@ class TestSponsorFindAssistor(TestBaseWorkflow):
             user_id=user_id,
             train_id=train_id
         )
-        task_mode = sponsor_metadata_record[0]
-        model_name = sponsor_metadata_record[1]
-        metric_name = sponsor_metadata_record[2]
+        task_mode = sponsor_metadata_record[1]
+        model_name = sponsor_metadata_record[2]
+        metric_name = sponsor_metadata_record[3]
 
         # call make_hash in Algorithm module
         sponsor_encrypted_identifer = super()._encrypt_identifier(

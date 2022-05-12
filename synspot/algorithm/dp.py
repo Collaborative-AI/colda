@@ -8,7 +8,9 @@ from synspot.utils.dtypes.api import (
     is_numpy,
     is_list,
     is_tuple,
-    is_dict_like
+    is_dict_like,
+    is_integer,
+    is_float
 )
 
 from synspot._typing import Serializable_Datatype
@@ -39,10 +41,6 @@ class DP:
         if data is None:
             return None
         
-        if is_list(data):
-            return copy.deepcopy(np.array(data))
-
-        # processed_data = None
         if is_dict_like(data):
             processed_data = {}
             for key, value in data.items():
@@ -51,10 +49,14 @@ class DP:
             processed_data = []
             for i in range(len(data)):
                 processed_data.append(cls.process_input_recursion(data[i])) 
+            # if not is_numpy(processed_data):
+            #     print('processed_data', processed_data, type(processed_data), type(processed_data[0])) 
+            processed_data = np.array(processed_data, dtype=type(processed_data[0]))
+            # print(f'new_type: {type(processed_data[0])}')
         else:
             return data
 
-        return processed_data
+        return copy.deepcopy(processed_data)
 
     @classmethod
     def process_input(
@@ -62,6 +64,7 @@ class DP:
         **kwargs
     ):
         for key, val in kwargs.items():
+            print('~~~!@~!', key, val)
             kwargs[key] = cls.process_input_recursion(val)
         
         return kwargs

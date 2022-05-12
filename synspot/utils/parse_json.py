@@ -97,24 +97,24 @@ class ParseJson:
         data: Any
     ) -> Serializable_Datatype:
 
+        '''
+        Change all np.array to list
+        '''
+
         if data is None:
             return None
 
-        if cls.is_serializable(data):
+        if cls.is_serializable(data) and not is_dict_like(data):
             return copy.deepcopy(data)
         
-        data = cls.change_datatype_to_serializable(data)
+        # data = cls.change_datatype_to_serializable(data)
 
         # processed_data = None
         if is_dict_like(data):
             processed_data = {}
             for key, value in data.items():
-                processed_data[key] = cls.make_data_serializable(value)    
-        elif is_list(data):
-            processed_data = []
-            for i in range(len(data)):
-                processed_data.append(cls.make_data_serializable(data[i])) 
+                processed_data[key] = cls.make_data_serializable(value)
+            print('~processed_data', processed_data)    
+            return processed_data 
         else:
-            return data
-
-        return processed_data
+            return cls.change_datatype_to_serializable(data)

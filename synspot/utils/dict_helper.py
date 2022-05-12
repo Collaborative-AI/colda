@@ -39,12 +39,18 @@ class DictHelper:
         cls, 
         user_id: str, 
         task_id: str,
-        *args,
+        supplement_key: Union(str, list[str], None)=None,
     ) -> tuple[str, str]:
 
+        if supplement_key == None:
+            return (user_id, task_id)
+
         key = [(user_id, task_id)]
-        for val in args:
-            key.append(val)
+        if not is_list(supplement_key):
+            key.append(supplement_key)
+        else:
+            for val in supplement_key:
+                key.append(val)
         return key
 
     @classmethod
@@ -103,7 +109,8 @@ class DictHelper:
 
         if len(key) == 1:
             return key[0], container
-            
+        
+        print('keyyyy', key)
         if not DictHelper.is_key_in_dict(key[0], container):
             container[key[0]] = {}
     
@@ -160,12 +167,12 @@ class DictHelper:
         '''
         Maintain pointer at the top of the container
         '''
-        print('sub_container1', key, container)
+        # print('sub_container1', key, container)
         if len(key) == 1:
             return key[0], container
         
         cur_key = key.pop(0)
-        if not DictHelper.is_key_in_dict(key, container):
+        if not DictHelper.is_key_in_dict(cur_key, container):
             '''
             warning: no key in container
             '''
@@ -175,11 +182,11 @@ class DictHelper:
             print('warning: no key in container)')
             print('warning: no key in container)')
             print('warning: no key in container)')
-            for key, val in container.items():
-                print('---', key)
-            return DictValueNotFound
+            # for key, val in container.items():
+            print('---')
+            return DictValueNotFound, DictValueNotFound
         container = container[cur_key] 
-        print('sub_container', container)
+        # print('sub_container', container)
         return cls.get_value_recursion(
             key=key,
             container=container
@@ -198,9 +205,9 @@ class DictHelper:
                 key=key,
                 container=temp
             )
-            print('container', container)
+            # print('container', container)
 
-        print('____', key, container, container[key])
+        # print('get_value_____', key, container[key])  
         if not DictHelper.is_key_in_dict(key, container):
             '''
             warning: no key in container

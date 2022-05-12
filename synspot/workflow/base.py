@@ -37,7 +37,8 @@ class BaseWorkflow:
     _skip_header: Final[int] = 1
     _initial_round_num: Final[int] = 1
     _url_prefix: Final[str] = 'main_flow'
-    _max_round: Final[int] = 3
+    # _max_round: Final[int] = 3
+    _max_round = 2
 
     __Network_instance = Network.get_instance()
     __PI_instance = PI.get_instance()
@@ -173,6 +174,22 @@ class BaseWorkflow:
         )
 
         return cls.__DatabaseOperator_instance.get_record(
+            **kwargs
+        )
+
+    @final
+    @classmethod
+    def _get_all_database_records(
+        cls,
+        database_type: Union(Train_Database_Type, Test_Database_Type),
+        **kwargs,
+    ) -> tuple[Any]:
+
+        cls.__DatabaseOperator_instance.set_database(
+            database_type=database_type
+        )
+
+        return cls.__DatabaseOperator_instance.get_all_records(
             **kwargs
         )
 

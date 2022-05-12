@@ -62,6 +62,7 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
 
         
         key = DictHelper.generate_dict_key(user_id, test_id)
+        temp_key = str(key)
         # if key not in self.__temp_database:
         #     self.__temp_database[key] = collections.defaultdict(dict)
 
@@ -84,9 +85,9 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         )
             
         if store_res == True:
-            return f'{self.__class__.__name__} stores {key} successfully!' 
+            return f'{self.__class__.__name__} stores {temp_key} successfully!' 
         else:
-            return f'{self.__class__.__name__} failed to stores {key}'
+            return store_res
 
     def get_record(
         self, 
@@ -118,8 +119,8 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             raise RuntimeError('Use task_id to retrieve User_Assistor_Table')
 
         key = DictHelper.generate_dict_key(user_id, test_id)
-        if key not in self.__temp_database:
-            print(f'{self.__class__.__name__} does not contain the record')
+        # if key not in self.__temp_database:
+        #     print(f'{self.__class__.__name__} does not contain the record')
 
         assistor_metadata = DictHelper.get_value(
             key=key,
@@ -188,6 +189,7 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             test_name, 
             test_description
         ):
+            print(f'{self.__class__.__name__} does not contain the record')
             return super().dict_value_not_found()
 
         return (

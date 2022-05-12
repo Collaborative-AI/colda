@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from synspot.utils.log import GetAlgorithmLog
 
+from typing import Any
+
 
 class AlgorithmAPI:
 
@@ -18,3 +20,9 @@ class AlgorithmAPI:
             task_id=task_id,
             log_category=log_category
         )
+    
+    @classmethod
+    def get_all_logs(
+        cls
+    ) -> dict[str, Any]:
+        return GetAlgorithmLog.get_log().get_all_logs()

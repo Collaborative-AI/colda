@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import collections
 from synspot.utils.log.base import BaseLog
 
@@ -43,27 +44,17 @@ class AlgorithmLog(BaseLog, AbstractLog):
     ) -> None:
 
         key = DictHelper.generate_dict_key(user_id, task_id, log_category)
+        print('()()(', key, msgs)
+        
+        DictHelper.store_value(
+            key=key,
+            value=msgs,
+            container=self.__algorithm_log,
+            store_type='append'
+        )
+        for key,val in self.__algorithm_log.items():
+            print('**', key, val)
 
-        if is_list(msgs):
-            for msg in msgs:
-                msg_str = to_string(msg)
-                DictHelper.store_value(
-                    key=key,
-                    value=msg_str,
-                    container=self.__algorithm_log,
-                    store_type='append'
-                )
-        elif is_dict_like(msgs):
-            DictHelper.store_value(
-                key=key,
-                value=msgs,
-                container=self.__algorithm_log,
-                store_type='append'
-            )
-        else:
-            '''
-            error
-            '''
 
         return 
 
@@ -75,17 +66,19 @@ class AlgorithmLog(BaseLog, AbstractLog):
     ) -> str:
 
         key = DictHelper.generate_dict_key(user_id, task_id, log_category)
-        
+        print('get_log_key', key)
         log = DictHelper.get_value(
             key=key,
             container=self.__algorithm_log,
         )
 
-        log = '\n'.join(log)
+        if is_list(log):
+            log = '\n'.join(log)
+
         return log
 
-    def get_all_logs(self, user_id):
-        pass
+    def get_all_logs(self):
+        return copy.deepcopy(self.__algorithm_log)
 
     def log_serialization(self):
         pass

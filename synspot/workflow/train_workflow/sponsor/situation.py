@@ -55,11 +55,11 @@ class TrainSponsorSituation(TrainBaseWorkflow):
         task_name = sponsor_metadata_record[8]
         task_description = sponsor_metadata_record[9]
 
-        sponsor_residual = super()._get_database_record(
+        residual_dict = super()._get_database_record(
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name='sponsor_residual'
+            algorithm_data_name='residual_dict'
         )
 
         # train cooperative model using residual of current round as target
@@ -69,7 +69,7 @@ class TrainSponsorSituation(TrainBaseWorkflow):
             skip_header=super()._skip_header, 
             task_mode=task_mode, 
             model_name=model_name,
-            cur_round_residual=sponsor_residual,
+            cur_round_residual=residual_dict['sponsor'],
             role=cls.__role,
             matched_identifier=None,
         )
@@ -79,7 +79,7 @@ class TrainSponsorSituation(TrainBaseWorkflow):
             database_type='train_algorithm',
             user_id=user_id,
             train_id=train_id,
-            algorithm_data_name=['trained_cooperative_model', 'rounds_{cur_rounds_num}'],
+            algorithm_data_name=['trained_cooperative_model', f'rounds_{cur_rounds_num}'],
             algorithm_data=trained_cooperative_model
         )
 

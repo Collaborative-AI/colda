@@ -62,6 +62,7 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         """
 
         key = DictHelper.generate_dict_key(user_id, test_id)
+        temp_key = str(key)
         # if key not in self.__temp_database:
         #     self.__temp_database[key] = collections.defaultdict(dict)
 
@@ -84,9 +85,9 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             container=self.__temp_database
         )
         if store_res == True:
-            return f'{self.__class__.__name__} stores {key} successfully!' 
+            return f'{self.__class__.__name__} stores {temp_key} successfully!' 
         else:
-            return f'{self.__class__.__name__} failed to stores {key}'
+            return store_res
     
     def get_record(
         self, 
@@ -119,8 +120,8 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
 
         key = DictHelper.generate_dict_key(user_id, test_id)
         cur_class_name = self.__class__.__name__
-        if key not in self.__temp_database:
-            print(f'{cur_class_name} does not contain the record')
+        # if key not in self.__temp_database:
+        #     print(f'{cur_class_name} does not contain the record')
 
         sponsor_metadata = DictHelper.get_value(
             key=key,
@@ -195,6 +196,7 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             test_name, 
             test_description
         ):
+            print(f'{cur_class_name} does not contain the record')
             return super().dict_value_not_found()
 
         return ( 

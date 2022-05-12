@@ -44,10 +44,10 @@ class BaseDatabase:
     def if_db_response_valid(
         cls, *args
     ) -> bool:
-        print('if_response_valid', args)
+        # print('if_response_valid', args)
 
         # args = cls.handle_db_return_datatype(*args)
-        print('if_response_valid', args)
+        # print('if_response_valid', args)
         if cls.dict_value_not_found() in args:
             return False
         return True

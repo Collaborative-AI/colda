@@ -818,9 +818,135 @@ class DictValueNotFound(ValueError):
 
 # ceshi2(*res)
 
-a = [1,2,3]
+# a = [1,2,3]
 
-def ceshi(*args):
-    print(args)
+# def ceshi(c, *args):
+#     print(c)
+#     print(args, args==())
 
-ceshi(None)
+# ceshi(a)
+
+
+def is_serializable(
+    data: Any
+) -> bool:
+
+    # if isinstance(data, (np.ndarray, np.generic)):
+    #     return False
+    # return True
+
+    try:
+        json.dumps(data)
+    except:
+        return False
+    else:
+        return True
+
+# a = [4,5,[6,6,[7,8,9]]]
+# import numpy as np
+
+# b = np.array(a, dtype="object")
+# print(b, type(b), is_serializable(b))
+# for item in b:
+#     print(item, type(item), is_serializable(item))
+
+# b1 = b.tolist()
+# print('b1', b1, type(b1), is_serializable(b1))
+
+# c = np.array([np.array(_) for _ in a])
+# print(c, type(c), is_serializable(c))
+# for item in c:
+#     print(item, type(item), is_serializable(item))
+# b = np.array()
+# a = []
+# print(a == None, not a, not b)
+# a = np.array(5.6, dtype='float')
+# b = np.array(5.6, dtype=float)
+# c = 5
+# print(a,b)
+# print(type(c))
+# d = np.array(5, dtype=type(c))
+
+# a = np.ones([2,2,3], dtype = int)
+# print(a)
+# res1 = is_serializable(a)
+
+# a = a.tolist()
+
+# res2 = is_serializable(a)
+
+# print(res1, res2)
+from pandas.api.types import is_dict_like as pandas_is_dict_like
+from pandas.api.types import is_integer as pandas_is_integer
+from pandas.api.types import is_list_like as pandas_is_list_like
+from pandas.api.types import is_float as pandas_is_float
+def is_numpy(obj) -> bool:
+    return isinstance(obj, (np.ndarray, np.generic))
+
+def is_dict_like(obj) -> bool:
+    return pandas_is_dict_like(obj)
+
+def is_list_like(obj) -> bool:
+    return pandas_is_list_like(obj)
+
+def is_tuple(obj) -> bool:
+    return isinstance(obj, tuple)
+
+def is_list(obj) -> bool:
+    return isinstance(obj, list)
+
+def is_integer(obj) -> bool:
+    return pandas_is_integer(obj)
+
+def is_float(obj) -> bool:
+    return pandas_is_float(obj)
+
+
+
+# def process_input_recursion(
+#     data: Any,
+# ):
+
+    '''
+    Change list to np.array
+    '''
+    
+    # if data is None or not data:
+    #     return None
+    
+    # # processed_data = None
+    # if is_dict_like(data):
+    #     processed_data = {}
+    #     for key, value in data.items():
+    #         processed_data[key] = process_input_recursion(value)    
+    # elif is_list(data):
+    #     processed_data = []
+    #     for i in range(len(data)):
+    #         processed_data.append(process_input_recursion(data[i]))
+    #     print('processed_data', processed_data) 
+    #     if not is_array()
+    #     processed_data = np.array(processed_data, dtype=type(processed_data[0]))
+    #     print(f'new_type: {type(processed_data[0])}')
+    # else:
+    #     return data
+
+    # return processed_data
+
+
+# a = [[-4.44], [-5.66]]
+# b = process_input_recursion(a)
+
+# print(b, type(b))
+
+
+a = [6, 5]
+a = np.array(a)
+# a = np.array(a, type(a[0]))
+b = {5: a}
+print(is_serializable(b))
+
+b[5] = b[5].tolist()
+print(is_serializable(b))
+# d = 5
+
+# print(type(d) == int)

@@ -45,7 +45,7 @@ class TestAssistorRequest(TestBaseWorkflow):
                 id_idx=default_id_column, 
                 skip_header=super()._skip_header
             )
-            print('assistor_encrypted_identifier', assistor_encrypted_identifier)
+            # print('assistor_encrypted_identifier', assistor_encrypted_identifier)
             # add log
             msgs = [
                 "You are Assistor", 
@@ -91,7 +91,7 @@ class TestAssistorRequest(TestBaseWorkflow):
             super()._store_database_record(
                 database_type='test_algorithm',
                 user_id=user_id, 
-                test=test_id, 
+                test_id=test_id, 
                 algorithm_data_name='assistor_encrypted_identifier',
                 algorithm_data=assistor_encrypted_identifier
             )

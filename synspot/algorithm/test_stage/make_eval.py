@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 import os
+import copy
 import json
 import collections
 
@@ -48,6 +49,12 @@ class MakeEval(BaseAlgorithm):
         # task_path: str
     ) -> list:
 
+        print('sponsor_test_cooperative_model_output_every_round',sponsor_test_cooperative_model_output_every_round)
+        print('assistor_test_cooperative_model_output_every_round', assistor_test_cooperative_model_output_every_round)
+        print('trained_result_rounds_0', trained_result_rounds_0)
+        print('trained_alpha_every_round', trained_alpha_every_round)
+        print('matched_identifier', matched_identifier)
+        print('dataset_path', dataset_path)
         # task_path = os.path.join(root, self_id, 'task', task_id)
         # result = np.genfromtxt(os.path.join(task_path, 'train', 'round', '0', 'result.csv'), delimiter=',')
         result = trained_result_rounds_0
@@ -119,7 +126,7 @@ class MakeEval(BaseAlgorithm):
             if role == 'sponsor':
                 metric = Metric(task_mode, metric_name)
                 eval, eval_dict = metric.eval(result, target)
-                make_eval_res[i] = eval_dict
+                make_eval_res[rounds_key] = copy.deepcopy(eval_dict)
                 msg = 'Test Round: {}, {}'.format(i, eval)
                 # log(msg, root, self_id, task_id, test_id)
 
@@ -132,4 +139,4 @@ class MakeEval(BaseAlgorithm):
         # result_path = '?'.join(result_path)
         # make_eval_res = json.dumps(make_eval_res)
         # return '200?make_eval?{make_eval_res}?{result_path}'.format(make_eval_res = make_eval_res, result_path = result_path)
-        return make_eval_res
+        return (make_eval_res, )

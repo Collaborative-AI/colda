@@ -38,8 +38,8 @@ class MakeMatchIdx(BaseAlgorithm):
         # retrieve from DB
         # self_id_data = 5
         # from_id_data = 6
-        print('self_id_data:', self_id_data)
-        print('from_id_data:', from_id_data)
+        # print('self_id_data:', self_id_data)
+        # print('from_id_data:', from_id_data)
         _, self_from_matched_idx, _ = np.intersect1d(self_id_data, from_id_data, return_indices=True)
         # makedir_exist_ok(self_from_matched_idx_path)
         # np.savetxt(os.path.join(self_from_matched_idx_path, '{}.csv'.format(from_id)), self_from_matched_idx,

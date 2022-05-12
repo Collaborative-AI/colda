@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import collections
 from synspot.utils.log.base import BaseLog
 
@@ -74,8 +75,8 @@ class WorkflowLog(BaseLog, AbstractLog):
         log = '\n'.join(log)
         return log
 
-    def get_all_logs(self, user_id):
-        pass
+    def get_all_logs(self):
+        return copy.deepcopy(self.__workflow_log)
 
     def log_serialization(self):
         pass

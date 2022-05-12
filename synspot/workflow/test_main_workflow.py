@@ -92,7 +92,7 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
         :exception OSError: Placeholder.
         """
 
-        for test_id, test_id_dict in test_id_dicts.item():
+        for test_id, test_id_dict in test_id_dicts.items():
             TestAssistorRequest.test_assistor_request(
                 test_id=test_id,
                 test_id_dict=test_id_dict

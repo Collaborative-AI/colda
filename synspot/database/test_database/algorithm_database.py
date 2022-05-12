@@ -27,6 +27,9 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
 
         return cls.__TestAlgorithmDatabase_instance
 
+    def get_all_records(self) -> list[tuple[str, str]]:
+        return DictHelper.get_all_key_value_pairs(container=self.__temp_database)
+
     def store_record(
         self, 
         user_id: str, 
@@ -47,6 +50,7 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         """
 
         key = DictHelper.generate_dict_key(user_id, test_id, algorithm_data_name)
+        temp_key = str(key)
 
         store_res = DictHelper.store_value(
             key=key,
@@ -55,9 +59,9 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
             store_type='append'
         )
         if store_res == True:
-            return f'{self.__class__.__name__} stores {key} successfully!' 
+            return f'{self.__class__.__name__} stores {temp_key} successfully!' 
         else:
-            return f'{self.__class__.__name__} failed to stores {key}'
+            return store_res
 
     
     def get_record(
@@ -93,18 +97,20 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
             print('placeholder')
             
         key = DictHelper.generate_dict_key(user_id, test_id, algorithm_data_name)
-        if key not in self.__temp_database:
-            print(f'{self.__class__.__name__} does not contain the record')
-            return '666666'
+        
+        # if key not in self.__temp_database:
+        #     print(f'{self.__class__.__name__} does not contain the record')
+        #     return '666666'
 
         algorithm_data = DictHelper.get_value(
-            key=algorithm_data_name,
-            container=self.__temp_database[key]
+            key=key,
+            container=self.__temp_database
         )
         
         if not super().if_db_response_valid(
             algorithm_data, 
         ):
+            print(f'{self.__class__.__name__} does not contain the record')
             return super().dict_value_not_found()
 
         return algorithm_data

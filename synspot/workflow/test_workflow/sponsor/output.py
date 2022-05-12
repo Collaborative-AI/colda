@@ -103,7 +103,7 @@ class TestSponsorOutput(TestBaseWorkflow):
         ) == False:
             return
         
-        cls.train_calculate_result(
+        cls.evaluation(
             user_id=user_id,
             test_id=test_id, 
             rounds=cur_rounds_num,
@@ -113,7 +113,7 @@ class TestSponsorOutput(TestBaseWorkflow):
         return
 
     @classmethod
-    def train_calculate_result(
+    def evaluation(
         cls, 
         user_id: str,
         test_id: str, 
@@ -154,14 +154,14 @@ class TestSponsorOutput(TestBaseWorkflow):
         test_cooperative_model_outputs = super()._get_database_record(
             database_type='test_algorithm',
             user_id=user_id,
-            train_id=train_id,
+            test_id=test_id,
             algorithm_data_name='test_cooperative_model_outputs',
         )
 
         sponsor_matched_identifers = super()._get_database_record(
-            database_type='train_algorithm',
+            database_type='test_algorithm',
             user_id=user_id,
-            train_id=train_id,
+            test_id=test_id,
             algorithm_data_name='sponsor_matched_identifers',
         )
 
@@ -183,7 +183,7 @@ class TestSponsorOutput(TestBaseWorkflow):
         print('&&%%%%', type(assistor_random_id_to_output_content_dict))
         evaluation = super()._evaluate_results(
             user_id=user_id,
-            task_id=test_id,
+            test_id=test_id,
             max_round=super()._max_round, 
             dataset_path=test_file_path, 
             target_idx=test_target_column, 
@@ -207,7 +207,7 @@ class TestSponsorOutput(TestBaseWorkflow):
         super()._store_database_record(
             database_type='test_algorithm',
             user_id=user_id,
-            train_id=train_id,
+            test_id=test_id,
             algorithm_data_name='evaluation',
             algorithm_data=evaluation
         )

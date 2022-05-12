@@ -16,6 +16,7 @@ from synspot.authorization import Authorization
 from synspot.GetNotification import GetNotification
 from synspot.pi import PI
 from synspot.network import Network
+from synspot.utils.log import GetAlgorithmLog
 # from synspot import set_default_data_path, get_all_task_id_as_sponsor, get_all_test_id_as_sponsor, get_all_task_id_as_assistor, get_all_test_id_as_assistor
 # from synspot import get_all_task_id, get_all_test_id
 
@@ -25,6 +26,7 @@ _default_testMainWorkflow = TestMainWorkflow.get_instance()
 _default_getNotification = GetNotification.get_instance()
 _default_PI = PI.get_instance()
 _default_Network = Network.get_instance()
+# _default_algorithm_log = GetAlgorithmLog.get_log()
 # _default_testRequest = TestRequest.get_TestRequest_instance()
 # _default_get_notification = Get_Notification.get_Get_notification_instance()
 
@@ -100,16 +102,39 @@ class Strategy(ABC):
     Strategies.
     """
 
+    @classmethod
     @abstractmethod
-    def unread_test_output_test(self):
+    def alpha(cls):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def sponsor_trained_cooperative_model_output(cls):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def assistor_trained_cooperative_model_output(cls):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def unread_test_make_result(cls):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def unread_test_output_test(cls):
         pass
     
+    @classmethod
     @abstractmethod
-    def unread_test_sponsor_match_id_test(self):
+    def unread_test_sponsor_match_id_test(cls):
         pass
     
+    @classmethod
     @abstractmethod
-    def unread_test_assistor_match_id_test(self):
+    def unread_test_assistor_match_id_test(cls):
         pass
 
 """
@@ -118,15 +143,169 @@ interface. The interface makes them interchangeable in the Context.
 """
 
 class Regression_1s_1a(Strategy):
-    def unread_test_output_test(self):
+    
+    @classmethod
+    def alpha(cls):
+        def alpha_callback(data):
+            test_dict = {
+                "rounds_1": [0.57166346],
+                "rounds_2": [0.802418863],
+            }
+            
+            for key in data:
+                cur_running_res = data[key]
+                cur_testing_res = test_dict[key]
+                # print('cur_running_res', cur_running_res, cur_running_res[0])
+                # print(cur_testing_res, cur_testing_res[0])
+                # for i in range(len(cur_running_res)):
+                cur_number = cur_running_res[0]
+                cur_number = float(format(cur_number, '.5f'))
+                cur_testing_number = cur_testing_res[0]
+                cur_testing_number = float(format(cur_testing_number, '.5f'))
+                print('1s_1a', cur_testing_number, cur_number)
+                if cur_number != cur_testing_number:
+                    return False
+            return True
+        return alpha_callback
+
+    # @classmethod
+    # def make_result_cooperative_model_output(cls):
+    #     def make_result_cooperative_model_output_callback(data):
+    #         test_dict = {
+    #             "rounds_1": [
+    #                 [-8.29007],
+    #                 [-1.670738],
+    #                 [-13.95130964],
+    #                 [12.425088]
+    #             ],
+    #             "rounds_2": [
+    #                 [0.0506641812],
+    #                 [-3.080867],
+    #                 [0.5027218],
+    #                 [-0.942036042]
+    #             ]
+    #         }
+            
+    #         for key in data:
+    #             cur_running_res = data[key]
+    #             cur_testing_res = test_dict[key]
+    #             for i in range(len(cur_running_res)):
+    #                 cur_number = cur_running_res[i][0]
+    #                 cur_number = float(format(cur_number, '.5f'))
+    #                 cur_testing_number = cur_testing_res[i][0]
+    #                 cur_testing_number = float(format(cur_testing_number, '.5f'))
+    #                 print('1s_1a', cur_testing_number, cur_number)
+    #                 if cur_number != cur_testing_number:
+    #                     return False
+    #         return True
+    #     return make_result_cooperative_model_output_callback
+
+    @classmethod
+    def sponsor_trained_cooperative_model_output(cls):
+        def sponsor_trained_cooperative_model_output_callback(data):
+            test_dict = {
+                "rounds_1": [
+                    [-8.29007],
+                    [-1.670738],
+                    [-13.95130964],
+                    [12.425088]
+                ],
+                "rounds_2": [
+                    [0.0506641812],
+                    [-3.080867],
+                    [0.5027218],
+                    [-0.942036042]
+                ]
+            }
+            
+            for key in data:
+                cur_running_res = data[key]
+                cur_testing_res = test_dict[key]
+                for i in range(len(cur_running_res)):
+                    cur_number = cur_running_res[i][0]
+                    cur_number = float(format(cur_number, '.5f'))
+                    cur_testing_number = cur_testing_res[i][0]
+                    cur_testing_number = float(format(cur_testing_number, '.5f'))
+                    print('1s_1a', cur_testing_number, cur_number)
+                    if cur_number != cur_testing_number:
+                        return False
+            return True
+        return sponsor_trained_cooperative_model_output_callback
+
+    @classmethod
+    def assistor_trained_cooperative_model_output(cls):
+        def assistor_trained_cooperative_model_output_callback(data):
+            test_dict = {
+                "rounds_1": [
+                    [13.47092],
+                    [-7.71771],
+                    [2.183919],
+                    [11.85157]
+                ],
+                "rounds_2": [
+                    [-1.74752106],
+                    [-1.19497534],
+                    [-0.87041926],
+                    [-0.23935089]
+                ]
+            }
+            
+            for key in data:
+                cur_running_res = data[key]
+                cur_testing_res = test_dict[key]
+                for i in range(len(cur_running_res)):
+                    cur_number = cur_running_res[i][0]
+                    cur_number = float(format(cur_number, '.5f'))
+                    cur_testing_number = cur_testing_res[i][0]
+                    cur_testing_number = float(format(cur_testing_number, '.5f'))
+                    print('1s_1a', cur_testing_number, cur_number)
+                    if cur_number != cur_testing_number:
+                        return False
+            return True
+        return assistor_trained_cooperative_model_output_callback
+
+    @classmethod
+    def unread_test_make_result(cls):
+        def unread_test_make_result_regression_regression_1s_1a(data):
+            test_dict = {
+                "rounds_1": [
+                    [21.28509384],
+                    [22.65005942],
+                    [13.2916661],
+                    [28.7824146]
+                ],
+                "rounds_2": [
+                    [22.036252],
+                    [21.005467],
+                    [13.064913],
+                    [28.00325766]
+                ]
+            }
+            
+            for key in data:
+                cur_running_res = data[key]
+                cur_testing_res = test_dict[key]
+                for i in range(len(cur_running_res)):
+                    cur_number = cur_running_res[i][0]
+                    cur_number = float(format(cur_number, '.5f'))
+                    cur_testing_number = cur_testing_res[i][0]
+                    cur_testing_number = float(format(cur_testing_number, '.5f'))
+                    print('1s_1a', cur_testing_number, cur_number)
+                    if cur_number != cur_testing_number:
+                        return False
+            return True
+        return unread_test_make_result_regression_regression_1s_1a
+
+    @classmethod
+    def unread_test_output_test(cls):
         def unread_test_output_regression_regression_1s_1a(data):
             test_dict = {
-                "1": {
+                "rounds_1": {
                     "MAD": 3.54763,
                     "RMSE": 5.21270,
                     "R2": 0.46997,
                 },
-                "2": {
+                "rounds_2": {
                     "MAD": 3.54221,
                     "RMSE": 5.19744,
                     "R2": 0.45141,
@@ -141,41 +320,73 @@ class Regression_1s_1a(Strategy):
                     cur_number = float(format(cur_number, '.5f'))
                     cur_testing_number = cur_testing_dict[sub_key]
                     cur_testing_number = float(format(cur_testing_number, '.5f'))
-                    print('1s_1a', cur_number, cur_testing_number)
+                    print('1s_1a', cur_testing_number, cur_number)
                     if cur_number != cur_testing_number:
                         return False
             return True
         return unread_test_output_regression_regression_1s_1a
     
-    def unread_test_sponsor_match_id_test(self):
+    @classmethod
+    def unread_test_sponsor_match_id_test(cls):
         def unread_test_sponsor_match_id_regression_regression_1s_1a(data):
-            test_array = [-15.62146, -7.63978, -3.17975, -3.77626, -2.13779, 1.60417, -1.76595, -0.91224]
-            test_array_index = 0
+            test_dict = {
+                "rounds_1": [
+                    -15.62146, 
+                    -7.63978, 
+                    -3.17975, 
+                    -3.77626
+                ],
+                "rounds_2": [
+                    -2.13779, 
+                    1.60417, 
+                    -1.76595, 
+                    -0.91224
+                ]
+            } 
+            
             for key in data:
-                cur_list = data[key]
-                for j in range(len(cur_list)):
-                    cur_number = cur_list[j]
+                cur_running_res = data[key]
+                cur_testing_res = test_dict[key]
+                for i in range(len(cur_running_res)):
+                    cur_number = cur_running_res[i]
                     cur_number = float(format(cur_number, '.5f'))
-                    print('1s_1a', cur_number, type(cur_number), test_array[test_array_index], type(test_array[test_array_index]))
-                    if cur_number != test_array[test_array_index]:
+                    cur_testing_number = cur_testing_res[i]
+                    cur_testing_number = float(format(cur_testing_number, '.5f'))
+                    print('1s_1a', cur_testing_number, cur_number)
+                    if cur_number != cur_testing_number:
                         return False
-                    test_array_index += 1
             return True
         return unread_test_sponsor_match_id_regression_regression_1s_1a
 
-    def unread_test_assistor_match_id_test(self):
+    @classmethod
+    def unread_test_assistor_match_id_test(cls):
         def unread_test_assistor_match_id_regression_regression_1s_1a(data):
-            test_array = [3.93492, -1.96598, -19.51288, 6.83615, -0.52504, -0.75834, -1.23748, -0.11017]
-            test_array_index = 0
+            test_dict = {
+                "rounds_1": [
+                    3.93492, 
+                    -1.96598, 
+                    -19.51288, 
+                    6.83615
+                ],
+                "rounds_2": [
+                    -0.52504, 
+                    -0.75834, 
+                    -1.23748, 
+                    -0.11017
+                ]
+            }
+
             for key in data:
-                cur_list = data[key]
-                for j in range(len(cur_list)):
-                    cur_number = cur_list[j]
+                cur_running_res = data[key]
+                cur_testing_res = test_dict[key]
+                for i in range(len(cur_running_res)):
+                    cur_number = cur_running_res[i]
                     cur_number = float(format(cur_number, '.5f'))
-                    print('1s_1a_assistor', cur_number, type(cur_number), test_array[test_array_index], type(test_array[test_array_index]))
-                    if cur_number != test_array[test_array_index]:
+                    cur_testing_number = cur_testing_res[i]
+                    cur_testing_number = float(format(cur_testing_number, '.5f'))
+                    print('1s_1a', cur_testing_number, cur_number)
+                    if cur_number != cur_testing_number:
                         return False
-                    test_array_index += 1
             return True
         return unread_test_assistor_match_id_regression_regression_1s_1a
 
@@ -205,7 +416,20 @@ class unittest_strategy_interface():
 
         self._unittest_strategy = unittest_strategy
 
+    def alpha(self):
+        return self._unittest_strategy.alpha()
+
+    def sponsor_trained_cooperative_model_output(self):
+        return self._unittest_strategy.sponsor_trained_cooperative_model_output()
+
+    def assistor_trained_cooperative_model_output(self):
+        return self._unittest_strategy.assistor_trained_cooperative_model_output()
+
+    def get_unread_test_make_result(self):
+        return self._unittest_strategy.unread_test_make_result()
+
     def get_unread_test_sponsor_match_id_test(self):
+        print('strategy', self._unittest_strategy)
         return self._unittest_strategy.unread_test_sponsor_match_id_test()
     
     def get_unread_test_assistor_match_id_test(self):
@@ -214,7 +438,8 @@ class unittest_strategy_interface():
     def get_unread_test_output_test(self):
         return self._unittest_strategy.unread_test_output_test()
     
-    
+
+_default_unittest_strategy = unittest_strategy_interface()
 
 
 

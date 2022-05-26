@@ -22,13 +22,14 @@
             </div> -->
 
             <div class="row">
-                <!-- <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <div class="footer-heading">
-                            <h3>About Us</h3>
+                            <h3>Follow Us</h3>
+                             <h3>On Social Media</h3>
                         </div>
                         
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
+                        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p> -->
 
                         <ul class="footer-social">
                             <li>
@@ -53,9 +54,9 @@
                             </li>
                         </ul>
                     </div>
-                </div> -->
+                </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <div class="footer-heading">
                             <h3>Important Links</h3>
@@ -88,7 +89,7 @@
                     </div>    
                 </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <div class="footer-heading">
                             <!-- <h3>Featured Service</h3> -->
@@ -123,7 +124,7 @@
                     </div>    
                 </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <div class="footer-heading">
                             <h3>Contact</h3>

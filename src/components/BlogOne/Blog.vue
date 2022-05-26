@@ -3,7 +3,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>Our <span>Latest</span> News</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidiunt labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
+                <p>Check our new use cases!</p>
                 <div class="bar"></div>
             </div>
 
@@ -12,18 +12,18 @@
                     <div class="single-blog">
                         <div class="image">
                             <router-link to="/single-blog">
-                                <img src="../../assets/images/blog/blog-1.jpg" alt="image">
+                                <img src="../../assets/images/blog/weather.jpg" alt="image">
                             </router-link>
                         </div>
 
                         <div class="content">
-                            <span>20 March 2022</span>
+                            <span>24 May 2022</span>
                             <h3>
                                 <router-link to="/single-blog">
-                                    Great Tips To Earn More Money From Digital Industry
+                                    Weather Forecast
                                 </router-link>
                             </h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor</p>
+                            <p>Forecasting time series weather data with SynSpot packages</p>
                             <router-link to="/single-blog" class="read-more">Read More</router-link>
                         </div>
                     </div>
@@ -33,18 +33,18 @@
                     <div class="single-blog">
                         <div class="image">
                             <router-link to="/single-blog">
-                                <img src="../../assets/images/blog/blog-2.jpg" alt="image">
+                                <img src="../../assets/images/blog/ride.jpg" alt="image">
                             </router-link>
                         </div>
 
                         <div class="content">
-                            <span>23 April 2022</span>
+                            <span>25 May 2022</span>
                             <h3>
                                 <router-link to="/single-blog">
-                                    The Billionaire Guide On Design That will Get You Rich
+                                    Uber & Lyft Ride Price Prediction
                                 </router-link>
                             </h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor</p>
+                            <p>Improve the ride price prediction accuracy by combining the Uber and Lyft ride history during a certain time period</p>
                             <router-link to="/single-blog" class="read-more">Read More</router-link>
                         </div>
                     </div>
@@ -54,18 +54,18 @@
                     <div class="single-blog">
                         <div class="image">
                             <router-link to="/single-blog">
-                                <img src="../../assets/images/blog/blog-3.jpg" alt="image">
+                                <img src="../../assets/images/blog/earthquake.jpg" alt="image">
                             </router-link>
                         </div>
 
                         <div class="content">
-                            <span>27 June 2022</span>
+                            <span>27 May 2022</span>
                             <h3>
                                 <router-link to="/single-blog">
-                                    Making Peace With The Feast Or Famine Of Freelancing
+                                    Earthquake Forecast
                                 </router-link>
                             </h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor</p>
+                            <p>Forecast earthquake by using other locations earthquake data</p>
                             <router-link to="/single-blog" class="read-more">Read More</router-link>
                         </div>
                     </div>

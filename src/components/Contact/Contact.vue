@@ -5,7 +5,7 @@
                 <div class="col-lg-6">
                     <div class="contact-text">
                         <h3>Have Any Questions About Us?</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed eiusmod tempor incididunt ut labore </p>
+                        <p>Feel free to contact us if you have any questions.</p>
                     </div>
 
                     <div class="contact-form">

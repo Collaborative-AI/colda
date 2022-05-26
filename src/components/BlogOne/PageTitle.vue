@@ -4,7 +4,7 @@
             <div class="d-table-cell">
                 <div class="container">
                     <div class="page-title-content">
-                        <h2>Blog</h2>
+                        <h2>Use Cases</h2>
                         <ul>
                             <li><router-link to="/">Home</router-link></li>
                             <li>Blog</li>

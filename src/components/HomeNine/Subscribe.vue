@@ -1,3 +1,4 @@
+<!--
 <template>
     <div class="subscribe-inner-area ptb-100">
         <div class="container">
@@ -20,3 +21,5 @@
         name: 'Subscribe'
     }
 </script>
+
+-->

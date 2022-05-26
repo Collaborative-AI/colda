@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="about-section">
         <div class="container-fluid">
             <div class="row">
@@ -187,3 +187,4 @@ export default {
     },
 }
 </script>
+-->

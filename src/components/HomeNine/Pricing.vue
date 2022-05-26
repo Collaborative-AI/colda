@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="pricing-section pt-100 pb-70">
         <div class="container">
             <div class="section-title">
@@ -192,3 +192,5 @@
         name: 'Pricing'
     }
 </script>
+
+-->

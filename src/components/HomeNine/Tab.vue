@@ -1,4 +1,5 @@
-<template>
+
+<!-- <template>
     <div class="tab-section ptb-100">
         <div class="container">
             <div class="section-title">
@@ -66,7 +67,9 @@
             </div>
         </div>
     </div>
+
 </template>
+-->
 
 <script>
 export default {
@@ -80,8 +83,8 @@ export default {
                 {
                     id: 1,
                     icon: 'bx bx-flag',
-                    title: 'Real-Time Analytics',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan facilisis.',
+                    title: 'Our Motivation',
+                    description: '',
                     inners: [
                         {
                             id: 1,

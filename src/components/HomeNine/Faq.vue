@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="faq-section pb-100">
         <div class="container">
             <div class="section-title">
@@ -84,4 +84,4 @@ export default {
         AccordionItem
     }
 }
-</script>
+</script>-->

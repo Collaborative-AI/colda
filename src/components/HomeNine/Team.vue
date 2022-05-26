@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="team-section pb-70">
         <div class="container">
             <div class="section-title">
@@ -147,3 +147,4 @@
         name: 'Team'
     }
 </script>
+-->

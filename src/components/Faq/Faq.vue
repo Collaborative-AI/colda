@@ -1,3 +1,4 @@
+<!--
 <template>
     <div class="faq-section ptb-100">
         <div class="container">
@@ -85,3 +86,5 @@ export default {
     }
 }
 </script>
+
+-->

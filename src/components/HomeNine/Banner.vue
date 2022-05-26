@@ -4,9 +4,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="main-banner-content">
-                        <span>Digital Marketing</span>
-                        <h1>Digital Service With Excellent Quality</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing incididunt ut laboredolore magna aliqua elsed  tempomet, consectetur adipiscing.</p>
+                        <!-- <span>Digital Marketing</span> -->
+                        <h1>Build Your Model With Our Service</h1>
+                        <p>SynSpot optimizes your AI model cooperatively with others without sharing data and models. Start with millions of data science practioners, data-driven enterprises, and the open source community togther.</p>
                         <div class="banner-btn">
                             <a href="#" class="default-btn">Get Started</a>
                         </div>
@@ -55,16 +55,9 @@ export default defineComponent ({
         carouselItems: [
             {
                 id: 1,
-                image: require('../../assets/images/slider1.jpg'),
+                image: require('../../assets/images/data1.jpg'),
             },
-            {
-                id: 2,
-                image: require('../../assets/images/slider2.jpg'),
-            },
-            {
-                id: 3,
-                image: require('../../assets/images/slider3.jpg'),
-            },
+           
         ],
         settings: {
             itemsToShow: 1,

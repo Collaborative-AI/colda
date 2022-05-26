@@ -4,9 +4,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="tech-content">
-                        <h3>Awesome Things About Tech</h3>
+                        <h3>The Perfect Application for Beginners or Professionals</h3>
                         <div class="bar"></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed dood tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.typesetting, remaining essentially unchanged.</p>
+                        <p>SynSpot — is a carefully crafted multi-purpose, responsive, and gorgeous application built with Vue.js and Python. It comes with the features you need to quickly start your data analysis, optimize your AI model cooperatively with others without sharing local data.</p>
 
                         <div class="tech-btn">
                             <a href="#" class="default-btn">Discover More</a>

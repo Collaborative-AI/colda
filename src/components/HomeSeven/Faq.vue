@@ -1,3 +1,4 @@
+<!--
 <template>
     <div class="faq-section pb-100">
         <div class="container">
@@ -8,6 +9,12 @@
             </div>
 
             <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="faq-image">
+                        <img src="../../assets/images/faq.png" alt="image">
+                    </div>
+                </div>
+                
                 <div class="col-lg-6">
                     <div class="faq-accordion">
                         <accordion>
@@ -63,11 +70,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <div class="faq-image">
-                        <img src="../../assets/images/faq.png" alt="image">
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -85,3 +88,4 @@ export default {
     }
 }
 </script>
+-->

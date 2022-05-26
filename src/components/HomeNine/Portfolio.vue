@@ -1,3 +1,4 @@
+<!--
 <template>
     <div class="protfolio-section pb-70">
         <div class="container">
@@ -131,3 +132,4 @@
         name: 'Protfolio'
     }
 </script>
+-->

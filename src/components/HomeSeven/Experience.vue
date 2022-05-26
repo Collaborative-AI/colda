@@ -5,33 +5,36 @@
                 <div class="col-lg-6">
                     <div class="experience-inner-area">
                         <div class="experience-content">
-                            <h3>Why Choose Us</h3>
+                            <h3>Learn<span> More</span> About Us</h3>
                             <div class="bar"></div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra.</p>
+                            <p></p>
                         </div>
 
                         <div class="experience-inner-content">
                             <div class="icon">
                                 <i class="flaticon-check"></i>
                             </div>
-                            <h3>First Working Process</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut dolore ipsum.</p>
+                            <h3>Own Your Destiny</h3>
+                            <p>Synspot enables firms with data to conjointly train better AI models without
+sharing data and models with each other.</p>
                         </div>
 
                         <div class="experience-inner-content">
                             <div class="icon">
                                 <i class="flaticon-check"></i>
                             </div>
-                            <h3>Dedicated Team Member</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut dolore ipsum.</p>
+                            <h3>Build Your Model</h3>
+                            <p>Synspot allows firms to sponsor other firms for training better AI models through
+monetary incentives.</p>
                         </div>
 
                         <div class="experience-inner-content">
                             <div class="icon">
                                 <i class="flaticon-check"></i>
                             </div>
-                            <h3>24/7 Support</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut dolore ipsum.</p>
+                            <h3>Tackle Your Challenge</h3>
+                            <p>Synspot forms a community of shared interest by providing Decentralized
+Machine Learning as a service.</p>
                         </div>
                     </div>
                 </div>

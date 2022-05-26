@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="clients-section pb-100">
         <div class="container">
             <div class="section-title">
@@ -85,3 +85,4 @@ export default defineComponent ({
     }),
 })
 </script>
+-->

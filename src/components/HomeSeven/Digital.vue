@@ -1,49 +1,43 @@
+<!--
 <template>
     <div class="digital-section ptb-100">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="digital-image">
                         <img src="../../assets/images/digital.png" alt="image">
                     </div>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-20">
                     <div class="digital-content">
-                        <h3>Digital <span>Marketing</span></h3>
+                        <h3>Our <span>Motivation</span></h3>
                         <div class="bar"></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices  Lorem Ipsum is simply dummy tex printing and typesetting industry. Lorem Ipsum has been the industry</p>
+                        <p></p>
 
                         <ul class="digital-list">
                             <li>
                                 <i class="flaticon-check"></i>
-                                SEO Marketing
+                                Organizations want to optimize better AI models with a large amount of data
                             </li>
+
+        
 
                             <li>
                                 <i class="flaticon-check"></i>
-                                Email Marketing
+                                Organizations have difficulty leveraging decentralized data due to commercial and
+ethical restrictions
                             </li>
+
+                    
 
                             <li>
                                 <i class="flaticon-check"></i>
-                                Youtube Marketing
+                                Organizations needs a trustworthy third-party platform to assist each other for
+optimizing AI models
                             </li>
 
-                            <li>
-                                <i class="flaticon-check"></i>
-                                Social Marketing
-                            </li>
-
-                            <li>
-                                <i class="flaticon-check"></i>
-                                Facebook Marketing
-                            </li>
-
-                            <li>
-                                <i class="flaticon-check"></i>
-                                Page Ranking
-                            </li>
+                        
                         </ul>
 
                         <div class="digital-btn">
@@ -61,3 +55,4 @@
         name: 'Digital'
     }
 </script>
+-->

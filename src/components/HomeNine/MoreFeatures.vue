@@ -7,8 +7,8 @@
                         <div class="icon">
                             <i class="flaticon-report"></i>
                         </div>
-                        <h3>SEO Consultancy</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <h3>Privacy-Preserving</h3>
+                        <p>Preserves the privacy of data, model and objectives for building decentralized AI models.</p>
                     </div>
                 </div>
 
@@ -17,8 +17,8 @@
                         <div class="icon">
                             <i class="flaticon-laptop"></i>
                         </div>
-                        <h3>Social Media Marketting</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <h3>Efficient</h3>
+                        <p>Reduces communication overhead and leverages local data and computation resources.</p>
                     </div>
                 </div>
 
@@ -27,8 +27,8 @@
                         <div class="icon">
                             <i class="flaticon-software"></i>
                         </div>
-                        <h3>Competitor Analysis</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <h3>Collaborative</h3>
+                        <p>Enables collaboration and coorporation across organizations from various industries.</p>
                     </div>
                 </div>
 
@@ -37,8 +37,8 @@
                         <div class="icon">
                             <i class="flaticon-project-management"></i>
                         </div>
-                        <h3>Creative Idea</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                        <h3>Mutually Beneficial</h3>
+                        <p>Forms a community of shared interest by building a market of trading predictive power.</p>
                     </div>
                 </div>
             </div>

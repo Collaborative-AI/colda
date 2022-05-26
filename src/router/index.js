@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 // All Pages
-import HomePageOne from '../components/pages/HomePageOne'
+// import HomePageOne from '../components/pages/HomePageOne'
 import HomePageTwo from '../components/pages/HomePageTwo'
 import HomePageThree from '../components/pages/HomePageThree'
 import HomePageFour from '../components/pages/HomePageFour'
@@ -31,7 +31,7 @@ import PrivacyPolicyPage from '../components/pages/PrivacyPolicyPage'
 import ErrorPage from '../components/pages/ErrorPage'
 
 const routes = [
-    {path: '/', component: HomePageOne},
+    {path: '/', component: HomePageSeven},
     {path: '/home-two', component: HomePageTwo},
     {path: '/home-three', component: HomePageThree},
     {path: '/home-four', component: HomePageFour},
@@ -47,12 +47,12 @@ const routes = [
     {path: '/projects-one', component: ProjectsPageOne},
     {path: '/projects-two', component: ProjectsPageTwo},
     {path: '/single-projects', component: SingleProjectsPage},
-    {path: '/blog-one', component: BlogOnePage},
+    {path: '/use-cases', component: BlogOnePage},
     {path: '/blog-two', component: BlogTwoPage},
     {path: '/single-blog', component: SingleBlogPage},
     {path: '/contact', component: ContactPage},
     {path: '/team', component: TeamPage},
-    {path: '/pricing', component: PricingPage},
+    {path: '/products', component: PricingPage},
     {path: '/faq', component: FaqPage},
     {path: '/log-in', component: LogInPage},
     {path: '/sign-up', component: SignUpPage},

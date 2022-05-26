@@ -3,7 +3,7 @@
         <NavbarStyleTwo />
         <Banner />
         <MoreFeatures />
-        <About />
+        <!-- <About />
         <Services />
         <Pricing />
         <Tab />
@@ -12,7 +12,7 @@
         <Subscribe />
         <Blog />
         <Faq />
-        <Clients />
+        <Clients /> -->
         <Footer />
         <CopyRight />
     </div>
@@ -22,16 +22,16 @@
     import NavbarStyleTwo from '../Layout/NavbarStyleTwo'
     import Banner from '../HomeNine/Banner'
     import MoreFeatures from '../HomeNine/MoreFeatures'
-    import About from '../HomeNine/About'
-    import Services from '../HomeNine/Services'
-    import Pricing from '../HomeNine/Pricing'
-    import Tab from '../HomeNine/Tab'
-    import Team from '../HomeNine/Team'
-    import Portfolio from '../HomeNine/Portfolio'
-    import Subscribe from '../HomeNine/Subscribe'
-    import Blog from '../Common/Blog'
-    import Faq from '../HomeNine/Faq'
-    import Clients from '../HomeNine/Clients'
+    // import About from '../HomeNine/About'
+    // import Services from '../HomeNine/Services'
+    // import Pricing from '../HomeNine/Pricing'
+    // import Tab from '../HomeNine/Tab'
+    // import Team from '../HomeNine/Team'
+    // import Portfolio from '../HomeNine/Portfolio'
+    // import Subscribe from '../HomeNine/Subscribe'
+    // import Blog from '../Common/Blog'
+    // import Faq from '../HomeNine/Faq'
+    // import Clients from '../HomeNine/Clients'
     import Footer from '../Layout/Footer'
     import CopyRight from '../Layout/CopyRight'
 
@@ -41,16 +41,16 @@
             NavbarStyleTwo,
             Banner,
             MoreFeatures,
-            About,
-            Services,
-            Pricing,
-            Tab,
-            Team,
-            Portfolio,
-            Subscribe,
-            Blog,
-            Faq,
-            Clients,
+            // About,
+            // Services,
+            // Pricing,
+            // Tab,
+            // Team,
+            // Portfolio,
+            // Subscribe,
+            // Blog,
+            // Faq,
+            // Clients,
             Footer,
             CopyRight,
         }

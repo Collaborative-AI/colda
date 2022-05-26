@@ -1,5 +1,5 @@
 
-<!-- <template>
+<template>
     <div class="tab-section ptb-100">
         <div class="container">
             <div class="section-title">
@@ -69,7 +69,6 @@
     </div>
 
 </template>
--->
 
 <script>
 export default {

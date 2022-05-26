@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
     <div class="blog-section pt-100 pb-70">
         <div class="container">
             <div class="section-title">
@@ -80,4 +80,3 @@
         name: 'Blog'
     }
 </script>
--->

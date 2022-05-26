@@ -1,12 +1,11 @@
-<!--
 <template>
     <div class="digital-section ptb-100">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-5">
-                    <div class="digital-image">
+                    <!-- <div class="digital-image">
                         <img src="../../assets/images/digital.png" alt="image">
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="col-lg-20">
@@ -55,4 +54,3 @@ optimizing AI models
         name: 'Digital'
     }
 </script>
--->

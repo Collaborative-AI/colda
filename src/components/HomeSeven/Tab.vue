@@ -1,5 +1,3 @@
-<!--
-
 <template>
     <div class="tab-section">
         <div class="container">
@@ -231,5 +229,3 @@ export default {
     },
 }
 </script>
-
--->

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+<meta property="og:title" content="Writing Your Own Image Plugin" />
+  
+<meta property="og:type" content="website" />
+  
+<meta property="og:url" content="handbook/writing-your-own-file-decoder.html" />
+  
+<meta property="og:description" content="Pillow uses a plugin model which allows you to add your own decoders to the library, without any changes to the library itself. Such plugins usually have names like XxxImagePlugin.py, where Xxx is ..." />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing Your Own Image Plugin &mdash; Synspot 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/styles.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/dark.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/light.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/js/script.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Reference" href="../reference/index.html" />
+    <link rel="prev" title="Text anchors" href="text-anchors.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Synspot
+            <img src="../_static/Synspot.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="appendices.html">Appendices</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="image-file-formats.html">Image file formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="text-anchors.html">Text anchors</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Writing Your Own Image Plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-tile-attribute">The <code class="docutils literal notranslate"><span class="pre">tile</span></code> attribute</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#decoders">Decoders</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-raw-decoder">The raw decoder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#decoding-floating-point-data">Decoding floating point data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-bit-decoder">The bit decoder</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-your-own-file-decoder-in-c">Writing Your Own File Decoder in C</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#decoding">Decoding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cleanup">Cleanup</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-your-own-file-decoder-in-python">Writing Your Own File Decoder in Python</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Synspot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Handbook</a> &raquo;</li>
+          <li><a href="appendices.html">Appendices</a> &raquo;</li>
+      <li>Writing Your Own Image Plugin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/handbook/writing-your-own-file-decoder.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="writing-your-own-image-plugin">
+<span id="image-plugins"></span><h1>Writing Your Own Image Plugin<a class="headerlink" href="#writing-your-own-image-plugin" title="Permalink to this headline">¶</a></h1>
+<p>Pillow uses a plugin model which allows you to add your own
+decoders to the library, without any changes to the library
+itself. Such plugins usually have names like
+<code class="file docutils literal notranslate"><span class="pre">XxxImagePlugin.py</span></code>, where <code class="docutils literal notranslate"><span class="pre">Xxx</span></code> is a unique format name
+(usually an abbreviation).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Pillow &gt;= 2.1.0 no longer automatically imports any file
+in the Python path with a name ending in
+<code class="file docutils literal notranslate"><span class="pre">ImagePlugin.py</span></code>.  You will need to import your
+image plugin manually.</p>
+</div>
+<p>Pillow decodes files in two stages:</p>
+<ol class="arabic simple">
+<li><p>It loops over the available image plugins in the loaded order, and
+calls the plugin’s <code class="docutils literal notranslate"><span class="pre">_accept</span></code> function with the first 16 bytes of
+the file. If the <code class="docutils literal notranslate"><span class="pre">_accept</span></code> function returns true, the plugin’s
+<code class="docutils literal notranslate"><span class="pre">_open</span></code> method is called to set up the image metadata and image
+tiles. The <code class="docutils literal notranslate"><span class="pre">_open</span></code> method is not for decoding the actual image
+data.</p></li>
+<li><p>When the image data is requested, the <code class="docutils literal notranslate"><span class="pre">ImageFile.load</span></code> method is
+called, which sets up a decoder for each tile and feeds the data to
+it.</p></li>
+</ol>
+<p>An image plugin should contain a format handler derived from the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PIL.ImageFile.ImageFile</span></code> base class. This class should
+provide an <code class="docutils literal notranslate"><span class="pre">_open</span></code> method, which reads the file header and
+sets up at least the <code class="xref py py-attr docutils literal notranslate"><span class="pre">mode</span></code> and
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code> attributes. To be able to load the
+file, the method must also create a list of <code class="docutils literal notranslate"><span class="pre">tile</span></code> descriptors,
+which contain a decoder name, extents of the tile, and
+any decoder-specific data. The format handler class must be explicitly
+registered, via a call to the <code class="xref py py-mod docutils literal notranslate"><span class="pre">Image</span></code> module.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For performance reasons, it is important that the
+<code class="docutils literal notranslate"><span class="pre">_open</span></code> method quickly rejects files that do not have the
+appropriate contents.</p>
+</div>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The following plugin supports a simple format, which has a 128-byte header
+consisting of the words “SPAM” followed by the width, height, and pixel size in
+bits. The header fields are separated by spaces. The image data follows
+directly after the header, and can be either bi-level, greyscale, or 24-bit
+true color.</p>
+<p><strong>SpamImagePlugin.py</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageFile</span>
+
+
+<span class="k">def</span> <span class="nf">_accept</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">prefix</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;SPAM&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">SpamImageFile</span><span class="p">(</span><span class="n">ImageFile</span><span class="o">.</span><span class="n">ImageFile</span><span class="p">):</span>
+
+    <span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;SPAM&quot;</span>
+    <span class="n">format_description</span> <span class="o">=</span> <span class="s2">&quot;Spam raster image&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+        <span class="c1"># size in pixels (width, height)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="c1"># mode setting</span>
+        <span class="n">bits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">bits</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+        <span class="k">elif</span> <span class="n">bits</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;L&quot;</span>
+        <span class="k">elif</span> <span class="n">bits</span> <span class="o">==</span> <span class="mi">24</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;RGB&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s2">&quot;unknown number of bits&quot;</span><span class="p">)</span>
+
+        <span class="c1"># data descriptor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tile</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))]</span>
+
+
+<span class="n">Image</span><span class="o">.</span><span class="n">register_open</span><span class="p">(</span><span class="n">SpamImageFile</span><span class="o">.</span><span class="n">format</span><span class="p">,</span> <span class="n">SpamImageFile</span><span class="p">,</span> <span class="n">_accept</span><span class="p">)</span>
+
+<span class="n">Image</span><span class="o">.</span><span class="n">register_extensions</span><span class="p">(</span>
+    <span class="n">SpamImageFile</span><span class="o">.</span><span class="n">format</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="s2">&quot;.spam&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.spa&quot;</span><span class="p">,</span>  <span class="c1"># DOS version</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The format handler must always set the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code> and <code class="xref py py-attr docutils literal notranslate"><span class="pre">mode</span></code>
+attributes. If these are not set, the file cannot be opened. To
+simplify the plugin, the calling code considers exceptions like
+<code class="xref py py-exc docutils literal notranslate"><span class="pre">SyntaxError</span></code>, <code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyError</span></code>, <code class="xref py py-exc docutils literal notranslate"><span class="pre">IndexError</span></code>,
+<code class="xref py py-exc docutils literal notranslate"><span class="pre">EOFError</span></code> and <code class="xref py py-exc docutils literal notranslate"><span class="pre">struct.error</span></code> as a failure to identify
+the file.</p>
+<p>Note that the image plugin must be explicitly registered using
+<code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.Image.register_open()</span></code>. Although not required, it is also a good
+idea to register any extensions used by this format.</p>
+<p>Once the plugin has been imported, it can be used:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">SpamImagePlugin</span>
+
+<span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;hopper.spam&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">im</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="the-tile-attribute">
+<h2>The <code class="docutils literal notranslate"><span class="pre">tile</span></code> attribute<a class="headerlink" href="#the-tile-attribute" title="Permalink to this headline">¶</a></h2>
+<p>To be able to read the file as well as just identifying it, the <code class="docutils literal notranslate"><span class="pre">tile</span></code>
+attribute must also be set. This attribute consists of a list of tile
+descriptors, where each descriptor specifies how data should be loaded to a
+given region in the image. In most cases, only a single descriptor is used,
+covering the full image.</p>
+<p>The tile descriptor is a 4-tuple with the following contents:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">decoder</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The fields are used as follows:</p>
+<dl class="simple">
+<dt><strong>decoder</strong></dt><dd><p>Specifies which decoder to use. The <code class="docutils literal notranslate"><span class="pre">raw</span></code> decoder used here supports
+uncompressed data, in a variety of pixel formats. For more information on
+this decoder, see the description below.</p>
+</dd>
+<dt><strong>region</strong></dt><dd><p>A 4-tuple specifying where to store data in the image.</p>
+</dd>
+<dt><strong>offset</strong></dt><dd><p>Byte offset from the beginning of the file to image data.</p>
+</dd>
+<dt><strong>parameters</strong></dt><dd><p>Parameters to the decoder. The contents of this field depends on the
+decoder specified by the first field in the tile descriptor tuple. If the
+decoder doesn’t need any parameters, use <code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code> for this field.</p>
+</dd>
+</dl>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">tile</span></code> attribute contains a list of tile descriptors,
+not just a single descriptor.</p>
+</section>
+</section>
+<section id="decoders">
+<h1>Decoders<a class="headerlink" href="#decoders" title="Permalink to this headline">¶</a></h1>
+<section id="the-raw-decoder">
+<h2>The raw decoder<a class="headerlink" href="#the-raw-decoder" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">raw</span></code> decoder is used to read uncompressed data from an image file. It
+can be used with most uncompressed file formats, such as PPM, BMP, uncompressed
+TIFF, and many others. To use the raw decoder with the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.Image.frombytes()</span></code> function, use the following syntax:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">frombytes</span><span class="p">(</span>
+    <span class="n">mode</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span>
+    <span class="n">raw_mode</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">orientation</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>When used in a tile descriptor, the parameter field should look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">raw_mode</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The fields are used as follows:</p>
+<dl class="simple">
+<dt><strong>raw_mode</strong></dt><dd><p>The pixel layout used in the file, and is used to properly convert data to
+PIL’s internal layout. For a summary of the available formats, see the
+table below.</p>
+</dd>
+<dt><strong>stride</strong></dt><dd><p>The distance in bytes between two consecutive lines in the image. If 0, the
+image is assumed to be packed (no padding between lines). If omitted, the
+stride defaults to 0.</p>
+</dd>
+<dt><strong>orientation</strong></dt><dd><p>Whether the first line in the image is the top line on the screen (1), or
+the bottom line (-1). If omitted, the orientation defaults to 1.</p>
+</dd>
+</dl>
+<p>The <strong>raw mode</strong> field is used to determine how the data should be unpacked to
+match PIL’s internal pixel layout. PIL supports a large set of raw modes; for a
+complete list, see the table in the <code class="file docutils literal notranslate"><span class="pre">Unpack.c</span></code> module. The following
+table describes some commonly used <strong>raw modes</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>mode</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><div class="line-block">
+<div class="line">1-bit bilevel, stored with the leftmost pixel in the most</div>
+<div class="line">significant bit. 0 means black, 1 means white.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">1;I</span></code></p></td>
+<td><div class="line-block">
+<div class="line">1-bit inverted bilevel, stored with the leftmost pixel in the</div>
+<div class="line">most significant bit. 0 means white, 1 means black.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">1;R</span></code></p></td>
+<td><div class="line-block">
+<div class="line">1-bit reversed bilevel, stored with the leftmost pixel in the</div>
+<div class="line">least significant bit. 0 means black, 1 means white.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">L</span></code></p></td>
+<td><p>8-bit greyscale. 0 means black, 255 means white.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">L;I</span></code></p></td>
+<td><p>8-bit inverted greyscale. 0 means white, 255 means black.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">P</span></code></p></td>
+<td><p>8-bit palette-mapped image.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RGB</span></code></p></td>
+<td><p>24-bit true colour, stored as (red, green, blue).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BGR</span></code></p></td>
+<td><p>24-bit true colour, stored as (blue, green, red).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RGBX</span></code></p></td>
+<td><div class="line-block">
+<div class="line">24-bit true colour, stored as (red, green, blue, pad). The pad</div>
+<div class="line">pixels may vary.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RGB;L</span></code></p></td>
+<td><div class="line-block">
+<div class="line">24-bit true colour, line interleaved (first all red pixels, then</div>
+<div class="line">all green pixels, finally all blue pixels).</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that for the most common cases, the raw mode is simply the same as the mode.</p>
+<p>The Python Imaging Library supports many other decoders, including JPEG, PNG,
+and PackBits. For details, see the <code class="file docutils literal notranslate"><span class="pre">decode.c</span></code> source file, and the
+standard plugin implementations provided with the library.</p>
+</section>
+<section id="decoding-floating-point-data">
+<h2>Decoding floating point data<a class="headerlink" href="#decoding-floating-point-data" title="Permalink to this headline">¶</a></h2>
+<p>PIL provides some special mechanisms to allow you to load a wide variety of
+formats into a mode <code class="docutils literal notranslate"><span class="pre">F</span></code> (floating point) image memory.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">raw</span></code> decoder to read images where data is packed in any
+standard machine data type, using one of the following raw modes:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>mode</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F</span></code></p></td>
+<td><p>32-bit native floating point.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;8</span></code></p></td>
+<td><p>8-bit unsigned integer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;8S</span></code></p></td>
+<td><p>8-bit signed integer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;16</span></code></p></td>
+<td><p>16-bit little endian unsigned integer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;16S</span></code></p></td>
+<td><p>16-bit little endian signed integer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;16B</span></code></p></td>
+<td><p>16-bit big endian unsigned integer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;16BS</span></code></p></td>
+<td><p>16-bit big endian signed integer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;16N</span></code></p></td>
+<td><p>16-bit native unsigned integer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;16NS</span></code></p></td>
+<td><p>16-bit native signed integer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;32</span></code></p></td>
+<td><p>32-bit little endian unsigned integer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;32S</span></code></p></td>
+<td><p>32-bit little endian signed integer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;32B</span></code></p></td>
+<td><p>32-bit big endian unsigned integer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;32BS</span></code></p></td>
+<td><p>32-bit big endian signed integer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;32N</span></code></p></td>
+<td><p>32-bit native unsigned integer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;32NS</span></code></p></td>
+<td><p>32-bit native signed integer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;32F</span></code></p></td>
+<td><p>32-bit little endian floating point.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;32BF</span></code></p></td>
+<td><p>32-bit big endian floating point.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;32NF</span></code></p></td>
+<td><p>32-bit native floating point.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;64F</span></code></p></td>
+<td><p>64-bit little endian floating point.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F;64BF</span></code></p></td>
+<td><p>64-bit big endian floating point.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F;64NF</span></code></p></td>
+<td><p>64-bit native floating point.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-bit-decoder">
+<h2>The bit decoder<a class="headerlink" href="#the-bit-decoder" title="Permalink to this headline">¶</a></h2>
+<p>If the raw decoder cannot handle your format, PIL also provides a special “bit”
+decoder that can be used to read various packed formats into a floating point
+image memory.</p>
+<p>To use the bit decoder with the <code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.Image.frombytes()</span></code> function, use
+the following syntax:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">frombytes</span><span class="p">(</span>
+    <span class="n">mode</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="s2">&quot;bit&quot;</span><span class="p">,</span>
+    <span class="n">bits</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="n">fill</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">orientation</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>When used in a tile descriptor, the parameter field should look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="n">fill</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The fields are used as follows:</p>
+<dl>
+<dt><strong>bits</strong></dt><dd><p>Number of bits per pixel (2-32). No default.</p>
+</dd>
+<dt><strong>pad</strong></dt><dd><p>Padding between lines, in bits. This is either 0 if there is no padding, or
+8 if lines are padded to full bytes. If omitted, the pad value defaults to
+8.</p>
+</dd>
+<dt><strong>fill</strong></dt><dd><p>Controls how data are added to, and stored from, the decoder bit buffer.</p>
+</dd>
+<dt><strong>fill=0</strong></dt><dd><p>Add bytes to the LSB end of the decoder buffer; store pixels from the MSB
+end.</p>
+</dd>
+<dt><strong>fill=1</strong></dt><dd><p>Add bytes to the MSB end of the decoder buffer; store pixels from the MSB
+end.</p>
+</dd>
+<dt><strong>fill=2</strong></dt><dd><p>Add bytes to the LSB end of the decoder buffer; store pixels from the LSB
+end.</p>
+</dd>
+<dt><strong>fill=3</strong></dt><dd><p>Add bytes to the MSB end of the decoder buffer; store pixels from the LSB
+end.</p>
+<p>If omitted, the fill order defaults to 0.</p>
+</dd>
+<dt><strong>sign</strong></dt><dd><p>If non-zero, bit fields are sign extended. If zero or omitted, bit fields
+are unsigned.</p>
+</dd>
+<dt><strong>orientation</strong></dt><dd><p>Whether the first line in the image is the top line on the screen (1), or
+the bottom line (-1). If omitted, the orientation defaults to 1.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="writing-your-own-file-decoder-in-c">
+<span id="file-decoders"></span><h1>Writing Your Own File Decoder in C<a class="headerlink" href="#writing-your-own-file-decoder-in-c" title="Permalink to this headline">¶</a></h1>
+<p>There are 3 stages in a file decoder’s lifetime:</p>
+<ol class="arabic simple">
+<li><p>Setup: Pillow looks for a function in the decoder registry, falling
+back to a function named <code class="docutils literal notranslate"><span class="pre">[decodername]_decoder</span></code> on the internal
+core image object.  That function is called with the <code class="docutils literal notranslate"><span class="pre">args</span></code> tuple
+from the <code class="docutils literal notranslate"><span class="pre">tile</span></code> setup in the <code class="docutils literal notranslate"><span class="pre">_open</span></code> method.</p></li>
+<li><p>Decoding: The decoder’s decode function is repeatedly called with
+chunks of image data.</p></li>
+<li><p>Cleanup: If the decoder has registered a cleanup function, it will
+be called at the end of the decoding process, even if there was an
+exception raised.</p></li>
+</ol>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>The current conventions are that the decoder setup function is named
+<code class="docutils literal notranslate"><span class="pre">PyImaging_[Decodername]DecoderNew</span></code> and defined in <code class="docutils literal notranslate"><span class="pre">decode.c</span></code>. The
+python binding for it is named <code class="docutils literal notranslate"><span class="pre">[decodername]_decoder</span></code> and is setup
+from within the <code class="docutils literal notranslate"><span class="pre">_imaging.c</span></code> file in the codecs section of the
+function array.</p>
+<p>The setup function needs to call <code class="docutils literal notranslate"><span class="pre">PyImaging_DecoderNew</span></code> and at the
+very least, set the <code class="docutils literal notranslate"><span class="pre">decode</span></code> function pointer. The fields of
+interest in this object are:</p>
+<dl>
+<dt><strong>decode</strong></dt><dd><p>Function pointer to the decode function, which has access to
+<code class="docutils literal notranslate"><span class="pre">im</span></code>, <code class="docutils literal notranslate"><span class="pre">state</span></code>, and the buffer of data to be added to the image.</p>
+</dd>
+<dt><strong>cleanup</strong></dt><dd><p>Function pointer to the cleanup function, has access to <code class="docutils literal notranslate"><span class="pre">state</span></code>.</p>
+</dd>
+<dt><strong>im</strong></dt><dd><p>The target image, will be set by Pillow.</p>
+</dd>
+<dt><strong>state</strong></dt><dd><p>An ImagingCodecStateInstance, will be set by Pillow. The <code class="docutils literal notranslate"><span class="pre">context</span></code>
+member is an opaque struct that can be used by the decoder to store
+any format specific state or options.</p>
+</dd>
+<dt><strong>pulls_fd</strong></dt><dd><p><strong>EXPERIMENTAL</strong> – <strong>WARNING</strong>, interface may change. If set to 1,
+<code class="docutils literal notranslate"><span class="pre">state-&gt;fd</span></code> will be a pointer to the Python file like object.  The
+decoder may use the functions in <code class="docutils literal notranslate"><span class="pre">codec_fd.c</span></code> to read directly
+from the file like object rather than have the data pushed through a
+buffer.  Note that this implementation may be refactored until this
+warning is removed.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 3.3.0.</span></p>
+</div>
+</dd>
+</dl>
+</section>
+<section id="decoding">
+<h2>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">¶</a></h2>
+<p>The decode function is called with the target (core) image, the
+decoder state structure, and a buffer of data to be decoded.</p>
+<p><strong>Experimental</strong> – If <code class="docutils literal notranslate"><span class="pre">pulls_fd</span></code> is set, then the decode function
+is called once, with an empty buffer. It is the decoder’s
+responsibility to decode the entire tile in that one call.  The rest of
+this section only applies if <code class="docutils literal notranslate"><span class="pre">pulls_fd</span></code> is not set.</p>
+<p>It is the decoder’s responsibility to pull as much data as possible
+out of the buffer and return the number of bytes consumed. The next
+call to the decoder will include the previous unconsumed tail. The
+decoder function will be called multiple times as the data is read
+from the file like object.</p>
+<p>If an error occurs, set <code class="docutils literal notranslate"><span class="pre">state-&gt;errcode</span></code> and return -1.</p>
+<p>Return -1 on success, without setting the errcode.</p>
+</section>
+<section id="cleanup">
+<h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">¶</a></h2>
+<p>The cleanup function is called after the decoder returns a negative
+value, or if there is a read error from the file. This function should
+free any allocated memory and release any resources from external
+libraries.</p>
+</section>
+</section>
+<section id="writing-your-own-file-decoder-in-python">
+<span id="file-decoders-py"></span><h1>Writing Your Own File Decoder in Python<a class="headerlink" href="#writing-your-own-file-decoder-in-python" title="Permalink to this headline">¶</a></h1>
+<p>Python file decoders should derive from
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PIL.ImageFile.PyDecoder</span></code> and should at least override the
+decode method. File decoders should be registered using
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">PIL.Image.register_decoder()</span></code>. As in the C implementation of
+the file decoders, there are three stages in the lifetime of a
+Python-based file decoder:</p>
+<ol class="arabic simple">
+<li><p>Setup: Pillow looks for the decoder in the registry, then
+instantiates the class.</p></li>
+<li><p>Decoding: The decoder instance’s <code class="docutils literal notranslate"><span class="pre">decode</span></code> method is repeatedly
+called with a buffer of data to be interpreted.</p></li>
+<li><p>Cleanup: The decoder instance’s <code class="docutils literal notranslate"><span class="pre">cleanup</span></code> method is called.</p></li>
+</ol>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="text-anchors.html" class="btn btn-neutral float-left" title="Text anchors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../reference/index.html" class="btn btn-neutral float-right" title="Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

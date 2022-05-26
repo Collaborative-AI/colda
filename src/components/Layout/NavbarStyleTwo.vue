@@ -1,11 +1,26 @@
 <template>
     <div :class="['navbar-area navbar-two', {'is-sticky': isSticky}]">
         <div class="valzo-nav">
-            <div class="container">
+            <div class="container" style="margin-left:5em; margin-right:5em">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <router-link class="navbar-brand" to="/">
-                        <img src="../../assets/images/logo.png" alt="logo">
+                        <!-- <div class="container"> -->
+                            <div class="row" style="border-left:0;">
+                                <div class="col-4">
+                                    <img src="../../assets/images/logo1.png" width="50" height="50" alt="logo">
+                                     <!-- <h1>Synspot</h1> -->
+                                </div>
+                                <div class="col-6">
+                                    <!-- <div style="margin-top:10%; color:green"> -->
+                                        <h2 style="color:black; font-family: Helvetica">Synspot</h2>
+                                    <!-- </div> -->
+                                    
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                        
                     </router-link>
+                    
 
                     <div 
                         class="navbar-toggler"
@@ -21,12 +36,12 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent" is-nav>
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="home-seven" class="nav-link">
                                     Home 
                                     <i class='bx bx-chevron-down'></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <router-link  to="/" class="nav-link">
                                             Home One
                                         </router-link>
@@ -60,7 +75,7 @@
                                         <router-link  to="/home-six" class="nav-link">
                                             Home Six
                                         </router-link>
-                                    </li>
+                                    </li> -->
 
                                     <li class="nav-item">
                                         <router-link  to="/home-seven" class="nav-link">
@@ -68,11 +83,11 @@
                                         </router-link>
                                     </li>
 
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <router-link  to="/home-eight" class="nav-link">
                                             Home Eight
                                         </router-link>
-                                    </li>
+                                    </li> -->
 
                                     <li class="nav-item">
                                         <router-link  to="/home-nine" class="nav-link">
@@ -82,13 +97,9 @@
                                 </ul>
                             </li>
 
-                            <li class="nav-item">
-                                <router-link  to="/about" class="nav-link">
-                                    About
-                                </router-link>
-                            </li>
+                            
 
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     Services 
                                     <i class='bx bx-chevron-down'></i>
@@ -112,9 +123,9 @@
                                         </router-link>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> -->
 
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     Projects 
                                     <i class='bx bx-chevron-down'></i>
@@ -139,9 +150,9 @@
                                         </router-link>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> -->
 
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     Pages 
                                     <i class='bx bx-chevron-down'></i>
@@ -211,16 +222,53 @@
                                         </router-link>
                                     </li>
 
+                                    
+
                                     <li class="nav-item">
                                         <router-link  to="/contact" class="nav-link">
                                             Contact
                                         </router-link>
                                     </li>
                                 </ul>
+                            </li> -->
+
+                            <li class="nav-item">
+                                <router-link  to="/products" class="nav-link">
+                                    Products
+                                </router-link>
                             </li>
 
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
+                                    Resources 
+                                    <i class='bx bx-chevron-down'></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a href="html/index.html" class="nav-link"
+                                        >Docs</a>
+                                        
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="notebook/Sponsor_User_Guide.html" class="nav-link"
+                                        >Tutorials</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <router-link  to="/use-cases" class="nav-link">
+                                            Use Cases
+                                        </router-link>
+                                    </li>
+
+                                    
+                                </ul>
+                            </li>
+
+                            
+
+                            <!-- <li class="nav-item">
+                                <a href="/blog-one" class="nav-link">
                                     Blog 
                                     <i class='bx bx-chevron-down'></i>
                                 </a>
@@ -243,6 +291,12 @@
                                         </router-link>
                                     </li>
                                 </ul>
+                            </li> -->
+
+                            <li class="nav-item">
+                                <router-link  to="/about" class="nav-link">
+                                    About us
+                                </router-link>
                             </li>
 
                             <li class="nav-item">
@@ -270,7 +324,8 @@ export default {
         return {
             isSticky: false,
             active: false,
-            button_active_state: false
+            button_active_state: false,
+            publicPath: process.env.BASE_URL
         }
     },
     mounted(){

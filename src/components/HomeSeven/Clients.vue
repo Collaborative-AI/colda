@@ -8,11 +8,16 @@
             </div>
 
             <div class="clients-slider">
-                <carousel 
+                <!-- <carousel 
                     :autoplay="5000"
                     :settings="settings"
                     :wrap-around="true"
                     :breakpoints="breakpoints"
+                > -->
+                <carousel 
+                    :autoplay="5000"
+                    :settings="settings"
+                    :wrap-around="true"
                 >
                     <slide 
                         v-for="slide in carouselItems" 

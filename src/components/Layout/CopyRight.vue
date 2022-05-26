@@ -5,10 +5,10 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6">
                         <p>
-                            Copyright &copy; {{currentYear}} Valzo. All Rights Reserved by
-                            <a href="https://envytheme.com/" target="_blank">
+                            Copyright &copy; {{currentYear}} Synspot. All Rights Reserved
+                            <!-- <a href="https://envytheme.com/" target="_blank">
                                 EnvyTheme
-                            </a>
+                            </a> -->
                         </p>
                     </div>
 

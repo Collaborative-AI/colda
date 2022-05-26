@@ -5,10 +5,10 @@
                 <div class="container">
                     <div class="page-title-content">
                         <h2>About</h2>
-                        <ul>
+                        <!-- <ul>
                             <li><router-link to="/">Home</router-link></li>
                             <li>About</li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Navbar />
+        <NavbarStyleTwo />
         <PageTitle />
         <About />
         <Team />
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import Navbar from '../Layout/Navbar'
+    import NavbarStyleTwo from '../Layout/NavbarStyleTwo'
     import PageTitle from '../About/PageTitle'
     import About from '../About/About'
     import Faq from '../About/Faq'
@@ -24,7 +24,7 @@
     export default {
         name: 'AboutPage',
         components: {
-            Navbar,
+            NavbarStyleTwo,
             PageTitle,
             About,
             Faq,

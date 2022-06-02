@@ -36,12 +36,12 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent" is-nav>
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a href="home-seven" class="nav-link">
+                                <a href="home" class="nav-link">
                                     Home 
-                                    <i class='bx bx-chevron-down'></i>
+                                    <!-- <i class='bx bx-chevron-down'></i> -->
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <!-- <li class="nav-item">
+                                <!-- <ul class="dropdown-menu">
+                                    <li class="nav-item">
                                         <router-link  to="/" class="nav-link">
                                             Home One
                                         </router-link>
@@ -75,7 +75,7 @@
                                         <router-link  to="/home-six" class="nav-link">
                                             Home Six
                                         </router-link>
-                                    </li> -->
+                                    </li>
 
                                     <li class="nav-item">
                                         <router-link  to="/home-seven" class="nav-link">
@@ -83,18 +83,18 @@
                                         </router-link>
                                     </li>
 
-                                    <!-- <li class="nav-item">
+                                    <li class="nav-item">
                                         <router-link  to="/home-eight" class="nav-link">
                                             Home Eight
                                         </router-link>
-                                    </li> -->
+                                    </li>
 
                                     <li class="nav-item">
                                         <router-link  to="/home-nine" class="nav-link">
                                             Home Nine
                                         </router-link>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </li>
 
                             

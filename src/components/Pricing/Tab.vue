@@ -2,8 +2,8 @@
     <div class="tab-section ptb-100">
         <div class="container">
             <div class="section-title">
-                <h2>Outstanding Digital Experience</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidiunt  labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
+                <h2>Outstanding Experience</h2>
+                <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidiunt  labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p> -->
                 <div class="bar"></div>
             </div>
 
@@ -107,7 +107,7 @@ export default {
                 {
                     id: 2,
                     icon: 'bx bx-flag',
-                    title: 'Pay-Per-Click',
+                    title: 'Continuous Maintenance',
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan facilisis.',
                     inners: [
                         {

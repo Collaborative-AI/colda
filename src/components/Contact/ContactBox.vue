@@ -7,7 +7,7 @@
                         <i class="flaticon-pin"></i>
                         <div class="content-title">
                             <h3>Address</h3>
-                            <p>32 st Kilda Road, Melbourne VIC, 3004 <br> Australia</p>
+                            <p>366 Ford Hall <br> 224 Church Street, Minneapolis, MN 55455</p>
                         </div>
                     </div>
                 </div>
@@ -17,8 +17,8 @@
                         <i class="flaticon-envelope"></i>
                         <div class="content-title">
                             <h3>Email</h3>
-                            <a href="mailto:hello@valzo.com">hello@valzo.com</a>
-                            <a href="mailto:fax@valzo.com">fax@valzo.com</a>
+                            <a href="mailto:support@synspot-ai.com">support@synspot-ai.com </a>
+                            <!-- <a href="mailto:fax@valzo.com">fax@valzo.com</a> -->
                         </div>
                     </div>
                 </div>
@@ -28,8 +28,8 @@
                         <i class="flaticon-phone-call"></i>
                         <div class="content-title">
                             <h3>Phone</h3>
-                            <a href="tel:123456123">+123(456)123</a>
-                            <a href="tel:126446129">+126(446)129</a>
+                            <a href="tel:+1 4048343911">+1 4048343911</a>
+                            <!-- <a href="tel:126446129">+126(446)129</a> -->
                         </div>
                     </div>
                 </div>

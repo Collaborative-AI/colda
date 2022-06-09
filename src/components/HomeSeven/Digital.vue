@@ -15,33 +15,37 @@
                         <p></p>
 
                         <ul class="digital-list">
-                            <li>
-                                <i class="flaticon-check"></i>
-                                Organizations want to optimize better AI models with a large amount of data
-                            </li>
+                            
+                            <p>
+                            <i class="flaticon-check"></i>
+                            Organizations want to optimize better AI models with a large amount of data.
+                            </p>
+                            
 
         
 
-                            <li>
-                                <i class="flaticon-check"></i>
-                                Organizations have difficulty leveraging decentralized data due to commercial and
-ethical restrictions
-                            </li>
+                            
+                            <p>
+                            <i class="flaticon-check"></i>
+                            Organizations have difficulty leveraging decentralized data due to commercial and ethical restrictions.
+                            </p>
+                            
 
                     
 
-                            <li>
+                            <p>
                                 <i class="flaticon-check"></i>
-                                Organizations needs a trustworthy third-party platform to assist each other for
-optimizing AI models
-                            </li>
+                                Organizations needs a trustworthy third-party platform to assist each other for optimizing AI models。
+                            </p>
 
                         
                         </ul>
 
-                        <div class="digital-btn">
+                        
+
+                        <!-- <div class="digital-btn">
                             <a href="#" class="default-btn">Learn More</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

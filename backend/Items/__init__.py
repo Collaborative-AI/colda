@@ -13,7 +13,7 @@ from Items.helper_api import helper_api_bp
 def create_app(config_class=None):
     '''Factory Pattern: Create Flask app.'''
     # pymysql.install_as_MySQLdb()
-    application = Flask(__name__)
+    application = Flask(__name__,)
 
     # Initialization flask app
     configure_app(application, config_class)

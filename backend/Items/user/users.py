@@ -82,7 +82,9 @@ def create_user():
         'confirm_email': False,
         'participated_train_task': {},
     }
+    print('user doc is', user_document)
     pyMongo.db.User.insert_one(user_document)
+
 
     token = generate_confirmation_token(email)
     confirm_url = url_for('user.confirm_email', token=token, _external=True)
@@ -123,11 +125,11 @@ def confirm_email(token):
                 pyMongo.db.User.update_one({'email': email}, {'$set':{
                     'confirm_email': True
                 }})
-                msg = 'You have confirmed your account. Thanks!'
+                msg = 'You have confirmed your email. Thanks!'
             else:
                 msg = 'The confirmation link is invalid or has expired.'
         else:
-            msg = 'Account already confirmed. Please login.'
+            msg = 'Email already confirmed. Please login.'
     else:
         msg = 'The confirmation link is invalid or has expired.'
 
@@ -154,10 +156,16 @@ def resend():
         return bad_request('You must post JSON data.')
     if 'username' not in data or not data.get('username'):
         return bad_request('username is required.')
+    if 'email' not in data or not data.get('email'):
+        return bad_request('email is required')
+    if 'key_indicator' not in data or not data.get('key_indicator'):
+        return bad_request('key_indicator is required')
 
     username = data.get('username')
+    email = data.get('email')
+    key_indicator = data.get('key_indicator')
 
-    user_document = mongoDB.search_user_document(user_id=None, username=username)
+    user_document = mongoDB.search_user_document(user_id=None, username=username, email=email, key_indicator=key_indicator)
     email = user_document['email']
 
     token = generate_confirmation_token(email)
@@ -199,7 +207,8 @@ def forgot():
     username = data.get('username')
     email = data.get('email')
 
-    user_document = mongoDB.search_pending_document(user_id=None, username=username)
+    user_document = mongoDB.search_user_document(user_id=None, username=username, email=email, key_indicator='username')
+    print('user doc1 is', user_document)
     if not user_document:
         message['username'] = 'Please type in the correct username.'
     if user_document['email'] != email:
@@ -273,7 +282,10 @@ def forgot_new(token):
         }})
 
         flash('Password successfully changed.')
-        return 'Password successfully changed.'
+        # return 'Password successfully changed.'
+        msg = 'Your password has changed successfully.'
+        return render_template('password.html', msg=msg)
+
     else:
         print('123token', token)
         msg = 'Hello ' + user_document['username']

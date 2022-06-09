@@ -34,6 +34,7 @@ def create_new_train_task():
     train_id = obtain_unique_id()
 
     response = {"train_id": train_id}
+    print('response is', response)
     return jsonify(response)
 
 @main_flow_bp.route('/create_new_test_task', methods=['GET'])

@@ -43,7 +43,6 @@ def get_notifications(id):
     notification_document = pyMongo.db.Notification.find_one({'user_id': user_id})
     # print('notification_document', notification_document, user_id)
     if notification_document is None:
-        print('zz1')
         response = {
             'notification_result': {
                 'category': {}
@@ -55,7 +54,6 @@ def get_notifications(id):
 
     # If there is no new notification return a null dict
     if len(category) == 0:
-        print('zz2')
         response = {
             'notification_result': {
                 'category': {}
@@ -70,7 +68,6 @@ def get_notifications(id):
         'notification_result': copy.deepcopy(notification_document)
     }
     if 'new_token' in g.current_user and g.current_user['new_token'] != None:
-        print('zz3')
         response = add_new_token_to_response(response)
 
     print('cat1', type(response))

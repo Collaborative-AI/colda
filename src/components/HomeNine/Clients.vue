@@ -3,7 +3,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>What Our Clients Say</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidiunt labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
+                <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidiunt labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p> -->
                 <div class="bar"></div>
             </div>
 
@@ -64,23 +64,23 @@ export default defineComponent ({
             {
                 id: 1,
                 icon: 'flaticon-left-quotes-sign',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley',
-                name: 'Moris Jacker',
-                position: 'Web Developer',
+                description: 'Don’t see a need for large corporations, many big companies will have their software developers make tools for data ingesting, sharing and analysis. They have or they can buy data. (Run out of time here for full answer).Large companies have data scientist team that could incorporate SynSpot Python API but also for small/medium size companies that have no data science teams.',
+                name: 'UMN Alumni',
+                position: 'CVS - Data Scientist',
             },
             {
                 id: 2,
                 icon: 'flaticon-left-quotes-sign',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley',
-                name: 'Alex Maxwel',
-                position: 'Agent Management',
+                description: 'Internal Data is shared within the Data Analytics team and within the organization. Reports are given to coaches directly as well as R and PowerBI Reports. Data sharing via competitors is difficult but some ‘data exchanges’ have been made. These have to be negotiated by the higher ups and need to be like for like. Any models cannot be a black box, need to be explainable to the end users as well as have insight into the data',
+                name: 'UMN Alumni',
+                position: 'Minnesota Twins - Sports Science Analyst',
             },
             {
                 id: 3,
                 icon: 'flaticon-left-quotes-sign',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley',
-                name: 'Edmond Halley',
-                position: 'Web Designer',
+                description: 'Sharing data is a data governance and IT issue as well (He currently only works with internal data). Although sharing data between departments and doing a cross-functional model may be of use. ',
+                name: 'UMN Alumni',
+                position: 'Disney Hulu - Data Analyst',
             },
         ],
         settings: {

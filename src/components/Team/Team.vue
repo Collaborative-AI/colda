@@ -1,10 +1,12 @@
 <template>
-    <section class="team-section pt-100 pb-100">
+    <section class="team-section ptb-100">
             <div class="container">
                 <div class="section-title">
-                    <h2>Our Expert Team</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidiunt labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
-                    <div class="bar"></div>
+                    <h2>Our Expert Team
+                    </h2><div class="mt-5"></div>
+
+                    <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidiunt labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
+                    <div class="col-lg-6"></div> -->
                 </div>
 
                 <div class="row">

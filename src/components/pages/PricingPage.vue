@@ -3,7 +3,7 @@
         <NavbarStyleTwo />
         <PageTitle />
         <Pricing />
-        <Tab />
+        <!-- <Tab /> -->
         <Footer />
         <CopyRight />
     </div>
@@ -13,7 +13,7 @@
     import NavbarStyleTwo from '../Layout/NavbarStyleTwo.vue'
     import PageTitle from '../Pricing/PageTitle'
     import Pricing from '../Pricing/Pricing'
-    import Tab from '../Pricing/Tab'
+    // import Tab from '../Pricing/Tab'
     import Footer from '../Layout/Footer'
     import CopyRight from '../Layout/CopyRight'
 
@@ -23,7 +23,7 @@
             NavbarStyleTwo,
             PageTitle,
             Pricing,
-            Tab,
+            // Tab,
             Footer,
             CopyRight,
         }

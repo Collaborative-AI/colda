@@ -37,7 +37,7 @@ const routes = [
     {path: '/home-four', component: HomePageFour},
     {path: '/home-five', component: HomePageFive},
     {path: '/home-six', component: HomePageSix},
-    {path: '/home-seven', component: HomePageSeven},
+    {path: '/home', component: HomePageSeven},
     {path: '/home-eight', component: HomePageEight},
     {path: '/home-nine', component: HomePageNine},
     {path: '/about', component: AboutPage},

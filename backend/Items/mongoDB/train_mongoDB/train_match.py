@@ -58,7 +58,7 @@ class train_match():
         return pyMongo.db.Train_Match.update_one({'train_id': train_id}, {'$set':{
             f'{base_key}.assistor_id_to_random_id': assistor_random_id,
             f'{base_key}.identifier_id': identifier_id,
-            f'asssistor_random_id_mapping.{assistor_random_id}': assistor_id,
+            f'assistor_random_id_mapping.{assistor_random_id}': assistor_id,
         }})
 
     @classmethod

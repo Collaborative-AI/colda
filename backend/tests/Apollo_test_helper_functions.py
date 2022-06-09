@@ -211,7 +211,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         sponsor_terminate_id_dict = train_match_document['sponsor_terminate_id_dict']
         assistor_terminate_id_dict = train_match_document['assistor_terminate_id_dict']
         sponsor_random_id_mapping = train_match_document['sponsor_random_id_mapping']
-        asssistor_random_id_mapping = train_match_document['assistor_random_id_mapping']
+        assistor_random_id_mapping = train_match_document['assistor_random_id_mapping']
         sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
         sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
@@ -220,7 +220,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(sponsor_id, user_id_1)
         self.assertEqual(sponsor_random_id_mapping[sponsor_random_id], sponsor_id)
         self.assertEqual(len(assistor_information), 0)
-        self.assertEqual(len(asssistor_random_id_mapping), 0)
+        self.assertEqual(len(assistor_random_id_mapping), 0)
         self.assertEqual(len(sponsor_terminate_id_dict), 0)
         self.assertEqual(len(assistor_terminate_id_dict), 0)
 
@@ -339,7 +339,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         sponsor_terminate_id_dict = test_match_document['sponsor_terminate_id_dict']
         assistor_terminate_id_dict = test_match_document['assistor_terminate_id_dict']
         sponsor_random_id_mapping = test_match_document['sponsor_random_id_mapping']
-        asssistor_random_id_mapping = test_match_document['assistor_random_id_mapping']
+        assistor_random_id_mapping = test_match_document['assistor_random_id_mapping']
         sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
         sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
@@ -349,7 +349,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(sponsor_id, user_id_1)
         self.assertEqual(sponsor_random_id_mapping[sponsor_random_id], sponsor_id)
         self.assertEqual(len(assistor_information), 0)
-        self.assertEqual(len(asssistor_random_id_mapping), 0)
+        self.assertEqual(len(assistor_random_id_mapping), 0)
         self.assertEqual(len(sponsor_terminate_id_dict), 0)
         self.assertEqual(len(assistor_terminate_id_dict), 0)
         

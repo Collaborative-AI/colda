@@ -64,7 +64,7 @@ def get_output_content(id):
     log(generate_msg('5.1:"', 'sponsor get_user_output start'), user_id, train_id)
 
     train_message_document = train_message.search_train_message_document(train_id=train_id)
-    output_dict = train_message_document['rounds_' + str(rounds)]['output_dict']
+    output_dict = train_message_document[f'rounds_{rounds}']['output_dict']
 
     assistor_random_id_to_output_content_dict = {}
     for assistor_id in output_dict:

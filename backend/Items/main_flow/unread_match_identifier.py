@@ -250,6 +250,7 @@ def send_situation(id):
     elif cur_rounds_num > 1:
         log(generate_msg('5.3:', 'sponsor send_situation begins'), user_id, train_id)
 
+    print('!!$$$cur_rounds_num', cur_rounds_num)
     train_match_document = train_match.search_train_match_document(train_id=train_id)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
     total_assistor_num = train_match_document['total_assistor_num']
@@ -258,7 +259,7 @@ def send_situation(id):
     sponsor_terminate_id_dict = train_match_document['sponsor_terminate_id_dict']
     # check how many assistors in this train task have terminated train task
     assistor_terminate_id_dict = train_match_document['assistor_terminate_id_dict']
-    asssistor_random_id_mapping = train_match_document['asssistor_random_id_mapping']
+    assistor_random_id_mapping = train_match_document['assistor_random_id_mapping']
     sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
     sponsor_identifier_id = sponsor_information[sponsor_id]['identifier_id']
 
@@ -269,7 +270,7 @@ def send_situation(id):
     running_assistor_id_dict = {}
     for assistor_random_id, residual in assistor_random_id_to_residual_dict.items():
 
-        assistor_id = asssistor_random_id_mapping[assistor_random_id]
+        assistor_id = assistor_random_id_mapping[assistor_random_id]
         print('send situation assistor_id', assistor_id)
         if assistor_id in assistor_terminate_id_dict:
             continue
@@ -312,7 +313,8 @@ def send_situation(id):
     elif cur_rounds_num > 1:
         pyMongo.db.Train_Message.update_one({'train_id': train_id}, {'$set':{
             'cur_rounds_num': cur_rounds_num,
-            'rounds_' + str(cur_rounds_num) + '.situation_dict': situation_dict
+            f'rounds_{cur_rounds_num}.situation_dict': situation_dict
+            # 'rounds_' + str(cur_rounds_num) + '.situation_dict': situation_dict
         }})
 
     # Delete the output content sent by the assistor
@@ -321,6 +323,7 @@ def send_situation(id):
 
     # send unread_situation notification to all assistors in this train task 
     # !zhuyi
+    print('###############send_situation')
     for assistor_id in running_assistor_id_dict:
         # mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_situation', 
         #                                     id=task_id, sender_random_id=sponsor_random_id, 
@@ -427,12 +430,21 @@ def send_test_output(id):
     cur_rounds_num = 1
 
     output_id = obtain_unique_id()
-    test_message.update_test_message_document(test_id=test_id, cur_rounds_num=cur_rounds_num, 
-                                                    assistor_id=assistor_id, output_id=output_id)
+    test_message.update_test_message_document(
+        test_id=test_id, 
+        cur_rounds_num=cur_rounds_num, 
+        assistor_id=assistor_id, 
+        output_id=output_id
+    )
 
-    test_message_output.create_test_message_output_document(output_id=output_id, test_id=test_id, sender_id=assistor_id,
-                                                            sender_random_id=assistor_random_id, recipient_id=sponsor_id,
-                                                            output_content=output_content)
+    test_message_output.create_test_message_output_document(
+        output_id=output_id, 
+        test_id=test_id, 
+        sender_id=assistor_id,
+        sender_random_id=assistor_random_id, 
+        recipient_id=sponsor_id,
+        output_content=output_content
+    )
 
     # check how many assistors are still participate in this train task
     remain_assistor_num = total_assistor_num - len(assistor_terminate_id_dict)

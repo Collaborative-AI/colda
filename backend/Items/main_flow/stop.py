@@ -64,7 +64,7 @@ def stop_train_task(id):
     assistor_information = train_match_document['assistor_information']
     sponsor_information = train_match_document['sponsor_information']
     sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
-    asssistor_random_id_mapping = train_match_document['asssistor_random_id_mapping']
+    assistor_random_id_mapping = train_match_document['assistor_random_id_mapping']
     if sponsor_id == user_id:
         isSponsor = True 
 
@@ -118,7 +118,7 @@ def stop_train_task(id):
         # put sponsor in sponsor_terminate_id_dict
         train_match.update_user_stop_in_train_match_document(train_id=train_id, user_id=user_id, role='assistor')
         assistor_id = user_id
-        assistor_random_id = asssistor_random_id_mapping[assistor_id]
+        assistor_random_id = assistor_random_id_mapping[assistor_id]
 
         # add stop notification to its notification table
         mongoDB.update_notification_document(
@@ -194,7 +194,7 @@ def stop_test_task(id):
     assistor_information = test_match_document['assistor_information']
     sponsor_information = test_match_document['sponsor_information']
     sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
-    asssistor_random_id_mapping = test_match_document['asssistor_random_id_mapping']
+    assistor_random_id_mapping = test_match_document['assistor_random_id_mapping']
     if sponsor_id == user_id:
         isSponsor = True 
 
@@ -250,7 +250,7 @@ def stop_test_task(id):
         # put sponsor in sponsor_terminate_id_dict
         test_match.update_user_stop_in_train_match_document(test_id=test_id, user_id=user_id, role='assistor')
         assistor_id = user_id
-        assistor_random_id = asssistor_random_id_mapping[assistor_id]
+        assistor_random_id = assistor_random_id_mapping[assistor_id]
 
         # add stop notification to its notification table
         mongoDB.update_notification_document(

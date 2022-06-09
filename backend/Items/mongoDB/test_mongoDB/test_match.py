@@ -45,7 +45,7 @@ class test_match:
         return pyMongo.db.Test_Match.update_one({'test_id': test_id}, {'$set':{
             base_key + '.assistor_id_to_random_id': assistor_random_id,
             base_key + '.identifier_id': identifier_id,
-            'asssistor_random_id_mapping.' + assistor_random_id: assistor_id,
+            'assistor_random_id_mapping.' + assistor_random_id: assistor_id,
         }})
 
     @classmethod

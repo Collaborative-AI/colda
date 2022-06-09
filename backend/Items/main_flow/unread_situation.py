@@ -62,7 +62,7 @@ def get_situation_content(id):
     # obtain some information from Train_Message table using specific key, such as rounds_1, rounds_2
     train_message_document = train_message.search_train_message_document(train_id=train_id)
     print('rounds', rounds, user_id)
-    situation_id = train_message_document['rounds_' + str(rounds)]['situation_dict'][user_id]['situation_id']
+    situation_id = train_message_document[f'rounds_{rounds}']['situation_dict'][user_id]['situation_id']
 
     # obtain situation file from Train_Message_Situation table
     train_message_situation_document = train_message_situation.search_train_message_situation_document(situation_id=situation_id)
@@ -101,7 +101,7 @@ def send_output(id):
     Raises:
         KeyError - raises an exception
     """
-
+    print('send_output!!!!!!!!!')
     data = request.get_json()
 
     if not data:

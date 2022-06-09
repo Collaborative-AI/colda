@@ -38,13 +38,16 @@ class Config(object):
     # Database_name = 'unittest_db'
     # MONGO_URI = "mongodb://%s:27017/%s" % (local_host, Database_name)
 
-    password = 'AI-Apollo'
-    Database_name = 'synspot_db'
-    # Database_name = 'unittest_db'
-    MONGO_URI = 'mongodb+srv://diaoenmao-gmailcom:%s@synspot-cluster.iqgfk.mongodb.net/%s?retryWrites=true&w=majority' % (password, Database_name)
+    # password = 'AI-Apollo'
+    # Database_name = 'synspot_db'
+    # # Database_name = 'unittest_db'
+    # MONGO_URI = 'mongodb+srv://diaoenmao-gmailcom:%s@synspot-cluster.iqgfk.mongodb.net/%s?retryWrites=true&w=majority' % (password, Database_name)
     # MONGO_URI = "mongodb://%s:27017" % (local_host)
     
-    
+    password = 'AI-Apollo'
+    Database_name = 'unittest_db'
+    # Database_name = 'unittest_db'
+    MONGO_URI = 'mongodb+srv://diaoenmao-gmailcom:%s@synspot-cluster.iqgfk.mongodb.net/%s?retryWrites=true&w=majority' % (password, Database_name)
     # mysql
 #     master_username = 'apollo'
 #     password = 'Aa1234567!'

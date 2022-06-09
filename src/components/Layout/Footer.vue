@@ -133,19 +133,19 @@
                         <div class="footer-info-contact">
                             <i class="flaticon-phone-call"></i>
                             <h3>Phone</h3>
-                            <span><a href="tel:+882-569-756">+123(456)123</a></span>
+                            <span><a href="tel:+1 4048343911">+1 4048343911</a></span>
                         </div>
 
                         <div class="footer-info-contact">
                             <i class="flaticon-envelope"></i>
                             <h3>Email</h3>
-                            <span><a href="mailto:hello@valzo.com">hello@valzo.com</a></span>
+                            <span><a href="mailto:support@synspot-ai.com">support@synspot-ai.com</a></span>
                         </div>
 
                         <div class="footer-info-contact">
                             <i class="flaticon-pin"></i>
                             <h3>Address</h3>
-                            <span>32 st Kilda Road, Melbourne VIC, 3004 Australia</span>
+                            <span>366 Ford Hall 224, Church Street, Minneapolis, MN 55455</span>
                         </div>
                     </div>
                 </div>

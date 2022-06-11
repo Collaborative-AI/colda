@@ -251,7 +251,7 @@ export default {
             console.log("2.1 Update request notification response")
           
             const delete_pending = {
-              task_id: vm.task_id,
+              train_id: vm.task_id,
               test_id: vm.test_id,
               test_indicator: vm.test_indicator
             }
@@ -303,7 +303,7 @@ export default {
                 console.log('hash_id_file_data', hash_id_file_data)
 
                 const match_assistor_id_data = {
-                  task_id: task_id,
+                  train_id: task_id,
                   identifier_content: hash_id_file_data,
                 }
                 
@@ -418,7 +418,7 @@ export default {
             // vm.$toasted.success("2.1 Update Test request notification", { icon: 'fingerprint' })
 
             const delete_pending = {
-              task_id: vm.task_id,
+              train_id: vm.task_id,
               test_id: vm.test_id,
               test_indicator: vm.test_indicator
             }
@@ -472,7 +472,7 @@ export default {
                 const match_test_assistor_id_data = {
                   identifier_content: test_hash_id_file_data,
                   test_id: test_id,
-                  task_id: task_id
+                  train_id: task_id
                 }
 
                 vm.$axios.post(add_prefix(`/match_test_identifier_content/${vm.sharedState.user_id}/`, `/main_flow`), match_test_assistor_id_data)
@@ -533,7 +533,7 @@ export default {
       let vm = this;
 
       const delete_pending = {
-        task_id: vm.task_id,
+        train_id: vm.task_id,
         test_id: vm.test_id,
         test_indicator: vm.test_indicator
       }

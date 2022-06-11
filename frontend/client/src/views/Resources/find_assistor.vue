@@ -167,10 +167,12 @@ export default {
     },
 
     get_train_id (unittest_callbacks) {
+      let vm = this
       this.$axios.get(add_prefix(`/create_new_train_task/`, `/main_flow`))
         .then((response) => {
-          this.task_id = response.data.task_id
-          let unittest_parameters = generate_unittest_parameters(this.task_id)
+          vm.task_id = response.data.train_id
+          let unittest_parameters = generate_unittest_parameters(vm.task_id)
+          console.log('task_id is', vm.task_id);
           execute_unittest_list(unittest_callbacks, 0, "find_assistor_unittest", unittest_parameters)
         })
         .catch((error) => {
@@ -294,6 +296,7 @@ export default {
           //     (`+`"`+vm.task_name +`", "`+vm.task_description+`", "`+vm.sharedState.user_id+ `","train","`+vm.task_id+`", "`+vm.train_file_path+`", "`+vm.train_id_column+`", "`+vm.train_data_column+`", "`+vm.train_target_column+`", "`+vm.task_mode+`", "`+vm.model_name+`", "`+vm.metric_name+`")`
 
           // console.log("insert_sentence", insert_sentence) 
+          console.log('param is', param);
           vm.$db.run(sentence, change_db_param_to_string(param), function(err){
             if (err){
               console.log('err info',err);
@@ -370,7 +373,7 @@ export default {
           const find_assistor_data = {
             assistor_username_list: handle_assistor_username_list_res,
             identifier_content: hash_id_file_data,
-            task_id: vm.task_id,
+            train_id: vm.task_id,
             task_mode: vm.task_mode,
             model_name: vm.model_name,
             metric_name: vm.metric_name,

@@ -14,7 +14,9 @@ import axios from 'axios'
 axios.defaults.timeout = 50000  // 超时时间
 // axios.defaults.baseURL = 'http://127.0.0.1:5000'
 // axios.defaults.baseURL = 'http://3.145.140.55'
-axios.defaults.baseURL = 'http://synspot-env.eba-mvtmbnb2.us-east-2.elasticbeanstalk.com/'
+// axios.defaults.baseURL = 'http://synspot-env.eba-mvtmbnb2.us-east-2.elasticbeanstalk.com/'
+axios.defaults.baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/' 
+// #new web address
 
 
 

@@ -3,7 +3,7 @@ import App from './App.vue';
 // import router from './router';
 import { router } from './router'
 import axios from './http'
-import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap.css';
 import store from './store';
 import VueToasted  from 'vue-toasted'
 import moment from 'moment'
@@ -18,10 +18,20 @@ import './assets/icon-awesome/css/font-awesome.min.css'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 Vue.use(BootstrapVue)
+
+// import FlexibleLink from 'vue-flexible-link'
+// const {FlexibleLink} = require('vue-flexible-link');
+// Vue.use(FlexibleLink)
+// import {shell} from 'electron';
+// Vue.use(shell)
 
 import huakuai from 'huakuai-vue'
 Vue.use(huakuai)
+
+// import dragVerify from 'vue-drag-verify2'
+// Vue.use(dragVerify)
 // import mdbvue from 'mdbvue'
 // Vue.use(mdbvue)
 

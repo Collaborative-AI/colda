@@ -10,8 +10,10 @@
 
 
 export function generate_unittest_parameters(){
+  console.log('jingenerate');
   let unittest_parameters = []
   for (let i = 0; i < arguments.length; i++){
+    console.log('argument', arguments[i]);
     unittest_parameters.push(arguments[i])
   }
   return unittest_parameters
@@ -24,7 +26,7 @@ export function change_db_param_to_string(db_parameters){
     if (db_param_i == undefined){
       console.log('db_sentence_param_wrong', db_param_i)
     }
-    // console.log('db_param_i', db_param_i)
+    console.log('db_param_i is', db_param_i, db_param_i.length)
     if (db_param_i.length > 0){
       new_db_parameters.push(db_param_i.toString())
     }

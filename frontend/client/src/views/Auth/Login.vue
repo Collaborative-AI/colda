@@ -15,9 +15,34 @@
             <div v-show="loginForm.passwordError" class="invalid-feedback">{{ loginForm.passwordError }}</div>
           </div>
 
-          <div>
+          <!-- <div>
             <hua-kuai @verify='verify' @refresh='refresh'></hua-kuai>
+          </div> -->
+
+          <!-- <div>
+             <drag-verify
+              ref="dragVerify"
+              :isPassing.sync="isPassing1"
+              handlerIcon="el-icon-d-arrow-right"
+              successIcon="el-icon-circle-check"
+              @passcallback='verify'
+              handlerBg="#999999"
+            >
+            </drag-verify>
+          </div> -->
+          <div>
+            <drag-verify 
+            :width="width"
+            :height="height"
+            background="#ccc" 
+            progress-bar-bg="#66cc66" 
+            completed-bg="#66cc66"
+            @passcallback='verify'
+          ></drag-verify>
           </div>
+          
+
+          
 
           <br />
           
@@ -37,11 +62,16 @@
 <script>
 import store from '../../store.js'
 import { execute_unittest_list, add_prefix } from '../../utils.js'
+// import dragVerify from "@/components/dragVerify";
 // console.log('window44', window)
 // const store = require('../../store').default
+import dragVerify from 'vue-drag-verify'
 
 export default {
   name: 'Login',  //this is the name of the component
+  components:{
+    dragVerify
+  },
   data () {
     return {
       sharedState: store.state,
@@ -56,12 +86,16 @@ export default {
       verification_res: false,
       root: '',
       exe_position: '',
+      isPassing1: false,
+      width:280,
+      height:35
     }
   },
   methods: {
-    verify(result){
-      console.log(result) // result为true表示验证通过，false表示验证三次都失败了哦
-      if (result == true){
+    verify(){
+      this.isPassing1 = true
+      console.log('jieguo', this.isPassing1) // result为true表示验证通过，false表示验证三次都失败了哦
+      if (this.isPassing1 == true){
         this.verification_res = true;
       }
     },
@@ -94,7 +128,7 @@ export default {
       if (this.verification_res == false){
         console.log("ggggggg")
         this.loginForm.errors++
-        this.$toasted.success("Please move slider into the right place", { icon: 'fingerprint' })
+        this.$toasted.success("Please move slider to the right place", { icon: 'fingerprint' })
       }
       
       if (this.loginForm.errors > 0) {
@@ -123,7 +157,7 @@ export default {
           // handle success
           if (response.data == 'not verify email yet'){
             this.$router.push({path: '/resend', query: {'username': this.loginForm.username}})
-            this.$toasted.success(`Please verify your email`, { icon: 'fingerprint' })
+            this.$toasted.success(`A verification link has been sent. Please check your email`, { icon: 'fingerprint' })
 
           } else{
             console.log('token is' ,response.data.token)

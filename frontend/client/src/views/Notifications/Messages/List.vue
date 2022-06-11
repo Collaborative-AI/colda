@@ -19,7 +19,7 @@
                             <div v-if="message.test_indicator == 'train' " class="text-truncate">Task Name: {{ message.task_name }}</div>
                             <div v-if="message.test_indicator == 'test' " class="text-truncate">Test Name: {{ message.test_name }}</div> 
                             <!-- <div v-if="message.test_indicator == 'test' " class="small">Task Name: {{ message.task_name }}</div> -->
-                            <div class="small">Task ID:  {{ message.task_id }}</div>
+                            <div class="small">Task ID:  {{ message.train_id }}</div>
                             <!-- <div v-if="message.test_indicator == 'test' " class="small">Task ID:  {{ index }}</div> -->
 
                             <div v-if="message.test_indicator == 'train' " class="small">Task Description:  {{ message.task_description }}</div>
@@ -44,7 +44,7 @@
                             <br />
                             <div class="text-right text-muted pt-1">
                               <div >
-                                <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.task_id, from_task_name: message.task_name, from_task_description: message.task_description, from_test_id: message.test_id} }">
+                                <router-link v-bind:to="{ name: 'MessagesHistory', query: { from: message.train_id, from_task_name: message.task_name, from_task_description: message.task_description, from_test_id: message.test_id} }">
                                   <button class="btn btn-block u-btn-outline-primary g-rounded-20 ">Details</button>
                                 </router-link>
                               </div>

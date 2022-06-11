@@ -10,10 +10,11 @@ module.exports = {
     //   }
     // },
 
-
+    
     publicPath: './',
     pluginOptions: {
       electronBuilder: {
+        nodeIntegration: true,
         builderOptions: {
           "productName": "SynSpot",
           "appId": "com.apollothebest.app",

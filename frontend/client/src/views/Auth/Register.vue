@@ -24,13 +24,23 @@
             <small v-if="!registerForm.passwordError" id="passwordHelp1" class="form-text text-muted">At least 8 characters. At most 25 characters</small>
             <small v-if="!registerForm.passwordError" id="passwordHelp2" class="form-text text-muted">A mixture of both uppercase and lowercase letters</small>
             <small v-if="!registerForm.passwordError" id="passwordHelp3" class="form-text text-muted">A mixture of letters and numbers</small>
-            <small v-if="!registerForm.passwordError" id="passwordHelp4" class="form-text text-muted">Inclusion of at least one special character, e.g., ! @ # ? ]</small>
+            <!-- <small v-if="!registerForm.passwordError" id="passwordHelp4" class="form-text text-muted">Inclusion of at least one special character, e.g., ! @ # ? ]</small> -->
 
             <div v-show="registerForm.passwordError" class="invalid-feedback">{{ registerForm.passwordError }}</div>
           </div>
 
-          <div>
+          <!-- <div>
             <hua-kuai @verify='verify' @refresh='refresh'></hua-kuai>
+          </div> -->
+          <div>
+            <drag-verify 
+            :width="width"
+            :height="height"
+            background="#ccc" 
+            progress-bar-bg="#66cc66" 
+            completed-bg="#66cc66"
+            @passcallback='verify'
+            ></drag-verify>
           </div>
           
           <br />
@@ -46,9 +56,14 @@
 // import {request_withdata} from '@/network/request';
 // import axios from 'axios'
 import { add_prefix } from '../../utils'
+import dragVerify from 'vue-drag-verify'
+
 
 export default {
   name: 'Register', //this is the name of the component
+  components:{
+    dragVerify
+  },
   data () {
     return {
       registerForm: {
@@ -62,14 +77,18 @@ export default {
         passwordError: null
       },
       verifivation_res: false,
+      isPassing1: false,
+      width:280,
+      height:35
     }
   },
 
   methods: {
 
-    verify(result){
-      console.log(result) // result为true表示验证通过，false表示验证三次都失败了哦
-      if (result == true){
+    verify(){
+      this.isPassing1 = true
+      console.log('result is', this.isPassing1) // result为true表示验证通过，false表示验证三次都失败了哦
+      if (this.isPassing1 == true){
         this.verifivation_res = true;
       }
     },
@@ -109,7 +128,7 @@ export default {
       if (this.verifivation_res == false){
         console.log("ggggggg")
         this.registerForm.errors++
-        this.$toasted.success("Please move into the right place", { icon: 'fingerprint' })
+        this.$toasted.success("Please move slider to the right place", { icon: 'fingerprint' })
       }
 
       if (this.registerForm.errors > 0) {
@@ -126,9 +145,9 @@ export default {
       this.$axios.post(add_prefix(`/users`, `/user`), payload)
       .then((res) => {
         // Go to Login Page
-        this.$toasted.success('Please verify your email.', { icon: 'fingerprint' })
+        this.$toasted.success('A verification link has been sent. Please check your email', { icon: 'fingerprint' })
         console.log('please verify email')
-        this.$router.push({path: '/resend', query: {'username': this.registerForm.username}})
+        this.$router.push({path: '/resend', query: {'username': this.registerForm.username, 'email': this.registerForm.email}})
         
       }).catch((error) => {
         console.log('error is', error)

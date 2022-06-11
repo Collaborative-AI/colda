@@ -330,7 +330,7 @@ export default {
 
               const payload = {
                 identifier_content:test_hash_id_file_data,
-                task_id: vm.task_id,
+                train_id: vm.task_id,
                 test_id: vm.test_id, 
                 task_mode: vm.task_mode,
                 model_name: vm.model_name,

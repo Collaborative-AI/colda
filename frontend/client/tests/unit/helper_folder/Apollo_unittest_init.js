@@ -12,6 +12,7 @@ const dialog = console.log
 
 
 import Login from '../../../src/views/Auth/Login.vue'
+import Reset from '../../../src/views/Auth/Reset.vue'
 import Navbar from '../../../src/components/Navbar.vue'
 import Profile from '../../../src/views/Settings/Profile.vue'
 import Find_Assistor from '../../../src/views/Resources/find_assistor.vue'
@@ -42,6 +43,7 @@ unittest_parameters.test_indicator = 'train'
 
 unittest_parameters.first_user_username = 'xie1'
 unittest_parameters.first_user_password = 'Xie1@123'
+unittest_parameters.first_user_email = 'xie00250@umn.edu'
 unittest_parameters.second_user_username = 'xie2'
 unittest_parameters.second_user_password = 'Xie2@123'
 unittest_parameters.third_user_username = 'leq1'
@@ -274,6 +276,28 @@ let Login_wrapper = mount(Login, {
   stubs: ['router-link','router-view']
 });
 
+let Reset_wrapper = mount(Reset, {
+  mocks: {
+     $toasted: {
+         success: () => {},
+         error: () => {},
+     },
+    $axios: axios,
+    $db: db,
+    // fs: fs,
+    ex: ex,
+    node_path: node_path,
+    os: os,
+    // log: log,
+    dialog: {
+      showErrorBox: dialog,
+    }
+    
+    // split: 
+  },
+  stubs: ['router-link','router-view']
+});
+
 
 let Navbar_wrapper = mount(Navbar, {
   mocks: {
@@ -397,4 +421,4 @@ let PendItem_Wrapper = mount(PendItem, {
   stubs: ['router-link','router-view']
 });
 
-export { unittest_parameters, router, Plist_Wrapper, PendItem_Wrapper, generate_unittest_log, switch_default_values, Login_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper, Profile_wrapper, modify_parameter }
+export { unittest_parameters, router, Plist_Wrapper, PendItem_Wrapper, generate_unittest_log, switch_default_values, Login_wrapper, Reset_wrapper, Navbar_wrapper, Find_Assistor_wrapper, Find_Test_Assistor_Wrapper, Profile_wrapper, modify_parameter }

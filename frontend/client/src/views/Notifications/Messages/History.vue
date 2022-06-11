@@ -1719,7 +1719,7 @@ export default {
       let vm = this
       console.log('checksponsor', task_id)
       const payload = {
-        task_id: task_id,
+        train_id: task_id,
       }
 
       this.$axios.post(add_prefix(`/check_sponsor/${vm.sharedState.user_id}`, `/helper_api`), payload)
@@ -1738,7 +1738,7 @@ export default {
           console.log(error)
         })
 
-        this.$axios.post(add_prefix(`/get_test_task_id_history/${vm.sharedState.user_id}`, `/helper_api`), payload)
+        this.$axios.post(add_prefix(`/get_test_id_of_train_id_history/${vm.sharedState.user_id}`, `/helper_api`), payload)
         .then((response) => {
           console.log('zz77',response)
           let test_task_dict = response.data.test_task_dict;

@@ -18,3 +18,4 @@ db.insert({
 }, function(err, doc) {
     console.log('inserted:', doc)
 })
+export default db

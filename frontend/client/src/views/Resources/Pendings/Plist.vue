@@ -15,14 +15,18 @@
                         <div class="font-weight-bold mr-3">
                             <div v-if="pend.test_indicator == 'train'" class="text-truncate">Task Name: {{ pend.task_name }}</div>
                             <div v-if="pend.test_indicator == 'test'" class="text-truncate">Test Name: {{ pend.test_name }}</div>
-                            <div class="small">Task ID:  {{ pend.task_id }}</div>
-                            <div class='small'>Test ID: {{ pend.test_id }}</div>
-                            <div class='small'>Task Mode: {{ pend.task_mode }}</div>
-                            <div class='small'>Model Name: {{ pend.model_name }}</div>
-                            <div class='small'>Metric Name: {{ pend.metric_name }}</div>
+                            <div class="small">Task ID:  {{ pend.train_id }}</div>
+                            <div v-if="pend.test_indicator == 'train'" class="small">Task Description:  {{ pend.task_description }}</div>
+                            <div v-if="pend.test_indicator == 'test'" class='small'>Test ID: {{ pend.test_id }}</div>
+                            <div v-if="pend.test_indicator == 'test'" class="small">Test Description:  {{ pend.test_description }}</div>
 
-                            <div class="small">Task Description:  {{ pend.pending_task_description }}</div>
-                            <div v-if="pend.pending_test_indicator == 'test'" class="small">Test Description:  {{ pend.test_description }}</div>
+                            <div class="small">{{ $moment(pend.timestamp).format('YYYY年MM月DD日 HH:mm:ss') }}</div>
+
+
+                            <!-- <div class='small'>Task Mode: {{ pend.task_mode }}</div>
+                            <div class='small'>Model Name: {{ pend.model_name }}</div>
+                            <div class='small'>Metric Name: {{ pend.metric_name }}</div> -->
+
                         </div>
                         <span class="ml-auto mb-auto">
                             <!-- <div class="btn-group">
@@ -38,7 +42,7 @@
                             <div class="text-right text-muted pt-1">
                               <router-link v-bind:to="{ name: 'PendItem', params: { 
                                                         task_description: pend.task_description, 
-                                                        task_id: pend.task_id, 
+                                                        task_id: pend.train_id, 
                                                         task_name: pend.task_name, 
                                                         task_mode: pend.task_mode,
                                                         model_name: pend.model_name,

@@ -18,8 +18,18 @@
             <div v-show="resetForm.emailError" class="invalid-feedback">{{ resetForm.emailError }}</div>
           </div>
 
-          <div>
+          <!-- <div>
             <hua-kuai @verify='verify' @refresh='refresh'></hua-kuai>
+          </div> -->
+           <div>
+            <drag-verify 
+            :width="width"
+            :height="height"
+            background="#ccc" 
+            progress-bar-bg="#66cc66" 
+            completed-bg="#66cc66"
+            @passcallback='verify'
+            ></drag-verify>
           </div>
           
           <br />
@@ -32,11 +42,16 @@
 </template>
 
 <script>
+import { add_prefix, execute_unittest_list, generate_unittest_parameters} from '../../utils';
 // import {request_withdata} from '@/network/request';
 // import axios from 'axios'
+import dragVerify from 'vue-drag-verify'
 
 export default {
   name: 'Reset', //this is the name of the component
+  components:{
+    dragVerify
+  },
   data () {
     return {
       resetForm: {
@@ -50,14 +65,18 @@ export default {
         passwordError: null
       },
       verifivation_res: false,
+      isPassing1: false,
+      width:280,
+      height:35
     }
   },
 
   methods: {
 
-    verify(result){
-      console.log(result) // result为true表示验证通过，false表示验证三次都失败了哦
-      if (result == true){
+    verify(){
+      this.isPassing1 = true
+      console.log('result is', this.isPassing1) // result为true表示验证通过，false表示验证三次都失败了哦
+      if (this.isPassing1 == true){
         this.verifivation_res = true;
       }
     },
@@ -66,7 +85,9 @@ export default {
       console.log('用户点击了初始化')
     },
 
-    onSubmit (e) {
+    onSubmit (unittest_callbacks) {
+      console.log('jinreset', this.resetForm.username, this.resetForm.email)
+
       this.resetForm.submitted = true  // 先更新状态
       this.resetForm.errors = 0
 
@@ -87,30 +108,35 @@ export default {
         this.resetForm.emailError = null
       }
 
-
+      console.log('faforgot0')
       if (this.verifivation_res == false){
         console.log("ggggggg")
         this.resetForm.errors++
-        this.$toasted.success("Please move into the right place", { icon: 'fingerprint' })
+        this.$toasted.success("Please move slider to the right place", { icon: 'fingerprint' })
       }
-
+      console.log('faforgot1')
       if (this.resetForm.errors > 0) {
         // Stop when the form has error
+        console.log('faerror');
         return false
       }
-
+      console.log('faforgot2')
       const payload = {
         username: this.resetForm.username,
         email: this.resetForm.email,
       }
-
-      this.$axios.post('/forgot', payload)
+      console.log('faforgot3')
+      this.$axios.post(add_prefix('/forgot','/user'), payload)
       .then((res) => {
         // Go to Login Page
         this.$toasted.success('A password reset email has been sent via email.', { icon: 'fingerprint' })
-        console.log(res.data)
+        // console.log('resethui', res.data, typeof(res.data))
+        let unittest_parameters = generate_unittest_parameters(res.data)
+        console.log('unit1', unittest_parameters)
+        execute_unittest_list(unittest_callbacks, 0, 'forgot_password_unittest', unittest_parameters)
         
       }).catch((error) => {
+        console.log('jinerror');
         for (var field in error.response.data.message) {
           if (field == 'username') {
             this.resetForm.usernameError = error.response.data.message.username

@@ -1,13 +1,13 @@
 <template>
   <div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
-        <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1" style="overflow:auto">
+        <div class="col-12 col-md-2 p-0 bg-dark flex-shrink-1" style="overflow:auto">
             <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2">
                 <div class="collapse navbar-collapse ">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
 
                         <router-link to="/" class="g-text-underline--none--hover">
-                          <img src="../assets/l6.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                          <img src="../assets/l8.png" width="30" height="30" class="d-inline-block align-top" alt="">
                             
                         </router-link>
                         <li v-if="sharedState.is_authenticated" class="nav-item">
@@ -29,6 +29,10 @@
                         <li v-else class="nav-item">
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
+
+                        <!-- <li class="nav-item">
+                          <router-link to="/resend" class="nav-link">Resend</router-link>
+                        </li> -->
                       
                         <!-- <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user']) && sharedState.username != 'xie1'"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
@@ -55,8 +59,9 @@
                     </ul>
                 </div>
             </nav>
-        </aside>
-        <main class="col-12 col-md-10 bg-faded py-3 flex-grow-1" >
+            
+        </div>
+        <main class="col-12 col-md-10 bg-faded py-3 flex-grow-1" style="border:1px; height: 100%">
             <!-- <h2>Example</h2>
             <p>
                 This is a Bootstrap 4 example layout that includes a Sidebar menu. On larger screen widths, the Sidebar is on the 
@@ -68,7 +73,10 @@
                 This Sidebar works using only Bootstrap CSS classes and doesn't require JavaScript. It utilizes the responsive Navbar classes
                 to auto-magically switch the Sidebar orientation.
             </p>  -->
-            <router-view v-if="showView"/>
+            <div class="row min-vh-100" style="border:1px; height: 100%">
+              <router-view v-if="showView"/>
+            </div>
+            
         </main>
     </div>
 </div>
@@ -312,7 +320,7 @@ export default {
             // console.log('hashidfile', hash_id_file_data, hash_id_file_address)
 
             const match_assistor_id_data = {
-              task_id: task_id,
+              train_id: task_id,
               identifier_content: hash_id_file_data,
             }
             
@@ -346,7 +354,7 @@ export default {
       } else if (vm.sharedState.mode == 'manual'){
         vm.sharedState.pending_num++;
         const add_train_pending = {
-          task_id: task_id,
+          train_id: task_id,
         }
         console.log('jinlai', add_train_pending)
         vm.$toasted.success("manual: Training Task " + task_id + " Request Received", { icon: 'fingerprint' })
@@ -449,7 +457,7 @@ export default {
       // Obtain Match_id file
       // async
       const payload = {
-        task_id: task_id
+        train_id: task_id
       }
       
       // const path = `/users/${vm.sharedState.user_id}/match_id_file/`
@@ -623,7 +631,7 @@ export default {
 
             // // console.log("assistor_random_id_list", assistor_random_id_list)
             const send_situation_payload = {
-                task_id: task_id,
+                train_id: task_id,
                 assistor_random_id_to_residual_dict: assistor_random_id_to_residual_dict,
                 // assistor_random_id_list: assistor_random_id_list,
                 // residual_list: all_residual_data,
@@ -676,7 +684,7 @@ export default {
       
       // Obtain Match_id file
       const payload = {
-        task_id: task_id
+        train_id: task_id
       }
       // const path = `/users/${vm.sharedState.user_id}/match_id_file/`
       // async
@@ -919,7 +927,7 @@ export default {
       const Log_address = vm.handle_train_log_address(task_id)
 
       const payload = {
-        task_id: task_id,
+        train_id: task_id,
         rounds: rounds
       }
       
@@ -1084,7 +1092,7 @@ export default {
         Assistor_train_output_data = Assistor_train_output_data.split(/[\r\n]+/)
 
         const Assistor_output_payload = {
-          task_id: task_id,
+          train_id: task_id,
           output_content: Assistor_train_output_data,
         }
 
@@ -1177,7 +1185,7 @@ export default {
       // Obtain output from assistors
 
       const payload = {
-        task_id: task_id,
+        train_id: task_id,
         rounds: rounds
       }
       // const url = `/users/${vm.sharedState.user_id}/output/`
@@ -1393,7 +1401,7 @@ export default {
         }
 
         const payload1 = {
-          task_id: task_id,
+          train_id: task_id,
           assistor_random_id_to_residual_dict: assistor_random_id_to_residual_dict
         }
 
@@ -1453,7 +1461,7 @@ export default {
 
       for (let test_id in cur_unread_test_request_Testid_dict){
         // let task_id = test_id_to_task_id[test_id]
-        let task_id = cur_unread_test_request_Testid_dict[test_id]['task_id']
+        let task_id = cur_unread_test_request_Testid_dict[test_id]['train_id']
         // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
      
         // // console.log('unread test request mode', vm.sharedState.mode)
@@ -1573,7 +1581,7 @@ export default {
               test_hash_id_file_data = test_hash_id_file_data.split(/[\r\n]+/)
 
               const match_test_assistor_id_data = {
-                task_id: task_id,
+                train_id: task_id,
                 test_id: test_id,
                 identifier_content: test_hash_id_file_data,
               }
@@ -1658,7 +1666,7 @@ export default {
 
       for (let test_id in cur_unread_test_match_id_Testid_dict){
         // let task_id = test_id_to_task_id[test_id]
-        let task_id = cur_unread_test_match_id_Testid_dict[test_id]['task_id']
+        let task_id = cur_unread_test_match_id_Testid_dict[test_id]['train_id']
 
         // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
@@ -1712,7 +1720,7 @@ export default {
       // Obtain Match_id file
       // async
       const payload = {
-        task_id: task_id,
+        train_id: task_id,
         test_id: test_id
       }
       
@@ -1865,7 +1873,7 @@ export default {
       
       // Obtain Match_id file
       const payload = {
-        task_id: task_id,
+        train_id: task_id,
         test_id: test_id
       }
       // const path = `/users/${vm.sharedState.user_id}/test_match_id_file/`
@@ -2010,7 +2018,7 @@ export default {
               // // console.log("all_test_output", all_test_output)
 
               const send_test_output_payload = {
-                task_id: task_id,
+                train_id: task_id,
                 test_id: test_id,
                 output_content: all_test_output,
               }
@@ -2072,7 +2080,7 @@ export default {
 
       for (let test_id in cur_unread_test_output_Testid_dict){
         // let task_id = test_id_to_task_id[test_id]
-        let task_id = cur_unread_test_output_Testid_dict[test_id]['task_id']
+        let task_id = cur_unread_test_output_Testid_dict[test_id]['train_id']
 
         // log.transports.file.resolvePath = () => node_path.join(vm.root.toString(), '/logs', vm.sharedState.user_id.toString(), task_id.toString(), 'log.txt');
 
@@ -2100,7 +2108,7 @@ export default {
 
 
       const payload = {
-        task_id: task_id, 
+        train_id: task_id, 
         test_id: test_id,
       }
 
@@ -2357,7 +2365,7 @@ export default {
 
 
                   if (train_notification_category_name.has(category_name)){
-                    let task_id_dict = category[category_name]['task_id_dict']
+                    let task_id_dict = category[category_name]['train_id_dicts']
                     console.log('jin3', category_name)
                     console.log('jin4', task_id_dict)
                     if (category_name == 'unread_request'){
@@ -2376,7 +2384,7 @@ export default {
                     }
                   }else if (test_notification_category_name.has(category_name)){
                     console.log('jin88')
-                    let test_id_dict = category[category_name]['test_id_dict']
+                    let test_id_dict = category[category_name]['test_id_dicts']
                     if (category_name == 'unread_test_request'){
                       console.log('jin8')
                       unread_test_request(test_id_dict)

@@ -14,7 +14,7 @@ pip1. First time launch:
 4. Install Package: pipenv install + package name
 
 5. Migrate the database: (create table in database e.g.sqlite3 mysql)
-     0. migration .env add (render_as_batch=True,)
+    0. migration .env add (render_as_batch=True,)
      (with connectable.connect() as connection:
         context.configure(
             connection=connection,
@@ -23,13 +23,12 @@ pip1. First time launch:
             process_revision_directives=process_revision_directives,
             **current_app.extensions['migrate'].configure_args
         ))
-     1. flask db migrate -m "comment"
-     2. flask db upgrade (flask db downgrade => rollback)
+    1. flask db migrate -m "comment"
+    2. flask db upgrade (flask db downgrade => rollback)
             
 6. Test: 
-    
-        1. modify the python code in Test files
-        2. Running: flask test
+    1. modify the python code in Test files
+    2. Running: flask test
     
 7. 3 users:
       1. id=4 username=testa email=126@gmail.com password=123

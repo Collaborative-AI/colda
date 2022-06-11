@@ -288,8 +288,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_2 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_2['notification_result']['category']), 2)
-        self.assertEqual(len(json_response_2['notification_result']['category']['unread_request']['train_id_dict']), 1)
-        assert train_id in json_response_2['notification_result']['category']['unread_request']['train_id_dict']
+        self.assertEqual(len(json_response_2['notification_result']['category']['unread_request']['train_id_dicts']), 1)
+        assert train_id in json_response_2['notification_result']['category']['unread_request']['train_id_dicts']
 
         # User 3 cannot check the notification of user 2
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
@@ -302,8 +302,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_3['notification_result']['category']), 2)
-        self.assertEqual(len(json_response_3['notification_result']['category']['unread_request']['train_id_dict']), 1)
-        assert train_id in json_response_3['notification_result']['category']['unread_request']['train_id_dict']
+        self.assertEqual(len(json_response_3['notification_result']['category']['unread_request']['train_id_dicts']), 1)
+        assert train_id in json_response_3['notification_result']['category']['unread_request']['train_id_dicts']
 
         # create test id
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -407,8 +407,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         json_response_2 = json.loads(response.get_data(as_text=True))
         print('json_response_2', json_response_2)
         self.assertEqual(len(json_response_2['notification_result']['category']), 1)
-        self.assertEqual(len(json_response_2['notification_result']['category']['unread_test_request']['test_id_dict']), 1)
-        assert test_id in json_response_2['notification_result']['category']['unread_test_request']['test_id_dict']
+        self.assertEqual(len(json_response_2['notification_result']['category']['unread_test_request']['test_id_dicts']), 1)
+        assert test_id in json_response_2['notification_result']['category']['unread_test_request']['test_id_dicts']
 
         # User 3 cannot check the notification of user 2
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
@@ -421,8 +421,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_3['notification_result']['category']), 1)
-        self.assertEqual(len(json_response_3['notification_result']['category']['unread_test_request']['test_id_dict']), 1)
-        assert test_id in json_response_3['notification_result']['category']['unread_test_request']['test_id_dict']
+        self.assertEqual(len(json_response_3['notification_result']['category']['unread_test_request']['test_id_dicts']), 1)
+        assert test_id in json_response_3['notification_result']['category']['unread_test_request']['test_id_dicts']
 
         # 5. assistor upload ID file
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
@@ -497,8 +497,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_1 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_1['notification_result']['category']), 1)
-        self.assertEqual(len(json_response_1['notification_result']['category']['unread_test_match_identifier']['test_id_dict']), 1)
-        assert test_id in json_response_1['notification_result']['category']['unread_test_match_identifier']['test_id_dict']
+        self.assertEqual(len(json_response_1['notification_result']['category']['unread_test_match_identifier']['test_id_dicts']), 1)
+        assert test_id in json_response_1['notification_result']['category']['unread_test_match_identifier']['test_id_dicts']
 
         # Check the Notification of user 2
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
@@ -506,8 +506,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_2 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_2['notification_result']['category']), 1)
-        self.assertEqual(len(json_response_2['notification_result']['category']['unread_test_match_identifier']['test_id_dict']), 1)
-        assert test_id in json_response_2['notification_result']['category']['unread_test_match_identifier']['test_id_dict']
+        self.assertEqual(len(json_response_2['notification_result']['category']['unread_test_match_identifier']['test_id_dicts']), 1)
+        assert test_id in json_response_2['notification_result']['category']['unread_test_match_identifier']['test_id_dicts']
 
         # User 3 cannot check the notification of user 2
         headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
@@ -520,8 +520,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_3['notification_result']['category']), 1)
-        self.assertEqual(len(json_response_3['notification_result']['category']['unread_test_match_identifier']['test_id_dict']), 1)
-        assert test_id in json_response_3['notification_result']['category']['unread_test_match_identifier']['test_id_dict']
+        self.assertEqual(len(json_response_3['notification_result']['category']['unread_test_match_identifier']['test_id_dicts']), 1)
+        assert test_id in json_response_3['notification_result']['category']['unread_test_match_identifier']['test_id_dicts']
 
         # 6. sponsor and assistors call update_match_id_notification() (in unread_match_identifier.py) and check updated notification (unread match id => 0)
         headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
@@ -636,8 +636,8 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_response_1 = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response_1['notification_result']['category']), 1)
-        self.assertEqual(len(json_response_1['notification_result']['category']['unread_test_output']['test_id_dict']), 1)
-        assert test_id in json_response_1['notification_result']['category']['unread_test_output']['test_id_dict']
+        self.assertEqual(len(json_response_1['notification_result']['category']['unread_test_output']['test_id_dicts']), 1)
+        assert test_id in json_response_1['notification_result']['category']['unread_test_output']['test_id_dicts']
         
         # 16. sponsor calls: get_user_output() (in unread_output.py), gets output files
         data = json.dumps({

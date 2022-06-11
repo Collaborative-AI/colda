@@ -38,7 +38,7 @@ class train_task():
         
     @classmethod
     def update_train_task_document_test_id_of_train_id_dict(cls, train_id, test_id):
-        print('update_train_task_document_test_task_dict', test_id)
+        print('update_train_task_document_test_id_of_train_id_dict', test_id)
         return pyMongo.db.Train_Task.update_one({'train_id': train_id}, {'$set':{
                    'test_id_of_train_id_dict.' + test_id: None,
                }})

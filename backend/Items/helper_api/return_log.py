@@ -45,7 +45,7 @@ def get_backend_log(id):
 
     train_id = data['train_id']
     train_match_document = train_match.search_train_match_document(train_id=train_id)
-    test_task_dict = train_match_document['test_task_dict']
+    test_id_of_train_id_dict = train_match_document['test_id_of_train_id_dict']
     
     response = {}
     response[train_id] = {
@@ -53,7 +53,7 @@ def get_backend_log(id):
         'test_indicator': 'train',
         'log_file': get_log(user_id, train_id)
     }
-    for test_id in test_task_dict:
+    for test_id in test_id_of_train_id_dict:
         response[test_id] = {
             'id': test_id,
             'test_indicator': 'test',

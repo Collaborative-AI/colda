@@ -258,7 +258,7 @@ def find_test_assistor(id):
     for assistor_id in train_match_document['assistor_information']:
         assistor_id_dict[assistor_id] = None
 
-    # update test_task_dict    
+    # update test_id_of_train_id_dict    
     res = train_task.update_train_task_document_test_id_of_train_id_dict(train_id=train_id, test_id=test_id)
     train_task_document = train_task.search_train_task_document(train_id=train_id)
     print('fsdfasd', res, train_task_document)

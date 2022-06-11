@@ -230,6 +230,6 @@
         }
     5. url加前缀
     6. 修改get_user_history返回的key, 'items' => 'participated_sort_task_dict'
-    7. Train_Task: assistor_id_list => assistor_id_dict, test_task_list => test_task_dict
+    7. Train_Task: assistor_id_list => assistor_id_dict, test_task_list => test_id_of_train_id_dict
     8. Test_Task: assistor_id_list => assistor_id_dict
-    9. get_test_task_id_history 返回为'test_task_dict'
+    9. get_test_task_id_history 返回为'test_id_of_train_id_dict'

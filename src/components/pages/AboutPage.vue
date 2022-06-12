@@ -2,7 +2,7 @@
     <div>
         <NavbarStyleTwo />
         <PageTitle />
-        <About />
+        <!-- <About /> -->
         <Team />
         <Faq />
         <Clients />
@@ -14,7 +14,7 @@
 <script>
     import NavbarStyleTwo from '../Layout/NavbarStyleTwo'
     import PageTitle from '../About/PageTitle'
-    import About from '../About/About'
+    // import About from '../About/About'
     import Faq from '../About/Faq'
     import Team from '../HomeNine/Team'
     import Clients from '../HomeNine/Clients'
@@ -26,7 +26,7 @@
         components: {
             NavbarStyleTwo,
             PageTitle,
-            About,
+            // About,
             Faq,
             Team,
             Clients,

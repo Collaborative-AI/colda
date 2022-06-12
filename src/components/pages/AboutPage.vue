@@ -2,9 +2,9 @@
     <div>
         <NavbarStyleTwo />
         <PageTitle />
-        <!-- <About /> -->
+        <!-- <About />   -->
         <Team />
-        <Faq />
+        <!-- <Faq /> -->
         <Clients />
         <Footer />
         <CopyRight />
@@ -15,7 +15,7 @@
     import NavbarStyleTwo from '../Layout/NavbarStyleTwo'
     import PageTitle from '../About/PageTitle'
     // import About from '../About/About'
-    import Faq from '../About/Faq'
+    // import Faq from '../About/Faq'
     import Team from '../HomeNine/Team'
     import Clients from '../HomeNine/Clients'
     import Footer from '../Layout/Footer'
@@ -27,7 +27,7 @@
             NavbarStyleTwo,
             PageTitle,
             // About,
-            Faq,
+            // Faq,
             Team,
             Clients,
             Footer,

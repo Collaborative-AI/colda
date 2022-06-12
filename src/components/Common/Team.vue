@@ -4,8 +4,8 @@
             <div class="container">
                 <div class="section-title">
                     <h2>Our Expert Team</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidiunt labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
-                    <div class="bar"></div>
+                    <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidiunt labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
+                    <div class="bar"></div> -->
                 </div>
 
                 <div class="row">

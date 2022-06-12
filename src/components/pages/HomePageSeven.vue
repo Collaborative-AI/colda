@@ -4,7 +4,8 @@
         <Banner />  <!-- build your model with our service -->    
         <MoreFeatures />    <!-- privacy-preserving -->
         <Tech />    <!-- perfect app for beninner -->
-        <Digital /> <!-- our motivation -->
+        <!-- our motivation -->
+        <Digital />
         <!-- <AgencyServices /> -->
         <!-- <Experience />
         <Tab /> -->

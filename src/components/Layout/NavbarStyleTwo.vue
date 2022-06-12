@@ -246,7 +246,7 @@
                                 <ul class="dropdown-menu">
                                     <li class="nav-item">
                                         <a href="html/index.html" class="nav-link"
-                                        >Docs</a>
+                                        >Documentation</a>
                                         
                                     </li>
 

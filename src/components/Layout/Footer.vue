@@ -97,7 +97,7 @@
                         </div>
                         <ul class="footer-quick-links">
                             <li>
-                                <a href="html/index.html">Docs</a>
+                                <a href="html/index.html">Documentation</a>
                             </li>
                             <li>
                                 <a href="notebook/Sponsor_User_Guide.html">Tutorials</a>

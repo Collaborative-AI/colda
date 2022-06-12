@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Navbar />
+        <NavbarStyleTwo />
         <PageTitle />
         <Blog />
         <Footer />
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import Navbar from '../Layout/Navbar'
+    import NavbarStyleTwo from '../Layout/NavbarStyleTwo.vue'
     import PageTitle from '../SingleBlog/PageTitle'
     import Blog from '../SingleBlog/Blog'
     import Footer from '../Layout/Footer'
@@ -18,7 +18,7 @@
     export default {
         name: 'SingleBlogPage',
         components: {
-            Navbar,
+            NavbarStyleTwo,
             PageTitle,
             Blog,
             Footer,

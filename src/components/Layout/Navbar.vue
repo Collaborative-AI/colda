@@ -5,28 +5,42 @@
                 <div class="container">
                     <nav class="navbar navbar-expand-lg navbar-light">
                         <router-link class="navbar-brand" to="/">
-                            <img src="../../assets/images/logo.png" alt="logo">
+                            <!-- <img src="../../assets/images/logo.png" alt="logo"> -->
+                            <div class="row" style="border-left:0; border:1px solid black;">
+                                <div class="col-4">
+                                    <img src="../../assets/images/logo1.png" width="50" height="50" alt="logo">
+                                     <!-- <h1>Synspot</h1> -->
+                                </div>
+                                <div class="col-6">
+                                    <!-- <div style="margin-top:10%; color:green"> -->
+                                        <h2 style="color:black; font-family: Helvetica">Synspot</h2>
+                                    <!-- </div> -->
+                                    
+                                </div>
+                            </div>
                         </router-link>
+                        
 
                         <div 
                             class="navbar-toggler"
                             @click="active = !active" :aria-pressed="active ? 'true' : 'false'"
                             v-bind:class="{ 'active': button_active_state }"
                             v-on:click="button_active_state = !button_active_state"
+                            style="border-left:0; border:1px solid black;"
                         >
                             <span class="icon-bar top-bar"></span>
                             <span class="icon-bar middle-bar"></span>
                             <span class="icon-bar bottom-bar"></span>
                         </div>
 
-                        <div class="collapse navbar-collapse" :class="{ show: active }" is-nav>
-                            <ul class="navbar-nav">
+                        <div class="collapse navbar-collapse" :class="{ show: active }" is-nav style="border-left:0; border:1px solid black"> 
+                            <ul class="navbar-nav px-0" style="border-left:0; border:1px solid red">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="home" class="nav-link">
                                         Home 
-                                        <i class='bx bx-chevron-down'></i>
+                                        <!-- <i class='bx bx-chevron-down'></i> -->
                                     </a>
-                                    <ul class="dropdown-menu">
+                                    <!-- <ul class="dropdown-menu">
                                         <li class="nav-item">
                                             <router-link  to="/" class="nav-link">
                                                 Home One
@@ -80,16 +94,61 @@
                                                 Home Nine
                                             </router-link>
                                         </li>
+                                    </ul> -->
+                                </li>
+
+                                <li class="nav-item">
+                                    <router-link  to="/products" class="nav-link">
+                                        Products
+                                    </router-link>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        Resources 
+                                        <i class='bx bx-chevron-down'></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item">
+                                            <a href="html/index.html" class="nav-link"
+                                            >Documentation</a>
+                                            
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="notebook/Sponsor_User_Guide.html" class="nav-link"
+                                            >Tutorials</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <router-link  to="/use-cases" class="nav-link">
+                                                Use Cases
+                                            </router-link>
+                                        </li>
+
+                                        
                                     </ul>
                                 </li>
 
                                 <li class="nav-item">
                                     <router-link  to="/about" class="nav-link">
-                                        About
+                                        About us
                                     </router-link>
                                 </li>
 
                                 <li class="nav-item">
+                                    <router-link  to="/contact" class="nav-link">
+                                        Contact
+                                    </router-link>
+                                </li>
+
+                                <!-- <li class="nav-item">
+                                    <router-link  to="/about" class="nav-link">
+                                        About
+                                    </router-link>
+                                </li> -->
+
+                                <!-- <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         Services 
                                         <i class='bx bx-chevron-down'></i>
@@ -113,9 +172,9 @@
                                             </router-link>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> -->
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         Projects 
                                         <i class='bx bx-chevron-down'></i>
@@ -140,9 +199,9 @@
                                             </router-link>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> -->
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         Pages 
                                         <i class='bx bx-chevron-down'></i>
@@ -218,9 +277,9 @@
                                             </router-link>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> -->
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         Blog 
                                         <i class='bx bx-chevron-down'></i>
@@ -244,13 +303,13 @@
                                             </router-link>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> -->
 
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <router-link  to="/contact" class="nav-link">
                                         Contact
                                     </router-link>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
 

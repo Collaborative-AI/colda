@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Navbar />
+        <NavbarStyleTwo />
         <PageTitle />
         <Signup />
         <Footer />
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import Navbar from '../Layout/Navbar'
+    import NavbarStyleTwo from '../Layout/NavbarStyleTwo.vue'
     import PageTitle from '../SignUp/PageTitle'
     import Signup from '../SignUp/Signup'
     import Footer from '../Layout/Footer'
@@ -18,7 +18,7 @@
     export default {
         name: 'SignUpPage',
         components: {
-            Navbar,
+            NavbarStyleTwo,
             PageTitle,
             Signup,
             Footer,

@@ -64,7 +64,7 @@
 
                         <ul class="footer-quick-links">
                              <li>
-                                <router-link to="/home-seven">Home</router-link>
+                                <router-link to="/">Home</router-link>
                             </li>
                              <li>
                                 <router-link to="/products">Products</router-link>

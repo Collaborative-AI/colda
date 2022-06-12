@@ -35,12 +35,12 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent" is-nav>
                         <ul class="navbar-nav">
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="home" class="nav-link">
                                     Home 
-                                    <!-- <i class='bx bx-chevron-down'></i> -->
+                                    <i class='bx bx-chevron-down'></i>
                                 </a>
-                                <!-- <ul class="dropdown-menu">
+                                <ul class="dropdown-menu">
                                     <li class="nav-item">
                                         <router-link  to="/" class="nav-link">
                                             Home One
@@ -94,8 +94,8 @@
                                             Home Nine
                                         </router-link>
                                     </li>
-                                </ul> -->
-                            </li>
+                                </ul>
+                            </li> -->
 
                             
 
@@ -231,6 +231,12 @@
                                     </li>
                                 </ul>
                             </li> -->
+
+                            <li class="nav-item">
+                                <router-link  to="/" class="nav-link">
+                                    Home
+                                </router-link>
+                            </li>
 
                             <li class="nav-item">
                                 <router-link  to="/products" class="nav-link">

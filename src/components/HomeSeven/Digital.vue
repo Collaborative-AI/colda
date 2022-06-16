@@ -21,21 +21,18 @@
                             Organizations want to optimize better AI models with a large amount of data.
                             </p>
                             
-
-        
-
+                             
                             
                             <p>
                             <i class="flaticon-check"></i>
                             Organizations have difficulty leveraging decentralized data due to commercial and ethical restrictions.
                             </p>
                             
-
-                    
+                             
 
                             <p>
                                 <i class="flaticon-check"></i>
-                                Organizations needs a trustworthy third-party platform to assist each other for optimizing AI models。
+                                Organizations needs a trustworthy third-party platform to assist each other for optimizing AI models.
                             </p>
 
                         

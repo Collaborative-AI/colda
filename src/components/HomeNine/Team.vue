@@ -11,8 +11,8 @@
                 <div class="col-lg-12">
                     <div class="team-item">
                         <div class="image" >
-                            <img src="../../assets/images/diao.jpg" alt="image" style = "float:left; width:30%; line-height: 40;">
-                            <div class = "text" style = "float:right; width: 70%">
+                            <img src="../../assets/images/diao-square.jpeg" alt="image" style = "float:inline-start; width:20%; line-height: 40;">
+                            <div class = "text" style = "float:right; width: 60%">
                             <div class="content">
                             <h2>Enmao Diao</h2>
                             <h3><span>Co-founder</span></h3>
@@ -91,8 +91,8 @@
                 <div class="col-lg-12">
                     <div class="team-item">
                         <div class="image">
-                            <img src="../../assets/images/ding.jpg" alt="image" style = "float:left; width:30%; line-height: 40;">
-                            <div class = "text" style = "float:right; width: 70%">
+                            <img src="../../assets/images/ding-square.jpeg" alt="image" style = "float:inline-start; width:20%; line-height: 40;">
+                            <div class = "text" style = "float:right; width: 60%">
                             <div class="content">
                             <h2>Jie Ding</h2>
                             <h3><span>Co-founder</span></h3>

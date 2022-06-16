@@ -14,7 +14,7 @@
                             <accordion-item>
                                 <template v-slot:accordion-trigger>
                                     <button class="accordion-title">
-                                        What's The Difference Between IDS And IBS?
+                                        What Is Distributed Machine Learning And Why It Is Used?
                                         <span></span>
                                         <i class='bx bx-chevron-down'></i>
                                     </button>
@@ -26,7 +26,7 @@
                             <accordion-item>
                                 <template v-slot:accordion-trigger>
                                     <button class="accordion-title">
-                                        How Is Encryption Different From Hacking
+                                        What's The Difference Between Gradient Assistant Learning And Federal Assistant Learning?
                                         <span></span>
                                         <i class='bx bx-chevron-down'></i>
                                     </button>
@@ -38,7 +38,7 @@
                             <accordion-item>
                                 <template v-slot:accordion-trigger>
                                     <button class="accordion-title">
-                                        What Is Firewall And Why It Is Used?
+                                        How Is Software Different From API?
                                         <span></span>
                                         <i class='bx bx-chevron-down'></i>
                                     </button>
@@ -50,7 +50,7 @@
                             <accordion-item>
                                 <template v-slot:accordion-trigger>
                                     <button class="accordion-title">
-                                        What Steps Will You Take To Secure Server
+                                        What Steps Will You Take To Secure Our Data?
                                         <span></span>
                                         <i class='bx bx-chevron-down'></i>
                                     </button>

@@ -14,7 +14,7 @@
                             <img src="../../assets/images/diao-square.jpeg" alt="image" style = "float:inline-start; width:20%; line-height: 40;">
                             <div class = "text" style = "float:right; width: 60%">
                             <div class="content">
-                            <h2>Enmao Diao</h2>
+                            <h2><a target="_blank" rel="noopener noreferrer" href="https://diaoenmao.com/">Enmao Diao</a></h2>
                             <h3><span>Co-founder</span></h3>
                             <p>He received the B.S. degree in computer science and electrical engineering from Georgia Institute of Technology, Georgia, USA, in 2016 and the M.S. degree in electrical engineering from Harvard University, Cambridge, USA, in 2018. He is currently pursuing the Ph.D. degree in electrical engineering at Duke University, Durham, NC, USA. His research interest includes distributed machine learning, data and model compression, and audio signal processing. He has published several academic papers in top tier conferences and journals.</p> </div>
                             </div>
@@ -22,7 +22,7 @@
                         <div class="col-lg-12"></div>
                             
 
-                            <ul class="social">
+                            <!-- <ul class="social">
                                 <li>
                                     <a href="#" target="_blank">
                                         <i class="bx bxl-facebook"></i>
@@ -43,10 +43,9 @@
                                         <i class="bx bxl-instagram"></i>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </div>
 
-                        
                     </div>
 
                     
@@ -94,13 +93,13 @@
                             <img src="../../assets/images/ding-square.jpeg" alt="image" style = "float:inline-start; width:20%; line-height: 40;">
                             <div class = "text" style = "float:right; width: 60%">
                             <div class="content">
-                            <h2>Jie Ding</h2>
+                            <h2><a target="_blank" rel="noopener noreferrer" href="https://jding.org/">Jie Ding</a></h2>
                             <h3><span>Co-founder</span></h3>
                             <p>He received his Ph.D. degree in Engineering Sciences from Harvard University, Cambridge, in 2017. He obtained his B.S. degree from Tsinghua University, Beijing, in 2012. He joined the faculty of the University of Minnesota, Twin Cities, in 2018, where he has been an Assistant Professor at the School of Statistics, with a graduate faculty appointment at the Department of Electrical and Computer Engineering. His research is on the foundations of machine learning, statistics, and signal processing.</p> </div>
                             </div>
                             
                             <div class = "mt-4"></div>
-                            <ul class="social">
+                            <!-- <ul class="social">
                                 <li>
                                     <a href="#" target="_blank">
                                         <i class="bx bxl-facebook"></i>
@@ -121,7 +120,7 @@
                                         <i class="bx bxl-instagram"></i>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </div>
 
                         

@@ -14,31 +14,24 @@
                         <div class="bar"></div>
                         <p></p>
 
-                        <ul class="digital-list">
-                            
+                        <ul class="digital-list">                           
                             <p>
                             <i class="flaticon-check"></i>
                             Organizations want to optimize better AI models with a large amount of data.
                             </p>
-                            
-                             
-                            
+                        </ul>
+                        <ul class="digital-list">                          
                             <p>
                             <i class="flaticon-check"></i>
                             Organizations have difficulty leveraging decentralized data due to commercial and ethical restrictions.
-                            </p>
-                            
-                             
-
-                            <p>
-                                <i class="flaticon-check"></i>
-                                Organizations needs a trustworthy third-party platform to assist each other for optimizing AI models.
-                            </p>
-
-                        
+                            </p>                                     
                         </ul>
-
-                        
+                        <ul class="digital-list">                           
+                            <p>
+                            <i class="flaticon-check"></i>
+                            Organizations needs a trustworthy third-party platform to assist each other for optimizing AI models.
+                            </p>
+                        </ul>
 
                         <!-- <div class="digital-btn">
                             <a href="#" class="default-btn">Learn More</a>

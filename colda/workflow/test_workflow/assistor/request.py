@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from colda.workflow.test_base import TestBaseWorkflow
+from colda.workflow.test_workflow.test_base import TestBaseWorkflow
 
 from colda.workflow.utils import (
     obtain_notification_information

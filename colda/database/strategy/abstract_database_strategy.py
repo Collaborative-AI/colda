@@ -11,7 +11,7 @@ class AbstractDatabaseStrategy(ABC):
         pass
 
     @abstractmethod
-    def get_all_records(self, **kwargs):
+    def get_all_records_history(self, **kwargs):
         pass
     
     @abstractmethod

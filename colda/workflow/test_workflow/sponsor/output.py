@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import time
 
-from colda.workflow.test_base import TestBaseWorkflow
+from colda.workflow.test_workflow.test_base import TestBaseWorkflow
 
 from colda.workflow.utils import (
     obtain_notification_information
@@ -70,30 +70,6 @@ class TestSponsorOutput(TestBaseWorkflow):
         )
 
         assistor_random_id_to_output_content_dict = get_test_output_content_response['assistor_random_id_to_output_content_dict']
-        # assistor_output_contents = {}
-        # for assistor_random_id, output_content in assistor_random_id_to_output_content_dict.items():
-        #     # from_id = assistor_random_id
-        #     # cur_output = output_content
-        #     # print("from_id", from_id)
-        #     # call save_output
-        #     # save_output_pos = save_output(root=root, self_id=user_id, train_id=train_id, mode=self.test_indicator, test_id=None, round=rounds, from_id=from_id)
-        #     # # assert save_output_pos is not None
-        #     # _, save_output_pos = handle_Algorithm_return_value("save_output_pos", save_output_pos, "200", "save_output")
-        #     # assert save_output_pos is not None
-
-        #     # write file
-        #     # cur_output = json.loads(output[i]).split("\n")
-        #     # print("cur_output", type(cur_output), cur_output)
-        #     # save_file(save_output_pos[2], cur_output)
-
-        #     # msg = ["5.3 Sponsor saves Output model\n"]
-        #     # log_helper(msg, root, user_id, train_id)
-        #     assistor_output_contents[assistor_random_id] = output_content
-            # super()._store_database_record(
-            #     database_type='train_algorithm'
-            # )
-            # get train_file_path, train_target_column from User_Sponsor_Table
-            # task_mode, model_name, metric_name, task_name, task_description, train_file_path, train_id_column, train_data_column, train_target_column = self.Database_instance.get_User_Sponsor_Table(user_id=user_id, train_id=train_id, test_indicator=self.test_indicator)
         
         if super()._async_checker(
             database_type='test_algorithm', 
@@ -199,13 +175,7 @@ class TestSponsorOutput(TestBaseWorkflow):
             matched_identifier=sponsor_matched_identifers,
             role='sponsor'
         )
-        # make_result_done = make_result(root=root, self_id=user_id, train_id=train_id, round=rounds, 
-        #                                dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default, 
-        #                                task_mode=task_mode, metric_name=metric_name)
-        # assert make_result_done is not None
-        # make_result_done_indicator, make_result_done = handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
-        # assert make_result_done is not None
-
+    
         super()._store_database_record(
             database_type='test_algorithm',
             user_id=user_id,

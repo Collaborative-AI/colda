@@ -1,21 +1,18 @@
 from __future__ import annotations
 
 import time
-import threading
-from urllib import request
-from colda.network import Network
-from colda.pi import PI
-from colda.utils.log import GetWorkflowLog
-from colda.algorithm.strategy import BaseAlgorithmStrategy
-
-from colda.database.strategy import DatabaseOperator
-
-from colda._typing import (
-    Train_Database_Type,
-    Test_Database_Type
-)
-
 import warnings
+import threading
+
+from colda.network.api import Network
+
+from colda.pi.api import PI
+
+from colda.database.strategy.api import DatabaseOperator
+
+from colda.algorithm.strategy.api import BaseAlgorithmStrategy
+
+from colda.utils.log.api import GetWorkflowLog
 
 from colda.error import (
     StatusCodeWarning,
@@ -30,9 +27,17 @@ from typing import (
     Final,
 )
 
-from colda._typing import Stage
+from colda._typing import (
+    Serializable_Datatype,
+    Stage,
+    Train_Database_Type,
+    Test_Database_Type
+)
+
 from typeguard import typechecked
 
+
+#@typechecked
 class BaseWorkflow:
     '''
     Base class for workflow
@@ -60,33 +65,8 @@ class BaseWorkflow:
     
     __DatabaseOperator_instance = DatabaseOperator.get_instance()
     __BaseAlgorithm_instance = BaseAlgorithmStrategy()
-    
-    __log = GetWorkflowLog.get_log()
 
-    @final
-    @classmethod
-    def _get_user_id(cls) -> tuple[str]:
-        """
-        Obtain the information we need: user_id, root, token, task_id
-
-        :param get_train_id: Boolean. Indicate if we need to get the new train id
-
-        :returns: A tuple of ``(user_id, root, token, task_id)``
-
-        :exception OSError: Placeholder.
-        """
-        user_id = cls.__PI_instance.user_id
-        # assert user_id is not None
-        # root = cls.__PI_instance.root
-        # assert root is not None
-        # token = cls.__Network_instance.token
-        # assert token is not None
-        return user_id
-    
-    @final
-    @classmethod
-    def _get_default_mode(cls) -> str:
-        return cls.__PI_instance.default_mode
+    __log = GetWorkflowLog.get_instance()
     
     @final
     @classmethod
@@ -97,8 +77,22 @@ class BaseWorkflow:
         url_root: str,
         url_suffix: str,
         status_code: int,
-    ) -> dict[str, Union(list[str], str)]:
+    ) -> Any:
+        '''
+        http get request
 
+        Parameters
+        ----------
+        task_id : str
+        url_prefix : str
+        url_root : str
+        url_suffix : str
+        status_code : int
+
+        Returns
+        -------
+        Any
+        '''
         request_response = cls.__Network_instance.get_request_chaining(
             url_prefix=url_prefix,
             url_root=url_root,
@@ -106,11 +100,12 @@ class BaseWorkflow:
             status_code=status_code,
         )
 
-        if request_response == StatusCodeError:
-            warnings.warn(
-                f"{task_id}'s network get request to {url_root} goes wrong", 
-                StatusCodeWarning
-            )
+        # TODO: modify later
+        # if request_response == StatusCodeError:
+        #     warnings.warn(
+        #         f"{task_id}'s network get request to {url_root} goes wrong", 
+        #         StatusCodeWarning
+        #     )
         
         return request_response
 
@@ -119,13 +114,28 @@ class BaseWorkflow:
     def _post_request_chaining(
         cls, 
         task_id: str,
-        data: dict[str, Union(list[str], str)],
+        data: dict[str, Serializable_Datatype],
         url_prefix: str,
         url_root: str,
         url_suffix: str,
         status_code: int,
-    ) -> dict[str, Union(list[str], str)]:
+    ) -> Any:
+        '''
+        http post request
 
+        Parameters
+        ----------
+        task_id : str
+        data : dict[str, Serializable_Datatype]
+        url_prefix : str
+        url_root : str
+        url_suffix : str
+        status_code : int
+
+        Returns
+        -------
+        Any
+        '''
         request_response = cls.__Network_instance.post_request_chaining(
             data=data,
             url_prefix=url_prefix,
@@ -134,11 +144,12 @@ class BaseWorkflow:
             status_code=status_code
         )
 
-        if request_response == StatusCodeError:
-            warnings.warn(
-                f"{task_id}'s network get request to {url_root} goes wrong", 
-                StatusCodeWarning
-            )
+        # TODO: modify later
+        # if request_response == StatusCodeError:
+        #     warnings.warn(
+        #         f"{task_id}'s network get request to {url_root} goes wrong", 
+        #         StatusCodeWarning
+        #     )
 
         return request_response
 
@@ -150,19 +161,31 @@ class BaseWorkflow:
         task_id: str,
         msgs: list[str],
     ) -> None:
+        '''
+        Store workflow log
 
+        Parameters
+        ----------
+        user_id : str
+        task_id : str
+        msgs : list[str]
+
+        Returns
+        -------
+        None
+        '''
         cls.__log.store_log(
             user_id=user_id,
             task_id=task_id,
             msgs=msgs
         )
-        return None
+        return
 
     @final
     @classmethod
     def _store_database_record(
         cls,
-        database_type: Union(Train_Database_Type, Test_Database_Type),
+        database_type: Union[Train_Database_Type, Test_Database_Type],
         **kwargs,
     ) -> None:
 
@@ -180,7 +203,7 @@ class BaseWorkflow:
     @classmethod
     def _get_database_record(
         cls,
-        database_type: Union(Train_Database_Type, Test_Database_Type),
+        database_type: Union[Train_Database_Type, Test_Database_Type],
         **kwargs,
     ) -> tuple[Any]:
 
@@ -196,7 +219,7 @@ class BaseWorkflow:
     @classmethod
     def _get_all_database_records(
         cls,
-        database_type: Union(Train_Database_Type, Test_Database_Type),
+        database_type: Union[Train_Database_Type, Test_Database_Type],
         **kwargs,
     ) -> tuple[Any]:
 
@@ -218,10 +241,6 @@ class BaseWorkflow:
     ) -> None:
 
         encrypted_identifer = cls.__BaseAlgorithm_instance.make_hash(
-                # self_id=user_id, 
-                # train_id=train_id, 
-                # mode=self.test_indicator, 
-                # test_id=None, 
                 dataset_path=dataset_path, 
                 id_idx=id_idx, 
                 skip_header=skip_header

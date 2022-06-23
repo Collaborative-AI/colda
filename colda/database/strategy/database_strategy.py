@@ -22,16 +22,44 @@ from colda._typing import (
 )
 
 from typeguard import typechecked
+
+
+#@typechecked
 class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
+    '''
+    Strategy pattern to manage db
+
+    Attributes
+    ----------
+    database
+
+    Methods
+    -------
+    set_database
+    get_all_records_history
+    store_record
+    get_record
+    '''
+
     __DatabaseOperator_instance = None
-    # strategy pattern
-    # 传给他不同的行为，algo使用
 
     def __init__(self) -> None:
         self.__database_operator = GetDefaultMetadataDatabase.get_database()
 
     @classmethod
-    def get_instance(cls) -> type[DatabaseOperator]:
+    def get_instance(cls) -> DatabaseOperator:
+        '''
+        Singleton pattern. 
+        Get instance of current class.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        DatabaseOperator
+        '''
         if cls.__DatabaseOperator_instance == None:
             cls.__DatabaseOperator_instance = DatabaseOperator()
 
@@ -39,51 +67,109 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
 
     @property
     def database(self):
-        """
-        The Context maintains a reference to one of the Strategy objects. The
-        Context does not know the concrete class of a strategy. It should work
-        with all strategies via the Strategy interface.
-        """
+        '''
+        Get strategy object
 
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Any
+        '''
         return self.__database_operator
 
     @database.setter
     def database(self, database) -> None:
-        """
-        Usually, the Context allows replacing a Strategy object at runtime.
-        """
+        '''
+        Set strategy object
 
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Any
+        '''
         self.__database_operator = database
 
     def set_database(
         self, database_type: Union[Train_Database_Type, Test_Database_Type]
     ) -> None:
-        if database_type == 'default_metadata':
-            self.__database_operator = GetDefaultMetadataDatabase.get_database()
-        elif database_type == 'train_sponsor_metadata':
-            self.__database_operator = GetTrainSponsorMetadataDatabase.get_database()
-        elif database_type == 'train_assistor_metadata':
-            self.__database_operator = GetTrainAssistorMetadataDatabase.get_database()
-        elif database_type == 'train_algorithm':
-            self.__database_operator = GetTrainAlgorithmDatabase.get_database()
-        elif database_type == 'test_sponsor_metadata':
-            self.__database_operator = GetTestSponsorMetadataDatabase.get_database()
-        elif database_type == 'test_assistor_metadata':
-            self.__database_operator = GetTestAssistorMetadataDatabase.get_database()
-        elif database_type == 'test_algorithm':
-            self.__database_operator = GetTestAlgorithmDatabase.get_database()
+        '''
+        Helper function to set strategy object 
 
-    def get_all_records(
+        Parameters
+        ----------
+        database_type : Union[Train_Database_Type, Test_Database_Type]
+
+        Returns
+        -------
+        None
+        '''
+        if database_type == 'default_metadata':
+            self.__database_operator = GetDefaultMetadataDatabase.get_instance()
+        elif database_type == 'train_sponsor_metadata':
+            self.__database_operator = GetTrainSponsorMetadataDatabase.get_instance()
+        elif database_type == 'train_assistor_metadata':
+            self.__database_operator = GetTrainAssistorMetadataDatabase.get_instance()
+        elif database_type == 'train_algorithm':
+            self.__database_operator = GetTrainAlgorithmDatabase.get_instance()
+        elif database_type == 'test_sponsor_metadata':
+            self.__database_operator = GetTestSponsorMetadataDatabase.get_instance()
+        elif database_type == 'test_assistor_metadata':
+            self.__database_operator = GetTestAssistorMetadataDatabase.get_instance()
+        elif database_type == 'test_algorithm':
+            self.__database_operator = GetTestAlgorithmDatabase.get_instance()
+        else:
+            raise ValueError('wrong database name')
+
+    def get_all_records_history(
         self, **kwargs
     ) -> list:
-        return self.__database_operator.get_all_records(**kwargs)
+        '''
+        call specific function
+
+        Parameters
+        ----------
+        **kwargs : Any
+
+        Returns
+        -------
+        list
+        '''
+        return self.__database_operator.get_all_records_history(**kwargs)
     
     def store_record(
         self, **kwargs
     ) -> list:
+        '''
+        call specific function
+
+        Parameters
+        ----------
+        **kwargs : Any
+
+        Returns
+        -------
+        list
+        '''
         return self.__database_operator.store_record(**kwargs)
     
     def get_record(
         self, **kwargs
     ) -> list:
+        '''
+        call specific function
+
+        Parameters
+        ----------
+        **kwargs : Any
+
+        Returns
+        -------
+        list
+        '''
         return self.__database_operator.get_record(**kwargs)

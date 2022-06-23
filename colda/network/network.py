@@ -2,20 +2,19 @@ from __future__ import annotations
 
 import requests
 
-from colda.utils import ParseJson
-
 from colda.utils.api import (
     del_instance,
-    Constant
+    Constant,
+    Serialization
 )
 
 from colda.network.dp import DP
 
 from colda.network.base import BaseNetwork
 
-from colda._typing import JSONType
-
 from typing import Union
+
+from colda._typing import JSONType
 
 from typeguard import typechecked
 
@@ -321,7 +320,7 @@ class Network(BaseNetwork):
             url_suffix=url_suffix
         )
         
-        data = ParseJson.make_data_serializable(data=data)
+        data = Serialization.make_data_serializable(data=data)
 
         network_response = self.post_request(
             url=url,

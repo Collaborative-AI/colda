@@ -25,7 +25,7 @@ class BaseAlgorithm:
     '''
 
     __root: Final[str] = './algorithm_log'
-    __log = GetAlgorithmLog.get_log()
+    __log = GetAlgorithmLog.get_instance()
 
     # TODO: implement methods
     @final

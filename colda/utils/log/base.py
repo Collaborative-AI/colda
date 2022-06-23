@@ -17,8 +17,8 @@ class BaseLog:
     Methods
     -------
     None
-
     '''
+    
     # TODO: implement methods
     @final
     def placeholder(self):

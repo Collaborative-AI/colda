@@ -74,8 +74,8 @@ _default_TestMainWorkflow = TestMainWorkflow.get_instance()
 _default_ShortPolling = ShortPolling.get_instance()
 _default_network = Network.get_instance()
 _default_PI = PI.get_instance()
-_default_algo_log = GetAlgorithmLog.get_log()
-_default_workflow_log = GetWorkflowLog.get_log()
+_default_algo_log = GetAlgorithmLog.get_instance()
+_default_workflow_log = GetWorkflowLog.get_instance()
 
 from colda.database.api import (
     get_all_train_id_as_sponsor,

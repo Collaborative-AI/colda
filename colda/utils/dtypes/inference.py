@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import numpy as np
 import pandas as pd
 
@@ -118,5 +119,38 @@ def is_float(obj: Any) -> bool:
     '''
     return pandas_is_float(obj)
 
+#@typechecked
+def is_set(obj: Any) -> bool:
+    '''
+    Check if obj is set
+    
+    Parameters
+    ----------
+    obj : Any
 
+    Returns
+    -------
+    bool
+    '''
+    return isinstance(obj, set)
 
+def is_serializable(
+    data: Any
+) -> bool:
+    '''
+    Check if data is serializable.
+
+    Parameters
+    ----------
+    data : Any
+
+    Returns
+    -------
+    bool
+    '''
+    try:
+        json.dumps(data)
+    except:
+        return False
+    else:
+        return True

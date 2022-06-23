@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from colda.workflow.train_base import TrainBaseWorkflow
+from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
 
 from colda._typing import (
     Task_Mode,

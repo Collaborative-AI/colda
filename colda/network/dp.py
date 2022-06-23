@@ -1,12 +1,17 @@
 from __future__ import annotations
 
-from colda.utils import ParseJson
-
-from typing import Union
-
-from colda._typing import JSONType
+import json
 
 from colda.error import StatusCodeError
+
+from colda.network.utils import load_json
+
+from typing import (
+    Union,
+    Any
+)
+
+from colda._typing import JSONType
 
 from typeguard import typechecked
 
@@ -54,7 +59,7 @@ class DP:
     def load_network_response(
         cls,
         network_response: JSONType,
-    ) -> dict[str, Union[list[str], str]]:
+    ) -> Any:
         '''
         parse network response.
         Change JSONType data to dict type data
@@ -65,11 +70,9 @@ class DP:
         
         Returns
         -------
-        dict
+        Any
         '''
         if hasattr(network_response, 'text'):
             network_response = network_response.text
 
-        return ParseJson.load_json_recursion(
-            network_response=network_response
-        )
+        return json.loads(network_response)

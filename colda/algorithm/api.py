@@ -40,7 +40,7 @@ class AlgorithmAPI:
         -------
         list
         '''
-        return GetAlgorithmLog.get_log().get_log(
+        return GetAlgorithmLog.get_instance().get_log(
             user_id=user_id,
             task_id=task_id,
             log_category=log_category
@@ -61,4 +61,4 @@ class AlgorithmAPI:
         -------
         dict[str, Any]
         '''
-        return GetAlgorithmLog.get_log().get_all_logs()
+        return GetAlgorithmLog.get_instance().get_all_logs()

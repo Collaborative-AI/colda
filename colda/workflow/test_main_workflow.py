@@ -18,6 +18,7 @@ from colda.workflow.test_workflow.assistor import (
 )
 
 from colda.workflow.utils import CheckSponsor
+
 from colda._typing import (
     Task_Mode,
     Model_Name,
@@ -26,21 +27,49 @@ from colda._typing import (
 from typing import Any
 
 from typeguard import typechecked
+
+
+#@typechecked
 class TestMainWorkflow(AbstractTestMainWorkflow):
-    __TestMainWorkflow_instance = None
+    '''
+    Manage test workflow
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    get_instance
+    find_test_assistor
+    test_assistor_request
+    test_match_identifier
+    test_sponsor_match_identifier
+    test_assistor_match_identifier
+    test_output
+    '''
 
     def __init__(self):
         pass
 
     @classmethod
-    def get_instance(cls) -> type[TestMainWorkflow]:
-        if cls.__TestMainWorkflow_instance == None:
-            cls.__TestMainWorkflow_instance = TestMainWorkflow()
+    def get_class(cls) -> type[TestMainWorkflow]:
+        ''' 
+        Get current class.
 
-        return cls.__TestMainWorkflow_instance
+        Parameters
+        ----------
+        None
 
+        Returns
+        -------
+        type[TestMainWorkflow]
+        '''
+        return TestMainWorkflow
+        
+    @classmethod
     def find_test_assistor(
-        self, 
+        cls, 
         train_id: str, 
         test_file_path: str, 
         test_id_column: str, 
@@ -48,30 +77,26 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
         test_target_column: str, 
         test_name: str=None, 
         test_description: str=None
-    ) -> Any:
+    ) -> None:
+        ''' 
+        Start testing with all assistors of the previous train 
+        task
 
-        """
-        start testing with all assistors of the task
+        Parameters
+        ----------
+        train_id : str
+        test_file_path : str
+        test_id_column : str
+        test_data_column : str 
+        test_target_column : str 
+        test_name : str=None
+        test_description : str=None
 
-        :param task_id: String. The task that the user wanted to test
-        :param task_name: String. The name of the task that the user wanted to test
-        :param task_description: String. The description of the task that the user wanted to test
-        :param task_mode: String. Classification or Regression
-        :param model_name: String. Specific model, such as LinearRegression, DecisionTree.
-        :param metric_name: String. Metric to measure the result, such as MAD, RMSE, R2.
-        :param test_file_path: String. Input path address of testing data path
-        :param test_id_column: String. ID column of Input File
-        :param test_data_column: String. Data column of Input File
-        :param test_target_column: String. Target column of Input File
-        :param test_name: None or String. The name of current test
-        :param test_description: None or String. The description of current test
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
-        return TestSponsorFindAssistor.find_test_assistor(
+        Returns
+        -------
+        Any
+        '''
+        TestSponsorFindAssistor.find_test_assistor(
             train_id=train_id,
             test_file_path=test_file_path, 
             test_id_column=test_id_column,
@@ -80,44 +105,49 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
             test_name=test_name,
             test_description=test_description
         )
+        return
        
-
+    @classmethod
     def test_assistor_request(
-        self, test_id_dicts: dict[dict[str, str]]
-    ) -> bool:
+        cls, test_id_dicts: dict[dict[str, str]]
+    ) -> None:
+        ''' 
+        Request is fist stage of testing for assistor.
+        In this stage, assistor would:
+            1. Encrypt the identifiers
+            2. Send the identifiers to server
 
-        """
-        Handle the unread test request for three default mode: ["passive", "active", "auto"]
+        Parameters
+        ----------
+        test_id_dicts : dict[dict[str, str]]
 
-        :param test_id_dict: Dictionary.
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
+        Returns
+        -------
+        None
+        '''
         for test_id, test_id_dict in test_id_dicts.items():
             TestAssistorRequest.test_assistor_request(
                 test_id=test_id,
                 test_id_dict=test_id_dict
             )
-        
-        return True
+        return
 
-
+    @classmethod
     def test_match_identifier(
-        self, test_id_dicts: dict[dict[str, str]]
-    ) -> bool:
-        """
-        Handle the unread_test_match_identifier. Two situations needed to be considered: sponsor and assistor
+        cls, test_id_dicts: dict[dict[str, str]]
+    ) -> None:
+        ''' 
+        Handle the unread_test_match_identifier. 
+        Two situations needed to be considered: sponsor and assistor
 
-        :param test_id_dict: Dictionary.
+        Parameters
+        ----------
+        test_id_dicts : dict[dict[str, str]]
 
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
+        Returns
+        -------
+        None
+        '''
         for test_id, test_id_dict in test_id_dicts.items():
             _, role, _, _ = obtain_notification_information(
                 notification_dict=test_id_dict, 
@@ -125,80 +155,92 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
             )
 
             if role == CheckSponsor.sponsor:
-                self.test_sponsor_match_identifier(
+                cls.test_sponsor_match_identifier(
                     test_id=test_id,
                     test_id_dict=test_id_dict
                 )
             elif role == CheckSponsor.assistor:
-                self.test_assistor_match_identifier(
+                cls.test_assistor_match_identifier(
                     test_id=test_id,
                     test_id_dict=test_id_dict
                 )
+        return
 
-            return True
-
+    @classmethod
     def test_sponsor_match_identifier(
-        self, test_id: str, test_id_dict: dict[str, str]
-    ) -> bool:
+        cls, test_id: str, test_id_dict: dict[str, str]
+    ) -> None:
+        ''' 
+        Match_identifier is second stage of testing for sponsor.
+        In this stage, sponsor would:
+            1. Match the identifiers sent from all the assistors
+            2. Test the trained models produced at each round of
+               training stage
 
-        """
-        Handle the unread_test_match_identifier of sponsor.
+        Parameters
+        ----------
+        test_id : str
+        test_id_dicts : dict[str, str]
 
-        :param task_id: String.
-        :param test_id: String.
-        :param cur_max_round: Integer.
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
-        return TestSponsorMatchIdentifier.test_sponsor_match_identifier(
+        Returns
+        -------
+        None
+        '''
+        TestSponsorMatchIdentifier.test_sponsor_match_identifier(
             test_id=test_id,
             test_id_dict=test_id_dict
         )
+        return
 
+    @classmethod
     def test_assistor_match_identifier(
-        self, test_id: str, test_id_dict: dict[str, str]
+        cls, test_id: str, test_id_dict: dict[str, str]
     ) -> bool:
+        ''' 
+        Match_identifier is second stage of testing for assistor.
+        In this stage, assistor would:
+            1. Match the identifiers sent from the sponsor
+            2. Test the trained models produced at each round of
+               training stage using test data
+            3. Send the test ouputs to sponsor
 
-        """
-        Handle the unread_test_match_identifier of assistor.
+        Parameters
+        ----------
+        test_id : str
+        test_id_dicts : dict[str, str]
 
-        :param task_id: String.
-        :param test_id: String.
-        :param cur_max_round: Integer.
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
-        return TestAssistorMatchIdentifier.test_assistor_match_identifier(
+        Returns
+        -------
+        None
+        '''
+        TestAssistorMatchIdentifier.test_assistor_match_identifier(
             test_id=test_id,
             test_id_dict=test_id_dict
         )
+        return
 
-
+    @classmethod
     def test_output(
-        self, test_id_dicts: dict[dict[str, str]]
-    ) -> bool:
+        cls, test_id_dicts: dict[dict[str, str]]
+    ) -> None:
+        ''' 
+        Output is third stage of testing for sponsor.
+        In this stage, sponsor would:
+            1. Get the test outputs sent from all the assistors
+            2. Evaluate test results
 
-        """
-        Handle the unread_test_output.
+        Parameters
+        ----------
+        test_id_dicts : dict[dict[str, str]]
 
-        :param test_id_dict: Dictionary.
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
+        Returns
+        -------
+        None
+        '''
         for test_id, test_id_dict in test_id_dicts.items():
             TestSponsorOutput.test_sponsor_output(
                 test_id=test_id,
                 test_id_dict=test_id_dict
             )
-        
-        return True
+        return
 

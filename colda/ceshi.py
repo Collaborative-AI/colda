@@ -1108,10 +1108,72 @@ def is_serializable(
 # print(a)
 
 
-key = [(5, 4)]
-key.append(6)
-print(key)
+# key = [(5, 4)]
+# key.append(6)
+# print(key)
 
-a = {}
-a[key] = 6
-print(a)
+# a = {}
+# a[key] = 6
+# print(a)
+
+def is_json_object(
+    data: Any
+) -> bool:
+    '''
+    Check if data is json object.
+
+    Parameters
+    ----------
+    data : Any
+
+    Returns
+    -------
+    bool
+    '''
+    try:
+        json.loads(data)
+    except ValueError as err:
+        return False
+    else:
+        return True
+
+# print(is_json('5'))
+
+# a = json.dumps('5')
+# print(a)
+# print(type(a) == str)
+# a = json.loads('5')
+# b = json.loads('"5"')
+# print(type(a))
+# print(type(b))
+# a = '{"5": "6"}'
+
+# b = json.loads(a)
+# print(b, type(b))
+# c = json.loads(b['5'])
+# print(c, type(c))
+
+def is_serializable(
+    data: Any
+) -> bool:
+    '''
+    Check if data is serializable.
+
+    Parameters
+    ----------
+    data : Any
+
+    Returns
+    -------
+    bool
+    '''
+    try:
+        json.dumps(data)
+    except:
+        return False
+    else:
+        return True
+
+
+a = {'5': [4, 5, np.array(5)]}
+print(is_serializable(a))

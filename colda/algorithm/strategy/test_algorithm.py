@@ -34,7 +34,7 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
         self.__test_custom = GetTestFixedParameter.get_instance()
 
     @classmethod
-    def get_instance(cls) -> type[TestAlgorithm]:
+    def get_instance(cls) -> TestAlgorithm:
         '''
         Singleton pattern. 
         Get instance of current class.
@@ -45,7 +45,7 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
 
         Returns
         -------
-        type[TestAlgorithm]
+        TestAlgorithm
         '''
         if cls.__TestAlgorithm_instance == None:
             cls.__TestAlgorithm_instance = TestAlgorithm()

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import requests
 
-from colda.workflow.train_base import TrainBaseWorkflow
+from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
 
 from colda.utils import(
     ParseJson
@@ -15,6 +15,9 @@ from colda.workflow.utils import (
 from typing import Any
 
 from typeguard import typechecked
+
+
+#@typechecked
 class TrainSponsorSituation(TrainBaseWorkflow):
     __role = 'sponsor'
 

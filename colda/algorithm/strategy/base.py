@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import final
 
-from colda.algorithm.shared_stage.api import (
+from colda.algorithm.common_stage.api import (
     MakeDataset,
     MakeHash,
     MakeMatchIdx,
@@ -69,6 +69,7 @@ class BaseAlgorithmStrategy:
     @final
     def make_hash(self, **kwargs) -> list:
         '''
+        Common stage algo
         Call MakeHash.make_hash to hash
         identifiers
 
@@ -85,6 +86,7 @@ class BaseAlgorithmStrategy:
     @final
     def make_match_idx(self, **kwargs) -> list:
         '''
+        Common stage algo
         Call MakeMatchIdx.make_match_idx to
         match the identifiers between sponsor
         and assistor

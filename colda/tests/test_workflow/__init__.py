@@ -26,7 +26,7 @@ _default_testMainWorkflow = TestMainWorkflow.get_instance()
 _default_ShortPolling = ShortPolling.get_instance()
 _default_PI = PI.get_instance()
 _default_Network = Network.get_instance()
-# _default_algorithm_log = GetAlgorithmLog.get_log()
+# _default_algorithm_log = GetAlgorithmLog.get_instance()
 # _default_testRequest = TestRequest.get_TestRequest_instance()
 # _default_get_notification = Get_Notification.get_Get_notification_instance()
 

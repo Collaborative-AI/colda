@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import collections
 
-from colda.workflow.train_base import TrainBaseWorkflow
+from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
 
 from colda.utils import(
     ParseJson

@@ -1,16 +1,19 @@
 from __future__ import annotations
 
+import copy
 import numpy as np
 import pandas as pd
-
-from pandas.api.types import is_dict_like as pandas_is_dict_like
-from pandas.api.types import is_integer as pandas_is_integer
-from pandas.api.types import is_list_like as pandas_is_list_like
-from pandas.api.types import is_float as pandas_is_float
 
 from typing import Any
 
 from collections.abc import Iterable
+
+from colda.utils.dtypes.inference import (
+    is_numpy,
+    is_set
+)
+
+from colda._typing import Serializable_Datatype
 
 
 def to_list(data: Iterable) -> list:
@@ -43,7 +46,6 @@ def to_string(
     '''
     return str(data)
 
-
 def to_tuple(data: Iterable) -> str:
     '''
     Change iterable data to tuple
@@ -54,7 +56,29 @@ def to_tuple(data: Iterable) -> str:
 
     Returns
     -------
-    str
+    tuple
     '''
-    hasattr(name, '__iter__')
     return tuple(data)
+
+def to_serializable(
+    data: Any
+) -> Serializable_Datatype:
+    '''
+    Change data to serializable data:
+        1. convert numpy type to list
+        2. convert set to list
+
+    Parameters
+    ----------
+    data : Any
+
+    Returns
+    -------
+    Serializable_Datatype
+    '''
+    if is_numpy(data):
+        return copy.deepcopy(data.tolist())
+    elif is_set(data):
+        return copy.deepcopy(list(data))
+
+    return data

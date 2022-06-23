@@ -3,7 +3,7 @@ from cgi import test
 
 import collections
 
-from colda.workflow.test_base import TestBaseWorkflow
+from colda.workflow.test_workflow.test_base import TestBaseWorkflow
 
 from colda.utils import(
     ParseJson

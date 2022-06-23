@@ -3,7 +3,7 @@ from re import L
 
 import time
 
-from colda.workflow.train_base import TrainBaseWorkflow
+from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
 
 from colda.workflow.utils import (
     obtain_notification_information

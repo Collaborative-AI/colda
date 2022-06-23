@@ -2,7 +2,7 @@ import numpy as np
 
 import copy
 
-from colda.utils import ParseJson
+from colda.utils.api import Serialization
 
 from colda.utils.dtypes.api import (
     is_numpy,
@@ -102,10 +102,10 @@ class DP:
             )
 
         if len(res) == 1:
-            return ParseJson.make_data_serializable(res[0])
+            return Serialization.make_data_serializable(data=res[0])
 
         for i in range(len(res)):
-            res[i] = ParseJson.make_data_serializable(res[i])
+            res[i] = Serialization.make_data_serializable(data=res[i])
             
         return res
 

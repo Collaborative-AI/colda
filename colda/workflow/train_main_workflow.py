@@ -20,6 +20,7 @@ from colda.workflow.train_workflow.assistor import (
 )
 
 from colda.workflow.utils import CheckSponsor
+
 from colda._typing import (
     Task_Mode,
     Model_Name,
@@ -28,21 +29,47 @@ from colda._typing import (
 from typeguard import typechecked
 
 
+#@typechecked
 class TrainMainWorkflow(AbstractTrainMainWorkflow):
-    __TrainMainWorkflow_instance = None
+    '''
+    Manage train workflow
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    get_instance
+    find_test_assistor
+    test_assistor_request
+    test_match_identifier
+    test_sponsor_match_identifier
+    test_assistor_match_identifier
+    test_output
+    '''
 
     def __init__(self):
         pass
 
     @classmethod
-    def get_instance(cls) -> type[TrainMainWorkflow]:
-        if cls.__TrainMainWorkflow_instance == None:
-            cls.__TrainMainWorkflow_instance = TrainMainWorkflow()
+    def get_class(cls) -> type[TrainMainWorkflow]:
+        ''' 
+        Get current class.
 
-        return cls.__TrainMainWorkflow_instance        
+        Parameters
+        ----------
+        None
 
+        Returns
+        -------
+        type[TrainMainWorkflow]
+        '''
+        return TrainMainWorkflow  
+
+    @classmethod
     def find_assistor(
-        self, 
+        cls, 
         maxRound: int, 
         assistors: list, 
         task_mode: Task_Mode, 
@@ -52,31 +79,31 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         train_id_column: str, 
         train_data_column: str, 
         train_target_column: str, 
-        task_name: str = None, 
-        task_description: str = None
-    ) -> tuple[bool, str]:
-        
-        """
-        start task with all assistors
+        task_name: str=None, 
+        task_description: str=None
+    ) -> None:
+        ''' 
+        Start training
 
-        :param maxRound: Integer. Maximum training round
-        :param assistors: List. The List of assistors' usernames
-        :param train_file_path: String. Input path address of training data path
-        :param train_id_column: String. ID column of Input File
-        :param train_data_column: String. Data column of Input File
-        :param train_target_column: String. Target column of Input File
-        :param task_mode: String. Classification or Regression
-        :param model_name: String. Specific model, such as ``LinearRegression``, ``DecisionTree``.
-        :param metric_name: String. Metric to measure the result, such as ``MAD``, ``RMSE``, ``R2``.
-        :param task_name: None or String. The name of current task.
-        :param task_description: None or String. The description of current task
+        Parameters
+        ----------
+        maxRound : int 
+        assistors : list 
+        task_mode : Task_Mode
+        model_name : Model_Name
+        metric_name : Metric_Name
+        train_file_path : str
+        train_id_column : str
+        train_data_column : str 
+        train_target_column : str 
+        task_name : str=None 
+        task_description : str=None
 
-        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
-
-        :exception OSError: Placeholder.
-        """
-
-        return TrainSponsorFindAssistor.find_assistor(
+        Returns
+        -------
+        Any
+        '''
+        TrainSponsorFindAssistor.find_assistor(
             maxRound=maxRound,
             assistors=assistors,
             train_file_path=train_file_path,
@@ -89,200 +116,228 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
             task_name=task_name,
             task_description=task_description
         )
-        
+        return
+    
+    @classmethod
     def train_assistor_request(
-        self, train_id_dicts: dict[dict[str, str]]
-    ) -> bool:
+        cls, train_id_dicts: dict[dict[str, str]]
+    ) -> None:
+        ''' 
+        Request is fist stage of training for assistor.
+        In this stage, assistor would:
+            1. Encrypt the identifiers
+            2. Send the identifiers to server
 
-        """
-        Handle the unread request for three default mode: ["passive", "active", "auto"]
+        Parameters
+        ----------
+        train_id_dicts : dict[dict[str, str]]
 
-        :param train_id_dict: Dictionary.
-
-        :returns: String. 'unread_request successfully'
-
-        :exception OSError: Placeholder.
-        """
-
+        Returns
+        -------
+        None
+        '''
         for train_id, train_id_dict in train_id_dicts.items():
             TrainAssistorRequest.train_assistor_request(
                 train_id=train_id, 
                 train_id_dict=train_id_dict
             )
-        return True
+        return
 
+    @classmethod
     def train_match_identifier(
-        self, train_id_dicts: dict[dict[str, str]]
-    ) -> bool:
+        cls, train_id_dicts: dict[dict[str, str]]
+    ) -> None:
+        ''' 
+        Handle the unread_test_match_identifier. 
+        Two situations needed to be considered: sponsor and assistor
 
-        """
-        Handle the unread_match_identifier. Consider sponsor and assistor, different functions will be called
+        Parameters
+        ----------
+        test_id_dicts : dict[dict[str, str]]
 
-        :param train_id_dict: Dictionary.
-
-        :returns: String. 'unread match id done'
-
-        :exception OSError: Placeholder.
-        """
-
-        # cur_unread_match_identifier_Taskid_dict = unread_match_identifier_notification["check_dict"]
+        Returns
+        -------
+        None
+        '''
         for train_id, train_id_dict in train_id_dicts.items():
-            sender_random_id, role, cur_rounds_num = obtain_notification_information(
+            _, role, _ = obtain_notification_information(
                 notification_dict=train_id_dict
             )            
 
-            print('**********', sender_random_id, role, cur_rounds_num)
             if role == CheckSponsor.sponsor:
-                self.train_sponsor_match_identifier(
+                cls.train_sponsor_match_identifier(
                     train_id=train_id, 
                     train_id_dict=train_id_dict
                 )
             elif role == CheckSponsor.assistor:
-                print('train_assistor_match_identifier')
-                self.train_assistor_match_identifier(
+                cls.train_assistor_match_identifier(
                     train_id=train_id, 
                     train_id_dict=train_id_dict
                 )
+        return
 
-        return True
-
+    @classmethod
     def train_sponsor_match_identifier(
-        self, train_id: str, train_id_dict: dict[str, str]
-    ) -> bool:
+        cls, train_id: str, train_id_dict: dict[str, str]
+    ) -> None:
+        ''' 
+        Match_identifier is second stage of training for sponsor.
+        In this stage, sponsor would:
+            1. Match the identifiers sent from all the assistors
+            2. Calculate residual(training target)
+            3. Send residual to all assistors
 
-        """
-        Handle the unread_match_identifier of sponsor.
+        Parameters
+        ----------
+        train_id : str
+        train_id_dicts : dict
 
-        :param train_id: String.
-
-        :returns: String. 'unread_match_identifier_sponsor successfully'
-
-        :exception OSError: Placeholder.
-        """
-
-        return TrainSponsorMatchIdentifier.train_sponsor_match_identifier(
+        Returns
+        -------
+        None
+        '''
+        TrainSponsorMatchIdentifier.train_sponsor_match_identifier(
             train_id=train_id, 
             train_id_dict=train_id_dict
         )
-        
+        return
+    
+    @classmethod
     def train_assistor_match_identifier(
-        self, train_id: str, train_id_dict: dict[str, str]
-    ) -> bool:
+        cls, train_id: str, train_id_dict: dict[str, str]
+    ) -> None:
+        ''' 
+        Match_identifier is second stage of training for assistor.
+        In this stage, assistor would:
+            1. Match the identifiers sent from all the assistors
 
-        """
-        Handle the unread_match_identifier of assistor.
+        Parameters
+        ----------
+        train_id : str
+        train_id_dict : dict
 
-        :param train_id: String.
-
-        :returns: String. 'unread_match_identifier_assistor successfully'
-
-        :exception OSError: Placeholder.
-        """
-
-        return TrainAssistorMatchIdentifier.train_assistor_match_identifier(
+        Returns
+        -------
+        None
+        '''
+        TrainAssistorMatchIdentifier.train_assistor_match_identifier(
             train_id=train_id, 
             train_id_dict=train_id_dict
         )
+        return
 
+    @classmethod
     def train_situation(
-        self, train_id_dicts: dict[dict[str, str]]
-    ) -> bool:
+        cls, train_id_dicts: dict[dict[str, str]]
+    ) -> None:
+        ''' 
+        Handle the unread_train_situation. 
+        Two situations needed to be considered: sponsor and assistor
 
-        """
-        Handle the unread_situation. Two situations needed to be considered: sponsor and assistor
+        Parameters
+        ----------
+        train_id_dicts : dict[dict[str, str]]
 
-        :param train_id_dict: Dictionary.
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
+        Returns
+        -------
+        None
+        '''
         for train_id, train_id_dict in train_id_dicts.items():
             _, role, _ = obtain_notification_information(
                 notification_dict=train_id_dict
             )
 
             if role == CheckSponsor.sponsor:
-                self.train_sponsor_situation(
+                cls.train_sponsor_situation(
                     train_id=train_id, 
                     train_id_dict=train_id_dict,
                 )
             elif role == CheckSponsor.assistor:
-                self.train_assistor_situation(
+                cls.train_assistor_situation(
                     train_id=train_id, 
                     train_id_dict=train_id_dict
                 )
         return True
 
+    @classmethod
     def train_sponsor_situation(
-        self, train_id: str, train_id_dict: dict
-    ) -> bool:
+        cls, train_id: str, train_id_dict: dict
+    ) -> None:
+        ''' 
+        situation is third stage of training for sponsor.
+        In this stage, sponsor would:
+            1. Train model
 
-        """
-        Handle the unread situation of sponsor.
+        Parameters
+        ----------
+        train_id : str
+        train_id_dicts : dict
 
-        :param train_id: String. The task needed to be handled.
-        :param rounds: Integer. Current round.
+        Returns
+        -------
+        None
+        '''
+        TrainSponsorSituation.train_sponsor_situation(train_id, train_id_dict)
+        return
 
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-        return TrainSponsorSituation.train_sponsor_situation(train_id, train_id_dict)
-
+    @classmethod
     def train_assistor_situation(
-        self, train_id: str, train_id_dict: dict
-    ) -> bool:
+        cls, train_id: str, train_id_dict: dict
+    ) -> None:
+        ''' 
+        situation is third stage of training for assistor.
+        In this stage, assistor would:
+            1. Get the residual(training target) sent from the 
+               sponsor
+            2. Train model
+            3. Send trained model output to sponsor
 
-        """
-        Handle the unread situation of assistor.
+        Parameters
+        ----------
+        train_id : str
+        train_id_dicts : dict
 
-        :param train_id: String. The task needed to be handled.
-        :param rounds: Integer. Current round.
- 
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
-        return TrainAssistorSituation.train_assistor_situation(
+        Returns
+        -------
+        None
+        '''
+        TrainAssistorSituation.train_assistor_situation(
             train_id=train_id, 
             train_id_dict=train_id_dict
         )
+        return
 
+    @classmethod
     def train_output(
-        self, train_id_dicts: dict[dict[str, str]]
-    ) -> bool:
+        cls, train_id_dicts: dict[dict[str, str]]
+    ) -> None:
+        ''' 
+        Output is fourth stage of testing for sponsor.
+        In this stage, sponsor would:
+            1. Get the train outputs sent from all the assistors
+            2. Evaluate train results
 
-        """
-        Handle the unread_output.
+        Parameters
+        ----------
+        train_id_dicts : dict[dict[str, str]]
 
-        :param train_id_dict: Dictionary.
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
+        Returns
+        -------
+        None
+        '''
         for train_id, train_id_dict in train_id_dicts.items():
             TrainSponsorOutput.train_sponsor_output(
                 train_id=train_id,
                 train_id_dict=train_id_dict
             )
-            
-        return True
+        return
 
-    def stop_train(self, unread_train_stop_notification: dict):
-        """
-        Stop Train and delete related files
-
-        :param unread_train_stop_notification: Dictionary.
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
+    @classmethod
+    def stop_train(cls, unread_train_stop_notification: dict):
+        ''' 
+        Stop Train and delete related files.
+        Implement later
+        ''' 
         return
 
 

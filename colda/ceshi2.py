@@ -9,4 +9,4 @@
 # if __name__ == '__main__':
 #     globals()[sys.argv[1]]()\
 
-from colda.utils.parse_json import ParseJson
+from colda.utils.serialization import ParseJson

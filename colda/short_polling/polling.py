@@ -152,7 +152,8 @@ class ShortPolling():
         '''
         # 
         if not self.shortpolling['running']:
-            return 'short polling has already stoped'
+            print('short polling has already stoped')
+            return
 
         # get basic information
         user_id = self.__PI_instance.user_id
@@ -167,7 +168,7 @@ class ShortPolling():
             url_suffix=user_id,
             status_code=200,
         )
-        print(f'short_polling_res: {short_polling_res}')
+        
         if 'new_token' in short_polling_res and short_polling_res['new_token'] != None:
             new_token = short_polling_res['new_token']
             self.__Authentication_instance.process_token(new_token)

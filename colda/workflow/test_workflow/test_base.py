@@ -9,7 +9,24 @@ from typing import (
 )
 
 from typeguard import typechecked
+
+
+#@typechecked
 class TestBaseWorkflow(BaseWorkflow):
+    '''
+    Base class for test workflow
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    _evaluate_results
+    _test_cooperative_model
+    _test_local_model
+    '''
+
     __TestAlgorithm_instance = TestAlgorithm.get_instance()
 
     @final

@@ -39,7 +39,7 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
         self.__train_custom = GetTrainFixedParameter.get_class()
 
     @classmethod
-    def get_instance(cls) -> type[TrainAlgorithm]:
+    def get_instance(cls) -> TrainAlgorithm:
         '''
         Singleton pattern. 
         Get instance of current class.

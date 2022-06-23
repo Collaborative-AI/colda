@@ -3,11 +3,11 @@ Quick Setup Guide
 
 ## Getting Started
 
-1. **Install the 'Synspot' package using pip**
-> python -m pip install Synspot
+1. **Install the 'colda' package using pip**
+> python -m pip install colda
 
 2. **Import the Model and Experiment API classes**
-> import Synspot
+> import colda
 
 ## Using the package
 1. **Register**

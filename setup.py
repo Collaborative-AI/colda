@@ -3,10 +3,10 @@
 import os
 from setuptools import setup, find_packages
 
-# get key package details from Synspot/__version__.py
+# get key package details from colda/__version__.py
 about = {}  # type: ignore
 here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'Synspot', '__version__.py')) as f:
+with open(os.path.join(here, 'colda', '__version__.py')) as f:
     exec(f.read(), about)
 
 # load the README file and use it as the long_description for PyPI
@@ -29,18 +29,18 @@ setup(
     # 你要安装的包，通过 setuptools.find_packages 找到当前目录下有哪些包
     packages=find_packages(),
     include_package_data=True,
-    package_dir={'synspot': 'synspot'},
+    package_dir={'colda': 'colda'},
     # 希望被打包的文件
-    package_data={'synspot_Data': ['synspot_Data/*']},
+    package_data={'colda_Data': ['colda_Data/*']},
 
     # entry_points={
-    #     'console_scripts': ['synspot=synspot.__init__'],
+    #     'console_scripts': ['colda=colda.__init__'],
     # },
 
     long_description=readme,
     long_description_content_type='text/markdown',
     
-    # packages=['synspot'],
+    # packages=['colda'],
 
     python_requires=">=3.7.*",
     install_requires=[
@@ -63,5 +63,5 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],
-    keywords='synspot'
+    keywords='colda'
 )

@@ -24,6 +24,7 @@ sphinx-issues = "*"
 sphinx-removed-in = "*"
 sphinxext-opengraph = "*"
 wheel = "*"
+typeguard = "*"
 
 [dev-packages]
 "flake8" = "*"

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>synspot.authorization.Authorization &mdash; Synspot 0.0.0 documentation</title>
+  <title>colda.authorization.Authorization &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
@@ -33,8 +33,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Synspot
-            <img src="../../../_static/Synspot.png" class="logo" alt="Logo"/>
+            <a href="../../../index.html" class="icon icon-home"> colda
+            <img src="../../../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -56,7 +56,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">Synspot</a>
+          <a href="../../../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -65,7 +65,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>synspot.authorization.Authorization</li>
+      <li>colda.authorization.Authorization</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,22 +74,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for synspot.authorization.Authorization</h1><div class="highlight"><pre>
+  <h1>Source code for colda.authorization.Authorization</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 
-<span class="kn">from</span> <span class="nn">synspot.network</span> <span class="kn">import</span> <span class="n">Network</span>
-<span class="kn">from</span> <span class="nn">synspot.PI</span> <span class="kn">import</span> <span class="n">PI</span>
-<span class="kn">from</span> <span class="nn">synspot.database</span> <span class="kn">import</span> <span class="n">Database</span>
-<span class="kn">from</span> <span class="nn">synspot.utils</span> <span class="kn">import</span> <span class="n">handle_base64_padding</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">check_status_code</span>
+<span class="kn">from</span> <span class="nn">colda.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">colda.PI</span> <span class="kn">import</span> <span class="n">PI</span>
+<span class="kn">from</span> <span class="nn">colda.database</span> <span class="kn">import</span> <span class="n">Database</span>
+<span class="kn">from</span> <span class="nn">colda.utils</span> <span class="kn">import</span> <span class="n">handle_base64_padding</span><span class="p">,</span> <span class="n">load_json_data</span><span class="p">,</span> <span class="n">check_status_code</span>
 <span class="c1"># from Get_Notification import</span>
 
 <span class="c1"># from urllib.request import quote, unquote</span>
 <span class="c1"># import atob</span>
 
-<div class="viewcode-block" id="Authorization"><a class="viewcode-back" href="../../../reference/authorization.html#synspot.authorization.Authorization">[docs]</a><span class="k">class</span> <span class="nc">Authorization</span><span class="p">():</span>
-    <span class="n">__authorization_instance</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="viewcode-block" id="Authorization"><a class="viewcode-back" href="../../../reference/authorization.html#colda.authorization.Authorization">[docs]</a><span class="k">class</span> <span class="nc">Authorization</span><span class="p">():</span>
+    <span class="n">__Authentication_instance</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Network_instance</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_Network_instance</span><span class="p">()</span>
@@ -104,11 +104,11 @@
         <span class="k">return</span> <span class="n">root</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_Authorization_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__authorization_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">__authorization_instance</span> <span class="o">=</span> <span class="n">Authorization</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_Authentication_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__Authentication_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">__Authentication_instance</span> <span class="o">=</span> <span class="n">Authorization</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__authorization_instance</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__Authentication_instance</span>
 
     <span class="k">def</span> <span class="nf">userRegister</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -135,7 +135,7 @@
         <span class="k">return</span> <span class="kc">True</span>
 
 
-<div class="viewcode-block" id="Authorization.userLogin"><a class="viewcode-back" href="../../../reference/authorization.html#synspot.authorization.Authorization.userLogin">[docs]</a>    <span class="k">def</span> <span class="nf">userLogin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="Authorization.userLogin"><a class="viewcode-back" href="../../../reference/authorization.html#colda.authorization.Authorization.userLogin">[docs]</a>    <span class="k">def</span> <span class="nf">userLogin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get Token through HTTP authorization&#39;s Basic Auth when first time login. Update __token in Network class</span>
@@ -173,7 +173,7 @@
         
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Authorization.userLogout"><a class="viewcode-back" href="../../../reference/authorization.html#synspot.authorization.Authorization.userLogout">[docs]</a>    <span class="k">def</span> <span class="nf">userLogout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Authorization.userLogout"><a class="viewcode-back" href="../../../reference/authorization.html#colda.authorization.Authorization.userLogout">[docs]</a>    <span class="k">def</span> <span class="nf">userLogout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle user logout by deleting the information in the instances of Network, </span>
 <span class="sd">        PI, and Database_class.</span>

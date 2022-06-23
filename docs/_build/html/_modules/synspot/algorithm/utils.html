@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>synspot.algorithm.utils &mdash; Synspot 0.0.0 documentation</title>
+  <title>colda.algorithm.utils &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
@@ -33,8 +33,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Synspot
-            <img src="../../../_static/Synspot.png" class="logo" alt="Logo"/>
+            <a href="../../../index.html" class="icon icon-home"> colda
+            <img src="../../../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -56,7 +56,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">Synspot</a>
+          <a href="../../../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -65,7 +65,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>synspot.algorithm.utils</li>
+      <li>colda.algorithm.utils</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,14 +74,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for synspot.algorithm.utils</h1><div class="highlight"><pre>
+  <h1>Source code for colda.algorithm.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">errno</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 
 
-<div class="viewcode-block" id="makedir_exist_ok"><a class="viewcode-back" href="../../../reference/algorithm.html#synspot.algorithm.makedir_exist_ok">[docs]</a><span class="k">def</span> <span class="nf">makedir_exist_ok</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="makedir_exist_ok"><a class="viewcode-back" href="../../../reference/algorithm.html#colda.algorithm.makedir_exist_ok">[docs]</a><span class="k">def</span> <span class="nf">makedir_exist_ok</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -92,7 +92,7 @@
     <span class="k">return</span></div>
 
 
-<div class="viewcode-block" id="save"><a class="viewcode-back" href="../../../reference/algorithm.html#synspot.algorithm.save">[docs]</a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;pickle&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="save"><a class="viewcode-back" href="../../../reference/algorithm.html#colda.algorithm.save">[docs]</a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;pickle&#39;</span><span class="p">):</span>
     <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">makedir_exist_ok</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;torch&#39;</span><span class="p">:</span>
@@ -106,7 +106,7 @@
     <span class="k">return</span></div>
 
 
-<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../reference/algorithm.html#synspot.algorithm.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;pickle&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../reference/algorithm.html#colda.algorithm.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;pickle&#39;</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;torch&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="k">lambda</span> <span class="n">storage</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n">storage</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;np&#39;</span><span class="p">:</span>
@@ -118,7 +118,7 @@
     <span class="k">return</span></div>
 
 
-<div class="viewcode-block" id="log"><a class="viewcode-back" href="../../../reference/algorithm.html#synspot.algorithm.log">[docs]</a><span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="log"><a class="viewcode-back" href="../../../reference/algorithm.html#colda.algorithm.log">[docs]</a><span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">test_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">test_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">makedir_exist_ok</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">))</span>
         <span class="n">log_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;log.txt&#39;</span><span class="p">)</span>
@@ -130,7 +130,7 @@
     <span class="k">return</span></div>
 
 
-<div class="viewcode-block" id="parse_idx"><a class="viewcode-back" href="../../../reference/algorithm.html#synspot.algorithm.parse_idx">[docs]</a><span class="k">def</span> <span class="nf">parse_idx</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_idx"><a class="viewcode-back" href="../../../reference/algorithm.html#colda.algorithm.parse_idx">[docs]</a><span class="k">def</span> <span class="nf">parse_idx</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
     <span class="n">parsed_idx</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">idx_list_comma</span> <span class="o">=</span> <span class="n">idx</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">idx_list_comma</span><span class="p">)):</span>

@@ -1,10 +1,10 @@
-.. py:module:: synspot.algorithm
-.. py:currentmodule:: synspot.algorithm
+.. py:module:: colda.algorithm
+.. py:currentmodule:: colda.algorithm
 
-:py:mod:`~synspot.algorithm` Module
+:py:mod:`~colda.algorithm` Module
 ===========================
 
-The :py:mod:`~synspot.algorithm` module provides a class with the same name which is
+The :py:mod:`~colda.algorithm` module provides a class with the same name which is
 used to represent a PIL image. The module also provides a number of factory
 functions, including functions to load images from files, and to create new
 images.
@@ -20,7 +20,7 @@ and save the model at the desginated position.
 
 .. code-block:: python
 
-    from synspot import algorithm
+    from colda import algorithm
     model = Model(task_mode, model_name)
     model.fit(data, target)
     save(model, os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'model.pkl'))
@@ -30,22 +30,22 @@ and save the model at the desginated position.
 Functions
 ---------
 
-.. autofunction:: synspot.algorithm.make_train_local
-.. autofunction:: synspot.algorithm.make_test_local
-.. autofunction:: synspot.algorithm.make_hash
-.. autofunction:: synspot.algorithm.save_match_id
-.. autofunction:: synspot.algorithm.make_match_idx
-.. autofunction:: synspot.algorithm.make_residual
-.. autofunction:: synspot.algorithm.save_residual
-.. autofunction:: synspot.algorithm.make_train
-.. autofunction:: synspot.algorithm.save_output
-.. autofunction:: synspot.algorithm.make_result
-.. autofunction:: synspot.algorithm.make_test
-.. autofunction:: synspot.algorithm.make_eval
-.. autofunction:: synspot.algorithm.makedir_exist_ok
-.. autofunction:: synspot.algorithm.save
-.. autofunction:: synspot.algorithm.load
-.. autofunction:: synspot.algorithm.log
-.. autofunction:: synspot.algorithm.parse_idx
+.. autofunction:: colda.algorithm.make_train_local
+.. autofunction:: colda.algorithm.make_test_local
+.. autofunction:: colda.algorithm.make_hash
+.. autofunction:: colda.algorithm.save_match_id
+.. autofunction:: colda.algorithm.make_match_idx
+.. autofunction:: colda.algorithm.make_residual
+.. autofunction:: colda.algorithm.save_residual
+.. autofunction:: colda.algorithm.make_train
+.. autofunction:: colda.algorithm.save_output
+.. autofunction:: colda.algorithm.make_result
+.. autofunction:: colda.algorithm.make_test
+.. autofunction:: colda.algorithm.make_eval
+.. autofunction:: colda.algorithm.makedir_exist_ok
+.. autofunction:: colda.algorithm.save
+.. autofunction:: colda.algorithm.load
+.. autofunction:: colda.algorithm.log
+.. autofunction:: colda.algorithm.parse_idx
 
 

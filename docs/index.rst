@@ -1,9 +1,9 @@
-Synspot
+colda
 ======
 
-Synspot is the friendly package for Assisted Learning fork by `Jie Ding Group <https://github.com/python-pillow/Pillow/graphs/contributors>`_. PIL is the Python Imaging Library by Fredrik Lundh and Contributors.
+colda is the friendly package for Assisted Learning fork by `Jie Ding Group <https://github.com/python-pillow/Pillow/graphs/contributors>`_. PIL is the Python Imaging Library by Fredrik Lundh and Contributors.
 
-Synspot for enterprise is available via the Tidelift Subscription. `Learn more <https://tidelift.com/subscription/pkg/pypi-pillow?utm_source=pypi-pillow&utm_medium=docs&utm_campaign=enterprise>`_.
+colda for enterprise is available via the Tidelift Subscription. `Learn more <https://tidelift.com/subscription/pkg/pypi-pillow?utm_source=pypi-pillow&utm_medium=docs&utm_campaign=enterprise>`_.
 
 .. .. image:: https://readthedocs.org/projects/pillow/badge/?version=latest
 ..    :target: https://pillow.readthedocs.io/?badge=latest

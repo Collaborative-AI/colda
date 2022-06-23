@@ -9,21 +9,21 @@ https://docutils-zh-cn.readthedocs.io/zh_CN/latest/user/rst/cheatsheet.html
 7. 文字中分小块 
 
 1. 
-The 'Synspot' package
+The 'colda' package
 This package aims to help various entities assist each other in supervised learning tasks without sharing data, models, and objective function. 
 
 Available Implementations
-At this time, the 'Synspot' API is available right out of the box to the general public for personal use in the following programming languages
+At this time, the 'colda' API is available right out of the box to the general public for personal use in the following programming languages
 
 A Quick Setup Guide
 Getting Started
 
 1. Install the 'slants' package using pip
 # Installing package
-python -m pip install Synspot
+python -m pip install colda
 
 2. Import the Model and Experiment API classes
-from Synspot import Package
+from colda import Package
 
 Using the package
 1. Register

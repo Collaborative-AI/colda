@@ -71,11 +71,11 @@ The `entry_points.py` module is referenced in the `setup.py` file via the `entry
 
 ```python
 entry_points={
-    'console_scripts': ['py-package-template=Synspot.entry_points:main'],
+    'console_scripts': ['py-package-template=colda.entry_points:main'],
 }
 ```
 
-It enables the declared entry point - `Synspot.entry_points.main` -  to be invoked when `py-package-template` is called from the command line. This is what enables the template project to be downloaded programmatically (check the code for the full details). This could easily be extended to start a server (e.g. using Flask), or run any other type of script.
+It enables the declared entry point - `colda.entry_points.main` -  to be invoked when `py-package-template` is called from the command line. This is what enables the template project to be downloaded programmatically (check the code for the full details). This could easily be extended to start a server (e.g. using Flask), or run any other type of script.
 
 ### Project Dependencies
 
@@ -157,7 +157,7 @@ The `conftest.py` module is used by PyTest - in this particular instance for loa
 I prefer to use [flake8](http://flake8.pycqa.org/en/latest/) for style guide enforcement. This can be invoked from the command line by running,
 
 ```bash
-pipenv run flake8 Synspot
+pipenv run flake8 colda
 ```
 
 Flake8 could easily be swapped-out for another tool by using Pipenv as described above.
@@ -167,12 +167,12 @@ Flake8 could easily be swapped-out for another tool by using Pipenv as described
 We have used the Python type annotation framework, together with the [MyPy package](http://mypy-lang.org), to perform static type checks on the codebase. Analogous to any linter or unit testing framework, MyPy can be run from the command line as follows,
 
 ```bash
-pipenv run python -m mypy Synspot/*.py
+pipenv run python -m mypy colda/*.py
 ```
 
 MyPy options for this project can be defined in the `mypy.ini` file that MyPy will look for by default. For more information on the full set of options, see the [mypy documentation](https://mypy.readthedocs.io/en/stable/config_file.html).
 
-Examples of type annotation and type checking for library development can be found in the `Synspot.curves.py` module. This should also be cross-referenced with the improvement to readability (and usability) that this has on package documentation.
+Examples of type annotation and type checking for library development can be found in the `colda.curves.py` module. This should also be cross-referenced with the improvement to readability (and usability) that this has on package documentation.
 
 ### Documentation
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>synspot.algorithm.save_match_id &mdash; Synspot 0.0.0 documentation</title>
+  <title>colda.algorithm.save_match_id &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
@@ -33,8 +33,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Synspot
-            <img src="../../../_static/Synspot.png" class="logo" alt="Logo"/>
+            <a href="../../../index.html" class="icon icon-home"> colda
+            <img src="../../../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -56,7 +56,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">Synspot</a>
+          <a href="../../../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -65,7 +65,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>synspot.algorithm.save_match_id</li>
+      <li>colda.algorithm.save_match_id</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,12 +74,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for synspot.algorithm.save_match_id</h1><div class="highlight"><pre>
+  <h1>Source code for colda.algorithm.save_match_id</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">synspot.algorithm.utils</span> <span class="kn">import</span> <span class="n">makedir_exist_ok</span>
+<span class="kn">from</span> <span class="nn">colda.algorithm.utils</span> <span class="kn">import</span> <span class="n">makedir_exist_ok</span>
 
 
-<div class="viewcode-block" id="save_match_id"><a class="viewcode-back" href="../../../reference/algorithm.html#synspot.algorithm.save_match_id">[docs]</a><span class="k">def</span> <span class="nf">save_match_id</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">):</span>
+<div class="viewcode-block" id="save_match_id"><a class="viewcode-back" href="../../../reference/algorithm.html#colda.algorithm.save_match_id">[docs]</a><span class="k">def</span> <span class="nf">save_match_id</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">test_id</span><span class="p">,</span> <span class="n">from_id</span><span class="p">):</span>
 
     <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
         <span class="n">match_id_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>

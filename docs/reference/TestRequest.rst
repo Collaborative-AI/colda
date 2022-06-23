@@ -1,10 +1,10 @@
-.. py:module:: synspot.TestRequest
-.. py:currentmodule:: synspot.TestRequest
+.. py:module:: colda.TestRequest
+.. py:currentmodule:: colda.TestRequest
 
-:py:mod:`~synspot.TestRequest` Module
+:py:mod:`~colda.TestRequest` Module
 ==============================
 
-The :py:mod:`~synspot.TestRequest` module contains a class of the same name to
+The :py:mod:`~colda.TestRequest` module contains a class of the same name to
 initiate test stage collaboration.
 
 Examples
@@ -17,16 +17,16 @@ The following script shows how to initiate a testing task
 
 .. code-block:: python
 
-    import synspot
+    import colda
     # login
-    synspot.userLogin('xie1', 'Xie1@123')
+    colda.userLogin('xie1', 'Xie1@123')
     
-    synspot.callForTest(task_id: str, test_file_path: str, test_id_column: str, test_data_column: str, 
+    colda.callForTest(task_id: str, test_file_path: str, test_id_column: str, test_data_column: str, 
                             test_target_column: str, test_name: str=None, test_description: str=None)
 
 .. note::
 
-    The :py:class:`~synspot.TestRequest.TestRequest` class has several methods,
+    The :py:class:`~colda.TestRequest.TestRequest` class has several methods,
     but they are all marked as "experimental." Read that as you will. The
     ``[source]`` link is there for a reason.
 
@@ -35,5 +35,5 @@ The following script shows how to initiate a testing task
 Classes
 -------
 
-.. autoclass:: synspot.TestRequest.TestRequest
+.. autoclass:: colda.TestRequest.TestRequest
     :members:

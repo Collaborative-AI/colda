@@ -12,7 +12,7 @@
 <meta property="og:description" content="The utils module contains some methods to help main functions. Examples: Train and save the model: The following script generates a model based on the task_mode and model_name, then train the model..." />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>utils Module &mdash; Synspot 0.0.0 documentation</title>
+  <title>utils Module &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -44,8 +44,8 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Synspot
-            <img src="../_static/Synspot.png" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> colda
+            <img src="../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -87,7 +87,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Synspot</a>
+          <a href="../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -130,16 +130,16 @@
     text-align: unset;
 }
 </style>
-<span class="target" id="module-synspot.utils"></span><section id="utils-module">
-<h1><a class="reference internal" href="#module-synspot.utils" title="synspot.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a> Module<a class="headerlink" href="#utils-module" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="#module-synspot.utils" title="synspot.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a> module contains some methods to help main functions.</p>
+<span class="target" id="module-colda.utils"></span><section id="utils-module">
+<h1><a class="reference internal" href="#module-colda.utils" title="colda.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a> Module<a class="headerlink" href="#utils-module" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#module-colda.utils" title="colda.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a> module contains some methods to help main functions.</p>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <section id="train-and-save-the-model">
 <h3>Train and save the model<a class="headerlink" href="#train-and-save-the-model" title="Permalink to this headline">¶</a></h3>
 <p>The following script generates a model based on the task_mode and model_name, then train the model
 and save the model at the desginated position.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">synspot</span> <span class="kn">import</span> <span class="n">algorithm</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">colda</span> <span class="kn">import</span> <span class="n">algorithm</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 <span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;round&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">),</span> <span class="s1">&#39;model.pkl&#39;</span><span class="p">))</span>
@@ -147,7 +147,7 @@ and save the model at the desginated position.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <a class="reference internal" href="#module-synspot.utils" title="synspot.utils"><code class="xref py py-class docutils literal notranslate"><span class="pre">utils</span></code></a> class has several methods,
+<p>The <a class="reference internal" href="#module-colda.utils" title="colda.utils"><code class="xref py py-class docutils literal notranslate"><span class="pre">utils</span></code></a> class has several methods,
 but they are all marked as “experimental.” Read that as you will. The
 <code class="docutils literal notranslate"><span class="pre">[source]</span></code> link is there for a reason.</p>
 </div>
@@ -160,8 +160,8 @@ but they are all marked as “experimental.” Read that as you will. The
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="synspot.utils.log_helper">
-<span class="sig-prename descclassname"><span class="pre">synspot.utils.</span></span><span class="sig-name descname"><span class="pre">log_helper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/utils.html#log_helper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.utils.log_helper" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colda.utils.log_helper">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.</span></span><span class="sig-name descname"><span class="pre">log_helper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils.html#log_helper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log_helper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append the msg to log file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -177,8 +177,8 @@ but they are all marked as “experimental.” Read that as you will. The
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="synspot.utils.check_json_format">
-<span class="sig-prename descclassname"><span class="pre">synspot.utils.</span></span><span class="sig-name descname"><span class="pre">check_json_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/utils.html#check_json_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.utils.check_json_format" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colda.utils.check_json_format">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.</span></span><span class="sig-name descname"><span class="pre">check_json_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils.html#check_json_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.check_json_format" title="Permalink to this definition">¶</a></dt>
 <dd><p>start task with all assistors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -197,8 +197,8 @@ but they are all marked as “experimental.” Read that as you will. The
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="synspot.utils.check_status_code">
-<span class="sig-prename descclassname"><span class="pre">synspot.utils.</span></span><span class="sig-name descname"><span class="pre">check_status_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/utils.html#check_status_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.utils.check_status_code" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colda.utils.check_status_code">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.</span></span><span class="sig-name descname"><span class="pre">check_status_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_code</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils.html#check_status_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.check_status_code" title="Permalink to this definition">¶</a></dt>
 <dd><p>start task with all assistors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -217,8 +217,8 @@ but they are all marked as “experimental.” Read that as you will. The
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="synspot.utils.load_json_data">
-<span class="sig-prename descclassname"><span class="pre">synspot.utils.</span></span><span class="sig-name descname"><span class="pre">load_json_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_data_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testing_key_value_pair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/utils.html#load_json_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.utils.load_json_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colda.utils.load_json_data">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.</span></span><span class="sig-name descname"><span class="pre">load_json_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_data_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testing_key_value_pair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils.html#load_json_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.load_json_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>start task with all assistors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -237,8 +237,8 @@ but they are all marked as “experimental.” Read that as you will. The
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="synspot.utils.load_file">
-<span class="sig-prename descclassname"><span class="pre">synspot.utils.</span></span><span class="sig-name descname"><span class="pre">load_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_address</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/utils.html#load_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.utils.load_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colda.utils.load_file">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.</span></span><span class="sig-name descname"><span class="pre">load_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_address</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils.html#load_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.load_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>start task with all assistors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -257,8 +257,8 @@ but they are all marked as “experimental.” Read that as you will. The
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="synspot.utils.save_file">
-<span class="sig-prename descclassname"><span class="pre">synspot.utils.</span></span><span class="sig-name descname"><span class="pre">save_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_content</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/utils.html#save_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.utils.save_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colda.utils.save_file">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.</span></span><span class="sig-name descname"><span class="pre">save_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_content</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils.html#save_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.save_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>start task with all assistors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -277,8 +277,8 @@ but they are all marked as “experimental.” Read that as you will. The
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="synspot.utils.handle_Algorithm_return_value">
-<span class="sig-prename descclassname"><span class="pre">synspot.utils.</span></span><span class="sig-name descname"><span class="pre">handle_Algorithm_return_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/utils.html#handle_Algorithm_return_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.utils.handle_Algorithm_return_value" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colda.utils.handle_Algorithm_return_value">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.</span></span><span class="sig-name descname"><span class="pre">handle_Algorithm_return_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils.html#handle_Algorithm_return_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.handle_Algorithm_return_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the return value returned by the Algorithm equals to the correct value, e.x. 
 return_val[0] == first_val (‘200’), return_val[1] == second_val (‘make_train’)</p>
 <dl class="field-list simple">
@@ -300,8 +300,8 @@ return_val[0] == first_val (‘200’), return_val[1] == second_val (‘make_tra
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="synspot.utils.handle_base64_padding">
-<span class="sig-prename descclassname"><span class="pre">synspot.utils.</span></span><span class="sig-name descname"><span class="pre">handle_base64_padding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base64_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/utils.html#handle_base64_padding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.utils.handle_base64_padding" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="colda.utils.handle_base64_padding">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.</span></span><span class="sig-name descname"><span class="pre">handle_base64_padding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base64_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils.html#handle_base64_padding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.handle_base64_padding" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the length of the base64 string is not multiple of 3, add ‘=’ or ‘==’ behind</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

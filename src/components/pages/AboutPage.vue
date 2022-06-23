@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NavbarStyleTwo />
+        <Navbar />
         <PageTitle />
         <!-- <About />   -->
         <Team />
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import NavbarStyleTwo from '../Layout/NavbarStyleTwo'
+    import Navbar from '../Layout/Navbar.vue'
     import PageTitle from '../About/PageTitle'
     // import About from '../About/About'
     import Faq from '../About/Faq'
@@ -24,7 +24,7 @@
     export default {
         name: 'AboutPage',
         components: {
-            NavbarStyleTwo,
+            Navbar,
             PageTitle,
             // About,
             Faq,

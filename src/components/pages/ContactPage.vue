@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NavbarStyleTwo />
+        <Navbar />
         <PageTitle />
         <ContactBox />
         <Contact />
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import NavbarStyleTwo from '../Layout/NavbarStyleTwo.vue'
+    import Navbar from '../Layout/Navbar.vue'
     import PageTitle from '../Contact/PageTitle'
     import ContactBox from '../Contact/ContactBox'
     import Contact from '../Contact/Contact'
@@ -20,7 +20,7 @@
     export default {
         name: 'ContactPage',
         components: {
-            NavbarStyleTwo,
+            Navbar,
             PageTitle,
             ContactBox,
             Contact,

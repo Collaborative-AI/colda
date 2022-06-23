@@ -6,7 +6,8 @@
                     <nav class="navbar navbar-expand-lg navbar-light">
                         <router-link class="navbar-brand" to="/">
                             <!-- <img src="../../assets/images/logo.png" alt="logo"> -->
-                            <div class="row" style="border-left:0; border:1px solid black;">
+                            <div class="row">
+                            <!-- <div class="row" style="border-left:0; border:1px solid black;"> -->
                                 <div class="col-4">
                                     <img src="../../assets/images/logo1.png" width="50" height="50" alt="logo">
                                      <!-- <h1>Synspot</h1> -->
@@ -26,20 +27,26 @@
                             @click="active = !active" :aria-pressed="active ? 'true' : 'false'"
                             v-bind:class="{ 'active': button_active_state }"
                             v-on:click="button_active_state = !button_active_state"
-                            style="border-left:0; border:1px solid black;"
                         >
                             <span class="icon-bar top-bar"></span>
                             <span class="icon-bar middle-bar"></span>
                             <span class="icon-bar bottom-bar"></span>
                         </div>
 
-                        <div class="collapse navbar-collapse" :class="{ show: active }" is-nav style="border-left:0; border:1px solid black"> 
-                            <ul class="navbar-nav px-0" style="border-left:0; border:1px solid red">
+                        <div class="collapse navbar-collapse zuiwai" :class="{ show: active }" is-nav>
+                        <!-- <div class="collapse navbar-collapse" :class="{ show: active }" is-nav style="border-left:0; border:1px solid black; padding: 0px">  -->
+                            <div class="zuobian"></div>
+
+                            <ul class="navbar-nav px-0">
+                            <!-- <ul class="navbar-nav px-0" style="border:1px solid red;"> -->
                                 <li class="nav-item">
-                                    <a href="home" class="nav-link">
-                                        Home 
-                                        <!-- <i class='bx bx-chevron-down'></i> -->
-                                    </a>
+                                    <router-link  to="/" class="nav-link">
+                                       <p>Home</p> 
+                                    </router-link>
+                                    <!-- <a href="home" class="nav-link">
+                                        <p>Home</p>
+                                        <i class='bx bx-chevron-down'></i>
+                                    </a> -->
                                     <!-- <ul class="dropdown-menu">
                                         <li class="nav-item">
                                             <router-link  to="/" class="nav-link">
@@ -99,30 +106,30 @@
 
                                 <li class="nav-item">
                                     <router-link  to="/products" class="nav-link">
-                                        Products
+                                       <p>Products</p> 
                                     </router-link>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        Resources 
+                                    <a href="#" class="nav-link" style="width: 105px">
+                                        <p>Resources</p>&nbsp;
                                         <i class='bx bx-chevron-down'></i>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li class="nav-item">
-                                            <a href="html/index.html" class="nav-link"
+                                            <a href="html/index.html" target="_blank" class="nav-link"
                                             >Documentation</a>
                                             
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="notebook/Sponsor_User_Guide.html" class="nav-link"
+                                            <a href="notebook/Sponsor_User_Guide.html" target="_blank" class="nav-link"
                                             >Tutorials</a>
                                         </li>
 
                                         <li class="nav-item">
                                             <router-link  to="/use-cases" class="nav-link">
-                                                Use Cases
+                                            Use&nbsp;Cases
                                             </router-link>
                                         </li>
 
@@ -132,13 +139,13 @@
 
                                 <li class="nav-item">
                                     <router-link  to="/about" class="nav-link">
-                                        About us
+                                       <p>About</p> 
                                     </router-link>
                                 </li>
 
                                 <li class="nav-item">
                                     <router-link  to="/contact" class="nav-link">
-                                        Contact
+                                       <p>Contact</p> 
                                     </router-link>
                                 </li>
 
@@ -310,10 +317,16 @@
                                         Contact
                                     </router-link>
                                 </li> -->
+                                <li>
+                                    <div class="sign-up">
+                                        <router-link to="/sign-up" class="default-btn">Sign&nbsp;Up</router-link>
+                                    </div>
+                                </li>
+                        
                             </ul>
                         </div>
 
-                        <div class="others-options">
+                        <!-- <div class="others-options">
                             <div 
                                 class="burger-menu"
                                 v-on:click="isPopupMethod(isPopup)"
@@ -322,7 +335,12 @@
                                 <span></span>
                                 <span></span>
                             </div>
-                        </div>
+                        </div> -->
+                        <!-- <div class="others-options">
+                            <router-link to="/sign-up" class="default-btn">Sign In</router-link>
+                        </div> -->
+
+                        
                     </nav>
                 </div>
             </div>
@@ -465,3 +483,43 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+ul {
+    margin:0 auto;
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    /* border:1px solid red; */
+}
+.nav-item p{
+    /* width: 20%; */
+    /* margin-left: 5%;
+    margin-right: 5% */
+    /* margin: auto;
+    padding: auto; */
+    font-size: 120%;
+    color: black;
+    display: inline
+}
+.sign-up {
+    margin-top: 15px;
+    /* border:1px solid red; */
+}
+/* .zuiwai {
+    border:1px solid blue;
+} */
+.zuobian {
+    /* border:1px solid green; */
+    width: 5%
+}
+/* i {
+    display:inline-block;
+    white-space:nowrap
+} */
+.router-link-active p{
+  color:#086AD8
+}
+
+
+</style>

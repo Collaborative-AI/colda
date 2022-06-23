@@ -4566,10 +4566,11 @@ Pricing Area CSS
   transition: 0.5s;
 }
 
-.single-pricing:hover .price-btn .default-btn {
+.single-pricing .price-btn .default-btn:hover {
   background-color: #086AD8;
   color: #ffffff;
 }
+
 
 .single-pricing.two {
   border-radius: 5px;

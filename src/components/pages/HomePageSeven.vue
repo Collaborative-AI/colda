@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NavbarStyleTwo />
+        <Navbar />
         <Banner />  <!-- build your model with our service -->    
         <MoreFeatures />    <!-- privacy-preserving -->
         <Tech />    <!-- perfect app for beninner -->
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import NavbarStyleTwo from '../Layout/NavbarStyleTwo'
+import Navbar from '../Layout/Navbar.vue'
 import Banner from '../HomeSeven/Banner'
 import MoreFeatures from '../HomeSeven/MoreFeatures'
 import Tech from '../HomeSeven/Tech'
@@ -37,7 +37,7 @@ import CopyRight from '../Layout/CopyRight'
 export default {
     name: 'HomePageSeven',
     components: {
-        NavbarStyleTwo,
+        Navbar,
         Banner,
         MoreFeatures,
         Tech,

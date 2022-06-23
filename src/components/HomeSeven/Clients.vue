@@ -2,7 +2,7 @@
     <div class="clients-section bg-background ptb-100">
         <div class="container">
             <div class="section-title">
-                <h2>Start Your Data Journey With<span> SynSpot</span> </h2>
+                <h2 style = "font-size: 45px;">Start Your Data Journey With<span> SynSpot</span> </h2>
                 <p></p>
                 <div class="bar"></div>
             </div>

@@ -1,14 +1,16 @@
 <template>
-    <div class="main-banner-area-nine">
+    <div class="main-banner-area-nine" >
         <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="main-banner-content">
+            <div class="row align-items-center" >
+                <div class="col-lg-6" >
+                    <div class="main-banner-content" >
                         <!-- <span>Digital Marketing</span> -->
                         <h1>Build Your Model With Our Service</h1>
-                        <p>SynSpot optimizes your AI model cooperatively with others without sharing data and models. Start with millions of data science practioners, data-driven enterprises, and the open source community togther.</p>
+                        
+                            SynSpot optimizes your AI model cooperatively with others without sharing data and models. Start with millions of data science practioners, data-driven enterprises, and the open source community togther.
+                        
                         <div class="banner-btn">
-                            <a href="#" class="default-btn">Get Started</a>
+                            <button href="#" class="default-btn">Get Started</button>
                         </div>
                     </div>
                 </div>
@@ -71,3 +73,5 @@ export default defineComponent ({
     }),
 })
 </script>
+
+

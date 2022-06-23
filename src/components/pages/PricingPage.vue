@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NavbarStyleTwo />
+        <Navbar />
         <PageTitle />
         <Pricing />
         <!-- <Tab /> -->
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import NavbarStyleTwo from '../Layout/NavbarStyleTwo.vue'
+    import Navbar from '../Layout/Navbar.vue'
     import PageTitle from '../Pricing/PageTitle'
     import Pricing from '../Pricing/Pricing'
     // import Tab from '../Pricing/Tab'
@@ -20,7 +20,7 @@
     export default {
         name: 'PricingPage',
         components: {
-            NavbarStyleTwo,
+            Navbar,
             PageTitle,
             Pricing,
             // Tab,

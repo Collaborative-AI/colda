@@ -4,7 +4,7 @@
         <PageTitle />
         <!-- <About />   -->
         <Team />
-        <Faq />
+        <!-- <Faq /> -->
         <Clients />
         <Footer />
         <CopyRight />
@@ -15,9 +15,9 @@
     import Navbar from '../Layout/Navbar.vue'
     import PageTitle from '../About/PageTitle'
     // import About from '../About/About'
-    import Faq from '../About/Faq'
+    // import Faq from '../About/Faq'
     import Team from '../HomeNine/Team'
-    import Clients from '../HomeNine/Clients'
+    // import Clients from '../HomeNine/Clients'
     import Footer from '../Layout/Footer'
     import CopyRight from '../Layout/CopyRight'
 
@@ -27,9 +27,9 @@
             Navbar,
             PageTitle,
             // About,
-            Faq,
+            // Faq,
             Team,
-            Clients,
+            // Clients,
             Footer,
             CopyRight,
         }

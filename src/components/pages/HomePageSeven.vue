@@ -6,7 +6,7 @@
         <Tech />    <!-- perfect app for beninner -->
         <!-- our motivation -->
         <Faq />  
-        <Digital />
+        <!-- <Digital /> -->
         <!-- <AgencyServices /> -->
         <!-- <Experience />
         <Tab /> -->
@@ -24,7 +24,7 @@ import Banner from '../HomeSeven/Banner'
 import MoreFeatures from '../HomeSeven/MoreFeatures'
 import Tech from '../HomeSeven/Tech'
 import Faq from '../HomeSeven/Faq'
-import Digital from '../HomeSeven/Digital'
+// import Digital from '../HomeSeven/Digital'
 // import AgencyServices from '../HomeSeven/AgencyServices'
 // import Experience from '../HomeSeven/Experience'
 // import Tab from '../HomeSeven/Tab'
@@ -42,7 +42,7 @@ export default {
         MoreFeatures,
         Tech,
         Faq,
-        Digital,
+        // Digital,
         // AgencyServices,
         // Experience,
         // Tab,

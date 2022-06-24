@@ -4,7 +4,7 @@
             <div class="section-title">
                 <h3>The Perfect Application for Beginners or Professionals</h3>
                 <body-1>
-                    SynSpot — is a carefully crafted multi-purpose, responsive, and gorgeous application built with Vue.js and Python. It comes with the features you need to quickly start your data analysis, optimize your AI model cooperatively with others without sharing local data.
+                    Synspot — is a carefully crafted multi-purpose, responsive, and gorgeous application built with Vue.js and Python. It comes with the features you need to quickly start your data analysis, optimize your AI model cooperatively with others without sharing local data.
                 </body-1>
                 <div class="bar"></div>
             </div>

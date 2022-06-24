@@ -7,7 +7,7 @@
                         <!-- <span>Digital Marketing</span> -->
                         <h1>Build Your Model With Our Service</h1>
                         
-                            SynSpot optimizes your AI model cooperatively with others without sharing data and models. Start with millions of data science practioners, data-driven enterprises, and the open source community togther.
+                            Synspot optimizes your AI model cooperatively with others without sharing data and models. Start with millions of data science practioners, data-driven enterprises, and the open source community togther.
                         
                         <div class="banner-btn">
                             <button href="#" class="default-btn">Get Started</button>

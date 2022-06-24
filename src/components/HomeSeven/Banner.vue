@@ -11,7 +11,7 @@
                                         Build Your Model With Our Service
                                     </h1>
                                     <p style = "font-size: 25px">
-                                        SynSpot optimizes your AI model cooperatively with others without sharing data and models. 
+                                        Synspot optimizes your AI model cooperatively with others without sharing data and models. 
                                     </p>
                                     <p style = "font-size: 25px">
                                         Start with millions of data science practioners, data-driven enterprises, and the open source community togther.

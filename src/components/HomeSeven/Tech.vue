@@ -9,7 +9,7 @@
                         </h3>
                         <div class="bar"></div>
                         <p style = "font-size:20px">
-                            SynSpot — is a carefully crafted multi-purpose, responsive, and gorgeous application built with Vue.js and Python. It comes with the features you need to quickly start your data analysis, optimize your AI model cooperatively with others without sharing local data.
+                            Synspot — is a carefully crafted multi-purpose, responsive, and gorgeous application built with Vue.js and Python. It comes with the features you need to quickly start your data analysis, optimize your AI model cooperatively with others without sharing local data.
                         </p>
 
                         <div class="tech-btn">

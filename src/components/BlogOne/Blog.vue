@@ -23,7 +23,7 @@
                                     Weather Forecast
                                 </router-link>
                             </h3>
-                            <p>Forecasting time series weather data with SynSpot packages</p>
+                            <p>Forecasting time series weather data with Synspot packages</p>
                             <router-link to="/single-blog" class="read-more">Read More</router-link>
                         </div>
                     </div>

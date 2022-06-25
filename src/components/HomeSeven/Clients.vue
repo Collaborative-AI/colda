@@ -2,7 +2,7 @@
     <div class="clients-section bg-background ptb-100">
         <div class="container">
             <div class="section-title">
-                <h2>Start Your Data Journey With<span> SynSpot</span> </h2>
+                <h2 style = "font-size: 45px;">What Our Clients Say</h2>
                 <p></p>
                 <div class="bar"></div>
             </div>
@@ -66,24 +66,31 @@ export default defineComponent ({
         carouselItems: [
             {
                 id: 1,
-                icon: 'flaticon-left-quotes-sign',
-                description: 'All participants collaboratively optimize the aggregate of local loss functions, and each participant autonomously builds its own model by iteratively fitting the gradients of the objective function',
-                name: 'Software Developer',
-                position: '',
+                icon: 'flaticon-happy',
+                description: 'We have more than lots of partners. A few years ago we tried to use blockchain to leverage scattered data, but not very successful. Anything that can improve the assessment of risk is useful for us. So we collaborate a lot with other organizations. Everybody does not trust another. For example, payers don’t trust service providers. It would be great if any product can resolve trust issues.',
+                name: 'UnitedHealth',
+                position: 'Healthcare Insurance',
             },
             {
                 id: 2,
-                icon: 'flaticon-left-quotes-sign',
-                description: 'SynSpot is an open-source innovation which can keep pace with your needs and business challenges.',
-                name: 'Software Developer',
-                position: '',
+                icon: 'flaticon-technical-support',
+                description: 'We use API to share data with other insurance companies. There are expensive procedures that require prior authorization. Agreement for multiple parties must be constantly settled.',
+                name: 'Anthem',
+                position: 'Healthcare Insurance',
             },
             {
                 id: 3,
+                icon: 'flaticon-quality',
+                description: 'It is not possible to dive into the data market in a short amount of time. We need a recommendation on what external data would be useful.',
+                name: 'CVS Health',
+                position: 'Pharmacy',
+            },
+            {
+                id: 4,
                 icon: 'flaticon-left-quotes-sign',
-                description: 'You will ready to solve problems in your daily life',
-                name: 'Software Developer',
-                position: '',
+                description: 'Data sharing via competitors is difficult but some ‘data exchanges’ have been made.',
+                name: 'G&M Health',
+                position: 'Health and Life-science Service',
             },
         ],
 

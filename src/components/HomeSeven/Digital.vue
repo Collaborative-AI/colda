@@ -9,28 +9,28 @@
                 </div>
 
                 <div class="col-lg-20">
-                    <div class="digital-content">
-                        <h3>Our <span>Motivation</span></h3>
+                    <div class="digital-content" style = "margin-top: -50px;">
+                        <h3 style = "font-size:45">Our <span>Motivation</span></h3>
                         <div class="bar"></div>
                         <p></p>
 
-                        <ul class="digital-list">                           
-                            <p>
+                        <ul class="digital-list" style = "font-size:20px; margin-top:5px">                           
+                            <body>
                             <i class="flaticon-check"></i>
-                            Organizations want to optimize better AI models with a large amount of data.
-                            </p>
+                            It is potentially beneficial to improve machine learning models with external data.
+                            </body>
                         </ul>
-                        <ul class="digital-list">                          
-                            <p>
+                        <ul class="digital-list" style = "font-size:20px; margin-top:10px">                          
+                            <body>
                             <i class="flaticon-check"></i>
-                            Organizations have difficulty leveraging decentralized data due to commercial and ethical restrictions.
-                            </p>                                     
+                            It is difficult to leverage external data due to various constraints, i.e. commercial, regulatory, and ethical restrictions.
+                            </body>                                     
                         </ul>
-                        <ul class="digital-list">                           
-                            <p>
+                        <ul class="digital-list" style = "font-size:20px; margin-top:10px">                           
+                            <body>
                             <i class="flaticon-check"></i>
-                            Organizations needs a trustworthy third-party platform to assist each other for optimizing AI models.
-                            </p>
+                            The machine learning community lacks a trustworthy third-party platform to collaboratively analyze data.
+                            </body>
                         </ul>
 
                         <!-- <div class="digital-btn">

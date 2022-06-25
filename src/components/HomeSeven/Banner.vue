@@ -4,18 +4,25 @@
                 <div class="d-table-cell">
                     <div class="container-fluid">
                         <div class="row align-items-center">
-                            <div class="col-lg-6">
-                                <div class="main-banner-content">
+                            <div class="col-lg-6" >
+                                <div class="main-banner-content"  >
                                     <!-- <span>Digital Marketing</span> -->
-                                    <h1>Build Your Model With Our Service</h1>
-                                    <p>SynSpot optimizes your AI model cooperatively with others without sharing data and models. Start with millions of data science practioners, data-driven enterprises, and the open source community togther.</p>
+                                    <h1>
+                                        Build Your Model With Our Service
+                                    </h1>
+                                    <p style = "font-size: 25px">
+                                        Synspot optimizes your AI model cooperatively with others without sharing data and models. 
+                                    </p>
+                                    <p style = "font-size: 25px">
+                                        Start with millions of data science practioners, data-driven enterprises, and the open source community togther.
+                                    </p>
                                     <div class="banner-btn">
-                                        <a href="#" class="default-btn">Get Started</a>
+                                        <button href="#" class="default-btn" style = "font-size: 22px">GET STARTED</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 pr-0">
+                            <div class="col-lg-6 pr-0" >
                                 <div class="banner-image">
                                     <img src="../../assets/images/home-seven/home-seven-1.png" alt="image">
 									<img src="../../assets/images/home-seven/home-seven-2.png" alt="image">

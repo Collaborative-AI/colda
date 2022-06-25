@@ -15,8 +15,9 @@
                                 <i class="flaticon-check"></i>
                             </div>
                             <h3>Own Your Destiny</h3>
-                            <p>Synspot enables firms with data to conjointly train better AI models without
-sharing data and models with each other.</p>
+                            <p>
+                                Synspot enables firms with data to conjointly train better AI models without sharing data and models with each other.
+                            </p>
                         </div>
 
                         <div class="experience-inner-content">

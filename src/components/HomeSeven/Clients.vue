@@ -66,21 +66,21 @@ export default defineComponent ({
         carouselItems: [
             {
                 id: 1,
-                icon: 'flaticon-left-quotes-sign',
+                icon: 'flaticon-happy',
                 description: 'We have more than lots of partners. A few years ago we tried to use blockchain to leverage scattered data, but not very successful. Anything that can improve the assessment of risk is useful for us. So we collaborate a lot with other organizations. Everybody does not trust another. For example, payers don’t trust service providers. It would be great if any product can resolve trust issues.',
                 name: 'UnitedHealth',
                 position: 'Healthcare Insurance',
             },
             {
                 id: 2,
-                icon: 'flaticon-left-quotes-sign',
+                icon: 'flaticon-technical-support',
                 description: 'We use API to share data with other insurance companies. There are expensive procedures that require prior authorization. Agreement for multiple parties must be constantly settled.',
                 name: 'Anthem',
                 position: 'Healthcare Insurance',
             },
             {
                 id: 3,
-                icon: 'flaticon-left-quotes-sign',
+                icon: 'flaticon-quality',
                 description: 'It is not possible to dive into the data market in a short amount of time. We need a recommendation on what external data would be useful.',
                 name: 'CVS Health',
                 position: 'Pharmacy',

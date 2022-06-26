@@ -54,7 +54,7 @@ const routes = [
     {path: '/team', component: TeamPage},
     {path: '/products', component: PricingPage},
     {path: '/faq', component: FaqPage},
-    {path: '/log-in', component: LogInPage},
+    {path: '/sign-in', component: LogInPage},
     {path: '/sign-up', component: SignUpPage},
     {path: '/terms-condition', component: TermsConditionsPage},
     {path: '/privacy-policy', component: PrivacyPolicyPage},

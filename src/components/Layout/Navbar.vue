@@ -319,7 +319,7 @@
                                 </li> -->
                                 <li>
                                     <div class="sign-up">
-                                        <router-link to="/sign-up" class="default-btn">Sign&nbsp;Up</router-link>
+                                        <router-link to="/sign-in" class="default-btn">Sign&nbsp;In</router-link>
                                     </div>
                                 </li>
                         

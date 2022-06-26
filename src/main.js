@@ -18,7 +18,7 @@ app.mount("#app");
 
 
 
-import {request} from '../src/network/request.js'
+// import {request} from '../src/network/request.js'
 
 // const instance1 = axios.create({
 //     baseURL: 'http://123.207.32.32:8000',
@@ -41,20 +41,20 @@ console.log('color is', window.localStorage.getItem('color'));
 
 
 
-const payload = {
-    username: 'xie3',
-    email: 'xie00250@umn.edu',
-    password: 'Xie30123'
-  }
+// const payload = {
+//     username: 'xie3',
+//     email: 'xie00250@umn.edu',
+//     password: 'Xie30123'
+//   }
 
-request.post(`/user/users`, payload)
-.then((res) => {
-// Go to Login Page
-console.log('please verify email',res)    
-})
+// request.post(`/user/users`, payload)
+// .then((res) => {
+// // Go to Login Page
+// console.log('please verify email',res)    
+// })
 
 // axios 实现Basic Auth需要在config中设置 auth 这个属性即可
-// axios.post(`/auth/tokens`, {}, { 
+// request.post(`/auth/tokens`, {}, { 
 // auth: {
 //     'username': 'xie3',
 //     'password': 'Xie30123'
@@ -70,7 +70,7 @@ console.log('please verify email',res)
 //     }
     
 // })
-
+// http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/user/confirm_email/InhpZTAwMjUwQHVtbi5lZHUi.YrdVcw.Ut7vjYy77mPG8CNWKk7YZrOkDpo
 // request({
 //     url: '/'
 // }, res => {

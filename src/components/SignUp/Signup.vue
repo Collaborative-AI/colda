@@ -38,7 +38,7 @@
                                     </button>
                                 </div>
                                 <br>
-                                <span>Already a registered user? <router-link to="/log-in">Login!</router-link></span>
+                                <span>Already a registered user? <router-link to="/sign-in">Sign In!</router-link></span>
                             </div>
                         </div>
                     </form>

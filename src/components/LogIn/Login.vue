@@ -4,7 +4,7 @@
             <div class="login-form">
                 <div class="login-title">
                     <h3>Welcome Back!</h3>
-                    <p>Please login to your account.</p>
+                    <p>Please sign in to your account.</p>
                 </div>
                     
                 <form>
@@ -24,7 +24,7 @@
                         <div class="col-lg-12">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="checkme">
-                                <label class="form-check-label" for="checkme">Keep me Log In</label>
+                                <label class="form-check-label" for="checkme">Keep Me Sign In</label>
                             </div>
                         </div>
 
@@ -35,12 +35,12 @@
                         <div class="col-lg-12">
                             <div class="send-btn">
                                 <button type="submit" class="default-btn">
-                                    Log In Now
+                                    Sign In Now
                                     <span></span>
                                 </button>
                             </div>
                             <br>
-                            <span>Don't have account? <router-link to="/sign-up">Signup!</router-link></span>
+                            <span>Don't have account? <router-link to="/sign-up">Sign Up!</router-link></span>
                         </div>
                     </div>
                 </form>

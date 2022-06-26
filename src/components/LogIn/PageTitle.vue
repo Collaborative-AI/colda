@@ -4,10 +4,10 @@
             <div class="d-table-cell">
                 <div class="container">
                     <div class="page-title-content">
-                        <h2>Log In</h2>
+                        <h2>Sign In</h2>
                         <ul>
                             <li><router-link to="/">Home</router-link></li>
-                            <li>Log In</li>
+                            <li>Sign In</li>
                         </ul>
                     </div>
                 </div>

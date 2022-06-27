@@ -2,17 +2,44 @@ from __future__ import annotations
 
 from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
 
+from colda.pi.api import get_user_id
+
 from typing import Any
 
 from typeguard import typechecked
+
+
+#@typechecked
 class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
+    '''
+    Handle train assistor match identifier stage.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    train_assistor_match_identifier
+    '''
 
     @classmethod
     def train_assistor_match_identifier(
         cls, train_id: str, train_id_dict: dict[str, Any]
     ) -> None:
-        # initiate a request
-        user_id = super()._get_user_id()
+        ''' 
+        Execute train assistor match identifier logic.
+
+        Parameters
+        ----------
+        train_id: str 
+        train_id_dict : dict[str, Any]
+
+        Returns
+        -------
+        None
+        '''
+        user_id = get_user_id()
 
         msgs = [
             "---- 3. Unread Match ID", 

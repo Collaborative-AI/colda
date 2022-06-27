@@ -75,6 +75,12 @@ Metric_Name = Literal[
     'AUCROC'
 ]
 
+Identifier_Type = Union[
+    str,
+    float,
+    int
+]
+
 Serializable_Datatype = Union[
     dict,
     list,

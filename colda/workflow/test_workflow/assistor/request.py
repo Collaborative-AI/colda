@@ -6,20 +6,49 @@ from colda.workflow.utils import (
     obtain_notification_information
 )
 
+from colda.pi.api import (
+    get_user_id,
+    get_default_mode
+)
+
 from typing import Any
 
 from typeguard import typechecked
-class TestAssistorRequest(TestBaseWorkflow):
 
+
+#@typechecked
+class TestAssistorRequest(TestBaseWorkflow):
+    '''
+    Handle test assistor request stage.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    test_assistor_request
+    '''
     @classmethod
     def test_assistor_request(
         cls, 
         test_id: str, 
         test_id_dict: dict[str, Any]
     ) -> None:
+        ''' 
+        Execute test assistor request logic.
 
-        default_mode = cls._get_default_mode()
-        user_id = super()._get_user_id()
+        Parameters
+        ----------
+        test_id: str 
+        test_id_dict : dict[str, Any]
+
+        Returns
+        -------
+        None
+        '''
+        default_mode = get_default_mode()
+        user_id = get_user_id()
 
         _, _, _, train_id = obtain_notification_information(
             notification_dict=test_id_dict,

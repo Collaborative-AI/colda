@@ -14,7 +14,8 @@ from typeguard import typechecked
 #@typechecked
 class TestBaseWorkflow(BaseWorkflow):
     '''
-    Base class for test workflow
+    1. Wrap the algorithm part
+    2. Implement some common methods
 
     Attributes
     ----------
@@ -34,6 +35,17 @@ class TestBaseWorkflow(BaseWorkflow):
     def _evaluate_results(
         cls, **kwargs
     ) -> None:
+        ''' 
+        Evaluate trained model performance on test dataset.
+
+        Parameters
+        ----------
+        **kwargs : Any
+
+        Returns
+        -------
+        None
+        '''
         return cls.__TestAlgorithm_instance.make_eval(**kwargs)
 
     @final
@@ -41,6 +53,17 @@ class TestBaseWorkflow(BaseWorkflow):
     def _test_cooperative_model(
         cls, **kwargs
     ) -> None:
+        ''' 
+        Test cooperative trained model.
+
+        Parameters
+        ----------
+        **kwargs : Any
+
+        Returns
+        -------
+        None
+        '''
         return cls.__TestAlgorithm_instance.make_test(**kwargs)
 
     @final
@@ -48,5 +71,16 @@ class TestBaseWorkflow(BaseWorkflow):
     def _test_local_model(
         cls, **kwargs
     ) -> None:
+        ''' 
+        Test local trained model on test dataset.
+
+        Parameters
+        ----------
+        **kwargs : Any
+
+        Returns
+        -------
+        None
+        '''
         return cls.__TestAlgorithm_instance.make_test_local(**kwargs)
 

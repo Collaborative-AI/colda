@@ -1153,27 +1153,34 @@ def is_json_object(
 # c = json.loads(b['5'])
 # print(c, type(c))
 
-def is_serializable(
-    data: Any
-) -> bool:
-    '''
-    Check if data is serializable.
+# def is_serializable(
+#     data: Any
+# ) -> bool:
+#     '''
+#     Check if data is serializable.
 
-    Parameters
-    ----------
-    data : Any
+#     Parameters
+#     ----------
+#     data : Any
 
-    Returns
-    -------
-    bool
-    '''
-    try:
-        json.dumps(data)
-    except:
-        return False
-    else:
-        return True
+#     Returns
+#     -------
+#     bool
+#     '''
+#     try:
+#         json.dumps(data)
+#     except:
+#         return False
+#     else:
+#         return True
 
 
-a = {'5': [4, 5, np.array(5)]}
-print(is_serializable(a))
+# a = {'5': [4, 5, np.array(5)]}
+# print(is_serializable(a))
+
+
+import hashlib
+input = 5
+output = hashlib.sha256(str(input).encode('utf-8'))
+output = output.hexdigest()
+print(type(output))

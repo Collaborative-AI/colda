@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -36,7 +37,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="TestRequest Module" href="TestRequest.html" />
-    <link rel="prev" title="ShortPolling Module" href="ShortPolling.html" /> 
+    <link rel="prev" title="error Module" href="error.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,7 +46,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> colda
-            <img src="../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -62,9 +62,7 @@
 <li class="toctree-l2"><a class="reference internal" href="authorization.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="PI.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PI</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ShortPolling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ShortPolling</span></code> Module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#train-and-save-the-model">Train and save the model</a></li>
@@ -131,13 +129,13 @@
 }
 </style>
 <span class="target" id="module-colda.StopRequest"></span><section id="stoprequest-module">
-<h1><a class="reference internal" href="#module-colda.StopRequest" title="colda.StopRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code></a> Module<a class="headerlink" href="#stoprequest-module" title="Permalink to this headline">¶</a></h1>
+<h1><a class="reference internal" href="#module-colda.StopRequest" title="colda.StopRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code></a> Module<a class="headerlink" href="#stoprequest-module" title="Permalink to this heading">¶</a></h1>
 <p>The <a class="reference internal" href="#module-colda.StopRequest" title="colda.StopRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code></a> module contains a class of the same name to
 stop the task.</p>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <section id="train-and-save-the-model">
-<h3>Train and save the model<a class="headerlink" href="#train-and-save-the-model" title="Permalink to this headline">¶</a></h3>
+<h3>Train and save the model<a class="headerlink" href="#train-and-save-the-model" title="Permalink to this heading">¶</a></h3>
 <p>The following script generates a model based on the task_mode and model_name, then train the model
 and save the model at the desginated position.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">colda</span> <span class="kn">import</span> <span class="n">algorithm</span>
@@ -148,7 +146,7 @@ and save the model at the desginated position.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <a class="reference internal" href="#colda.StopRequest.StopRequest" title="colda.StopRequest.StopRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">StopRequest</span></code></a> class has several methods,
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">StopRequest</span></code> class has several methods,
 but they are all marked as “experimental.” Read that as you will. The
 <code class="docutils literal notranslate"><span class="pre">[source]</span></code> link is there for a reason.</p>
 </div>
@@ -159,12 +157,7 @@ but they are all marked as “experimental.” Read that as you will. The
 </section>
 </section>
 <section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="colda.StopRequest.StopRequest">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.StopRequest.</span></span><span class="sig-name descname"><span class="pre">StopRequest</span></span><a class="reference internal" href="../_modules/colda/StopRequest.html#StopRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.StopRequest.StopRequest" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -172,7 +165,7 @@ but they are all marked as “experimental.” Read that as you will. The
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="ShortPolling.html" class="btn btn-neutral float-left" title="ShortPolling Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="error.html" class="btn btn-neutral float-left" title="error Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="TestRequest.html" class="btn btn-neutral float-right" title="TestRequest Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

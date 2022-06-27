@@ -7,7 +7,8 @@ from colda.utils import DictHelper
 
 from typing import (
     Union,
-    Final
+    Final,
+    Any
 )
 
 from typeguard import typechecked
@@ -16,10 +17,21 @@ class CheckSponsor:
     assistor: Final[str] = 'assistor'
 
 def obtain_notification_information(
-    notification_dict: dict[str, str], 
-    test_indicator: str = 'train'
-) -> Union(tuple(str, str, int), tuple(str, str, int, str)):
+    notification_dict: dict[str, Any], 
+    test_indicator: str='train'
+) -> Union[tuple[str, str, int], tuple[str, str, int, str]]:
+    ''' 
+    Parse the notification dict
 
+    Parameters
+    ----------
+    notification_dict : dict[str, Any]
+    test_indicator : str
+
+    Returns
+    -------
+    tuple[str]
+    '''
     sender_random_id = DictHelper.get_value(
         key='sender_random_id',
         container=notification_dict

@@ -6,20 +6,48 @@ from colda.workflow.utils import (
     obtain_notification_information
 )
 
+from colda.pi.api import (
+    get_user_id,
+    get_default_mode
+)
+
 from typing import Any
 
 from typeguard import typechecked
+
+
+#@typechecked
 class TrainAssistorRequest(TrainBaseWorkflow):
+    '''
+    Handle train assistor request stage.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    train_assistor_request
+    '''
 
     @classmethod
     def train_assistor_request(
         cls, train_id: str, train_id_dict: dict[str, Any]
     ) -> None:
-        print('#####request_train', train_id)
-        print('dictt',train_id_dict)
-        default_mode = cls._get_default_mode()
-        user_id = super()._get_user_id()
-        print(f'Default_mode: {default_mode}')
+        ''' 
+        Execute train assistor request logic.
+
+        Parameters
+        ----------
+        train_id: str 
+        train_id_dict : dict[str, Any]
+
+        Returns
+        -------
+        None
+        '''
+        default_mode = get_default_mode()
+        user_id = get_user_id()
 
         sender_random_id, role, cur_rounds_num = obtain_notification_information(
             notification_dict=train_id_dict

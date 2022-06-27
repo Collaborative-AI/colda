@@ -2,27 +2,43 @@ from __future__ import annotations
 
 from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
 
+from colda.pi.api import get_user_id
+
 from colda._typing import (
     Task_Mode,
     Model_Name,
     Metric_Name
 )
+
 from typeguard import typechecked
 
 
 class TrainSponsorFindAssistor(TrainBaseWorkflow):
+    '''
+    Handle sponsor train find assistor.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    find_assistor
+    '''
 
     @classmethod
     def __get_train_id(cls) -> str:
-        
-        """
-        Get new Task id for this task
+        ''' 
+        Get new train id for this train task.
 
-        :returns: new_train_id. String`. The new task id of new task
+        Parameters
+        ----------
+        None
 
-        :exception OSError: 
-        """
-
+        Returns
+        -------
+        str
+        '''
         create_new_train_task_response = super()._get_request_chaining(
             task_id=None,
             url_prefix=super()._url_prefix,
@@ -45,12 +61,32 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
         task_mode: Task_Mode, 
         model_name: Model_Name, 
         metric_name: Metric_Name, 
-        task_name: str = None, 
-        task_description: str = None
+        task_name: str=None, 
+        task_description: str=None
     ) -> None:
+        ''' 
+        Execute sponsor find assistor logic.
 
+        Parameters
+        ----------
+        maxRound : int
+        assistors : list
+        train_file_path : str
+        train_id_column : str
+        train_data_column : str
+        train_target_column : str 
+        task_mode : Task_Mode
+        model_name : Model_Name
+        metric_name : Metric_Name
+        task_name : str=None
+        task_description : str=None
+
+        Returns
+        -------
+        None
+        '''
         train_id = cls.__get_train_id()
-        user_id = super()._get_user_id()
+        user_id = get_user_id()
         
         # call make_hash in Algorithm module
         sponsor_encrypted_identifer = super()._encrypt_identifier(

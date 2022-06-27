@@ -2,24 +2,40 @@ from __future__ import annotations
 
 from colda.workflow.test_workflow.test_base import TestBaseWorkflow
 
+from colda.pi.api import get_user_id
+
 from typing import Union
 
 from typeguard import typechecked
 
 
+#@typechecked
 class TestSponsorFindAssistor(TestBaseWorkflow):
+    '''
+    Handle test sponsor find assistor.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    find_test_assistor
+    '''
 
     @classmethod
     def __get_test_id(cls) -> str:
-        
-        """
-        Get new Task id for this task
+        ''' 
+        Get new test id for this test task.
 
-        :returns: new_test_id. String`. The new task id of new task
+        Parameters
+        ----------
+        None
 
-        :exception OSError: 
-        """
-
+        Returns
+        -------
+        str
+        '''
         create_new_test_task_response = super()._get_request_chaining(
             task_id=None,
             url_prefix=super()._url_prefix,
@@ -41,9 +57,25 @@ class TestSponsorFindAssistor(TestBaseWorkflow):
         test_name: Union[str, None], 
         test_description: Union[str, None]
     ) -> None:
+        ''' 
+        Execute test sponsor find assistor logic.
 
+        Parameters
+        ----------
+        train_id : str
+        test_file_path : str
+        test_id_column : str 
+        test_data_column : str
+        test_target_column : str
+        test_name : Union[str, None]
+        test_description : Union[str, None]
+
+        Returns
+        -------
+        None
+        '''
         test_id = cls.__get_test_id()
-        user_id = super()._get_user_id()
+        user_id = get_user_id()
         
         # Retrieve data of train_id
         sponsor_metadata_record = super()._get_database_record(

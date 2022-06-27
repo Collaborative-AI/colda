@@ -6,6 +6,8 @@ from colda.workflow.utils import (
     obtain_notification_information
 )
 
+from colda.pi.api import get_user_id
+
 from typing import Any
 
 from typeguard import typechecked
@@ -13,6 +15,17 @@ from typeguard import typechecked
 
 #@typechecked
 class TestAssistorMatchIdentifier(TestBaseWorkflow):
+    '''
+    Handle test assistor match identifier stage.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    test_assistor_match_identifier
+    '''
 
     @classmethod
     def test_assistor_match_identifier(
@@ -20,8 +33,19 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
         test_id: str, 
         test_id_dict: dict[str, Any]
     ) -> None:
-        
-        user_id = super()._get_user_id()
+        ''' 
+        Execute train assistor match identifier logic.
+
+        Parameters
+        ----------
+        test_id: str 
+        test_id_dict : dict[str, Any]
+
+        Returns
+        -------
+        None
+        '''
+        user_id = get_user_id()
         _, _, _, train_id = obtain_notification_information(
             notification_dict=test_id_dict,
             test_indicator='test'
@@ -101,7 +125,22 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
         test_id: str,
         assistor_matched_identifer: dict[str]
     ) -> None:
+        ''' 
+        In test stage, we dont need to wait the training 
+        target sent by the sponsor.
+        We test the trained model using test dataset directly
 
+        Parameters
+        ----------
+        user_id : str
+        train_id : str
+        test_id : str
+        assistor_matched_identifer : dict[str]
+
+        Returns
+        -------
+        None
+        '''
         test_assistor_metadata = super()._get_database_record(
             database_type='test_assistor_metadata',
             user_id=user_id,

@@ -8,12 +8,25 @@ from colda.workflow.utils import (
     obtain_notification_information
 )
 
+from colda.pi.api import get_user_id
+
 from typing import Any
 
 from typeguard import typechecked
 
 
 class TestSponsorOutput(TestBaseWorkflow):
+    '''
+    Handle test sponsor output stage.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    test_sponsor_output
+    '''
 
     @classmethod
     def test_sponsor_output(
@@ -21,19 +34,19 @@ class TestSponsorOutput(TestBaseWorkflow):
         test_id: str, 
         test_id_dict: dict[str, Any]
     ) -> None:
+        ''' 
+        Execute test sponsor output logic.
 
-        """
-        Handle the single task of unread output.
+        Parameters
+        ----------
+        test_id : str 
+        test_id_dict : dict[str, Any]
 
-        :param train_id: String. Task id of current task
-        :param rounds: Integer. Current Round
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
-        user_id = super()._get_user_id()
+        Returns
+        -------
+        None
+        '''
+        user_id = get_user_id()
         _, _, cur_rounds_num, train_id = obtain_notification_information(
             notification_dict=test_id_dict,
             test_indicator='test'
@@ -98,20 +111,24 @@ class TestSponsorOutput(TestBaseWorkflow):
         rounds: int, 
         assistor_random_id_to_output_content_dict: dict[str, Any]
     ) -> None:
+        ''' 
+        Function to avoid async case.
+        When sponsor gets the test output content sent
+        by assistors, the sponsor may not complete its
+        own testing model step. We need to wait till it
+        complete.
 
-        """
-        Helper Function. Dealing with the order issue
+        Parameters
+        ----------
+        user_id : str
+        test_id : str 
+        rounds : int
+        assistor_random_id_to_output_content_dict : dict[str, Any]
 
-        :param train_id: String. Task id of current task
-        :param rounds: Integer. Current Round
-        :param train_file_path: String. The file path of train file
-        :param train_target_column: String. The selected data column of train file
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
+        Returns
+        -------
+        None
+        '''
         sponsor_metadata_record = super()._get_database_record(
             database_type='test_sponsor_metadata',
             user_id=user_id,

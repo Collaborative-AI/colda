@@ -9,6 +9,8 @@ from colda.workflow.utils import (
     obtain_notification_information
 )
 
+from colda.pi.api import get_user_id
+
 from colda._typing import (
     Task_Mode,
     Model_Name,
@@ -19,25 +21,37 @@ from typing import Any
 from typeguard import typechecked
 
 
+#@typechecked
 class TrainSponsorOutput(TrainBaseWorkflow):
+    '''
+    Handle sponsor train output stage.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    train_sponsor_output
+    '''
 
     @classmethod
     def train_sponsor_output(
         cls, train_id: str, train_id_dict: dict[str, Any]
     ) -> None:
+        ''' 
+        Execute sponsor train output logic.
 
-        """
-        Handle the single task of unread output.
+        Parameters
+        ----------
+        train_id : str 
+        train_id_dict : dict[str, Any]
 
-        :param train_id: String. Task id of current task
-        :param rounds: Integer. Current Round
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
-        user_id = super()._get_user_id()
+        Returns
+        -------
+        None
+        '''
+        user_id = get_user_id()
         sender_random_id, role, cur_rounds_num = obtain_notification_information(
             notification_dict=train_id_dict
         )
@@ -99,20 +113,24 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         cur_rounds_num: int, 
         assistor_random_id_to_output_content_dict: dict[str, Any]
     ) -> None:
+        ''' 
+        Function to avoid async case.
+        When sponsor gets the output content sent
+        by assistors, the sponsor may not complete its
+        own training model step. We need to wait till it
+        complete.
 
-        """
-        Helper Function. Dealing with the order issue
+        Parameters
+        ----------
+        user_id : str
+        train_id : str
+        cur_rounds_num : int
+        assistor_random_id_to_output_content_dict : dict[str, Any]
 
-        :param train_id: String. Task id of current task
-        :param rounds: Integer. Current Round
-        :param train_file_path: String. The file path of train file
-        :param train_target_column: String. The selected data column of train file
-
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-
+        Returns
+        -------
+        None
+        '''
         sponsor_metadata_record = super()._get_database_record(
             database_type='train_sponsor_metadata',
             user_id=user_id,
@@ -166,13 +184,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             sponsor_matched_identifers=sponsor_matched_identifers,
             last_round_result=sponsor_result,
         )
-        # make_result_done = make_result(root=root, self_id=user_id, train_id=train_id, round=rounds, 
-        #                                dataset_path=train_file_path, target_idx=train_target_column, skip_header=self.skip_header_default, 
-        #                                task_mode=task_mode, metric_name=metric_name)
-        # assert make_result_done is not None
-        # make_result_done_indicator, make_result_done = handle_Algorithm_return_value("make_result_done", make_result_done, "200", "make_result")
-        # assert make_result_done is not None
-
+    
         super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
@@ -206,6 +218,8 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             print('Sponsor: Training train_id: ', train_id, ' ends')
             return
         else:
+            # If cur_rounds_num < max_round, we need to initiate
+            # a new round.
             return cls.train_calculate_next_round_residual(
                 user_id=user_id,
                 train_id=train_id,
@@ -231,7 +245,25 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         sponsor_matched_identifers: Any,
         last_round_result: Any
     ) -> None:
+        ''' 
+        Handle stages in new round.
 
+        Parameters
+        ----------
+        user_id : str
+        train_id : str
+        train_file_path : str
+        train_target_column : str
+        task_mode : Task_Mode
+        metric_name : Metric_Name
+        cur_rounds_num : int
+        sponsor_matched_identifers : Any
+        last_round_result : Any
+
+        Returns
+        -------
+        None
+        '''
         print('daozheli1')
         new_rounds_num = cur_rounds_num + 1
         _, residual_dict = super()._calculate_residual(
@@ -246,13 +278,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             sponsor_matched_identifers=sponsor_matched_identifers,
             last_round_result=last_round_result,
         )
-        # call make_residual
-        # make_residual_multiple_paths = make_residual(root=root, self_id=user_id, train_id=train_id, round=(rounds+1), 
-        #                                                 dataset_path=train_file_path, target_idx=train_target_column, 
-        #                                                 skip_header=self.skip_header_default, task_mode=task_mode, metric_name=metric_name)
-        # assert make_residual_multiple_paths is not None
-        # _, make_residual_multiple_paths = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
-        # assert make_residual_multiple_paths is not None
+       
         print('daozheli2', residual_dict)
         msgs = ["5.5 Sponsor makes residual finished"]
         super()._store_log(
@@ -260,20 +286,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             task_id=train_id,
             msgs=msgs
         )
-        # log_helper(msg, root, user_id, train_id)
-
-        # residual_paths = make_residual_multiple_paths[2:]
-        # assistor_random_id_to_residual_dict = {}
-        # print('residual_paths', residual_paths)
-        # for i in range(len(residual_paths)):
-        #     data = load_file(residual_paths[i])
-        #     # cur_residual_path_data = "\n".join(cur_residual_path_data)
-
-        #     path_split = os.path.split(residual_paths[i])
-        #     print('cur_path', path_split)
-        #     assistor_random_id = path_split[-1].split(".")[0]
-        #     print('cur_path', assistor_random_id)
-        #     assistor_random_id_to_residual_dict[assistor_random_id] = data
         
         assistor_random_id_to_residual_dict = {}
         for assistor_random_id in sponsor_matched_identifers.keys():
@@ -291,13 +303,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             url_suffix=user_id,
             status_code=200
         )
-        print('daozheli3')
-        
-        res = cls._get_all_database_records(
-            database_type='train_algorithm'
-        )
-        # print(res[(user_id, train_id)]['sponsor_residual'])
-
+    
         cls._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
@@ -305,12 +311,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             algorithm_data_name='residual_dict',
             algorithm_data=residual_dict
         )
-
-        print('daozheli3.5')
-        res = cls._get_all_database_records(
-            database_type='train_algorithm'
-        )
-        # print(res[(user_id, train_id)]['sponsor_residual'])
 
         msgs = [
             "5.6 Sponsor updates situation done", 
@@ -321,6 +321,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             task_id=train_id,
             msgs=msgs
         )
-        print('daozheli4')
+
         print('Sponsor: Training train_id: ', train_id, ' is running')
         return True

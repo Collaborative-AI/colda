@@ -31,7 +31,8 @@ from colda._typing import (
     Serializable_Datatype,
     Stage,
     Train_Database_Type,
-    Test_Database_Type
+    Test_Database_Type,
+    Identifier_Type
 )
 
 from typeguard import typechecked
@@ -100,7 +101,7 @@ class BaseWorkflow:
             status_code=status_code,
         )
 
-        # TODO: modify later
+        # TODO: modify later, error handler
         # if request_response == StatusCodeError:
         #     warnings.warn(
         #         f"{task_id}'s network get request to {url_root} goes wrong", 
@@ -144,7 +145,7 @@ class BaseWorkflow:
             status_code=status_code
         )
 
-        # TODO: modify later
+        # TODO: modify later, error handler
         # if request_response == StatusCodeError:
         #     warnings.warn(
         #         f"{task_id}'s network get request to {url_root} goes wrong", 
@@ -188,7 +189,20 @@ class BaseWorkflow:
         database_type: Union[Train_Database_Type, Test_Database_Type],
         **kwargs,
     ) -> None:
+        '''
+        Handle 2 things:
+            1. set database strategy object
+            2. store record to corresponding db
 
+        Parameters
+        ----------
+        database_type : Union[Train_Database_Type, Test_Database_Type]
+        **kwargs : Any
+
+        Returns
+        -------
+        None
+        '''
         cls.__DatabaseOperator_instance.set_database(
             database_type=database_type
         )
@@ -196,7 +210,6 @@ class BaseWorkflow:
         cls.__DatabaseOperator_instance.store_record(
             **kwargs
         )
-        
         return 
     
     @final
@@ -206,7 +219,20 @@ class BaseWorkflow:
         database_type: Union[Train_Database_Type, Test_Database_Type],
         **kwargs,
     ) -> tuple[Any]:
+        '''
+        Handle 2 things:
+            1. set database strategy object
+            2. get record from corresponding db
 
+        Parameters
+        ----------
+        database_type : Union[Train_Database_Type, Test_Database_Type]
+        **kwargs : Any
+
+        Returns
+        -------
+        None
+        '''
         cls.__DatabaseOperator_instance.set_database(
             database_type=database_type
         )
@@ -217,29 +243,25 @@ class BaseWorkflow:
 
     @final
     @classmethod
-    def _get_all_database_records(
-        cls,
-        database_type: Union[Train_Database_Type, Test_Database_Type],
-        **kwargs,
-    ) -> tuple[Any]:
-
-        cls.__DatabaseOperator_instance.set_database(
-            database_type=database_type
-        )
-
-        return cls.__DatabaseOperator_instance.get_all_records(
-            **kwargs
-        )
-
-    @final
-    @classmethod
     def _encrypt_identifier(
         cls,
         dataset_path: str,
         id_idx: str,
         skip_header: int
-    ) -> None:
+    ) -> list[Identifier_Type]:
+        '''
+        Call corresponding function in algorithm part
 
+        Parameters
+        ----------
+        dataset_path : str
+        id_idx : str
+        skip_header : int
+
+        Returns
+        -------
+        list[Identifier_Type]
+        '''
         encrypted_identifer = cls.__BaseAlgorithm_instance.make_hash(
                 dataset_path=dataset_path, 
                 id_idx=id_idx, 
@@ -254,7 +276,18 @@ class BaseWorkflow:
         self_id_data: list[str],
         from_id_data: list[str]
     ) -> list[str]:
+        '''
+        Call corresponding function in algorithm part
 
+        Parameters
+        ----------
+        self_id_data: list[str],
+        from_id_data: list[str]
+
+        Returns
+        -------
+        list[str]
+        '''
         matched_identifier = cls.__BaseAlgorithm_instance.make_match_idx(
             self_id_data=self_id_data,
             from_id_data=from_id_data

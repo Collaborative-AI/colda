@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -43,7 +44,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> colda
-            <img src="../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -108,9 +108,9 @@
 }
 </style>
 <section id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading">¶</a></h1>
 <section id="using-the-image-class">
-<h2>Using the Image class<a class="headerlink" href="#using-the-image-class" title="Permalink to this headline">¶</a></h2>
+<h2>Using the Image class<a class="headerlink" href="#using-the-image-class" title="Permalink to this heading">¶</a></h2>
 <p>The most important class in the Python Imaging Library is the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code> class, defined in the module with the same name.
 You can create instances of this class in several ways; either by loading
@@ -152,7 +152,7 @@ debugging and tests.</p>
 <p>The following sections provide an overview of the different functions provided in this library.</p>
 </section>
 <section id="reading-and-writing-images">
-<h2>Reading and writing images<a class="headerlink" href="#reading-and-writing-images" title="Permalink to this headline">¶</a></h2>
+<h2>Reading and writing images<a class="headerlink" href="#reading-and-writing-images" title="Permalink to this heading">¶</a></h2>
 <p>The Python Imaging Library supports a wide variety of image file formats. To
 read files from disk, use the <code class="xref py py-func docutils literal notranslate"><span class="pre">open()</span></code> function in the
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">Image</span></code> module. You don’t have to know the file format to open a
@@ -163,7 +163,7 @@ the file.</p>
 important. Unless you specify the format, the library uses the filename
 extension to discover which file storage format to use.</p>
 <section id="convert-files-to-jpeg">
-<h3>Convert files to JPEG<a class="headerlink" href="#convert-files-to-jpeg" title="Permalink to this headline">¶</a></h3>
+<h3>Convert files to JPEG<a class="headerlink" href="#convert-files-to-jpeg" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
@@ -183,7 +183,7 @@ method which explicitly specifies a file format. If you use a non-standard
 extension, you must always specify the format this way:</p>
 </section>
 <section id="create-jpeg-thumbnails">
-<h3>Create JPEG thumbnails<a class="headerlink" href="#create-jpeg-thumbnails" title="Permalink to this headline">¶</a></h3>
+<h3>Create JPEG thumbnails<a class="headerlink" href="#create-jpeg-thumbnails" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
@@ -210,7 +210,7 @@ of the file size and compression type. Here’s a simple script to quickly
 identify a set of image files:</p>
 </section>
 <section id="identify-image-files">
-<h3>Identify Image Files<a class="headerlink" href="#identify-image-files" title="Permalink to this headline">¶</a></h3>
+<h3>Identify Image Files<a class="headerlink" href="#identify-image-files" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
@@ -225,12 +225,12 @@ identify a set of image files:</p>
 </section>
 </section>
 <section id="cutting-pasting-and-merging-images">
-<h2>Cutting, pasting, and merging images<a class="headerlink" href="#cutting-pasting-and-merging-images" title="Permalink to this headline">¶</a></h2>
+<h2>Cutting, pasting, and merging images<a class="headerlink" href="#cutting-pasting-and-merging-images" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code> class contains methods allowing you to
 manipulate regions within an image. To extract a sub-rectangle from an image,
 use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">crop()</span></code> method.</p>
 <section id="copying-a-subrectangle-from-an-image">
-<h3>Copying a subrectangle from an image<a class="headerlink" href="#copying-a-subrectangle-from-an-image" title="Permalink to this headline">¶</a></h3>
+<h3>Copying a subrectangle from an image<a class="headerlink" href="#copying-a-subrectangle-from-an-image" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">box</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
 <span class="n">region</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
 </pre></div>
@@ -242,7 +242,7 @@ pixels, so the region in the above example is exactly 300x300 pixels.</p>
 <p>The region could now be processed in a certain manner and pasted back.</p>
 </section>
 <section id="processing-a-subrectangle-and-pasting-it-back">
-<h3>Processing a subrectangle, and pasting it back<a class="headerlink" href="#processing-a-subrectangle-and-pasting-it-back" title="Permalink to this headline">¶</a></h3>
+<h3>Processing a subrectangle, and pasting it back<a class="headerlink" href="#processing-a-subrectangle-and-pasting-it-back" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">region</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Transpose</span><span class="o">.</span><span class="n">ROTATE_180</span><span class="p">)</span>
 <span class="n">im</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span>
 </pre></div>
@@ -255,7 +255,7 @@ the region is automatically converted before being pasted (see the section on
 <p>Here’s an additional example:</p>
 </section>
 <section id="rolling-an-image">
-<h3>Rolling an image<a class="headerlink" href="#rolling-an-image" title="Permalink to this headline">¶</a></h3>
+<h3>Rolling an image<a class="headerlink" href="#rolling-an-image" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">roll</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Roll an image sideways.&quot;&quot;&quot;</span>
     <span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
@@ -286,7 +286,7 @@ merge function takes a mode and a tuple of images, and combines them into a new
 image. The following sample swaps the three bands of an RGB image:</p>
 </section>
 <section id="splitting-and-merging-bands">
-<h3>Splitting and merging bands<a class="headerlink" href="#splitting-and-merging-bands" title="Permalink to this headline">¶</a></h3>
+<h3>Splitting and merging bands<a class="headerlink" href="#splitting-and-merging-bands" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
 </pre></div>
@@ -297,13 +297,13 @@ the image to “RGB” first.</p>
 </section>
 </section>
 <section id="geometrical-transforms">
-<h2>Geometrical transforms<a class="headerlink" href="#geometrical-transforms" title="Permalink to this headline">¶</a></h2>
+<h2>Geometrical transforms<a class="headerlink" href="#geometrical-transforms" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">PIL.Image.Image</span></code> class contains methods to
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">resize()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">rotate()</span></code> an
 image. The former takes a tuple giving the new size, the latter the angle in
 degrees counter-clockwise.</p>
 <section id="simple-geometry-transforms">
-<h3>Simple geometry transforms<a class="headerlink" href="#simple-geometry-transforms" title="Permalink to this headline">¶</a></h3>
+<h3>Simple geometry transforms<a class="headerlink" href="#simple-geometry-transforms" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">))</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span> <span class="c1"># degrees counter-clockwise</span>
 </pre></div>
@@ -314,7 +314,7 @@ degrees counter-clockwise.</p>
 flip an image around its horizontal or vertical axis.</p>
 </section>
 <section id="transposing-an-image">
-<h3>Transposing an image<a class="headerlink" href="#transposing-an-image" title="Permalink to this headline">¶</a></h3>
+<h3>Transposing an image<a class="headerlink" href="#transposing-an-image" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Transpose</span><span class="o">.</span><span class="n">FLIP_LEFT_RIGHT</span><span class="p">)</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Transpose</span><span class="o">.</span><span class="n">FLIP_TOP_BOTTOM</span><span class="p">)</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">Transpose</span><span class="o">.</span><span class="n">ROTATE_90</span><span class="p">)</span>
@@ -330,11 +330,11 @@ true, to provide for the same changes to the image’s size.</p>
 </section>
 </section>
 <section id="color-transforms">
-<span id="id1"></span><h2>Color transforms<a class="headerlink" href="#color-transforms" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>Color transforms<a class="headerlink" href="#color-transforms" title="Permalink to this heading">¶</a></h2>
 <p>The Python Imaging Library allows you to convert images between different pixel
 representations using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">convert()</span></code> method.</p>
 <section id="converting-between-modes">
-<h3>Converting between modes<a class="headerlink" href="#converting-between-modes" title="Permalink to this headline">¶</a></h3>
+<h3>Converting between modes<a class="headerlink" href="#converting-between-modes" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;hopper.ppm&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">im</span><span class="p">:</span>
@@ -347,16 +347,16 @@ intermediate image (typically an “RGB” image).</p>
 </section>
 </section>
 <section id="image-enhancement">
-<h2>Image enhancement<a class="headerlink" href="#image-enhancement" title="Permalink to this headline">¶</a></h2>
+<h2>Image enhancement<a class="headerlink" href="#image-enhancement" title="Permalink to this heading">¶</a></h2>
 <p>The Python Imaging Library provides a number of methods and modules that can be
 used to enhance images.</p>
 <section id="filters">
-<h3>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h3>
+<h3>Filters<a class="headerlink" href="#filters" title="Permalink to this heading">¶</a></h3>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">ImageFilter</span></code> module contains a number of pre-defined
 enhancement filters that can be used with the
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code> method.</p>
 <section id="applying-filters">
-<h4>Applying filters<a class="headerlink" href="#applying-filters" title="Permalink to this headline">¶</a></h4>
+<h4>Applying filters<a class="headerlink" href="#applying-filters" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">ImageFilter</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ImageFilter</span><span class="o">.</span><span class="n">DETAIL</span><span class="p">)</span>
 </pre></div>
@@ -364,13 +364,13 @@ enhancement filters that can be used with the
 </section>
 </section>
 <section id="point-operations">
-<h3>Point Operations<a class="headerlink" href="#point-operations" title="Permalink to this headline">¶</a></h3>
+<h3>Point Operations<a class="headerlink" href="#point-operations" title="Permalink to this heading">¶</a></h3>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">point()</span></code> method can be used to translate the pixel
 values of an image (e.g. image contrast manipulation). In most cases, a
 function object expecting one argument can be passed to this method. Each
 pixel is processed according to that function:</p>
 <section id="applying-point-transforms">
-<h4>Applying point transforms<a class="headerlink" href="#applying-point-transforms" title="Permalink to this headline">¶</a></h4>
+<h4>Applying point transforms<a class="headerlink" href="#applying-point-transforms" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiply each pixel by 1.2</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
 </pre></div>
@@ -380,7 +380,7 @@ image. You can also combine the <code class="xref py py-meth docutils literal no
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">paste()</span></code> methods to selectively modify an image:</p>
 </section>
 <section id="processing-individual-bands">
-<h4>Processing individual bands<a class="headerlink" href="#processing-individual-bands" title="Permalink to this headline">¶</a></h4>
+<h4>Processing individual bands<a class="headerlink" href="#processing-individual-bands" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># split the image into individual bands</span>
 <span class="n">source</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
@@ -410,13 +410,13 @@ the second operand, and thus returns 0. Otherwise, it returns 255.</p>
 </section>
 </section>
 <section id="enhancement">
-<h3>Enhancement<a class="headerlink" href="#enhancement" title="Permalink to this headline">¶</a></h3>
+<h3>Enhancement<a class="headerlink" href="#enhancement" title="Permalink to this heading">¶</a></h3>
 <p>For more advanced image enhancement, you can use the classes in the
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">ImageEnhance</span></code> module. Once created from an image, an enhancement
 object can be used to quickly try out different settings.</p>
 <p>You can adjust contrast, brightness, color balance and sharpness in this way.</p>
 <section id="enhancing-images">
-<h4>Enhancing images<a class="headerlink" href="#enhancing-images" title="Permalink to this headline">¶</a></h4>
+<h4>Enhancing images<a class="headerlink" href="#enhancing-images" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">ImageEnhance</span>
 
 <span class="n">enh</span> <span class="o">=</span> <span class="n">ImageEnhance</span><span class="o">.</span><span class="n">Contrast</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
@@ -427,7 +427,7 @@ object can be used to quickly try out different settings.</p>
 </section>
 </section>
 <section id="image-sequences">
-<h2>Image sequences<a class="headerlink" href="#image-sequences" title="Permalink to this headline">¶</a></h2>
+<h2>Image sequences<a class="headerlink" href="#image-sequences" title="Permalink to this heading">¶</a></h2>
 <p>The Python Imaging Library contains some basic support for image sequences
 (also called animation formats). Supported sequence formats include FLI/FLC,
 GIF, and a few experimental formats. TIFF files can also contain more than one
@@ -436,7 +436,7 @@ frame.</p>
 sequence. You can use the seek and tell methods to move between different
 frames:</p>
 <section id="reading-sequences">
-<h3>Reading sequences<a class="headerlink" href="#reading-sequences" title="Permalink to this headline">¶</a></h3>
+<h3>Reading sequences<a class="headerlink" href="#reading-sequences" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;animation.gif&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">im</span><span class="p">:</span>
@@ -455,7 +455,7 @@ sequence ends.</p>
 <p>The following class lets you use the for-statement to loop over the sequence:</p>
 </section>
 <section id="using-the-imagesequence-iterator-class">
-<h3>Using the ImageSequence Iterator class<a class="headerlink" href="#using-the-imagesequence-iterator-class" title="Permalink to this headline">¶</a></h3>
+<h3>Using the ImageSequence Iterator class<a class="headerlink" href="#using-the-imagesequence-iterator-class" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">ImageSequence</span>
 <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">ImageSequence</span><span class="o">.</span><span class="n">Iterator</span><span class="p">(</span><span class="n">im</span><span class="p">):</span>
     <span class="c1"># ...do something to frame...</span>
@@ -464,11 +464,11 @@ sequence ends.</p>
 </section>
 </section>
 <section id="postscript-printing">
-<h2>PostScript printing<a class="headerlink" href="#postscript-printing" title="Permalink to this headline">¶</a></h2>
+<h2>PostScript printing<a class="headerlink" href="#postscript-printing" title="Permalink to this heading">¶</a></h2>
 <p>The Python Imaging Library includes functions to print images, text and
 graphics on PostScript printers. Here’s a simple example:</p>
 <section id="drawing-postscript">
-<h3>Drawing PostScript<a class="headerlink" href="#drawing-postscript" title="Permalink to this headline">¶</a></h3>
+<h3>Drawing PostScript<a class="headerlink" href="#drawing-postscript" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">PSDraw</span>
 
@@ -493,7 +493,7 @@ graphics on PostScript printers. Here’s a simple example:</p>
 </section>
 </section>
 <section id="more-on-reading-images">
-<h2>More on reading images<a class="headerlink" href="#more-on-reading-images" title="Permalink to this headline">¶</a></h2>
+<h2>More on reading images<a class="headerlink" href="#more-on-reading-images" title="Permalink to this heading">¶</a></h2>
 <p>As described earlier, the <code class="xref py py-func docutils literal notranslate"><span class="pre">open()</span></code> function of the
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">Image</span></code> module is used to open an image file. In most cases, you
 simply pass it the filename as an argument. <code class="docutils literal notranslate"><span class="pre">Image.open()</span></code> can be used as a
@@ -509,7 +509,7 @@ Otherwise, an <code class="xref py py-exc docutils literal notranslate"><span cl
 implement <code class="docutils literal notranslate"><span class="pre">file.read</span></code>, <code class="docutils literal notranslate"><span class="pre">file.seek</span></code> and <code class="docutils literal notranslate"><span class="pre">file.tell</span></code> methods,
 and be opened in binary mode.</p>
 <section id="reading-from-an-open-file">
-<h3>Reading from an open file<a class="headerlink" href="#reading-from-an-open-file" title="Permalink to this headline">¶</a></h3>
+<h3>Reading from an open file<a class="headerlink" href="#reading-from-an-open-file" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;hopper.ppm&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
@@ -520,7 +520,7 @@ and be opened in binary mode.</p>
 class:</p>
 </section>
 <section id="reading-from-binary-data">
-<h3>Reading from binary data<a class="headerlink" href="#reading-from-binary-data" title="Permalink to this headline">¶</a></h3>
+<h3>Reading from binary data<a class="headerlink" href="#reading-from-binary-data" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">io</span>
 
@@ -534,7 +534,7 @@ tar file, you can use the <code class="xref py py-class docutils literal notrans
 <code class="xref py py-class docutils literal notranslate"><span class="pre">TarIO</span></code> modules to access it.</p>
 </section>
 <section id="reading-from-a-tar-archive">
-<h3>Reading from a tar archive<a class="headerlink" href="#reading-from-a-tar-archive" title="Permalink to this headline">¶</a></h3>
+<h3>Reading from a tar archive<a class="headerlink" href="#reading-from-a-tar-archive" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">TarIO</span>
 
 <span class="n">fp</span> <span class="o">=</span> <span class="n">TarIO</span><span class="o">.</span><span class="n">TarIO</span><span class="p">(</span><span class="s2">&quot;Tests/images/hopper.tar&quot;</span><span class="p">,</span> <span class="s2">&quot;hopper.jpg&quot;</span><span class="p">)</span>
@@ -543,7 +543,7 @@ tar file, you can use the <code class="xref py py-class docutils literal notrans
 </div>
 </section>
 <section id="batch-processing">
-<h3>Batch processing<a class="headerlink" href="#batch-processing" title="Permalink to this headline">¶</a></h3>
+<h3>Batch processing<a class="headerlink" href="#batch-processing" title="Permalink to this heading">¶</a></h3>
 <p>Operations can be applied to multiple image files. For example, all PNG images
 in the current directory can be saved as JPEGs at reduced quality.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
@@ -575,7 +575,7 @@ module.</p>
 </section>
 </section>
 <section id="controlling-the-decoder">
-<h2>Controlling the decoder<a class="headerlink" href="#controlling-the-decoder" title="Permalink to this headline">¶</a></h2>
+<h2>Controlling the decoder<a class="headerlink" href="#controlling-the-decoder" title="Permalink to this heading">¶</a></h2>
 <p>Some decoders allow you to manipulate the image while reading it from a file.
 This can often be used to speed up decoding when creating thumbnails (when
 speed is usually more important than quality) and printing to a monochrome
@@ -584,7 +584,7 @@ laser printer (when only a greyscale version of the image is needed).</p>
 loaded image so it as closely as possible matches the given mode and size. This
 is done by reconfiguring the image decoder.</p>
 <section id="reading-in-draft-mode">
-<h3>Reading in draft mode<a class="headerlink" href="#reading-in-draft-mode" title="Permalink to this headline">¶</a></h3>
+<h3>Reading in draft mode<a class="headerlink" href="#reading-in-draft-mode" title="Permalink to this heading">¶</a></h3>
 <p>This is only available for JPEG and MPO files.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 

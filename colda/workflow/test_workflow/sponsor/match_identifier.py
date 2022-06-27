@@ -9,6 +9,8 @@ from colda.utils import(
     ParseJson
 )
 
+from colda.pi.api import get_user_id
+
 from colda.workflow.utils import (
     obtain_notification_information
 )
@@ -18,16 +20,39 @@ from typing import Any
 from typeguard import typechecked
 
 
+#@typechecked
 class TestSponsorMatchIdentifier(TestBaseWorkflow):
+    '''
+    Handle test sponsor match identifier stage.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    test_sponsor_match_identifier
+    '''
 
     @classmethod
     def test_sponsor_match_identifier(
-            cls, 
-            test_id: str, 
-            test_id_dict: dict[str, Any]
-        ) -> None:
+        cls, 
+        test_id: str, 
+        test_id_dict: dict[str, Any]
+    ) -> None:
+        ''' 
+        Execute test sponsor match identifier logic.
 
-        user_id = super()._get_user_id()
+        Parameters
+        ----------
+        test_id : str 
+        test_id_dict : dict[str, Any]
+
+        Returns
+        -------
+        None
+        '''
+        user_id = get_user_id()
         _, _, _, train_id = obtain_notification_information(
             notification_dict=test_id_dict,
             test_indicator='test'
@@ -106,7 +131,21 @@ class TestSponsorMatchIdentifier(TestBaseWorkflow):
         test_id: str,
         sponsor_matched_identifers: dict[str, Any],
     ) -> None:
-        
+        ''' 
+        In test stage, we dont need to wait the training 
+        model output sent by the assistors.
+        We test the trained model using test dataset directly
+
+        Parameters
+        ----------
+        user_id : str
+        test_id : str
+        sponsor_matched_identifers : dict[str]
+
+        Returns
+        -------
+        None
+        '''
         sponsor_metadata_record = super()._get_database_record(
             database_type='test_sponsor_metadata',
             user_id=user_id,

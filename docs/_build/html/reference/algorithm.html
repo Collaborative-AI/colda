@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -45,7 +46,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> colda
-            <img src="../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -69,9 +69,7 @@
 <li class="toctree-l2"><a class="reference internal" href="authorization.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="PI.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PI</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ShortPolling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ShortPolling</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="StopRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TestRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TrainRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a></li>
@@ -131,15 +129,15 @@
 }
 </style>
 <span class="target" id="module-colda.algorithm"></span><section id="algorithm-module">
-<h1><a class="reference internal" href="#module-colda.algorithm" title="colda.algorithm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code></a> Module<a class="headerlink" href="#algorithm-module" title="Permalink to this headline">¶</a></h1>
+<h1><a class="reference internal" href="#module-colda.algorithm" title="colda.algorithm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code></a> Module<a class="headerlink" href="#algorithm-module" title="Permalink to this heading">¶</a></h1>
 <p>The <a class="reference internal" href="#module-colda.algorithm" title="colda.algorithm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code></a> module provides a class with the same name which is
 used to represent a PIL image. The module also provides a number of factory
 functions, including functions to load images from files, and to create new
 images.</p>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <section id="train-and-save-the-model">
-<h3>Train and save the model<a class="headerlink" href="#train-and-save-the-model" title="Permalink to this headline">¶</a></h3>
+<h3>Train and save the model<a class="headerlink" href="#train-and-save-the-model" title="Permalink to this heading">¶</a></h3>
 <p>The following script generates a model based on the task_mode and model_name, then train the model
 and save the model at the desginated position.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">colda</span> <span class="kn">import</span> <span class="n">algorithm</span>
@@ -155,92 +153,7 @@ and save the model at the desginated position.</p>
 </section>
 </section>
 <section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.make_train_local">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">make_train_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/make_train_local.html#make_train_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.make_train_local" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.make_test_local">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">make_test_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/make_test_local.html#make_test_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.make_test_local" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.make_hash">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">make_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/make_hash.html#make_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.make_hash" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.save_match_id">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">save_match_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/save_match_id.html#save_match_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.save_match_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.make_match_idx">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">make_match_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/make_match_idx.html#make_match_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.make_match_idx" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.make_residual">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">make_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/make_residual.html#make_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.make_residual" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.save_residual">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">save_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/save_residual.html#save_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.save_residual" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.make_train">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">make_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/make_train.html#make_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.make_train" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.save_output">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">save_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/save_output.html#save_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.save_output" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.make_result">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">make_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/make_result.html#make_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.make_result" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.make_test">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">make_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/make_test.html#make_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.make_test" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.make_eval">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">make_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/make_eval.html#make_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.make_eval" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.makedir_exist_ok">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">makedir_exist_ok</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/utils.html#makedir_exist_ok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.makedir_exist_ok" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.save">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pickle'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/utils.html#save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.save" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.load">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pickle'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/utils.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.load" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.log">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/utils.html#log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.log" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.algorithm.parse_idx">
-<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">parse_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/algorithm/utils.html#parse_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.algorithm.parse_idx" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 

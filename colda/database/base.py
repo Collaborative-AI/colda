@@ -12,6 +12,9 @@ from colda.error import DictValueNotFound
 from colda.utils.dtypes.api import is_numpy
 
 from typeguard import typechecked
+
+
+#@typechecked
 class BaseDatabase:
     """
     Base class for Algorithm

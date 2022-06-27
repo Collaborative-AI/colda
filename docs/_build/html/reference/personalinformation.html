@@ -7,7 +7,7 @@
   
 <meta property="og:type" content="website" />
   
-<meta property="og:url" content="reference/PI.html" />
+<meta property="og:url" content="reference/personalinformation.html" />
   
 <meta property="og:description" content="The PI module contains a class of the same name to manage the personal information of current user. Classes:" />
   
@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -34,9 +35,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="error Module" href="error.html" />
-    <link rel="prev" title="network Module" href="network.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,7 +44,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> colda
-            <img src="../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,25 +53,9 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="authorization.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PI</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ShortPolling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ShortPolling</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="StopRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TestRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TrainRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code> Module</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
 </ul>
 
@@ -91,10 +73,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Reference</a> &raquo;</li>
       <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">PI</span></code> Module</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/reference/PI.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/reference/personalinformation.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -126,8 +107,8 @@
     text-align: unset;
 }
 </style>
-<span class="target" id="module-colda.PI"></span><section id="PI-module">
-<h1><a class="reference internal" href="#module-colda.PI" title="colda.PI"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PI</span></code></a> Module<a class="headerlink" href="#PI-module" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-colda.PI"></span><section id="pi-module">
+<h1><a class="reference internal" href="#module-colda.PI" title="colda.PI"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PI</span></code></a> Module<a class="headerlink" href="#pi-module" title="Permalink to this heading">¶</a></h1>
 <p>The <a class="reference internal" href="#module-colda.PI" title="colda.PI"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PI</span></code></a> module contains a class of the same name to
 manage the personal information of current user.</p>
 <div class="admonition note">
@@ -141,92 +122,14 @@ but they are all marked as “experimental.” Read that as you will. The
 <p>This method is experimental.</p>
 </div>
 <section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="colda.PI.PI">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.PI.</span></span><span class="sig-name descname"><span class="pre">PI</span></span><a class="reference internal" href="../_modules/colda/PI/PI.html#PI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.PI.PI" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py property">
-<dt class="sig sig-object py" id="colda.PI.PI.default_mode">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_mode</span></span><a class="headerlink" href="#colda.PI.PI.default_mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the default mode set by user from DB. The default mode is set to active at first.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The default mode set by user.</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="colda.PI.PI.exe_position">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exe_position</span></span><a class="headerlink" href="#colda.PI.PI.exe_position" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the path of the Algorithm entry point</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="colda.PI.PI.logout">
-<span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/PI/PI.html#PI.logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.PI.PI.logout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle user logout by setting the __default_mode and __user_id to None</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="colda.PI.PI.root">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root</span></span><a class="headerlink" href="#colda.PI.PI.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the root path of intermediate data storage</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The root path of intermediate data storage.</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="colda.PI.PI.user_id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#colda.PI.PI.user_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>get the user id of current user. The user id is set to None at first.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The user id of current user.</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="network.html" class="btn btn-neutral float-left" title="network Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="error.html" class="btn btn-neutral float-right" title="error Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

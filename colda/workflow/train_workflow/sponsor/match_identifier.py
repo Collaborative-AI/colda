@@ -4,21 +4,44 @@ import collections
 
 from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
 
-from colda.utils import(
-    ParseJson
-)
+from colda.pi.api import get_user_id
 
 from typing import Any
 
 from typeguard import typechecked
+
+
+#@typechecked
 class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
+    '''
+    Handle sponsor match identifier stage.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    train_sponsor_match_identifier
+    '''
 
     @classmethod
     def train_sponsor_match_identifier(
-            cls, train_id: str, train_id_dict: dict[str, Any]
-        ) -> None:
-        print('train_sponsor_match_identifier')
-        user_id = super()._get_user_id()
+        cls, train_id: str, train_id_dict: dict[str, Any]
+    ) -> None:
+        ''' 
+        Execute sponsor match identifier logic.
+
+        Parameters
+        ----------
+        train_id: str 
+        train_id_dict : dict[str, Any]
+
+        Returns
+        -------
+        None
+        '''
+        user_id = get_user_id()
 
         msgs = [
             "---- 3. Unread Match ID", 
@@ -156,7 +179,6 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             msgs=msg
         )
 
-        # residual_paths = make_residual_multiple_paths[2].split("?")
         assistor_random_id_to_residual_dict = {}
         for assistor_random_id in assistor_random_id_to_identifier_content_dict.keys():
             assistor_random_id_to_residual_dict[assistor_random_id] = residual_dict[assistor_random_id]

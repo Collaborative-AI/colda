@@ -26,6 +26,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/clipboard.min.js"></script>
         <script src="_static/copybutton.js"></script>
@@ -43,7 +44,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> colda
-            <img src="_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -108,15 +108,15 @@
 }
 </style>
 <section id="deprecations-and-removals">
-<span id="deprecations"></span><h1>Deprecations and removals<a class="headerlink" href="#deprecations-and-removals" title="Permalink to this headline">¶</a></h1>
+<span id="deprecations"></span><h1>Deprecations and removals<a class="headerlink" href="#deprecations-and-removals" title="Permalink to this heading">¶</a></h1>
 <p>This page lists Pillow features that are deprecated, or have been removed in
 past major releases, and gives the alternatives to use instead.</p>
 <section id="deprecated-features">
-<h2>Deprecated features<a class="headerlink" href="#deprecated-features" title="Permalink to this headline">¶</a></h2>
+<h2>Deprecated features<a class="headerlink" href="#deprecated-features" title="Permalink to this heading">¶</a></h2>
 <p>Below are features which are considered deprecated. Where appropriate,
 a <code class="docutils literal notranslate"><span class="pre">DeprecationWarning</span></code> is issued.</p>
 <section id="tk-tcl-8-4">
-<h3>Tk/Tcl 8.4<a class="headerlink" href="#tk-tcl-8-4" title="Permalink to this headline">¶</a></h3>
+<h3>Tk/Tcl 8.4<a class="headerlink" href="#tk-tcl-8-4" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 8.2.0.</span></p>
 </div>
@@ -124,7 +124,7 @@ a <code class="docutils literal notranslate"><span class="pre">DeprecationWarnin
 when Tk/Tcl 8.5 will be the minimum supported.</p>
 </section>
 <section id="categories">
-<h3>Categories<a class="headerlink" href="#categories" title="Permalink to this headline">¶</a></h3>
+<h3>Categories<a class="headerlink" href="#categories" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 8.2.0.</span></p>
 </div>
@@ -135,7 +135,7 @@ along with the related <code class="docutils literal notranslate"><span class="p
 <code class="docutils literal notranslate"><span class="pre">getattr(im,</span> <span class="pre">&quot;is_animated&quot;,</span> <span class="pre">False)</span></code> can be used instead.</p>
 </section>
 <section id="jpegimageplugin-convert-dict-qtables">
-<h3>JpegImagePlugin.convert_dict_qtables<a class="headerlink" href="#jpegimageplugin-convert-dict-qtables" title="Permalink to this headline">¶</a></h3>
+<h3>JpegImagePlugin.convert_dict_qtables<a class="headerlink" href="#jpegimageplugin-convert-dict-qtables" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 8.3.0.</span></p>
 </div>
@@ -145,7 +145,7 @@ performs any operations on the data given to it, has been deprecated and will be
 removed in Pillow 10.0.0 (2023-07-01).</p>
 </section>
 <section id="imagepalette-size-parameter">
-<h3>ImagePalette size parameter<a class="headerlink" href="#imagepalette-size-parameter" title="Permalink to this headline">¶</a></h3>
+<h3>ImagePalette size parameter<a class="headerlink" href="#imagepalette-size-parameter" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 8.4.0.</span></p>
 </div>
@@ -155,7 +155,7 @@ default, and the size parameter could be used to override that. Pillow 8.3.0 rem
 the default required length, also removing the need for the size parameter.</p>
 </section>
 <section id="imageshow-viewer-show-file-file-argument">
-<h3>ImageShow.Viewer.show_file file argument<a class="headerlink" href="#imageshow-viewer-show-file-file-argument" title="Permalink to this headline">¶</a></h3>
+<h3>ImageShow.Viewer.show_file file argument<a class="headerlink" href="#imageshow-viewer-show-file-file-argument" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 9.1.0.</span></p>
 </div>
@@ -167,7 +167,7 @@ deprecated and will be removed in Pillow 10.0.0 (2023-07-01). It has been replac
 <code class="docutils literal notranslate"><span class="pre">viewer.show_file(path=&quot;test.jpg&quot;)</span></code> instead.</p>
 </section>
 <section id="constants">
-<h3>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h3>
+<h3>Constants<a class="headerlink" href="#constants" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 9.2.0.</span></p>
 </div>
@@ -350,7 +350,7 @@ deprecated and will be removed in Pillow 10.0.0 (2023-07-01). It has been replac
 </table>
 </section>
 <section id="fitsstubimageplugin">
-<h3>FitsStubImagePlugin<a class="headerlink" href="#fitsstubimageplugin" title="Permalink to this headline">¶</a></h3>
+<h3>FitsStubImagePlugin<a class="headerlink" href="#fitsstubimageplugin" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 9.1.0.</span></p>
 </div>
@@ -360,11 +360,11 @@ Pillow 10.0.0 (2023-07-01). FITS images can be read without a handler through
 </section>
 </section>
 <section id="removed-features">
-<h2>Removed features<a class="headerlink" href="#removed-features" title="Permalink to this headline">¶</a></h2>
+<h2>Removed features<a class="headerlink" href="#removed-features" title="Permalink to this heading">¶</a></h2>
 <p>Deprecated features are only removed in major releases after an appropriate
 period of deprecation has passed.</p>
 <section id="pillow-version-constant">
-<h3>PILLOW_VERSION constant<a class="headerlink" href="#pillow-version-constant" title="Permalink to this headline">¶</a></h3>
+<h3>PILLOW_VERSION constant<a class="headerlink" href="#pillow-version-constant" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 5.2.0.</span></p>
 </div>
@@ -376,7 +376,7 @@ period of deprecation has passed.</p>
 to give projects more time to upgrade.</p>
 </section>
 <section id="image-show-command-parameter">
-<h3>Image.show command parameter<a class="headerlink" href="#image-show-command-parameter" title="Permalink to this headline">¶</a></h3>
+<h3>Image.show command parameter<a class="headerlink" href="#image-show-command-parameter" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 7.2.0.</span></p>
 </div>
@@ -387,7 +387,7 @@ to give projects more time to upgrade.</p>
 <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageShow.Viewer</span></code> instead.</p>
 </section>
 <section id="image-showxv">
-<h3>Image._showxv<a class="headerlink" href="#image-showxv" title="Permalink to this headline">¶</a></h3>
+<h3>Image._showxv<a class="headerlink" href="#image-showxv" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 7.2.0.</span></p>
 </div>
@@ -398,7 +398,7 @@ to give projects more time to upgrade.</p>
 <code class="xref py py-func docutils literal notranslate"><span class="pre">ImageShow.register()</span></code> to add a custom <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageShow.Viewer</span></code> class.</p>
 </section>
 <section id="imagefile-raise-ioerror">
-<h3>ImageFile.raise_ioerror<a class="headerlink" href="#imagefile-raise-ioerror" title="Permalink to this headline">¶</a></h3>
+<h3>ImageFile.raise_ioerror<a class="headerlink" href="#imagefile-raise-ioerror" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 7.2.0.</span></p>
 </div>
@@ -410,7 +410,7 @@ So, <code class="docutils literal notranslate"><span class="pre">ImageFile.raise
 Use <code class="docutils literal notranslate"><span class="pre">ImageFile.raise_oserror</span></code> instead.</p>
 </section>
 <section id="freetype-2-7">
-<h3>FreeType 2.7<a class="headerlink" href="#freetype-2-7" title="Permalink to this headline">¶</a></h3>
+<h3>FreeType 2.7<a class="headerlink" href="#freetype-2-7" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 8.1.0.</span></p>
 </div>
@@ -422,7 +422,7 @@ Use <code class="docutils literal notranslate"><span class="pre">ImageFile.raise
 vulnerability introduced in FreeType 2.6 (<a class="reference external" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-15999">CVE-2020-15999</a>).</p>
 </section>
 <section id="im-offset">
-<h3>im.offset<a class="headerlink" href="#im-offset" title="Permalink to this headline">¶</a></h3>
+<h3>im.offset<a class="headerlink" href="#im-offset" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 1.1.2.</span></p>
 </div>
@@ -436,7 +436,7 @@ an <code class="docutils literal notranslate"><span class="pre">Exception</span>
 and <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code> since 3.3.0.</p>
 </section>
 <section id="image-fromstring-im-fromstring-and-im-tostring">
-<h3>Image.fromstring, im.fromstring and im.tostring<a class="headerlink" href="#image-fromstring-im-fromstring-and-im-tostring" title="Permalink to this headline">¶</a></h3>
+<h3>Image.fromstring, im.fromstring and im.tostring<a class="headerlink" href="#image-fromstring-im-fromstring-and-im-tostring" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 2.0.0.</span></p>
 </div>
@@ -453,7 +453,7 @@ an <code class="docutils literal notranslate"><span class="pre">Exception</span>
 and <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code> since 3.3.0.</p>
 </section>
 <section id="imagecms-cmsprofile-attributes">
-<h3>ImageCms.CmsProfile attributes<a class="headerlink" href="#imagecms-cmsprofile-attributes" title="Permalink to this headline">¶</a></h3>
+<h3>ImageCms.CmsProfile attributes<a class="headerlink" href="#imagecms-cmsprofile-attributes" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 3.2.0.</span></p>
 </div>
@@ -498,7 +498,7 @@ they issued a <code class="docutils literal notranslate"><span class="pre">Depre
 </table>
 </section>
 <section id="python-2-7">
-<h3>Python 2.7<a class="headerlink" href="#python-2-7" title="Permalink to this headline">¶</a></h3>
+<h3>Python 2.7<a class="headerlink" href="#python-2-7" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 6.0.0.</span></p>
 </div>
@@ -509,7 +509,7 @@ they issued a <code class="docutils literal notranslate"><span class="pre">Depre
 support Python 2.</p>
 </section>
 <section id="image-del">
-<h3>Image.__del__<a class="headerlink" href="#image-del" title="Permalink to this headline">¶</a></h3>
+<h3>Image.__del__<a class="headerlink" href="#image-del" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 6.1.0.</span></p>
 </div>
@@ -531,7 +531,7 @@ deterministic way.</p>
 </div>
 </section>
 <section id="pil-imageplugin-version-attributes">
-<h3>PIL.*ImagePlugin.__version__ attributes<a class="headerlink" href="#pil-imageplugin-version-attributes" title="Permalink to this headline">¶</a></h3>
+<h3>PIL.*ImagePlugin.__version__ attributes<a class="headerlink" href="#pil-imageplugin-version-attributes" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 6.0.0.</span></p>
 </div>
@@ -605,7 +605,7 @@ instead.</p>
 </table>
 </section>
 <section id="pyqt4-and-pyside">
-<h3>PyQt4 and PySide<a class="headerlink" href="#pyqt4-and-pyside" title="Permalink to this headline">¶</a></h3>
+<h3>PyQt4 and PySide<a class="headerlink" href="#pyqt4-and-pyside" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 6.0.0.</span></p>
 </div>
@@ -618,7 +618,7 @@ instead.</p>
 or PySide2.</p>
 </section>
 <section id="setting-the-size-of-tiff-images">
-<h3>Setting the size of TIFF images<a class="headerlink" href="#setting-the-size-of-tiff-images" title="Permalink to this headline">¶</a></h3>
+<h3>Setting the size of TIFF images<a class="headerlink" href="#setting-the-size-of-tiff-images" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 5.3.0.</span></p>
 </div>
@@ -629,7 +629,7 @@ or PySide2.</p>
 an error. Use <code class="docutils literal notranslate"><span class="pre">Image.resize</span></code> instead.</p>
 </section>
 <section id="version-constant">
-<h3>VERSION constant<a class="headerlink" href="#version-constant" title="Permalink to this headline">¶</a></h3>
+<h3>VERSION constant<a class="headerlink" href="#version-constant" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 5.2.0.</span></p>
 </div>
@@ -640,7 +640,7 @@ an error. Use <code class="docutils literal notranslate"><span class="pre">Image
 <code class="docutils literal notranslate"><span class="pre">__version__</span></code> instead.</p>
 </section>
 <section id="undocumented-imageops-functions">
-<h3>Undocumented ImageOps functions<a class="headerlink" href="#undocumented-imageops-functions" title="Permalink to this headline">¶</a></h3>
+<h3>Undocumented ImageOps functions<a class="headerlink" href="#undocumented-imageops-functions" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 4.3.0.</span></p>
 </div>
@@ -679,7 +679,7 @@ in <code class="docutils literal notranslate"><span class="pre">ImageFilter</spa
 </table>
 </section>
 <section id="pil-olefileio">
-<h3>PIL.OleFileIO<a class="headerlink" href="#pil-olefileio" title="Permalink to this headline">¶</a></h3>
+<h3>PIL.OleFileIO<a class="headerlink" href="#pil-olefileio" title="Permalink to this heading">¶</a></h3>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 4.0.0.</span></p>
 </div>

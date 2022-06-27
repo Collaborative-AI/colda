@@ -8,6 +8,8 @@ from colda.utils import(
     ParseJson
 )
 
+from colda.pi.api import get_user_id
+
 from colda.workflow.utils import (
     obtain_notification_information
 )
@@ -19,15 +21,38 @@ from typeguard import typechecked
 
 #@typechecked
 class TrainSponsorSituation(TrainBaseWorkflow):
+    '''
+    Handle sponsor train situation logic
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    train_sponsor_situation
+    '''
+
     __role = 'sponsor'
 
     @classmethod
     def train_sponsor_situation(
-            cls, train_id: str, train_id_dict: dict[str, Any]
-        ) -> None:
+        cls, train_id: str, train_id_dict: dict[str, Any]
+    ) -> None:
+        ''' 
+        Execute sponsor train situation logic.
 
-        user_id = super()._get_user_id()
-        sender_random_id, role, cur_rounds_num = obtain_notification_information(
+        Parameters
+        ----------
+        train_id: str 
+        train_id_dict : dict[str, Any]
+
+        Returns
+        -------
+        None
+        '''
+        user_id = get_user_id()
+        _, _, cur_rounds_num = obtain_notification_information(
             notification_dict=train_id_dict
         )
 

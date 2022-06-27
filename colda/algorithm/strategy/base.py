@@ -10,7 +10,7 @@ from colda.algorithm.common_stage.api import (
 
 from typing import Callable
 
-from colda.algorithm.dp import DP
+from colda.algorithm.strategy.utils import algorithm_process
 
 from typeguard import typechecked
 
@@ -39,34 +39,7 @@ class BaseAlgorithmStrategy:
     '''
 
     @final
-    def algorithm_process(
-        self, 
-        func: Callable, 
-        **kwargs
-    ) -> Serializable_Datatype:
-        '''
-        1. Process the input that pass into
-        all the algorithm methods. Mainly change
-        list to np.array
-        2. Process the output that generated from
-        all the algorithm methods. Mainly change
-        np.array to list
-
-        Parameters
-        ----------
-        func : Callable
-        **kwargs : Any
-
-        Returns
-        -------
-        JSONType
-        '''
-        kwargs = DP.process_input(**kwargs)
-        res = func(**kwargs)  
-        res = DP.process_output(res)
-        return res
-
-    @final
+    @algorithm_process
     def make_hash(self, **kwargs) -> list:
         '''
         Common stage algo
@@ -81,9 +54,10 @@ class BaseAlgorithmStrategy:
         -------
         list
         '''
-        return self.algorithm_process(MakeHash.make_hash, **kwargs)
+        return MakeHash.make_hash(**kwargs)
 
     @final
+    @algorithm_process
     def make_match_idx(self, **kwargs) -> list:
         '''
         Common stage algo
@@ -99,4 +73,4 @@ class BaseAlgorithmStrategy:
         -------
         list
         '''
-        return self.algorithm_process(MakeMatchIdx.make_match_idx, **kwargs)
+        return MakeMatchIdx.make_match_idx(**kwargs)

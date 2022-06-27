@@ -4,6 +4,8 @@ from colda.algorithm.strategy.base import BaseAlgorithmStrategy
 
 from colda.algorithm.strategy.abstract_algorithm_strategy import AbstractTestAlgorithmStrategy
 
+from colda.algorithm.strategy.utils import algorithm_process
+
 from colda.algorithm.test_stage.api import MakeTestLocal
 
 from colda.algorithm.custom.api import GetTestFixedParameter
@@ -84,6 +86,7 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
         '''
         self.__test_custom = test_custom
 
+    @algorithm_process
     def make_test_local(
         self, **kwargs
     ) -> list:
@@ -98,8 +101,9 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
         -------
         list
         '''
-        return self.algorithm_process(MakeTestLocal.make_test_local, **kwargs)
+        return MakeTestLocal.make_test_local(**kwargs)
 
+    @algorithm_process
     def make_test(
         self, **kwargs
     ) -> list:
@@ -114,8 +118,9 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
         -------
         list
         '''
-        return self.algorithm_process(self.__test_custom.make_test, **kwargs)
+        return self.__test_custom.make_test(**kwargs)
 
+    @algorithm_process
     def make_eval(
         self, **kwargs
     ) -> list:
@@ -130,4 +135,4 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
         -------
         list
         '''
-        return self.algorithm_process(self.__test_custom.make_eval, **kwargs)
+        return self.__test_custom.make_eval(**kwargs)

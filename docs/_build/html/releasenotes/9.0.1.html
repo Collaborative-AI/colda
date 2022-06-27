@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -43,7 +44,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> colda
-            <img src="../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -108,9 +108,9 @@
 }
 </style>
 <section id="id1">
-<h1>9.0.1<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1>9.0.1<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <section id="security">
-<h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
+<h2>Security<a class="headerlink" href="#security" title="Permalink to this heading">¶</a></h2>
 <p>This release addresses several security problems.</p>
 <p><a class="reference external" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24303">CVE-2022-24303</a>: If the path to the temporary directory on Linux or macOS
 contained a space, this would break removal of the temporary image file after
@@ -121,7 +121,7 @@ has been present since PIL.</p>
 expressions. These are now also restricted.</p>
 </section>
 <section id="other-changes">
-<h2>Other Changes<a class="headerlink" href="#other-changes" title="Permalink to this headline">¶</a></h2>
+<h2>Other Changes<a class="headerlink" href="#other-changes" title="Permalink to this heading">¶</a></h2>
 <p>Pillow 9.0 added support for <code class="docutils literal notranslate"><span class="pre">xdg-open</span></code> as an image viewer, but there have been
 reports that the temporary image file was removed too quickly to be loaded into the
 final application. A delay has been added.</p>

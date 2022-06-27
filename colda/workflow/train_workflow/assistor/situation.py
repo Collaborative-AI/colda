@@ -7,6 +7,8 @@ from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
 
 from colda.workflow.utils import obtain_notification_information
 
+from colda.pi.api import get_user_id
+
 from typing import Any
 
 from typeguard import typechecked
@@ -14,13 +16,38 @@ from typeguard import typechecked
 
 #@typechecked
 class TrainAssistorSituation(TrainBaseWorkflow):
+    '''
+    Handle train assistor situation stage.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    train_assistor_situation
+    '''
 
     @classmethod
     def train_assistor_situation(
         cls, train_id: str, train_id_dict: dict[str, Any]
     ) -> None:
+        ''' 
+        Execute train assistor situation logic.
+        1. Assistor get training target from sponsor
+        2. Assistor trains the model
+        3. Assistor sends the model output back to sponsor
 
-        user_id = super()._get_user_id()
+        Parameters
+        ----------
+        train_id: str 
+        train_id_dict : dict[str, Any]
+
+        Returns
+        -------
+        None
+        '''
+        user_id = get_user_id()
         sender_random_id, role, cur_rounds_num = obtain_notification_information(
             notification_dict=train_id_dict
         )
@@ -79,20 +106,25 @@ class TrainAssistorSituation(TrainBaseWorkflow):
         sender_random_id: str, 
         situation_content: Any
     ) -> None:
-        
-        """
-        Handle the timing issue of unread situation of assistor.
+        ''' 
+        Function to avoid async case.
+        When assistor gets the situation content sent
+        by sponsor, the assistor may not complete its
+        match identifier stage. We need to wait till
+        the matching stage complete.
 
-        :param train_id: String. The task needed to be handled.
-        :param rounds: Integer. Current round.
-        :param train_file_path: String. The file path of train file
-        :param train_data_column: String. The selected data column of train file
+        Parameters
+        ----------
+        user_id : str
+        train_id : str
+        rounds : int
+        sender_random_id : str
+        situation_content : Any
 
-        :returns: None
-
-        :exception OSError: Placeholder.
-        """
-        
+        Returns
+        -------
+        None
+        '''
         train_assistor_metadata = super()._get_database_record(
             database_type='train_assistor_metadata',
             user_id=user_id,

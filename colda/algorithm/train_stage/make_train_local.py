@@ -26,8 +26,8 @@ from typeguard import typechecked
 
 class MakeTrainLocal(BaseAlgorithm):
     '''
-    Train model locally and get
-    its performance
+    Sponsor train model locally(only use its dataset) 
+    and get its performance
 
     Attributes
     ----------

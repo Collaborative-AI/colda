@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -35,8 +36,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ShortPolling Module" href="ShortPolling.html" />
-    <link rel="prev" title="PI Module" href="PI.html" /> 
+    <link rel="next" title="StopRequest Module" href="StopRequest.html" />
+    <link rel="prev" title="network Module" href="network.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,7 +46,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> colda
-            <img src="../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -62,12 +62,10 @@
 <li class="toctree-l2"><a class="reference internal" href="authorization.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="PI.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PI</span></code> Module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="ShortPolling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ShortPolling</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="StopRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TestRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TrainRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a></li>
@@ -127,7 +125,7 @@
 }
 </style>
 <span class="target" id="module-colda.error"></span><section id="error-module">
-<h1><a class="reference internal" href="#module-colda.error" title="colda.error"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code></a> Module<a class="headerlink" href="#error-module" title="Permalink to this headline">¶</a></h1>
+<h1><a class="reference internal" href="#module-colda.error" title="colda.error"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code></a> Module<a class="headerlink" href="#error-module" title="Permalink to this heading">¶</a></h1>
 <p>The <a class="reference internal" href="#module-colda.error" title="colda.error"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code></a> module contains some methods to handle exceptions.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -140,26 +138,7 @@ but they are all marked as “experimental.” Read that as you will. The
 <p>This method is experimental.</p>
 </div>
 <section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="colda.error.check_Algorithm_return_value">
-<span class="sig-prename descclassname"><span class="pre">colda.error.</span></span><span class="sig-name descname"><span class="pre">check_Algorithm_return_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/error.html#check_Algorithm_return_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.error.check_Algorithm_return_value" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>first_val</strong> – String. The first val needs to check.</p></li>
-<li><p><strong>second_val</strong> – String. The second val needs to check.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Boolean</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -167,8 +146,8 @@ but they are all marked as “experimental.” Read that as you will. The
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="PI.html" class="btn btn-neutral float-left" title="PI Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="ShortPolling.html" class="btn btn-neutral float-right" title="ShortPolling Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="network.html" class="btn btn-neutral float-left" title="network Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="StopRequest.html" class="btn btn-neutral float-right" title="StopRequest Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

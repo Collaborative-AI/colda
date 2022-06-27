@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -35,7 +36,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PI Module" href="PI.html" />
+    <link rel="next" title="error Module" href="error.html" />
     <link rel="prev" title="database Module" href="database.html" /> 
 </head>
 
@@ -45,7 +46,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> colda
-            <img src="../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -65,9 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="PI.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PI</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ShortPolling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ShortPolling</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="StopRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TestRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TrainRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a></li>
@@ -127,7 +125,7 @@
 }
 </style>
 <span class="target" id="module-colda.network"></span><section id="network-module">
-<h1><a class="reference internal" href="#module-colda.network" title="colda.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code></a> Module<a class="headerlink" href="#network-module" title="Permalink to this headline">¶</a></h1>
+<h1><a class="reference internal" href="#module-colda.network" title="colda.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code></a> Module<a class="headerlink" href="#network-module" title="Permalink to this heading">¶</a></h1>
 <p>The <a class="reference internal" href="#module-colda.network" title="colda.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code></a> module contains a class of the same name to
 manage the network issue.</p>
 <div class="admonition note">
@@ -141,54 +139,7 @@ but they are all marked as “experimental.” Read that as you will. The
 <p>This method is experimental.</p>
 </div>
 <section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="colda.network.Network">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.network.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><a class="reference internal" href="../_modules/colda/network/Network.html#Network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.network.Network" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py property">
-<dt class="sig sig-object py" id="colda.network.Network.base_url">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">base_url</span></span><a class="headerlink" href="#colda.network.Network.base_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get base url that is the ipv4 address of AWS server and return base url</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>base url, a string of server ipv4 address</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="colda.network.Network.logout">
-<span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/network/Network.html#Network.logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.network.Network.logout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle user logout by setting the __token to None</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="colda.network.Network.token">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#colda.network.Network.token" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the token</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>token - string.</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -197,7 +148,7 @@ but they are all marked as “experimental.” Read that as you will. The
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="database.html" class="btn btn-neutral float-left" title="database Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="PI.html" class="btn btn-neutral float-right" title="PI Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="error.html" class="btn btn-neutral float-right" title="error Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

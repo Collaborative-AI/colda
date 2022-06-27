@@ -4,6 +4,8 @@ from colda.algorithm.strategy.base import BaseAlgorithmStrategy
 
 from colda.algorithm.strategy.abstract_algorithm_strategy import AbstractTrainAlgorithmStrategy
 
+from colda.algorithm.strategy.utils import algorithm_process
+
 from colda.algorithm.train_stage.api import (
     MakeResidual,
     MakeTrainLocal,
@@ -89,35 +91,39 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
         '''
         self.__train_custom = train_custom
 
+    @algorithm_process
     def make_train_local(
         self, **kwargs
     ) -> None:
         '''
         strategy interface
         '''
-        return self.algorithm_process(MakeTrainLocal.make_train_local, **kwargs)
+        return MakeTrainLocal.make_train_local(**kwargs)
     
+    @algorithm_process
     def make_residual(
         self, **kwargs
     ) -> None:
         '''
         strategy interface
         '''
-        return self.algorithm_process(MakeResidual.make_residual, **kwargs)
+        return MakeResidual.make_residual(**kwargs)
     
+    @algorithm_process
     def make_train(
         self, **kwargs
     ) -> None:
         '''
         strategy interface
         '''
-        return self.algorithm_process(self.__train_custom.make_train, **kwargs)
+        return self.__train_custom.make_train(**kwargs)
 
+    @algorithm_process
     def make_result(
         self, **kwargs
     ) -> None:
         '''
         strategy interface
         '''
-        return self.algorithm_process(self.__train_custom.make_result, **kwargs)
+        return self.__train_custom.make_result(**kwargs)
 

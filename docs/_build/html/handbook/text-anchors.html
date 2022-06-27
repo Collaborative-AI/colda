@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -43,7 +44,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> colda
-            <img src="../_static/colda.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -108,14 +108,14 @@
 }
 </style>
 <section id="text-anchors">
-<span id="id1"></span><h1>Text anchors<a class="headerlink" href="#text-anchors" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Text anchors<a class="headerlink" href="#text-anchors" title="Permalink to this heading">¶</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">anchor</span></code> parameter determines the alignment of drawn text relative to the <code class="docutils literal notranslate"><span class="pre">xy</span></code> parameter.
 The default alignment is top left, specifically <code class="docutils literal notranslate"><span class="pre">la</span></code> (left-ascender) for horizontal text
 and <code class="docutils literal notranslate"><span class="pre">lt</span></code> (left-top) for vertical text.</p>
 <p>This parameter is only supported by OpenType/TrueType fonts.
 Other fonts may ignore the parameter and use the default (top left) alignment.</p>
 <section id="specifying-an-anchor">
-<h2>Specifying an anchor<a class="headerlink" href="#specifying-an-anchor" title="Permalink to this headline">¶</a></h2>
+<h2>Specifying an anchor<a class="headerlink" href="#specifying-an-anchor" title="Permalink to this heading">¶</a></h2>
 <p>An anchor is specified with a two-character string. The first character is the
 horizontal alignment, the second character is the vertical alignment.
 For example, the default value of <code class="docutils literal notranslate"><span class="pre">la</span></code> for horizontal text means left-ascender
@@ -142,10 +142,10 @@ the text will be placed such that the specified anchor point is at the <code cla
 </div>
 </section>
 <section id="quick-reference">
-<h2>Quick reference<a class="headerlink" href="#quick-reference" title="Permalink to this headline">¶</a></h2>
+<h2>Quick reference<a class="headerlink" href="#quick-reference" title="Permalink to this heading">¶</a></h2>
 <img alt="Horizontal text" class="align-center" src="../_images/anchor_horizontal.svg" /><img alt="Vertical text" class="align-center" src="../_images/anchor_vertical.svg" /></section>
 <section id="horizontal-anchor-alignment">
-<h2>Horizontal anchor alignment<a class="headerlink" href="#horizontal-anchor-alignment" title="Permalink to this headline">¶</a></h2>
+<h2>Horizontal anchor alignment<a class="headerlink" href="#horizontal-anchor-alignment" title="Permalink to this heading">¶</a></h2>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">l</span></code> — left</dt><dd><p>Anchor is to the left of the text.</p>
 <p>For <em>horizontal</em> text this is the origin of the first glyph, as shown in the <a class="reference external" href="https://freetype.org/freetype2/docs/tutorial/step2.html">FreeType tutorial</a>.</p>
@@ -165,7 +165,7 @@ as it does not change based on the specific glyphs of the given text
 </dl>
 </section>
 <section id="vertical-anchor-alignment">
-<h2>Vertical anchor alignment<a class="headerlink" href="#vertical-anchor-alignment" title="Permalink to this headline">¶</a></h2>
+<h2>Vertical anchor alignment<a class="headerlink" href="#vertical-anchor-alignment" title="Permalink to this heading">¶</a></h2>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">a</span></code> — ascender / top <em>(horizontal text only)</em></dt><dd><p>Anchor is at the ascender line (top) of the first line of text, as defined by the font.</p>
 <p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Typeface#Font_metrics">Font metrics on Wikipedia</a> for more information.</p>
@@ -192,7 +192,7 @@ as it does not change based on the specific glyphs of the given text.</p>
 </dl>
 </section>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <p>The following image shows several examples of anchors for horizontal text.
 In each section the <code class="docutils literal notranslate"><span class="pre">xy</span></code> parameter was set to the center shown by the intersection
 of the two lines.</p>

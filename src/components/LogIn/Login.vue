@@ -128,7 +128,7 @@ export default {
                 'password': vm.loginForm.password
                 }
             }).then((response) => {
-                console.log('4321', this.$route,this.exe_position)
+                // console.log('4321', this.$route,this.exe_position)
                 // handle success
                 if (response.data == 'not verify email yet'){
                     // this.$router.push({path: '/resend', query: {'username': this.loginForm.username}})
@@ -138,7 +138,10 @@ export default {
                 } else{
                     console.log('token is' ,response.data.token)
                     window.localStorage.setItem('Apollo-token', response.data.token)
-                    console.log('user id is', vm.$store.state.user_id);
+                    // console.log('store user id is', vm.$store.state.user_id);
+                    let user_id = JSON.parse(atob(window.localStorage.getItem('Apollo-token').split('.')[1])).user_id
+                    vm.$store.state.user_id = user_id
+
                     // store.loginAction()
 
                     // const name = JSON.parse(atob(response.data.token.split('.')[1])).name
@@ -173,6 +176,5 @@ export default {
         }
     }
 }
-
 
 </script>

@@ -38,7 +38,8 @@ export default {
 
   },
   created() {
-    const user_id = this.sharedState.user_id
+    let user_id = this.sharedState.user_id
+    console.log('dash user id is', user_id);
     this.getUser(user_id)
   }
 

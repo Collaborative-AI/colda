@@ -157,4 +157,8 @@ class database_strategy_interface():
         return self._database_strategy.search_database(user_id, Database_class_instance)
 
 
+x. 
+pipenv install package_name
+pipenv uninstall package_name clean
 
+pipenv install --dev package_name

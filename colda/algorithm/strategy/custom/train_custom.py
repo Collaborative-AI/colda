@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from colda.algorithm.test_stage import (
-    MakeTest,
-    MakeEval
+from colda.algorithm.train_stage.api import (
+    MakeTrain,
+    MakeResult
 )
 
 from typing import Callable
@@ -12,10 +12,10 @@ from typing import Callable
 from typeguard import typechecked
 
 
-class AbstractTestCustom(ABC):
+class AbstractTrainCustom(ABC):
     '''
     Abstract class for the custom part of
-    test algorithm
+    train algorithm
 
     Parameters
     ----------
@@ -28,18 +28,18 @@ class AbstractTestCustom(ABC):
 
     @classmethod
     @abstractmethod
-    def make_test(cls, **kwargs):
+    def make_train(cls, **kwargs):
         pass
-
+    
     @classmethod
     @abstractmethod
-    def make_eval(cls, **kwargs):
+    def make_result(cls, **kwargs):
         pass
 
 
-class TestFixedParameter(AbstractTestCustom):
+class TrainFixedParameter(AbstractTrainCustom):
     '''
-    Fix learning rate in the make_test and make_eval stage
+    Fix learning rate in the make_train and make_result stage
 
     Attributes
     ----------
@@ -47,16 +47,16 @@ class TestFixedParameter(AbstractTestCustom):
 
     Methods
     -------
-    make_test
-    make_eval
+    make_train
+    make_result
     '''
 
     @classmethod
-    def make_test(
+    def make_train(
         cls, **kwargs
     ) -> None:
         '''
-        Call MakeTest.make_test
+        Call MakeTrain.make_train
         
         Parameters
         ----------
@@ -66,14 +66,14 @@ class TestFixedParameter(AbstractTestCustom):
         -------
         None
         '''
-        return MakeTest.make_test(**kwargs)
+        return MakeTrain.make_train(**kwargs)
     
     @classmethod
-    def make_eval(
+    def make_result(
         cls, **kwargs
     ) -> None:
         '''
-        Call MakeEval.make_eval
+        Call MakeResult.make_result
         
         Parameters
         ----------
@@ -83,13 +83,13 @@ class TestFixedParameter(AbstractTestCustom):
         -------
         None
         '''
-        return MakeEval.make_eval(**kwargs)
+        return MakeResult.make_result(**kwargs)
 
 
-class TestOptimizedParameter(AbstractTestCustom):
+class TrainOptimizedParameter(AbstractTrainCustom):
     '''
-    Learnable learning rate in the make_test 
-    and make_eval stage
+    Learnable learning rate in the make_train 
+    and make_result stage
 
     Attributes
     ----------
@@ -97,16 +97,16 @@ class TestOptimizedParameter(AbstractTestCustom):
 
     Methods
     -------
-    make_test
-    make_eval
+    make_train
+    make_result
     '''
 
     @classmethod
-    def make_test(
+    def make_train(
         cls, **kwargs
     ) -> None:
         '''
-        Call MakeTest.make_test
+        Call MakeTrain.make_train
         
         Parameters
         ----------
@@ -116,14 +116,12 @@ class TestOptimizedParameter(AbstractTestCustom):
         -------
         None
         '''
-        return MakeTest.make_test(**kwargs)
+        return MakeTrain.make_train(**kwargs)
     
     @classmethod
-    def make_eval(
-        cls, **kwargs
-    ) -> None:
+    def make_result(cls, **kwargs):
         '''
-        Call MakeEval.make_eval
+        Call MakeResult.make_result
         
         Parameters
         ----------
@@ -133,13 +131,13 @@ class TestOptimizedParameter(AbstractTestCustom):
         -------
         None
         '''
-        return MakeEval.make_eval(**kwargs)
+        return MakeResult.make_result(**kwargs)
 
 
-class TestOwnFunction(AbstractTestCustom):
+class TrainOwnFunction(AbstractTrainCustom):
     '''
-    Custom testing algo in the make_test 
-    and make_eval stage
+    Custom testing algo in the make_train 
+    and make_result stage
 
     Attributes
     ----------
@@ -147,8 +145,8 @@ class TestOwnFunction(AbstractTestCustom):
 
     Methods
     -------
-    make_test
-    make_eval
+    make_train
+    make_result
     '''
     __OwnFunction = None
 
@@ -161,13 +159,26 @@ class TestOwnFunction(AbstractTestCustom):
         cls, OwnFunction: dict[str, Callable]
     ) -> None:
         cls.__OwnFunction = OwnFunction
+
+    @classmethod
+    def make_train(cls, **kwargs):
+        '''
+        Call OwnFunction['MakeTrain']
+        
+        Parameters
+        ----------
+        **kwargs : Any
+
+        Returns
+        -------
+        None
+        '''
+        return cls.OwnFunction['MakeTrain'](**kwargs)
     
     @classmethod
-    def make_test(
-        cls, **kwargs
-    ) -> None:
+    def make_result(cls, **kwargs):
         '''
-        Call OwnFunction['MakeTest']
+        Call OwnFunction['MakeResult']
         
         Parameters
         ----------
@@ -177,22 +188,6 @@ class TestOwnFunction(AbstractTestCustom):
         -------
         None
         '''
-        return cls.OwnFunction['MakeTest'](**kwargs)
+        return cls.OwnFunction['MakeResult'](**kwargs)
 
-    @classmethod    
-    def make_eval(
-        cls, **kwargs
-    ) -> None:
-        '''
-        Call OwnFunction['MakeEval']
-        
-        Parameters
-        ----------
-        **kwargs : Any
-
-        Returns
-        -------
-        None
-        '''
-        return cls.OwnFunction['MakeEval'](**kwargs)
         

@@ -6,10 +6,6 @@ from colda.utils.log.base import BaseLog
 
 from colda.utils.log.abstract_log import AbstractLog
 
-from colda.utils.utils import (
-    to_string,
-)
-
 from colda.utils.dict_helper import DictHelper
 
 from colda.utils.dtypes.api import (
@@ -83,29 +79,14 @@ class WorkflowLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_unique_dict_key(user_id, task_id)
+        key = DictHelper.generate_dict_key(user_id, task_id)
 
-        if is_list(msgs):
-            for msg in msgs:
-                msg_str = to_string(msg)
-                DictHelper.store_value(
-                    key=key,
-                    value=msg_str,
-                    container=self.__workflow_log,
-                    store_type='append'
-                )
-        elif is_dict_like(msgs):
-            DictHelper.store_value(
-                key=key,
-                value=msgs,
-                container=self.__workflow_log,
-                store_type='append'
-            )
-        else:
-            '''
-            error
-            '''
-
+        DictHelper.store_value(
+            key=key,
+            value=msgs,
+            container=self.__workflow_log,
+            store_type='append'
+        )
         return 
 
     def get_log(
@@ -126,7 +107,7 @@ class WorkflowLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_unique_dict_key(
+        key = DictHelper.generate_dict_key(
             user_id=user_id, 
             task_id=task_id
         )

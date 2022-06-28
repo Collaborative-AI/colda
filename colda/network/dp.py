@@ -4,8 +4,6 @@ import json
 
 from colda.error import StatusCodeError
 
-from colda.network.utils import load_json
-
 from typing import (
     Union,
     Any

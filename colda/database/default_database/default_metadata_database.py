@@ -6,7 +6,7 @@ from colda.database.base import BaseDatabase
 
 from colda.database.abstract_database import AbstractMetadataDatabase
 
-from colda.utils import DictHelper
+from colda.utils.api import DictHelper
 
 from typing import Any
 
@@ -113,7 +113,9 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        key = user_id
+        key = DictHelper.generate_dict_key(
+            user_id=user_id, 
+        )  
         value = {
             'default_mode': default_mode,
             'default_task_mode': default_task_mode,
@@ -122,17 +124,17 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             'default_id_column': default_id_column,
             'default_data_column': default_data_column,
         }
-        store_res = DictHelper.store_value(
+        DictHelper.store_value(
             key=key,
             value=value,
             container=self.__temp_database,
-            store_type='multiple_access'
+            store_type='store_multiple'
         )
-
-        if store_res == True:
-            return f'{self.__class__.__name__} stores {key} successfully!' 
-        else:
-            return store_res
+        return
+        # if store_res == True:
+        #     return f'{self.__class__.__name__} stores {key} successfully!' 
+        # else:
+        #     return store_res
 
     def get_record(
         self, user_id: str
@@ -149,9 +151,9 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        key = user_id
-        if key not in self.__temp_database:
-            print(f'{self.__class__.__name__} does not contain the record')
+        key = DictHelper.generate_dict_key(
+            user_id=user_id, 
+        )  
 
         default_metadata = DictHelper.get_value(
             key=key,

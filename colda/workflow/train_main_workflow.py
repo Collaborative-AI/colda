@@ -6,14 +6,14 @@ from colda.workflow.utils import (
     obtain_notification_information
 )
 
-from colda.workflow.train_workflow.sponsor import (
+from colda.workflow.train_workflow.sponsor.api import (
     TrainSponsorFindAssistor,
     TrainSponsorMatchIdentifier,
     TrainSponsorSituation,
     TrainSponsorOutput
 )
 
-from colda.workflow.train_workflow.assistor import (
+from colda.workflow.train_workflow.assistor.api import (
     TrainAssistorRequest,
     TrainAssistorMatchIdentifier,
     TrainAssistorSituation

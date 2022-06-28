@@ -25,8 +25,8 @@ DictKey = TypeVar('DictKey', List[Hashable], Hashable)
 DictValue = TypeVar("DictValue", bound=Any)
 Dict_Store_Type = Literal[
     'append', 
-    'one_access',
-    'multiple_access'
+    'store_once',
+    'store_multiple'
 ]
 
 Train_Database_Type = Literal[
@@ -92,7 +92,12 @@ Serializable_Datatype = Union[
     None,
 ]
 
-Stage = [
+Stage = Literal[
     'train',
     'test'
+]
+
+Parse_Mode = Literal[
+    'get',
+    'store'
 ]

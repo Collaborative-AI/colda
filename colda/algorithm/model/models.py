@@ -38,7 +38,7 @@ from colda._typing import (
 )
 
 
-class Model:
+class Model(BaseModel):
     def __init__(self, task_mode, model_name, model=None):
         self.task_mode = task_mode
         self.model_name = model_name

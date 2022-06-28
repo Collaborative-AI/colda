@@ -6,7 +6,8 @@ from colda.database.base import BaseDatabase
 
 from colda.database.abstract_database import AbstractAlgorithmDatabase
 
-from colda.utils import DictHelper
+from colda.utils.api import DictHelper
+
 from colda._typing import (
     Task_Mode,
     Model_Name,
@@ -98,20 +99,25 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_unique_dict_key(user_id, train_id, algorithm_data_name)
+        key = DictHelper.generate_dict_key(
+            user_id=user_id, 
+            task_id=train_id,
+            supplement_key=algorithm_data_name
+        )
         temp_key = str(key)
 
-        store_res = DictHelper.store_value(
+        DictHelper.store_value(
             key=key,
             value=algorithm_data,
             container=self.__temp_database,
-            store_type='multiple_access'
+            store_type='store_multiple'
         )
-        if store_res == True:
-            return f'{self.__class__.__name__} stores {temp_key} successfully!' 
-        else:
-            return store_res
-    
+        # if store_res == True:
+        #     return f'{self.__class__.__name__} stores {temp_key} successfully!' 
+        # else:
+        #     return store_res
+        return
+
     def get_record(
         self, 
         user_id: str, 
@@ -134,18 +140,21 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         if not train_id:
             raise RuntimeError('Use train_id to retrieve User_Assistor_Table')
             
-        key = DictHelper.generate_unique_dict_key(user_id, train_id, algorithm_data_name)
-
+        key = DictHelper.generate_dict_key(
+            user_id=user_id, 
+            task_id=train_id,
+            supplement_key=algorithm_data_name
+        )
         algorithm_data = DictHelper.get_value(
             key=key,
             container=self.__temp_database
         )
         
-        if not super().if_db_response_valid(
-            algorithm_data, 
-        ):
-            print(f'{self.__class__.__name__} does not contain the record')
-            return super().dict_value_not_found()
+        # if not super().if_db_response_valid(
+        #     algorithm_data, 
+        # ):
+        #     print(f'{self.__class__.__name__} does not contain the record')
+        #     return super().dict_value_not_found()
 
         return algorithm_data
        

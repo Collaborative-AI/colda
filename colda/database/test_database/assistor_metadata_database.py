@@ -6,7 +6,7 @@ from colda.database.base import BaseDatabase
 
 from colda.database.abstract_database import AbstractMetadataDatabase
 
-from colda.utils.dict_helper import DictHelper
+from colda.utils.api import DictHelper
 
 from colda._typing import (
     Task_Mode,
@@ -109,7 +109,10 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_unique_dict_key(user_id, test_id)
+        key = DictHelper.generate_dict_key(
+            user_id=user_id, 
+            task_id=test_id
+        )
         temp_key = str(key)
 
         value = {
@@ -124,16 +127,17 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             'test_name': test_name,
             'test_description': test_description
         }
-        store_res = DictHelper.store_value(
+        DictHelper.store_value(
             key=key,
             value=value,
             container=self.__temp_database
         )
             
-        if store_res == True:
-            return f'{self.__class__.__name__} stores {temp_key} successfully!' 
-        else:
-            return store_res
+        # if store_res == True:
+        #     return f'{self.__class__.__name__} stores {temp_key} successfully!' 
+        # else:
+        #     return store_res
+        return
 
     def get_record(
         self, 
@@ -155,7 +159,10 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         if not test_id:
             raise RuntimeError('Use task_id to retrieve User_Assistor_Table')
 
-        key = DictHelper.generate_unique_dict_key(user_id, test_id)
+        key = DictHelper.generate_dict_key(
+            user_id=user_id, 
+            task_id=test_id
+        )
 
         assistor_metadata = DictHelper.get_value(
             key=key,
@@ -212,20 +219,20 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             container=assistor_metadata
         )  
         
-        if not super().if_db_response_valid(
-            train_id, 
-            mode, 
-            task_mode, 
-            model_name, 
-            test_id,
-            test_file_path, 
-            test_id_column, 
-            test_data_column, 
-            test_name, 
-            test_description
-        ):
-            print(f'{self.__class__.__name__} does not contain the record')
-            return super().dict_value_not_found()
+        # if not super().if_db_response_valid(
+        #     train_id, 
+        #     mode, 
+        #     task_mode, 
+        #     model_name, 
+        #     test_id,
+        #     test_file_path, 
+        #     test_id_column, 
+        #     test_data_column, 
+        #     test_name, 
+        #     test_description
+        # ):
+        #     print(f'{self.__class__.__name__} does not contain the record')
+        #     return super().dict_value_not_found()
 
         return (
             train_id, 

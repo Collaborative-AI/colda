@@ -8,10 +8,13 @@ from typing import (
     Union
 )
 
+from parso import parse
+
 from colda._typing import (
     DictKey,
     DictValue,
-    Dict_Store_Type
+    Dict_Store_Type,
+    Parse_Mode
 )
 
 from colda.error import (
@@ -20,6 +23,7 @@ from colda.error import (
 )
 
 from colda.utils.dtypes.api import (
+    is_dict_like,
     is_list,
     to_list,
     to_tuple
@@ -43,15 +47,10 @@ class DictHelper:
     Methods
     -------
     is_key_in_dict
-    generate_unique_dict_key
-    append_type
-    one_access_type
-    multiple_access_type
-    process_key_recursion
-    process_key
+    generate_dict_key
     store_value
-    get_value_recursion
     get_value
+    get_all_key_value_pairs
     '''
 
     @classmethod
@@ -77,14 +76,14 @@ class DictHelper:
         return False
 
     @classmethod
-    def generate_unique_dict_key(
+    def generate_dict_key(
         cls, 
         user_id: str, 
-        task_id: str,
+        task_id: str=None,
         supplement_key: Union[str, list[str], None]=None,
     ) -> tuple[str]:
         '''
-        generate unique dictionary key to 
+        Generate unique dictionary key to 
         store imformation for each task
 
         Parameters
@@ -97,7 +96,9 @@ class DictHelper:
         -------
         tuple[str]
         '''
-        if supplement_key == None:
+        if task_id == None:
+            return (user_id, )
+        elif supplement_key == None:
             return (user_id, task_id)
 
         key = [user_id, task_id]
@@ -110,15 +111,18 @@ class DictHelper:
         return to_tuple(key)
 
     @classmethod
-    def append_type(
+    def __append_type(
         cls,
         key: DictKey, 
         value: Union[dict[DictKey, DictValue], list[DictValue]],
         container: dict[DictKey, DictValue],
     ) -> None:
         '''
-        generate unique dictionary key
-        to store imformation of each task
+        The current container can can append the value 
+        to the current key. 
+        If the container[key] has already stored value, 
+        the new value must be same type as the type of
+        container[key]
 
         Parameters
         ----------
@@ -134,29 +138,28 @@ class DictHelper:
         if not DictHelper.is_key_in_dict(key, container):
             container[key] = copy.deepcopy(value)
         else:
-            if isinstance(container[key], dict) and isinstance(value, dict):
+            if is_dict_like(container[key]) and is_dict_like(value):
                 for sub_key, sub_value in value.items():
                     container[key][sub_key] = sub_value
-            elif isinstance(container[key], list) and isinstance(value, list):
+            elif is_list(container[key]) and is_list(value):
                 for sub_value in value:
                     container[key].append(sub_value)
             else:
                 raise ValueError(
                     'value is not matching dict append type, must be list or dict'
                 )
-
         return
 
     @classmethod
-    def one_access_type(
+    def __store_once_type(
         cls,
         key: DictKey, 
         value: DictValue,
         container: dict[DictKey, DictValue]
-    ) -> Union[bool, type[DuplicateKeyError]]:
+    ) -> None:
         '''
-        Generate unique dictionary key
-        to store imformation of each task
+        The current container can only store the value 
+        to the current key once.
 
         Parameters
         ----------
@@ -166,24 +169,24 @@ class DictHelper:
         
         Returns
         -------
-        bool
+        None
         '''
-        if not DictHelper.is_key_in_dict(key, container):
-            container[key] = copy.deepcopy(value)
-            return True
-        else:
-            return DuplicateKeyError
+        if DictHelper.is_key_in_dict(key, container):
+            raise DuplicateKeyError('Store once type wrong')
 
+        container[key] = copy.deepcopy(value)
+        return 
+        
     @classmethod
-    def multiple_access_type(
+    def __store_multiple_type(
         cls,
         key: DictKey, 
         value: DictValue,
         container: dict[DictKey, DictValue]
-    ) -> Union[bool, type[DuplicateKeyError]]:
+    ) -> None:
         '''
-        generate unique dictionary key
-        to store imformation of each task
+        The current container can store the value 
+        to the current key mutiple times(Overwrite old value).
 
         Parameters
         ----------
@@ -193,57 +196,77 @@ class DictHelper:
         
         Returns
         -------
-        bool
+        None
         '''
         container[key] = copy.deepcopy(value)
-        return True
+        return
 
     @classmethod
-    def process_key_recursion(
+    def __parse_key_recursion(
         cls,
-        key: DictKey,
+        key: DictKey, 
         container: dict[DictKey, DictValue],
-    ) -> tuple[DictKey, dict[DictKey, DictValue]]:
+        parse_mode: Parse_Mode
+    ) -> DictValue:
         '''
-        generate unique dictionary key
-        to store imformation of each task
+        Handle the situation that user wants to get/store
+        value in multi-layer dict. 
+        Do the recursion until the we reach the
+        final key.
 
         Parameters
         ----------
         key : DictKey
-        value : Union[dict[DictKey, DictValue], list[DictValue]]
         container : dict[DictKey, DictValue]
         
         Returns
         -------
-        bool
-        '''
-        if not is_list(key):
-            return key, container
+        DictValue
 
+        Examples
+        --------
+        >>> key = ['1', '2']
+        >>> container = {'1': {'2': '3'}}
+        >>> DictHelper.get_value_recursion(key, container)
+        key '2'
+        container {'2': '3'}
+        '''
+        print('keyeee', key)
         if len(key) == 1:
+            if not DictHelper.is_key_in_dict(key[0], container) and parse_mode == 'get':                    
+                raise DictValueNotFound('Key not in container')
             return key[0], container
         
-        print('keyyyy', key)
-        if not DictHelper.is_key_in_dict(key[0], container):
-            container[key[0]] = {}
-    
-        container = container[key.pop(0)]    
-        return cls.process_key(
+        cur_key = key.pop(0)
+        if not DictHelper.is_key_in_dict(cur_key, container):
+            if parse_mode == 'store':
+                # if the parse_mode is store,
+                # we need to initiate container
+                # to empty dict
+                container[cur_key] = {}
+            else:
+                raise DictValueNotFound('Key not in container')
+        container = container[cur_key] 
+        
+        return cls.__parse_key_recursion(
             key=key,
-            container=container
+            container=container,
+            parse_mode=parse_mode
         )
 
     @classmethod
-    def process_key(
+    def __parse_key(
         cls,
         key: DictKey,
         container: dict[DictKey, DictValue],
+        parse_mode: Parse_Mode,
     ) -> tuple[DictKey, dict[DictKey, DictValue]]:
         '''
+        Handle the situation that user wants to get/store
+        value in multi-layer dict. 
         Create a temp container to maintain pointer
-        at the top of the container
-
+        at the top of the container.
+        
         Parameters
         ----------
         key : DictKey
@@ -253,12 +276,17 @@ class DictHelper:
         Returns
         -------
         bool
-        '''
 
+        Notes
+        -----
+        Remember to maintain the container pointer at the top:
         temp = container
-        return cls.process_key_recursion(
+        '''
+        temp = container
+        return cls.__parse_key_recursion(
             key=key,
-            container=temp
+            container=temp,
+            parse_mode=parse_mode,
         )
         
     @classmethod
@@ -267,65 +295,49 @@ class DictHelper:
         key: DictKey, 
         value: DictValue,
         container: dict[DictKey, DictValue],
-        store_type: Dict_Store_Type='one_access'
+        store_type: Dict_Store_Type='store_once'
     ) -> None:
         '''
-        Maintain pointer at the top of the container
+        Store value in dict
 
         Parameters
         ----------
         key : DictKey
         value : Union[dict[DictKey, DictValue], list[DictValue]]
         container : dict[DictKey, DictValue]
-        
+        store_type : Dict_Store_Type
+            We have different store type to handle different situations
+
         Returns
         -------
-        bool
+        None
         '''
-        key, container = cls.process_key(key, container)
-        if store_type == 'one_access':
-            return cls.one_access_type(key, value, container)
-        elif store_type == 'append':
-            return cls.append_type(key, value, container)
-        elif store_type == 'multiple_access':
-            return cls.multiple_access_type(key, value, container)
-        else:
-            print('store type wrong')
-        return
-
-    @classmethod
-    def get_value_recursion(
-        cls,
-        key: DictKey, 
-        container: dict[DictKey, DictValue]
-    ) -> DictValue:
-        '''
-        Maintain pointer at the top of the container
-
-        Parameters
-        ----------
-        key : DictKey
-        value : Union[dict[DictKey, DictValue], list[DictValue]]
-        container : dict[DictKey, DictValue]
-        
-        Returns
-        -------
-        bool
-        '''
-        # print('sub_container1', key, container)
-        if len(key) == 1:
-            return key[0], container
-        
-        cur_key = key.pop(0)
-        if not DictHelper.is_key_in_dict(cur_key, container):
-            return DictValueNotFound, DictValueNotFound
-        container = container[cur_key] 
-        
-        return cls.get_value_recursion(
-            key=key,
-            container=container
+        key, container = cls.__parse_key(
+            key=key, 
+            container=container,
+            parse_mode='store'
         )
-        
+        if store_type == 'store_once':
+            return cls.__store_once_type(
+                key=key, 
+                value=value, 
+                container=container
+            )
+        elif store_type == 'append':
+            return cls.__append_type(
+                key=key, 
+                value=value, 
+                container=container
+            )
+        elif store_type == 'store_multiple':
+            return cls.__store_multiple_type(
+                key=key, 
+                value=value, 
+                container=container
+            )
+        else:
+            raise ValueError('store type wrong')
+
     @classmethod
     def get_value(
         cls,
@@ -333,27 +345,22 @@ class DictHelper:
         container: dict[DictKey, DictValue]
     ) -> DictValue:
         '''
-        Maintain pointer at the top of the container
-
+        Get value corresponding to the key in dict.
+        
         Parameters
         ----------
         key : DictKey
-        value : Union[dict[DictKey, DictValue], list[DictValue]]
         container : dict[DictKey, DictValue]
         
         Returns
         -------
-        bool
+        DictValue
         '''
-        if is_list(key):
-            temp = container
-            key, container = cls.get_value_recursion(
-                key=key,
-                container=temp
-            )
-
-        if not DictHelper.is_key_in_dict(key, container):
-            raise DictValueNotFound
+        key, container = cls.__parse_key(
+            key=key,
+            container=container,
+            parse_mode='get'
+        )
         
         return container[key]
     
@@ -363,16 +370,14 @@ class DictHelper:
         container: dict[DictKey, DictValue]
     ) -> dict[DictKey, DictValue]:
         '''
-        Maintain pointer at the top of the container
+        Return all data in current container
 
         Parameters
         ----------
-        key : DictKey
-        value : Union[dict[DictKey, DictValue], list[DictValue]]
         container : dict[DictKey, DictValue]
         
         Returns
         -------
-        bool
+        dict
         '''
         return copy.deepcopy(container)

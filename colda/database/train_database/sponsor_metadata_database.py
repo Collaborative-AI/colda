@@ -10,7 +10,7 @@ from colda._typing import (
     Model_Name,
     Metric_Name
 )
-from colda.utils import DictHelper
+from colda.utils.api import DictHelper
 
 from typeguard import typechecked
 
@@ -105,7 +105,10 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_unique_dict_key(user_id, train_id)
+        key = DictHelper.generate_dict_key(
+            user_id=user_id, 
+            train_id=train_id
+        )  
         temp_key = str(key)
     
         value = {
@@ -120,15 +123,16 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             'task_name': task_name,
             'task_description': task_description
         }
-        store_res = DictHelper.store_value(
+        DictHelper.store_value(
             key=key,
             value=value,
             container=self.__temp_database
         )
-        if store_res == True:
-            return f'{self.__class__.__name__} stores {temp_key} successfully!' 
-        else:
-            return store_res
+        # if store_res == True:
+        #     return f'{self.__class__.__name__} stores {temp_key} successfully!' 
+        # else:
+        #     return store_res
+        return
     
     def get_record(
         self, 
@@ -150,7 +154,10 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         if not train_id:
             raise RuntimeError('Use train_id or test_id to retrieve User_Assistor_Table')
 
-        key = DictHelper.generate_unique_dict_key(user_id, train_id)
+        key = DictHelper.generate_dict_key(
+            user_id=user_id, 
+            train_id=train_id
+        )  
         cur_class_name = self.__class__.__name__
         # if key not in self.__temp_database:
         #     print(f'{cur_class_name} does not contain the record')
@@ -210,20 +217,20 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             container=sponsor_metadata
         )
 
-        if not super().if_db_response_valid(
-            train_id,
-            task_mode, 
-            model_name, 
-            metric_name, 
-            train_file_path, 
-            train_id_column, 
-            train_data_column, 
-            train_target_column, 
-            task_name, 
-            task_description
-        ):
-            print(f'{cur_class_name} does not contain the record')
-            return super().dict_value_not_found()
+        # if not super().if_db_response_valid(
+        #     train_id,
+        #     task_mode, 
+        #     model_name, 
+        #     metric_name, 
+        #     train_file_path, 
+        #     train_id_column, 
+        #     train_data_column, 
+        #     train_target_column, 
+        #     task_name, 
+        #     task_description
+        # ):
+        #     print(f'{cur_class_name} does not contain the record')
+        #     return super().dict_value_not_found()
 
         return (
             train_id,

@@ -5,10 +5,6 @@ import collections
 
 from colda.workflow.test_workflow.test_base import TestBaseWorkflow
 
-from colda.utils import(
-    ParseJson
-)
-
 from colda.pi.api import get_user_id
 
 from colda.workflow.utils import (

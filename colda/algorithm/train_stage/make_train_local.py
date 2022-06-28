@@ -12,7 +12,7 @@ from colda.algorithm.utils import (
     parse_idx
 )
 
-from colda.algorithm.model.models import Model
+from colda.algorithm.model.api import Model
 
 from colda.algorithm.metric.metrics import Metric
 

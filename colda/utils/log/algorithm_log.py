@@ -6,10 +6,6 @@ from colda.utils.log.base import BaseLog
 
 from colda.utils.log.abstract_log import AbstractLog
 
-from colda.utils.utils import (
-    to_string,
-)
-
 from colda.utils.dict_helper import DictHelper
 
 from typing import (
@@ -88,7 +84,7 @@ class AlgorithmLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_unique_dict_key(
+        key = DictHelper.generate_dict_key(
             user_id=user_id, 
             task_id=task_id, 
             suppliment_key=log_category
@@ -124,7 +120,7 @@ class AlgorithmLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_unique_dict_key(
+        key = DictHelper.generate_dict_key(
             user_id=user_id, 
             task_id=task_id, 
             suppliment_key=log_category

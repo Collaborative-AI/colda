@@ -19,10 +19,6 @@ class AbstractTrainAlgorithmStrategy(ABC):
         pass
     
     @abstractmethod
-    def save_residual(self, **kwargs):
-        pass
-    
-    @abstractmethod
     def make_train(self, **kwargs):
         pass
     

@@ -15,6 +15,8 @@ from colda.utils.dtypes.inference import (
 
 from colda._typing import Serializable_Datatype
 
+from colda.error import DataNotSerializable
+
 
 def to_list(data: Iterable) -> list:
     '''
@@ -80,5 +82,5 @@ def to_serializable(
         return copy.deepcopy(data.tolist())
     elif is_set(data):
         return copy.deepcopy(list(data))
-
-    return data
+    else:
+        raise DataNotSerializable('Can only convert numpy and set type data')

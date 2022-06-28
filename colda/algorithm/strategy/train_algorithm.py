@@ -11,7 +11,7 @@ from colda.algorithm.train_stage.api import (
     MakeTrainLocal,
 )
 
-from colda.algorithm.custom.api import GetTrainFixedParameter
+from colda.algorithm.strategy.custom.api import GetTrainFixedParameter
 
 from typing import Any
 

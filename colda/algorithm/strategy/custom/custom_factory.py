@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from colda.algorithm.custom.train_custom import (
+from colda.algorithm.strategy.custom.train_custom import (
     TrainFixedParameter, 
     TrainOptimizedParameter, 
     TrainOwnFunction
 )
 
-from colda.algorithm.custom.test_custom import (
+from colda.algorithm.strategy.custom.test_custom import (
     TestFixedParameter,
     TestOptimizedParameter,
     TestOwnFunction

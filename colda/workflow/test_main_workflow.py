@@ -6,13 +6,13 @@ from colda.workflow.utils import (
     obtain_notification_information
 )
 
-from colda.workflow.test_workflow.sponsor import (
+from colda.workflow.test_workflow.sponsor.api import (
     TestSponsorFindAssistor,
     TestSponsorMatchIdentifier,
     TestSponsorOutput
 )
 
-from colda.workflow.test_workflow.assistor import (
+from colda.workflow.test_workflow.assistor.api import (
     TestAssistorRequest,
     TestAssistorMatchIdentifier
 )

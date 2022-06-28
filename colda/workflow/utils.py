@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import numpy as np
 
-from colda.utils import DictHelper
+from colda.utils.api import DictHelper
 
 from typing import (
     Union,
@@ -12,6 +12,8 @@ from typing import (
 )
 
 from typeguard import typechecked
+
+
 class CheckSponsor:
     sponsor: Final[str] = 'sponsor'
     assistor: Final[str] = 'assistor'

@@ -8,7 +8,7 @@ from typing import(
     List
 )
 
-from colda.database.strategy import DatabaseOperator
+from colda.database.strategy.api import DatabaseOperator
 
 from typeguard import typechecked
 

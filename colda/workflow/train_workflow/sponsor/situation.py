@@ -4,10 +4,6 @@ import requests
 
 from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
 
-from colda.utils import(
-    ParseJson
-)
-
 from colda.pi.api import get_user_id
 
 from colda.workflow.utils import (

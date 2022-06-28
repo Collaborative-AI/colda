@@ -44,7 +44,7 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
     __DatabaseOperator_instance = None
 
     def __init__(self) -> None:
-        self.__database_operator = GetDefaultMetadataDatabase.get_database()
+        self.__database_operator = GetDefaultMetadataDatabase.get_instance()
 
     @classmethod
     def get_instance(cls) -> DatabaseOperator:

@@ -7,7 +7,7 @@ from colda.algorithm.base import BaseAlgorithm
 
 from colda.algorithm.utils import parse_idx
 
-from colda.algorithm.model.models import Model
+from colda.algorithm.model.api import Model
 
 from typing import Any
 

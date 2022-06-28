@@ -5,7 +5,7 @@ import requests
 import threading
 import time
 
-from colda.workflow import (
+from colda.workflow.api import (
     TrainMainWorkflow,
     TestMainWorkflow
 )

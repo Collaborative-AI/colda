@@ -26,16 +26,16 @@ class BaseDatabase:
         pass
 
    
-    @final
-    @classmethod
-    def dict_value_not_found(cls) -> type[DictValueNotFound]:
-        return DictValueNotFound
+    # @final
+    # @classmethod
+    # def dict_value_not_found(cls) -> type[DictValueNotFound]:
+    #     return DictValueNotFound
 
-    @final
-    @classmethod
-    def if_db_response_valid(
-        cls, *args
-    ) -> bool:
-        if cls.dict_value_not_found() in args:
-            return False
-        return True
+    # @final
+    # @classmethod
+    # def if_db_response_valid(
+    #     cls, *args
+    # ) -> bool:
+    #     if cls.dict_value_not_found() in args:
+    #         return False
+    #     return True

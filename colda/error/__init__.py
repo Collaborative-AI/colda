@@ -30,6 +30,13 @@ class DictValueNotFound(ValueError):
 
     pass
 
+class DataNotSerializable(ValueError):
+    """
+    Error raised when the data is not the type not we can converted
+    """
+
+    pass
+
 # from pandas._config.config import OptionError  # noqa:F401
 
 # from pandas._libs.tslibs import (  # noqa:F401

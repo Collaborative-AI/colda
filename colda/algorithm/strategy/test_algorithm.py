@@ -8,7 +8,7 @@ from colda.algorithm.strategy.utils import algorithm_process
 
 from colda.algorithm.test_stage.api import MakeTestLocal
 
-from colda.algorithm.custom.api import GetTestFixedParameter
+from colda.algorithm.strategy.custom.api import GetTestFixedParameter
 
 from typeguard import typechecked
 
@@ -33,7 +33,7 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
     __TestAlgorithm_instance = None
 
     def __init__(self) -> None:
-        self.__test_custom = GetTestFixedParameter.get_instance()
+        self.__test_custom = GetTestFixedParameter.get_class()
 
     @classmethod
     def get_instance(cls) -> TestAlgorithm:

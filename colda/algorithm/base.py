@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from colda.utils.log import GetAlgorithmLog
+from colda.utils.log.api import GetAlgorithmLog
 
 from typing import (
     Final,

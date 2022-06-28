@@ -28,7 +28,7 @@ from colda.database.strategy.api import DatabaseOperator
 from colda.network.api import Network
 from colda.pi.api import PI
 
-from colda.algorithm.custom.api import (
+from colda.algorithm.strategy.custom.api import (
     GetTrainFixedParameter,
     GetTrainOptimizedParameter,
     GetTrainOwnFunction,
@@ -42,12 +42,12 @@ from colda.algorithm.strategy.api import (
     TestAlgorithm
 )
 
-from colda.workflow import (
+from colda.workflow.api import (
     TrainMainWorkflow,
     TestMainWorkflow
 )
 
-from colda.utils.log import (
+from colda.utils.log.api import (
     GetAlgorithmLog,
     GetWorkflowLog
 )

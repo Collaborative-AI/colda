@@ -300,7 +300,7 @@ from typing import (
 
 # DictKey = TypeVar('DictKey', bound=Hashable)
 # DictValue = TypeVar("DictValue", bound=Any)
-# Store_Type = Literal['append', 'one_access']
+# Store_Type = Literal['append', 'store_once']
 
 
 # class DictHelper:
@@ -317,7 +317,7 @@ from typing import (
 #         return False
 
 #     @classmethod
-#     def generate_unique_dict_key(
+#     def generate_dict_key(
 #         cls, user_id: str, task_id: str
 #     ) -> tuple[str, str]:
 
@@ -342,7 +342,7 @@ from typing import (
 #         return
 
 #     @classmethod
-#     def one_access_type(
+#     def store_once_type(
 #         cls,
 #         key: DictKey, 
 #         value: DictValue,
@@ -360,11 +360,11 @@ from typing import (
 #         key: DictKey, 
 #         value: DictValue,
 #         container: dict[DictKey, DictValue],
-#         store_type: Store_Type = 'one_access'
+#         store_type: Store_Type = 'store_once'
 #     ) -> None:
 
-#         if store_type == 'one_access':
-#             cls.one_access_type(key, value, container)
+#         if store_type == 'store_once':
+#             cls.store_once_type(key, value, container)
 #         elif store_type == 'append':
 #             cls.append_type(key, value, container)
 #         else:

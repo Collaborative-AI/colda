@@ -6,10 +6,8 @@ class TestTrainSponsorMetadataDatabase:
 
     @pytest.mark.usefixtures('DatabaseOperator_instance')
     @pytest.mark.parametrize("test_record, expected_res", [
-        (('user', 'test', 'test', 'test'), 
-        "DefaultMetadataDatabase stores user successfully!"),
-        (('user', 'test', 'test2', 'test2'), 
-        "DefaultMetadataDatabase stores user successfully!")
+        (('user', 'auto', 'classification', 'linear'), None),
+        (('user', 'manual', 'regression', 'gradient_boosting'), None)
     ])
     def test_store_record(self, DatabaseOperator_instance, test_record, expected_res):
         DatabaseOperator_instance.set_database(database_type='default_metadata')
@@ -22,13 +20,13 @@ class TestTrainSponsorMetadataDatabase:
         assert response == expected_res
 
     
-    @pytest.mark.usefixtures('DatabaseOperator_instance')
-    @pytest.mark.parametrize("test_record, expected_res", [
-        ('user', ('test', 'test2', 'test2', None, None, None)),
-    ])
-    def test_get_record(self, DatabaseOperator_instance, test_record, expected_res):
-        DatabaseOperator_instance.set_database(database_type='default_metadata')
-        response = DatabaseOperator_instance.get_record(
-            user_id=test_record, 
-        )
-        assert response == expected_res
+    # @pytest.mark.usefixtures('DatabaseOperator_instance')
+    # @pytest.mark.parametrize("test_record, expected_res", [
+    #     ('user', ('test', 'test2', 'test2', None, None, None)),
+    # ])
+    # def test_get_record(self, DatabaseOperator_instance, test_record, expected_res):
+    #     DatabaseOperator_instance.set_database(database_type='default_metadata')
+    #     response = DatabaseOperator_instance.get_record(
+    #         user_id=test_record, 
+    #     )
+    #     assert response == expected_res

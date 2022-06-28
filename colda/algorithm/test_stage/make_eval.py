@@ -13,7 +13,7 @@ from colda.algorithm.utils import (
     parse_idx
 )
 
-from colda.algorithm.metric import Metric
+from colda.algorithm.metric.api import Metric
 
 from typing import Any
 

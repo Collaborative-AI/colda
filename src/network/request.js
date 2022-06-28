@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const request = axios.create({
-    // baseURL: 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com',
-    baseURL: 'http://127.0.0.1:5000',
+    baseURL: 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com',
+    // baseURL: 'http://127.0.0.1:5000',
     timeout: 5000
 })
 

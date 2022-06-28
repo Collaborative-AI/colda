@@ -71,6 +71,24 @@
 
 <script>
     export default {
-        name: 'Signup'
+        name: 'Signup',
+        data () {
+            return {
+                loginForm: {
+                    username: 'xie2',
+                    password: 'Xie20123',
+                    submitted: false,  // 是否点击了 submit 按钮
+                    errors: 0,  // 表单是否在前端验证通过，0 表示没有错误，验证通过
+                    usernameError: null,
+                    passwordError: null
+                },
+            }
+        },
+        components: {
+
+        },
+        methods: {
+            
+        }
     }
 </script>

@@ -17,38 +17,38 @@ request.interceptors.request.use(config => {
     return Promise.reject(error)
   })
 
-  request.interceptors.response.use(response => {
-    console.log('axios response is', response)
-    return response
-  }, error => {
-    console.log('Error_https', error)
-    // if ('response' in error && error.response != undefined){
-    //   console.log('status' in error.response)
-    //   if ('status' in error.response){
-    //     switch  (error.response.status) {
-    //       case 401:
-    //         // 清除 Token 及 已认证 等状态
-    //         store.logoutAction()
-    //         // 跳转到登录页
-    //         if (router.currentRoute.path !== '/login') {
-    //           Vue.toasted.error('401: 认证已失效，请先登录', { icon: 'fingerprint' })
-    //           router.replace({
-    //             path: '/login',
-    //             query: { redirect: router.currentRoute.path },
-    //           })
-    //         }
-    //         break
-      
-    //       case 404:
-    //         Vue.toasted.error('404: NOT FOUND', { icon: 'fingerprint' })
-    //         router.back()
-    //         break
-    //     }
-    //   }
-    // }
+request.interceptors.response.use(response => {
+console.log('axios response is', response)
+return response
+}, error => {
+console.log('Error_https', error)
+// if ('response' in error && error.response != undefined){
+//   console.log('status' in error.response)
+//   if ('status' in error.response){
+//     switch  (error.response.status) {
+//       case 401:
+//         // 清除 Token 及 已认证 等状态
+//         store.logoutAction()
+//         // 跳转到登录页
+//         if (router.currentRoute.path !== '/login') {
+//           Vue.toasted.error('401: 认证已失效，请先登录', { icon: 'fingerprint' })
+//           router.replace({
+//             path: '/login',
+//             query: { redirect: router.currentRoute.path },
+//           })
+//         }
+//         break
     
-    return Promise.reject(error)
-  })
+//       case 404:
+//         Vue.toasted.error('404: NOT FOUND', { icon: 'fingerprint' })
+//         router.back()
+//         break
+//     }
+//   }
+// }
+
+return Promise.reject(error)
+})
 
 export {request}
 

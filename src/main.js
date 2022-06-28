@@ -1,6 +1,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
+import {request} from './network/request'
+import store from './store.js'
 
 // import "bootstrap/dist/css/bootstrap.min.css"
 // import "bootstrap"
@@ -12,13 +14,15 @@ import "./assets/custom.scss";
 const app = createApp(App)
 // app.use(boxicons)
 app.use(router)
+app.config.globalProperties.$axios = request
+app.config.globalProperties.$store = store
 
 
 app.mount("#app");
 
+console.log(store.state.user_id);
 
 
-// import {request} from '../src/network/request.js'
 
 // const instance1 = axios.create({
 //     baseURL: 'http://123.207.32.32:8000',
@@ -40,11 +44,10 @@ console.log('color is', window.localStorage.getItem('color'));
 // })
 
 
-
 // const payload = {
-//     username: 'xie3',
-//     email: 'xie00250@umn.edu',
-//     password: 'Xie30123'
+//     username: 'xie2',
+//     email: 'xxie43@asu.edu',
+//     password: 'Xie20123'
 //   }
 
 // request.post(`/user/users`, payload)
@@ -56,8 +59,8 @@ console.log('color is', window.localStorage.getItem('color'));
 // axios 实现Basic Auth需要在config中设置 auth 这个属性即可
 // request.post(`/auth/tokens`, {}, { 
 // auth: {
-//     'username': 'xie3',
-//     'password': 'Xie30123'
+//     'username': 'xie2',
+//     'password': 'Xie20123'
 // }
 // }).then((response) => {
 //     console.log('4321')

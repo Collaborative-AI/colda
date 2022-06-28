@@ -75,7 +75,9 @@
                         
                     <div class="single-pricing">
                         <div class="pricing-header">
-                            <h3>Software <box-icon type='logo' name='windows'></box-icon></h3>
+                            <h3>Software 
+                                <!-- <box-icon type='logo' name='windows'></box-icon> -->
+                            </h3>
                             
                             <!-- <i class='bx bxl-windows' ></i> -->
                             <!-- <p>Business Up</p> -->

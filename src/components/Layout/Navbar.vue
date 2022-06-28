@@ -117,13 +117,13 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li class="nav-item">
-                                            <a href="html/index.html" target="_blank" class="nav-link"
+                                            <a target="_blank" href="html/index.html" class="nav-link"
                                             >Documentation</a>
                                             
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="notebook/Sponsor_User_Guide.html" target="_blank" class="nav-link"
+                                            <a target="_blank" href="notebook/Sponsor_User_Guide.html" class="nav-link"
                                             >Tutorials</a>
                                         </li>
 

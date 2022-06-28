@@ -30,6 +30,8 @@ import TermsConditionsPage from '../components/pages/TermsConditionsPage'
 import PrivacyPolicyPage from '../components/pages/PrivacyPolicyPage'
 import ErrorPage from '../components/pages/ErrorPage'
 
+import Dashboard from "../components/Dash/Dashboard";
+
 const routes = [
     {path: '/', component: HomePageSeven},
     {path: '/home-two', component: HomePageTwo},
@@ -59,6 +61,7 @@ const routes = [
     {path: '/terms-condition', component: TermsConditionsPage},
     {path: '/privacy-policy', component: PrivacyPolicyPage},
     {path: '/error-404', component: ErrorPage},
+    {path: '/dashboard', component: Dashboard},
 ]
     
 const router = createRouter({

@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<meta property="og:title" content="GetNotification Module" />
+<meta property="og:title" content="ShortPolling Module" />
   
 <meta property="og:type" content="website" />
   
 <meta property="og:url" content="reference/GetNotification.html" />
   
-<meta property="og:description" content="The GetNotification module contains a class of the same name to do short polling. Examples: Classes:" />
+<meta property="og:description" content="The ShortPolling module contains a class of the same name to do short polling. Examples: Classes:" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GetNotification Module &mdash; Synspot 0.0.0 documentation</title>
+  <title>ShortPolling Module &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -34,9 +35,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="StopRequest Module" href="StopRequest.html" />
-    <link rel="prev" title="error Module" href="error.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,8 +43,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Synspot
-            <img src="../_static/Synspot.jpg" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> colda
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,30 +53,9 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="authorization.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="personalinformation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">personalinformation</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">GetNotification</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="StopRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TestRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TrainRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code> Module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
 </ul>
 
@@ -88,7 +65,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Synspot</a>
+          <a href="../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -96,8 +73,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Reference</a> &raquo;</li>
-      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">GetNotification</span></code> Module</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ShortPolling</span></code> Module</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/reference/GetNotification.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -131,15 +107,15 @@
     text-align: unset;
 }
 </style>
-<span class="target" id="module-synspot.GetNotification"></span><section id="getnotification-module">
-<h1><a class="reference internal" href="#module-synspot.GetNotification" title="synspot.GetNotification"><code class="xref py py-mod docutils literal notranslate"><span class="pre">GetNotification</span></code></a> Module<a class="headerlink" href="#getnotification-module" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="#module-synspot.GetNotification" title="synspot.GetNotification"><code class="xref py py-mod docutils literal notranslate"><span class="pre">GetNotification</span></code></a> module contains a class of the same name to
+<span class="target" id="module-colda.ShortPolling"></span><section id="shortpolling-module">
+<h1><a class="reference internal" href="#module-colda.ShortPolling" title="colda.ShortPolling"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ShortPolling</span></code></a> Module<a class="headerlink" href="#shortpolling-module" title="Permalink to this heading">¶</a></h1>
+<p>The <a class="reference internal" href="#module-colda.ShortPolling" title="colda.ShortPolling"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ShortPolling</span></code></a> module contains a class of the same name to
 do short polling.</p>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <a class="reference internal" href="#synspot.GetNotification.GetNotification" title="synspot.GetNotification.GetNotification"><code class="xref py py-class docutils literal notranslate"><span class="pre">GetNotification</span></code></a> class has several methods,
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">ShortPolling</span></code> class has several methods,
 but they are all marked as “experimental.” Read that as you will. The
 <code class="docutils literal notranslate"><span class="pre">[source]</span></code> link is there for a reason.</p>
 </div>
@@ -149,36 +125,14 @@ but they are all marked as “experimental.” Read that as you will. The
 </div>
 </section>
 <section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="synspot.GetNotification.GetNotification">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">synspot.GetNotification.</span></span><span class="sig-name descname"><span class="pre">GetNotification</span></span><a class="reference internal" href="../_modules/synspot/GetNotification.html#GetNotification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.GetNotification.GetNotification" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="synspot.GetNotification.GetNotification.start_Collaboration">
-<span class="sig-name descname"><span class="pre">start_Collaboration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/GetNotification.html#GetNotification.start_Collaboration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.GetNotification.GetNotification.start_Collaboration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Short Polling for new Notifications</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="error.html" class="btn btn-neutral float-left" title="error Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="StopRequest.html" class="btn btn-neutral float-right" title="StopRequest Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

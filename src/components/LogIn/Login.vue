@@ -147,7 +147,7 @@ export default {
                     // const name = JSON.parse(atob(response.data.token.split('.')[1])).name
                     // vm.$toasted.success(`Welcome ${name}!`, { icon: 'fingerprint' })
                     console.log("####", window.localStorage.getItem('Apollo-token'))
-                    vm.$router.push('dashboard')
+                    vm.$router.push('dashboard1')
                     
                     // if (this.$route != undefined){
                     //     if (typeof this.$route.query.redirect == 'undefined') {

@@ -61,7 +61,7 @@ const routes = [
     {path: '/terms-condition', component: TermsConditionsPage},
     {path: '/privacy-policy', component: PrivacyPolicyPage},
     {path: '/error-404', component: ErrorPage},
-    {path: '/dashboard', component: Dashboard},
+    {path: '/dashboard1', component: Dashboard},
 ]
     
 const router = createRouter({

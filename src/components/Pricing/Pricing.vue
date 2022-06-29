@@ -62,7 +62,7 @@
                         </ul>
 
                         <div class="price-btn">
-                            <a href="html/index.html" target="_blank" class="default-btn">
+                            <a target="_blank" href="html/index.html" class="default-btn">
                                 Check&nbsp;Now
                             </a>
                             

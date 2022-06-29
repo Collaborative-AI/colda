@@ -12,7 +12,7 @@
 <meta property="og:description" content="The Python Imaging Library supports a wide variety of raster file formats. Over 30 different file formats can be identified and read by the library. Write support is less extensive, but most common..." />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Image file formats &mdash; Synspot 0.0.0 documentation</title>
+  <title>Image file formats &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -34,9 +35,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Text anchors" href="text-anchors.html" />
-    <link rel="prev" title="Appendices" href="appendices.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,8 +43,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Synspot
-            <img src="../_static/Synspot.jpg" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> colda
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,33 +53,9 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="appendices.html">Appendices</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Image file formats</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#fully-supported-formats">Fully supported formats</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#read-only-formats">Read-only formats</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#write-only-formats">Write-only formats</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#identify-only-formats">Identify-only formats</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="text-anchors.html">Text anchors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html">Writing Your Own Image Plugin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html#decoders">Decoders</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html#writing-your-own-file-decoder-in-c">Writing Your Own File Decoder in C</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html#writing-your-own-file-decoder-in-python">Writing Your Own File Decoder in Python</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
 </ul>
 
@@ -91,7 +65,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Synspot</a>
+          <a href="../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -99,8 +73,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Handbook</a> &raquo;</li>
-          <li><a href="appendices.html">Appendices</a> &raquo;</li>
       <li>Image file formats</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/handbook/image-file-formats.rst.txt" rel="nofollow"> View page source</a>
@@ -136,7 +108,7 @@
 }
 </style>
 <section id="image-file-formats">
-<span id="id1"></span><h1><a class="toc-backref" href="#id4">Image file formats</a><a class="headerlink" href="#image-file-formats" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1><a class="toc-backref" href="#id4">Image file formats</a><a class="headerlink" href="#image-file-formats" title="Permalink to this heading">¶</a></h1>
 <p>The Python Imaging Library supports a wide variety of raster file formats.
 Over 30 different file formats can be identified and read by the library.
 Write support is less extensive, but most common interchange and presentation
@@ -153,7 +125,7 @@ internally creates a copy of the image, the <code class="docutils literal notran
 methods and attributes specific to a format. The <code class="xref py py-attr docutils literal notranslate"><span class="pre">format</span></code>
 attribute will be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <section id="fully-supported-formats">
-<h2><a class="toc-backref" href="#id5">Fully supported formats</a><a class="headerlink" href="#fully-supported-formats" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5">Fully supported formats</a><a class="headerlink" href="#fully-supported-formats" title="Permalink to this heading">¶</a></h2>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -251,7 +223,7 @@ attribute will be <code class="docutils literal notranslate"><span class="pre">N
 </ul>
 </div>
 <section id="bmp">
-<h3><a class="toc-backref" href="#id6">BMP</a><a class="headerlink" href="#bmp" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id6">BMP</a><a class="headerlink" href="#bmp" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes Windows and OS/2 BMP files containing <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>,
 or <code class="docutils literal notranslate"><span class="pre">RGB</span></code> data. 16-colour images are read as <code class="docutils literal notranslate"><span class="pre">P</span></code> images. Run-length encoding
 is not supported.</p>
@@ -263,13 +235,13 @@ is not supported.</p>
 </dl>
 </section>
 <section id="dds">
-<h3><a class="toc-backref" href="#id7">DDS</a><a class="headerlink" href="#dds" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">DDS</a><a class="headerlink" href="#dds" title="Permalink to this heading">¶</a></h3>
 <p>DDS is a popular container texture format used in video games and natively supported
 by DirectX. Uncompressed RGB and RGBA can be read, and (since 8.3.0) written. DXT1,
 DXT3 (since 3.4.0) and DXT5 pixel formats can be read, only in <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> mode.</p>
 </section>
 <section id="dib">
-<h3><a class="toc-backref" href="#id8">DIB</a><a class="headerlink" href="#dib" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">DIB</a><a class="headerlink" href="#dib" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes DIB files. DIB files are similar to BMP files, so see
 above for more information.</p>
 <blockquote>
@@ -279,7 +251,7 @@ above for more information.</p>
 </div></blockquote>
 </section>
 <section id="eps">
-<h3><a class="toc-backref" href="#id9">EPS</a><a class="headerlink" href="#eps" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">EPS</a><a class="headerlink" href="#eps" title="Permalink to this heading">¶</a></h3>
 <p>Pillow identifies EPS files containing image data, and can read files that
 contain embedded raster images (ImageData descriptors). If Ghostscript is
 available, other EPS files can be read as well. The EPS driver can also write
@@ -307,7 +279,7 @@ the default behaviour of an RGB image with a white background.</p>
 </dl>
 </section>
 <section id="gif">
-<h3><a class="toc-backref" href="#id10">GIF</a><a class="headerlink" href="#gif" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">GIF</a><a class="headerlink" href="#gif" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads GIF87a and GIF89a versions of the GIF file format. The library
 writes run-length encoded files in GIF87a by default, unless GIF89a features
 are used or GIF89a is already in use.</p>
@@ -336,14 +308,14 @@ it will loop forever.</p>
 </dd>
 </dl>
 <section id="reading-sequences">
-<h4><a class="toc-backref" href="#id11">Reading sequences</a><a class="headerlink" href="#reading-sequences" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id11">Reading sequences</a><a class="headerlink" href="#reading-sequences" title="Permalink to this heading">¶</a></h4>
 <p>The GIF loader supports the <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code> methods. You can combine these methods
 to seek to the next frame (<code class="docutils literal notranslate"><span class="pre">im.seek(im.tell()</span> <span class="pre">+</span> <span class="pre">1)</span></code>).</p>
 <p><code class="docutils literal notranslate"><span class="pre">im.seek()</span></code> raises an <code class="xref py py-exc docutils literal notranslate"><span class="pre">EOFError</span></code> if you try to seek after the last frame.</p>
 </section>
 <section id="saving">
-<h4><a class="toc-backref" href="#id12">Saving</a><a class="headerlink" href="#saving" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id12">Saving</a><a class="headerlink" href="#saving" title="Permalink to this heading">¶</a></h4>
 <p>When calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> to write a GIF file, the
 following options are available:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">save_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">append_images</span><span class="o">=</span><span class="p">[</span><span class="n">im1</span><span class="p">,</span> <span class="n">im2</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
@@ -406,7 +378,7 @@ forever. By default, the image will not loop.</p>
 </dl>
 </section>
 <section id="reading-local-images">
-<h4><a class="toc-backref" href="#id13">Reading local images</a><a class="headerlink" href="#reading-local-images" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id13">Reading local images</a><a class="headerlink" href="#reading-local-images" title="Permalink to this heading">¶</a></h4>
 <p>The GIF loader creates an image memory the same size as the GIF file’s <em>logical
 screen size</em>, and pastes the actual pixel data (the <em>local image</em>) into this
 image. If you only want the actual pixel rectangle, you can manipulate the
@@ -424,7 +396,7 @@ attributes before loading the file:</p>
 </section>
 </section>
 <section id="icns">
-<h3><a class="toc-backref" href="#id14">ICNS</a><a class="headerlink" href="#icns" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id14">ICNS</a><a class="headerlink" href="#icns" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes macOS <code class="docutils literal notranslate"><span class="pre">.icns</span></code> files.  By default, the
 largest available icon is read, though you can override this by setting the
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code> property before calling
@@ -457,7 +429,7 @@ the size of each image.</p>
 </dl>
 </section>
 <section id="ico">
-<h3><a class="toc-backref" href="#id15">ICO</a><a class="headerlink" href="#ico" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id15">ICO</a><a class="headerlink" href="#ico" title="Permalink to this heading">¶</a></h3>
 <p>ICO is used to store icons on Windows. The largest available icon is read.</p>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method supports the following options:</p>
 <dl class="simple">
@@ -485,14 +457,14 @@ the size of each image.</p>
 </dl>
 </section>
 <section id="im">
-<h3><a class="toc-backref" href="#id16">IM</a><a class="headerlink" href="#im" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id16">IM</a><a class="headerlink" href="#im" title="Permalink to this heading">¶</a></h3>
 <p>IM is a format used by LabEye and other applications based on the IFUNC image
 processing library. The library reads and writes most uncompressed interchange
 versions of this format.</p>
 <p>IM is the only format that can store all internal Pillow formats.</p>
 </section>
 <section id="jpeg">
-<h3><a class="toc-backref" href="#id17">JPEG</a><a class="headerlink" href="#jpeg" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id17">JPEG</a><a class="headerlink" href="#jpeg" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads JPEG, JFIF, and Adobe JPEG files containing <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB</span></code>, or
 <code class="docutils literal notranslate"><span class="pre">CMYK</span></code> data. It writes standard and progressive JFIF files.</p>
 <p>Using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">draft()</span></code> method, you can speed things up by
@@ -594,7 +566,7 @@ details.</p>
 </div>
 </section>
 <section id="jpeg-2000">
-<h3><a class="toc-backref" href="#id18">JPEG 2000</a><a class="headerlink" href="#jpeg-2000" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id18">JPEG 2000</a><a class="headerlink" href="#jpeg-2000" title="Permalink to this heading">¶</a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 2.4.0.</span></p>
 </div>
@@ -670,16 +642,16 @@ you fail to do this, you will get errors about not being able to load the
 </div>
 </section>
 <section id="msp">
-<h3><a class="toc-backref" href="#id19">MSP</a><a class="headerlink" href="#msp" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id19">MSP</a><a class="headerlink" href="#msp" title="Permalink to this heading">¶</a></h3>
 <p>Pillow identifies and reads MSP files from Windows 1 and 2. The library writes
 uncompressed (Windows 1) versions of this format.</p>
 </section>
 <section id="pcx">
-<h3><a class="toc-backref" href="#id20">PCX</a><a class="headerlink" href="#pcx" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id20">PCX</a><a class="headerlink" href="#pcx" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes PCX files containing <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>, or <code class="docutils literal notranslate"><span class="pre">RGB</span></code> data.</p>
 </section>
 <section id="png">
-<h3><a class="toc-backref" href="#id21">PNG</a><a class="headerlink" href="#png" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id21">PNG</a><a class="headerlink" href="#png" title="Permalink to this heading">¶</a></h3>
 <p>Pillow identifies, reads, and writes PNG files containing <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">LA</span></code>,
 <code class="docutils literal notranslate"><span class="pre">I</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB</span></code> or <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> data. Interlaced files are supported as of
 v1.1.7.</p>
@@ -762,7 +734,7 @@ library before building the Python Imaging Library. See the
 <a class="reference internal" href="../installation.html"><span class="doc">installation documentation</span></a> for details.</p>
 </div>
 <section id="apng-sequences">
-<span id="id2"></span><h4><a class="toc-backref" href="#id22">APNG sequences</a><a class="headerlink" href="#apng-sequences" title="Permalink to this headline">¶</a></h4>
+<span id="id2"></span><h4><a class="toc-backref" href="#id22">APNG sequences</a><a class="headerlink" href="#apng-sequences" title="Permalink to this heading">¶</a></h4>
 <p>The PNG loader includes limited support for reading and writing Animated Portable
 Network Graphics (APNG) files.
 When an APNG file is loaded, <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_format_mimetype()</span></code>
@@ -810,7 +782,7 @@ loader will not attempt to repair and reorder files containing sequence errors.<
 </div>
 </section>
 <section id="apng-saving">
-<span id="id3"></span><h4><a class="toc-backref" href="#id23">Saving</a><a class="headerlink" href="#apng-saving" title="Permalink to this headline">¶</a></h4>
+<span id="id3"></span><h4><a class="toc-backref" href="#id23">Saving</a><a class="headerlink" href="#apng-saving" title="Permalink to this heading">¶</a></h4>
 <p>When calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code>, by default only a single frame PNG file
 will be saved. To save an APNG file (including a single frame APNG), the <code class="docutils literal notranslate"><span class="pre">save_all</span></code>
 parameter must be set to <code class="docutils literal notranslate"><span class="pre">True</span></code>. The following parameters can also be set:</p>
@@ -871,16 +843,16 @@ these list or tuple parameters should not include an entry for the default image
 </section>
 </section>
 <section id="ppm">
-<h3><a class="toc-backref" href="#id24">PPM</a><a class="headerlink" href="#ppm" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id24">PPM</a><a class="headerlink" href="#ppm" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes PBM, PGM, PPM and PNM files containing <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code> or
 <code class="docutils literal notranslate"><span class="pre">RGB</span></code> data.</p>
 </section>
 <section id="sgi">
-<h3><a class="toc-backref" href="#id25">SGI</a><a class="headerlink" href="#sgi" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id25">SGI</a><a class="headerlink" href="#sgi" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes uncompressed <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB</span></code>, and <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> files.</p>
 </section>
 <section id="spider">
-<h3><a class="toc-backref" href="#id26">SPIDER</a><a class="headerlink" href="#spider" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id26">SPIDER</a><a class="headerlink" href="#spider" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes SPIDER image files of 32-bit floating point data
 (“F;32F”).</p>
 <p>Pillow also reads SPIDER stack files containing sequences of SPIDER images. The
@@ -901,7 +873,7 @@ is provided for converting floating point data to byte data (mode <code class="d
 </pre></div>
 </div>
 <section id="writing-files-in-spider-format">
-<h4><a class="toc-backref" href="#id27">Writing files in SPIDER format</a><a class="headerlink" href="#writing-files-in-spider-format" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id27">Writing files in SPIDER format</a><a class="headerlink" href="#writing-files-in-spider-format" title="Permalink to this heading">¶</a></h4>
 <p>The extension of SPIDER files may be any 3 alphanumeric characters. Therefore
 the output format must be specified explicitly:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;newimage.spi&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;SPIDER&#39;</span><span class="p">)</span>
@@ -912,13 +884,13 @@ the output format must be specified explicitly:</p>
 </section>
 </section>
 <section id="tga">
-<h3><a class="toc-backref" href="#id28">TGA</a><a class="headerlink" href="#tga" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id28">TGA</a><a class="headerlink" href="#tga" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes TGA images containing <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">LA</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>,
 <code class="docutils literal notranslate"><span class="pre">RGB</span></code>, and <code class="docutils literal notranslate"><span class="pre">RGBA</span></code> data. Pillow can read and write both uncompressed and
 run-length encoded TGAs.</p>
 </section>
 <section id="tiff">
-<h3><a class="toc-backref" href="#id29">TIFF</a><a class="headerlink" href="#tiff" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id29">TIFF</a><a class="headerlink" href="#tiff" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes TIFF files. It can read both striped and tiled
 images, pixel and plane interleaved multi-band images. If you have
 libtiff and its headers installed, Pillow can read and write many kinds
@@ -975,7 +947,7 @@ numbers are returned as a tuple of <code class="docutils literal notranslate"><s
 </div>
 </div></blockquote>
 <section id="reading-multi-frame-tiff-images">
-<h4><a class="toc-backref" href="#id30">Reading Multi-frame TIFF Images</a><a class="headerlink" href="#reading-multi-frame-tiff-images" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id30">Reading Multi-frame TIFF Images</a><a class="headerlink" href="#reading-multi-frame-tiff-images" title="Permalink to this heading">¶</a></h4>
 <p>The TIFF loader supports the <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code> methods, taking and returning frame numbers
 within the image file. You can combine these methods to seek to the next frame
@@ -985,7 +957,7 @@ and can be accessed in any order.</p>
 last frame.</p>
 </section>
 <section id="saving-tiff-images">
-<h4><a class="toc-backref" href="#id31">Saving Tiff Images</a><a class="headerlink" href="#saving-tiff-images" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id31">Saving Tiff Images</a><a class="headerlink" href="#saving-tiff-images" title="Permalink to this heading">¶</a></h4>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method can take the following keyword arguments:</p>
 <dl>
 <dt><strong>save_all</strong></dt><dd><p>If true, Pillow will save all frames of the image to a multiframe tiff document.</p>
@@ -1081,7 +1053,7 @@ of the dpi will be rounded to the nearest integer.</p>
 </section>
 </section>
 <section id="webp">
-<h3><a class="toc-backref" href="#id32">WebP</a><a class="headerlink" href="#webp" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id32">WebP</a><a class="headerlink" href="#webp" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes WebP files. The specifics of Pillow’s capabilities with
 this format are currently undocumented.</p>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code> method supports the following options:</p>
@@ -1103,7 +1075,7 @@ the system WebP library was built with webpmux support.</p>
 </dd>
 </dl>
 <section id="saving-sequences">
-<h4><a class="toc-backref" href="#id33">Saving sequences</a><a class="headerlink" href="#saving-sequences" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id33">Saving sequences</a><a class="headerlink" href="#saving-sequences" title="Permalink to this heading">¶</a></h4>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Support for animated WebP files will only be enabled if the system WebP
@@ -1145,25 +1117,25 @@ chooses between lossy and lossless for each frame.</p>
 </section>
 </section>
 <section id="xbm">
-<h3><a class="toc-backref" href="#id34">XBM</a><a class="headerlink" href="#xbm" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id34">XBM</a><a class="headerlink" href="#xbm" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads and writes X bitmap files (mode <code class="docutils literal notranslate"><span class="pre">1</span></code>).</p>
 </section>
 </section>
 <section id="read-only-formats">
-<h2><a class="toc-backref" href="#id35">Read-only formats</a><a class="headerlink" href="#read-only-formats" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id35">Read-only formats</a><a class="headerlink" href="#read-only-formats" title="Permalink to this heading">¶</a></h2>
 <section id="blp">
-<h3><a class="toc-backref" href="#id36">BLP</a><a class="headerlink" href="#blp" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id36">BLP</a><a class="headerlink" href="#blp" title="Permalink to this heading">¶</a></h3>
 <p>BLP is the Blizzard Mipmap Format, a texture format used in World of
 Warcraft. Pillow supports reading <code class="docutils literal notranslate"><span class="pre">JPEG</span></code> Compressed or raw <code class="docutils literal notranslate"><span class="pre">BLP1</span></code>
 images, and all types of <code class="docutils literal notranslate"><span class="pre">BLP2</span></code> images.</p>
 </section>
 <section id="cur">
-<h3><a class="toc-backref" href="#id37">CUR</a><a class="headerlink" href="#cur" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id37">CUR</a><a class="headerlink" href="#cur" title="Permalink to this heading">¶</a></h3>
 <p>CUR is used to store cursors on Windows. The CUR decoder reads the largest
 available cursor. Animated cursors are not supported.</p>
 </section>
 <section id="dcx">
-<h3><a class="toc-backref" href="#id38">DCX</a><a class="headerlink" href="#dcx" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id38">DCX</a><a class="headerlink" href="#dcx" title="Permalink to this heading">¶</a></h3>
 <p>DCX is a container file format for PCX files, defined by Intel. The DCX format
 is commonly used in fax applications. The DCX decoder can read files containing
 <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">P</span></code>, or <code class="docutils literal notranslate"><span class="pre">RGB</span></code> data.</p>
@@ -1171,14 +1143,14 @@ is commonly used in fax applications. The DCX decoder can read files containing
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> or <code class="xref py py-mod docutils literal notranslate"><span class="pre">ImageSequence</span></code> to read other images.</p>
 </section>
 <section id="fits">
-<h3><a class="toc-backref" href="#id39">FITS</a><a class="headerlink" href="#fits" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id39">FITS</a><a class="headerlink" href="#fits" title="Permalink to this heading">¶</a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 9.1.0.</span></p>
 </div>
 <p>Pillow identifies and reads FITS files, commonly used for astronomy.</p>
 </section>
 <section id="fli-flc">
-<h3><a class="toc-backref" href="#id40">FLI, FLC</a><a class="headerlink" href="#fli-flc" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id40">FLI, FLC</a><a class="headerlink" href="#fli-flc" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads Autodesk FLI and FLC animations.</p>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
@@ -1188,7 +1160,7 @@ is commonly used in fax applications. The DCX decoder can read files containing
 </dl>
 </section>
 <section id="fpx">
-<h3><a class="toc-backref" href="#id41">FPX</a><a class="headerlink" href="#fpx" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id41">FPX</a><a class="headerlink" href="#fpx" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads Kodak FlashPix files. In the current version, only the highest
 resolution image is read from the file, and the viewing transform is not taken
 into account.</p>
@@ -1200,7 +1172,7 @@ README for details.</p>
 </div>
 </section>
 <section id="ftex">
-<h3><a class="toc-backref" href="#id42">FTEX</a><a class="headerlink" href="#ftex" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id42">FTEX</a><a class="headerlink" href="#ftex" title="Permalink to this heading">¶</a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 3.2.0.</span></p>
 </div>
@@ -1209,7 +1181,7 @@ Independence War 2: Edge Of Chaos. The plugin reads a single texture
 per file, in the compressed and uncompressed formats.</p>
 </section>
 <section id="gbr">
-<h3><a class="toc-backref" href="#id43">GBR</a><a class="headerlink" href="#gbr" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id43">GBR</a><a class="headerlink" href="#gbr" title="Permalink to this heading">¶</a></h3>
 <p>The GBR decoder reads GIMP brush files, version 1 and 2.</p>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
@@ -1221,7 +1193,7 @@ per file, in the compressed and uncompressed formats.</p>
 </dl>
 </section>
 <section id="gd">
-<h3><a class="toc-backref" href="#id44">GD</a><a class="headerlink" href="#gd" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id44">GD</a><a class="headerlink" href="#gd" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads uncompressed GD2 files. Note that you must use
 <code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.GdImageFile.open()</span></code> to read such a file.</p>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
@@ -1233,49 +1205,49 @@ transparent.</p>
 </dl>
 </section>
 <section id="imt">
-<h3><a class="toc-backref" href="#id45">IMT</a><a class="headerlink" href="#imt" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id45">IMT</a><a class="headerlink" href="#imt" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads Image Tools images containing <code class="docutils literal notranslate"><span class="pre">L</span></code> data.</p>
 </section>
 <section id="iptc-naa">
-<h3><a class="toc-backref" href="#id46">IPTC/NAA</a><a class="headerlink" href="#iptc-naa" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id46">IPTC/NAA</a><a class="headerlink" href="#iptc-naa" title="Permalink to this heading">¶</a></h3>
 <p>Pillow provides limited read support for IPTC/NAA newsphoto files.</p>
 </section>
 <section id="mcidas">
-<h3><a class="toc-backref" href="#id47">MCIDAS</a><a class="headerlink" href="#mcidas" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id47">MCIDAS</a><a class="headerlink" href="#mcidas" title="Permalink to this heading">¶</a></h3>
 <p>Pillow identifies and reads 8-bit McIdas area files.</p>
 </section>
 <section id="mic">
-<h3><a class="toc-backref" href="#id48">MIC</a><a class="headerlink" href="#mic" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id48">MIC</a><a class="headerlink" href="#mic" title="Permalink to this heading">¶</a></h3>
 <p>Pillow identifies and reads Microsoft Image Composer (MIC) files. When opened,
 the first sprite in the file is loaded. You can use <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code> to read other sprites from the file.</p>
 <p>Note that there may be an embedded gamma of 2.2 in MIC files.</p>
 </section>
 <section id="mpo">
-<h3><a class="toc-backref" href="#id49">MPO</a><a class="headerlink" href="#mpo" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id49">MPO</a><a class="headerlink" href="#mpo" title="Permalink to this heading">¶</a></h3>
 <p>Pillow identifies and reads Multi Picture Object (MPO) files, loading the primary
 image when first opened. The <code class="xref py py-meth docutils literal notranslate"><span class="pre">seek()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">tell()</span></code>
 methods may be used to read other pictures from the file. The pictures are
 zero-indexed and random access is supported.</p>
 </section>
 <section id="pcd">
-<h3><a class="toc-backref" href="#id50">PCD</a><a class="headerlink" href="#pcd" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id50">PCD</a><a class="headerlink" href="#pcd" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads PhotoCD files containing <code class="docutils literal notranslate"><span class="pre">RGB</span></code> data. This only reads the 768x512
 resolution image from the file. Higher resolutions are encoded in a proprietary
 encoding.</p>
 </section>
 <section id="pixar">
-<h3><a class="toc-backref" href="#id51">PIXAR</a><a class="headerlink" href="#pixar" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id51">PIXAR</a><a class="headerlink" href="#pixar" title="Permalink to this heading">¶</a></h3>
 <p>Pillow provides limited support for PIXAR raster files. The library can
 identify and read “dumped” RGB files.</p>
 <p>The format code is <code class="docutils literal notranslate"><span class="pre">PIXAR</span></code>.</p>
 </section>
 <section id="psd">
-<h3><a class="toc-backref" href="#id52">PSD</a><a class="headerlink" href="#psd" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id52">PSD</a><a class="headerlink" href="#psd" title="Permalink to this heading">¶</a></h3>
 <p>Pillow identifies and reads PSD files written by Adobe Photoshop 2.5 and 3.0.</p>
 </section>
 <section id="wal">
-<h3><a class="toc-backref" href="#id53">WAL</a><a class="headerlink" href="#wal" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id53">WAL</a><a class="headerlink" href="#wal" title="Permalink to this heading">¶</a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 1.1.4.</span></p>
 </div>
@@ -1287,7 +1259,7 @@ this format.</p>
 the palette, use the putpalette method.</p>
 </section>
 <section id="wmf">
-<h3><a class="toc-backref" href="#id54">WMF</a><a class="headerlink" href="#wmf" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id54">WMF</a><a class="headerlink" href="#wmf" title="Permalink to this heading">¶</a></h3>
 <p>Pillow can identify WMF files.</p>
 <p>On Windows, it can read WMF files. By default, it will load the image at 72
 dpi. To load it at another resolution:</p>
@@ -1324,7 +1296,7 @@ dpi. To load it at another resolution:</p>
 </div>
 </section>
 <section id="xpm">
-<h3><a class="toc-backref" href="#id55">XPM</a><a class="headerlink" href="#xpm" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id55">XPM</a><a class="headerlink" href="#xpm" title="Permalink to this heading">¶</a></h3>
 <p>Pillow reads X pixmap files (mode <code class="docutils literal notranslate"><span class="pre">P</span></code>) with 256 colors or less.</p>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">open()</span></code> method sets the following
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> properties:</p>
@@ -1336,14 +1308,14 @@ transparent.</p>
 </section>
 </section>
 <section id="write-only-formats">
-<h2><a class="toc-backref" href="#id56">Write-only formats</a><a class="headerlink" href="#write-only-formats" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id56">Write-only formats</a><a class="headerlink" href="#write-only-formats" title="Permalink to this heading">¶</a></h2>
 <section id="palm">
-<h3><a class="toc-backref" href="#id57">PALM</a><a class="headerlink" href="#palm" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id57">PALM</a><a class="headerlink" href="#palm" title="Permalink to this heading">¶</a></h3>
 <p>Pillow provides write-only support for PALM pixmap files.</p>
 <p>The format code is <code class="docutils literal notranslate"><span class="pre">Palm</span></code>, the extension is <code class="docutils literal notranslate"><span class="pre">.palm</span></code>.</p>
 </section>
 <section id="pdf">
-<h3><a class="toc-backref" href="#id58">PDF</a><a class="headerlink" href="#pdf" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id58">PDF</a><a class="headerlink" href="#pdf" title="Permalink to this heading">¶</a></h3>
 <p>Pillow can write PDF (Acrobat) images. Such images are written as binary PDF 1.4
 files, using either JPEG or HEX encoding depending on the image mode (and
 whether JPEG support is available or not).</p>
@@ -1423,14 +1395,14 @@ file, this will default to the current time.</p>
 </dl>
 </section>
 <section id="xv-thumbnails">
-<h3><a class="toc-backref" href="#id59">XV Thumbnails</a><a class="headerlink" href="#xv-thumbnails" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id59">XV Thumbnails</a><a class="headerlink" href="#xv-thumbnails" title="Permalink to this heading">¶</a></h3>
 <p>Pillow can read XV thumbnail files.</p>
 </section>
 </section>
 <section id="identify-only-formats">
-<h2><a class="toc-backref" href="#id60">Identify-only formats</a><a class="headerlink" href="#identify-only-formats" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id60">Identify-only formats</a><a class="headerlink" href="#identify-only-formats" title="Permalink to this heading">¶</a></h2>
 <section id="bufr">
-<h3><a class="toc-backref" href="#id61">BUFR</a><a class="headerlink" href="#bufr" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id61">BUFR</a><a class="headerlink" href="#bufr" title="Permalink to this heading">¶</a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 1.1.3.</span></p>
 </div>
@@ -1439,7 +1411,7 @@ file, this will default to the current time.</p>
 <code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.BufrStubImagePlugin.register_handler()</span></code>.</p>
 </section>
 <section id="grib">
-<h3><a class="toc-backref" href="#id62">GRIB</a><a class="headerlink" href="#grib" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id62">GRIB</a><a class="headerlink" href="#grib" title="Permalink to this heading">¶</a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 1.1.5.</span></p>
 </div>
@@ -1451,7 +1423,7 @@ has to seek to the header before passing the file handle to Pillow.</p>
 <code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.GribStubImagePlugin.register_handler()</span></code>.</p>
 </section>
 <section id="hdf5">
-<h3><a class="toc-backref" href="#id63">HDF5</a><a class="headerlink" href="#hdf5" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id63">HDF5</a><a class="headerlink" href="#hdf5" title="Permalink to this heading">¶</a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 1.1.5.</span></p>
 </div>
@@ -1460,7 +1432,7 @@ has to seek to the header before passing the file handle to Pillow.</p>
 <code class="xref py py-func docutils literal notranslate"><span class="pre">PIL.Hdf5StubImagePlugin.register_handler()</span></code>.</p>
 </section>
 <section id="mpeg">
-<h3><a class="toc-backref" href="#id64">MPEG</a><a class="headerlink" href="#mpeg" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id64">MPEG</a><a class="headerlink" href="#mpeg" title="Permalink to this heading">¶</a></h3>
 <p>Pillow identifies MPEG files.</p>
 </section>
 </section>
@@ -1469,10 +1441,7 @@ has to seek to the header before passing the file handle to Pillow.</p>
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="appendices.html" class="btn btn-neutral float-left" title="Appendices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="text-anchors.html" class="btn btn-neutral float-right" title="Text anchors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

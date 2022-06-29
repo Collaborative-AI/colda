@@ -12,7 +12,7 @@
 <meta property="og:description" content="The TrainRequest module contains a class of the same name to initiate train stage collaboration. Examples: Initiate a training task: The following script shows how to initiate a training task Classes:" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TrainRequest Module &mdash; Synspot 0.0.0 documentation</title>
+  <title>TrainRequest Module &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -44,8 +45,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Synspot
-            <img src="../_static/Synspot.jpg" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> colda
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -57,15 +57,12 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="algorithm.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="authorization.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="personalinformation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">personalinformation</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="GetNotification.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">GetNotification</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="StopRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TestRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a><ul>
@@ -79,9 +76,6 @@
 <li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code> Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
 </ul>
 
@@ -91,7 +85,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Synspot</a>
+          <a href="../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -134,26 +128,26 @@
     text-align: unset;
 }
 </style>
-<span class="target" id="module-synspot.TrainRequest"></span><section id="trainrequest-module">
-<h1><a class="reference internal" href="#module-synspot.TrainRequest" title="synspot.TrainRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code></a> Module<a class="headerlink" href="#trainrequest-module" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="#module-synspot.TrainRequest" title="synspot.TrainRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code></a> module contains a class of the same name to
+<span class="target" id="module-colda.TrainRequest"></span><section id="trainrequest-module">
+<h1><a class="reference internal" href="#module-colda.TrainRequest" title="colda.TrainRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code></a> Module<a class="headerlink" href="#trainrequest-module" title="Permalink to this heading">¶</a></h1>
+<p>The <a class="reference internal" href="#module-colda.TrainRequest" title="colda.TrainRequest"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code></a> module contains a class of the same name to
 initiate train stage collaboration.</p>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <section id="initiate-a-training-task">
-<h3>Initiate a training task<a class="headerlink" href="#initiate-a-training-task" title="Permalink to this headline">¶</a></h3>
+<h3>Initiate a training task<a class="headerlink" href="#initiate-a-training-task" title="Permalink to this heading">¶</a></h3>
 <p>The following script shows how to initiate a training task</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">synspot</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">colda</span>
 <span class="c1"># login</span>
-<span class="n">synspot</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="s1">&#39;xie1&#39;</span><span class="p">,</span> <span class="s1">&#39;Xie1@123&#39;</span><span class="p">)</span>
+<span class="n">colda</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="s1">&#39;xie1&#39;</span><span class="p">,</span> <span class="s1">&#39;Xie1@123&#39;</span><span class="p">)</span>
 
-<span class="n">synspot</span><span class="o">.</span><span class="n">callForTrain</span><span class="p">(</span><span class="n">maxRound</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">assistors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="n">colda</span><span class="o">.</span><span class="n">callForTrain</span><span class="p">(</span><span class="n">maxRound</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">assistors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                         <span class="n">train_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <a class="reference internal" href="#synspot.TrainRequest.TrainRequest" title="synspot.TrainRequest.TrainRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainRequest</span></code></a> class has several methods,
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">TrainRequest</span></code> class has several methods,
 but they are all marked as “experimental.” Read that as you will. The
 <code class="docutils literal notranslate"><span class="pre">[source]</span></code> link is there for a reason.</p>
 </div>
@@ -164,264 +158,7 @@ but they are all marked as “experimental.” Read that as you will. The
 </section>
 </section>
 <section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">synspot.TrainRequest.</span></span><span class="sig-name descname"><span class="pre">TrainRequest</span></span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.handleTrainRequest">
-<span class="sig-name descname"><span class="pre">handleTrainRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxRound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assistors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.handleTrainRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.handleTrainRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Call __find_assistor <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">further</span></code> execution</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>maxRound</strong> – <code class="xref py py-exc docutils literal notranslate"><span class="pre">Integer</span></code>. Maximum training round</p></li>
-<li><p><strong>assistors</strong> – List. The List of <code class="docutils literal notranslate"><span class="pre">assistors'</span></code> usernames</p></li>
-<li><p><strong>train_file_path</strong> – String. Input path address of training data path</p></li>
-<li><p><strong>train_id_column</strong> – String. ID column of Input File</p></li>
-<li><p><strong>train_data_column</strong> – String. Data column of Input File</p></li>
-<li><p><strong>train_target_column</strong> – String. Target column of Input File</p></li>
-<li><p><strong>task_mode</strong> – String. Classification or Regression</p></li>
-<li><p><strong>model_name</strong> – String. Specific model, such as LinearRegression, DecisionTree.</p></li>
-<li><p><strong>metric_name</strong> – String. Metric to measure the result, such as MAD, RMSE, R2.</p></li>
-<li><p><strong>task_name</strong> – None or String. The name of current task.</p></li>
-<li><p><strong>task_description</strong> – None or String. The description of current task</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_match_id">
-<span class="sig-name descname"><span class="pre">unread_match_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unread_match_id_notification</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_match_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_match_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the unread_match_id. Consider sponsor and assistor, different functions will be called</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>unread_match_id_notification</strong> – Dictionary.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>String. ‘unread match id done’</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_match_id_assistor">
-<span class="sig-name descname"><span class="pre">unread_match_id_assistor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_match_id_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_match_id_assistor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the unread_match_id of assistor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>task_id</strong> – String.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>String. ‘unread_match_id_assistor successfully’</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_match_id_sponsor">
-<span class="sig-name descname"><span class="pre">unread_match_id_sponsor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_match_id_sponsor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_match_id_sponsor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the unread_match_id of sponsor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>task_id</strong> – String.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>String. ‘unread_match_id_sponsor successfully’</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_output">
-<span class="sig-name descname"><span class="pre">unread_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unread_output_notification</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_output" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the unread_output.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>unread_output_notification</strong> – Dictionary.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_output_make_result_helper">
-<span class="sig-name descname"><span class="pre">unread_output_make_result_helper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waiting_start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_output_make_result_helper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_output_make_result_helper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper Function. Dealing with the order issue</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>task_id</strong> – String. Task id of current task</p></li>
-<li><p><strong>rounds</strong> – Integer. Current Round</p></li>
-<li><p><strong>train_file_path</strong> – String. The file path of train file</p></li>
-<li><p><strong>train_target_column</strong> – String. The selected data column of train file</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_output_singleTask">
-<span class="sig-name descname"><span class="pre">unread_output_singleTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_output_singleTask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_output_singleTask" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the single task of unread output.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>task_id</strong> – String. Task id of current task</p></li>
-<li><p><strong>rounds</strong> – Integer. Current Round</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_request">
-<span class="sig-name descname"><span class="pre">unread_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unread_request_notification</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the unread request for three default mode: [“passive”, “active”, “auto”]</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>unread_request_notification</strong> – Dictionary.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>String. ‘unread_request successfully’</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_situation">
-<span class="sig-name descname"><span class="pre">unread_situation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unread_situation_notification</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_situation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_situation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the unread_situation. Two situations needed to be considered: sponsor and assistor</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>unread_situation_notification</strong> – Dictionary.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_situation_assistor">
-<span class="sig-name descname"><span class="pre">unread_situation_assistor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_situation_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_situation_assistor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the unread situation of assistor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>task_id</strong> – String. The task needed to be handled.</p></li>
-<li><p><strong>rounds</strong> – Integer. Current round.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_situation_assistor_train_part">
-<span class="sig-name descname"><span class="pre">unread_situation_assistor_train_part</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waiting_start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_situation_assistor_train_part"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_situation_assistor_train_part" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the timing issue of unread situation of assistor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>task_id</strong> – String. The task needed to be handled.</p></li>
-<li><p><strong>rounds</strong> – Integer. Current round.</p></li>
-<li><p><strong>train_file_path</strong> – String. The file path of train file</p></li>
-<li><p><strong>train_data_column</strong> – String. The selected data column of train file</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_situation_sponsor">
-<span class="sig-name descname"><span class="pre">unread_situation_sponsor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_situation_sponsor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_situation_sponsor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle the unread situation of sponsor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>task_id</strong> – String. The task needed to be handled.</p></li>
-<li><p><strong>rounds</strong> – Integer. Current round.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.TrainRequest.TrainRequest.unread_train_stop">
-<span class="sig-name descname"><span class="pre">unread_train_stop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unread_train_stop_notification</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/TrainRequest.html#TrainRequest.unread_train_stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.TrainRequest.TrainRequest.unread_train_stop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stop Train and delete related files</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>unread_train_stop_notification</strong> – Dictionary.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 

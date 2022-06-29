@@ -12,7 +12,7 @@
 <meta property="og:description" content="Pillow uses a plugin model which allows you to add your own decoders to the library, without any changes to the library itself. Such plugins usually have names like XxxImagePlugin.py, where Xxx is ..." />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Writing Your Own Image Plugin &mdash; Synspot 0.0.0 documentation</title>
+  <title>Writing Your Own Image Plugin &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -34,9 +35,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Reference" href="../reference/index.html" />
-    <link rel="prev" title="Text anchors" href="text-anchors.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,8 +43,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Synspot
-            <img src="../_static/Synspot.jpg" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> colda
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,41 +53,9 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="appendices.html">Appendices</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="image-file-formats.html">Image file formats</a></li>
-<li class="toctree-l3"><a class="reference internal" href="text-anchors.html">Text anchors</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Writing Your Own Image Plugin</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-tile-attribute">The <code class="docutils literal notranslate"><span class="pre">tile</span></code> attribute</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#decoders">Decoders</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#the-raw-decoder">The raw decoder</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#decoding-floating-point-data">Decoding floating point data</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-bit-decoder">The bit decoder</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#writing-your-own-file-decoder-in-c">Writing Your Own File Decoder in C</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#decoding">Decoding</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cleanup">Cleanup</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#writing-your-own-file-decoder-in-python">Writing Your Own File Decoder in Python</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
 </ul>
 
@@ -99,7 +65,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Synspot</a>
+          <a href="../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -107,8 +73,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Handbook</a> &raquo;</li>
-          <li><a href="appendices.html">Appendices</a> &raquo;</li>
       <li>Writing Your Own Image Plugin</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/handbook/writing-your-own-file-decoder.rst.txt" rel="nofollow"> View page source</a>
@@ -144,7 +108,7 @@
 }
 </style>
 <section id="writing-your-own-image-plugin">
-<span id="image-plugins"></span><h1>Writing Your Own Image Plugin<a class="headerlink" href="#writing-your-own-image-plugin" title="Permalink to this headline">¶</a></h1>
+<span id="image-plugins"></span><h1>Writing Your Own Image Plugin<a class="headerlink" href="#writing-your-own-image-plugin" title="Permalink to this heading">¶</a></h1>
 <p>Pillow uses a plugin model which allows you to add your own
 decoders to the library, without any changes to the library
 itself. Such plugins usually have names like
@@ -185,7 +149,7 @@ registered, via a call to the <code class="xref py py-mod docutils literal notra
 appropriate contents.</p>
 </div>
 <section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
 <p>The following plugin supports a simple format, which has a 128-byte header
 consisting of the words “SPAM” followed by the width, height, and pixel size in
 bits. The header fields are separated by spaces. The image data follows
@@ -257,7 +221,7 @@ idea to register any extensions used by this format.</p>
 </div>
 </section>
 <section id="the-tile-attribute">
-<h2>The <code class="docutils literal notranslate"><span class="pre">tile</span></code> attribute<a class="headerlink" href="#the-tile-attribute" title="Permalink to this headline">¶</a></h2>
+<h2>The <code class="docutils literal notranslate"><span class="pre">tile</span></code> attribute<a class="headerlink" href="#the-tile-attribute" title="Permalink to this heading">¶</a></h2>
 <p>To be able to read the file as well as just identifying it, the <code class="docutils literal notranslate"><span class="pre">tile</span></code>
 attribute must also be set. This attribute consists of a list of tile
 descriptors, where each descriptor specifies how data should be loaded to a
@@ -287,9 +251,9 @@ not just a single descriptor.</p>
 </section>
 </section>
 <section id="decoders">
-<h1>Decoders<a class="headerlink" href="#decoders" title="Permalink to this headline">¶</a></h1>
+<h1>Decoders<a class="headerlink" href="#decoders" title="Permalink to this heading">¶</a></h1>
 <section id="the-raw-decoder">
-<h2>The raw decoder<a class="headerlink" href="#the-raw-decoder" title="Permalink to this headline">¶</a></h2>
+<h2>The raw decoder<a class="headerlink" href="#the-raw-decoder" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">raw</span></code> decoder is used to read uncompressed data from an image file. It
 can be used with most uncompressed file formats, such as PPM, BMP, uncompressed
 TIFF, and many others. To use the raw decoder with the
@@ -391,7 +355,7 @@ and PackBits. For details, see the <code class="file docutils literal notranslat
 standard plugin implementations provided with the library.</p>
 </section>
 <section id="decoding-floating-point-data">
-<h2>Decoding floating point data<a class="headerlink" href="#decoding-floating-point-data" title="Permalink to this headline">¶</a></h2>
+<h2>Decoding floating point data<a class="headerlink" href="#decoding-floating-point-data" title="Permalink to this heading">¶</a></h2>
 <p>PIL provides some special mechanisms to allow you to load a wide variety of
 formats into a mode <code class="docutils literal notranslate"><span class="pre">F</span></code> (floating point) image memory.</p>
 <p>You can use the <code class="docutils literal notranslate"><span class="pre">raw</span></code> decoder to read images where data is packed in any
@@ -474,7 +438,7 @@ standard machine data type, using one of the following raw modes:</p>
 </table>
 </section>
 <section id="the-bit-decoder">
-<h2>The bit decoder<a class="headerlink" href="#the-bit-decoder" title="Permalink to this headline">¶</a></h2>
+<h2>The bit decoder<a class="headerlink" href="#the-bit-decoder" title="Permalink to this heading">¶</a></h2>
 <p>If the raw decoder cannot handle your format, PIL also provides a special “bit”
 decoder that can be used to read various packed formats into a floating point
 image memory.</p>
@@ -523,7 +487,7 @@ the bottom line (-1). If omitted, the orientation defaults to 1.</p>
 </section>
 </section>
 <section id="writing-your-own-file-decoder-in-c">
-<span id="file-decoders"></span><h1>Writing Your Own File Decoder in C<a class="headerlink" href="#writing-your-own-file-decoder-in-c" title="Permalink to this headline">¶</a></h1>
+<span id="file-decoders"></span><h1>Writing Your Own File Decoder in C<a class="headerlink" href="#writing-your-own-file-decoder-in-c" title="Permalink to this heading">¶</a></h1>
 <p>There are 3 stages in a file decoder’s lifetime:</p>
 <ol class="arabic simple">
 <li><p>Setup: Pillow looks for a function in the decoder registry, falling
@@ -537,7 +501,7 @@ be called at the end of the decoding process, even if there was an
 exception raised.</p></li>
 </ol>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">¶</a></h2>
 <p>The current conventions are that the decoder setup function is named
 <code class="docutils literal notranslate"><span class="pre">PyImaging_[Decodername]DecoderNew</span></code> and defined in <code class="docutils literal notranslate"><span class="pre">decode.c</span></code>. The
 python binding for it is named <code class="docutils literal notranslate"><span class="pre">[decodername]_decoder</span></code> and is setup
@@ -571,7 +535,7 @@ warning is removed.</p>
 </dl>
 </section>
 <section id="decoding">
-<h2>Decoding<a class="headerlink" href="#decoding" title="Permalink to this headline">¶</a></h2>
+<h2>Decoding<a class="headerlink" href="#decoding" title="Permalink to this heading">¶</a></h2>
 <p>The decode function is called with the target (core) image, the
 decoder state structure, and a buffer of data to be decoded.</p>
 <p><strong>Experimental</strong> – If <code class="docutils literal notranslate"><span class="pre">pulls_fd</span></code> is set, then the decode function
@@ -587,7 +551,7 @@ from the file like object.</p>
 <p>Return -1 on success, without setting the errcode.</p>
 </section>
 <section id="cleanup">
-<h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">¶</a></h2>
+<h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this heading">¶</a></h2>
 <p>The cleanup function is called after the decoder returns a negative
 value, or if there is a read error from the file. This function should
 free any allocated memory and release any resources from external
@@ -595,7 +559,7 @@ libraries.</p>
 </section>
 </section>
 <section id="writing-your-own-file-decoder-in-python">
-<span id="file-decoders-py"></span><h1>Writing Your Own File Decoder in Python<a class="headerlink" href="#writing-your-own-file-decoder-in-python" title="Permalink to this headline">¶</a></h1>
+<span id="file-decoders-py"></span><h1>Writing Your Own File Decoder in Python<a class="headerlink" href="#writing-your-own-file-decoder-in-python" title="Permalink to this heading">¶</a></h1>
 <p>Python file decoders should derive from
 <code class="xref py py-class docutils literal notranslate"><span class="pre">PIL.ImageFile.PyDecoder</span></code> and should at least override the
 decode method. File decoders should be registered using
@@ -614,10 +578,7 @@ called with a buffer of data to be interpreted.</p></li>
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="text-anchors.html" class="btn btn-neutral float-left" title="Text anchors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../reference/index.html" class="btn btn-neutral float-right" title="Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

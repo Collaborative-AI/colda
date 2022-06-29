@@ -1,10 +1,10 @@
-.. py:module:: synspot.StopRequest
-.. py:currentmodule:: synspot.StopRequest
+.. py:module:: colda.StopRequest
+.. py:currentmodule:: colda.StopRequest
 
-:py:mod:`~synspot.StopRequest` Module
+:py:mod:`~colda.StopRequest` Module
 ==============================
 
-The :py:mod:`~synspot.StopRequest` module contains a class of the same name to
+The :py:mod:`~colda.StopRequest` module contains a class of the same name to
 stop the task.
 
 Examples
@@ -18,14 +18,14 @@ and save the model at the desginated position.
 
 .. code-block:: python
 
-    from synspot import algorithm
+    from colda import algorithm
     model = Model(task_mode, model_name)
     model.fit(data, target)
     save(model, os.path.join(root, self_id, 'task', task_id, 'train', 'round', str(round), 'model.pkl'))
     
 .. note::
 
-    The :py:class:`~synspot.StopRequest.StopRequest` class has several methods,
+    The :py:class:`~colda.StopRequest.StopRequest` class has several methods,
     but they are all marked as "experimental." Read that as you will. The
     ``[source]`` link is there for a reason.
 
@@ -34,5 +34,5 @@ and save the model at the desginated position.
 Classes
 -------
 
-.. autoclass:: synspot.StopRequest.StopRequest
+.. autoclass:: colda.StopRequest.StopRequest
     :members:

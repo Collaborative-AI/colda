@@ -36,7 +36,7 @@ scp -i ~/Downloads/SynSpot_Website_RSA.pem -r dist/ ubuntu@ec2-18-117-134-124.us
 ```
 ssh -i ~/Downloads/SynSpot_Website_RSA.pem ubuntu@ec2-18-117-134-124.us-east-2.compute.amazonaws.com
 ```
-### Make Sure dist folder exists before preceed
+### Make Sure dist folder exists before proceed
 ```
 sudo cp -r ~/dist/* /var/www/html/
 ```

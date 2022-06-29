@@ -1,10 +1,10 @@
-.. py:module:: synspot.database
-.. py:currentmodule:: synspot.database
+.. py:module:: colda.database
+.. py:currentmodule:: colda.database
 
-:py:mod:`~synspot.database` Module
+:py:mod:`~colda.database` Module
 ==============================
 
-The :py:mod:`~synspot.database` module contains a class of the same name to
+The :py:mod:`~colda.database` module contains a class of the same name to
 handle the database in memory.
 
 Examples
@@ -17,15 +17,15 @@ The following script shows how to retrieve history from database
 
 .. code-block:: python
 
-    import synspot
-    synspot.get_all_task_id_as_sponsor()
-    synspot.get_all_test_id_as_sponsor()
-    synspot.get_all_task_id_as_assistor()
-    synspot.get_all_test_id_as_assistor()
+    import colda
+    colda.get_all_task_id_as_sponsor()
+    colda.get_all_test_id_as_sponsor()
+    colda.get_all_task_id_as_assistor()
+    colda.get_all_test_id_as_assistor()
 
 .. note::
 
-    The :py:class:`~synspot.synspot.database.database` class has several methods,
+    The :py:class:`~colda.colda.database.database` class has several methods,
     but they are all marked as "experimental." Read that as you will. The
     ``[source]`` link is there for a reason.
 
@@ -34,5 +34,5 @@ The following script shows how to retrieve history from database
 Classes
 -------
 
-.. autoclass:: synspot.database.Database
+.. autoclass:: colda.database.Database
     :members:

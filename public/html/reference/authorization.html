@@ -12,7 +12,7 @@
 <meta property="og:description" content="The authorization module contains a class of the same name to handle simple authentication(login) and authorization(token) Examples: Login and logout to an account: The following script shows how t..." />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>authorization Module &mdash; Synspot 0.0.0 documentation</title>
+  <title>authorization Module &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -44,8 +45,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Synspot
-            <img src="../_static/Synspot.jpg" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> colda
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -57,7 +57,6 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="algorithm.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code> Module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code> Module</a><ul>
@@ -70,18 +69,13 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="personalinformation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">personalinformation</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="GetNotification.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">GetNotification</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="StopRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">StopRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TestRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TestRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TrainRequest.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">TrainRequest</span></code> Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code> Module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
 </ul>
 
@@ -91,7 +85,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Synspot</a>
+          <a href="../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -134,22 +128,22 @@
     text-align: unset;
 }
 </style>
-<span class="target" id="module-synspot.authorization"></span><section id="authorization-module">
-<h1><a class="reference internal" href="#module-synspot.authorization" title="synspot.authorization"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code></a> Module<a class="headerlink" href="#authorization-module" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="#module-synspot.authorization" title="synspot.authorization"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code></a> module contains a class of the same name to
+<span class="target" id="module-colda.authorization"></span><section id="authorization-module">
+<h1><a class="reference internal" href="#module-colda.authorization" title="colda.authorization"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code></a> Module<a class="headerlink" href="#authorization-module" title="Permalink to this heading">¶</a></h1>
+<p>The <a class="reference internal" href="#module-colda.authorization" title="colda.authorization"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authorization</span></code></a> module contains a class of the same name to
 handle simple authentication(login) and authorization(token)</p>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <section id="login-and-logout-to-an-account">
-<h3>Login and logout to an account<a class="headerlink" href="#login-and-logout-to-an-account" title="Permalink to this headline">¶</a></h3>
+<h3>Login and logout to an account<a class="headerlink" href="#login-and-logout-to-an-account" title="Permalink to this heading">¶</a></h3>
 <p>The following script shows how to login and logout.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">synspot</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">colda</span>
 
 <span class="c1"># login</span>
-<span class="n">synspot</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="s1">&#39;xie1&#39;</span><span class="p">,</span> <span class="s1">&#39;Xie1@123&#39;</span><span class="p">)</span>
+<span class="n">colda</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="s1">&#39;xie1&#39;</span><span class="p">,</span> <span class="s1">&#39;Xie1@123&#39;</span><span class="p">)</span>
 
 <span class="c1"># logout</span>
-<span class="n">synspot</span><span class="o">.</span><span class="n">userLogout</span><span class="p">()</span>
+<span class="n">colda</span><span class="o">.</span><span class="n">userLogout</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -165,47 +159,7 @@ but they are all marked as “experimental.” Read that as you will. The
 </section>
 </section>
 <section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="synspot.authorization.Authorization">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">synspot.authorization.</span></span><span class="sig-name descname"><span class="pre">Authorization</span></span><a class="reference internal" href="../_modules/synspot/authorization/Authorization.html#Authorization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.authorization.Authorization" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="synspot.authorization.Authorization.userLogin">
-<span class="sig-name descname"><span class="pre">userLogin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/authorization/Authorization.html#Authorization.userLogin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.authorization.Authorization.userLogin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get Token through HTTP authorization’s Basic Auth when first time login. Update __token in Network class</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>username</strong> – The username of current user</p></li>
-<li><p><strong>password</strong> – The password of current user</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Boolean</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="synspot.authorization.Authorization.userLogout">
-<span class="sig-name descname"><span class="pre">userLogout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/synspot/authorization/Authorization.html#Authorization.userLogout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#synspot.authorization.Authorization.userLogout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handle user logout by deleting the information in the instances of Network, 
-PersonalInformation, and Database_class.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>OSError</strong> – Placeholder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 

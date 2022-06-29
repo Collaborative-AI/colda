@@ -12,7 +12,7 @@
 <meta property="og:description" content="The Python Imaging Library handles raster images; that is, rectangles of pixel data. Bands: An image can consist of one or more bands of data. The Python Imaging Library allows you to store several..." />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Concepts &mdash; Synspot 0.0.0 documentation</title>
+  <title>Concepts &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -34,9 +35,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Appendices" href="appendices.html" />
-    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,8 +43,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Synspot
-            <img src="../_static/Synspot.jpg" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> colda
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,32 +53,9 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Concepts</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#bands">Bands</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#modes">Modes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#size">Size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#coordinate-system">Coordinate System</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#palette">Palette</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#info">Info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#orientation">Orientation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#filters">Filters</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#filters-comparison-table">Filters comparison table</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="appendices.html">Appendices</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
 </ul>
 
@@ -90,7 +65,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Synspot</a>
+          <a href="../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -98,7 +73,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Handbook</a> &raquo;</li>
       <li>Concepts</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/handbook/concepts.rst.txt" rel="nofollow"> View page source</a>
@@ -134,11 +108,11 @@
 }
 </style>
 <section id="concepts">
-<h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
+<h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">¶</a></h1>
 <p>The Python Imaging Library handles <em>raster images</em>; that is, rectangles of
 pixel data.</p>
 <section id="bands">
-<span id="concept-bands"></span><h2>Bands<a class="headerlink" href="#bands" title="Permalink to this headline">¶</a></h2>
+<span id="concept-bands"></span><h2>Bands<a class="headerlink" href="#bands" title="Permalink to this heading">¶</a></h2>
 <p>An image can consist of one or more bands of data. The Python Imaging Library
 allows you to store several bands in a single image, provided they all have the
 same dimensions and depth.  For example, a PNG image might have ‘R’, ‘G’, ‘B’,
@@ -149,7 +123,7 @@ think of each pixel as having one value per band.</p>
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">getbands()</span></code> method.</p>
 </section>
 <section id="modes">
-<span id="concept-modes"></span><h2>Modes<a class="headerlink" href="#modes" title="Permalink to this headline">¶</a></h2>
+<span id="concept-modes"></span><h2>Modes<a class="headerlink" href="#modes" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">mode</span></code> of an image is a string which defines the type and depth of a pixel in the image.
 Each pixel uses the full range of the bit depth. So a 1-bit pixel has a range
 of 0-1, an 8-bit pixel has a range of 0-255 and so on. The current release
@@ -197,13 +171,13 @@ combinations that are not listed above, use a sequence of Image objects.</p>
 attribute. This is a string containing one of the above values.</p>
 </section>
 <section id="size">
-<h2>Size<a class="headerlink" href="#size" title="Permalink to this headline">¶</a></h2>
+<h2>Size<a class="headerlink" href="#size" title="Permalink to this heading">¶</a></h2>
 <p>You can read the image size through the <code class="xref py py-attr docutils literal notranslate"><span class="pre">size</span></code>
 attribute. This is a 2-tuple, containing the horizontal and vertical size in
 pixels.</p>
 </section>
 <section id="coordinate-system">
-<span id="id1"></span><h2>Coordinate System<a class="headerlink" href="#coordinate-system" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>Coordinate System<a class="headerlink" href="#coordinate-system" title="Permalink to this heading">¶</a></h2>
 <p>The Python Imaging Library uses a Cartesian pixel coordinate system, with (0,0)
 in the upper left corner. Note that the coordinates refer to the implied pixel
 corners; the centre of a pixel addressed as (0, 0) actually lies at (0.5, 0.5).</p>
@@ -213,12 +187,12 @@ example, a rectangle covering all of an 800x600 pixel image is written as (0,
 0, 800, 600).</p>
 </section>
 <section id="palette">
-<h2>Palette<a class="headerlink" href="#palette" title="Permalink to this headline">¶</a></h2>
+<h2>Palette<a class="headerlink" href="#palette" title="Permalink to this heading">¶</a></h2>
 <p>The palette mode (<code class="docutils literal notranslate"><span class="pre">P</span></code>) uses a color palette to define the actual color for
 each pixel.</p>
 </section>
 <section id="info">
-<h2>Info<a class="headerlink" href="#info" title="Permalink to this headline">¶</a></h2>
+<h2>Info<a class="headerlink" href="#info" title="Permalink to this heading">¶</a></h2>
 <p>You can attach auxiliary information to an image using the
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> attribute. This is a dictionary object.</p>
 <p>How such information is handled when loading and saving image files is up to
@@ -227,7 +201,7 @@ handlers add properties to the <code class="xref py py-attr docutils literal not
 loading an image, but ignore it when saving images.</p>
 </section>
 <section id="orientation">
-<h2>Orientation<a class="headerlink" href="#orientation" title="Permalink to this headline">¶</a></h2>
+<h2>Orientation<a class="headerlink" href="#orientation" title="Permalink to this heading">¶</a></h2>
 <p>A common element of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">info</span></code> attribute for JPG and
 TIFF images is the EXIF orientation tag. This is an instruction for how the
 image data should be oriented. For example, it may instruct an image to be
@@ -235,7 +209,7 @@ rotated by 90 degrees, or to be mirrored. To apply this information to an
 image, <code class="xref py py-meth docutils literal notranslate"><span class="pre">exif_transpose()</span></code> can be used.</p>
 </section>
 <section id="filters">
-<span id="concept-filters"></span><h2>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h2>
+<span id="concept-filters"></span><h2>Filters<a class="headerlink" href="#filters" title="Permalink to this heading">¶</a></h2>
 <p>For geometry operations that may map multiple input pixels to a single output
 pixel, the Python Imaging Library provides different resampling <em>filters</em>.</p>
 <dl class="py data">
@@ -300,7 +274,7 @@ and <code class="xref py py-meth docutils literal notranslate"><span class="pre"
 </dd></dl>
 
 <section id="filters-comparison-table">
-<h3>Filters comparison table<a class="headerlink" href="#filters-comparison-table" title="Permalink to this headline">¶</a></h3>
+<h3>Filters comparison table<a class="headerlink" href="#filters-comparison-table" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 30%" />
@@ -357,10 +331,7 @@ quality</p></th>
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="appendices.html" class="btn btn-neutral float-right" title="Appendices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

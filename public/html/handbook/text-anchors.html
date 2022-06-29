@@ -12,7 +12,7 @@
 <meta property="og:description" content="The anchor parameter determines the alignment of drawn text relative to the xy parameter. The default alignment is top left, specifically la(left-ascender) for horizontal text and lt(left-top) for ..." />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Text anchors &mdash; Synspot 0.0.0 documentation</title>
+  <title>Text anchors &mdash; colda 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
@@ -26,6 +26,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/clipboard.min.js"></script>
         <script src="../_static/copybutton.js"></script>
@@ -34,9 +35,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Writing Your Own Image Plugin" href="writing-your-own-file-decoder.html" />
-    <link rel="prev" title="Image file formats" href="image-file-formats.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,8 +43,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Synspot
-            <img src="../_static/Synspot.jpg" class="logo" alt="Logo"/>
+            <a href="../index.html" class="icon icon-home"> colda
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,34 +53,9 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="appendices.html">Appendices</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="image-file-formats.html">Image file formats</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Text anchors</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#specifying-an-anchor">Specifying an anchor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#quick-reference">Quick reference</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#horizontal-anchor-alignment">Horizontal anchor alignment</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#vertical-anchor-alignment">Vertical anchor alignment</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html">Writing Your Own Image Plugin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html#decoders">Decoders</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html#writing-your-own-file-decoder-in-c">Writing Your Own File Decoder in C</a></li>
-<li class="toctree-l3"><a class="reference internal" href="writing-your-own-file-decoder.html#writing-your-own-file-decoder-in-python">Writing Your Own File Decoder in Python</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deprecations.html">Deprecations and removals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
 </ul>
 
@@ -92,7 +65,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Synspot</a>
+          <a href="../index.html">colda</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -100,8 +73,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Handbook</a> &raquo;</li>
-          <li><a href="appendices.html">Appendices</a> &raquo;</li>
       <li>Text anchors</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/handbook/text-anchors.rst.txt" rel="nofollow"> View page source</a>
@@ -137,14 +108,14 @@
 }
 </style>
 <section id="text-anchors">
-<span id="id1"></span><h1>Text anchors<a class="headerlink" href="#text-anchors" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Text anchors<a class="headerlink" href="#text-anchors" title="Permalink to this heading">¶</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">anchor</span></code> parameter determines the alignment of drawn text relative to the <code class="docutils literal notranslate"><span class="pre">xy</span></code> parameter.
 The default alignment is top left, specifically <code class="docutils literal notranslate"><span class="pre">la</span></code> (left-ascender) for horizontal text
 and <code class="docutils literal notranslate"><span class="pre">lt</span></code> (left-top) for vertical text.</p>
 <p>This parameter is only supported by OpenType/TrueType fonts.
 Other fonts may ignore the parameter and use the default (top left) alignment.</p>
 <section id="specifying-an-anchor">
-<h2>Specifying an anchor<a class="headerlink" href="#specifying-an-anchor" title="Permalink to this headline">¶</a></h2>
+<h2>Specifying an anchor<a class="headerlink" href="#specifying-an-anchor" title="Permalink to this heading">¶</a></h2>
 <p>An anchor is specified with a two-character string. The first character is the
 horizontal alignment, the second character is the vertical alignment.
 For example, the default value of <code class="docutils literal notranslate"><span class="pre">la</span></code> for horizontal text means left-ascender
@@ -171,10 +142,10 @@ the text will be placed such that the specified anchor point is at the <code cla
 </div>
 </section>
 <section id="quick-reference">
-<h2>Quick reference<a class="headerlink" href="#quick-reference" title="Permalink to this headline">¶</a></h2>
+<h2>Quick reference<a class="headerlink" href="#quick-reference" title="Permalink to this heading">¶</a></h2>
 <img alt="Horizontal text" class="align-center" src="../_images/anchor_horizontal.svg" /><img alt="Vertical text" class="align-center" src="../_images/anchor_vertical.svg" /></section>
 <section id="horizontal-anchor-alignment">
-<h2>Horizontal anchor alignment<a class="headerlink" href="#horizontal-anchor-alignment" title="Permalink to this headline">¶</a></h2>
+<h2>Horizontal anchor alignment<a class="headerlink" href="#horizontal-anchor-alignment" title="Permalink to this heading">¶</a></h2>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">l</span></code> — left</dt><dd><p>Anchor is to the left of the text.</p>
 <p>For <em>horizontal</em> text this is the origin of the first glyph, as shown in the <a class="reference external" href="https://freetype.org/freetype2/docs/tutorial/step2.html">FreeType tutorial</a>.</p>
@@ -194,7 +165,7 @@ as it does not change based on the specific glyphs of the given text
 </dl>
 </section>
 <section id="vertical-anchor-alignment">
-<h2>Vertical anchor alignment<a class="headerlink" href="#vertical-anchor-alignment" title="Permalink to this headline">¶</a></h2>
+<h2>Vertical anchor alignment<a class="headerlink" href="#vertical-anchor-alignment" title="Permalink to this heading">¶</a></h2>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">a</span></code> — ascender / top <em>(horizontal text only)</em></dt><dd><p>Anchor is at the ascender line (top) of the first line of text, as defined by the font.</p>
 <p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Typeface#Font_metrics">Font metrics on Wikipedia</a> for more information.</p>
@@ -221,7 +192,7 @@ as it does not change based on the specific glyphs of the given text.</p>
 </dl>
 </section>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <p>The following image shows several examples of anchors for horizontal text.
 In each section the <code class="docutils literal notranslate"><span class="pre">xy</span></code> parameter was set to the center shown by the intersection
 of the two lines.</p>
@@ -232,10 +203,7 @@ of the two lines.</p>
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="image-file-formats.html" class="btn btn-neutral float-left" title="Image file formats" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="writing-your-own-file-decoder.html" class="btn btn-neutral float-right" title="Writing Your Own Image Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

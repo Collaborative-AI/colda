@@ -26,6 +26,7 @@ from colda._typing import (
 
 from typeguard import typechecked
 
+
 class MakeEval(BaseAlgorithm):
     '''
     Test model using the test dataset.

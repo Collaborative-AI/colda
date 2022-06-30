@@ -17,6 +17,8 @@ from colda.algorithm.utils import softmax
 from colda.algorithm.metric.base import BaseMetric
 
 from typeguard import typechecked
+
+
 class Metric(BaseMetric):
     '''
     Metrics used to measure the performance of

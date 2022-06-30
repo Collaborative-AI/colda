@@ -87,36 +87,68 @@ from colda.database.api import (
 )
 
 
-def userRegister(
+def register(
     username: str, 
     email: str, 
     password: str
-) -> bool:
+) -> None:
+    '''
+    User registers.
 
-    return _default_authentication.userRegister(
+    Parameters
+    ----------
+    username : str
+    email : str
+    password : str
+
+    Returns
+    -------
+    None
+    '''
+    _default_authentication.user_register(
         username=username, 
         email=email,
-        password=password)
+        password=password
+    )
+    return
     
-def userLogin(
+def login(
     username: str, 
     password: str
 ) -> bool:
-    return _default_authentication.userLogin(
+    '''
+    User login.
+
+    Parameters
+    ----------
+    username : str
+    password : str
+
+    Returns
+    -------
+    None
+    '''
+    _default_authentication.user_login(
         username=username, 
-        password=password)
+        password=password
+    )
+    return
 
-def userLogout():
-    """
-    Handle user logout
+def logout():
+    '''
+    User logout.
 
-    :returns: None
+    Parameters
+    ----------
+    None
 
-    :exception OSError: Placeholder.
-    """
-    return _default_authentication.userLogout()
+    Returns
+    -------
+    None
+    '''
+    return _default_authentication.user_logout()
 
-def callForTrain(
+def call_for_train(
     maxRound: int, 
     assistors: list, 
     task_mode: Task_Mode, 
@@ -126,11 +158,32 @@ def callForTrain(
     train_id_column: str, 
     train_data_column: str, 
     train_target_column: str, 
-    task_name: str = None, 
-    task_description: str = None
-) -> bool:
+    task_name: str=None, 
+    task_description: str=None
+) -> None:
+    '''
+    Sponsor initiate a new training 
+    task.
 
-    return _default_TrainMainWorkflow.find_assistor(
+    Parameters
+    ----------
+    maxRound : int
+    assistors : list
+    task_mode : Task_Mode
+    model_name : Model_Name
+    metric_name : Metric_Name
+    train_file_path : str
+    train_id_column : str
+    train_data_column : str
+    train_target_column : str
+    task_name : str=None
+    task_description : str=None
+
+    Returns
+    -------
+    None
+    '''
+    _default_TrainMainWorkflow.find_assistor(
         maxRound=maxRound, 
         assistors=assistors, 
         task_mode=task_mode, 
@@ -143,18 +196,36 @@ def callForTrain(
         task_name=task_name, 
         task_description=task_description
     )
+    return 
     
 
-def callForTest(
+def call_for_test(
     train_id: str, 
     test_file_path: str, 
     test_id_column: str, 
     test_data_column: str, 
     test_target_column: str, 
-    test_name: str = None, 
-    test_description: str = None
-) -> bool:
+    test_name: str=None, 
+    test_description: str=None
+) -> None:
+    '''
+    Sponsor call for test of a
+    train task.
 
+    Parameters
+    ----------
+    train_id : str
+    test_file_path : str
+    test_id_column : str 
+    test_data_column : str
+    test_target_column : str 
+    test_name : str=None 
+    test_description : str=None
+
+    Returns
+    -------
+    None
+    '''
     _default_TestMainWorkflow.find_test_assistor(
         train_id=train_id, 
         test_file_path=test_file_path, 
@@ -166,22 +237,61 @@ def callForTest(
     )
     return
 
-def start_Collaboration():
+def start_cooperation() -> None:
+    '''
+    Start cooperation
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    '''
     _default_ShortPolling.start_cooperation()
     return
 
-def end_Collaboration():
-    return _default_ShortPolling.end_cooperation()
+def end_cooperation() -> None:
+    '''
+    End cooperation
 
-def set_default_data_path(
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    '''
+    _default_ShortPolling.end_cooperation()
+    return
+
+def set_default_info(
     default_mode: Mode, 
     default_task_mode: Task_Mode, 
     default_model_name: Model_Name, 
-    default_file_path: str = None, 
-    default_id_column: str = None, 
-    default_data_column: str = None
+    default_file_path: str=None, 
+    default_id_column: str=None, 
+    default_data_column: str=None
 ) -> None:
+    '''
+    Set default info used for training and
+    testing as assistor.
 
+    Parameters
+    ----------
+    default_mode : Mode
+    default_task_mode : Task_Mode
+    default_model_name : Model_Name 
+    default_file_path : str=None 
+    default_id_column : str=None
+    default_data_column : str=None
+
+    Returns
+    -------
+    None
+    '''
     PI_instance = PI.get_instance()
     user_id = PI_instance.user_id
     if user_id == None:

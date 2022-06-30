@@ -276,3 +276,6 @@ Note that we provide Travis with an encrypted password, that was made using the 
 1. Quickstart
 2. Automated Generated Documentation
 3. Jupyter Notebook
+
+
+ :members:

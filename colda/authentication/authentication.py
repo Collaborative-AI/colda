@@ -107,14 +107,14 @@ class Authentication(AuthenticationBase):
             'email': email,
             'password': password
         }
-        self.Network_instance.post_request_chaining(
+        res = self.Network_instance.post_request_chaining(
             data=data,
             url_prefix='user',
             url_root='users',
             url_suffix=None,
             status_code=201
         )
-
+        print(res)
         return
 
     def user_login(

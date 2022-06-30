@@ -16,7 +16,13 @@ import sphinx_rtd_theme
 # import colda
 # sys.path.insert(0, os.path.abspath('..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
+print('asdfhkjasdhfsal', os.path.join(os.path.dirname(__file__), '..'))
+sys.path.extend(
+    [
+        # numpy standard doc extensions
+        os.path.join(os.path.dirname(__file__), "..", "sphinxext")
+    ]
+)
 
 # -- Project information -----------------------------------------------------
 
@@ -51,7 +57,9 @@ extensions = [
    "sphinx.ext.viewcode",
    "sphinxext.opengraph",
    'nbsphinx', 
-   'recommonmark']
+   'recommonmark',
+   'numpydoc'
+]
 
 # Add any paths that contain templates here, relative to this directory.
 # templates_path = ['_templates']
@@ -92,12 +100,12 @@ nitpicky = True
 
 
 
-def setup(app):
-    app.add_js_file("js/script.js")
-    app.add_css_file("css/styles.css")
-    app.add_css_file("css/dark.css")
-    app.add_css_file("css/light.css")
+# def setup(app):
+#     app.add_js_file("js/script.js")
+#     app.add_css_file("css/styles.css")
+#     app.add_css_file("css/dark.css")
+#     app.add_css_file("css/light.css")
 
 
 # GitHub repo for sphinx-issues
-issues_github_path = "python-pillow/Pillow"
+# issues_github_path = "python-pillow/Pillow"

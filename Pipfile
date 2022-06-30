@@ -27,6 +27,10 @@ recommonmark = "*"
 sphinx-copybutton = "*"
 sphinx-issues = "*"
 nbsphinx = "*"
+sphinx-rtd-theme = "*"
+sphinx-removed-in = "*"
+sphinxext-opengraph = "*"
+numpydoc = "*"
 
 [requires]
 python_version = "3.9"

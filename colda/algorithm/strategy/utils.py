@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from colda.algorithm.dp import DP
+from colda.algorithm.strategy.dp import DP
 
 from functools import wraps
 
@@ -34,13 +34,22 @@ def algorithm_process(
     -------
     JSONType
     '''
+    print('fggggg', func)
     @wraps(func)
     def wrapper(
         *args, **kwargs
     ) -> Serializable_Datatype:
-
+        '''
+        Notes
+        -------
+        *args used to handle self,
+        **kwargs used to handle parameters
+        '''
+        # print(f'args: {args}')
+        print(f'kwargs: {kwargs}')
         kwargs = DP.process_input(**kwargs)
-        res = func(**kwargs)  
+        print(f'2222kwargs: {kwargs}')
+        res = func(*args, **kwargs)  
         res = DP.process_output(res)
         return res
 

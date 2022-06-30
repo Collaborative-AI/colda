@@ -23,8 +23,12 @@ from colda.tests.test_workflow import _default_authentication
 from colda.tests.test_workflow import _default_ShortPolling
 from colda.tests.test_workflow import _default_PI
 from colda.tests.test_workflow import _default_Network
-from colda.algorithm.api import AlgorithmAPI
+from colda.algorithm.api import (
+    get_algo_log,
+    get_all_algo_logs
+)
 from colda.workflow.base import BaseWorkflow
+from colda.short_polling.api import ShortPolling
 
 
 class Train_helper_function:
@@ -38,30 +42,47 @@ class Train_helper_function:
         )
         
     def first_user_login(self):
-        userLogin_res = _default_authentication.userLogin(
+        data = {
+            'username': testing_data['first_user_username'],
+            'password': testing_data['first_user_password'],
+            'email': testing_data['first_user_email']
+        }
+        _default_Network.post_request_chaining(
+            data=data,
+            url_prefix='helper_api',
+            url_root='create_unittest_user',
+        )
+        _default_authentication.user_login(
             username=testing_data['first_user_username'], 
             password=testing_data['first_user_password']
         )
-        assert userLogin_res == True
         return
     
     def second_user_login(self):
-        userLogin_res = _default_authentication.userLogin(
+        data = {
+            'username': testing_data['second_user_username'],
+            'password': testing_data['second_user_password'],
+            'email': testing_data['second_user_email']
+        }
+        _default_Network.post_request_chaining(
+            data=data,
+            url_prefix='helper_api',
+            url_root='create_unittest_user',
+        )
+        _default_authentication.user_login(
             username=testing_data['second_user_username'], 
             password=testing_data['second_user_password']
         )
-        assert userLogin_res == True
         return
 
     def get_user_id(self):
         return _default_PI.user_id
 
     def get_notification(self):
-        return _default_ShortPolling.start_Collaboration()
-
-    # def set_max_round(self, num):
-    #     BaseWorkflow._max_round = num
-    #     return True
+        _default_ShortPolling.shortpolling['running'] = True
+        notification = _default_ShortPolling._ShortPolling__polling()
+        print(f'notification: {notification}')
+        return notification
 
     def find_assistor(self):
         find_assistor_res = _default_trainMainWorkflow.find_assistor(
@@ -77,28 +98,22 @@ class Train_helper_function:
             task_name=testing_data['task_name'], 
             task_description=testing_data['task_description']
         )
-        assert find_assistor_res[0] == True
-        return find_assistor_res[1]
+        return find_assistor_res
         
     def train_assistor_request(self, notification_category):
-        train_assistor_request = _default_trainMainWorkflow.train_assistor_request(notification_category['unread_request']['train_id_dicts'])
-        assert train_assistor_request == True
+        _default_trainMainWorkflow.train_assistor_request(notification_category['unread_request']['train_id_dicts'])
 
     def train_sponsor_match_identifier(self, notification_category):
-        train_sponsor_match_identifier = _default_trainMainWorkflow.train_match_identifier(notification_category['unread_match_identifier']['train_id_dicts'])   
-        assert train_sponsor_match_identifier == True
+        _default_trainMainWorkflow.train_match_identifier(notification_category['unread_match_identifier']['train_id_dicts'])   
     
     def train_assistor_match_identifier(self, notification_category):
-        train_assistor_match_identifier = _default_trainMainWorkflow.train_match_identifier(notification_category['unread_match_identifier']['train_id_dicts'])   
-        assert train_assistor_match_identifier == True
+        _default_trainMainWorkflow.train_match_identifier(notification_category['unread_match_identifier']['train_id_dicts'])   
     
     def train_sponsor_situation(self, notification_category):
-        train_sponsor_situation = _default_trainMainWorkflow.train_situation(notification_category['unread_situation']['train_id_dicts'])   
-        assert train_sponsor_situation == True
+        _default_trainMainWorkflow.train_situation(notification_category['unread_situation']['train_id_dicts'])   
     
     def train_assistor_situation(self, notification_category):
-        train_assistor_situation = _default_trainMainWorkflow.train_situation(notification_category['unread_situation']['train_id_dicts'])   
-        assert train_assistor_situation == True
+        _default_trainMainWorkflow.train_situation(notification_category['unread_situation']['train_id_dicts'])   
     
     def _test_algorithm_result(
         self,
@@ -108,8 +123,7 @@ class Train_helper_function:
         test_func,
     ):
         
-
-        data = AlgorithmAPI.get_log(
+        data = get_algo_log(
             user_id=user_id,
             task_id=task_id,
             log_category=log_category
@@ -120,53 +134,48 @@ class Train_helper_function:
 
     def train_output(
         self, 
-        notification_category, 
-        unittest_strategy, 
-        user_id, 
-        train_id, 
-        rounds
+        notification_category: dict, 
+        unittest_strategy: object=None, 
+        user_id: str=None, 
+        train_id: str=None, 
     ) -> None:
 
         _default_unittest_strategy.unittest_strategy = unittest_strategy
-        train_output = _default_trainMainWorkflow.train_output(notification_category['unread_output']['train_id_dicts'])   
+        _default_trainMainWorkflow.train_output(notification_category['unread_output']['train_id_dicts'])   
         
-        res = AlgorithmAPI.get_all_logs()
+        res = get_all_algo_logs()
         print('&&&', res)
 
-        log_category = 'sponsor_trained_cooperative_model_output'
-        self._test_algorithm_result(
-            user_id=user_id, 
-            task_id=train_id, 
-            log_category=log_category,
-            test_func=_default_unittest_strategy.sponsor_trained_cooperative_model_output(),
-            rounds=rounds
-        )
-        
-        log_category = 'assistor_trained_cooperative_model_output'
-        self._test_algorithm_result(
-            user_id=user_id, 
-            task_id=train_id, 
-            log_category=log_category,
-            test_func=_default_unittest_strategy.assistor_trained_cooperative_model_output(),
-            rounds=rounds
-        )
+        if unittest_strategy:
+            log_category = 'sponsor_trained_cooperative_model_output'
+            self._test_algorithm_result(
+                user_id=user_id, 
+                task_id=train_id, 
+                log_category=log_category,
+                test_func=_default_unittest_strategy.sponsor_trained_cooperative_model_output(),
+            )
+            
+            log_category = 'assistor_trained_cooperative_model_output'
+            self._test_algorithm_result(
+                user_id=user_id, 
+                task_id=train_id, 
+                log_category=log_category,
+                test_func=_default_unittest_strategy.assistor_trained_cooperative_model_output(),
+            )
 
-        log_category = 'make_result_alpha'
-        self._test_algorithm_result(
-            user_id=user_id, 
-            task_id=train_id, 
-            log_category=log_category,
-            test_func=_default_unittest_strategy.alpha(),
-            rounds=rounds
-        )  
+            log_category = 'make_result_alpha'
+            self._test_algorithm_result(
+                user_id=user_id, 
+                task_id=train_id, 
+                log_category=log_category,
+                test_func=_default_unittest_strategy.alpha(),
+            )  
 
-        log_category = 'make_result'
-        self._test_algorithm_result(
-            user_id=user_id, 
-            task_id=train_id, 
-            log_category=log_category,
-            test_func=_default_unittest_strategy.get_unread_test_make_result(),
-            rounds=rounds
-        )  
-
-        assert train_output == True
+            log_category = 'make_result'
+            self._test_algorithm_result(
+                user_id=user_id, 
+                task_id=train_id, 
+                log_category=log_category,
+                test_func=_default_unittest_strategy.get_unread_test_make_result(),
+            )  
+        return

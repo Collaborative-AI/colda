@@ -34,29 +34,15 @@ def obtain_notification_information(
     -------
     tuple[str]
     '''
-    sender_random_id = DictHelper.get_value(
-        key='sender_random_id',
-        container=notification_dict
-    )
-
-    role = DictHelper.get_value(
-        key='role',
-        container=notification_dict
-    )
-
-    cur_rounds_num = DictHelper.get_value(
-        key='cur_rounds_num',
-        container=notification_dict
-    )
+    sender_random_id = notification_dict['sender_random_id']
+    role = notification_dict['role']
+    cur_rounds_num = notification_dict['cur_rounds_num']
 
     if test_indicator == 'train':
         return sender_random_id, role, cur_rounds_num
     elif test_indicator == 'test':
-
-        train_id = DictHelper.get_value(
-            key='train_id',
-            container=notification_dict
-        )
+        
+        train_id = notification_dict['train_id']
 
         return sender_random_id, role, cur_rounds_num, train_id
 

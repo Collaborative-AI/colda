@@ -59,7 +59,7 @@ class BaseWorkflow:
     _initial_round_num: Final[int] = 1
     _url_prefix: Final[str] = 'main_flow'
     # _max_round: Final[int] = 3
-    _max_round: Final[int] = 2
+    _max_round = 2
 
     __Network_instance = Network.get_instance()
     __PI_instance = PI.get_instance()
@@ -262,6 +262,7 @@ class BaseWorkflow:
         -------
         list[Identifier_Type]
         '''
+        print('gdsfasdf')
         encrypted_identifer = cls.__BaseAlgorithm_instance.make_hash(
                 dataset_path=dataset_path, 
                 id_idx=id_idx, 

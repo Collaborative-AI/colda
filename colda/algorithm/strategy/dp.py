@@ -2,6 +2,8 @@ import numpy as np
 
 import copy
 
+from colda.algorithm.model.api import Model
+
 from colda.utils.api import Serialization
 
 from colda.utils.dtypes.api import (
@@ -105,7 +107,10 @@ class DP:
             return Serialization.make_data_serializable(data=res[0])
 
         for i in range(len(res)):
-            res[i] = Serialization.make_data_serializable(data=res[i])
+            # If the output is model, we only need to store it
+            # in db dict. We do not need to transfer it.
+            if type(res[i]) != Model:
+                res[i] = Serialization.make_data_serializable(data=res[i])
             
         return res
 

@@ -109,7 +109,7 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         '''
         root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
-            train_id=train_id
+            task_id=train_id
         )  
     
         value = {
@@ -150,7 +150,7 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         '''
         key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
-            train_id=train_id
+            task_id=train_id
         )  
 
         sponsor_metadata = DictHelper.get_value(

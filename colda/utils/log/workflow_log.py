@@ -79,10 +79,13 @@ class WorkflowLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_dict_root_key(user_id, task_id)
+        root_key = DictHelper.generate_dict_root_key(
+            user_id=user_id, 
+            task_id=task_id
+        )
 
         DictHelper.store_value(
-            key=key,
+            key=root_key,
             value=msgs,
             container=self.__workflow_log,
             store_type='append'
@@ -107,13 +110,13 @@ class WorkflowLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_dict_root_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=task_id
         )
 
         log = DictHelper.get_value(
-            key=key,
+            key=root_key,
             container=self.__workflow_log,
         )
 

@@ -44,8 +44,8 @@ class ShortPolling():
         self.__PI_instance = PI.get_instance()
         self.__Authentication_instance = Authentication.get_instance()
 
-        self.__default_trainMainWorkflow = TrainMainWorkflow.get_instance()
-        self.__default_testMainWorkflow = TestMainWorkflow.get_instance()
+        self.__default_trainMainWorkflow = TrainMainWorkflow.get_class()
+        self.__default_testMainWorkflow = TestMainWorkflow.get_class()
 
         # The key of the train stage notification
         # returned by the back-end
@@ -150,7 +150,6 @@ class ShortPolling():
         -------
         None
         '''
-        # 
         if not self.shortpolling['running']:
             print('short polling has already stoped')
             return
@@ -168,7 +167,7 @@ class ShortPolling():
             url_suffix=user_id,
             status_code=200,
         )
-        
+        print(f'short_polling_res: {short_polling_res}')
         if 'new_token' in short_polling_res and short_polling_res['new_token'] != None:
             new_token = short_polling_res['new_token']
             self.__Authentication_instance.process_token(new_token)

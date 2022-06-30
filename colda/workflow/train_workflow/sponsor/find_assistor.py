@@ -63,7 +63,7 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
         metric_name: Metric_Name, 
         task_name: str=None, 
         task_description: str=None
-    ) -> None:
+    ) -> str:
         ''' 
         Execute sponsor find assistor logic.
 
@@ -155,4 +155,4 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
 
         print('Training train_id: ', train_id)
         print('Sponsor: Training train_id: ', train_id, ' is running')
-        return (True, train_id)
+        return train_id

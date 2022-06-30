@@ -8,6 +8,9 @@ from colda.error import StatusCodeError
 
 class TestNetwork:
 
+    '''
+    Must run backend before testing
+    '''
     @pytest.mark.usefixtures('network_instance')
     @pytest.mark.parametrize("url, expected_url", [
         (('prefix', 'root', 'suffix'), '/prefix/root/suffix'),
@@ -40,7 +43,6 @@ class TestNetwork:
             request_name=url[1],
         )
         assert network_response.status_code == expected_status_code
-    
 
     @pytest.mark.usefixtures('network_instance')
     @pytest.mark.parametrize("url, expected_status_code", [
@@ -61,25 +63,40 @@ class TestNetwork:
         )
         assert network_response.status_code == expected_status_code
 
-
     @pytest.mark.usefixtures('network_instance')
-    @pytest.mark.parametrize("url, status_code, expected_result", [
+    @pytest.mark.parametrize("url, status_code, expected", [
         (('helper_api', 'testing_get', None), 200, 'test successfully!'),
-        (('helper_api', 'testing_get', None), 201, StatusCodeError),
     ])
-    def test_get_request_chaining(self, network_instance, url, status_code, expected_result):
+    def test_get_request_chaining(self, network_instance, url, status_code, expected):
         network_response = network_instance.get_request_chaining(
             url_prefix=url[0],
             url_root=url[1],
             url_suffix=url[2],
             status_code=status_code
         )
-        assert network_response == expected_result
+        assert network_response == expected
     
     @pytest.mark.usefixtures('network_instance')
+    @pytest.mark.parametrize("url, status_code", [
+        (('helper_api', 'testing_get', None), 201),
+    ])
+    def test_get_request_chaining_exception(self, network_instance, url, status_code):
+        msg = 'Network response has wrong status code'
+        with pytest.raises(StatusCodeError, match=msg):
+            network_instance.get_request_chaining(
+                url_prefix=url[0],
+                url_root=url[1],
+                url_suffix=url[2],
+                status_code=status_code
+            )
+
+    @pytest.mark.usefixtures('network_instance')
     @pytest.mark.parametrize("url, status_code, expected_result", [
-        (('helper_api', 'testing_post', None), 200, 'test successfully!'),
-        (('helper_api', 'testing_post', None), 201, StatusCodeError)
+        (
+            ('helper_api', 'testing_post', None), 
+            200, 
+            'test successfully!'
+        ),
     ])
     def test_post_request_chaining(self, network_instance, url, status_code, expected_result):
         network_response = network_instance.post_request_chaining(

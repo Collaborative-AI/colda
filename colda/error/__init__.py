@@ -10,11 +10,13 @@ class StatusCodeWarning(Warning):
     '''
     Warning raised when status code of network response is not matching
     '''
+    pass
 
-class StatusCodeError(HTTPError):
+class StatusCodeError(ValueError):
     '''
     Return Exception when status code of network response is not matching
     '''
+    pass
 
 class DuplicateKeyError(ValueError):
     """

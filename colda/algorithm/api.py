@@ -7,7 +7,7 @@ from typeguard import typechecked
 
 
 
-def get_log(
+def get_algo_log(
     user_id: str,
     task_id: str,
     log_category: str
@@ -33,7 +33,7 @@ def get_log(
     )
 
 
-def get_all_logs() -> dict[str, Any]:
+def get_all_algo_logs() -> dict[str, Any]:
     '''
     Return all logs
 

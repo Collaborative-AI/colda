@@ -10,14 +10,19 @@ from colda import set_default_data_path
 from colda.tests.test_workflow import testing_data
 from colda.tests.test_workflow.Train_helper_function import Train_helper_function
 
+from colda.tests.test_workflow import Regression_1s_1a
 
-class Test_unread_test_match_identifier(Train_helper_function):
 
-        def test_unread_situation(self):
+class Test_unread_output(Train_helper_function):
+
+        @pytest.mark.parametrize("unittest_strategy", [
+            Regression_1s_1a,
+        ])
+        def test_unread_output(self, unittest_strategy):
         
             self.first_user_login()
             self.clean_db()
-            self.find_assistor()
+            train_id = self.find_assistor()
 
             # unread_request
             self.second_user_login()
@@ -67,4 +72,9 @@ class Test_unread_test_match_identifier(Train_helper_function):
             notification_category = self.get_notification()
             print('1010', notification_category)
             assert "unread_output" in notification_category.keys()
-            self.train_output(notification_category)
+            self.train_output(
+                notification_category=notification_category, 
+                unittest_strategy=unittest_strategy,
+                user_id=super().get_user_id(),
+                train_id=train_id,
+            )

@@ -54,6 +54,7 @@ class BaseAlgorithmStrategy:
         -------
         list
         '''
+        print('zhelizheli', kwargs)
         return MakeHash.make_hash(**kwargs)
 
     @final

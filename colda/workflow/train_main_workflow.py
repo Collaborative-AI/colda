@@ -81,7 +81,7 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         train_target_column: str, 
         task_name: str=None, 
         task_description: str=None
-    ) -> None:
+    ) -> str:
         ''' 
         Start training
 
@@ -103,7 +103,7 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         -------
         Any
         '''
-        TrainSponsorFindAssistor.find_assistor(
+        return TrainSponsorFindAssistor.find_assistor(
             maxRound=maxRound,
             assistors=assistors,
             train_file_path=train_file_path,
@@ -116,8 +116,7 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
             task_name=task_name,
             task_description=task_description
         )
-        return
-    
+        
     @classmethod
     def train_assistor_request(
         cls, train_id_dicts: dict[dict[str, str]]

@@ -104,14 +104,43 @@ class DictHelper:
         elif supplement_key == None:
             return (user_id, task_id)
 
-        key = [user_id, task_id]
+        key = [(user_id, task_id)]
         if is_list(supplement_key):
             for val in supplement_key:
                 key.append(val)
         else:
             key.append(supplement_key)
         
-        return to_tuple(key)
+        return key
+    
+    @classmethod
+    def generate_dict_supplement_key(
+        cls, 
+        root_key: tuple[DictKey], 
+        supplement_key: Union[str, list[str], None]=None,
+    ) -> tuple[DictKey]:
+        '''
+        Generate unique dictionary key to 
+        store imformation for each task
+
+        Parameters
+        ----------
+        user_id : str
+        task_id : str
+        supplement_key : Union[str, list[str], None]=None
+        
+        Returns
+        -------
+        tuple[str]
+        '''
+        key = [root_key]
+        if is_list(supplement_key):
+            for val in supplement_key:
+                key.append(val)
+        else:
+            key.append(supplement_key)
+        
+        return key
 
     @classmethod
     def __append_type(

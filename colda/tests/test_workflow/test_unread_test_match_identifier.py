@@ -12,6 +12,8 @@ from colda.tests.test_workflow import testing_data
 from colda.tests.test_workflow.Train_helper_function import Train_helper_function
 from colda.tests.test_workflow.Test_helper_function import Test_helper_function
 
+from colda.workflow.base import BaseWorkflow
+
 # from colda.tests.test_workflow.conftest import Regression_1s_1a_strategy
 from colda.tests.test_workflow import Regression_1s_1a
 
@@ -22,7 +24,8 @@ class Test_unread_test_match_identifier(Train_helper_function, Test_helper_funct
             Regression_1s_1a,
         ])
         def test_unread_test_match_identifier(self, unittest_strategy):
-        
+            
+            BaseWorkflow._max_round = 1
             super().first_user_login()
             super().clean_db()
             train_id = super().find_assistor()

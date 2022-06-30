@@ -84,10 +84,13 @@ class AlgorithmLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_dict_root_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
-            task_id=task_id, 
-            suppliment_key=log_category
+            task_id=task_id,
+        )
+        key = DictHelper.generate_dict_supplement_key(
+            root_key=root_key,
+            supplement_key=log_category
         )
         
         DictHelper.store_value(
@@ -120,10 +123,13 @@ class AlgorithmLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_dict_root_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
-            task_id=task_id, 
-            suppliment_key=log_category
+            task_id=task_id,
+        )
+        key = DictHelper.generate_dict_supplement_key(
+            root_key=root_key,
+            supplement_key=log_category
         )
         
         log = DictHelper.get_value(

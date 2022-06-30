@@ -13,9 +13,9 @@ from colda.tests.test_workflow.Train_helper_function import Train_helper_functio
 from colda.tests.test_workflow.Test_helper_function import Test_helper_function
 
 
-class Test_unread_test_find_test_assistor(Train_helper_function, Test_helper_function):
+class Test_unread_test_request(Train_helper_function, Test_helper_function):
 
-        def test_unread_situation(self):
+        def test_unread_test_request(self):
         
             super().first_user_login()
             super().clean_db()

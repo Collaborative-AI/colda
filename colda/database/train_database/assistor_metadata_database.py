@@ -105,7 +105,7 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         '''
         root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
-            train_id=train_id
+            task_id=train_id
         )  
 
         value = {
@@ -146,7 +146,7 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         '''
         root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
-            train_id=train_id
+            task_id=train_id
         )            
 
         assistor_metadata = DictHelper.get_value(

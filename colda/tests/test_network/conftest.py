@@ -4,6 +4,6 @@ from colda.network.api import Network
 
 @pytest.fixture
 def network_instance():
-    print('Initiate Network Instance')
+    print('Unittest: Initiate Network Instance')
     __Network_instance = Network.get_instance()
     return __Network_instance

@@ -45,9 +45,7 @@ class MakeResidual(BaseAlgorithm):
     @overload
     @classmethod
     def make_residual(
-        cls, 
-        self_id: str, 
-        task_id: str, 
+        cls,  
         round: str, 
         dataset_path: str, 
         target_idx: str, 
@@ -63,8 +61,6 @@ class MakeResidual(BaseAlgorithm):
     @classmethod
     def make_residual(
         cls, 
-        self_id: str, 
-        task_id: str, 
         round: str, 
         dataset_path: str, 
         target_idx: str, 

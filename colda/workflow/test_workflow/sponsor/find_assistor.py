@@ -56,7 +56,7 @@ class TestSponsorFindAssistor(TestBaseWorkflow):
         test_target_column: str, 
         test_name: Union[str, None], 
         test_description: Union[str, None]
-    ) -> None:
+    ) -> str:
         ''' 
         Execute test sponsor find assistor logic.
 
@@ -154,4 +154,4 @@ class TestSponsorFindAssistor(TestBaseWorkflow):
 
         print('Testing test_id: ', test_id)
         print('Sponsor: Testing test_id: ', test_id, ' is running')
-        return (True, test_id)
+        return test_id

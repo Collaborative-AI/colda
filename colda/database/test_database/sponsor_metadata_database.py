@@ -152,9 +152,6 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        if not test_id:
-            raise RuntimeError('Use test_id to retrieve User_Assistor_Table')
-
         root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=test_id

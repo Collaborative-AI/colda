@@ -99,12 +99,14 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_dict_root_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=train_id,
+        )
+        key = DictHelper.generate_dict_supplement_key(
+            root_key=root_key,
             supplement_key=algorithm_data_name
         )
-        temp_key = str(key)
 
         DictHelper.store_value(
             key=key,
@@ -139,10 +141,14 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=train_id,
+        )
+        key = DictHelper.generate_dict_supplement_key(
+            root_key=root_key,
             supplement_key=algorithm_data_name
         )
+
         algorithm_data = DictHelper.get_value(
-            key=root_key,
+            key=key,
             container=self.__temp_database
         )
         return algorithm_data

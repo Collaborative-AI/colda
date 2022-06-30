@@ -142,8 +142,6 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
 
         # call make residual
         sponsor_trained_result, residual_dict = super()._calculate_residual(
-            self_id=user_id, 
-            train_id=train_id, 
             round=cls._initial_round_num, 
             dataset_path=train_file_path, 
             target_idx=train_target_column, 

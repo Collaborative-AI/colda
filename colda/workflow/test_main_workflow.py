@@ -77,7 +77,7 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
         test_target_column: str, 
         test_name: str=None, 
         test_description: str=None
-    ) -> None:
+    ) -> str:
         ''' 
         Start testing with all assistors of the previous train 
         task
@@ -96,7 +96,7 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
         -------
         Any
         '''
-        TestSponsorFindAssistor.find_test_assistor(
+        return TestSponsorFindAssistor.find_test_assistor(
             train_id=train_id,
             test_file_path=test_file_path, 
             test_id_column=test_id_column,
@@ -105,7 +105,6 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
             test_name=test_name,
             test_description=test_description
         )
-        return
        
     @classmethod
     def test_assistor_request(

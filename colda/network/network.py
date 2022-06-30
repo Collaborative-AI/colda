@@ -293,8 +293,8 @@ class Network(BaseNetwork):
         data: dict[str, Union[list[str], str]],
         url_prefix: str,
         url_root: str,
-        url_suffix: str,
-        status_code: int = 200,
+        url_suffix: str=None,
+        status_code: int=200,
     ) -> dict[str, Union[list[str], str]]:
         '''
         Handle the http post request flow:

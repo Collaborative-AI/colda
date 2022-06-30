@@ -70,7 +70,8 @@ class DP:
         -------
         Any
         '''
+        # print('yyy', network_response.json())
         if hasattr(network_response, 'text'):
             network_response = network_response.text
-
+        # print(f'network_response: {network_response}, {type(network_response)}')
         return json.loads(network_response)

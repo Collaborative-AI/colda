@@ -1185,5 +1185,7 @@ from typing import (
 # output = output.hexdigest()
 # print(type(output))
 
-a = (5,6)
-a.pop(0)
+def ceshi(**kwargs):
+    print(kwargs)
+
+ceshi(a=5)

@@ -7,7 +7,7 @@ Test suite for the colda package.
 from typing import List
 from abc import ABC, abstractmethod
 
-from colda.workflow import (
+from colda.workflow.api import (
     TrainMainWorkflow,
     TestMainWorkflow
 )
@@ -16,13 +16,13 @@ from colda.authentication.api import Authentication
 from colda.short_polling.api import ShortPolling
 from colda.pi.api import PI
 from colda.network.api import Network
-from colda.utils.log import GetAlgorithmLog
+from colda.utils.log.api import GetAlgorithmLog
 # from colda import set_default_data_path, get_all_task_id_as_sponsor, get_all_test_id_as_sponsor, get_all_task_id_as_assistor, get_all_test_id_as_assistor
 # from colda import get_all_task_id, get_all_test_id
 
 _default_authentication = Authentication.get_instance()
-_default_trainMainWorkflow = TrainMainWorkflow.get_instance()
-_default_testMainWorkflow = TestMainWorkflow.get_instance()
+_default_trainMainWorkflow = TrainMainWorkflow.get_class()
+_default_testMainWorkflow = TestMainWorkflow.get_class()
 _default_ShortPolling = ShortPolling.get_instance()
 _default_PI = PI.get_instance()
 _default_Network = Network.get_instance()
@@ -32,10 +32,12 @@ _default_Network = Network.get_instance()
 
 testing_data = {}
 testing_data['max_round'] = 2
-testing_data['first_user_username'] = 'xie1'
+testing_data['first_user_username'] = 'unittest1'
 testing_data['first_user_password'] = 'Xie1@123'
-testing_data['second_user_username'] = 'xie2'
-testing_data['second_user_password'] = 'Xie2@123'
+testing_data['first_user_email'] = 'ruibasu@gff.com'
+testing_data['second_user_username'] = 'unittest2'
+testing_data['second_user_password'] = 'Xie1@456'
+testing_data['second_user_email'] = 'ruibasu1@gff.com'
 
 testing_data['test_register_username'] = 'leqq'
 testing_data['test_register_email'] = 'lq109945190@gmail.com'
@@ -48,12 +50,12 @@ match_ratio = '1.0'
 user_id = '0'
 folder_indicator = 'train'
 if testing_data['sponsor_mode'] == 'regression':
-    testing_data['train_file_path'] = "/Users/qile/Documents/colda_all/colda_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['train_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 elif testing_data['sponsor_mode'] == 'classification':
-    testing_data['train_file_path'] = "/Users/qile/Documents/colda_all/colda_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['train_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
 testing_data['maxRound'] = 2
-testing_data['assistors'] = ['xie2']
+testing_data['assistors'] = ['unittest2']
 testing_data['train_id_column'] = '1'
 testing_data['train_data_column'] = '2-8'
 testing_data['train_target_column'] = '9'
@@ -65,9 +67,9 @@ testing_data['task_description'] = 'lihaideceshi'
 
 folder_indicator = 'test'
 if testing_data['sponsor_mode'] == 'regression':
-    testing_data['test_file_path'] = "/Users/qile/Documents/colda_all/colda_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['test_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 elif testing_data['sponsor_mode'] == 'classification':
-    testing_data['test_file_path'] = "/Users/qile/Documents/colda_all/colda_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['test_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 testing_data['test_id_column'] = '1'
 testing_data['test_data_column'] = '2-8'
 testing_data['test_target_column'] = '9'
@@ -85,9 +87,9 @@ match_ratio = '1.0'
 user_id = '1'
 folder_indicator = 'all'
 if testing_data['default_task_mode'] == 'regression':
-    testing_data['default_file_path'] = "/Users/qile/Documents/colda_all/colda_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['default_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 elif testing_data['default_task_mode'] == 'classification':
-    testing_data['default_file_path'] = "/Users/qile/Documents/colda_all/colda_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
+    testing_data['default_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
 testing_data['default_id_column'] = '1'
 testing_data['default_data_column'] = '2-7'

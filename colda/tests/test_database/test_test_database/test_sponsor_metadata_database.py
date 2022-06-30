@@ -7,13 +7,13 @@ from colda.error import DuplicateKeyError
 class TestTestSponsorMetadataDatabase:
 
     @pytest.mark.usefixtures('DatabaseOperator_instance')
-    @pytest.mark.parametrize("test_record, expected_res", [
-        (('test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test'), 
-        "TestSponsorMetadataDatabase stores [('test', 'test')] successfully!"),
-        (('test', 'test', 'test2', 'test', 'test', 'test', 'test', 'test', 'test', 'test'), 
-        DuplicateKeyError)
+    @pytest.mark.parametrize("test_record, expected", [
+        (
+            ('test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test'), 
+            None
+        ),
     ])
-    def test_store_record(self, DatabaseOperator_instance, test_record, expected_res):
+    def test_store_record(self, DatabaseOperator_instance, test_record, expected):
         DatabaseOperator_instance.set_database(database_type='test_sponsor_metadata')
         response = DatabaseOperator_instance.store_record(
             user_id=test_record[0], 
@@ -27,17 +27,20 @@ class TestTestSponsorMetadataDatabase:
             test_data_column=test_record[8],
             test_target_column=test_record[9],
         )
-        assert response == expected_res
+        assert response == expected
 
     
     @pytest.mark.usefixtures('DatabaseOperator_instance')
-    @pytest.mark.parametrize("test_record, expected_res", [
-        (('test', 'test'), ('test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', None, None)),
+    @pytest.mark.parametrize("test_record, expected", [
+        (
+            ('test', 'test'), 
+            ('test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', None, None)
+        ),
     ])
-    def test_get_record(self, DatabaseOperator_instance, test_record, expected_res):
+    def test_get_record(self, DatabaseOperator_instance, test_record, expected):
         DatabaseOperator_instance.set_database(database_type='test_sponsor_metadata')
         response = DatabaseOperator_instance.get_record(
             user_id=test_record[0], 
             test_id=test_record[1], 
         )
-        assert response == expected_res
+        assert response == expected

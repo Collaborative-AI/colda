@@ -267,8 +267,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         print('daozheli1')
         new_rounds_num = cur_rounds_num + 1
         _, residual_dict = super()._calculate_residual(
-            self_id=user_id, 
-            train_id=train_id, 
             round=new_rounds_num, 
             dataset_path=train_file_path, 
             target_idx=train_target_column, 
@@ -323,4 +321,4 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         )
 
         print('Sponsor: Training train_id: ', train_id, ' is running')
-        return True
+        return

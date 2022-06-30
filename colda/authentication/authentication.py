@@ -143,8 +143,8 @@ class Authentication(AuthenticationBase):
 
         try:
             token_response = requests.post(url, auth=(username, password))
-        except:
-            return False
+        except Exception:
+            raise Exception
 
         # TODO: user general parse class
         token_response_text = json.loads(token_response.text)

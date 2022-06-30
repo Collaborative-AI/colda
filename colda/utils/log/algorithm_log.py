@@ -84,7 +84,7 @@ class AlgorithmLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_dict_key(
+        key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=task_id, 
             suppliment_key=log_category
@@ -120,7 +120,7 @@ class AlgorithmLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_dict_key(
+        key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=task_id, 
             suppliment_key=log_category

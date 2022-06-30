@@ -103,13 +103,10 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_dict_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             train_id=train_id
         )  
-        temp_key = str(key)
-        # if key not in self.__temp_database:
-        #     self.__temp_database[key] = collections.defaultdict(dict)
 
         value = {
             'train_id': train_id,
@@ -124,7 +121,7 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         }
 
         DictHelper.store_value(
-            key=key,
+            key=root_key,
             value=value,
             container=self.__temp_database
         )
@@ -147,78 +144,26 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        if not train_id:
-            raise RuntimeError('Use train_id to retrieve User_Assistor_Table')
-
-        key = DictHelper.generate_dict_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             train_id=train_id
         )            
 
         assistor_metadata = DictHelper.get_value(
-            key=key,
+            key=root_key,
             container=self.__temp_database
         )
 
-        train_id = DictHelper.get_value(
-            key='train_id',
-            container=assistor_metadata
-        )
+        train_id = assistor_metadata['train_id']
+        mode = assistor_metadata['mode']
+        task_mode = assistor_metadata['task_mode']
+        model_name = assistor_metadata['model_name']
+        train_file_path = assistor_metadata['train_file_path']
+        train_id_column = assistor_metadata['train_id_column']
+        train_data_column = assistor_metadata['train_data_column']
+        task_name = assistor_metadata['task_name']
+        task_description = assistor_metadata['task_description']
 
-        mode = DictHelper.get_value(
-            key='mode',
-            container=assistor_metadata
-        )
-
-        task_mode = DictHelper.get_value(
-            key='task_mode',
-            container=assistor_metadata
-        )
-
-        model_name = DictHelper.get_value(
-            key='model_name',
-            container=assistor_metadata
-        )
-
-        train_file_path = DictHelper.get_value(
-            key='train_file_path',
-            container=assistor_metadata
-        )
-
-        train_id_column = DictHelper.get_value(
-            key='train_id_column',
-            container=assistor_metadata
-        )
-
-        train_data_column = DictHelper.get_value(
-            key='train_data_column',
-            container=assistor_metadata
-        )
-
-        task_name = DictHelper.get_value(
-            key='task_name',
-            container=assistor_metadata
-        )
-
-        task_description = DictHelper.get_value(
-            key='task_description',
-            container=assistor_metadata
-        )  
-        
-        # if not super().if_db_response_valid(
-        #     train_id, 
-        #     mode, 
-        #     task_mode, 
-        #     model_name, 
-        #     train_file_path, 
-        #     train_id_column, 
-        #     train_data_column, 
-        #     task_name, 
-        #     task_description
-        # ):
-        #     print(f'{self.__class__.__name__} does not contain the record')
-        #     return super().dict_value_not_found()
-        
         return (
             train_id, 
             mode, 

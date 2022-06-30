@@ -5,8 +5,8 @@ class TestTestAlgorithmDatabase:
 
     @pytest.mark.usefixtures('DatabaseOperator_instance')
     @pytest.mark.parametrize("test_record, expected_res", [
-        (('test', 'test', 'test1', ''), "TestAlgorithmDatabase stores [('test', 'test'), 'test1'] successfully!"),
-        (('test', 'test', 'test2', 'test'), "TestAlgorithmDatabase stores [('test', 'test'), 'test2'] successfully!")
+        (('test', 'test', 'test1', ''), None),
+        (('test', 'test', 'test2', 'test'), None)
     ])
     def test_store_record(self, DatabaseOperator_instance, test_record, expected_res):
         DatabaseOperator_instance.set_database(database_type='test_algorithm')

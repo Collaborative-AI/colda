@@ -109,7 +109,7 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_dict_key(
+        key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=test_id
         )
@@ -133,10 +133,6 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             value=value,
             container=self.__temp_database
         )
-        # if store_res == True:
-        #     return f'{self.__class__.__name__} stores {temp_key} successfully!' 
-        # else:
-        #     return store_res
         return
     
     def get_record(
@@ -159,87 +155,27 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         if not test_id:
             raise RuntimeError('Use test_id to retrieve User_Assistor_Table')
 
-        key = DictHelper.generate_dict_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=test_id
         )
-        cur_class_name = self.__class__.__name__
 
         sponsor_metadata = DictHelper.get_value(
-            key=key,
+            key=root_key,
             container=self.__temp_database
         )
 
-        train_id = DictHelper.get_value(
-            key='train_id',
-            container=sponsor_metadata
-        )
-
-        task_mode = DictHelper.get_value(
-            key='task_mode',
-            container=sponsor_metadata
-        )
-
-        model_name = DictHelper.get_value(
-            key='model_name',
-            container=sponsor_metadata
-        )
-
-        metric_name = DictHelper.get_value(
-            key='metric_name',
-            container=sponsor_metadata
-        )
-
-        test_id = DictHelper.get_value(
-            key='test_id',
-            container=sponsor_metadata
-        )
-
-        test_file_path = DictHelper.get_value(
-            key='test_file_path',
-            container=sponsor_metadata
-        )
-
-        test_id_column = DictHelper.get_value(
-            key='test_id_column',
-            container=sponsor_metadata
-        )
-
-        test_data_column = DictHelper.get_value(
-            key='test_data_column',
-            container=sponsor_metadata
-        )
-
-        test_target_column = DictHelper.get_value(
-            key='test_target_column',
-            container=sponsor_metadata
-        )
-
-        test_name = DictHelper.get_value(
-            key='test_name',
-            container=sponsor_metadata
-        )
-
-        test_description = DictHelper.get_value(
-            key='test_description',
-            container=sponsor_metadata
-        )  
-        
-        # if not super().if_db_response_valid(
-        #     train_id,
-        #     task_mode, 
-        #     model_name,
-        #     metric_name, 
-        #     test_id,
-        #     test_file_path, 
-        #     test_id_column, 
-        #     test_data_column, 
-        #     test_target_column,
-        #     test_name, 
-        #     test_description
-        # ):
-        #     print(f'{cur_class_name} does not contain the record')
-        #     return super().dict_value_not_found()
+        train_id = sponsor_metadata['train_id']
+        task_mode = sponsor_metadata['task_mode']
+        model_name = sponsor_metadata['model_name']
+        metric_name = sponsor_metadata['metric_name']
+        test_id = sponsor_metadata['test_id']
+        test_file_path = sponsor_metadata['test_file_path']
+        test_id_column = sponsor_metadata['test_id_column']
+        test_data_column = sponsor_metadata['test_data_column']
+        test_target_column = sponsor_metadata['test_target_column']
+        test_name = sponsor_metadata['test_name']
+        test_description = sponsor_metadata['test_description']
 
         return ( 
             train_id,

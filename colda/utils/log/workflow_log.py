@@ -79,7 +79,7 @@ class WorkflowLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_dict_key(user_id, task_id)
+        key = DictHelper.generate_dict_root_key(user_id, task_id)
 
         DictHelper.store_value(
             key=key,
@@ -107,7 +107,7 @@ class WorkflowLog(BaseLog, AbstractLog):
         None
         '''
         # generate unique key
-        key = DictHelper.generate_dict_key(
+        key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=task_id
         )

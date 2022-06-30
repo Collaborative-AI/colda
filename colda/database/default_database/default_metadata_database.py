@@ -113,7 +113,7 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_dict_key(
+        key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
         )  
         value = {
@@ -131,10 +131,6 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             store_type='store_multiple'
         )
         return
-        # if store_res == True:
-        #     return f'{self.__class__.__name__} stores {key} successfully!' 
-        # else:
-        #     return store_res
 
     def get_record(
         self, user_id: str
@@ -151,44 +147,21 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_dict_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
         )  
 
         default_metadata = DictHelper.get_value(
-            key=key,
+            key=root_key,
             container=self.__temp_database
         )
 
-        default_mode = DictHelper.get_value(
-            key='default_mode',
-            container=default_metadata
-        )
-
-        default_task_mode = DictHelper.get_value(
-            key='default_task_mode',
-            container=default_metadata
-        )
-
-        default_model_name = DictHelper.get_value(
-            key='default_model_name',
-            container=default_metadata
-        )
-
-        default_file_path = DictHelper.get_value(
-            key='default_file_path',
-            container=default_metadata
-        )
-
-        default_id_column = DictHelper.get_value(
-            key='default_id_column',
-            container=default_metadata
-        )
-
-        default_data_column = DictHelper.get_value(
-            key='default_data_column',
-            container=default_metadata
-        )
+        default_mode = default_metadata['default_mode']
+        default_task_mode = default_metadata['default_task_mode']
+        default_model_name = default_metadata['default_model_name']
+        default_file_path = default_metadata['default_file_path']
+        default_id_column = default_metadata['default_id_column']
+        default_data_column = default_metadata['default_data_column']
 
         return (
             default_mode, 

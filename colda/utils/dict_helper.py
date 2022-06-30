@@ -25,9 +25,12 @@ from colda.error import (
 from colda.utils.dtypes.api import (
     is_dict_like,
     is_list,
+    is_tuple,
     to_list,
     to_tuple
 )
+
+from collections.abc import Iterable
 
 from typeguard import typechecked
 
@@ -47,7 +50,7 @@ class DictHelper:
     Methods
     -------
     is_key_in_dict
-    generate_dict_key
+    generate_dict_root_key
     store_value
     get_value
     get_all_key_value_pairs
@@ -76,12 +79,12 @@ class DictHelper:
         return False
 
     @classmethod
-    def generate_dict_key(
+    def generate_dict_root_key(
         cls, 
         user_id: str, 
         task_id: str=None,
         supplement_key: Union[str, list[str], None]=None,
-    ) -> tuple[str]:
+    ) -> tuple[DictKey]:
         '''
         Generate unique dictionary key to 
         store imformation for each task
@@ -172,7 +175,9 @@ class DictHelper:
         None
         '''
         if DictHelper.is_key_in_dict(key, container):
-            raise DuplicateKeyError('Store once type wrong')
+            raise DuplicateKeyError(
+                'Store once type wrong, you cannot store twice under same key'
+            )
 
         container[key] = copy.deepcopy(value)
         return 
@@ -231,7 +236,8 @@ class DictHelper:
         key '2'
         container {'2': '3'}
         '''
-        print('keyeee', key)
+        print('keyeee', key, type(key))
+        # single key
         if len(key) == 1:
             if not DictHelper.is_key_in_dict(key[0], container) and parse_mode == 'get':                    
                 raise DictValueNotFound('Key not in container')
@@ -257,7 +263,7 @@ class DictHelper:
     @classmethod
     def __parse_key(
         cls,
-        key: DictKey,
+        key: Union[tuple[DictKey], Iterable[DictKey]],
         container: dict[DictKey, DictValue],
         parse_mode: Parse_Mode,
     ) -> tuple[DictKey, dict[DictKey, DictValue]]:
@@ -282,6 +288,10 @@ class DictHelper:
         Remember to maintain the container pointer at the top:
         temp = container
         '''
+        if is_tuple(key):
+            if not DictHelper.is_key_in_dict(key, container) and parse_mode == 'get':                    
+                raise DictValueNotFound('Key not in container')
+            return key, container
         temp = container
         return cls.__parse_key_recursion(
             key=key,
@@ -292,7 +302,7 @@ class DictHelper:
     @classmethod
     def store_value(
         cls,
-        key: DictKey, 
+        key: Union[tuple[DictKey], Iterable[DictKey]], 
         value: DictValue,
         container: dict[DictKey, DictValue],
         store_type: Dict_Store_Type='store_once'
@@ -341,7 +351,7 @@ class DictHelper:
     @classmethod
     def get_value(
         cls,
-        key: DictKey, 
+        key: Union[tuple[DictKey], Iterable[DictKey]], 
         container: dict[DictKey, DictValue]
     ) -> DictValue:
         '''

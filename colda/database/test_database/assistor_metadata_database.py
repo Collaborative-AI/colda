@@ -17,7 +17,7 @@ from colda._typing import (
 from typeguard import typechecked
 
 
-@typechecked
+# @typechecked
 class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
     '''
     Store and manage data generated from assistor test stage.
@@ -109,11 +109,11 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_dict_key(
+
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=test_id
         )
-        temp_key = str(key)
 
         value = {
             'train_id': train_id,
@@ -128,15 +128,10 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             'test_description': test_description
         }
         DictHelper.store_value(
-            key=key,
+            key=root_key,
             value=value,
             container=self.__temp_database
         )
-            
-        # if store_res == True:
-        #     return f'{self.__class__.__name__} stores {temp_key} successfully!' 
-        # else:
-        #     return store_res
         return
 
     def get_record(
@@ -159,80 +154,26 @@ class TestAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         if not test_id:
             raise RuntimeError('Use task_id to retrieve User_Assistor_Table')
 
-        key = DictHelper.generate_dict_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=test_id
         )
 
         assistor_metadata = DictHelper.get_value(
-            key=key,
+            key=root_key,
             container=self.__temp_database
         )
 
-        train_id = DictHelper.get_value(
-            key='train_id',
-            container=assistor_metadata
-        )
-
-        mode = DictHelper.get_value(
-            key='mode',
-            container=assistor_metadata
-        )
-
-        task_mode = DictHelper.get_value(
-            key='task_mode',
-            container=assistor_metadata
-        )
-
-        model_name = DictHelper.get_value(
-            key='model_name',
-            container=assistor_metadata
-        )
-
-        test_id = DictHelper.get_value(
-            key='test_id',
-            container=assistor_metadata
-        )
-
-        test_file_path = DictHelper.get_value(
-            key='test_file_path',
-            container=assistor_metadata
-        )
-
-        test_id_column = DictHelper.get_value(
-            key='test_id_column',
-            container=assistor_metadata
-        )
-
-        test_data_column = DictHelper.get_value(
-            key='test_data_column',
-            container=assistor_metadata
-        )
-
-        test_name = DictHelper.get_value(
-            key='test_name',
-            container=assistor_metadata
-        )
-
-        test_description = DictHelper.get_value(
-            key='test_description',
-            container=assistor_metadata
-        )  
-        
-        # if not super().if_db_response_valid(
-        #     train_id, 
-        #     mode, 
-        #     task_mode, 
-        #     model_name, 
-        #     test_id,
-        #     test_file_path, 
-        #     test_id_column, 
-        #     test_data_column, 
-        #     test_name, 
-        #     test_description
-        # ):
-        #     print(f'{self.__class__.__name__} does not contain the record')
-        #     return super().dict_value_not_found()
+        train_id = assistor_metadata['train_id']
+        mode = assistor_metadata['mode']
+        task_mode = assistor_metadata['task_mode']
+        model_name = assistor_metadata['model_name']
+        test_id = assistor_metadata['test_id']
+        test_file_path = assistor_metadata['test_file_path']
+        test_id_column = assistor_metadata['test_id_column']
+        test_data_column = assistor_metadata['test_data_column']
+        test_name = assistor_metadata['test_name']
+        test_description = assistor_metadata['test_description']
 
         return (
             train_id, 

@@ -96,7 +96,7 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         -------
         None
         '''
-        key = DictHelper.generate_dict_key(
+        key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=test_id,
             supplement_key=algorithm_data_name
@@ -109,10 +109,6 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
             container=self.__temp_database,
             store_type='append'
         )
-        # if store_res == True:
-        #     return f'{self.__class__.__name__} stores {temp_key} successfully!' 
-        # else:
-        #     return store_res
         return
 
     def get_record(
@@ -137,23 +133,16 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         if not test_id:
             raise RuntimeError('Use test_id to retrieve User_Assistor_Table')
             
-        key = DictHelper.generate_dict_key(
+        root_key = DictHelper.generate_dict_root_key(
             user_id=user_id, 
             task_id=test_id,
             supplement_key=algorithm_data_name
         )
 
         algorithm_data = DictHelper.get_value(
-            key=key,
+            key=root_key,
             container=self.__temp_database
         )
-        
-        # if not super().if_db_response_valid(
-        #     algorithm_data, 
-        # ):
-        #     print(f'{self.__class__.__name__} does not contain the record')
-        #     return super().dict_value_not_found()
-
         return algorithm_data
        
    

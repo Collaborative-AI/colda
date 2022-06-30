@@ -317,7 +317,7 @@ from typing import (
 #         return False
 
 #     @classmethod
-#     def generate_dict_key(
+#     def generate_dict_root_key(
 #         cls, user_id: str, task_id: str
 #     ) -> tuple[str, str]:
 
@@ -557,607 +557,570 @@ from typing import (
 #         # super().__init__()
 #         # print(parent.__ceshi)
 #         cls.fulei()
-import json
-import copy
-import numpy as np
-def check(data):
-    try:
-        json.dumps(data)
-    except:
-        return False
-    else:
-        return True
-
-# child.dayin()
-
-class ParseJson:
-
-    @classmethod
-    def is_json(
-        cls,
-        data: Any
-    ) -> bool:
-
-        """
-        start task with all assistors
-
-        :param file_address: Integer. Maximum training round
-        :param file_content: List. The List of assistors' usernames
-
-        :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
-
-        :exception OSError: Placeholder.
-        """
-
-        if isinstance(data, list):
-            return False
-        elif isinstance(data, int):
-            return False
-        elif isinstance(data, tuple):
-            return False    
-        elif isinstance(data, dict):
-            return False
-
-        try:
-            json.loads(data)
-        except:
-            return False
-
-        return True
-
-    @classmethod
-    def load_json_recursion(
-        cls,
-        data: Any,
-    ) -> dict[Any]:
-
-        if data is None:
-            return None
-
-        if cls.is_json(data):
-            data = json.loads(data)
-        
-        if not isinstance(data, dict):
-            return data
-
-        processed_data = {}
-        for key, value in data.items():
-            processed_data[key] = cls.load_json_recursion(value)    
-
-        return processed_data
-    
-    @classmethod
-    def is_serializable(
-        cls,
-        data: Any
-    ) -> bool:
-
-        # if isinstance(data, (np.ndarray, np.generic)):
-        #     return False
-        # return True
-
-        try:
-            json.dumps(data)
-        except:
-            return False
-        else:
-            return True
-
-    @classmethod
-    def make_data_serializable(
-        cls,
-        data: Any
-    ) -> Any:
-
-        if data is None:
-            return None
-
-        if cls.is_serializable(data):
-            return copy.deepcopy(data)
-        
-        if isinstance(data, (np.ndarray, np.generic)):
-            return copy.deepcopy(data.tolist())
-
-        # processed_data = None
-        if isinstance(data, dict):
-            processed_data = {}
-            for key, value in data.items():
-                processed_data[key] = cls.make_data_serializable(value)    
-        elif isinstance(data, list):
-            processed_data = []
-            for i in range(len(data)):
-                processed_data.append(cls.make_data_serializable(data[i])) 
-
-        return processed_data
-
-# from colda.utils import ParseJson
-
-# a = np.array(5)
-# b = np.array(6)
-# c = [a,b]
-# res = check(c)
-# print(res)
-# c = ParseJson.make_data_serializable(c)
-# print('ccc', c)
-# res = check(c)
-# print(res)
-# def is_json(myjson):
-#   try:
-#     json.loads(myjson)
-#   except ValueError as e:
-#     return False
-#   return True
-
-# aa = json.dumps(
-#     {
-#         '8': {
-#             5: 7
-#         }
-#     },
-# )
-# a = {
-#     '5': aa,
-#     'wudi': [
-#         1,2,3
-#     ]
-# }
-
-# b = json.dumps(a)
-# print(b, type(b), is_json(b))
-# # c = b.json()
-# c = json.loads(b)
-# print(c, type(c))
-# d = c['5']
-# print(d, type(d), is_json(d))
-
-
-# print(a,type(a))
-# b = json.dumps(a)
-# c = json.dumps(b)
-# print(a,type(a))
-# print(b,type(b))
-# print(c,type(c))
-
-# def a(*args):
-#     # print(args, type(args))
-#     # print(5 in args)
-#     return 5,6,7,8
-# b = a()
-
-# print(b)
-
-class DictValueNotFound(ValueError):
-    """
-    Error raised when the value cannot found in corresponding dict key
-    """
-    pass
-
-# print(DictValueNotFound == a.all())
-# a = np.array([1,2,3])
-# print('aaaa', a)
-# print(len(a), len(DictValueNotFound))
-# print( (DictValueNotFound == a).all() )
-# print(type(DictValueNotFound))
-# print(type(a))
-# print(type([1,2,3]))
-# print(type(5))
-# print(DictValueNotFound == a.tolist())
-# print(type(a) == DictValueNotFound)
-# print(DictValueNotFound == [1,2,3])
-# def is_numpy(obj) -> bool:
-#     if isinstance(obj, (np.ndarray, np.generic)):
-#         return True
-#     return False
-
-# def if_response_valid(
-#     *args
-# ) -> bool:
-#     print('if_response_valid1', args)
-
-#     args = [val.tolist() if is_numpy(val) else val for val in args]
-#     print('if_response_valid2', args)
-#     if DictValueNotFound in args:
+# import json
+# import copy
+# import numpy as np
+# def check(data):
+#     try:
+#         json.dumps(data)
+#     except:
 #         return False
-#     return True
+#     else:
+#         return True
 
-# res = if_response_valid(a)
+# # child.dayin()
 
-# print(res)
-
-
-# a = [[5,6,7,8]]
-
-# b = [a, [5,6]]
-
-# print(DictValueNotFound == b)
-
-# def ceshi(**kwargs):
-    # for key, val in kwargs.items():
-    #     print(key, val)
-    #     if val == 'lihai':
-    #         kwargs[key] = 'lihaima'
-
-    # for key, val in kwargs.items():
-    #     print(key, val)
-        # if val == 'lihai':
-        #     val = 'lihaima'
-#     return (
-#         wudi='wudi',
-#         lihai='lihai',
-#     )
-
-# ceshi(
-#     wudi='wudi',
-#     lihai='lihai'
-# )
-
-# def ceshi1(**kwargs):
-#     print(kwargs)
-#     return kwargs
-
-# def ceshi2(**kwargs):
-#     print(kwargs)
-
-# res = ceshi1(
-#     wudi='wudi',
-#     lihai='lihai'
-# )
-# print('res', res)
-# ceshi2(**res)
-
-# def ceshi():
-#     return (5, 6, 7)
-
-# res = ceshi()
-# print(res, type(res))
-# for val in res:
-#     print(val)
-
-# def ceshi2(*args):
-#     print(args)
-
-# ceshi2(*res)
-
-# a = [1,2,3]
-
-# def ceshi(c, *args):
-#     print(c)
-#     print(args, args==())
-
-# ceshi(a)
-
-
-def is_serializable(
-    data: Any
-) -> bool:
-
-    # if isinstance(data, (np.ndarray, np.generic)):
-    #     return False
-    # return True
-
-    try:
-        json.dumps(data)
-    except:
-        return False
-    else:
-        return True
-
-# a = [4,5,[6,6,[7,8,9]]]
-# import numpy as np
-
-# b = np.array(a, dtype="object")
-# print(b, type(b), is_serializable(b))
-# for item in b:
-#     print(item, type(item), is_serializable(item))
-
-# b1 = b.tolist()
-# print('b1', b1, type(b1), is_serializable(b1))
-
-# c = np.array([np.array(_) for _ in a])
-# print(c, type(c), is_serializable(c))
-# for item in c:
-#     print(item, type(item), is_serializable(item))
-# b = np.array()
-# a = []
-# print(a == None, not a, not b)
-# a = np.array(5.6, dtype='float')
-# b = np.array(5.6, dtype=float)
-# c = 5
-# print(a,b)
-# print(type(c))
-# d = np.array(5, dtype=type(c))
-
-# a = np.ones([2,2,3], dtype = int)
-# print(a)
-# res1 = is_serializable(a)
-
-# a = a.tolist()
-
-# res2 = is_serializable(a)
-
-# print(res1, res2)
-# from pandas.api.types import is_dict_like as pandas_is_dict_like
-# from pandas.api.types import is_integer as pandas_is_integer
-# from pandas.api.types import is_list_like as pandas_is_list_like
-# from pandas.api.types import is_float as pandas_is_float
-# def is_numpy(obj) -> bool:
-#     return isinstance(obj, (np.ndarray, np.generic))
-
-# def is_dict_like(obj) -> bool:
-#     return pandas_is_dict_like(obj)
-
-# def is_list_like(obj) -> bool:
-#     return pandas_is_list_like(obj)
-
-# def is_tuple(obj) -> bool:
-#     return isinstance(obj, tuple)
-
-# def is_list(obj) -> bool:
-#     return isinstance(obj, list)
-
-# def is_integer(obj) -> bool:
-#     return pandas_is_integer(obj)
-
-# def is_float(obj) -> bool:
-#     return pandas_is_float(obj)
-
-
-
-# def process_input_recursion(
-#     data: Any,
-# ):
-
-    '''
-    Change list to np.array
-    '''
-    
-    # if data is None or not data:
-    #     return None
-    
-    # # processed_data = None
-    # if is_dict_like(data):
-    #     processed_data = {}
-    #     for key, value in data.items():
-    #         processed_data[key] = process_input_recursion(value)    
-    # elif is_list(data):
-    #     processed_data = []
-    #     for i in range(len(data)):
-    #         processed_data.append(process_input_recursion(data[i]))
-    #     print('processed_data', processed_data) 
-    #     if not is_array()
-    #     processed_data = np.array(processed_data, dtype=type(processed_data[0]))
-    #     print(f'new_type: {type(processed_data[0])}')
-    # else:
-    #     return data
-
-    # return processed_data
-
-
-# a = [[-4.44], [-5.66]]
-# b = process_input_recursion(a)
-
-# print(b, type(b))
-
-
-# a = [6, 5]
-# a = np.array(a)
-# # a = np.array(a, type(a[0]))
-# b = {5: a}
-# print(is_serializable(b))
-
-# b[5] = b[5].tolist()
-# print(is_serializable(b))
-# d = 5
-
-# print(type(d) == int)
-
-# class wudi:
-#     stop = False
+# class ParseJson:
 
 #     @classmethod
-#     def ceshi(cls):
-#         if cls.stop == False:
-#             print('wudi')
-#             cls.stop = True
+#     def is_json(
+#         cls,
+#         data: Any
+#     ) -> bool:
 
-# wudi.ceshi()
-# wudi.ceshi()
+#         """
+#         start task with all assistors
 
+#         :param file_address: Integer. Maximum training round
+#         :param file_content: List. The List of assistors' usernames
 
+#         :returns: Tuple. Contains a string 'handleTrainRequest successfully' and the task id
 
-# # Code to execute in an independent thread
-# def countdown(n, started_evt):
-#     print('countdown starting')
-#     started_evt.set()
-#     while n > 0:
-#         print('T-minus', n)
-#         n -= 1
-#         time.sleep(5)
+#         :exception OSError: Placeholder.
+#         """
 
-# # # Create the event object that will be used to signal startup
-# # started_evt = Event()
+#         if isinstance(data, list):
+#             return False
+#         elif isinstance(data, int):
+#             return False
+#         elif isinstance(data, tuple):
+#             return False    
+#         elif isinstance(data, dict):
+#             return False
 
-# # # Launch the thread and pass the startup event
-# # print('Launching countdown')
-# # t = Thread(target=countdown, args=(10,started_evt))
-# # t.start()
+#         try:
+#             json.loads(data)
+#         except:
+#             return False
 
-# # # Wait for the thread to start
-# # started_evt.wait()
-# # print('countdown is running')
-
-# import threading
-# from threading import Thread, Event
-# import time
-
-# class Ceshi:
-#     __temp_instance = None
-
-#     def __init__(self):
-#         self.stop_indicator = False
-#         # self.timer = None
-#         self.shortpolling = {'running': False}
+#         return True
 
 #     @classmethod
-#     def get_instance(cls):
-#         if cls.__temp_instance == None:
-#             cls.__temp_instance = Ceshi()
+#     def load_json_recursion(
+#         cls,
+#         data: Any,
+#     ) -> dict[Any]:
 
-#         return cls.__temp_instance
+#         if data is None:
+#             return None
 
-#     def start_helper(self, x):
-#         if self.shortpolling['running'] == False:
-#             self.shortpolling['running'] = True
-#             self.__start(x)
+#         if cls.is_json(data):
+#             data = json.loads(data)
+        
+#         if not isinstance(data, dict):
+#             return data
 
-#         return 
+#         processed_data = {}
+#         for key, value in data.items():
+#             processed_data[key] = cls.load_json_recursion(value)    
 
-#     def __start(self, x):
-#         # if self.stop_indicator == False and self.timer == None:
-#         # if self.shortpolling['running'] == None:
-#         print('zzzz', x)
-#         if self.shortpolling['running'] == True:
-#             self.timer = threading.Timer(5, self.__start, args=([x+1]))
-#             # self.shortpolling['running'] = True
-#             self.timer.start()
-
-#         return
+#         return processed_data
     
-#     def end(self):
-#         self.shortpolling['running'] = False
-#         # self.timer = None
-#         return
+#     @classmethod
+#     def is_serializable(
+#         cls,
+#         data: Any
+#     ) -> bool:
+
+#         # if isinstance(data, (np.ndarray, np.generic)):
+#         #     return False
+#         # return True
+
+#         try:
+#             json.dumps(data)
+#         except:
+#             return False
+#         else:
+#             return True
+
+#     @classmethod
+#     def make_data_serializable(
+#         cls,
+#         data: Any
+#     ) -> Any:
+
+#         if data is None:
+#             return None
+
+#         if cls.is_serializable(data):
+#             return copy.deepcopy(data)
+        
+#         if isinstance(data, (np.ndarray, np.generic)):
+#             return copy.deepcopy(data.tolist())
+
+#         # processed_data = None
+#         if isinstance(data, dict):
+#             processed_data = {}
+#             for key, value in data.items():
+#                 processed_data[key] = cls.make_data_serializable(value)    
+#         elif isinstance(data, list):
+#             processed_data = []
+#             for i in range(len(data)):
+#                 processed_data.append(cls.make_data_serializable(data[i])) 
+
+#         return processed_data
+
+# # from colda.utils import ParseJson
+
+# # a = np.array(5)
+# # b = np.array(6)
+# # c = [a,b]
+# # res = check(c)
+# # print(res)
+# # c = ParseJson.make_data_serializable(c)
+# # print('ccc', c)
+# # res = check(c)
+# # print(res)
+# # def is_json(myjson):
+# #   try:
+# #     json.loads(myjson)
+# #   except ValueError as e:
+# #     return False
+# #   return True
+
+# # aa = json.dumps(
+# #     {
+# #         '8': {
+# #             5: 7
+# #         }
+# #     },
+# # )
+# # a = {
+# #     '5': aa,
+# #     'wudi': [
+# #         1,2,3
+# #     ]
+# # }
+
+# # b = json.dumps(a)
+# # print(b, type(b), is_json(b))
+# # # c = b.json()
+# # c = json.loads(b)
+# # print(c, type(c))
+# # d = c['5']
+# # print(d, type(d), is_json(d))
 
 
-# _a = Ceshi()
+# # print(a,type(a))
+# # b = json.dumps(a)
+# # c = json.dumps(b)
+# # print(a,type(a))
+# # print(b,type(b))
+# # print(c,type(c))
 
-# def kaishi():
-#     # a = Ceshi()
-#     print('wudi', id(_a))
-#     _a.start_helper(0)
-#     _a.start_helper(-10000)
+# # def a(*args):
+# #     # print(args, type(args))
+# #     # print(5 in args)
+# #     return 5,6,7,8
+# # b = a()
 
-# def jieshu():
-#     # a = Ceshi()
-#     print('wudi', id(_a))
-#     _a.end()
+# # print(b)
 
-# import sys
-# if __name__ == '__main__':
-#     globals()[sys.argv[1]]()
-#     time.sleep(20)
-#     globals()[sys.argv[2]]()
-# python -c 'import foo; print foo.hello()'
+# class DictValueNotFound(ValueError):
+#     """
+#     Error raised when the value cannot found in corresponding dict key
+#     """
+#     pass
 
-# import numpy as np
+# # print(DictValueNotFound == a.all())
+# # a = np.array([1,2,3])
+# # print('aaaa', a)
+# # print(len(a), len(DictValueNotFound))
+# # print( (DictValueNotFound == a).all() )
+# # print(type(DictValueNotFound))
+# # print(type(a))
+# # print(type([1,2,3]))
+# # print(type(5))
+# # print(DictValueNotFound == a.tolist())
+# # print(type(a) == DictValueNotFound)
+# # print(DictValueNotFound == [1,2,3])
+# # def is_numpy(obj) -> bool:
+# #     if isinstance(obj, (np.ndarray, np.generic)):
+# #         return True
+# #     return False
 
-# a = [[2,3],[1,2]]
+# # def if_response_valid(
+# #     *args
+# # ) -> bool:
+# #     print('if_response_valid1', args)
 
-# # dict[str, Any]
+# #     args = [val.tolist() if is_numpy(val) else val for val in args]
+# #     print('if_response_valid2', args)
+# #     if DictValueNotFound in args:
+# #         return False
+# #     return True
 
-# b = np.array(a)
+# # res = if_response_valid(a)
 
-# c = {5: 6, 7: 8}
-# d = np.array(c)
-
-
-# # print(b, type(b))
-# # for item in b:
-# #     print(item, type(item))
-
-# print(d, type(d), d[5])
-# Role = Literal[
-#     'sponsor',
-#     'assistor',
-# ]
-
-# def a(role: Role):
-#     print(f'role: {role}')
-
-# a(5)
-# from typeguard import typechecked
-
-# #@typechecked
-# def a() -> tuple[int]:
-#     return (5, )
-
-# print(type(a()))
-
-# class ceshi:
-#     __shuxing = 5
-
-#     # def __init__(cls, shuxing):
-#     #     cls.__shuxing = shuxing
-#     #     cls.get()
-
-#     @property
-#     def shuxing(cls):
-#         print(cls.__shuxing)
-
-#     @shuxing.setter
-#     def shuxing(cls, shuxing):
-#         cls.__shuxing = shuxing
-#         return cls.__shuxing
-
-# ceshi.shuxing = 7
-# print(ceshi.shuxing)
-
-# print(ceshi.shuxing)
-
-# a = list(5)
-# print(a)
+# # print(res)
 
 
-# key = [(5, 4)]
-# key.append(6)
-# print(key)
+# # a = [[5,6,7,8]]
 
-# a = {}
-# a[key] = 6
-# print(a)
+# # b = [a, [5,6]]
 
-def is_json_object(
-    data: Any
-) -> bool:
-    '''
-    Check if data is json object.
+# # print(DictValueNotFound == b)
 
-    Parameters
-    ----------
-    data : Any
+# # def ceshi(**kwargs):
+#     # for key, val in kwargs.items():
+#     #     print(key, val)
+#     #     if val == 'lihai':
+#     #         kwargs[key] = 'lihaima'
 
-    Returns
-    -------
-    bool
-    '''
-    try:
-        json.loads(data)
-    except ValueError as err:
-        return False
-    else:
-        return True
+#     # for key, val in kwargs.items():
+#     #     print(key, val)
+#         # if val == 'lihai':
+#         #     val = 'lihaima'
+# #     return (
+# #         wudi='wudi',
+# #         lihai='lihai',
+# #     )
 
-# print(is_json('5'))
+# # ceshi(
+# #     wudi='wudi',
+# #     lihai='lihai'
+# # )
 
-# a = json.dumps('5')
-# print(a)
-# print(type(a) == str)
-# a = json.loads('5')
-# b = json.loads('"5"')
-# print(type(a))
-# print(type(b))
-# a = '{"5": "6"}'
+# # def ceshi1(**kwargs):
+# #     print(kwargs)
+# #     return kwargs
 
-# b = json.loads(a)
-# print(b, type(b))
-# c = json.loads(b['5'])
-# print(c, type(c))
+# # def ceshi2(**kwargs):
+# #     print(kwargs)
+
+# # res = ceshi1(
+# #     wudi='wudi',
+# #     lihai='lihai'
+# # )
+# # print('res', res)
+# # ceshi2(**res)
+
+# # def ceshi():
+# #     return (5, 6, 7)
+
+# # res = ceshi()
+# # print(res, type(res))
+# # for val in res:
+# #     print(val)
+
+# # def ceshi2(*args):
+# #     print(args)
+
+# # ceshi2(*res)
+
+# # a = [1,2,3]
+
+# # def ceshi(c, *args):
+# #     print(c)
+# #     print(args, args==())
+
+# # ceshi(a)
+
 
 # def is_serializable(
 #     data: Any
 # ) -> bool:
+
+#     # if isinstance(data, (np.ndarray, np.generic)):
+#     #     return False
+#     # return True
+
+#     try:
+#         json.dumps(data)
+#     except:
+#         return False
+#     else:
+#         return True
+
+# # a = [4,5,[6,6,[7,8,9]]]
+# # import numpy as np
+
+# # b = np.array(a, dtype="object")
+# # print(b, type(b), is_serializable(b))
+# # for item in b:
+# #     print(item, type(item), is_serializable(item))
+
+# # b1 = b.tolist()
+# # print('b1', b1, type(b1), is_serializable(b1))
+
+# # c = np.array([np.array(_) for _ in a])
+# # print(c, type(c), is_serializable(c))
+# # for item in c:
+# #     print(item, type(item), is_serializable(item))
+# # b = np.array()
+# # a = []
+# # print(a == None, not a, not b)
+# # a = np.array(5.6, dtype='float')
+# # b = np.array(5.6, dtype=float)
+# # c = 5
+# # print(a,b)
+# # print(type(c))
+# # d = np.array(5, dtype=type(c))
+
+# # a = np.ones([2,2,3], dtype = int)
+# # print(a)
+# # res1 = is_serializable(a)
+
+# # a = a.tolist()
+
+# # res2 = is_serializable(a)
+
+# # print(res1, res2)
+# # from pandas.api.types import is_dict_like as pandas_is_dict_like
+# # from pandas.api.types import is_integer as pandas_is_integer
+# # from pandas.api.types import is_list_like as pandas_is_list_like
+# # from pandas.api.types import is_float as pandas_is_float
+# # def is_numpy(obj) -> bool:
+# #     return isinstance(obj, (np.ndarray, np.generic))
+
+# # def is_dict_like(obj) -> bool:
+# #     return pandas_is_dict_like(obj)
+
+# # def is_list_like(obj) -> bool:
+# #     return pandas_is_list_like(obj)
+
+# # def is_tuple(obj) -> bool:
+# #     return isinstance(obj, tuple)
+
+# # def is_list(obj) -> bool:
+# #     return isinstance(obj, list)
+
+# # def is_integer(obj) -> bool:
+# #     return pandas_is_integer(obj)
+
+# # def is_float(obj) -> bool:
+# #     return pandas_is_float(obj)
+
+
+
+# # def process_input_recursion(
+# #     data: Any,
+# # ):
+
 #     '''
-#     Check if data is serializable.
+#     Change list to np.array
+#     '''
+    
+#     # if data is None or not data:
+#     #     return None
+    
+#     # # processed_data = None
+#     # if is_dict_like(data):
+#     #     processed_data = {}
+#     #     for key, value in data.items():
+#     #         processed_data[key] = process_input_recursion(value)    
+#     # elif is_list(data):
+#     #     processed_data = []
+#     #     for i in range(len(data)):
+#     #         processed_data.append(process_input_recursion(data[i]))
+#     #     print('processed_data', processed_data) 
+#     #     if not is_array()
+#     #     processed_data = np.array(processed_data, dtype=type(processed_data[0]))
+#     #     print(f'new_type: {type(processed_data[0])}')
+#     # else:
+#     #     return data
+
+#     # return processed_data
+
+
+# # a = [[-4.44], [-5.66]]
+# # b = process_input_recursion(a)
+
+# # print(b, type(b))
+
+
+# # a = [6, 5]
+# # a = np.array(a)
+# # # a = np.array(a, type(a[0]))
+# # b = {5: a}
+# # print(is_serializable(b))
+
+# # b[5] = b[5].tolist()
+# # print(is_serializable(b))
+# # d = 5
+
+# # print(type(d) == int)
+
+# # class wudi:
+# #     stop = False
+
+# #     @classmethod
+# #     def ceshi(cls):
+# #         if cls.stop == False:
+# #             print('wudi')
+# #             cls.stop = True
+
+# # wudi.ceshi()
+# # wudi.ceshi()
+
+
+
+# # # Code to execute in an independent thread
+# # def countdown(n, started_evt):
+# #     print('countdown starting')
+# #     started_evt.set()
+# #     while n > 0:
+# #         print('T-minus', n)
+# #         n -= 1
+# #         time.sleep(5)
+
+# # # # Create the event object that will be used to signal startup
+# # # started_evt = Event()
+
+# # # # Launch the thread and pass the startup event
+# # # print('Launching countdown')
+# # # t = Thread(target=countdown, args=(10,started_evt))
+# # # t.start()
+
+# # # # Wait for the thread to start
+# # # started_evt.wait()
+# # # print('countdown is running')
+
+# # import threading
+# # from threading import Thread, Event
+# # import time
+
+# # class Ceshi:
+# #     __temp_instance = None
+
+# #     def __init__(self):
+# #         self.stop_indicator = False
+# #         # self.timer = None
+# #         self.shortpolling = {'running': False}
+
+# #     @classmethod
+# #     def get_instance(cls):
+# #         if cls.__temp_instance == None:
+# #             cls.__temp_instance = Ceshi()
+
+# #         return cls.__temp_instance
+
+# #     def start_helper(self, x):
+# #         if self.shortpolling['running'] == False:
+# #             self.shortpolling['running'] = True
+# #             self.__start(x)
+
+# #         return 
+
+# #     def __start(self, x):
+# #         # if self.stop_indicator == False and self.timer == None:
+# #         # if self.shortpolling['running'] == None:
+# #         print('zzzz', x)
+# #         if self.shortpolling['running'] == True:
+# #             self.timer = threading.Timer(5, self.__start, args=([x+1]))
+# #             # self.shortpolling['running'] = True
+# #             self.timer.start()
+
+# #         return
+    
+# #     def end(self):
+# #         self.shortpolling['running'] = False
+# #         # self.timer = None
+# #         return
+
+
+# # _a = Ceshi()
+
+# # def kaishi():
+# #     # a = Ceshi()
+# #     print('wudi', id(_a))
+# #     _a.start_helper(0)
+# #     _a.start_helper(-10000)
+
+# # def jieshu():
+# #     # a = Ceshi()
+# #     print('wudi', id(_a))
+# #     _a.end()
+
+# # import sys
+# # if __name__ == '__main__':
+# #     globals()[sys.argv[1]]()
+# #     time.sleep(20)
+# #     globals()[sys.argv[2]]()
+# # python -c 'import foo; print foo.hello()'
+
+# # import numpy as np
+
+# # a = [[2,3],[1,2]]
+
+# # # dict[str, Any]
+
+# # b = np.array(a)
+
+# # c = {5: 6, 7: 8}
+# # d = np.array(c)
+
+
+# # # print(b, type(b))
+# # # for item in b:
+# # #     print(item, type(item))
+
+# # print(d, type(d), d[5])
+# # Role = Literal[
+# #     'sponsor',
+# #     'assistor',
+# # ]
+
+# # def a(role: Role):
+# #     print(f'role: {role}')
+
+# # a(5)
+# # from typeguard import typechecked
+
+# # #@typechecked
+# # def a() -> tuple[int]:
+# #     return (5, )
+
+# # print(type(a()))
+
+# # class ceshi:
+# #     __shuxing = 5
+
+# #     # def __init__(cls, shuxing):
+# #     #     cls.__shuxing = shuxing
+# #     #     cls.get()
+
+# #     @property
+# #     def shuxing(cls):
+# #         print(cls.__shuxing)
+
+# #     @shuxing.setter
+# #     def shuxing(cls, shuxing):
+# #         cls.__shuxing = shuxing
+# #         return cls.__shuxing
+
+# # ceshi.shuxing = 7
+# # print(ceshi.shuxing)
+
+# # print(ceshi.shuxing)
+
+# # a = list(5)
+# # print(a)
+
+
+# # key = [(5, 4)]
+# # key.append(6)
+# # print(key)
+
+# # a = {}
+# # a[key] = 6
+# # print(a)
+
+# def is_json_object(
+#     data: Any
+# ) -> bool:
+#     '''
+#     Check if data is json object.
 
 #     Parameters
 #     ----------
@@ -1168,19 +1131,59 @@ def is_json_object(
 #     bool
 #     '''
 #     try:
-#         json.dumps(data)
-#     except:
+#         json.loads(data)
+#     except ValueError as err:
 #         return False
 #     else:
 #         return True
 
+# # print(is_json('5'))
 
-# a = {'5': [4, 5, np.array(5)]}
-# print(is_serializable(a))
+# # a = json.dumps('5')
+# # print(a)
+# # print(type(a) == str)
+# # a = json.loads('5')
+# # b = json.loads('"5"')
+# # print(type(a))
+# # print(type(b))
+# # a = '{"5": "6"}'
+
+# # b = json.loads(a)
+# # print(b, type(b))
+# # c = json.loads(b['5'])
+# # print(c, type(c))
+
+# # def is_serializable(
+# #     data: Any
+# # ) -> bool:
+# #     '''
+# #     Check if data is serializable.
+
+# #     Parameters
+# #     ----------
+# #     data : Any
+
+# #     Returns
+# #     -------
+# #     bool
+# #     '''
+# #     try:
+# #         json.dumps(data)
+# #     except:
+# #         return False
+# #     else:
+# #         return True
 
 
-import hashlib
-input = 5
-output = hashlib.sha256(str(input).encode('utf-8'))
-output = output.hexdigest()
-print(type(output))
+# # a = {'5': [4, 5, np.array(5)]}
+# # print(is_serializable(a))
+
+
+# import hashlib
+# input = 5
+# output = hashlib.sha256(str(input).encode('utf-8'))
+# output = output.hexdigest()
+# print(type(output))
+
+a = (5,6)
+a.pop(0)

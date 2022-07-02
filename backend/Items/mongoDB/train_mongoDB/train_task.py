@@ -10,6 +10,7 @@ class train_task():
     def create_train_task_document(
         cls, 
         train_id, 
+        max_round,
         task_name, 
         task_description, 
         task_mode, 
@@ -23,6 +24,7 @@ class train_task():
 
         train_task_document = {
             "train_id": train_id,
+            "max_round": max_round,
             'test_indicator': test_indicator,
             "task_name": task_name,
             "task_description": task_description,

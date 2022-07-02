@@ -85,6 +85,8 @@ def find_assistor(id):
     # print('data', data)
     if not data:
         return bad_request('You must post JSON data.')
+    if 'max_round' not in data or not data.get('max_round'):
+        return bad_request('max_round is required.')
     if 'assistor_username_list' not in data or not data.get('assistor_username_list'):
         return bad_request('assistor_username_list is required.')
     if 'identifier_content' not in data or not data.get('identifier_content'):
@@ -109,10 +111,10 @@ def find_assistor(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    print('666666666666')
     assistor_username_list = data['assistor_username_list']
     identifier_content = data['identifier_content']
     train_id = data['train_id']
+    max_round = data['max_round']
     task_name = data['task_name']
     task_mode = data['task_mode']
     model_name = data['model_name']
@@ -154,6 +156,7 @@ def find_assistor(id):
     # add new train_task document to Train_Task Table
     train_task.create_train_task_document(
         train_id=train_id, 
+        max_round=max_round,
         task_name=task_name, 
         task_description=task_description, 
         task_mode=task_mode, 

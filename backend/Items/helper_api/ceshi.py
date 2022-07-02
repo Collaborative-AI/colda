@@ -7,19 +7,77 @@ from Items.authentication import token_auth
 from Items.utils import generate_password
 from Items.mongoDB import mongoDB
 
+
+from typeguard import typechecked
+from typing import Any
+from flask import jsonify
+
+from typing import Callable
+from functools import wraps
+
+@typechecked
+def handle_response(
+    func: Callable
+) -> Callable:
+    print('daohandlele')
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print('daopzheli')
+        res = func(*args, **kwargs)
+        # res = Serialization.make_data_serializable(res)
+        print('到wrapperle')
+        return jsonify(res)
+
+    return wrapper
+
 @helper_api_bp.route('/testing_get', methods=['GET'])
+# @handle_response
 # @token_auth.login_required
 def testing_get():
-  return 'test successfully!'
+    # from datetime import (
+    #     datetime, 
+    #     timedelta, 
+    #     timezone
+    # )
+
+    # from Items.mongoDB import train_match
+
+    # train_match.create_train_match_document(
+    #     train_id='5555', 
+    #     total_assistor_num=5, 
+    #     sponsor_id='66666', 
+    #     sponsor_random_id='7777', 
+    #     identifier_id=['5', '6']
+    # )
+    print('jinlaileshabi')
+    return jsonify('test successfully!')
+    # return None
+    # from flask.json import jsonify
+    # a = datetime.now(tz=timezone.utc)
+    # # b = jsonify(a)
+    # # print('b---', b)
+    # import json
+    # return json.dumps(a, default=str)
 
 @helper_api_bp.route('/testing_post', methods=['POST'])
 def testing_post():
-  return 'test successfully!'
+    return jsonify('test successfully!')
 
 # @helper_api_bp.route('/ceshi', methods=['GET'])
 @helper_api_bp.route('/changshi', methods=['GET'])
 def changshi():
-  print("NIHAO!!!!!")
+    # a = {}
+    # try:
+    #     b = a['5']
+    # except KeyError:
+    #   # raise e('cuowu')
+
+    #     raise KeyError(
+    #         "String passed to weights not a valid column"
+    #     )
+    #     raise KeyError
+    print("NIHAO!!!!!")
 
 #   zzz = id
 #   print("aaaa", zzz)
@@ -36,39 +94,45 @@ def changshi():
 #   print("data",request.values.get("Json"))
 #   print("data",request.values.get("JSON"))
 #   print("data2", request.get_data())
-  return "good,NIHAO"
+    return None
 
 # @helper_api_bp.route('/ceshi', methods=['GET'])
 @helper_api_bp.route('/changshi2', methods=['GET'])
 def changshi2():
-  print("wori")
+    print("wori")
 
-  return "best,NIHAO"
+    return "best,NIHAO"
+
+@helper_api_bp.route('/changshi3', methods=['GET'])
+def changshi3():
+    print("wori")
+    from flask.json import jsonify
+    return jsonify("changshi3")
 
 @helper_api_bp.route('/ceshi/<string:ID>/<int:value>', methods=['GET'])
 @token_auth.login_required
 def ceshi(ID,value):
-  print("jinlaile!!!!!")
+    print("jinlaile!!!!!")
 
-  # zzz = id
-  # print("aaaa", zzz)
-  # args = request.args.get("ID")
-  # print("ARGS",args)
-  print("ID", ID)
-  print("value", value)
-  # print("oo", args)
-  # file_obj = request.get_json()
-  # print("FILE", file_obj)
+    # zzz = id
+    # print("aaaa", zzz)
+    # args = request.args.get("ID")
+    # print("ARGS",args)
+    print("ID", ID)
+    print("value", value)
+    # print("oo", args)
+    # file_obj = request.get_json()
+    # print("FILE", file_obj)
 
-  # print("zhuanhuan", json.loads(file_obj['file']))
+    # print("zhuanhuan", json.loads(file_obj['file']))
 
-  # file_array = json.loads(file_obj['file'])
-  # for i in file_array:
-  #   print(i)
-  print("data",request.values.get("Json"))
-  print("data",request.values.get("JSON"))
-  print("data2", request.get_data())
-  return "good"
+    # file_array = json.loads(file_obj['file'])
+    # for i in file_array:
+    #   print(i)
+    print("data",request.values.get("Json"))
+    print("data",request.values.get("JSON"))
+    print("data2", request.get_data())
+    return "good"
 
 @helper_api_bp.route('/create_unittest_user/', methods=['POST'])
 def create_unittest_user():
@@ -77,7 +141,7 @@ def create_unittest_user():
     password = data['password']
     email = data['email']
     if mongoDB.search_user_document(user_id=None, username=username, email=None, key_indicator='username'):
-        return 'done'
+        return jsonify('done')
 
     password_hash = generate_password(password)
 
@@ -94,7 +158,7 @@ def create_unittest_user():
     }
     mongoDB.create_user_document(user_document=user_document)
 
-    return 'done'
+    return jsonify('done')
 
 # @helper_api_bp.route('/ceshi', methods=['GET'])
 @helper_api_bp.route('/delete_unittest_db/', methods=['GET'])
@@ -104,7 +168,7 @@ def delete_unittest_db():
         if collection_name != 'User':
             pyMongo.db.drop_collection(collection_name)
 
-    return 'done'
+    return jsonify('done')
 #   # Message, Matched, Notification
 #   queries = Matched.query.all()
 #   for row in queries:

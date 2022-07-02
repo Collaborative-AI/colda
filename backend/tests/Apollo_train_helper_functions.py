@@ -27,28 +27,12 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         # db.drop_all()  # 删除所有数据库表
         self.drop_db_collections()
         self.app_context.pop()  # 退出Flask应用上下文
-
+    
     def drop_db_collections(self):
         # print('ssads', dir(pyMongo.db))
         # pyMongo.db.drop_collection()
         for collecion_names in pyMongo.db.list_collection_names():
             pyMongo.db.drop_collection(collecion_names)
-        # pyMongo.db.User.drop()
-        # pyMongo.db.Notification.drop()
-        # pyMongo.db.Pending.drop()
-        # pyMongo.db.Train_Message.drop()
-        # pyMongo.db.Train_Message_Situation.drop()
-        # pyMongo.db.Train_Message_Output.drop()
-        # pyMongo.db.Test_Message.drop()
-        # pyMongo.db.Test_Message_Situation.drop()
-        # pyMongo.db.Test_Message_Output.drop()
-        # pyMongo.db.Train_Match.drop()
-        # pyMongo.db.Train_Match_Identifier.drop()
-        # pyMongo.db.Test_Match.drop()
-        # pyMongo.db.Test_Match_Identifier.drop()
-        # pyMongo.db.Train_Task.drop()
-        # pyMongo.db.Test_Task.drop()
-        # pyMongo.db.Stop.drop()
 
     def get_basic_auth_headers(self, username, password):
         '''创建Basic Auth认证的headers'''
@@ -83,6 +67,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
     def init_train_user_file_content(self, indicator):
         file_content_dict = collections.defaultdict(dict)
+        file_content_dict['max_round'] = 5
         if indicator == 'small_data':
             file_content_dict['user_1']['identifier_content'] = [8, 4, 3, 12, 16, 17]
             file_content_dict['user_2']['identifier_content'] = [0, 4, 1, 12, 16, 17, 18]
@@ -96,7 +81,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
             file_content_dict['user_2']['output_content'] = [[3,321,6], [88,5,6], [7,99,9]]
             file_content_dict['user_3']['output_content'] = [[6,321,6], [88,5,6], [7,87.6,9]]
         elif indicator == 'large_data':
-            file_content_dict['user_1']['identifier_content'] = [1 for _ in range(3000000)]
+            file_content_dict['user_1']['identifier_content'] = [1 for _ in range(6000000)]
             file_content_dict['user_2']['identifier_content'] = [1 for _ in range(3000000)]
             file_content_dict['user_3']['identifier_content'] = [1 for _ in range(3000000)]
 
@@ -122,7 +107,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         # Check the Notification of each assistor
         newObjectId = ObjectId()
         user_id_1 = str(newObjectId)
-        password_hash = generate_password('Xie1@456')
+        password_hash = generate_password('Xie1@123')
         new_user_document = {
             '_id': newObjectId,
             'user_id': user_id_1,
@@ -186,7 +171,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         print('train_user_id_3', user_id_3)
 
         # 附带JWT到请求头中
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/main_flow/create_new_train_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -200,6 +185,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
             'assistor_username_list': assistor_username_list, 
             'identifier_content': identifier_content, 
             'train_id': train_id, 
+            'max_round': file_content_dict['max_round'],
             'task_mode': 'regression', 
             'model_name': 'LinearRegression', 
             'metric_name': 'RMSE',
@@ -211,13 +197,14 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response, "wrong username")
 
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         assistor_username_list = ['unittest2', 'unittest3']
         identifier_content = user_1_identifier_content
         data = json.dumps({
             'assistor_username_list': assistor_username_list, 
             'identifier_content': identifier_content,      
             'train_id': train_id, 
+            'max_round': file_content_dict['max_round'],
             'task_mode': 'regression', 
             'model_name': 'LinearRegression', 
             'metric_name': 'RMSE',
@@ -230,6 +217,14 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         print('json_response', json_response)
         self.assertEqual(json_response['train_id'], train_id)
         assistor_num = json_response['assistor_num']
+
+        data = json.dumps({
+            'train_id': train_id
+        })
+        response = self.client.post('/main_flow/get_max_round/', headers=headers, data=data)
+        self.assertEqual(response.status_code, 200)
+        json_response = json.loads(response.get_data(as_text=True))
+        self.assertEqual(json_response['max_round'], file_content_dict['max_round'])
 
         # check Train_Match database new rows, include sponsor to sponsor
         train_match_document = train_match.search_train_match_document(train_id=train_id)
@@ -296,7 +291,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         user_3_identifier_content = file_content_dict['user_3']['identifier_content']
 
         # Check the Notification of user 1
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_1 = json.loads(response.get_data(as_text=True))
@@ -353,7 +348,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(set(identifier_content), set(user_1_identifier_content) & set(user_2_identifier_content))
 
         # should not exist notification yet for sponsor
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -400,7 +395,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         user_3_situation_content = file_content_dict['user_3']['situation_content']
 
         # Check the Notification of user 2
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_1 = json.loads(response.get_data(as_text=True))
@@ -432,7 +427,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         assert train_id in json_response_3['notification_result']['category']['unread_match_identifier']['train_id_dicts']
 
         # 6. sponsor and assistors call update_match_id_notification() (in unread_match_identifier.py) and check updated notification (unread match id => 0)
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         data = json.dumps({
             'train_id': train_id
         })
@@ -475,7 +470,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         # test idendifier content
         self.assertEqual(set(sponsor_random_id_to_identifier_content_dict[user_random_id_1]), set(user_1_identifier_content) & set(user_3_identifier_content))
 
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         assistor_random_id_to_residual_dict = {}
         assistor_random_id_to_residual_dict[user_random_id_2] = user_2_situation_content
         assistor_random_id_to_residual_dict[user_random_id_3] = user_3_situation_content
@@ -523,7 +518,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         user_3_output_content = file_content_dict['user_3']['output_content']
 
         # 11. sponsor and assistors check notification (unread situation => 1)
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_1 = json.loads(response.get_data(as_text=True))
@@ -640,7 +635,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(cur_rounds_num, test_rounds_num)
 
         # 14. sponsor check notification (unread output => 1)
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_1 = json.loads(response.get_data(as_text=True))
@@ -684,7 +679,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         assistor_random_id_to_residual_dict[user_random_id_3] = user_3_situation_content
 
         # 17. sponsor calls: send_situation(), goes into new round 
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         data = json.dumps({
             'train_id': train_id, 
             "assistor_random_id_to_residual_dict": assistor_random_id_to_residual_dict

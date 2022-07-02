@@ -13,6 +13,11 @@ from abc import ABC, abstractmethod
 
 from Items import pyMongo
 
+from pymongo.errors import (
+    BulkWriteError,
+    DocumentTooLarge
+)
+
 
 class train_match():
     
@@ -48,6 +53,13 @@ class train_match():
             'sponsor_terminate_id_dict': {},
             'assistor_terminate_id_dict': {},
         }
+
+        # print('zhezhezhezhe')
+        # try:
+        #     pyMongo.db.Train_Match.insert_one(train_match_document)
+        # except DocumentTooLarge as err:
+        #     raise DocumentTooLarge('cuolege')
+
         return pyMongo.db.Train_Match.insert_one(train_match_document)
     
     @classmethod

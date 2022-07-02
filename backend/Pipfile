@@ -16,6 +16,8 @@ pymongo = {extras = ["srv"], version = "*"}
 pyjwt = "*"
 flask-pymongo = "*"
 gunicorn = "*"
+pytest = "*"
+typeguard = "*"
 
 [dev-packages]
 

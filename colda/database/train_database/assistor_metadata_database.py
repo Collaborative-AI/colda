@@ -176,4 +176,6 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             task_description
         )
        
-   
+    @classmethod
+    def delete(cls):
+        cls.__TrainAssistorMetadataDatabase_instance = None

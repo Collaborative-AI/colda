@@ -51,6 +51,7 @@ setup(
         'matplotlib',
         'torch',
         'pandas',
+        'typeguard'
         ],
 
     license=about['__license__'],

@@ -153,4 +153,6 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         )
         return algorithm_data
        
-   
+    @classmethod
+    def delete(cls):
+        cls.__TrainAlgorithmDatabase_instance = None

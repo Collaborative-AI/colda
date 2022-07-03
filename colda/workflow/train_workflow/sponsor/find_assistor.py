@@ -52,7 +52,7 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
     @classmethod
     def find_assistor(
         cls, 
-        maxRound: int, 
+        max_round: int, 
         assistors: list, 
         train_file_path: str, 
         train_id_column: str, 
@@ -97,6 +97,7 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
 
         data = {
             "identifier_content": sponsor_encrypted_identifer,
+            "max_round": max_round,
             "train_id": train_id,
             "task_mode": task_mode,
             "model_name": model_name,
@@ -155,4 +156,5 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
 
         print('Training train_id: ', train_id)
         print('Sponsor: Training train_id: ', train_id, ' is running')
+        print('Sponsor stage 1: find assistor done')
         return train_id

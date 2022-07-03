@@ -126,6 +126,7 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         else:
             raise ValueError('wrong database name')
 
+
     def get_all_records_history(
         self, **kwargs
     ) -> list:

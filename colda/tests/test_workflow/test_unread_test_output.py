@@ -6,7 +6,6 @@ Test suite for the curves.py module that handles everything to do with
 supply and demand curves.
 """
 import pytest
-from colda import set_default_data_path
 from colda.tests.test_workflow import testing_data
 
 from colda.tests.test_workflow.Train_helper_function import Train_helper_function
@@ -16,6 +15,7 @@ from colda.workflow.base import BaseWorkflow
 
 from colda.tests.test_workflow import Regression_1s_1a
 
+from colda import get_all_algo_logs
 
 class Test_unread_test_output(Train_helper_function, Test_helper_function):
 
@@ -31,14 +31,7 @@ class Test_unread_test_output(Train_helper_function, Test_helper_function):
 
             # unread_request
             super().second_user_login()
-            set_default_data_path(
-                default_mode=testing_data['default_mode'], 
-                default_task_mode=testing_data['default_task_mode'], 
-                default_model_name=testing_data['default_model_name'], 
-                default_file_path=testing_data['default_file_path'],
-                default_id_column=testing_data['default_id_column'], 
-                default_data_column=testing_data['default_data_column']
-            )
+            super().set_default_information()
             notification_category = self.get_notification()
             print('5555', notification_category)
             assert "unread_request" in notification_category.keys()
@@ -131,3 +124,12 @@ class Test_unread_test_output(Train_helper_function, Test_helper_function):
                 user_id=super().get_user_id(),
                 test_id=test_id
             )
+
+            super().first_user_login()
+            print(get_all_algo_logs())
+            super().user_logout()
+            print(get_all_algo_logs())
+
+            # super().second_user_login()
+            # print(get_all_algo_logs())
+            # super().user_logout()

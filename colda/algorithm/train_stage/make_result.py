@@ -91,7 +91,7 @@ class MakeResult(BaseAlgorithm):
             if len(last_round_result.shape) == 1:
                 last_round_result = last_round_result.reshape(1, -1)
         last_round_result = last_round_result.reshape(last_round_result.shape[0], -1)
-        print('resultyy', last_round_result)
+        # print('resultyy', last_round_result)
         alpha = np.ones(1)
         func_ = minimize(cls.result_func, alpha, (task_mode, last_round_result, cooperative_model_output, target))
         alpha = func_.x

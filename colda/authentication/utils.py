@@ -25,3 +25,25 @@ def handle_base64_padding(
         base64_string = base64_string + '=' * (4-num)
 
     return base64_string
+
+
+def del_instance(
+    objectInstance: object
+) -> None:
+    '''
+    Delete instance
+
+    Parameters
+    ----------
+    objectInstance : object
+
+    Returns
+    -------
+    None
+    '''
+    try:
+        del objectInstance
+    except Exception as e:
+        print('Logout procedure wrong')
+        raise e
+    return

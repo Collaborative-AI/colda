@@ -44,8 +44,8 @@ class Network(BaseNetwork):
 
     def __init__(self):
         self.__token = ''
-        self.__baseURL = 'http://127.0.0.1:5000'
-        # self.__baseURL = 'http://colda-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/'
+        # self.__baseURL = 'http://127.0.0.1:5000'
+        self.__baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/'
 
     @classmethod
     def get_instance(cls) -> Network:
@@ -246,8 +246,8 @@ class Network(BaseNetwork):
         self, 
         url_prefix: str,
         url_root: str,
-        url_suffix: str,
-        status_code: int = 200, 
+        url_suffix: str=None,
+        status_code: int=200, 
     ) -> dict[str, Union(list[str], str)]:
         '''
         Handle the http get request flow:
@@ -339,20 +339,5 @@ class Network(BaseNetwork):
         )
     
     @classmethod
-    def logout(cls) -> None:
-        '''
-        Clean Network data when logout
-
-        Parameters
-        ----------
-        None
-        
-        Returns
-        -------
-        None
-        '''
-        del_instance(
-            objectInstance=cls.__Network_instance
-        )
-
-        return
+    def delete(cls):
+        cls.__Network_instance = None

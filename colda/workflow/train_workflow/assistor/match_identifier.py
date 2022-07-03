@@ -113,7 +113,7 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
             task_id=train_id,
             msgs=msgs
         )
-
         print(f'Assistor: Training train_id: {train_id} is running')
+        print('Assistor stage 2: match identifier done')
         return True
     

@@ -45,4 +45,5 @@ def get_all_algo_logs() -> dict[str, Any]:
     -------
     dict[str, Any]
     '''
+    print('algooo1', id(GetAlgorithmLog.get_instance()))
     return GetAlgorithmLog.get_instance().get_all_logs()

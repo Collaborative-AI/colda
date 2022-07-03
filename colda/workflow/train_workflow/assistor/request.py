@@ -136,6 +136,6 @@ class TrainAssistorRequest(TrainBaseWorkflow):
             pass
         else:
             print('unread request: wrong mode')
-
         print('Assistor: Training train_id: ', train_id, ' is running')
+        print('Assistor stage 1: request done')
         return True

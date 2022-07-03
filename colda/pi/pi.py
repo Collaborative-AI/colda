@@ -178,3 +178,7 @@ class PI(BasePI):
         )
             
         return
+    
+    @classmethod
+    def delete(cls):
+        cls.__PI_instance = None

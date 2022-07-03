@@ -1,8 +1,9 @@
 import pytest
 
-from colda.tests.test_autorization.conftest import Authentication_instance
+from colda.tests.test_authentication.conftest import Authentication_instance
 
-from colda.tests.test_autorization.conftest import Network_instance
+from colda.tests.test_authentication.conftest import Network_instance
+
 
 class TestLogin:
 
@@ -29,12 +30,12 @@ class TestLogin:
 
     @pytest.mark.usefixtures('Authentication_instance')
     @pytest.mark.parametrize("username, password, expected_res", [
-        ('xie1', 'Xie1@123', True),
-        ('xie2', 'Xie2@123', True)
+        ('xie1', 'Xie1@123', None),
+        ('xie2', 'Xie2@123', None)
     ])
     def test_login(self, Authentication_instance, username, password, expected_res):
 
-        response = Authentication_instance.userLogin(
+        response = Authentication_instance.user_login(
             username=username, 
             password=password, 
         )

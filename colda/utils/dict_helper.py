@@ -265,11 +265,13 @@ class DictHelper:
         key '2'
         container {'2': '3'}
         '''
-        print('keyeee', key, type(key))
+        # print('keyeee', key, type(key))
         # single key
         if len(key) == 1:
             if not DictHelper.is_key_in_dict(key[0], container) and parse_mode == 'get':                    
-                raise DictValueNotFound('Key not in container')
+                raise DictValueNotFound(
+                    f'Key not in container: {key[0]}'
+                )
             return key[0], container
         
         cur_key = key.pop(0)
@@ -280,7 +282,9 @@ class DictHelper:
                 # to empty dict
                 container[cur_key] = {}
             else:
-                raise DictValueNotFound('Key not in container')
+                raise DictValueNotFound(
+                    f'Key not in container: {cur_key}'
+                )
         container = container[cur_key] 
         
         return cls.__parse_key_recursion(

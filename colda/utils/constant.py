@@ -11,4 +11,5 @@ from typeguard import typechecked
 class Constant:
 
     INITIAL_DEFAULT_MODE: Final[str] = 'auto'
-
+    MAXIMUM_ROUND: Final[int] = 3
+    

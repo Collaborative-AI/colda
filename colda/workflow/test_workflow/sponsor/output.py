@@ -174,12 +174,22 @@ class TestSponsorOutput(TestBaseWorkflow):
             algorithm_data_name='sponsor_trained_alpha',
         )
 
+        data = {
+            'train_id': train_id
+        }
+        max_round = super()._post_request_chaining(
+            task_id=train_id,
+            data=data,
+            url_prefix=super()._url_prefix,
+            url_root='get_max_round',
+        )['max_round'] 
+
         # Calculate result for current round
-        print('&&%%%%', type(assistor_random_id_to_output_content_dict))
+        # print('&&%%%%', type(assistor_random_id_to_output_content_dict))
         evaluation = super()._evaluate_results(
             user_id=user_id,
             test_id=test_id,
-            max_round=super()._max_round, 
+            max_round=max_round, 
             dataset_path=test_file_path, 
             target_idx=test_target_column, 
             skip_header=super()._skip_header, 
@@ -210,5 +220,8 @@ class TestSponsorOutput(TestBaseWorkflow):
             task_id=test_id,
             msgs=msgs
         )
+
+        print('Sponsor test stage 3: output done')
+        return 
 
         

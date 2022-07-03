@@ -17,7 +17,8 @@ from colda.utils.log.api import GetWorkflowLog
 from colda.error import (
     StatusCodeWarning,
     StatusCodeError,
-    DictValueNotFound
+    DictValueNotFound,
+    StopWarning
 )
 
 from typing import (
@@ -58,8 +59,9 @@ class BaseWorkflow:
     _skip_header: Final[int] = 1
     _initial_round_num: Final[int] = 1
     _url_prefix: Final[str] = 'main_flow'
+    _helper_api = 'helper_api'
     # _max_round: Final[int] = 3
-    _max_round = 2
+    # _max_round = 2
 
     __Network_instance = Network.get_instance()
     __PI_instance = PI.get_instance()
@@ -76,8 +78,8 @@ class BaseWorkflow:
         task_id: str,
         url_prefix: str,
         url_root: str,
-        url_suffix: str,
-        status_code: int,
+        url_suffix: str=None,
+        status_code: int=200,
     ) -> Any:
         '''
         http get request
@@ -118,8 +120,8 @@ class BaseWorkflow:
         data: dict[str, Serializable_Datatype],
         url_prefix: str,
         url_root: str,
-        url_suffix: str,
-        status_code: int,
+        url_suffix: str=None,
+        status_code: int=200,
     ) -> Any:
         '''
         http post request
@@ -262,7 +264,6 @@ class BaseWorkflow:
         -------
         list[Identifier_Type]
         '''
-        print('gdsfasdf')
         encrypted_identifer = cls.__BaseAlgorithm_instance.make_hash(
                 dataset_path=dataset_path, 
                 id_idx=id_idx, 
@@ -321,13 +322,16 @@ class BaseWorkflow:
                 test_id=task_id,
                 algorithm_data_name=algorithm_data_name
             )
-        print('((((((', res, type(res))
+        # print('((((((', res, type(res))
+        print(f'async: {algorithm_data_name}')
         if res == DictValueNotFound:
 
             waiting_current_time = time.time()
             time_interval = waiting_current_time - waiting_start_time
             if time_interval > 30 * 60:
-                print('Sorry, the test stopped due to slow computation')
+                warnings.warn(
+                    'Sorry, the test stopped due to slow computation'
+                )
                 return False
 
             args = [

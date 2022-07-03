@@ -74,7 +74,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
             url_suffix=user_id,
             status_code=200
         )
-        print('get_situation_content_response', get_situation_content_response)
+        # print('get_situation_content_response', get_situation_content_response)
         # handle response from above request
         situation_content = get_situation_content_response['situation_content']
         sender_random_id = get_situation_content_response['sender_random_id']
@@ -157,7 +157,7 @@ class TrainAssistorSituation(TrainBaseWorkflow):
             role='assistor',
             matched_identifier=assistor_matched_identifer,
         )
-        print('trained_cooperative_model_output', trained_cooperative_model_output)
+        # print('trained_cooperative_model_output', trained_cooperative_model_output)
         # Store trained_cooperative_model for further testing
         super()._store_database_record(
             database_type='train_algorithm',
@@ -199,6 +199,6 @@ class TrainAssistorSituation(TrainBaseWorkflow):
             task_id=train_id,
             msgs=msgs
         )
-        
         print(f'Assistor: Training train_id: {train_id} is running')
+        print('Assistor stage 3: situation done')
         return True

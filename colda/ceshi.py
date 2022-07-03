@@ -1185,7 +1185,126 @@ from typing import (
 # output = output.hexdigest()
 # print(type(output))
 
-def ceshi(**kwargs):
-    print(kwargs)
+# def ceshi(**kwargs):
+#     print(kwargs)
 
-ceshi(a=5)
+# ceshi(a=5)
+# import sys
+# def handle_exception(args):
+#     # _default_ShortPolling.shortpolling['running'] = False
+#     print('handle_exception')
+#     # if issubclass(exc_type, KeyboardInterrupt):
+#     #     sys.__excepthook__(exc_type, exc_value, exc_traceback)
+#     #     return
+
+#     # logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+
+# # sys.excepthook = handle_exception
+# import threading
+# threading.excepthook = handle_exception
+# a = 1
+# def ceshi2():
+#     global a 
+#     if a == 2:
+#         raise ValueError(
+#             '???'
+#         )
+#     a += 1
+
+
+
+# def ceshi():
+#     print('laile')
+#     ceshi2()
+    
+#     timer = threading.Timer(3, ceshi)
+#     timer.start()
+# # a = {}
+# # a['6']
+# ceshi()
+# # train_notification_category_name = {
+    
+# # }
+
+# # The key of the train stage notification
+# # returned by the back-end
+# zz_notification_category_name = {
+#     'unread_request': 1,
+#     'unread_match_identifier': 2,
+#     'unread_situation': 3,
+#     'unread_output': 4,
+#     'unread_train_stop': 5,
+#     'unread_test_request': 6,
+#     'unread_test_match_identifier': 7,
+#     'unread_test_output': 8,
+#     'unread_test_stop': 9,
+# }
+
+# notification_category = {
+#     'unread_test_request': {'5': 6},
+#     'unread_output': {'5': 6},
+#     'unread_situation': {'5': 6},
+# }
+# # notification_category = list(notification_category)
+# notification_category = sorted(notification_category.items(), key=lambda x: zz_notification_category_name[x[0]])
+# # notification_category = sorted(notification_category, key=lambda x: test_notification_category_name[x])
+
+# print('555', notification_category)
+
+
+class WorkflowLog():
+    '''
+    Workflow log is used to store the information
+    from the workflow stage(train_workflow and
+    test_workflow).
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    get_instance
+    store_log
+    get_log
+    get_all_logs
+    '''
+
+    __WorkflowLog_instance = None
+
+    def __init__(self):
+        self.a = 0
+        self.__workflow_log = collections.defaultdict(list)
+
+    @classmethod
+    def get_instance(cls) -> WorkflowLog:
+        '''
+        Singleton pattern. 
+        Get instance of current class.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        WorkflowLog
+        '''
+        if cls.__WorkflowLog_instance == None:
+            cls.__WorkflowLog_instance = WorkflowLog()
+
+        return cls.__WorkflowLog_instance
+
+    @classmethod
+    def delete(cls):
+        cls.__WorkflowLog_instance = None
+
+    def set(self, val):
+        self.a = val
+
+a = WorkflowLog.get_instance()
+a.set(7)
+print(a.a, id(a))
+WorkflowLog.delete()
+c = WorkflowLog.get_instance()
+print(c.a, id(c))

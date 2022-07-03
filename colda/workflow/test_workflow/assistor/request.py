@@ -142,4 +142,5 @@ class TestAssistorRequest(TestBaseWorkflow):
             print('unread test request: wrong mode')
 
         print(f'Assistor: Testing test_id: {test_id} is running')
+        print('Sponsor test stage 1: request done')
         return True

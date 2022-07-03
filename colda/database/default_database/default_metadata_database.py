@@ -130,6 +130,7 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             container=self.__temp_database,
             store_type='store_multiple'
         )
+        print('store default info done')
         return
 
     def get_record(
@@ -171,3 +172,7 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             default_id_column, 
             default_data_column
         )
+    
+    @classmethod
+    def delete(cls):
+        cls.__DefaultMetadataDatabase_instance = None

@@ -125,6 +125,6 @@ class TrainSponsorSituation(TrainBaseWorkflow):
             task_id=train_id,
             msgs=msgs
         )
-
         print('Sponsor: Training train_id: ', train_id, ' is running')
+        print('Sponsor stage 3: situation done')
         return True

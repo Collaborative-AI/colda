@@ -7,7 +7,6 @@ supply and demand curves.
 """
 
 import pytest
-from colda import set_default_data_path
 from colda.tests.test_workflow import testing_data
 from colda.tests.test_workflow.Train_helper_function import Train_helper_function
 

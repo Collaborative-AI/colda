@@ -7,7 +7,6 @@ supply and demand curves.
 """
 
 import pytest
-from colda import set_default_data_path
 from colda.tests.test_workflow import testing_data
 from colda.tests.test_workflow.Train_helper_function import Train_helper_function
 
@@ -21,14 +20,7 @@ class Test_unread_request(Train_helper_function):
 
         # unread_request
         self.second_user_login()
-        set_default_data_path(
-            default_mode=testing_data['default_mode'], 
-            default_task_mode=testing_data['default_task_mode'], 
-            default_model_name=testing_data['default_model_name'], 
-            default_file_path=testing_data['default_file_path'],
-            default_id_column=testing_data['default_id_column'], 
-            default_data_column=testing_data['default_data_column']
-        )
+        super().set_default_information()
         notification_category = self.get_notification()
         print('5555', notification_category)
         assert "unread_request" in notification_category.keys()

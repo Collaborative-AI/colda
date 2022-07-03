@@ -138,7 +138,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         task_name = sponsor_metadata_record[8]
         task_description = sponsor_metadata_record[9]
         
-        print("train_file_path", train_file_path, train_target_column)
+        # print("train_file_path", train_file_path, train_target_column)
 
         # call make residual
         sponsor_trained_result, residual_dict = super()._calculate_residual(
@@ -151,7 +151,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             sponsor_matched_identifers=sponsor_matched_identifers,
             last_round_result=None,
         )
-        print('~~sponsor_trained_result', sponsor_trained_result, len(sponsor_trained_result))
+        # print('~~sponsor_trained_result', sponsor_trained_result, len(sponsor_trained_result))
         super()._store_database_record(
             database_type='train_algorithm',
             user_id=user_id,
@@ -180,7 +180,7 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
         assistor_random_id_to_residual_dict = {}
         for assistor_random_id in assistor_random_id_to_identifier_content_dict.keys():
             assistor_random_id_to_residual_dict[assistor_random_id] = residual_dict[assistor_random_id]
-            print('8989000', residual_dict[assistor_random_id])
+            # print('8989000', residual_dict[assistor_random_id])
 
         data = {
             "train_id": train_id,
@@ -204,6 +204,6 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
             task_id=train_id,
             msgs=msg
         )
-        print('sponsor_match_id_done')
         print('Sponsor: Training train_id: ', train_id, ' is running')
+        print('Sponsor stage 2: match id done')
         return True

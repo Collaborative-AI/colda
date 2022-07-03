@@ -134,6 +134,6 @@ class WorkflowLog(BaseLog, AbstractLog):
     def log_serialization(self):
         pass
 
-
-
-    
+    @classmethod
+    def delete(cls):
+        cls.__WorkflowLog_instance = None

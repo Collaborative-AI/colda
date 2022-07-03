@@ -150,4 +150,6 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         )
         return algorithm_data
        
-   
+    @classmethod
+    def delete(cls):
+        cls.__TestAlgorithmDatabase_instance = None

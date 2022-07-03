@@ -27,6 +27,7 @@ from colda.algorithm.api import (
     get_algo_log,
     get_all_algo_logs
 )
+from colda import set_default_info
 from colda.workflow.base import BaseWorkflow
 from colda.short_polling.api import ShortPolling
 
@@ -57,7 +58,7 @@ class Train_helper_function:
             password=testing_data['first_user_password']
         )
         return
-    
+
     def second_user_login(self):
         data = {
             'username': testing_data['second_user_username'],
@@ -75,6 +76,20 @@ class Train_helper_function:
         )
         return
 
+    def user_logout(self):
+        _default_authentication.user_logout()
+        
+    def set_default_information(self):
+        set_default_info(
+            default_mode=testing_data['default_mode'], 
+            default_task_mode=testing_data['default_task_mode'], 
+            default_model_name=testing_data['default_model_name'], 
+            default_file_path=testing_data['default_file_path'],
+            default_id_column=testing_data['default_id_column'], 
+            default_data_column=testing_data['default_data_column']
+        )
+        return
+
     def get_user_id(self):
         return _default_PI.user_id
 
@@ -86,7 +101,7 @@ class Train_helper_function:
 
     def find_assistor(self):
         find_assistor_res = _default_trainMainWorkflow.find_assistor(
-            maxRound=testing_data['maxRound'], 
+            max_round=testing_data['max_round'], 
             assistors=testing_data['assistors'], 
             train_file_path=testing_data['train_file_path'],
             train_id_column=testing_data['train_id_column'], 

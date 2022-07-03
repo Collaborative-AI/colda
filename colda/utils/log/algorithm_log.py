@@ -152,3 +152,6 @@ class AlgorithmLog(BaseLog, AbstractLog):
         pass
 
 
+    @classmethod
+    def delete(cls):
+        cls.__AlgorithmLog_instance = None

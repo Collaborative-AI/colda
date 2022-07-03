@@ -146,7 +146,7 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
             user_id=user_id,
             test_id=test_id
         )
-        print('@@@_______', test_assistor_metadata)
+        # print('@@@_______', test_assistor_metadata)
         train_id = test_assistor_metadata[0]
         mode = test_assistor_metadata[1]
         task_mode = test_assistor_metadata[2] 
@@ -165,10 +165,20 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
             algorithm_data_name='trained_cooperative_model',
         )
 
+        data = {
+            'train_id': train_id
+        }
+        max_round = super()._post_request_chaining(
+            task_id=train_id,
+            data=data,
+            url_prefix=super()._url_prefix,
+            url_root='get_max_round',
+        )['max_round']
+
         test_cooperative_model_outputs = super()._test_cooperative_model(
             user_id=user_id,
             test_id=test_id,
-            max_round=super()._max_round,
+            max_round=max_round,
             matched_identifier=assistor_matched_identifer,
             trained_models_of_each_round=trained_models_of_each_round,
             dataset_path=test_file_path, 
@@ -182,7 +192,7 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
             "test_id": test_id,
             "output_content": test_cooperative_model_outputs,
         }
-        print('test_cooperative_model_outputs', test_cooperative_model_outputs, type(test_cooperative_model_outputs))
+        # print('test_cooperative_model_outputs', test_cooperative_model_outputs, type(test_cooperative_model_outputs))
         send_test_output_response = super()._post_request_chaining(
             task_id=test_id,
             data=data,
@@ -203,5 +213,6 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
         )
 
         print(f'Assistor: Testing test_id: {test_id} is running')
+        print('Sponsor test stage 2: match identifier done')
         return True
     

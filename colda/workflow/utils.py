@@ -3,7 +3,10 @@ from __future__ import annotations
 import json
 import numpy as np
 
-from colda.utils.api import DictHelper
+from colda.utils.api import (
+    DictHelper,
+    Constant
+)
 
 from typing import (
     Union,
@@ -12,6 +15,17 @@ from typing import (
 )
 
 from typeguard import typechecked
+
+def is_max_round_valid(
+    max_round: int
+) -> bool:
+
+    if max_round < 1:
+        return False
+    if max_round > Constant.MAXIMUM_ROUND:
+        return False
+    
+    return True
 
 
 class CheckSponsor:

@@ -48,7 +48,7 @@ class DP:
         '''
         if network_response.status_code != status_code:
             raise StatusCodeError(
-                'Network response has wrong status code'
+                f'Network response has wrong status code: {network_response.status_code}'
             )
         
         return

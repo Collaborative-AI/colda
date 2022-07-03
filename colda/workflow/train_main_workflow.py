@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import warnings
+
 from colda.workflow.abstract_workflow import AbstractTrainMainWorkflow
 
 from colda.workflow.utils import (
-    obtain_notification_information
+    obtain_notification_information,
+    CheckSponsor
 )
 
 from colda.workflow.train_workflow.sponsor.api import (
@@ -19,13 +22,20 @@ from colda.workflow.train_workflow.assistor.api import (
     TrainAssistorSituation
 )
 
-from colda.workflow.utils import CheckSponsor
+from colda.utils.api import Constant
 
 from colda._typing import (
     Task_Mode,
     Model_Name,
     Metric_Name
 )
+
+from colda.error import DataOutofRangeWarning
+
+from colda.workflow.utils import (
+    is_max_round_valid
+)
+
 from typeguard import typechecked
 
 
@@ -70,7 +80,7 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
     @classmethod
     def find_assistor(
         cls, 
-        maxRound: int, 
+        max_round: int, 
         assistors: list, 
         task_mode: Task_Mode, 
         model_name: Model_Name, 
@@ -103,8 +113,13 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         -------
         Any
         '''
+        if not is_max_round_valid(max_round=max_round):
+            warnings.warn(
+                f'max round must between 1 to {Constant.MAXIMUM_ROUND}'
+            )
+
         return TrainSponsorFindAssistor.find_assistor(
-            maxRound=maxRound,
+            max_round=max_round,
             assistors=assistors,
             train_file_path=train_file_path,
             train_id_column=train_id_column,

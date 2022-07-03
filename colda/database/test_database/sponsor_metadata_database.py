@@ -188,3 +188,6 @@ class TestSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             test_description
         )
     
+    @classmethod
+    def delete(cls):
+        cls.__TestSponsorMetadataDatabase_instance = None

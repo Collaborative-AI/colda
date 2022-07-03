@@ -78,7 +78,7 @@ def to_serializable(
     -------
     Serializable_Datatype
     '''
-    print(f'smdata: {data}, {type(data)}')
+    # print(f'smdata: {data}, {type(data)}')
     if is_numpy(data):
         return copy.deepcopy(data.tolist())
     elif is_set(data):

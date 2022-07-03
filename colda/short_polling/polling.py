@@ -9,7 +9,6 @@ from colda.workflow.api import (
     TrainMainWorkflow,
     TestMainWorkflow
 )
-
 from colda.network.api import Network
 from colda.pi.api import PI
 from colda.authentication.api import Authentication
@@ -39,6 +38,7 @@ class ShortPolling():
         self.shortpolling = {
             'running': False
         }
+        self.throw_exception = False
 
         self.__Network_instance = Network.get_instance()
         self.__PI_instance = PI.get_instance()
@@ -47,23 +47,18 @@ class ShortPolling():
         self.__default_trainMainWorkflow = TrainMainWorkflow.get_class()
         self.__default_testMainWorkflow = TestMainWorkflow.get_class()
 
-        # The key of the train stage notification
+        # The key of the all stage notification
         # returned by the back-end
-        self.train_notification_category_name = {
-            'unread_request',
-            'unread_match_identifier',
-            'unread_situation',
-            'unread_output',
-            'unread_train_stop',
-        }
-
-        # The key of the train stage notification
-        # returned by the back-end
-        self.test_notification_category_name = {
-            'unread_test_request',
-            'unread_test_match_identifier',
-            'unread_test_output',
-            'unread_test_stop',
+        self.notification_category_name = {
+            'unread_request': 1,
+            'unread_match_identifier': 2,
+            'unread_situation': 3,
+            'unread_output': 4,
+            'unread_train_stop': 5,
+            'unread_test_request': 6,
+            'unread_test_match_identifier': 7,
+            'unread_test_output': 8,
+            'unread_test_stop': 9,
         }
 
     @classmethod
@@ -85,6 +80,11 @@ class ShortPolling():
 
         return cls.__ShortPolling_instance
 
+    def __handle_thread_exception(self):
+        self.shortpolling['running'] = False
+        print('handle_thread_exception')
+        return
+
     def __distribute_notification(
         self, notification_category: dict
     ) -> None:
@@ -100,39 +100,44 @@ class ShortPolling():
         -------
         None
         '''
-        for category_name in notification_category:
-            if category_name in self.train_notification_category_name or category_name in self.test_notification_category_name:
-                if category_name == 'unread_request':
+        print(f'notification_category: {notification_category}')
+        notification_category = sorted(notification_category.items(), key=lambda x:self.notification_category_name[x[0]])
+        for notification in notification_category:
+        # for category_name in notification_category:
+            key = notification[0]
+            value = notification[1]
+            if key in self.notification_category_name:
+                if key == 'unread_request':
                     self.__default_trainMainWorkflow.train_assistor_request(
-                        notification_category[category_name]['train_id_dicts']
+                        value['train_id_dicts']
                     )
-                elif category_name == 'unread_match_identifier':
+                elif key == 'unread_match_identifier':
                     self.__default_trainMainWorkflow.train_match_identifier(
-                        notification_category[category_name]['train_id_dicts']
+                        value['train_id_dicts']
                     )
-                elif category_name == 'unread_situation':
+                elif key == 'unread_situation':
                     self.__default_trainMainWorkflow.train_situation(
-                        notification_category[category_name]['train_id_dicts']
+                        value['train_id_dicts']
                     )
-                elif category_name == 'unread_output':
+                elif key == 'unread_output':
                     self.__default_trainMainWorkflow.train_output(
-                        notification_category[category_name]['train_id_dicts']
+                        value['train_id_dicts']
                     )
-                elif category_name == 'unread_train_stop':
+                elif key == 'unread_train_stop':
                     pass
-                elif category_name == 'unread_test_request':
+                elif key == 'unread_test_request':
                     self.__default_testMainWorkflow.test_assistor_request(
-                        notification_category[category_name]['test_id_dicts']
+                        value['test_id_dicts']
                     )
-                elif category_name == 'unread_test_match_identifier':
+                elif key == 'unread_test_match_identifier':
                     self.__default_testMainWorkflow.test_match_identifier(
-                        notification_category[category_name]['test_id_dicts']
+                        value['test_id_dicts']
                     )
-                elif category_name == 'unread_test_output':
+                elif key == 'unread_test_output':
                     self.__default_testMainWorkflow.test_output(
-                        notification_category[category_name]['test_id_dicts']
+                        value['test_id_dicts']
                     )
-                elif category_name == 'unread_test_stop':
+                elif key == 'unread_test_stop':
                     pass
             
                 # print("category_name: ", category_name, notification_category[category_name])
@@ -150,6 +155,7 @@ class ShortPolling():
         -------
         None
         '''
+        # print('new polling')
         if not self.shortpolling['running']:
             print('short polling has already stoped')
             return
@@ -167,7 +173,7 @@ class ShortPolling():
             url_suffix=user_id,
             status_code=200,
         )
-        print(f'short_polling_res: {short_polling_res}')
+        # print(f'short_polling_res: {short_polling_res}')
         if 'new_token' in short_polling_res and short_polling_res['new_token'] != None:
             new_token = short_polling_res['new_token']
             self.__Authentication_instance.process_token(new_token)
@@ -175,10 +181,11 @@ class ShortPolling():
         notification_category = short_polling_res['notification_result']['category']
         
         # for unittest, comment back
-        return notification_category
+        # return notification_category
         
         self.__distribute_notification(notification_category)
-        
+
+        threading.excepthook = self.__handle_thread_exception
         timer = threading.Timer(10, self.__polling)
         timer.start()
         return
@@ -196,10 +203,13 @@ class ShortPolling():
         -------
         None
         '''
+        # print("self.shortpolling['running']", self.shortpolling['running'])
         if self.shortpolling['running'] == False:
             self.shortpolling['running'] = True
             self.__polling()
-
+            print('cooperation starts')
+        else:
+            print('short polling has already started')
         return 
 
     def end_cooperation(self):
@@ -216,5 +226,6 @@ class ShortPolling():
         None
         '''
         self.shortpolling['running'] = False
-        return True
+        print('cooperation ends')
+        return
 

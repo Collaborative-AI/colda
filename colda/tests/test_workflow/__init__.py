@@ -54,7 +54,7 @@ if testing_data['sponsor_mode'] == 'regression':
 elif testing_data['sponsor_mode'] == 'classification':
     testing_data['train_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
-testing_data['maxRound'] = 2
+testing_data['max_round'] = 2
 testing_data['assistors'] = ['unittest2']
 testing_data['train_id_column'] = '1'
 testing_data['train_data_column'] = '2-8'

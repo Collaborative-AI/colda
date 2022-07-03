@@ -169,7 +169,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         )
 
         # Calculate result for current round
-        print('&&%%%%', type(assistor_random_id_to_output_content_dict))
+        # print('&&%%%%', type(assistor_random_id_to_output_content_dict))
         sponsor_alpha_result, sponsor_result = super()._calculate_result(
             user_id=user_id,
             train_id=train_id,
@@ -208,13 +208,24 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             msgs=msgs
         )
 
-        if cur_rounds_num >= super()._max_round:
+        data = {
+            'train_id': train_id
+        }
+        max_round = super()._post_request_chaining(
+            task_id=train_id,
+            data=data,
+            url_prefix=super()._url_prefix,
+            url_root='get_max_round',
+        )['max_round'] 
+
+        if cur_rounds_num >= max_round:
             msgs = ["---- Train Stage Ends"]
             super()._store_log(
                 user_id=user_id,
                 task_id=train_id,
                 msgs=msgs
             )
+            print('Sponsor stage 4: output done')
             print('Sponsor: Training train_id: ', train_id, ' ends')
             return
         else:
@@ -264,7 +275,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
         -------
         None
         '''
-        print('daozheli1')
+        # print('daozheli1')
         new_rounds_num = cur_rounds_num + 1
         _, residual_dict = super()._calculate_residual(
             round=new_rounds_num, 
@@ -277,7 +288,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             last_round_result=last_round_result,
         )
        
-        print('daozheli2', residual_dict)
+        # print('daozheli2', residual_dict)
         msgs = ["5.5 Sponsor makes residual finished"]
         super()._store_log(
             user_id=user_id,
@@ -319,6 +330,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             task_id=train_id,
             msgs=msgs
         )
-
         print('Sponsor: Training train_id: ', train_id, ' is running')
+        print('Sponsor stage 4: output done')
         return

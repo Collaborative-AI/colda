@@ -166,10 +166,20 @@ class TestSponsorMatchIdentifier(TestBaseWorkflow):
             algorithm_data_name='trained_cooperative_model',
         )
 
+        data = {
+            'train_id': train_id
+        }
+        max_round = super()._post_request_chaining(
+            task_id=train_id,
+            data=data,
+            url_prefix=super()._url_prefix,
+            url_root='get_max_round',
+        )['max_round'] 
+
         test_cooperative_model_outputs = super()._test_cooperative_model(
             user_id=user_id,
             test_id=test_id,
-            max_round=super()._max_round,
+            max_round=max_round,
             matched_identifier=sponsor_matched_identifers,
             trained_models_of_each_round=trained_models_of_each_round,
             dataset_path=test_file_path, 
@@ -196,6 +206,6 @@ class TestSponsorMatchIdentifier(TestBaseWorkflow):
             msgs=msgs
         )
 
-        print('sponsor_test_match_id_done')
         print(f'Sponsor: Testing test_id: {test_id} is running')
+        print('Sponsor test stage 2: match_id done')
         return True

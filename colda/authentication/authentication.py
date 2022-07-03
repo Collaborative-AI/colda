@@ -1,4 +1,5 @@
 from __future__ import annotations
+from ast import Del
 
 import requests
 import json
@@ -6,6 +7,21 @@ import base64
 
 from colda.network.api import Network
 from colda.pi.api import PI
+
+from colda.utils.log.algorithm_log import AlgorithmLog
+from colda.utils.log.workflow_log import WorkflowLog
+
+from colda.database.database_factory import (
+    TrainSponsorMetadataDatabase,
+    TrainAssistorMetadataDatabase,
+    TrainAlgorithmDatabase,
+    TestSponsorMetadataDatabase,
+    TestAssistorMetadataDatabase,
+    TestAlgorithmDatabase,
+    DefaultMetadataDatabase
+)
+
+from colda.authentication.utils import del_instance
 
 from colda.authentication.utils import handle_base64_padding
 
@@ -35,6 +51,8 @@ class Authentication(AuthenticationBase):
     def __init__(self):
         self.Network_instance = Network.get_instance()
         self.PI_instance = PI.get_instance()
+
+
         self.base_url = self.Network_instance.base_url
 
     @classmethod
@@ -76,11 +94,9 @@ class Authentication(AuthenticationBase):
         temp[1] = handle_base64_padding(temp[1])
         # get user_id
         user_id = str(json.loads(base64.b64decode(temp[1]))['user_id'])
-        print('login user_id', user_id)
 
         self.Network_instance.token = token
         self.PI_instance.user_id = user_id
-
         return
 
     def user_register(
@@ -114,7 +130,7 @@ class Authentication(AuthenticationBase):
             url_suffix=None,
             status_code=201
         )
-        print(res)
+        print('register successfully')
         return
 
     def user_login(
@@ -150,7 +166,7 @@ class Authentication(AuthenticationBase):
         token_response_text = json.loads(token_response.text)
         token = token_response_text["token"] 
         self.process_token(token)
-        
+        print('login successfully')
         return
 
     def user_logout(self):
@@ -166,8 +182,18 @@ class Authentication(AuthenticationBase):
         -------
         None
         '''
-        self.Network_instance.logout()
-        self.PI_instance.logout()
+        Network.delete()
+        PI.delete()
+        AlgorithmLog.delete() 
+        WorkflowLog.delete()
+        TrainSponsorMetadataDatabase.delete()   
+        TrainAssistorMetadataDatabase.delete()
+        TrainAlgorithmDatabase.delete()
+        TestSponsorMetadataDatabase.delete()
+        TestAssistorMetadataDatabase.delete()  
+        TestAlgorithmDatabase.delete()
+        DefaultMetadataDatabase.delete()
 
+        print('logout done')
         return 
 

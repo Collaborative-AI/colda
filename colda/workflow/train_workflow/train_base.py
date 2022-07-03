@@ -32,6 +32,7 @@ class TrainBaseWorkflow(BaseWorkflow):
     '''
 
     __TrainAlgorithm_instance = TrainAlgorithm.get_instance()
+    
 
     @final
     @classmethod

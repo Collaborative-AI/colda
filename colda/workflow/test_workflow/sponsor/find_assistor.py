@@ -154,4 +154,5 @@ class TestSponsorFindAssistor(TestBaseWorkflow):
 
         print('Testing test_id: ', test_id)
         print('Sponsor: Testing test_id: ', test_id, ' is running')
+        print('Sponsor test stage 1: find assistor done')
         return test_id

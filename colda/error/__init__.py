@@ -39,6 +39,18 @@ class DataNotSerializable(ValueError):
 
     pass
 
+class DataOutofRangeWarning(Warning):
+    """
+    Warning raised when the data is out of predefined range
+    """
+    pass
+
+class StopWarning(Warning):
+    """
+    Warning raised when the program stops due to some reasons
+    """
+    pass
+
 # from pandas._config.config import OptionError  # noqa:F401
 
 # from pandas._libs.tslibs import (  # noqa:F401

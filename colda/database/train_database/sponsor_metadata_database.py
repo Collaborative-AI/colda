@@ -182,4 +182,6 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
             task_description
         )
        
-   
+    @classmethod
+    def delete(cls):
+        cls.__TrainSponsorMetadataDatabase_instance = None

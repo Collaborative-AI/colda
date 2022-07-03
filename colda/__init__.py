@@ -14,6 +14,7 @@ to be used as a cookie-cutter for developing new Python packages.
 # import sys
 # sys.path.append(basedir)
 import os
+import sys
 import time
 import errno
 import pickle
@@ -23,7 +24,7 @@ import requests
 # import colda
 
 from colda.authentication.api import Authentication
-from colda.short_polling.polling import ShortPolling
+from colda.short_polling.api import ShortPolling
 from colda.database.strategy.api import DatabaseOperator
 from colda.network.api import Network
 from colda.pi.api import PI
@@ -49,7 +50,7 @@ from colda.workflow.api import (
 
 from colda.utils.log.api import (
     GetAlgorithmLog,
-    GetWorkflowLog
+    GetWorkflowLog,
 )
 
 from typing import (
@@ -85,6 +86,21 @@ from colda.database.api import (
     get_all_train_id,
     get_all_test_id
 )
+
+from colda.algorithm.api import (
+    get_algo_log,
+    get_all_algo_logs
+)
+
+
+def handle_process_exception(args):
+    _default_ShortPolling.shortpolling['running'] = False
+    print('handle_exception')
+
+sys.excepthook = handle_process_exception
+
+def test_function() -> str:
+    return 'test successfully'
 
 
 def register(
@@ -149,7 +165,7 @@ def logout():
     return _default_authentication.user_logout()
 
 def call_for_train(
-    maxRound: int, 
+    max_round: int, 
     assistors: list, 
     task_mode: Task_Mode, 
     model_name: Model_Name, 
@@ -167,7 +183,7 @@ def call_for_train(
 
     Parameters
     ----------
-    maxRound : int
+    max_round : int
     assistors : list
     task_mode : Task_Mode
     model_name : Model_Name
@@ -184,7 +200,7 @@ def call_for_train(
     None
     '''
     _default_TrainMainWorkflow.find_assistor(
-        maxRound=maxRound, 
+        max_round=max_round, 
         assistors=assistors, 
         task_mode=task_mode, 
         model_name=model_name, 
@@ -249,6 +265,7 @@ def start_cooperation() -> None:
     -------
     None
     '''
+    # print(f'?iddd: {id(_default_ShortPolling)}')
     _default_ShortPolling.start_cooperation()
     return
 

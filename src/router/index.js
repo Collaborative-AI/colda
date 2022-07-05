@@ -1,4 +1,8 @@
-import { createWebHistory, createRouter } from "vue-router";
+// import { createWebHistory, createRouter } from "vue-router";
+
+import Vue from 'vue';
+import Router from 'vue-router';
+Vue.use(Router);
 
 // All Pages
 // import HomePageOne from '../components/pages/HomePageOne'
@@ -30,7 +34,16 @@ import TermsConditionsPage from '../components/pages/TermsConditionsPage'
 import PrivacyPolicyPage from '../components/pages/PrivacyPolicyPage'
 import ErrorPage from '../components/pages/ErrorPage'
 
-import Dashboard from "../components/Dash/Dashboard";
+import Dashboard1 from "../components/Dash/Dashboard";
+
+// import Admin from "../components/mdbvue/Admin"
+
+import Dashboard from '../components/mdbvue/Dashboard'
+import Profile from '../components/mdbvue/Profile'
+import Tables from '../components/mdbvue/Tables'
+// import Maps from '../components/mdbvue/Maps'
+// import BadGateway from '../components/mdbvue/BadGateway'
+
 
 const routes = [
     {path: '/', component: HomePageSeven},
@@ -61,16 +74,65 @@ const routes = [
     {path: '/terms-condition', component: TermsConditionsPage},
     {path: '/privacy-policy', component: PrivacyPolicyPage},
     {path: '/error-404', component: ErrorPage},
-    {path: '/dashboard1', component: Dashboard},
+    {path: '/dashboard1', component: Dashboard1},
+
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: Dashboard,
+      props: { page: 1 },
+      alias: '/'
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      props: { page: 2 },
+      component: Profile
+    },
+    {
+      path: '/tables',
+      name: 'Tables',
+      props: { page: 3 },
+      component: Tables
+    },
+
+    // {
+    //   path: '/admin', 
+    //   component: Admin,
+    //   children: [
+    //     {
+    //       path: 'dashboard',
+    //       name: 'Dashboard',
+    //       component: Dashboard,
+    //       props: { page: 1 },
+    //     },
+    //     {
+    //       path: 'profile',
+    //       name: 'Profile',
+    //       props: { page: 2 },
+    //       component: Profile
+    //     },
+    //     {
+    //       path: 'tables',
+    //       name: 'Tables',
+    //       props: { page: 3 },
+    //       component: Tables
+    //     }
+    //   ]
+    // }
 ]
     
-const router = createRouter({
-    history: createWebHistory(),
-    linkExactActiveClass: "active",
-    routes,
-    scrollBehavior() {
-      return { top: 0 };
-    },
-  });
+// const router = createRouter({
+//     history: createWebHistory(),
+//     linkExactActiveClass: "active",
+//     routes,
+//     scrollBehavior() {
+//       return { top: 0 };
+//     },
+//   });
+const router = new Router({
+  routes,
+  mode: 'history'
+})
   
 export default router;

@@ -4,10 +4,8 @@
 :py:mod:`~colda.algorithm` Module
 ===========================
 
-The :py:mod:`~colda.algorithm` module provides a class with the same name which is
-used to represent a PIL image. The module also provides a number of factory
-functions, including functions to load images from files, and to create new
-images.
+The :py:mod:`~colda.algorithm` module provides classes to execute machine learning algorithm. The module also provides a number of factory
+functions, including functions to train models, calculate model performance.
 
 Examples
 --------
@@ -27,25 +25,77 @@ and save the model at the desginated position.
 
 .. warning:: This method is experimental.
 
-Functions
----------
+Classes
+-------
 
-.. autofunction:: colda.algorithm.make_train_local
-.. autofunction:: colda.algorithm.make_test_local
-.. autofunction:: colda.algorithm.make_hash
-.. autofunction:: colda.algorithm.save_match_id
-.. autofunction:: colda.algorithm.make_match_idx
-.. autofunction:: colda.algorithm.make_residual
-.. autofunction:: colda.algorithm.save_residual
-.. autofunction:: colda.algorithm.make_train
-.. autofunction:: colda.algorithm.save_output
-.. autofunction:: colda.algorithm.make_result
-.. autofunction:: colda.algorithm.make_test
-.. autofunction:: colda.algorithm.make_eval
-.. autofunction:: colda.algorithm.makedir_exist_ok
-.. autofunction:: colda.algorithm.save
-.. autofunction:: colda.algorithm.load
-.. autofunction:: colda.algorithm.log
-.. autofunction:: colda.algorithm.parse_idx
+.. autoclass:: colda.algorithm.common_stage.make_dataset.MakeDataset
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.algorithm.common_stage.make_hash.MakeHash
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.algorithm.common_stage.make_match_idx.MakeMatchIdx
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
+.. autoclass:: colda.algorithm.test_stage.make_eval.MakeEval
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.algorithm.test_stage.make_test_local.MakeTestLocal
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.algorithm.test_stage.make_test.MakeTest
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. autoclass:: colda.algorithm.train_stage.make_residual.MakeResidual
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.algorithm.train_stage.make_result.MakeResult
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.algorithm.train_stage.make_train_local.MakeTrainLocal
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.algorithm.train_stage.make_train.MakeTrain
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. autoclass:: colda.algorithm.metric.metrics.Metric
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. autoclass:: colda.algorithm.model.models.Model
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. autoclass:: colda.algorithm.strategy.custom.test_custom
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.algorithm.strategy.custom.train_custom
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. autoclass:: colda.algorithm.strategy.test_algorithm
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.algorithm.strategy.train_algorithm
+    :members:
+    :undoc-members:
+    :show-inheritance:
 

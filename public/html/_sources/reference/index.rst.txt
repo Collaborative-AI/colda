@@ -2,17 +2,14 @@ Reference
 =========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    algorithm
-   authorization
+   authentication
    database
-   network
-   PI
-
    error
-   ShortPolling
-   StopRequest
-   TestRequest
-   TrainRequest
+   network
+   pi
+   short_polling
    utils
+   workflow

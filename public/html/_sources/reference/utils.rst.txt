@@ -4,7 +4,8 @@
 :py:mod:`~colda.utils` Module
 ==============================
 
-The :py:mod:`~colda.utils` module contains some methods to help main functions.
+The :py:mod:`~colda.utils` module contains a number of helper functions, such as type checking,
+type converting, etc.
 
 Examples
 --------
@@ -32,12 +33,42 @@ and save the model at the desginated position.
 
 Functions
 ---------
+.. autofunction:: colda.utils.dtypes.convert.to_list
+.. autofunction:: colda.utils.dtypes.convert.to_string
+.. autofunction:: colda.utils.dtypes.convert.to_tuple
+.. autofunction:: colda.utils.dtypes.convert.to_serializable
 
-.. autofunction:: colda.utils.log_helper
-.. autofunction:: colda.utils.check_json_format
-.. autofunction:: colda.utils.check_status_code
-.. autofunction:: colda.utils.load_json_data
-.. autofunction:: colda.utils.load_file
-.. autofunction:: colda.utils.save_file
-.. autofunction:: colda.utils.handle_Algorithm_return_value
-.. autofunction:: colda.utils.handle_base64_padding
+.. autofunction:: colda.utils.dtypes.convert.is_numpy
+.. autofunction:: colda.utils.dtypes.convert.is_dict_like
+.. autofunction:: colda.utils.dtypes.convert.is_list_like
+.. autofunction:: colda.utils.dtypes.convert.is_tuple
+.. autofunction:: colda.utils.dtypes.convert.is_list
+.. autofunction:: colda.utils.dtypes.convert.is_integer
+.. autofunction:: colda.utils.dtypes.convert.is_float
+.. autofunction:: colda.utils.dtypes.convert.is_set
+.. autofunction:: colda.utils.dtypes.convert.is_serializable
+
+Classes
+-------
+.. autoclass:: colda.utils.log.base.BaseLog
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.utils.log.algorithm_log.AlgorithmLog
+    :members:
+    :undoc-members:
+    :show-inheritance:
+.. autoclass:: colda.utils.log.workflow_log.WorkflowLog
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. autoclass:: colda.utils.dict_helper.DictHelper
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. autoclass:: colda.utils.serialization.Serialization
+    :members:
+    :undoc-members:
+    :show-inheritance:

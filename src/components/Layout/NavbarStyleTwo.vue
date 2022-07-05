@@ -257,7 +257,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="notebook/Sponsor_User_Guide.html" class="nav-link"
+                                        <a href="notebook/User_Guide.html" class="nav-link"
                                         >Tutorials</a>
                                     </li>
 

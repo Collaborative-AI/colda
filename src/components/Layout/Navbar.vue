@@ -123,7 +123,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a target="_blank" href="notebook/Sponsor_User_Guide.html" class="nav-link"
+                                            <a target="_blank" href="notebook/User_Guide.html" class="nav-link"
                                             >Tutorials</a>
                                         </li>
 

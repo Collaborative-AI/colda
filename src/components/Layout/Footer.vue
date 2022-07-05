@@ -100,7 +100,7 @@
                                 <a href="html/index.html">Documentation</a>
                             </li>
                             <li>
-                                <a href="notebook/Sponsor_User_Guide.html">Tutorials</a>
+                                <a href="notebook/User_Guide.html">Tutorials</a>
                             </li>
                             <li>
                                 <router-link to="/use-cases">Use Cases</router-link>

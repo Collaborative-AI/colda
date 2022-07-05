@@ -4,7 +4,7 @@
 :py:mod:`~colda.error` Module
 ==============================
 
-The :py:mod:`~colda.error` module contains some methods to handle exceptions.    
+The :py:mod:`~colda.error` module handles self-defined exceptions.    
 
 .. note::
 
@@ -14,7 +14,20 @@ The :py:mod:`~colda.error` module contains some methods to handle exceptions.
 
 .. warning:: This method is experimental.
 
-Functions
----------
+Classes
+-------
 
-.. autofunction:: colda.error.check_Algorithm_return_value
+.. autoclass:: colda.error.StatusCodeWarning
+   :members:
+
+.. autoclass:: colda.error.StatusCodeError
+   :members:
+
+.. autoclass:: colda.error.DuplicateKeyError
+   :members:
+
+.. autoclass:: colda.error.DictValueNotFound
+   :members:
+
+.. autoclass:: colda.error.DataNotSerializable
+   :members:

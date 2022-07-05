@@ -1,8 +1,8 @@
-import { createApp } from "vue";
+// import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import {request} from './network/request'
-import store from './store.js'
+// import {request} from './network/request'
+// import store from './store.js'
 
 // import "bootstrap/dist/css/bootstrap.min.css"
 // import "bootstrap"
@@ -11,16 +11,28 @@ import store from './store.js'
 
 import "./assets/custom.scss";
 
-const app = createApp(App)
-// app.use(boxicons)
-app.use(router)
-app.config.globalProperties.$axios = request
-app.config.globalProperties.$store = store
+// const app = createApp(App)
+// // app.use(boxicons)
+// app.use(router)
+// // app.config.globalProperties.$axios = request
+// // app.config.globalProperties.$store = store
 
 
-app.mount("#app");
+// app.mount("#app");
 
-console.log(store.state.user_id);
+// console.log(store.state.user_id);
+
+
+
+import '@fortawesome/fontawesome-free/css/all.min.css'
+import 'bootstrap-css-only/css/bootstrap.min.css'
+import 'mdbvue/lib/css/mdb.min.css'
+import Vue from 'vue'
+new Vue({
+    router,
+    render: h => h(App)
+  }).$mount('#app')
+  
 
 
 
@@ -34,8 +46,8 @@ console.log(store.state.user_id);
 // }).then(res => {
 //     console.log(res);
 // })
-window.localStorage.setItem('color', 'blue')
-console.log('color is', window.localStorage.getItem('color'));
+// window.localStorage.setItem('color', 'blue')
+// console.log('color is', window.localStorage.getItem('color'));
 
 // import axios from 'axios'
 // const instance1= axios.create({

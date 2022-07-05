@@ -6,8 +6,8 @@
                     <nav class="navbar navbar-expand-lg navbar-light">
                         <router-link class="navbar-brand" to="/">
                             <!-- <img src="../../assets/images/logo.png" alt="logo"> -->
-                            <div class="row">
-                            <!-- <div class="row" style="border-left:0; border:1px solid black;"> -->
+                            <!-- <div class="row"> -->
+                            <div class="row" style="border-left:0; border:1px solid black;">
                                 <div class="col-4">
                                     <img src="../../assets/images/logo1.png" width="50" height="50" alt="logo">
                                      <!-- <h1>Synspot</h1> -->
@@ -33,8 +33,8 @@
                             <span class="icon-bar bottom-bar"></span>
                         </div>
 
-                        <div class="collapse navbar-collapse zuiwai" :class="{ show: active }" is-nav>
-                        <!-- <div class="collapse navbar-collapse" :class="{ show: active }" is-nav style="border-left:0; border:1px solid black; padding: 0px">  -->
+                        <!-- <div class="collapse navbar-collapse zuiwai" :class="{ show: active }" is-nav> -->
+                        <div class="collapse navbar-collapse" :class="{ show: active }" is-nav style="border-left:0; border:1px solid black; padding: 0px;"> 
                             <div class="zuobian"></div>
 
                             <ul class="navbar-nav px-0">
@@ -506,20 +506,20 @@ ul {
     margin-top: 15px;
     /* border:1px solid red; */
 }
-/* .zuiwai {
-    border:1px solid blue;
-} */
 .zuobian {
     /* border:1px solid green; */
     width: 5%
 }
+.router-link-active p{
+  color:#086AD8
+}
+/* .zuiwai {
+    border:1px solid blue;
+} */
 /* i {
     display:inline-block;
     white-space:nowrap
 } */
-.router-link-active p{
-  color:#086AD8
-}
 
 
 </style>

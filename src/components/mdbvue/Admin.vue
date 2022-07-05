@@ -57,7 +57,7 @@
         ><img alt="" class="img-fluid" src="../assets/logo-mdb-vue-small.png"
       /></a> -->
       <mdb-list-group class="list-group-flush">
-        <router-link to="/dashboard" @click="activeItem = 1">
+        <router-link to="/admin/dashboard" @click="activeItem = 1">
           <mdb-list-group-item
             :action="true"
             :class="activeItem === 1 && 'active'"
@@ -67,28 +67,28 @@
             />Dashboard</mdb-list-group-item
           >
         </router-link>
-        <router-link to="/profile" @click="activeItem = 2">
+        <router-link to="/admin/profile" @click="activeItem = 2">
           <mdb-list-group-item
             :action="true"
             :class="activeItem === 2 && 'active'"
             ><mdb-icon icon="user" class="mr-3" />Profile</mdb-list-group-item
           >
         </router-link>
-        <router-link to="/tables" @click="activeItem = 3">
+        <router-link to="/admin/tables" @click="activeItem = 3">
           <mdb-list-group-item
             :action="true"
             :class="activeItem === 3 && 'active'"
             ><mdb-icon icon="table" class="mr-3" />Tables</mdb-list-group-item
           >
         </router-link>
-        <router-link to="/maps" @click="activeItem = 4">
+        <router-link to="/admin/maps" @click="activeItem = 4">
           <mdb-list-group-item
             :action="true"
             :class="activeItem === 4 && 'active'"
             ><mdb-icon icon="map" class="mr-3" />Maps</mdb-list-group-item
           >
         </router-link>
-        <router-link to="/404" @click="activeItem = 5">
+        <router-link to="/admin/404" @click="activeItem = 5">
           <mdb-list-group-item
             :action="true"
             :class="activeItem === 5 && 'active'"
@@ -192,7 +192,9 @@ export default {
 }
 </style>
 
+
 <style scoped>
+
 main {
   background-color: #ededee;
 }

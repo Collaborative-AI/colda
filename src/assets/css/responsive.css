@@ -1601,7 +1601,7 @@
   }
   .navbar-area .valzo-nav .navbar .navbar-collapse {
     max-height: 70vh;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     border-top: 1px solid #eee;
     margin-top: 10px;
     padding-top: 5px;

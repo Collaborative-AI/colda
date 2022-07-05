@@ -36,13 +36,13 @@ import ErrorPage from '../components/pages/ErrorPage'
 
 import Dashboard1 from "../components/Dash/Dashboard";
 
-// import Admin from "../components/mdbvue/Admin"
+import Admin from "../components/mdbvue/Admin"
 
 import Dashboard from '../components/mdbvue/Dashboard'
 import Profile from '../components/mdbvue/Profile'
 import Tables from '../components/mdbvue/Tables'
 // import Maps from '../components/mdbvue/Maps'
-// import BadGateway from '../components/mdbvue/BadGateway'
+import BadGateway from '../components/mdbvue/BadGateway'
 
 
 const routes = [
@@ -76,50 +76,56 @@ const routes = [
     {path: '/error-404', component: ErrorPage},
     {path: '/dashboard1', component: Dashboard1},
 
-    {
-      path: '/dashboard',
-      name: 'Dashboard',
-      component: Dashboard,
-      props: { page: 1 },
-      alias: '/'
-    },
-    {
-      path: '/profile',
-      name: 'Profile',
-      props: { page: 2 },
-      component: Profile
-    },
-    {
-      path: '/tables',
-      name: 'Tables',
-      props: { page: 3 },
-      component: Tables
-    },
-
     // {
-    //   path: '/admin', 
-    //   component: Admin,
-    //   children: [
-    //     {
-    //       path: 'dashboard',
-    //       name: 'Dashboard',
-    //       component: Dashboard,
-    //       props: { page: 1 },
-    //     },
-    //     {
-    //       path: 'profile',
-    //       name: 'Profile',
-    //       props: { page: 2 },
-    //       component: Profile
-    //     },
-    //     {
-    //       path: 'tables',
-    //       name: 'Tables',
-    //       props: { page: 3 },
-    //       component: Tables
-    //     }
-    //   ]
-    // }
+    //   path: '/dashboard',
+    //   name: 'Dashboard',
+    //   component: Dashboard,
+    //   props: { page: 1 },
+    //   alias: '/'
+    // },
+    // {
+    //   path: '/profile',
+    //   name: 'Profile',
+    //   props: { page: 2 },
+    //   component: Profile
+    // },
+    // {
+    //   path: '/tables',
+    //   name: 'Tables',
+    //   props: { page: 3 },
+    //   component: Tables
+    // },
+
+    {
+      path: '/admin', 
+      component: Admin,
+      children: [
+        {
+          path: 'dashboard',
+          name: 'Dashboard',
+          component: Dashboard,
+          props: { page: 1 },
+        },
+        {
+          path: 'profile',
+          name: 'Profile',
+          props: { page: 2 },
+          component: Profile
+        },
+        {
+          path: 'tables',
+          name: 'Tables',
+          props: { page: 3 },
+          component: Tables
+        },
+        {
+          path: '404',
+          name: 'BadGateway',
+          props: { page: 5 },
+          component: BadGateway
+        }
+      ]
+    }
 ]
     
 // const router = createRouter({

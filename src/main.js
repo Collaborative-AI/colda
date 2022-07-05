@@ -27,7 +27,7 @@ import "./assets/custom.scss";
 
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import 'bootstrap-css-only/css/bootstrap.min.css'
-import 'mdbvue/lib/css/mdb.min.css'
+// import 'mdbvue/lib/css/mdb.min.css'
 
 import Vue from 'vue'
 new Vue({

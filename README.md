@@ -38,5 +38,5 @@ ssh -i ~/Downloads/SynSpot_Website_RSA.pem ubuntu@ec2-18-117-134-124.us-east-2.c
 ```
 ### Make Sure dist folder exists before proceed
 ```
-sudo cp -r ~/dist/* /var/www/html/
+sudo cp -r ~/dist/. /var/www/html/
 ```

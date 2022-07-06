@@ -718,12 +718,13 @@ export default {
   }
 }
 // src="mdbvue/lib/css/mdb.min.css"
+// src="./lib/css/mdb.min.css"
 
 </script>
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped src="./lib/css/mdb.min.css">
+<style scoped src="../../../node_modules/mdbvue/lib/css/mdb.min.css">
 .cascading-admin-card {
   margin: 20px 0;
 }

@@ -1,8 +1,8 @@
 // import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-// import {request} from './network/request'
-// import store from './store.js'
+import {request} from './network/request'
+import store from './store.js'
 
 // import "bootstrap/dist/css/bootstrap.min.css"
 // import "bootstrap"
@@ -30,6 +30,9 @@ import 'bootstrap-css-only/css/bootstrap.min.css'
 // import 'mdbvue/lib/css/mdb.min.css'
 
 import Vue from 'vue'
+
+Vue.prototype.$axios = request
+Vue.prototype.$store = store
 new Vue({
     router,
     render: h => h(App)

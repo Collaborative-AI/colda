@@ -101,27 +101,31 @@ const routes = [
       component: Admin,
       children: [
         {
+          path: '',
+          redirect: 'dashboard'
+        },
+        {
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard,
-          props: { page: 1 },
+          // props: { page: 1 },
         },
         {
           path: 'profile',
           name: 'Profile',
-          props: { page: 2 },
+          // props: { page: 2 },
           component: Profile
         },
         {
           path: 'tables',
           name: 'Tables',
-          props: { page: 3 },
+          // props: { page: 3 },
           component: Tables
         },
         {
           path: '404',
           name: 'BadGateway',
-          props: { page: 5 },
+          // props: { page: 5 },
           component: BadGateway
         }
       ]

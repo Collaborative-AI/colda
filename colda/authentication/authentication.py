@@ -27,6 +27,8 @@ from colda.authentication.utils import handle_base64_padding
 
 from colda.authentication.base import AuthenticationBase
 
+from colda.network.api import DP
+
 from typeguard import typechecked
 
 
@@ -158,15 +160,22 @@ class Authentication(AuthenticationBase):
         )
 
         try:
-            token_response = requests.post(url, auth=(username, password))
+            network_response = requests.post(url, auth=(username, password))
         except Exception:
             raise Exception
 
-        # TODO: user general parse class
-        token_response_text = json.loads(token_response.text)
-        token = token_response_text["token"] 
+        DP.check_network_response(
+            network_response=network_response, 
+        )
+
+        network_response = DP.load_network_response(
+            network_response=network_response
+        )
+
+        token = network_response["token"] 
         self.process_token(token)
-        print('login successfully')
+        assert token is not None
+        print(f'login successfully, current username is: {username}')
         return
 
     def user_logout(self):

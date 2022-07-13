@@ -4,6 +4,8 @@ from colda.tests.test_authentication.conftest import Authentication_instance
 
 from colda.tests.test_authentication.conftest import Network_instance
 
+from colda.error import StatusCodeError
+
 
 class TestLogin:
 
@@ -41,6 +43,23 @@ class TestLogin:
         )
         assert response == expected_res
 
+    @pytest.mark.usefixtures('Authentication_instance')
+    @pytest.mark.parametrize("username, password, error_status_code, error_name, error", [
+        (
+            'xie1', 
+            'Xie1@123333', 
+            500,
+            'ValueError',
+            'user cannot found'
+        ),
+    ])
+    def test_login_exception(self, Authentication_instance, username, password, error_status_code, error_name, error):
+        msg = f"Wrong network response. status code: {error_status_code}, error_name: {error_name}, error: {error}"
+        with pytest.raises(StatusCodeError, match=msg):
+            Authentication_instance.user_login(
+                username=username, 
+                password=password, 
+            )
     
     # @pytest.mark.usefixtures('DatabaseOperator_instance')
     # @pytest.mark.parametrize("test_record, expected_res", [

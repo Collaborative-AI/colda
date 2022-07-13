@@ -44,8 +44,8 @@ class Network(BaseNetwork):
 
     def __init__(self):
         self.__token = ''
-        # self.__baseURL = 'http://127.0.0.1:5000'
-        self.__baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/'
+        self.__baseURL = 'http://127.0.0.1:5000'
+        # self.__baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/'
 
     @classmethod
     def get_instance(cls) -> Network:
@@ -147,6 +147,27 @@ class Network(BaseNetwork):
         str
         '''
         return f'{url_root}/{url_suffix}'
+
+    def test_network(
+        self,
+        url_prefix: str,
+        url_root: str,
+        url_suffix: str=None,
+        status_code: int=200
+    ) -> str:
+
+        res = self.get_request_chaining(
+            url_prefix=url_prefix,
+            url_root=url_root,
+            url_suffix=url_suffix,
+            status_code=status_code
+        )
+
+        if 'test successfully!' == res:
+            return 'test successfully'
+        else:
+            return 'test failed'
+
 
     def process_url(
         self, 

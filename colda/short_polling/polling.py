@@ -80,9 +80,10 @@ class ShortPolling():
 
         return cls.__ShortPolling_instance
 
-    def __handle_thread_exception(self):
+    def handle_thread_exception(self, args):
         self.shortpolling['running'] = False
         print('handle_thread_exception')
+        print(f'Thread failed: {args}')
         return
 
     def __distribute_notification(
@@ -185,7 +186,7 @@ class ShortPolling():
         
         self.__distribute_notification(notification_category)
 
-        threading.excepthook = self.__handle_thread_exception
+        threading.excepthook = self.handle_thread_exception
         timer = threading.Timer(10, self.__polling)
         timer.start()
         return

@@ -33,7 +33,7 @@ class DP:
     def check_network_response(
         cls,
         network_response: JSONType,
-        status_code: int
+        status_code: int=200
     ) -> None:
         '''
         Check status_code of network response
@@ -47,10 +47,16 @@ class DP:
         None
         '''
         if network_response.status_code != status_code:
-            raise StatusCodeError(
-                f'Network response has wrong status code: {network_response.status_code}'
-            )
-        
+            status_code = network_response.status_code
+            network_response = cls.load_network_response(network_response=network_response)
+            if 'error_name' in network_response and 'error' in network_response:
+                raise StatusCodeError(
+                    f"Wrong network response. status code: {status_code}, error_name: {network_response['error_name']}, error: {network_response['error']}"
+                )
+            else:
+                raise StatusCodeError(
+                    f"Wrong network response, status code: {status_code}"
+                )
         return
 
     @classmethod

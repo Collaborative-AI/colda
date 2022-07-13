@@ -102,6 +102,11 @@ sys.excepthook = handle_process_exception
 def test_function() -> str:
     return 'test successfully'
 
+def test_network() -> str:
+    return _default_network.test_network(
+        url_prefix='helper_api',
+        url_root='testing_get'
+    )
 
 def register(
     username: str, 

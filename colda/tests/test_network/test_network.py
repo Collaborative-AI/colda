@@ -77,17 +77,22 @@ class TestNetwork:
         assert network_response == expected
     
     @pytest.mark.usefixtures('network_instance')
-    @pytest.mark.parametrize("url, status_code", [
-        (('helper_api', 'testing_get', None), 201),
+    @pytest.mark.parametrize("url, error_status_code, error_name, error", [
+        (
+            ('helper_api', 'testing_get_exception', None), 
+            500,
+            'KeyError',
+            '5'
+        ),
     ])
-    def test_get_request_chaining_exception(self, network_instance, url, status_code):
-        msg = 'Network response has wrong status code'
+    def test_get_request_chaining_exception_2(self, network_instance, url, error_status_code, error_name, error):
+        msg = f"Wrong network response. status code: {error_status_code}, error_name: {error_name}, error: '{error}'"
         with pytest.raises(StatusCodeError, match=msg):
             network_instance.get_request_chaining(
                 url_prefix=url[0],
                 url_root=url[1],
                 url_suffix=url[2],
-                status_code=status_code
+                status_code=200
             )
 
     @pytest.mark.usefixtures('network_instance')
@@ -107,3 +112,23 @@ class TestNetwork:
             status_code=status_code
         )
         assert network_response == expected_result
+
+    @pytest.mark.usefixtures('network_instance')
+    @pytest.mark.parametrize("url, error_status_code, error_name, error", [
+        (
+            ('helper_api', 'testing_post_exception', None), 
+            500,
+            'KeyError',
+            '5'
+        ),
+    ])
+    def test_get_request_chaining_exception_2(self, network_instance, url, error_status_code, error_name, error):
+        msg = f"Wrong network response. status code: {error_status_code}, error_name: {error_name}, error: '{error}'"
+        with pytest.raises(StatusCodeError, match=msg):
+            network_instance.post_request_chaining(
+                data=None,
+                url_prefix=url[0],
+                url_root=url[1],
+                url_suffix=url[2],
+                status_code=200
+            )

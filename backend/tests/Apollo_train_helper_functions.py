@@ -32,7 +32,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         # print('ssads', dir(pyMongo.db))
         # pyMongo.db.drop_collection()
         for collecion_names in pyMongo.db.list_collection_names():
-            pyMongo.db.drop_collection(collecion_names)
+            if collecion_names != 'User':
+                pyMongo.db.drop_collection(collecion_names)
 
     def get_basic_auth_headers(self, username, password):
         '''创建Basic Auth认证的headers'''
@@ -193,6 +194,8 @@ class Train_Helper_API_TestCase(unittest.TestCase):
             'task_description': 'unittest_desciption'
         })
         response = self.client.post('/main_flow/find_assistor/' + user_id_1, headers=headers, data=data)
+        json_response = json.loads(response.get_data(as_text=True))
+        print('json_responsesss', json_response)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response, "wrong username")

@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 # -*- coding: utf-8 -*-
+import sys
 from flask import request
 from flask.json import jsonify
 
@@ -7,10 +10,17 @@ from Items.main_flow import main_flow_bp
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
 from Items.utils import log, generate_msg, obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
+from Items.utils.api import (
+    check_if_data_is_valid,
+    input_data_err_msg
+)
 
 from Items.mongoDB import mongoDB
 from Items.mongoDB import train_match, train_task
 from Items.mongoDB import test_match, test_task
+
+from typing import Union
+
 
 @main_flow_bp.route('/add_train_pending/<string:id>', methods=['POST'])
 @token_auth.login_required
@@ -31,9 +41,15 @@ def add_train_pending(id):
 
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name, 'You must post JSON data.'))
+
+    expected_data = {
+        'train_id': str
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -68,12 +84,17 @@ def add_test_pending(id):
     Raises:
         KeyError - raises an exception
     """
-
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'test_id' not in data or not data.get('test_id'):
-        return bad_request('test_id is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name, 'You must post JSON data.'))
+
+    expected_data = {
+        'test_id': str
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -82,7 +103,7 @@ def add_test_pending(id):
         return error_response(403)
 
     test_id = data.get('test_id')
-    test_idhhh = mongoDB.update_pending_document(
+    mongoDB.update_pending_document(
         user_id=user_id, 
         task_id=test_id, 
         test_indicator='test'
@@ -109,7 +130,6 @@ def get_all_pending(id):
     Raises:
         KeyError - raises an exception
     """
-
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id, username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same
@@ -147,13 +167,17 @@ def dalete_pending(id):
     '''
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data:
-        return bad_request('train_id is required.')
-    # if 'test_id' not in data:
-    #     return bad_request('test_id is required.')
-    if 'test_indicator' not in data or not data.get('test_indicator'):
-        return bad_request('test_indicator is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name, 'You must post JSON data.'))
+
+    expected_data = {
+        'train_id': str,
+        'test_id': Union[str, None],
+        'test_indicator': str
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')

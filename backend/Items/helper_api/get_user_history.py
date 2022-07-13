@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import math
 import heapq
 
@@ -6,11 +7,15 @@ from flask import request, current_app
 from flask.json import jsonify
 from datetime import datetime
 
-
 from Items.helper_api import helper_api_bp
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
-from Items.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
+from Items.utils.api import (
+    check_if_data_is_valid,
+    input_data_err_msg,
+    obtain_user_id_from_token,
+    verify_token_user_id_and_function_caller_id
+)
 
 from Items.mongoDB import mongoDB
 from Items.mongoDB import train_task, train_match
@@ -130,9 +135,15 @@ def check_sponsor(id):
 
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
+
+    expected_data = {
+        'train_id': str,
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
     
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -178,9 +189,15 @@ def get_test_id_of_train_id_history(id):
     # find assistor algorithm, return all_assistor_id
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
+    
+    expected_data = {
+        'train_id': str,
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
     
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')

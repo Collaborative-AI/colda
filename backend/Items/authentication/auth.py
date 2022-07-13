@@ -73,9 +73,12 @@ def verify_password(username, password):
     print('password')
     user = pyMongo.db.User.find_one({'username': username})
     if user is None:
-        return False
+        raise ValueError('user cannot found')
+    if not check_password(user, password):
+        raise ValueError('user cannot found')
+        
     g.current_user = user
-    return check_password(g.current_user, password)
+    return True
 
 @basic_auth.error_handler
 def basic_auth_error():
@@ -98,7 +101,7 @@ def verify_token(token):
         KeyError - raises an exception
     """
 
-    print('token is!!!!!', token)
+    # print('token is!!!!!', token)
 
     g.current_user, token_payload = jwt_manipulation.verify_jwt(token) if token else None
 
@@ -179,7 +182,8 @@ class jwt_manipulation:
         return jwt.encode(
             token_payload,
             current_app.config['SECRET_KEY'],
-            algorithm='HS256')
+            algorithm='HS256'
+        )
 
     @classmethod
     def verify_jwt(cls, token):

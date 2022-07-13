@@ -1,3 +1,5 @@
+from __future__ import annotations
+import sys
 # -*- coding: utf-8 -*-
 from flask import request
 from flask.json import jsonify
@@ -9,6 +11,10 @@ from Items.authentication import token_auth
 from Items.mongoDB.train_mongoDB.train_message_situation import train_message_situation
 from Items.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 from Items.utils import log, generate_msg
+from Items.utils.api import (
+    check_if_data_is_valid,
+    input_data_err_msg
+)
 
 from Items.mongoDB import mongoDB
 from Items.mongoDB import train_match, train_message, train_message_output
@@ -36,11 +42,16 @@ def get_output_content(id):
 
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
-    if 'rounds' not in data:
-        return bad_request('rounds is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
+
+    expected_data = {
+        'train_id': str,
+        'rounds': int
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -48,8 +59,8 @@ def get_output_content(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    train_id = data.get('train_id')
-    rounds = data.get('rounds')
+    train_id = data['train_id']
+    rounds = data['rounds']
     sponsor_id = user_id
 
     # if caller is not sponsor, it should not enter this function
@@ -112,11 +123,16 @@ def get_test_output_content(id):
 
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
-    if 'test_id' not in data or not data.get('test_id'):
-        return bad_request('test_id is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
+
+    expected_data = {
+        'train_id': str,
+        'test_id': str,
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')

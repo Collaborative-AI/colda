@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import sys
+
 from flask import request
 from flask.json import jsonify
 
@@ -8,7 +10,12 @@ from Items.helper_api import helper_api_bp
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
 from Items.utils import get_log, log, generate_msg
-from Items.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
+from Items.utils.api import (
+    check_if_data_is_valid,
+    input_data_err_msg,
+    obtain_user_id_from_token, 
+    verify_token_user_id_and_function_caller_id
+)
 
 from Items.mongoDB import mongoDB
 from Items.mongoDB import train_match
@@ -16,7 +23,6 @@ from Items.mongoDB import train_match
 @helper_api_bp.route('/get_backend_log/<string:id>', methods=['POST'])
 @token_auth.login_required
 def get_backend_log(id):
-
     """
     return log of current task. Must have train_id in data, Might have test_id in data.
 
@@ -29,13 +35,18 @@ def get_backend_log(id):
     Raises:
         KeyError - raises an exception
     """
-
     data = request.get_json()
     print('data',data)
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name, 'You must post JSON data.'))
+        
+    expected_data = {
+        'train_id': str,
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')

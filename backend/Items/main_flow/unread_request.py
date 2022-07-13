@@ -1,3 +1,6 @@
+from __future__ import annotations
+import sys
+
 # -*- coding: utf-8 -*-
 from flask import request
 from flask.json import jsonify
@@ -9,6 +12,10 @@ from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
 from Items.utils import obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
 from Items.utils import log, generate_msg, obtain_unique_id
+from Items.utils.api import (
+    check_if_data_is_valid,
+    input_data_err_msg
+)
 
 from Items.mongoDB import mongoDB
 from Items.mongoDB import train_match, train_match_identifier
@@ -37,11 +44,16 @@ def match_identifier_content(id):
     
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
-    if 'identifier_content' not in data or not data.get('identifier_content'):
-        return bad_request('identifier_content is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
+
+    expected_data = {
+        'train_id': str,
+        'identifier_content': list
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -55,7 +67,7 @@ def match_identifier_content(id):
     assistor_id = user_id
 
     train_match_document = train_match.search_train_match_document(train_id=train_id)
-    print('train_match_document', train_match_document)
+    # print('train_match_document', train_match_document)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
     sponsor_information = train_match_document['sponsor_information']
     sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
@@ -172,14 +184,18 @@ def match_test_identifier_content(id):
 
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
-    if 'test_id' not in data or not data.get('test_id'):
-        return bad_request('test_id is required.')
-    if 'identifier_content' not in data or not data.get('identifier_content'):
-        return bad_request('identifier_content is required.')
-    
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
+
+    expected_data = {
+        'train_id': str,
+        'test_id': str,
+        'identifier_content': list
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
+
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
     # check if the caller of the function and the id is the same

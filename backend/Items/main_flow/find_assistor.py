@@ -1,4 +1,8 @@
+from __future__ import annotations
+
 # -*- coding: utf-8 -*-
+import sys
+
 from flask import request
 from flask.json import jsonify
 
@@ -9,15 +13,24 @@ from Items.authentication import token_auth
 from Items.utils import log, generate_msg, add_new_token_to_response
 from Items.utils import obtain_user_id_from_token, obtain_unique_id
 from Items.utils import verify_token_user_id_and_function_caller_id
+from Items.utils.api import (
+    check_if_data_is_valid,
+    input_data_err_msg
+)
 
 from Items.mongoDB import mongoDB
 from Items.mongoDB import train_match, train_match_identifier, train_task
 from Items.mongoDB import test_match, test_match_identifier, test_task
 
+from typing import (
+    Union,
+    List
+)
+
+
 @main_flow_bp.route('/create_new_train_task', methods=['GET'])
 @token_auth.login_required
 def create_new_train_task():
-
     """
     Generate a new train task id from unique uuid4
 
@@ -30,7 +43,6 @@ def create_new_train_task():
     Raises:
         KeyError - raises an exception
     """
-
     train_id = obtain_unique_id()
 
     response = {"train_id": train_id}
@@ -79,31 +91,27 @@ def find_assistor(id):
     Raises:
         KeyError - raises an exception
     """
-    print('~~~~~~~~~~~~~~~~')
     # check the data sent by the sponsor
     data = request.get_json()
     # print('data', data)
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'max_round' not in data or not data.get('max_round'):
-        return bad_request('max_round is required.')
-    if 'assistor_username_list' not in data or not data.get('assistor_username_list'):
-        return bad_request('assistor_username_list is required.')
-    if 'identifier_content' not in data or not data.get('identifier_content'):
-        return bad_request('identifier_content is required.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
-    if 'task_mode' not in data:
-        return bad_request('task_mode is required.')
-    if 'model_name' not in data:
-        return bad_request('model_name is required.')
-    if 'metric_name' not in data:
-        return bad_request('metric_name is required.')
-    if 'task_name' not in data:
-        return bad_request('task_name is required.')
-    if 'task_description' not in data:
-        return bad_request('task_description is required.')
-    print('find_assistor----------------')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name, 'You must post JSON data.'))
+
+    expected_data = {
+        'max_round': int,
+        'assistor_username_list': List[str],
+        'identifier_content': list,
+        'train_id': str,
+        'task_mode': str,
+        'model_name': str,
+        'metric_name': str,
+        'task_name': Union[str, None],
+        'task_description': Union[str, None]
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -222,23 +230,22 @@ def find_test_assistor(id):
     # find assistor algorithm, return all_assistor_id
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
-    if 'test_id' not in data or not data.get('test_id'):
-        return bad_request('test_id is required.')
-    if 'identifier_content' not in data or not data.get('identifier_content'):
-        return bad_request('identifier_content is required.')
-    if 'task_mode' not in data:
-        return bad_request('task_mode is required.')
-    if 'model_name' not in data:
-        return bad_request('model_name is required.')
-    if 'metric_name' not in data:
-        return bad_request('metric_name is required.')
-    if 'test_name' not in data:
-        return bad_request('test_name is required.')
-    if 'test_description' not in data:
-        return bad_request('test_description is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name, 'You must post JSON data.'))
+
+    expected_data = {
+        'train_id': str,
+        'test_id': str,
+        'identifier_content': list,
+        'task_mode': Union[str, None],
+        'model_name': Union[str, None],
+        'metric_name': Union[str, None],
+        'test_name': Union[str, None],
+        'test_description': Union[str, None]
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id, username=None, email=None, key_indicator='user_id')
@@ -286,14 +293,12 @@ def find_test_assistor(id):
         sponsor_random_id=sponsor_random_id, 
         identifier_id=identifier_id
     )
-
     
     # add new train_match_file document to Train_Match_File Table
     test_match_identifier.create_test_match_identifier_document(
         identifier_id=identifier_id, 
         identifier_content=identifier_content
     )
-    
     
     log(generate_msg('Test 1.2', 'sponsor handles id data done'), user_id, train_id, test_id)
 
@@ -310,7 +315,6 @@ def find_test_assistor(id):
         assistor_id_dict=assistor_id_dict, 
         test_indicator='test'
     )
-    
     
     for assistor_id in assistor_id_dict:
         mongoDB.update_notification_document(

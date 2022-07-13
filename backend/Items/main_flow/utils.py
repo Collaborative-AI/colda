@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 from flask import request
 from flask.json import jsonify
 
@@ -7,6 +8,10 @@ from Items.main_flow import main_flow_bp
 from Items.exception import error_response, bad_request
 from Items.authentication import token_auth
 from Items.utils import log, generate_msg, obtain_user_id_from_token, verify_token_user_id_and_function_caller_id
+from Items.utils.api import (
+    check_if_data_is_valid,
+    input_data_err_msg
+)
 
 from Items.mongoDB import mongoDB
 from Items.mongoDB import train_match, train_task
@@ -21,10 +26,6 @@ def get_max_round():
     Parameters
     ----------
     train_id : str
-    url_prefix : str
-    url_root : str
-    url_suffix : str
-    status_code : int
 
     Returns
     -------
@@ -32,9 +33,15 @@ def get_max_round():
     '''
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'train_id' not in data or not data.get('train_id'):
-        return bad_request('train_id is required.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
+    
+    expected_data = {
+        'train_id': str,
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
 
     train_id = data['train_id']
     train_task_document = train_task.search_train_task_document(

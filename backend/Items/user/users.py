@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import sys
 from bson import ObjectId
 from bson.json_util import loads, dumps
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -16,6 +17,11 @@ from Items.authentication import token_auth, basic_auth
 from Items.utils import obtain_user_id_from_token
 from Items.utils import log, generate_msg, validate_password, send_email, generate_confirmation_token, confirm_token
 from Items.utils import generate_password, verify_token_user_id_and_function_caller_id
+from Items.utils.api import (
+    check_if_data_is_valid,
+    input_data_err_msg
+)
+
 from Items.mongoDB import mongoDB
 
 @user_bp.route('/users', methods=['POST'])
@@ -38,20 +44,20 @@ def create_user():
 
     data = request.get_json()
     if not data:
-      return bad_request('No data. Please import JSON data')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
 
     message = {}
     if 'username' not in data or not data.get('username', None) or (' ' in data.get('username')):
-        message['username'] = 'Please provide a valid username.'
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please provide a valid username.')
     pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
     if 'email' not in data or not re.match(pattern, data.get('email', None)) or (' ' in data.get('email')):
-        message['email'] = 'Please provide a valid email address.'
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please provide a valid email address.')
     if 'password' not in data or not data.get('password', None) or (' ' in data.get('password')):
-        message['password'] = 'Please provide a valid password.'
-    
-    username = data.get('username')
-    email = data.get('email')
-    password = data.get('password')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please provide a valid password.')
+
+    username = data['username']
+    email = data['email']
+    password = data['password']
     password_hash = generate_password(password)
 
     user_document = pyMongo.db.User.find_one({'username': username})
@@ -64,9 +70,7 @@ def create_user():
     validate_password_indicator, return_message = validate_password(password)
     print('register', validate_password_indicator, return_message)
     if not validate_password_indicator:
-        message['password'] = return_message
-    if message:
-        return bad_request(message)
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), return_message)
     
     newObjectId = ObjectId()
     user_document = {
@@ -85,7 +89,6 @@ def create_user():
     print('user doc is', user_document)
     pyMongo.db.User.insert_one(user_document)
 
-
     token = generate_confirmation_token(email)
     confirm_url = url_for('user.confirm_email', token=token, _external=True)
     html = render_template('activate.html', confirm_url=confirm_url)
@@ -101,7 +104,6 @@ def create_user():
 
 @user_bp.route('/confirm_email/<token>', methods=['GET'])
 def confirm_email(token):
-
     """
     Confirm the link in the email 
 
@@ -114,7 +116,6 @@ def confirm_email(token):
     Raises:
         KeyError - raises an exception
     """
-
     email = confirm_token(token)
     user = pyMongo.db.User.find_one({'email': email})
 
@@ -153,17 +154,21 @@ def resend():
 
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
-    if 'username' not in data or not data.get('username'):
-        return bad_request('username is required.')
-    if 'email' not in data or not data.get('email'):
-        return bad_request('email is required')
-    if 'key_indicator' not in data or not data.get('key_indicator'):
-        return bad_request('key_indicator is required')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
 
-    username = data.get('username')
-    email = data.get('email')
-    key_indicator = data.get('key_indicator')
+    expected_data = {
+        'username': str,
+        'email': str,
+        'key_indicator': str
+    }
+    check_if_data_is_valid(
+        data=data,
+        expected_data=expected_data
+    )
+
+    username = data['username']
+    email = data['email']
+    key_indicator = data['key_indicator']
 
     user_document = mongoDB.search_user_document(user_id=None, username=username, email=email, key_indicator=key_indicator)
     email = user_document['email']
@@ -197,25 +202,24 @@ def forgot():
     """
 
     data = request.get_json()
-    message = {}
+    if not data:
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
+
     if 'username' not in data or not data.get('username', None):
-        message['username'] = 'Please provide a valid username.'
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please provide a valid username.')
     pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
     if 'email' not in data or not re.match(pattern, data.get('email', None)):
-        message['email'] = 'Please provide a valid email address.'
-    
-    username = data.get('username')
-    email = data.get('email')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please provide a valid email address.')
+
+    username = data['username']
+    email = data['email']
 
     user_document = mongoDB.search_user_document(user_id=None, username=username, email=email, key_indicator='username')
     print('user doc1 is', user_document)
     if not user_document:
-        message['username'] = 'Please type in the correct username.'
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please type in the correct username.')
     if user_document['email'] != email:
-        message['email'] = 'Please type in the correct username and email'
-        message['username'] = 'Please type in the correct username and email'
-    if message:
-        return bad_request(message)
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please type in the correct username and email')
 
     token = generate_confirmation_token(email)
     reset_url = url_for('user.forgot_new', token=token, _external=True)
@@ -328,12 +332,12 @@ def update_user(id):
 
     data = request.get_json()
     if not data:
-        return bad_request('You must post JSON data.')
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
     elif 'username' not in data or not data.get('username', None) or (' ' in data.get('username')):
-        message['username'] = 'Please provide a valid username.'
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please provide a valid username.')
     pattern = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
     if 'email' not in data or not re.match(pattern, data.get('email', None)) or (' ' in data.get('email')):
-        message['email'] = 'Please provide a valid email address.'
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please provide a valid email address.')
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
@@ -341,17 +345,13 @@ def update_user(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    username = data.get('username')
-    email = data.get('email')
+    username = data['username']
+    email = data['email']
     
-    message = {}
     if mongoDB.search_user_document(user_id=None, username=username):
-        message['username'] = 'Please use a different username.'
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please use a different username.')
     if pyMongo.db.User.find_one({'email': email}):
-        message['email'] = 'Please use a different email address.'
-
-    if message:
-        return bad_request(message)
+        raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please use a different email address.')
 
     response = {
 

@@ -29,8 +29,11 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         self.app_context.pop()  # 退出Flask应用上下文
 
     def drop_db_collections(self):
+        # print('ssads', dir(pyMongo.db))
+        # pyMongo.db.drop_collection()
         for collecion_names in pyMongo.db.list_collection_names():
-            pyMongo.db.drop_collection(collecion_names)
+            if collecion_names != 'User':
+                pyMongo.db.drop_collection(collecion_names)
 
     def get_basic_auth_headers(self, username, password):
         '''创建Basic Auth认证的headers'''
@@ -75,8 +78,16 @@ class Test_Helper_API_TestCase(unittest.TestCase):
             file_content_dict['user_3']['situation_content'] = [[1,2], [3,4]]
 
             file_content_dict['user_1']['output_content'] = None
-            file_content_dict['user_2']['output_content'] = [[3,321,6], [88,5,6], [7,99,9]]
-            file_content_dict['user_3']['output_content'] = [[6,321,6], [88,5,6], [7,87.6,9]]
+            file_content_dict['user_2']['output_content'] = {
+                '1': [3,321,6], 
+                '2': [88,5,6], 
+                '3': [7,99,9]
+            }
+            file_content_dict['user_3']['output_content'] = {
+                '1': [3,321,6], 
+                '2': [88,5,6], 
+                '3': [7,99,9]
+            }
         elif indicator == 'large_data':
             # file_content_dict['user_1']['identifier_content'] = [1 for _ in range(3000000)]
             # file_content_dict['user_2']['identifier_content'] = [1 for _ in range(3000000)]
@@ -187,6 +198,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         assistor_username_list = ['unittest2', 'unittest3']
         identifier_content = user_1_identifier_content
         data = json.dumps({
+            'max_round': 1,
             'assistor_username_list': assistor_username_list, 
             'identifier_content': identifier_content, 
             'train_id': train_id, 
@@ -197,6 +209,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
             'task_description': 'unittest_desciption'
         })
         response = self.client.post('/main_flow/find_assistor/' + user_id_1, headers=headers, data=data)
+        print(json.loads(response.get_data(as_text=True)))
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['train_id'], train_id)
@@ -573,6 +586,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         # 3. send_output() (in unread_situation.py) only assistor can send
         headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
         output_content = user_2_output_content
+        print('?????', output_content)
         data = json.dumps({
             'output_content': output_content, 
             'test_id': test_id, 
@@ -589,6 +603,7 @@ class Test_Helper_API_TestCase(unittest.TestCase):
         
         test_message_output_document = test_message_output.search_test_message_output_document(output_id=output_id)
         output_content = self.retrieve_file_content(test_message_output_document, 'output_content')
+        print('asdsa??', output_content)
         self.assertEqual(output_content, user_2_output_content)
 
         # should not have unread output now, the notification updates only when all assistors in 

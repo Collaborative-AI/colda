@@ -60,8 +60,20 @@ def testing_get():
     # import json
     # return json.dumps(a, default=str)
 
+@helper_api_bp.route('/testing_get_exception', methods=['GET'])
+def testing_get_exception():
+    a = {}
+    a['5']
+    return jsonify('test successfully!')
+
 @helper_api_bp.route('/testing_post', methods=['POST'])
 def testing_post():
+    return jsonify('test successfully!')
+
+@helper_api_bp.route('/testing_post_exception', methods=['POST'])
+def testing_post_exception():
+    a = {}
+    a['5']
     return jsonify('test successfully!')
 
 # @helper_api_bp.route('/ceshi', methods=['GET'])

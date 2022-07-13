@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import errno
 import os
 import re
@@ -12,6 +14,46 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from Items import mail, pyMongo
 from Items.extensions import mail
+
+from typing import (
+    Dict,
+    Any
+)
+
+from typeguard import (
+    check_type,
+    typechecked
+)
+
+@typechecked
+def check_if_data_is_valid(
+    data: Dict[str, Any],
+    expected_data: Dict[str, Any],
+) -> None:
+    '''
+    1. Check if data is None
+    2. Check if data type is correct
+
+    Parameters
+    ----------
+    data : dict[str, Any]
+    expected_data : dict[str, object]
+
+    Returns
+    -------
+    bool
+    '''
+    for expected_key, expected_type in expected_data.items():
+        check_type(
+            argname=f'{expected_key}',
+            value=data[expected_key],
+            expected_type=expected_type,
+        )
+    return
+
+def input_data_err_msg(func_name, msg):
+    # raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'You must post JSON data')
+    return func_name + ': ' + msg
 
 def add_new_token_to_response(response):
     if g.current_user['new_token'] != None:

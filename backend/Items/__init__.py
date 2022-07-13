@@ -134,13 +134,14 @@ def configure_errorhandlers(application):
     '''Configures the error handlers'''
     from flask.json import jsonify
     @application.errorhandler(Exception)
-    def handle_error(error):
-        print(f'$$err: {error}, {type(error)}')
+    def handle_error(e):
+        print('lailelaile', e)
         code = 500
-        
-        if isinstance(error, HTTPException):
-            code = error.code
-        return jsonify(error=str(error)), code
-    pass
+        if isinstance(e, HTTPException):
+            code = e.code
+        return jsonify(
+            error=str(e),
+            error_name=type(e).__name__
+        ), code
 
 

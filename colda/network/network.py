@@ -44,8 +44,8 @@ class Network(BaseNetwork):
 
     def __init__(self):
         self.__token = ''
-        self.__baseURL = 'http://127.0.0.1:5000'
-        # self.__baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/'
+        # self.__baseURL = 'http://127.0.0.1:5000'
+        self.__baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/'
 
     @classmethod
     def get_instance(cls) -> Network:

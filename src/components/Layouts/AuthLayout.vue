@@ -6,7 +6,7 @@
           <div class="col-xl-5 col-md-6">
             <div class="mini-logo text-center my-5">
               <router-link to="/"
-                ><img src="../../assets/images/logo.png" alt=""
+                ><img src="../../assets/images/logo1.png" alt=""
               /></router-link>
             </div>
             <div class="auth-form card">

@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+<meta property="og:title" content="workflow Module" />
+  
+<meta property="og:type" content="website" />
+  
+<meta property="og:url" content="reference/workflow.html" />
+  
+<meta property="og:description" content="The workflow module manages the workflow of cooperation between the sponsor and assistor. Examples: Initiate a testing task: The following script shows how to initiate a testing task Classes:" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workflow Module &mdash; colda 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quick Setup Guide" href="../README.html" />
+    <link rel="prev" title="utils Module" href="utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authentication</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pi</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="short_polling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">short_polling</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code> Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workflow</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initiate-a-testing-task">Initiate a testing task</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Reference</a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">workflow</span></code> Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/workflow.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<span class="target" id="module-colda.workflow"></span><section id="workflow-module">
+<h1><a class="reference internal" href="#module-colda.workflow" title="colda.workflow"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workflow</span></code></a> Module<a class="headerlink" href="#workflow-module" title="Permalink to this heading">¶</a></h1>
+<p>The <a class="reference internal" href="#module-colda.workflow" title="colda.workflow"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workflow</span></code></a> module manages the workflow of cooperation
+between the sponsor and assistor.</p>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
+<section id="initiate-a-testing-task">
+<h3>Initiate a testing task<a class="headerlink" href="#initiate-a-testing-task" title="Permalink to this heading">¶</a></h3>
+<p>The following script shows how to initiate a testing task</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">colda</span>
+<span class="c1"># login</span>
+<span class="n">colda</span><span class="o">.</span><span class="n">userLogin</span><span class="p">(</span><span class="s1">&#39;xie1&#39;</span><span class="p">,</span> <span class="s1">&#39;Xie1@123&#39;</span><span class="p">)</span>
+
+<span class="n">colda</span><span class="o">.</span><span class="n">callForTest</span><span class="p">(</span><span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="n">test_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">test_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a class="reference internal" href="#module-colda.workflow" title="colda.workflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">workflow</span></code></a> class has several methods,
+but they are all marked as “experimental.” Read that as you will. The
+<code class="docutils literal notranslate"><span class="pre">[source]</span></code> link is there for a reason.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method is experimental.</p>
+</div>
+</section>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.base.BaseWorkflow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.base.</span></span><span class="sig-name descname"><span class="pre">BaseWorkflow</span></span><a class="reference internal" href="../_modules/colda/workflow/base.html#BaseWorkflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.base.BaseWorkflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for workflow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>_skip_header</strong></dt><dd></dd>
+<dt><strong>_initial_round_num</strong></dt><dd></dd>
+<dt><strong>_url_prefix</strong></dt><dd></dd>
+<dt><strong>_max_round</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>None</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.test_main_workflow.TestMainWorkflow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.test_main_workflow.</span></span><span class="sig-name descname"><span class="pre">TestMainWorkflow</span></span><a class="reference internal" href="../_modules/colda/workflow/test_main_workflow.html#TestMainWorkflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_main_workflow.TestMainWorkflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTestMainWorkflow</span></code></p>
+<p>Manage test workflow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.test_main_workflow.TestMainWorkflow.find_test_assistor" title="colda.workflow.test_main_workflow.TestMainWorkflow.find_test_assistor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_test_assistor</span></code></a>(train_id, test_file_path, ...)</p></td>
+<td><p>Start testing with all assistors of the previous train  task</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_assistor_request" title="colda.workflow.test_main_workflow.TestMainWorkflow.test_assistor_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_assistor_request</span></code></a>(test_id_dicts)</p></td>
+<td><p>Request is fist stage of testing for assistor. In this stage, assistor would:     1. Encrypt the identifiers     2. Send the identifiers to server.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_match_identifier" title="colda.workflow.test_main_workflow.TestMainWorkflow.test_match_identifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_match_identifier</span></code></a>(test_id_dicts)</p></td>
+<td><p>Handle the unread_test_match_identifier.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_sponsor_match_identifier" title="colda.workflow.test_main_workflow.TestMainWorkflow.test_sponsor_match_identifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_sponsor_match_identifier</span></code></a>(test_id, ...)</p></td>
+<td><p>Match_identifier is second stage of testing for sponsor. In this stage, sponsor would:     1. Match the identifiers sent from all the assistors     2. Test the trained models produced at each round of        training stage.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_assistor_match_identifier" title="colda.workflow.test_main_workflow.TestMainWorkflow.test_assistor_match_identifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_assistor_match_identifier</span></code></a>(test_id, ...)</p></td>
+<td><p>Match_identifier is second stage of testing for assistor. In this stage, assistor would:     1. Match the identifiers sent from the sponsor     2. Test the trained models produced at each round of        training stage using test data     3. Send the test ouputs to sponsor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_output" title="colda.workflow.test_main_workflow.TestMainWorkflow.test_output"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_output</span></code></a>(test_id_dicts)</p></td>
+<td><p>Output is third stage of testing for sponsor. In this stage, sponsor would:     1. Get the test outputs sent from all the assistors     2. Evaluate test results.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>get_instance</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_main_workflow.TestMainWorkflow.find_test_assistor">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_test_assistor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_main_workflow.html#TestMainWorkflow.find_test_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_main_workflow.TestMainWorkflow.find_test_assistor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start testing with all assistors of the previous train 
+task</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_file_path</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_id_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_data_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_target_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_name</strong><span class="classifier">str=None</span></dt><dd></dd>
+<dt><strong>test_description</strong><span class="classifier">str=None</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>Any</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_main_workflow.TestMainWorkflow.get_class">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.workflow.test_main_workflow.TestMainWorkflow" title="colda.workflow.test_main_workflow.TestMainWorkflow"><span class="pre">colda.workflow.test_main_workflow.TestMainWorkflow</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_main_workflow.html#TestMainWorkflow.get_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_main_workflow.TestMainWorkflow.get_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>type[TestMainWorkflow]</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_main_workflow.TestMainWorkflow.test_assistor_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_assistor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_main_workflow.html#TestMainWorkflow.test_assistor_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_assistor_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match_identifier is second stage of testing for assistor.
+In this stage, assistor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Match the identifiers sent from the sponsor</p></li>
+<li><p>Test the trained models produced at each round of
+training stage using test data</p></li>
+<li><p>Send the test ouputs to sponsor</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_id_dicts</strong><span class="classifier">dict[str, str]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_main_workflow.TestMainWorkflow.test_assistor_request">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_assistor_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id_dicts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_main_workflow.html#TestMainWorkflow.test_assistor_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_assistor_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request is fist stage of testing for assistor.
+In this stage, assistor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Encrypt the identifiers</p></li>
+<li><p>Send the identifiers to server</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id_dicts</strong><span class="classifier">dict[dict[str, str]]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_main_workflow.TestMainWorkflow.test_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id_dicts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_main_workflow.html#TestMainWorkflow.test_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the unread_test_match_identifier. 
+Two situations needed to be considered: sponsor and assistor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id_dicts</strong><span class="classifier">dict[dict[str, str]]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_main_workflow.TestMainWorkflow.test_output">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id_dicts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_main_workflow.html#TestMainWorkflow.test_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output is third stage of testing for sponsor.
+In this stage, sponsor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Get the test outputs sent from all the assistors</p></li>
+<li><p>Evaluate test results</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id_dicts</strong><span class="classifier">dict[dict[str, str]]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_main_workflow.TestMainWorkflow.test_sponsor_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_sponsor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_main_workflow.html#TestMainWorkflow.test_sponsor_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_main_workflow.TestMainWorkflow.test_sponsor_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match_identifier is second stage of testing for sponsor.
+In this stage, sponsor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Match the identifiers sent from all the assistors</p></li>
+<li><p>Test the trained models produced at each round of
+training stage</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_id_dicts</strong><span class="classifier">dict[str, str]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.train_main_workflow.</span></span><span class="sig-name descname"><span class="pre">TrainMainWorkflow</span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTrainMainWorkflow</span></code></p>
+<p>Manage train workflow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>get_instance</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>find_test_assistor</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>test_assistor_request</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>test_match_identifier</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>test_sponsor_match_identifier</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>test_assistor_match_identifier</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>test_output</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.find_assistor">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_assistor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxRound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assistors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'regression'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'decision_tree'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'svm'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'gradient_boosting'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mlp'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MAD'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'RMSE'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'R2'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Accuracy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'F1'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'AUCROC'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.find_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.find_assistor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start training</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>maxRound</strong><span class="classifier">int</span></dt><dd></dd>
+<dt><strong>assistors</strong><span class="classifier">list</span></dt><dd></dd>
+<dt><strong>task_mode</strong><span class="classifier">Task_Mode</span></dt><dd></dd>
+<dt><strong>model_name</strong><span class="classifier">Model_Name</span></dt><dd></dd>
+<dt><strong>metric_name</strong><span class="classifier">Metric_Name</span></dt><dd></dd>
+<dt><strong>train_file_path</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_data_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_target_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>task_name</strong><span class="classifier">str=None</span></dt><dd></dd>
+<dt><strong>task_description</strong><span class="classifier">str=None</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>Any</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.get_class">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.workflow.train_main_workflow.TrainMainWorkflow" title="colda.workflow.train_main_workflow.TrainMainWorkflow"><span class="pre">colda.workflow.train_main_workflow.TrainMainWorkflow</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.get_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.get_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>type[TrainMainWorkflow]</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.stop_train">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop_train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unread_train_stop_notification</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.stop_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.stop_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop Train and delete related files.
+Implement later</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.train_assistor_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_assistor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.train_assistor_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.train_assistor_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match_identifier is second stage of training for assistor.
+In this stage, assistor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Match the identifiers sent from all the assistors</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id_dict</strong><span class="classifier">dict</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.train_assistor_request">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_assistor_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id_dicts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.train_assistor_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.train_assistor_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request is fist stage of training for assistor.
+In this stage, assistor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Encrypt the identifiers</p></li>
+<li><p>Send the identifiers to server</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id_dicts</strong><span class="classifier">dict[dict[str, str]]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.train_assistor_situation">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_assistor_situation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.train_assistor_situation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.train_assistor_situation" title="Permalink to this definition">¶</a></dt>
+<dd><p>situation is third stage of training for assistor.
+In this stage, assistor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Get the residual(training target) sent from the 
+sponsor</p></li>
+<li><p>Train model</p></li>
+<li><p>Send trained model output to sponsor</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id_dicts</strong><span class="classifier">dict</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.train_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id_dicts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.train_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.train_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the unread_test_match_identifier. 
+Two situations needed to be considered: sponsor and assistor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id_dicts</strong><span class="classifier">dict[dict[str, str]]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.train_output">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id_dicts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.train_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.train_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output is fourth stage of testing for sponsor.
+In this stage, sponsor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Get the train outputs sent from all the assistors</p></li>
+<li><p>Evaluate train results</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id_dicts</strong><span class="classifier">dict[dict[str, str]]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.train_situation">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_situation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id_dicts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.train_situation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.train_situation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the unread_train_situation. 
+Two situations needed to be considered: sponsor and assistor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id_dicts</strong><span class="classifier">dict[dict[str, str]]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.train_sponsor_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_sponsor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.train_sponsor_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.train_sponsor_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match_identifier is second stage of training for sponsor.
+In this stage, sponsor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Match the identifiers sent from all the assistors</p></li>
+<li><p>Calculate residual(training target)</p></li>
+<li><p>Send residual to all assistors</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id_dicts</strong><span class="classifier">dict</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_main_workflow.TrainMainWorkflow.train_sponsor_situation">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_sponsor_situation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_main_workflow.html#TrainMainWorkflow.train_sponsor_situation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_main_workflow.TrainMainWorkflow.train_sponsor_situation" title="Permalink to this definition">¶</a></dt>
+<dd><p>situation is third stage of training for sponsor.
+In this stage, sponsor would:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Train model</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id_dicts</strong><span class="classifier">dict</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.test_base.TestBaseWorkflow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.test_workflow.test_base.</span></span><span class="sig-name descname"><span class="pre">TestBaseWorkflow</span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/test_base.html#TestBaseWorkflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.test_base.TestBaseWorkflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.base.BaseWorkflow" title="colda.workflow.base.BaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseWorkflow</span></code></a></p>
+<ol class="arabic simple">
+<li><p>Wrap the algorithm part</p></li>
+<li><p>Implement some common methods</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_evaluate_results</span></code>(**kwargs)</p></td>
+<td><p>Evaluate trained model performance on test dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_test_cooperative_model</span></code>(**kwargs)</p></td>
+<td><p>Test cooperative trained model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_test_local_model</span></code>(**kwargs)</p></td>
+<td><p>Test local trained model on test dataset.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.assistor.match_identifier.TestAssistorMatchIdentifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.test_workflow.assistor.match_identifier.</span></span><span class="sig-name descname"><span class="pre">TestAssistorMatchIdentifier</span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/assistor/match_identifier.html#TestAssistorMatchIdentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.assistor.match_identifier.TestAssistorMatchIdentifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.test_workflow.test_base.TestBaseWorkflow" title="colda.workflow.test_workflow.test_base.TestBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestBaseWorkflow</span></code></a></p>
+<p>Handle test assistor match identifier stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.test_workflow.assistor.match_identifier.TestAssistorMatchIdentifier.test_assistor_match_identifier" title="colda.workflow.test_workflow.assistor.match_identifier.TestAssistorMatchIdentifier.test_assistor_match_identifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_assistor_match_identifier</span></code></a>(test_id, ...)</p></td>
+<td><p>Execute train assistor match identifier logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.assistor.match_identifier.TestAssistorMatchIdentifier.test_assistor_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_assistor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/assistor/match_identifier.html#TestAssistorMatchIdentifier.test_assistor_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.assistor.match_identifier.TestAssistorMatchIdentifier.test_assistor_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute train assistor match identifier logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id: str</strong></dt><dd></dd>
+<dt><strong>test_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.assistor.match_identifier.TestAssistorMatchIdentifier.test_cooperative_model">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_cooperative_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assistor_matched_identifer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/assistor/match_identifier.html#TestAssistorMatchIdentifier.test_cooperative_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.assistor.match_identifier.TestAssistorMatchIdentifier.test_cooperative_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>In test stage, we dont need to wait the training 
+target sent by the sponsor.
+We test the trained model using test dataset directly</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>assistor_matched_identifer</strong><span class="classifier">dict[str]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.assistor.request.TestAssistorRequest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.test_workflow.assistor.request.</span></span><span class="sig-name descname"><span class="pre">TestAssistorRequest</span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/assistor/request.html#TestAssistorRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.assistor.request.TestAssistorRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.test_workflow.test_base.TestBaseWorkflow" title="colda.workflow.test_workflow.test_base.TestBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestBaseWorkflow</span></code></a></p>
+<p>Handle test assistor request stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.test_workflow.assistor.request.TestAssistorRequest.test_assistor_request" title="colda.workflow.test_workflow.assistor.request.TestAssistorRequest.test_assistor_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_assistor_request</span></code></a>(test_id, test_id_dict)</p></td>
+<td><p>Execute test assistor request logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.assistor.request.TestAssistorRequest.test_assistor_request">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_assistor_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/assistor/request.html#TestAssistorRequest.test_assistor_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.assistor.request.TestAssistorRequest.test_assistor_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute test assistor request logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id: str</strong></dt><dd></dd>
+<dt><strong>test_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.sponsor.find_assistor.TestSponsorFindAssistor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.test_workflow.sponsor.find_assistor.</span></span><span class="sig-name descname"><span class="pre">TestSponsorFindAssistor</span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/sponsor/find_assistor.html#TestSponsorFindAssistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.sponsor.find_assistor.TestSponsorFindAssistor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.test_workflow.test_base.TestBaseWorkflow" title="colda.workflow.test_workflow.test_base.TestBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestBaseWorkflow</span></code></a></p>
+<p>Handle test sponsor find assistor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.test_workflow.sponsor.find_assistor.TestSponsorFindAssistor.find_test_assistor" title="colda.workflow.test_workflow.sponsor.find_assistor.TestSponsorFindAssistor.find_test_assistor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_test_assistor</span></code></a>(train_id, test_file_path, ...)</p></td>
+<td><p>Execute test sponsor find assistor logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.sponsor.find_assistor.TestSponsorFindAssistor.find_test_assistor">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_test_assistor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/sponsor/find_assistor.html#TestSponsorFindAssistor.find_test_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.sponsor.find_assistor.TestSponsorFindAssistor.find_test_assistor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute test sponsor find assistor logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_file_path</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_id_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_data_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_target_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_name</strong><span class="classifier">Union[str, None]</span></dt><dd></dd>
+<dt><strong>test_description</strong><span class="classifier">Union[str, None]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.sponsor.match_identifier.TestSponsorMatchIdentifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.test_workflow.sponsor.match_identifier.</span></span><span class="sig-name descname"><span class="pre">TestSponsorMatchIdentifier</span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/sponsor/match_identifier.html#TestSponsorMatchIdentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.sponsor.match_identifier.TestSponsorMatchIdentifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.test_workflow.test_base.TestBaseWorkflow" title="colda.workflow.test_workflow.test_base.TestBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestBaseWorkflow</span></code></a></p>
+<p>Handle test sponsor match identifier stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.test_workflow.sponsor.match_identifier.TestSponsorMatchIdentifier.test_sponsor_match_identifier" title="colda.workflow.test_workflow.sponsor.match_identifier.TestSponsorMatchIdentifier.test_sponsor_match_identifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_sponsor_match_identifier</span></code></a>(test_id, ...)</p></td>
+<td><p>Execute test sponsor match identifier logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.sponsor.match_identifier.TestSponsorMatchIdentifier.test_cooperative_model">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_cooperative_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sponsor_matched_identifers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/sponsor/match_identifier.html#TestSponsorMatchIdentifier.test_cooperative_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.sponsor.match_identifier.TestSponsorMatchIdentifier.test_cooperative_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>In test stage, we dont need to wait the training 
+model output sent by the assistors.
+We test the trained model using test dataset directly</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>sponsor_matched_identifers</strong><span class="classifier">dict[str]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.sponsor.match_identifier.TestSponsorMatchIdentifier.test_sponsor_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_sponsor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/sponsor/match_identifier.html#TestSponsorMatchIdentifier.test_sponsor_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.sponsor.match_identifier.TestSponsorMatchIdentifier.test_sponsor_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute test sponsor match identifier logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.sponsor.output.TestSponsorOutput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.test_workflow.sponsor.output.</span></span><span class="sig-name descname"><span class="pre">TestSponsorOutput</span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/sponsor/output.html#TestSponsorOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.sponsor.output.TestSponsorOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.test_workflow.test_base.TestBaseWorkflow" title="colda.workflow.test_workflow.test_base.TestBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestBaseWorkflow</span></code></a></p>
+<p>Handle test sponsor output stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.test_workflow.sponsor.output.TestSponsorOutput.test_sponsor_output" title="colda.workflow.test_workflow.sponsor.output.TestSponsorOutput.test_sponsor_output"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_sponsor_output</span></code></a>(test_id, test_id_dict)</p></td>
+<td><p>Execute test sponsor output logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.sponsor.output.TestSponsorOutput.evaluation">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assistor_random_id_to_output_content_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/sponsor/output.html#TestSponsorOutput.evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.sponsor.output.TestSponsorOutput.evaluation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to avoid async case.
+When sponsor gets the test output content sent
+by assistors, the sponsor may not complete its
+own testing model step. We need to wait till it
+complete.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>rounds</strong><span class="classifier">int</span></dt><dd></dd>
+<dt><strong>assistor_random_id_to_output_content_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.test_workflow.sponsor.output.TestSponsorOutput.test_sponsor_output">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_sponsor_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/test_workflow/sponsor/output.html#TestSponsorOutput.test_sponsor_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.test_workflow.sponsor.output.TestSponsorOutput.test_sponsor_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute test sponsor output logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>test_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>test_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.train_base.TrainBaseWorkflow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.train_workflow.train_base.</span></span><span class="sig-name descname"><span class="pre">TrainBaseWorkflow</span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/train_base.html#TrainBaseWorkflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.train_base.TrainBaseWorkflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.base.BaseWorkflow" title="colda.workflow.base.BaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseWorkflow</span></code></a></p>
+<ol class="arabic simple">
+<li><p>Wrap the algorithm part</p></li>
+<li><p>Implement some common methods</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_calculate_residual</span></code>(**kwargs)</p></td>
+<td><p>Calculate residual.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_calculate_result</span></code>(**kwargs)</p></td>
+<td><p>Calculate result Combine the sponsor's trained model and assistors' trained  models to a better sponsor model</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_train_cooperative_model</span></code>(**kwargs)</p></td>
+<td><p>Train the model</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_train_local_model</span></code>(**kwargs)</p></td>
+<td><p>Sponsor train model locally(only use its dataset)</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.assistor.match_identifier.TrainAssistorMatchIdentifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.train_workflow.assistor.match_identifier.</span></span><span class="sig-name descname"><span class="pre">TrainAssistorMatchIdentifier</span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/assistor/match_identifier.html#TrainAssistorMatchIdentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.assistor.match_identifier.TrainAssistorMatchIdentifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.train_workflow.train_base.TrainBaseWorkflow" title="colda.workflow.train_workflow.train_base.TrainBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainBaseWorkflow</span></code></a></p>
+<p>Handle train assistor match identifier stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.train_workflow.assistor.match_identifier.TrainAssistorMatchIdentifier.train_assistor_match_identifier" title="colda.workflow.train_workflow.assistor.match_identifier.TrainAssistorMatchIdentifier.train_assistor_match_identifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_assistor_match_identifier</span></code></a>(train_id, ...)</p></td>
+<td><p>Execute train assistor match identifier logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.assistor.match_identifier.TrainAssistorMatchIdentifier.train_assistor_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_assistor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/assistor/match_identifier.html#TrainAssistorMatchIdentifier.train_assistor_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.assistor.match_identifier.TrainAssistorMatchIdentifier.train_assistor_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute train assistor match identifier logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id: str</strong></dt><dd></dd>
+<dt><strong>train_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.assistor.request.TrainAssistorRequest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.train_workflow.assistor.request.</span></span><span class="sig-name descname"><span class="pre">TrainAssistorRequest</span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/assistor/request.html#TrainAssistorRequest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.assistor.request.TrainAssistorRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.train_workflow.train_base.TrainBaseWorkflow" title="colda.workflow.train_workflow.train_base.TrainBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainBaseWorkflow</span></code></a></p>
+<p>Handle train assistor request stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.train_workflow.assistor.request.TrainAssistorRequest.train_assistor_request" title="colda.workflow.train_workflow.assistor.request.TrainAssistorRequest.train_assistor_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_assistor_request</span></code></a>(train_id, train_id_dict)</p></td>
+<td><p>Execute train assistor request logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.assistor.request.TrainAssistorRequest.train_assistor_request">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_assistor_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/assistor/request.html#TrainAssistorRequest.train_assistor_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.assistor.request.TrainAssistorRequest.train_assistor_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute train assistor request logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id: str</strong></dt><dd></dd>
+<dt><strong>train_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.assistor.situation.TrainAssistorSituation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.train_workflow.assistor.situation.</span></span><span class="sig-name descname"><span class="pre">TrainAssistorSituation</span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/assistor/situation.html#TrainAssistorSituation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.assistor.situation.TrainAssistorSituation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.train_workflow.train_base.TrainBaseWorkflow" title="colda.workflow.train_workflow.train_base.TrainBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainBaseWorkflow</span></code></a></p>
+<p>Handle train assistor situation stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.train_workflow.assistor.situation.TrainAssistorSituation.train_assistor_situation" title="colda.workflow.train_workflow.assistor.situation.TrainAssistorSituation.train_assistor_situation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_assistor_situation</span></code></a>(train_id, train_id_dict)</p></td>
+<td><p>Execute train assistor situation logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.assistor.situation.TrainAssistorSituation.train_assistor_situation">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_assistor_situation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/assistor/situation.html#TrainAssistorSituation.train_assistor_situation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.assistor.situation.TrainAssistorSituation.train_assistor_situation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute train assistor situation logic.
+1. Assistor get training target from sponsor
+2. Assistor trains the model
+3. Assistor sends the model output back to sponsor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id: str</strong></dt><dd></dd>
+<dt><strong>train_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.assistor.situation.TrainAssistorSituation.train_cooperative_model">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_cooperative_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender_random_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">situation_content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/assistor/situation.html#TrainAssistorSituation.train_cooperative_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.assistor.situation.TrainAssistorSituation.train_cooperative_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to avoid async case.
+When assistor gets the situation content sent
+by sponsor, the assistor may not complete its
+match identifier stage. We need to wait till
+the matching stage complete.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>rounds</strong><span class="classifier">int</span></dt><dd></dd>
+<dt><strong>sender_random_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>situation_content</strong><span class="classifier">Any</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.find_assistor.TrainSponsorFindAssistor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.train_workflow.sponsor.find_assistor.</span></span><span class="sig-name descname"><span class="pre">TrainSponsorFindAssistor</span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/find_assistor.html#TrainSponsorFindAssistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.find_assistor.TrainSponsorFindAssistor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.train_workflow.train_base.TrainBaseWorkflow" title="colda.workflow.train_workflow.train_base.TrainBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainBaseWorkflow</span></code></a></p>
+<p>Handle sponsor train find assistor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.train_workflow.sponsor.find_assistor.TrainSponsorFindAssistor.find_assistor" title="colda.workflow.train_workflow.sponsor.find_assistor.TrainSponsorFindAssistor.find_assistor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_assistor</span></code></a>(maxRound, assistors, ...[, ...])</p></td>
+<td><p>Execute sponsor find assistor logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.find_assistor.TrainSponsorFindAssistor.find_assistor">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_assistor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxRound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assistors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'regression'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'decision_tree'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'svm'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'gradient_boosting'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mlp'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MAD'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'RMSE'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'R2'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Accuracy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'F1'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'AUCROC'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/find_assistor.html#TrainSponsorFindAssistor.find_assistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.find_assistor.TrainSponsorFindAssistor.find_assistor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute sponsor find assistor logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>maxRound</strong><span class="classifier">int</span></dt><dd></dd>
+<dt><strong>assistors</strong><span class="classifier">list</span></dt><dd></dd>
+<dt><strong>train_file_path</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_data_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_target_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>task_mode</strong><span class="classifier">Task_Mode</span></dt><dd></dd>
+<dt><strong>model_name</strong><span class="classifier">Model_Name</span></dt><dd></dd>
+<dt><strong>metric_name</strong><span class="classifier">Metric_Name</span></dt><dd></dd>
+<dt><strong>task_name</strong><span class="classifier">str=None</span></dt><dd></dd>
+<dt><strong>task_description</strong><span class="classifier">str=None</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.match_identifier.TrainSponsorMatchIdentifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.train_workflow.sponsor.match_identifier.</span></span><span class="sig-name descname"><span class="pre">TrainSponsorMatchIdentifier</span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/match_identifier.html#TrainSponsorMatchIdentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.match_identifier.TrainSponsorMatchIdentifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.train_workflow.train_base.TrainBaseWorkflow" title="colda.workflow.train_workflow.train_base.TrainBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainBaseWorkflow</span></code></a></p>
+<p>Handle sponsor match identifier stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.train_workflow.sponsor.match_identifier.TrainSponsorMatchIdentifier.train_sponsor_match_identifier" title="colda.workflow.train_workflow.sponsor.match_identifier.TrainSponsorMatchIdentifier.train_sponsor_match_identifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_sponsor_match_identifier</span></code></a>(train_id, ...)</p></td>
+<td><p>Execute sponsor match identifier logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.match_identifier.TrainSponsorMatchIdentifier.train_sponsor_match_identifier">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_sponsor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/match_identifier.html#TrainSponsorMatchIdentifier.train_sponsor_match_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.match_identifier.TrainSponsorMatchIdentifier.train_sponsor_match_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute sponsor match identifier logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id: str</strong></dt><dd></dd>
+<dt><strong>train_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.train_workflow.sponsor.output.</span></span><span class="sig-name descname"><span class="pre">TrainSponsorOutput</span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/output.html#TrainSponsorOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.train_workflow.train_base.TrainBaseWorkflow" title="colda.workflow.train_workflow.train_base.TrainBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainBaseWorkflow</span></code></a></p>
+<p>Handle sponsor train output stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput.train_sponsor_output" title="colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput.train_sponsor_output"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_sponsor_output</span></code></a>(train_id, train_id_dict)</p></td>
+<td><p>Execute sponsor train output logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput.train_calculate_next_round_residual">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_calculate_next_round_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'regression'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MAD'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'RMSE'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'R2'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Accuracy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'F1'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'AUCROC'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cur_rounds_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sponsor_matched_identifers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_round_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/output.html#TrainSponsorOutput.train_calculate_next_round_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput.train_calculate_next_round_residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle stages in new round.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_file_path</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_target_column</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>task_mode</strong><span class="classifier">Task_Mode</span></dt><dd></dd>
+<dt><strong>metric_name</strong><span class="classifier">Metric_Name</span></dt><dd></dd>
+<dt><strong>cur_rounds_num</strong><span class="classifier">int</span></dt><dd></dd>
+<dt><strong>sponsor_matched_identifers</strong><span class="classifier">Any</span></dt><dd></dd>
+<dt><strong>last_round_result</strong><span class="classifier">Any</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput.train_calculate_result">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_calculate_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cur_rounds_num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assistor_random_id_to_output_content_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/output.html#TrainSponsorOutput.train_calculate_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput.train_calculate_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to avoid async case.
+When sponsor gets the output content sent
+by assistors, the sponsor may not complete its
+own training model step. We need to wait till it
+complete.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>cur_rounds_num</strong><span class="classifier">int</span></dt><dd></dd>
+<dt><strong>assistor_random_id_to_output_content_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput.train_sponsor_output">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_sponsor_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/output.html#TrainSponsorOutput.train_sponsor_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.output.TrainSponsorOutput.train_sponsor_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute sponsor train output logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>train_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.situation.TrainSponsorSituation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.workflow.train_workflow.sponsor.situation.</span></span><span class="sig-name descname"><span class="pre">TrainSponsorSituation</span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/situation.html#TrainSponsorSituation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.situation.TrainSponsorSituation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.workflow.train_workflow.train_base.TrainBaseWorkflow" title="colda.workflow.train_workflow.train_base.TrainBaseWorkflow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrainBaseWorkflow</span></code></a></p>
+<p>Handle sponsor train situation logic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.workflow.train_workflow.sponsor.situation.TrainSponsorSituation.train_sponsor_situation" title="colda.workflow.train_workflow.sponsor.situation.TrainSponsorSituation.train_sponsor_situation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_sponsor_situation</span></code></a>(train_id, train_id_dict)</p></td>
+<td><p>Execute sponsor train situation logic.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.workflow.train_workflow.sponsor.situation.TrainSponsorSituation.train_sponsor_situation">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_sponsor_situation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/workflow/train_workflow/sponsor/situation.html#TrainSponsorSituation.train_sponsor_situation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.workflow.train_workflow.sponsor.situation.TrainSponsorSituation.train_sponsor_situation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute sponsor train situation logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_id: str</strong></dt><dd></dd>
+<dt><strong>train_id_dict</strong><span class="classifier">dict[str, Any]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="utils.html" class="btn btn-neutral float-left" title="utils Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../README.html" class="btn btn-neutral float-right" title="Quick Setup Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

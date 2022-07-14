@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+<meta property="og:title" content="utils Module" />
+  
+<meta property="og:type" content="website" />
+  
+<meta property="og:url" content="reference/utils.html" />
+  
+<meta property="og:description" content="The utils module contains a number of helper functions, such as type checking, type converting, etc. Examples: Train and save the model: The following script generates a model based on the task_mod..." />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils Module &mdash; colda 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="workflow Module" href="workflow.html" />
+    <link rel="prev" title="short_polling Module" href="short_polling.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">algorithm</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">authentication</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">database</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">error</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">network</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pi</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="short_polling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">short_polling</span></code> Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#train-and-save-the-model">Train and save the model</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="workflow.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">workflow</span></code> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Quick Setup Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Reference</a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code> Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<span class="target" id="module-colda.utils"></span><section id="utils-module">
+<h1><a class="reference internal" href="#module-colda.utils" title="colda.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a> Module<a class="headerlink" href="#utils-module" title="Permalink to this heading">¶</a></h1>
+<p>The <a class="reference internal" href="#module-colda.utils" title="colda.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a> module contains a number of helper functions, such as type checking,
+type converting, etc.</p>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
+<section id="train-and-save-the-model">
+<h3>Train and save the model<a class="headerlink" href="#train-and-save-the-model" title="Permalink to this heading">¶</a></h3>
+<p>The following script generates a model based on the task_mode and model_name, then train the model
+and save the model at the desginated position.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">colda</span> <span class="kn">import</span> <span class="n">algorithm</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">task_mode</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">self_id</span><span class="p">,</span> <span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;round&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">),</span> <span class="s1">&#39;model.pkl&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a class="reference internal" href="#module-colda.utils" title="colda.utils"><code class="xref py py-class docutils literal notranslate"><span class="pre">utils</span></code></a> class has several methods,
+but they are all marked as “experimental.” Read that as you will. The
+<code class="docutils literal notranslate"><span class="pre">[source]</span></code> link is there for a reason.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method is experimental.</p>
+</div>
+</section>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.to_list">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">to_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../_modules/colda/utils/dtypes/convert.html#to_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dtypes.convert.to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change iterable data to list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">Any</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>list</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.to_string">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/colda/utils/dtypes/convert.html#to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dtypes.convert.to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change data to str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">Any</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>str</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.to_tuple">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">to_tuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/colda/utils/dtypes/convert.html#to_tuple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dtypes.convert.to_tuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change iterable data to tuple</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">Any</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.to_serializable">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">to_serializable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/colda/utils/dtypes/convert.html#to_serializable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dtypes.convert.to_serializable" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Change data to serializable data:</dt><dd><ol class="arabic simple">
+<li><p>convert numpy type to list</p></li>
+<li><p>convert set to list</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">Any</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>Serializable_Datatype</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.is_numpy">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">is_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/colda/utils/dtypes/inference.html#is_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dtypes.convert.is_numpy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if obj is numpy</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>obj</strong><span class="classifier">Any</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.is_set">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">is_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/colda/utils/dtypes/inference.html#is_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dtypes.convert.is_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if obj is set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>obj</strong><span class="classifier">Any</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.base.BaseLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.base.</span></span><span class="sig-name descname"><span class="pre">BaseLog</span></span><a class="reference internal" href="../_modules/colda/utils/log/base.html#BaseLog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.base.BaseLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for log</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>None</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.base.BaseLog.placeholder">
+<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">placeholder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils/log/base.html#BaseLog.placeholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.base.BaseLog.placeholder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.algorithm_log.</span></span><span class="sig-name descname"><span class="pre">AlgorithmLog</span></span><a class="reference internal" href="../_modules/colda/utils/log/algorithm_log.html#AlgorithmLog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.utils.log.base.BaseLog" title="colda.utils.log.base.BaseLog"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLog</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLog</span></code></p>
+<p>Algorithm log is used to store the information
+from the algorithm stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.utils.log.algorithm_log.AlgorithmLog.get_instance" title="colda.utils.log.algorithm_log.AlgorithmLog.get_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_instance</span></code></a>()</p></td>
+<td><p>Singleton pattern.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#colda.utils.log.algorithm_log.AlgorithmLog.store_log" title="colda.utils.log.algorithm_log.AlgorithmLog.store_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store_log</span></code></a>(user_id, task_id, msgs[, log_category])</p></td>
+<td><p>Store msgs to log.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.utils.log.algorithm_log.AlgorithmLog.get_log" title="colda.utils.log.algorithm_log.AlgorithmLog.get_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_log</span></code></a>(user_id, task_id[, log_category])</p></td>
+<td><p>get msgs from log.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#colda.utils.log.algorithm_log.AlgorithmLog.get_all_logs" title="colda.utils.log.algorithm_log.AlgorithmLog.get_all_logs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_logs</span></code></a>()</p></td>
+<td><p>For unittest, change this function later</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.get_all_logs">
+<span class="sig-name descname"><span class="pre">get_all_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils/log/algorithm_log.html#AlgorithmLog.get_all_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.get_all_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>For unittest, change this function later</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.utils.log.algorithm_log.AlgorithmLog" title="colda.utils.log.algorithm_log.AlgorithmLog"><span class="pre">AlgorithmLog</span></a></span></span><a class="reference internal" href="../_modules/colda/utils/log/algorithm_log.html#AlgorithmLog.get_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>AlgorithmLog</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.get_log">
+<span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main_test'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/colda/utils/log/algorithm_log.html#AlgorithmLog.get_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.get_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>get msgs from log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>task_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>msgs</strong><span class="classifier">list[str]</span></dt><dd></dd>
+<dt><strong>log_category</strong><span class="classifier">str=’main_test’</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.log_serialization">
+<span class="sig-name descname"><span class="pre">log_serialization</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils/log/algorithm_log.html#AlgorithmLog.log_serialization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.log_serialization" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.store_log">
+<span class="sig-name descname"><span class="pre">store_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msgs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main_test'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/utils/log/algorithm_log.html#AlgorithmLog.store_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.store_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store msgs to log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>task_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>msgs</strong><span class="classifier">list[str]</span></dt><dd></dd>
+<dt><strong>log_category</strong><span class="classifier">str=’main_test’</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.workflow_log.</span></span><span class="sig-name descname"><span class="pre">WorkflowLog</span></span><a class="reference internal" href="../_modules/colda/utils/log/workflow_log.html#WorkflowLog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.utils.log.base.BaseLog" title="colda.utils.log.base.BaseLog"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLog</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLog</span></code></p>
+<p>Workflow log is used to store the information
+from the workflow stage(train_workflow and
+test_workflow).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.utils.log.workflow_log.WorkflowLog.get_instance" title="colda.utils.log.workflow_log.WorkflowLog.get_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_instance</span></code></a>()</p></td>
+<td><p>Singleton pattern.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#colda.utils.log.workflow_log.WorkflowLog.store_log" title="colda.utils.log.workflow_log.WorkflowLog.store_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store_log</span></code></a>(user_id, task_id, msgs)</p></td>
+<td><p>Store msgs to log.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.utils.log.workflow_log.WorkflowLog.get_log" title="colda.utils.log.workflow_log.WorkflowLog.get_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_log</span></code></a>(user_id, task_id)</p></td>
+<td><p>get msgs from log.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#colda.utils.log.workflow_log.WorkflowLog.get_all_logs" title="colda.utils.log.workflow_log.WorkflowLog.get_all_logs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_logs</span></code></a>()</p></td>
+<td><p>For unittest, change this function later</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.get_all_logs">
+<span class="sig-name descname"><span class="pre">get_all_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils/log/workflow_log.html#WorkflowLog.get_all_logs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.get_all_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>For unittest, change this function later</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.utils.log.workflow_log.WorkflowLog" title="colda.utils.log.workflow_log.WorkflowLog"><span class="pre">WorkflowLog</span></a></span></span><a class="reference internal" href="../_modules/colda/utils/log/workflow_log.html#WorkflowLog.get_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>WorkflowLog</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.get_log">
+<span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/colda/utils/log/workflow_log.html#WorkflowLog.get_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.get_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>get msgs from log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>task_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>msgs</strong><span class="classifier">list[str]</span></dt><dd></dd>
+<dt><strong>log_category</strong><span class="classifier">str=’main_test’</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.log_serialization">
+<span class="sig-name descname"><span class="pre">log_serialization</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/colda/utils/log/workflow_log.html#WorkflowLog.log_serialization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.log_serialization" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.store_log">
+<span class="sig-name descname"><span class="pre">store_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msgs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/utils/log/workflow_log.html#WorkflowLog.store_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.store_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store msgs to log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>task_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>msgs</strong><span class="classifier">list[str]</span></dt><dd></dd>
+<dt><strong>log_category</strong><span class="classifier">str=’main_test’</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.dict_helper.DictHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.dict_helper.</span></span><span class="sig-name descname"><span class="pre">DictHelper</span></span><a class="reference internal" href="../_modules/colda/utils/dict_helper.html#DictHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dict_helper.DictHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handle dictionary structure mainly
+for following 2 scenarios:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Database</p></li>
+<li><p>Log</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.utils.dict_helper.DictHelper.is_key_in_dict" title="colda.utils.dict_helper.DictHelper.is_key_in_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_key_in_dict</span></code></a>(key, container)</p></td>
+<td><p>check if key is in dict</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#colda.utils.dict_helper.DictHelper.generate_dict_root_key" title="colda.utils.dict_helper.DictHelper.generate_dict_root_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_dict_root_key</span></code></a>(user_id[, task_id, ...])</p></td>
+<td><p>Generate unique dictionary key to  store imformation for each task</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.utils.dict_helper.DictHelper.store_value" title="colda.utils.dict_helper.DictHelper.store_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store_value</span></code></a>(key, value, container[, store_type])</p></td>
+<td><p>Store value in dict</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#colda.utils.dict_helper.DictHelper.get_value" title="colda.utils.dict_helper.DictHelper.get_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_value</span></code></a>(key, container)</p></td>
+<td><p>Get value corresponding to the key in dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.utils.dict_helper.DictHelper.get_all_key_value_pairs" title="colda.utils.dict_helper.DictHelper.get_all_key_value_pairs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_key_value_pairs</span></code></a>(container)</p></td>
+<td><p>Return all data in current container</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.dict_helper.DictHelper.generate_dict_root_key">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_dict_root_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supplement_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/colda/utils/dict_helper.html#DictHelper.generate_dict_root_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dict_helper.DictHelper.generate_dict_root_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate unique dictionary key to 
+store imformation for each task</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>task_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>supplement_key</strong><span class="classifier">Union[str, list[str], None]=None</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple[str]</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.dict_helper.DictHelper.generate_dict_supplement_key">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_dict_supplement_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supplement_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/colda/utils/dict_helper.html#DictHelper.generate_dict_supplement_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dict_helper.DictHelper.generate_dict_supplement_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate unique dictionary key to 
+store imformation for each task</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>user_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>task_id</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>supplement_key</strong><span class="classifier">Union[str, list[str], None]=None</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple[str]</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.dict_helper.DictHelper.get_all_key_value_pairs">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_all_key_value_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DictValue</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DictValue</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/colda/utils/dict_helper.html#DictHelper.get_all_key_value_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dict_helper.DictHelper.get_all_key_value_pairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all data in current container</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>container</strong><span class="classifier">dict[DictKey, DictValue]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>dict</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.dict_helper.DictHelper.get_value">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DictValue</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DictValue</span></span></span><a class="reference internal" href="../_modules/colda/utils/dict_helper.html#DictHelper.get_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dict_helper.DictHelper.get_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get value corresponding to the key in dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>key</strong><span class="classifier">DictKey</span></dt><dd></dd>
+<dt><strong>container</strong><span class="classifier">dict[DictKey, DictValue]</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>DictValue</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.dict_helper.DictHelper.is_key_in_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_key_in_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DictKey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/colda/utils/dict_helper.html#DictHelper.is_key_in_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dict_helper.DictHelper.is_key_in_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if key is in dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>key</strong><span class="classifier">DictKey</span></dt><dd></dd>
+<dt><strong>container</strong><span class="classifier">dict</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.dict_helper.DictHelper.store_value">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">store_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DictValue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">DictKey</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DictValue</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'append'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'store_once'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'store_multiple'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'store_once'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/colda/utils/dict_helper.html#DictHelper.store_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.dict_helper.DictHelper.store_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store value in dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>key</strong><span class="classifier">DictKey</span></dt><dd></dd>
+<dt><strong>value</strong><span class="classifier">Union[dict[DictKey, DictValue], list[DictValue]]</span></dt><dd></dd>
+<dt><strong>container</strong><span class="classifier">dict[DictKey, DictValue]</span></dt><dd></dd>
+<dt><strong>store_type</strong><span class="classifier">Dict_Store_Type</span></dt><dd><p>We have different store type to handle different situations</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.serialization.Serialization">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.serialization.</span></span><span class="sig-name descname"><span class="pre">Serialization</span></span><a class="reference internal" href="../_modules/colda/utils/serialization.html#Serialization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.serialization.Serialization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#colda.utils.serialization.Serialization.make_data_serializable" title="colda.utils.serialization.Serialization.make_data_serializable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_data_serializable</span></code></a>(data)</p></td>
+<td><p>Change data type to serializable data type</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.serialization.Serialization.make_data_serializable">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_data_serializable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/colda/utils/serialization.html#Serialization.make_data_serializable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#colda.utils.serialization.Serialization.make_data_serializable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change data type to serializable data
+type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">Any</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>Serializable_Datatype</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="short_polling.html" class="btn btn-neutral float-left" title="short_polling Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="workflow.html" class="btn btn-neutral float-right" title="workflow Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

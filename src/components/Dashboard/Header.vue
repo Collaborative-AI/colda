@@ -7,7 +7,7 @@
             class="navbar navbar-expand-lg navbar-light px-0 justify-content-between"
           >
             <router-link class="navbar-brand" to="dashboard"
-              ><img src="../../assets/images/logo.png" alt=""
+              ><img src="../../assets/images/logo1.png" alt=""
             /></router-link>
 
             <div class="header-right d-flex my-2 align-items-center">

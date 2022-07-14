@@ -7,7 +7,7 @@
             <div class="navigation">
               <nav class="navbar navbar-expand-lg navbar-light px-0">
                 <a class="navbar-brand" href="demo"
-                  ><img src="../assets/images/logo.png" alt="" />
+                  ><img src="../assets/images/logo1.png" alt="" />
                 </a>
                 <b-navbar-toggle target="navbarSupportedContent">
                 </b-navbar-toggle>
@@ -1179,8 +1179,8 @@
             <div class="copyright">
               <p>
                 © Copyright {{ new Date().getFullYear() }}
-                <a href="https://themeforest.net/user/quixlab/portfolio"
-                  >Quixlab</a
+                <a href="https://synspot-ai.com"
+                  >Synspot</a
                 >
                 I All Rights Reserved
               </p>

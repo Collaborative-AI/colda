@@ -6,8 +6,8 @@
           <div class="copyright">
             <p>
               © Copyright {{ new Date().getFullYear() }}
-              <a href="https://themeforest.net/user/quixlab/portfolio"
-                >Quixlab</a
+              <a href="https://synspot-ai.com"
+                >Synspot</a
               >
               I All Rights Reserved
             </p>

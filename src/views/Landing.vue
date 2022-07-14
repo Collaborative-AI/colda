@@ -1,107 +1,6 @@
 <template>
   <div id="main-wrapper" class="show">
-    <div class="header">
-      <div class="container">
-        <div class="row">
-          <div class="col-xl-12">
-            <div class="navigation">
-              <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <router-link class="navbar-brand" to="index"
-                  ><img src="../assets/images/logo.png" alt=""
-                /></router-link>
-                <b-navbar-toggle target="navbarNavDropdown"> </b-navbar-toggle>
-                <b-collapse is-nav id="navbarNavDropdown">
-                  <b-navbar-nav tag="ul" class="navbar-nav">
-                    <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        :class="active === 1 && 'active'"
-                        @click="active = 1"
-                        href="#sec_1"
-                        data-scroll-nav="0"
-                        >Home</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        href="#sec_2"
-                        :class="active === 2 && 'active'"
-                        @click="active = 2"
-                        data-scroll-nav="1"
-                        >Price</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        href="#sec_3"
-                        :class="active === 3 && 'active'"
-                        @click="active = 3"
-                        data-scroll-nav="2"
-                        >Portfolio
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        href="#sec_4"
-                        :class="active === 4 && 'active'"
-                        @click="active = 4"
-                        data-scroll-nav="3"
-                        >Testimonial</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        href="#sec_5"
-                        :class="active === 5 && 'active'"
-                        @click="active = 5"
-                        data-scroll-nav="4"
-                        >App</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        href="#sec_6"
-                        :class="active === 6 && 'active'"
-                        @click="active = 6"
-                        data-scroll-nav="5"
-                        >Blog</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="nav-link"
-                        href="#sec_7"
-                        :class="active === 7 && 'active'"
-                        @click="active = 7"
-                        data-scroll-nav="6"
-                        >Support</a
-                      >
-                    </li>
-
-                    <li class="nav-item">
-                      <router-link class="nav-link" :to="dark ? '/dashboard-dark': '/dashboard'"
-                        >Dashboard</router-link
-                      >
-                    </li>
-                  </b-navbar-nav>
-                </b-collapse>
-
-                <div class="signin-btn">
-                  <router-link class="btn btn-primary text-white" :to="dark ? '/signin-dark': '/signin'"
-                    >Sign in</router-link
-                  >
-                </div>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <navbar></navbar>
 
     <div class="intro" data-scroll-index="0" id="sec_1">
       <div class="container">
@@ -831,106 +730,21 @@
       </div>
     </div>
 
-    <div class="bottom section-padding">
-      <div class="container">
-        <div class="row">
-          <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-            <div class="bottom-logo">
-              <img class="pb-3" src="../assets/images/logo.png" alt="" />
+    
 
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-            </div>
-          </div>
-          <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-            <div class="bottom-widget">
-              <h4 class="widget-title">Company</h4>
-              <ul>
-                <li><router-link to="#">About</router-link></li>
-                <li><router-link to="#">Career</router-link></li>
-                <li><router-link to="#">Affiliate</router-link></li>
-                <li><router-link to="#">Our Partner</router-link></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
-            <div class="bottom-widget">
-              <h4 class="widget-title">Support</h4>
-              <ul>
-                <li><router-link to="#">Ticket</router-link></li>
-                <li><router-link to="#">FAQ</router-link></li>
-                <li><router-link to="#">Blog</router-link></li>
-                <li><router-link to="#">Helpdesk</router-link></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-            <div class="bottom-widget">
-              <h4 class="widget-title">Exchange Pair</h4>
-              <div class="row">
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                  <ul>
-                    <li><router-link to="#">ETH to BTC</router-link></li>
-                    <li><router-link to="#">BTC to ETH</router-link></li>
-                    <li><router-link to="#">LTC to ETH</router-link></li>
-                    <li><router-link to="#">USDT to BTC</router-link></li>
-                  </ul>
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                  <ul>
-                    <li><router-link to="#">BTC to USDT</router-link></li>
-                    <li><router-link to="#">LTC to BTC</router-link></li>
-                    <li><router-link to="#">XMR to BTC</router-link></li>
-                    <li><router-link to="#">ETC to DASH</router-link></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-            <div class="copyright">
-              <p>
-                © Copyright {{ new Date().getFullYear() }}
-                <a href="#">Tradio</a> I All Rights Reserved
-              </p>
-            </div>
-          </div>
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-            <div class="footer-social">
-              <ul>
-                <li>
-                  <a href="#"><i class="fa fa-facebook"></i></a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-twitter"></i></a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-linkedin"></i></a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-youtube"></i></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
+// import Navbar from '../components/Layout/Navbar.vue';
 import BtcChart from "../components/Tradio/Charts/BtcChart.vue";
 import CurrencyForm from "../components/Tradio/From/CurrencyForm.vue";
 import Slider from "../components/Tradio/Slider.vue";
+import Navbar from './reuse/Navbar.vue'
+import Footer from './reuse/Footer.vue'
 export default {
-  components: { BtcChart, Slider, CurrencyForm },
+  components: { BtcChart, Slider, CurrencyForm, Navbar, Footer },
   data() {
     return {
       active: 1,

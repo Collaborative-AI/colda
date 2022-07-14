@@ -12,7 +12,7 @@ import Otp1 from "./views/auth/Otp1";
 import Otp2 from "./views/auth/Otp2";
 import Reset from "./views/auth/Reset";
 // Dashboard
-import Home from "./views/Dashboard/Home"
+import Dashboard from "./views/Dashboard/Dashboard.vue"
 // import HomeDark from "./views/Dashboard/HomeDark"
 import Exchange from "./views/Dashboard/Exchange"
 // Account
@@ -50,12 +50,27 @@ import E404 from "./views/errors/404"
 import E500 from "./views/errors/500"
 import E503 from "./views/errors/503"
 
+//import our website
+import Products from './views/Products.vue'
+import Usecases from './views/Usecases.vue'
+import About from './views/About.vue'
+import Contact from './views/Contact.vue'
+import Modules from './views/LandingCopy.vue'
+
+
 
 Vue.use(VueRouter);
 
 const routes = [
+  // our website page
+  { path: "/products", name: "Products", component: Products},
+  { path: "/products", name: "Products", component: Products},
+  { path: "/about", name: "About", component: About},
+  { path: "/contact", name: "Contact", component: Contact},
+  { path: "/usecases", name: "Usecases", component: Usecases},
+  { path: "/modules", name: "Modules", component: Modules},
   // Dashboard
-  { path: "/dashboard", name: "Home", component: Home },
+  { path: "/dashboard", name: "Dashboard", component: Dashboard },
   { path: "/exchange", name: "Exchange", component: Exchange },
   // Errors
   { path: "/400", name: "E400", component: E400 },
@@ -105,7 +120,7 @@ const routes = [
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Dark <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
   // Dashboard
-  { path: "/dashboard-dark", name: "HomeDark", component: Home },
+  { path: "/dashboard-dark", name: "HomeDark", component: Dashboard },
   { path: "/exchange-dark", name: "Exchange", component: Exchange },
   // Errors
   { path: "/400-dark", name: "E400", component: E400 },

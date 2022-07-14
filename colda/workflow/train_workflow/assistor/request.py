@@ -21,10 +21,6 @@ class TrainAssistorRequest(TrainBaseWorkflow):
     '''
     Handle train assistor request stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     train_assistor_request

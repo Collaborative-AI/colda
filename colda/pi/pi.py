@@ -43,10 +43,6 @@ class PI(BasePI):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         type[PI]
@@ -60,10 +56,6 @@ class PI(BasePI):
     def user_id(self) -> str:
         '''
         Get the user id.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -94,10 +86,6 @@ class PI(BasePI):
         '''
         Get the default mode.
         default mode is set to 'auto' at first
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -132,10 +120,6 @@ class PI(BasePI):
         Default data_storage_root is the path of 
         current file.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         str
@@ -149,10 +133,6 @@ class PI(BasePI):
         '''
         Set the data_storage_root path
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         str
@@ -164,10 +144,6 @@ class PI(BasePI):
     def logout(cls) -> None:
         '''
         Handle user logout by deleting instance
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

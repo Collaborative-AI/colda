@@ -23,10 +23,6 @@ class AbstractDatabaseFactory(ABC):
     '''
     Abstract class for database factory
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     None
@@ -44,10 +40,6 @@ class GetDefaultMetadataDatabase(AbstractDatabaseFactory):
     def get_instance(cls) -> DefaultMetadataDatabase:
         '''
         DefaultMetadataDatabase factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -62,10 +54,6 @@ class GetTrainSponsorMetadataDatabase(AbstractDatabaseFactory):
     def get_instance(cls) -> TrainSponsorMetadataDatabase:
         '''
         TrainSponsorMetadataDatabase factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -80,10 +68,6 @@ class GetTrainAssistorMetadataDatabase(AbstractDatabaseFactory):
     def get_instance(cls) -> TrainAssistorMetadataDatabase:
         '''
         TrainAssistorMetadataDatabase factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -98,10 +82,6 @@ class GetTrainAlgorithmDatabase(AbstractDatabaseFactory):
     def get_instance(cls) -> TrainAlgorithmDatabase:
         '''
         TrainAlgorithmDatabase factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -116,10 +96,6 @@ class GetTestSponsorMetadataDatabase(AbstractDatabaseFactory):
     def get_instance(cls) -> TestSponsorMetadataDatabase:
         '''
         TestSponsorMetadataDatabase factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -134,10 +110,6 @@ class GetTestAssistorMetadataDatabase(AbstractDatabaseFactory):
     def get_instance(cls) -> TestAssistorMetadataDatabase:
         '''
         TestAssistorMetadataDatabase factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -152,10 +124,6 @@ class GetTestAlgorithmDatabase(AbstractDatabaseFactory):
     def get_instance(cls) -> TestAlgorithmDatabase:
         '''
         TestAlgorithmDatabase factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------

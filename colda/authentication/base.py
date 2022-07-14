@@ -5,14 +5,6 @@ from typeguard import typechecked
 class AuthenticationBase:
     '''
     Base class for authentication
-
-    Attributes
-    ----------
-    None
-
-    Methods
-    -------
-    None
     '''
 
     @final

@@ -18,10 +18,6 @@ class MakeHash(BaseAlgorithm):
     '''
     Hash the identifier of dataset
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     make_hash

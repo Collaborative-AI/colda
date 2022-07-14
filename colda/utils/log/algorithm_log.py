@@ -26,10 +26,6 @@ class AlgorithmLog(BaseLog, AbstractLog):
     Algorithm log is used to store the information
     from the algorithm stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -48,10 +44,6 @@ class AlgorithmLog(BaseLog, AbstractLog):
         '''
         Singleton pattern. 
         Get instance of current class.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

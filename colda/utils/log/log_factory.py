@@ -25,10 +25,6 @@ class GetAlgorithmLog(AbstractLogFactory):
     def get_instance(cls) -> AlgorithmLog:
         '''
         AlgorithmLog factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -44,10 +40,6 @@ class GetWorkflowLog(AbstractLogFactory):
     def get_instance(cls) -> WorkflowLog:
         '''
         WorkflowLog factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------

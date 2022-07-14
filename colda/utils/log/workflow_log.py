@@ -22,10 +22,6 @@ class WorkflowLog(BaseLog, AbstractLog):
     from the workflow stage(train_workflow and
     test_workflow).
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -44,10 +40,6 @@ class WorkflowLog(BaseLog, AbstractLog):
         '''
         Singleton pattern. 
         Get instance of current class.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

@@ -19,10 +19,6 @@ class TrainAssistorSituation(TrainBaseWorkflow):
     '''
     Handle train assistor situation stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     train_assistor_situation

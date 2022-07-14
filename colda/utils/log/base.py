@@ -9,14 +9,6 @@ from typeguard import typechecked
 class BaseLog:
     '''
     Base class for log
-
-    Attributes
-    ----------
-    None
-
-    Methods
-    -------
-    None
     '''
     
     # TODO: implement methods

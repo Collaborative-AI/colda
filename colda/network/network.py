@@ -53,10 +53,6 @@ class Network(BaseNetwork):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         Network
@@ -71,10 +67,6 @@ class Network(BaseNetwork):
         '''
         Get the ipv4 address of AWS server
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         str
@@ -86,10 +78,6 @@ class Network(BaseNetwork):
     def token(self) -> str:
         '''
         Get the token
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -269,7 +257,7 @@ class Network(BaseNetwork):
         url_root: str,
         url_suffix: str=None,
         status_code: int=200, 
-    ) -> dict[str, Union(list[str], str)]:
+    ) -> dict[str, Union[list[str], str]]:
         '''
         Handle the http get request flow:
             1. generate url

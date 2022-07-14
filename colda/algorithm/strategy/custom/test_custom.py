@@ -17,10 +17,6 @@ class AbstractTestCustom(ABC):
     Abstract class for the custom part of
     test algorithm
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     None
@@ -40,10 +36,6 @@ class AbstractTestCustom(ABC):
 class TestFixedParameter(AbstractTestCustom):
     '''
     Fix learning rate in the make_test and make_eval stage
-
-    Attributes
-    ----------
-    None
 
     Methods
     -------
@@ -91,10 +83,6 @@ class TestOptimizedParameter(AbstractTestCustom):
     Learnable learning rate in the make_test 
     and make_eval stage
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     make_test
@@ -140,10 +128,6 @@ class TestOwnFunction(AbstractTestCustom):
     '''
     Custom testing algo in the make_test 
     and make_eval stage
-
-    Attributes
-    ----------
-    None
 
     Methods
     -------

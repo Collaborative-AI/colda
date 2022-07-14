@@ -26,10 +26,6 @@ class TrainSponsorOutput(TrainBaseWorkflow):
     '''
     Handle sponsor train output stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     train_sponsor_output

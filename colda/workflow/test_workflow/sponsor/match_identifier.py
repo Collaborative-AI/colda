@@ -21,10 +21,6 @@ class TestSponsorMatchIdentifier(TestBaseWorkflow):
     '''
     Handle test sponsor match identifier stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     test_sponsor_match_identifier

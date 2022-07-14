@@ -41,10 +41,6 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         TestAlgorithm
@@ -59,10 +55,6 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
         '''
         Get strategy object
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         Any
@@ -75,10 +67,6 @@ class TestAlgorithm(AbstractTestAlgorithmStrategy, BaseAlgorithmStrategy):
     ) -> None:
         '''
         Set strategy object
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

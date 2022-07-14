@@ -19,10 +19,6 @@ class TrainBaseWorkflow(BaseWorkflow):
     1. Wrap the algorithm part
     2. Implement some common methods
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     _calculate_residual

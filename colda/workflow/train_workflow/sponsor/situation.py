@@ -20,10 +20,6 @@ class TrainSponsorSituation(TrainBaseWorkflow):
     '''
     Handle sponsor train situation logic
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     train_sponsor_situation

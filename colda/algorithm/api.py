@@ -37,10 +37,6 @@ def get_all_algo_logs() -> dict[str, Any]:
     '''
     Return all logs
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     dict[str, Any]

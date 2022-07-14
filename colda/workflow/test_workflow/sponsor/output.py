@@ -19,10 +19,6 @@ class TestSponsorOutput(TestBaseWorkflow):
     '''
     Handle test sponsor output stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     test_sponsor_output

@@ -28,10 +28,6 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
     Train algorithm database mainly stores the output and log generated
     from algorithm part of train stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -51,10 +47,6 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         type[TrainAlgorithmDatabase]
@@ -67,10 +59,6 @@ class TrainAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
     def get_all_records_history(self) -> list[tuple[str, str]]:
         '''
         Return all keys of records in this database
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

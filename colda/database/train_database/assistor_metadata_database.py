@@ -20,10 +20,6 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
     '''
     Store and manage data generated from assistor train stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -43,10 +39,6 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         type[TrainAssistorMetadataDatabase]
@@ -59,10 +51,6 @@ class TrainAssistorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
     def get_all_records_history(self) -> list[tuple[str, str]]:
         '''
         Return all keys of records in this database
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

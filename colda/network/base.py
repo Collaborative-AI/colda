@@ -10,14 +10,6 @@ class BaseNetwork:
 
     '''
     Base class for Network
-
-    Attributes
-    ----------
-    None
-
-    Methods
-    -------
-    None
     '''
 
     @final

@@ -34,10 +34,6 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
     '''
     Manage test workflow
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -56,10 +52,6 @@ class TestMainWorkflow(AbstractTestMainWorkflow):
     def get_class(cls) -> type[TestMainWorkflow]:
         ''' 
         Get current class.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

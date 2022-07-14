@@ -9,14 +9,6 @@ from typeguard import typechecked
 class BasePI:
     '''
     Base class for PI
-
-    Attributes
-    ----------
-    None
-
-    Methods
-    -------
-    None
     '''
 
     @final

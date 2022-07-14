@@ -43,10 +43,6 @@ class DictHelper:
         1. Database
         2. Log
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     is_key_in_dict

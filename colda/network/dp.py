@@ -20,10 +20,6 @@ class DP:
     Data processing
     Parse http response
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     load_network_response

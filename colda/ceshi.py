@@ -1258,10 +1258,6 @@ class WorkflowLog():
     from the workflow stage(train_workflow and
     test_workflow).
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -1281,10 +1277,6 @@ class WorkflowLog():
         '''
         Singleton pattern. 
         Get instance of current class.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

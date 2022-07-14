@@ -37,10 +37,6 @@ class Authentication(AuthenticationBase):
     '''
     Verify user identity
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     user_register
@@ -54,7 +50,6 @@ class Authentication(AuthenticationBase):
         self.Network_instance = Network.get_instance()
         self.PI_instance = PI.get_instance()
 
-
         self.base_url = self.Network_instance.base_url
 
     @classmethod
@@ -62,10 +57,6 @@ class Authentication(AuthenticationBase):
         '''
         Singleton pattern. 
         Get instance of current class.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -182,10 +173,6 @@ class Authentication(AuthenticationBase):
         '''
         user logout
         clean related class
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

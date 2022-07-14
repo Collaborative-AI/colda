@@ -22,10 +22,6 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
     '''
     Store and manage data generated from sponsor train stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -45,10 +41,6 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         type[TrainSponsorMetadataDatabase]
@@ -61,10 +53,6 @@ class TrainSponsorMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
     def get_all_records_history(self) -> list[tuple[str, str]]:
         '''
         Return all keys of records in this database
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

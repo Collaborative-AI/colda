@@ -9,10 +9,6 @@ def get_user_id() -> str:
     '''
     Get user id
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     str
@@ -22,10 +18,6 @@ def get_user_id() -> str:
 def get_default_mode() -> str:
     '''
     Get default mode of assistor
-
-    Parameters
-    ----------
-    None
 
     Returns
     -------
@@ -37,10 +29,6 @@ def get_data_storage_root() -> str:
     '''
     Data storage root path is used to store
     the seralization of some instance.
-
-    Parameters
-    ----------
-    None
 
     Returns
     -------

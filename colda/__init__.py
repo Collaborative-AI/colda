@@ -159,10 +159,6 @@ def logout():
     '''
     User logout.
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     None
@@ -262,10 +258,6 @@ def start_cooperation() -> None:
     '''
     Start cooperation
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     None
@@ -277,10 +269,6 @@ def start_cooperation() -> None:
 def end_cooperation() -> None:
     '''
     End cooperation
-
-    Parameters
-    ----------
-    None
 
     Returns
     -------

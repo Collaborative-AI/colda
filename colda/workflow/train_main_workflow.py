@@ -44,10 +44,6 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
     '''
     Manage train workflow
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -66,10 +62,6 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
     def get_class(cls) -> type[TrainMainWorkflow]:
         ''' 
         Get current class.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

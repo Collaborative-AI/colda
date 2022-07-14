@@ -29,10 +29,6 @@ class MakeTrainLocal(BaseAlgorithm):
     Sponsor train model locally(only use its dataset) 
     and get its performance
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     make_train_local

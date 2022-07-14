@@ -46,10 +46,6 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         type[TrainAlgorithm]
@@ -64,10 +60,6 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
         '''
         Get strategy object
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         Any
@@ -80,10 +72,6 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
     ) -> None:
         '''
         Set strategy object
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

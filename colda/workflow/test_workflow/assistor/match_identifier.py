@@ -18,10 +18,6 @@ class TestAssistorMatchIdentifier(TestBaseWorkflow):
     '''
     Handle test assistor match identifier stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     test_assistor_match_identifier

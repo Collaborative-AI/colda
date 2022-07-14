@@ -24,10 +24,6 @@ class Metric(BaseMetric):
     Metrics used to measure the performance of
     the model
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     make_metric

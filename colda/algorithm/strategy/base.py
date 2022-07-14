@@ -27,10 +27,6 @@ class BaseAlgorithmStrategy:
             make_hash
             make_match_idx
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     algorithm_process

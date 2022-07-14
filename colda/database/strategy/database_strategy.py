@@ -52,10 +52,6 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         DatabaseOperator
@@ -70,10 +66,6 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
         '''
         Get strategy object
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         Any
@@ -84,10 +76,6 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
     def database(self, database) -> None:
         '''
         Set strategy object
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

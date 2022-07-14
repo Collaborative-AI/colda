@@ -21,10 +21,6 @@ class TestAssistorRequest(TestBaseWorkflow):
     '''
     Handle test assistor request stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     test_assistor_request

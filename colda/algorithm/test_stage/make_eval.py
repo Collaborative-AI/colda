@@ -32,10 +32,6 @@ class MakeEval(BaseAlgorithm):
     Test model using the test dataset.
     Evaluate the predicted results 
     at each round. 
-    
-    Attributes
-    ----------
-    None
 
     Methods
     -------

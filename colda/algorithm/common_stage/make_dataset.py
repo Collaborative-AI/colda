@@ -20,10 +20,6 @@ class MakeDataset(BaseAlgorithm):
     '''
     Pre-processing the dataset
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     make_dataset
@@ -44,7 +40,12 @@ class MakeDataset(BaseAlgorithm):
         
         Parameters
         ----------
-        None
+        root : str
+        data_name : str
+        num_users : int
+        task_id : str
+        match_rate : float=0.5
+        normalize : bool=True
 
         Returns
         -------
@@ -120,7 +121,8 @@ class MakeDataset(BaseAlgorithm):
         
         Parameters
         ----------
-        None
+        data_name : str 
+        num_users : int
 
         Returns
         -------
@@ -142,7 +144,8 @@ class MakeDataset(BaseAlgorithm):
         
         Parameters
         ----------
-        None
+        data_name : str 
+        normalize : int
 
         Returns
         -------

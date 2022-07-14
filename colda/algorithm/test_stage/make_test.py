@@ -23,12 +23,8 @@ class MakeTest(BaseAlgorithm):
         Utilize sponsor_trained_model at each round 
         to produce n(round number) predictions
     Assistor side:
-        Utilize assistor_trained_model at each round t
-        o produce n(round number) predictions
-
-    Attributes
-    ----------
-    None
+        Utilize assistor_trained_model at each round 
+        to produce n(round number) predictions
 
     Methods
     -------

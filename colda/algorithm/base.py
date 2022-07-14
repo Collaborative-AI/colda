@@ -15,10 +15,6 @@ class BaseAlgorithm:
     '''
     Base class for algorithm
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     _store_log

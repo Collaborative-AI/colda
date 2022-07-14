@@ -14,10 +14,6 @@ class TestSponsorFindAssistor(TestBaseWorkflow):
     '''
     Handle test sponsor find assistor.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     find_test_assistor
@@ -27,10 +23,6 @@ class TestSponsorFindAssistor(TestBaseWorkflow):
     def __get_test_id(cls) -> str:
         ''' 
         Get new test id for this test task.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

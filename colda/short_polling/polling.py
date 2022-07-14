@@ -21,10 +21,6 @@ class ShortPolling():
     '''
     Short polling to interact with back-end
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -66,10 +62,6 @@ class ShortPolling():
         '''
         Singleton pattern. 
         Get instance of current class.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -148,10 +140,6 @@ class ShortPolling():
         '''
         Short Polling for new Notifications
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         None
@@ -196,10 +184,6 @@ class ShortPolling():
         Start short polling
         Set indicator to True
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         None
@@ -217,10 +201,6 @@ class ShortPolling():
         '''
         End short polling
         Set indicator to False
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

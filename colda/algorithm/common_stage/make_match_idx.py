@@ -18,10 +18,6 @@ class MakeMatchIdx(BaseAlgorithm):
     Match the identifiers from other participants and
     current user's identifiers
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     make_match_idx

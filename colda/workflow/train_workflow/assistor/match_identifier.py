@@ -14,10 +14,6 @@ class TrainAssistorMatchIdentifier(TrainBaseWorkflow):
     '''
     Handle train assistor match identifier stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     train_assistor_match_identifier

@@ -25,10 +25,6 @@ class MakeTrain(BaseAlgorithm):
     '''
     Train the model
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     make_train

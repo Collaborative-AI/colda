@@ -22,10 +22,6 @@ class MakeResult(BaseAlgorithm):
     Combine the sponsor's trained model and assistors' trained 
     models to a better sponsor model
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     make_result

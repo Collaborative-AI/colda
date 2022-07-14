@@ -16,10 +16,6 @@ class TrainSponsorMatchIdentifier(TrainBaseWorkflow):
     '''
     Handle sponsor match identifier stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     train_sponsor_match_identifier

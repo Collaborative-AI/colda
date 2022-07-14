@@ -9,14 +9,6 @@ from typeguard import typechecked
 class BaseModel:
     '''
     Base class for Model
-
-    Attributes
-    ----------
-    None
-
-    Methods
-    -------
-    None
     '''
 
     @final

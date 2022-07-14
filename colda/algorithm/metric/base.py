@@ -8,16 +8,7 @@ from typeguard import typechecked
 class BaseMetric:
     '''
     Base class for Metric
-
-    Attributes
-    ----------
-    None
-
-    Methods
-    -------
-    None
     '''
-
     @final
     def placeholder(self):
         pass

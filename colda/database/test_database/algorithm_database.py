@@ -23,10 +23,6 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
     Test algorithm database mainly stores the output and log generated
     from algorithm part of test stage.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     get_instance
@@ -46,10 +42,6 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         type[TestAlgorithmDatabase]
@@ -62,10 +54,6 @@ class TestAlgorithmDatabase(BaseDatabase, AbstractAlgorithmDatabase):
     def get_all_records_history(self) -> list[tuple[str, str]]:
         '''
         Return all keys of records in this database
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

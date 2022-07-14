@@ -10,10 +10,6 @@ def get_user_id() -> str:
     '''
     Get current user_id
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     str

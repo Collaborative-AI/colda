@@ -17,10 +17,6 @@ class AbstractTrainCustom(ABC):
     Abstract class for the custom part of
     train algorithm
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     None
@@ -40,10 +36,6 @@ class AbstractTrainCustom(ABC):
 class TrainFixedParameter(AbstractTrainCustom):
     '''
     Fix learning rate in the make_train and make_result stage
-
-    Attributes
-    ----------
-    None
 
     Methods
     -------
@@ -91,10 +83,6 @@ class TrainOptimizedParameter(AbstractTrainCustom):
     Learnable learning rate in the make_train 
     and make_result stage
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     make_train
@@ -138,10 +126,6 @@ class TrainOwnFunction(AbstractTrainCustom):
     '''
     Custom testing algo in the make_train 
     and make_result stage
-
-    Attributes
-    ----------
-    None
 
     Methods
     -------

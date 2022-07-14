@@ -22,14 +22,6 @@ from typeguard import typechecked
 class AbstractCustomFactory(ABC):
     '''
     Abstract class for custom algorithm factory
-
-    Parameters
-    ----------
-    None
-
-    Returns
-    -------
-    None
     '''
 
     @classmethod
@@ -45,10 +37,6 @@ class GetTrainFixedParameter(AbstractCustomFactory) :
     def get_class(cls) -> type[TrainFixedParameter]:
         '''
         TrainFixedParameter factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -64,10 +52,6 @@ class GetTrainOptimizedParameter(AbstractCustomFactory):
     def get_class(cls) -> type[TrainOptimizedParameter]:
         '''
         TrainOptimizedParameter factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -104,10 +88,6 @@ class GetTestFixedParameter(AbstractCustomFactory):
     def get_class(cls) -> type[TestFixedParameter]:
         '''
         TestFixedParameter factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -123,10 +103,6 @@ class GetTestOptimizedParameter(AbstractCustomFactory):
     def get_class(cls) -> type[TestOptimizedParameter]:
         '''
         TestOptimizedParameter factory
-        
-        Parameters
-        ----------
-        None
 
         Returns
         -------

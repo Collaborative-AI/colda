@@ -17,10 +17,6 @@ class TrainSponsorFindAssistor(TrainBaseWorkflow):
     '''
     Handle sponsor train find assistor.
 
-    Attributes
-    ----------
-    None
-
     Methods
     -------
     find_assistor

@@ -50,10 +50,6 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
         Singleton pattern. 
         Get instance of current class.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         type[DefaultMetadataDatabase]
@@ -66,10 +62,6 @@ class DefaultMetadataDatabase(BaseDatabase, AbstractMetadataDatabase):
     def get_all_records_history(self) -> list[tuple[str]]:
         '''
         Return all records in this database
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------

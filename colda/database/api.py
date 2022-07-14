@@ -18,10 +18,6 @@ def get_all_train_id() -> list[str]:
     Get all train ids that store
     in all db
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     list[str]
@@ -33,10 +29,6 @@ def get_all_test_id() -> list[str]:
     Get all test ids that store
     in all db
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     list[str]
@@ -47,10 +39,6 @@ def get_all_train_id_as_sponsor() -> list[str]:
     '''
     Get all train ids as sponsor that store
     in all db
-
-    Parameters
-    ----------
-    None
 
     Returns
     -------
@@ -69,10 +57,6 @@ def get_all_test_id_as_sponsor() -> list[str]:
     '''
     Get all test ids as sponsor that store
     in all db
-
-    Parameters
-    ----------
-    None
 
     Returns
     -------
@@ -93,10 +77,6 @@ def get_all_train_id_as_assistor() -> list[str]:
     Get all train ids as assistor that store
     in all db
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     list[str]
@@ -115,10 +95,6 @@ def get_all_test_id_as_assistor() -> list[str]:
     Get all test ids as assistor that store
     in all db
 
-    Parameters
-    ----------
-    None
-
     Returns
     -------
     list[str]
@@ -132,13 +108,9 @@ def get_all_test_id_as_assistor() -> list[str]:
 
     return all_test_ids
 
-def logout():
+def logout(self):
     '''
     Clean all database
-
-    Parameters
-    ----------
-    None
 
     Returns
     -------

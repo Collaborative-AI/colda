@@ -1,0 +1,236 @@
+.buy-sell-widget {
+    .nav-tabs {
+        margin-bottom: 30px;
+        border       : 0px;
+
+        .nav-item {
+            width     : 50%;
+            text-align: center;
+
+            .nav-link {
+                padding       : 10px 10px;
+                font-size     : 18px;
+                text-transform: uppercase;
+                border        : 0px;
+                font-weight   : 500;
+                border-radius : 5px;
+                background    : transparent;
+                border        : 1px solid $border-color;
+                margin        : 0px 15px;
+
+                &.active {
+                    background: $primary;
+                    color     : white;
+                }
+            }
+        }
+    }
+}
+
+.buyer-seller {
+    .d-flex {
+        @include respond('phone-land') {
+
+            .buyer-info,
+            .seller-info {
+                padding: 10px;
+
+                img {
+                    display: none;
+                }
+            }
+        }
+
+        @include respond('phone-land') {
+            justify-content: flex-start;
+        }
+
+        @include respond('phone') {
+            flex-direction: column;
+
+            .seller-info {
+                text-align: left !important;
+            }
+        }
+    }
+}
+
+#accordion-faq {
+    margin-top: -15px;
+    box-shadow: none;
+
+    .card {
+        margin-bottom: 0px;
+        border       : 0px solid $border-color;
+        box-shadow   : none;
+
+        .card-header {
+            border : 0px;
+            padding: 15px 0px 10px;
+        }
+
+        .card-body {
+            padding: 0px 0px 10px;
+        }
+    }
+}
+
+.intro-video-play {
+    background-color   : $white;
+    background-image   : url('./../images/background/2.jpg');
+    background-size    : cover;
+    background-position: 0 0;
+    min-height         : 363px;
+    // max-width       : 800px;
+    margin             : 0 auto;
+    position           : relative;
+    border-radius      : 5px;
+    z-index            : 0;
+    margin-bottom      : 30px;
+    box-shadow         : 0 1.5rem 4rem rgba(22, 28, 45, 0.1);
+
+    &::after {
+        content      : '';
+        position     : absolute;
+        top          : 0;
+        left         : 0;
+        right        : 0;
+        bottom       : 0;
+        background   : $primary;
+        opacity      : 0.45;
+        border-radius: 5px;
+        z-index      : -1;
+    }
+}
+
+.play-btn {
+    position       : absolute;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    height         : 100%;
+    width          : 100%;
+
+    a {
+        background   : $primary;
+        width        : 75px;
+        height       : 75px;
+        border-radius: 100px;
+        padding      : 27px 0;
+        text-align   : center;
+        cursor       : pointer;
+
+        i {
+            color: $white;
+            font-size: 20px;
+        }
+    }
+}
+
+
+// // Apps Download
+.apps-download {
+    margin-bottom: 20px;
+    border-radius: 5px;
+    position     : relative;
+    padding: 0px 20px;
+
+    & ::before {
+        background-image   : url('./../images/app.png');
+        background-color   : #3A3361;
+        background-size    : cover;
+        background-position: center;
+        position           : absolute;
+        z-index            : -1;
+        content            : '';
+        left               : 0;
+        right              : 0;
+        top                : 0;
+        bottom             : 0;
+        border-radius      : 5px;
+        opacity            : 0.15;
+    }
+
+    & ::after {
+        position     : absolute;
+        content      : '';
+        left         : 0;
+        right        : 0;
+        top          : 0;
+        bottom       : 0;
+        background   : $primary;
+        opacity      : 0.3;
+        z-index      : -1;
+        border-radius: 5px;
+    }
+
+    // .card-title {
+    //     color: $white;
+    // }
+}
+
+.apps-download-content {
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    flex-direction : column;
+    min-height     : 504px;
+
+    h4 {
+        padding: 20px;
+        color  : $white;
+        text-align: center;
+        line-height: 1.3;
+    }
+    .btn{
+        min-width: 130px;
+    }
+    .btn-primary{
+        background: darken($primary, 10%);
+    }
+}
+
+//
+
+.transaction-table {
+    td {
+        padding: 1.25rem 0.75rem;
+    }
+    i.cc {
+        font-size   : 22px;
+        margin-right: 10px;
+    }
+    .sold-thumb {
+        background     : $danger;
+        color          : $white;
+        border-radius  : 50px;
+        width          : 30px;
+        height         : 30px;
+        text-align     : center;
+        display        : flex;
+        justify-content: center;
+        align-items    : center;
+        i {
+            font-weight : 700;
+            // font-size: 18px;
+        }
+    }
+    .buy-thumb {
+        background     : $success;
+        color          : $white;
+        border-radius  : 15px;
+        width          : 30px;
+        height         : 30px;
+        text-align     : center;
+        display        : flex;
+        justify-content: center;
+        align-items    : center;
+        i {
+            font-weight : 700;
+            // font-size: 22px;
+        }
+    }
+    .badge {
+        color: #fff;
+    }
+}

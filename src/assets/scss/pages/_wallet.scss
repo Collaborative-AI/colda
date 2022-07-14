@@ -1,0 +1,50 @@
+.wallet-feature {
+    border-top: 1px solid $border-color;
+  .wallet-feature-content {
+    margin-bottom: 50px;
+    text-align: center;
+    i {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: $primary;
+    }
+    h4 {
+      max-width: 200px;
+      margin: 0 auto;
+    }
+  }
+}
+
+//
+
+.all-coin{
+    border-bottom: 1px solid $border-color;
+}
+
+.all-coins {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  span {
+    font-size: 48px;
+    // padding: 10px;
+    width: 100px;
+    height: 100px;
+    // box-shadow: 0 2rem 5rem rgba(22,28,45,.1),0 .5rem 1rem -.75rem rgba(22,28,45,.05);
+    border: 1px solid $border-color;
+    border-radius: 100%;
+    text-align: center;
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.all-coin-content{
+    padding: 75px 0 0;
+    text-align: center;
+    h3{
+        margin-bottom: 15px;
+    }
+}

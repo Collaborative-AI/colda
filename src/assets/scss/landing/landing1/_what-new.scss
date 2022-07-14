@@ -1,0 +1,104 @@
+.whatsNew-tab {
+    .nav {
+        flex-direction: column;
+        .nav-item {
+            margin-bottom: 30px;
+            .nav-link {
+                background: transparent;
+                color: $headings-color;
+                font-size: 20px;
+                padding: 15px 15px;
+                border: 1px solid $primary;
+                transition: all 0.5s ease-in-out;
+                &:hover,
+                &:focus,
+                &.active {
+                    background: lighten($primary, 38%);
+                    color: $primary;
+                    border: 1px solid $primary;
+                }
+            }
+        }
+    }
+}
+
+.accordion {
+    box-shadow: 0 1.5rem 4rem rgba(22, 28, 45, 0.1);
+    //a single accrodion
+    &__item {
+        margin-bottom: -1px;
+    }
+    //accrodion header styles
+    &__header {
+        padding: 0.9375rem;
+        border: 1px solid $border-color;
+        cursor: pointer;
+        position: relative;
+        font-weight: 500;
+        //set the indicator font family
+        &--indicator {
+            font-family: 'LineAwesome';
+            position: absolute;
+            right: 1.5625rem;
+            top: 50%;
+            transform: translateY(-50%);
+            &.indicator_bordered {
+                display: inline-block;
+                width: 25px;
+                text-align: center;
+                height: 25px;
+                border: 1px solid #ddd;
+                border-radius: 50%;
+                line-height: 25px;
+            }
+        }
+        &:not(.collapsed) {
+            .accordion__header--indicator {
+                &::before {
+                    content: "\f110";
+                }
+                //icon style
+                &.style_two {
+                    &::before {
+                        content: "\f113";
+                    }
+                }
+            }
+        }
+        &.collapsed {
+            .accordion__header--indicator {
+                &::before {
+                    content: "\f113";
+                }
+                //icon style
+                &.style_two {
+                    &::before {
+                        content: "\f110";
+                    }
+                }
+            }
+        }
+    }
+    //accordion body styles
+    &__body {
+        &--text {
+            padding: 0.9375rem;
+        }
+    }
+    //active header styles
+    &-active-header {
+        .accordion__header {
+            &:not(.collapsed) {
+                background-color: $primary;
+                color: $white;
+            }
+        }
+    }
+}
+
+// .whats-new-img{
+//     text-align: right;
+//     img{
+//         max-width: 80%;
+//     }
+// }

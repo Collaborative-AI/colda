@@ -1,0 +1,32 @@
+.bottom {
+  background: #1B2A4E;
+  .bottom-logo {
+    p {
+      // color: #b2b6c4;
+      line-height: 30px;
+      font-weight: 400;
+    }
+  }
+  .bottom-widget {
+    @include respond("tab-port") {
+      margin-bottom: 30px;
+    }
+    .widget-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    ul {
+      li {
+        a {
+          // color: #b2b6c4;
+          color: $body-color;
+          font-weight: 400;
+          margin-bottom: 10px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}

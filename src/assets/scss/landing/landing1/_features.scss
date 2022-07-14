@@ -1,0 +1,43 @@
+.features {
+    background: $white;
+}
+
+.features-tab {
+    .nav {
+        justify-content: center;
+        margin-bottom: 50px;
+        .nav-item {
+            // margin: 0px 30px;
+            border-bottom: 1px solid #ddd;
+            .nav-link {
+                color: $headings-color;
+                font-weight: 500;
+                padding: 10px 30px;
+                background: transparent;
+                border-radius: 0px;
+                margin-bottom: -1px;
+                &.active {
+                    background: transparent;
+                    color: $primary;
+                    border-bottom: 1px solid $primary;
+                }
+            }
+        }
+    }
+}
+
+.features-content-img {
+    img {
+        max-width: 80%;
+    }
+}
+
+.features-content-text {
+    h3 {
+        margin-bottom: 20px;
+    }
+    p {
+        font-weight: 300;
+        line-height: 30px
+    }
+}

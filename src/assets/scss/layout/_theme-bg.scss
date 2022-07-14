@@ -1,0 +1,278 @@
+//background for header
+
+@each $name,
+$color in $theme_backgrounds {
+    [data-bodybg="#{$name}"] {
+        @if $name !="color_1" {
+            $body-bg       : $color;
+            $body-color    : lighten($color, 50%);
+            $headings-color: lighten($color, 80%);
+
+            background-color: $body-bg !important;
+            color           : $body-color !important;
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6,
+            .h1,
+            .h2,
+            .h3,
+            .h4,
+            .h5,
+            .h6 {
+                color: $headings-color;
+            }
+
+            .sidebar,
+            .header {
+                background: lighten($color, 3%);
+            }
+
+            .card {
+                background: lighten($body-bg, 3%);
+                border: 1px solid lighten($body-bg, 10%);
+
+                &-header {
+                    background  : lighten($body-bg, 3%);
+                    border-color: darken($body-bg, 1%);
+                }
+
+                .card-body {
+                    background: lighten($body-bg, 3%);
+                }
+            }
+
+            //
+            .group-2JyOhh7Z {
+                background-color: lighten($body-bg, 3%) !important;
+            }
+
+            
+
+
+            // .interested-join {
+            //   background: darken($color, 10%);
+            // }
+        }
+    }
+}
+
+//background for nav header
+@each $name,
+$color in $theme_primary_color {
+    [data-primary-color="#{$name}"] {
+        @if $name !="color_1" {
+            .btn-primary {
+                background-color: $color;
+                border-color    : $color;
+
+                &:hover,
+                &:focus,
+                &:active,
+                &.active {
+                    background-color: darken($color, 10%);
+                    border-color    : darken($color, 10%);
+                    box-shadow      : none;
+                }
+
+                &:not(:disabled):not(.disabled):active,
+                &:not(:disabled):not(.disabled).active {
+                    background-color: darken($color, 10%);
+                    border-color    : darken($color, 10%);
+                    box-shadow      : none;
+                }
+            }
+
+            .btn-outline-primary {
+                background-color: transparent;
+                color           : $color;
+                border-color    : $color;
+
+                &:hover,
+                &:focus,
+                &:active,
+                &.active {
+                    background-color: darken($color, 10%);
+                    border-color    : darken($color, 10%);
+                    box-shadow      : none;
+                    color           : $white;
+                }
+
+                &:not(:disabled):not(.disabled):active,
+                &:not(:disabled):not(.disabled).active {
+                    background-color: darken($color, 10%);
+                    border-color    : darken($color, 10%);
+                    box-shadow      : none;
+                    color           : $white;
+                }
+            }
+
+            .sidebar {
+                background: darken($color, 5%);
+            }
+
+            i.la,
+            i.fa,
+            .text-primary {
+                color: $color !important;
+            }
+
+            .bg-primary {
+                background-color: $color !important;
+            }
+
+            .owl-next,
+            .owl-prev {
+                background-color: darken($color, 10%) !important;
+
+                i {
+                    color: $white !important;
+                }
+            }
+
+            .intro-form {
+                button {
+                    background: $color;
+                    color     : $white !important;
+
+                    i {
+                        color: $white !important;
+                    }
+                }
+            }
+
+            .intro-form-exchange .btn i {
+                color: $white !important;
+            }
+
+            .product-feature-box {
+                i {
+                    color: $white !important;
+                }
+            }
+
+            .trust-content {
+                border-color: $color;
+            }
+
+            .footer a {
+                color: $color !important;
+            }
+
+            // Price page
+
+            .sort-view .search-timeline a:hover,
+            .sort-view .search-timeline a:focus,
+            .sort-view .search-timeline a:active,
+            .sort-view .search-timeline a.active {
+                color: $color;
+            }
+
+            .sort-view .coin-view .nav .nav-item .nav-link {
+                color: $white;
+            }
+
+            .sort-view .coin-view .nav .nav-item .nav-link:hover,
+            .sort-view .coin-view .nav .nav-item .nav-link:focus,
+            .sort-view .coin-view .nav .nav-item .nav-link:active,
+            .sort-view .coin-view .nav .nav-item .nav-link.active {
+                background: $color;
+            }
+
+            .badge {
+                background: $color !important;
+                color     : $white !important;
+            }
+
+            .intro-video-play::after {
+                background: $color;
+            }
+
+            // Dashboard
+            .menu ul li a,
+            .menu ul li a i,
+            .menu ul li a.active i {
+                color: $white !important;
+            }
+
+            .page-title .page-title-content p {
+                color: $color;
+            }
+
+            .profile_chart.card .card-header .duration-option a:hover,
+            .profile_chart.card .card-header .duration-option a:focus,
+            .profile_chart.card .card-header .duration-option a.active {
+                background: $color;
+            }
+
+            .profile_log .user .thumb {
+                background: $color;
+                color     : $white !important;
+
+                i {
+                    color: $white !important;
+                }
+            }
+
+            .trade-app-content .card-body a {
+                color: $color;
+            }
+
+            .buy-sell-widget .nav-tabs .nav-item .nav-link {
+                color: $color;
+            }
+
+            .buy-sell-widget .nav-tabs .nav-item .nav-link.active {
+                background: $color;
+                color     : white;
+            }
+
+            .social-icons a {
+                background: $color;
+                color     : white !important;
+
+                i {
+                    color: white !important;
+                }
+            }
+
+            .settings_menu ul li a {
+                color: $color;
+            }
+
+            .toggle-checkbox:checked+.toggle-switch {
+                background: $color;
+            }
+
+            .file-upload-wrapper:before {
+                background: $color;
+            }
+
+            .sidebar-right .sidebar-right-trigger {
+                background-color: $color !important;
+                color           : $white !important;
+
+                i {
+                    color: $white !important;
+                }
+            }
+
+            .form-control:focus,
+            .form-control:active,
+            .form-control.active {
+                border-color: $color;
+            }
+        }
+    }
+}
+
+[data-font="opensans"] {
+    font-family: "Open Sans", sans-serif;
+}
+
+[data-font="nunito"] {
+    font-family: "Nunito", sans-serif;
+}

@@ -1,0 +1,43 @@
+.sidebar {
+    background: darken($color: $white, $amount: 0%);
+    position: fixed;
+    left: 0;
+    height: 100%;
+    width: 60px;
+    top: 0;
+    box-shadow: 0 10px 30px 0 rgba(82, 63, 105, 0.08);
+}
+
+.menu {
+    margin-top: 100px;
+    ul {
+        li {
+            text-align: center;
+            margin-bottom: 15px;
+            a {
+                padding: 2px 10px;
+                display: inline-block;
+                margin-bottom: 5px;
+                border-radius: 5px;
+                &:hover,
+                &:focus,
+                &:active {
+                    background: lighten($primary, 0%);
+                    i {
+                        color: $white;
+                    }
+                }
+                &.active {
+                    background: $primary;
+                    i {
+                        color: $white;
+                    }
+                }
+                i {
+                    color: $headings-color;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}

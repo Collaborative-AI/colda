@@ -1,0 +1,32 @@
+
+
+.get-touch {
+    border-bottom: 1px solid $border-color;
+}
+
+.get-touch-content {
+    // text-align: center;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 1.5rem 4rem rgba(22, 28, 45, 0.1);
+    background: $white;
+    border-radius: 5px;
+    span {
+        margin-right: 15px;
+        i {
+            color: $primary;
+            font-size: 42px;
+        }
+    }
+    h4 {
+        font-size: 20px;
+        // margin-top: 30px;
+        margin-bottom: 10px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    p {
+        line-height: 27px;
+    }
+}

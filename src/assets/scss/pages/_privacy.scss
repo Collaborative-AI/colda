@@ -1,0 +1,35 @@
+.terms_condition {
+    position: relative;
+    // background: $white;
+}
+
+.terms_condition-content {
+    padding: 80px 0px 80px;
+}
+
+.terms_condition-text {
+    margin-bottom: 45px;
+    &:last-child {
+        margin-bottom: 0;
+    }
+    h3 {
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 30px;
+    }
+    p {
+        font-size: 16px;
+        line-height: 30px;
+        display: inline-block;
+        // color: #2E4577;
+    }
+    li {
+        display: flex;
+        i {
+            line-height: 30px;
+            margin-right: 15px;
+            font-size: 13px;
+            color: $primary;
+        }
+    }
+}

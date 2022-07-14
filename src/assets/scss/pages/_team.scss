@@ -1,0 +1,22 @@
+.join-team{
+    border-bottom: 1px solid $border-color;
+}
+
+
+
+.interested-join{
+    border-top: 1px solid $border-color;
+    background: darken($primary, 10%);
+    h2{
+        color: $white;
+        margin-bottom: 15px;
+    }
+    p{
+        color: $white;
+    }
+    .btn{
+        padding: 7px 20px;
+        margin-top: 30px;
+
+    }
+}

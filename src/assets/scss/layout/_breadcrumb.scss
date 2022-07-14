@@ -1,0 +1,58 @@
+.page-title {
+    padding: 30px 0;
+
+    //   background: url("../images/breadcrumb/1.jpg");
+    &.dashboard {
+        background : transparent;
+        margin-left: 75px;
+        padding    : 20px 0 0px;
+    }
+
+    .page-title-content {
+        p {
+            // color     : #fff;
+            font-size    : 16px;
+            font-weight  : 400;
+            margin-bottom: 0px;
+
+            span {
+                font-weight: 500;
+                color      : $primary;
+            }
+        }
+    }
+
+}
+
+
+.breadcrumbs {
+    display        : flex;
+    justify-content: flex-end;
+
+    @include respond('phone') {
+        justify-content: flex-start;
+    }
+
+    li {
+        a {
+            color      : $text-muted;
+            display    : inline-block;
+            margin-left: 15px;
+            font-size  : 14px;
+
+
+        }
+
+        &:first-child {
+            a {
+                margin-left: 0px;
+            }
+        }
+
+        &.active {
+            a {
+                color: $primary;
+            }
+        }
+    }
+}

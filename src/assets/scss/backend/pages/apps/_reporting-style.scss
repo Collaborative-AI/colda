@@ -1,0 +1,72 @@
+#reporting-chart-04 {
+	height: 300px!important;
+}
+#reporting-chart-14 {
+    height: 400px!important;
+}
+#reporting-chart-07 {
+    height: 320px!important;
+}
+#reporting-chart-08{
+	min-height: 310px!important;
+	display: flex;
+    justify-content: center;
+	 .apexcharts-canvas{
+		 margin:0 auto;
+	 }
+}
+.social-report-chart{
+	#ecommerce-chart-03 {
+    height: 290px;
+	}
+}
+#reporting-chart-15{
+	min-height: 300px!important;
+}
+.iq-details {
+	.iq-progress-bar {
+		height: 10px;
+		padding: 3px;
+	}
+}
+.iq-icon-box-2 {
+	height: 55px;
+	width: 55px;
+	line-height: 55px;
+	text-align: center;
+	margin-right: 10px;
+	font-size: 26px;
+}
+.reporting-table.table.table-borderless {
+	thead {
+		th {
+			border-bottom: 1px solid $border-color;
+		}
+	}
+}
+.reporting_table {
+	tbody {
+		tr {
+			border-bottom: 10px solid $white;
+			background-color: $body-bg;
+		}
+		td {
+			background-color: transparent;
+			border: 0px solid transparent;
+		}
+	}
+}
+
+@media (max-width: 479px){
+	.iq-rounded-block{
+		display: block !important;
+		.progress-round.goal-progress{
+			margin-bottom: 15px;
+		}
+	}
+}
+@media (max-width: 380px){
+	#reporting-chart-16{
+		min-height:280px!important;
+	}
+}

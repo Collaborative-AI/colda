@@ -1,0 +1,20 @@
+@keyframes rippleDrop {
+	100% {
+		@include transform-mixin( scale(2));
+		@include opacity-mixin(0);
+	}
+}
+.ripple {
+	width: 0;
+	height: 0;
+	@if $enable-rounded == true {
+		@include radius-mixin($border-radius-circle);
+	}
+	background: $primary-light;
+	@include transform-mixin( scale(0));
+	position: absolute;
+	@include opacity-mixin(1);
+}
+.rippleEffect {
+	animation: rippleDrop .6s linear;
+}

@@ -1,0 +1,175 @@
+.stepwizard-row {
+	display: block;
+	margin: 0 -20px;
+	.wizard-step {
+		a.btn {
+			background: $white;
+			color: $body-color;
+			font-size: 18px;
+			font-weight: 400;
+			display: block;
+			padding: 50px 15px;
+			margin: 10px 20px;
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius);
+			}
+			text-decoration: none;
+			border: 1px solid $primary-light;
+		}
+		i {
+			display: block;
+			text-align: center;
+			height: 65px;
+			width: 65px;
+			line-height: 65px;
+			font-size: 25px;
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius-circle);
+			}
+			margin: 0 auto 20px;
+			color: $white;
+			background: $primary;
+		}
+	}
+	#user.active {
+		a {
+			background: $primary-light;
+			border-color: $primary;
+		}
+	}
+	#document.active {
+		a {
+			background: $danger-light;
+			border-color: $danger;
+		}
+	}
+	#bank.active {
+		a {
+			background: $success-light;
+			border-color: $success;
+		}
+	}
+	#confirm.active {
+		a {
+			background: $warning-light;
+			border-color: $warning;
+		}
+	}
+	.wizard-step#user {
+		i {
+			background: $primary-light;
+			color: $primary;
+		}
+	}
+	.wizard-step#document {
+		i {
+			background: $danger-light;
+			color: $danger;
+		}
+	}
+	.wizard-step#bank {
+		i {
+			background: $success-light;
+			color: $success;
+		}
+	}
+	.wizard-step#confirm {
+		i {
+			background: $warning-light;
+			color: $warning;
+		}
+	}
+	.wizard-step.active {
+		i {
+			background-color: $white !important;
+		}
+	}
+	.wizard-step#document.active {
+		i {
+			background: $danger-light;
+			color: $danger;
+		}
+	}
+	.wizard-step#bank.active {
+		i {
+			background: $success-light;
+			color: $success;
+		}
+	}
+	.wizard-step#confirm.active {
+		i {
+			background: $warning-light;
+			color: $warning;
+		}
+	}
+}
+.stepwizard {
+	display: table;
+	width: 100%;
+	position: relative;
+}
+.setup-content {
+	margin-top: 60px;
+}
+.wizard-step {
+	font-size: 18px;
+	width: 25%;
+	float: left;
+	position: relative;
+	font-weight: 400;
+	text-align: center;
+}
+.has-error {
+	.help-block {
+		color: $danger;
+	}
+	.control-label {
+		color: $danger;
+	}
+	.radio {
+		color: $danger;
+	}
+	.checkbox {
+		color: $danger;
+	}
+	.radio-inline {
+		color: $danger;
+	}
+	.checkbox-inline {
+		color: $danger;
+	}
+	.form-control {
+		border: 1px solid $danger;
+		@include shadow-mixin(inset 0 1px 1px rgba(0, 0, 0, .075));
+	}
+}
+.btn.disabled {
+	cursor: not-allowed;
+	pointer-events: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+.btn[disabled] {
+	cursor: not-allowed;
+	pointer-events: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+fieldset[disabled] {
+	.btn {
+		cursor: not-allowed;
+		pointer-events: none;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+}
+@media(max-width: 767px){
+	.wizard-step {
+    	width: 50%;
+	}
+}
+@media(max-width: 479px){
+	.wizard-step {
+    	width: 100%;
+	}
+}

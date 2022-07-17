@@ -1,0 +1,121 @@
+#form-wizard1 {
+	position: relative;
+	input[type="file"] {
+		line-height: 27px;
+	}
+	fieldset {
+		&:not(:first-of-type) {
+			display: none;
+		}
+	}
+}
+#form-wizard2 {
+	position: relative;
+}
+#form-wizard3 {
+	position: relative;
+}
+.card {
+	border: none;
+	position: relative;
+}
+.steps {
+	font-size: 20px;
+	color: $body-color;
+	font-weight: normal;
+	text-align: right;
+}
+#top-tab-list {
+	margin: 0 -10px 60px;
+	overflow: hidden;
+	color: $body-color;
+	.active {
+		color: $primary;
+	}
+	li {
+		list-style-type: none;
+		font-size: 18px;
+		width: 25%;
+		float: left;
+		text-align: left;
+		position: relative;
+		font-weight: 400;
+		i {
+			display: inline-block;
+			text-align: center;
+			height: 50px;
+			width: 50px;
+			line-height: 50px;
+			font-size: 20px;
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius-circle);
+			}
+			margin: 0 15px 0 0;
+			color: $white;
+			background: $primary;
+		}
+		a {
+			background: $primary-light;
+			color: $primary;
+			display: block;
+			padding: 15px;
+			margin: 0 10px;
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius);
+			}
+			text-decoration: none;
+		}
+	}
+	li.active {
+		a {
+			color: $white;
+			background: $primary;
+		}
+		i {
+			background-color: $white;
+			color: $primary;
+		}
+	}
+	li.active.done {
+		a {
+			background: $success;
+		}
+		i {
+			color: $success;
+		}
+	}
+	li#confirm.active {
+		a {
+			background: $success;
+		}
+		i {
+			color: $success;
+		}
+	}
+}
+.fit-image {
+	width: 100%;
+	object-fit: cover;
+}
+
+@media(max-width: 991px){
+	#top-tab-list {
+	li {
+		a {
+			margin: 0 5px;
+			padding: 15px 8px;
+		}
+	}
+}
+
+}
+
+@media(max-width: 767px){
+	#top-tab-list {
+	li {
+		width: 100%;
+		margin-bottom: 15px;
+	}
+}
+
+}

@@ -1,0 +1,463 @@
+
+/*-------landing-1------*/
+
+.landing-button {
+    padding: 13px 30px;
+    border: none;
+    position: relative;
+    display: inline-block;
+    @if $enable-rounded == true {
+        @include radius-mixin($border-radius);
+    }
+    cursor: pointer;
+    z-index: 4;
+    &:hover {
+        text-decoration: none;
+    }
+    &:focus {
+        color: $white;
+    }
+    span {
+        z-index: 2;
+        position: relative;
+    }
+}
+.button-gradient {
+    &:hover {
+        background-position: right center;
+        color: $white;
+    }
+    color: $white;
+    text-decoration: none;
+    @if $enable-rounded == true {
+        @include radius-mixin($border-radius);
+    }
+    padding: 10px 30px;
+    border: none;
+    position: relative;
+    display: inline-block;
+    background-size: 200% auto;
+    background-color: $purple;
+    @include shadow-mixin( 0px 10px 20px 0px rgba(135, 108, 254, 0.4));
+    cursor: pointer;
+    z-index: 4;
+    @if $enable-transitions == true {
+        @include transition-mixin(all 0.3s ease-in-out);
+    }
+}
+.button.gradient-btn {
+    &:hover {
+        background-position: right center;
+        color: $white;
+    }
+    color: $white;
+    @if $enable-rounded == true {
+        @include radius-mixin($border-radius);
+    }
+    padding: 10px 30px;
+    border: none;
+    position: relative;
+    display: inline-block;
+    background-size: 200% auto;
+    z-index: 4;
+    @if $enable-transitions == true {
+        @include transition-mixin(all 0.3s ease-in-out);
+    }
+}
+.button.gradient-btn {
+	&:focus {
+		background-position: right center;
+		color: $white;
+	}
+}
+.button.blue-btn {
+	&:focus {
+		color: $white;
+	}
+}
+.landing-button-link {
+    color: $primary;
+    font-weight: bold;
+    &:hover {
+        color: $primary-dark;
+        text-decoration: none;
+    }
+    i {
+        margin-left: 5px;
+    }
+}
+/*-------landing-4------*/
+.landing-btn {
+    height: 55px;
+    position: absolute;
+    top: -63px;
+    right: 5px;
+}
+.iq-button {
+    text-decoration: none;
+    cursor: pointer;
+    background-color: $warning;
+    color: $white;
+    line-height: 2;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    display: inline-block;
+    padding: 15px 80px 15px 30px;
+    font-size: 16px;
+    @if $enable-rounded == true {
+        @include radius-mixin($border-radius);
+    }
+    text-transform: capitalize;
+    span {
+        color: $white;
+        display: block;
+        text-transform: capitalize;
+        @include transform-mixin( scale(0.9));
+        letter-spacing: 3px;
+        transform-origin: center left;
+        @include transition-mixin(all 0.3s ease-in-out);
+        position: relative;
+        z-index: 1;
+        font-size: 16px;
+    }
+    em {
+        position: absolute;
+        height: 1px;
+        background: $white;
+        width: 47%;
+        right: 30px;
+        top: 46%;
+        @include transform-mixin( scale(0.25));
+        transform-origin: center right;
+        @if $enable-transitions == true {
+            @include transition-mixin(all 0.3s ease-in-out);
+        }
+        z-index: 1;
+    }
+    &:before {
+        z-index: -1;
+        content: '';
+        background: $dark;
+        height: 50%;
+        width: 0;
+        position: absolute;
+        transition: 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        top: 0;
+        left: 0;
+        right: auto;
+    }
+    &:after {
+        z-index: -1;
+        content: '';
+        background: $dark;
+        height: 50%;
+        width: 0;
+        position: absolute;
+        transition: 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        bottom: 0;
+        right: 0;
+        left: auto;
+    }
+    &:hover {
+        &:before {
+            width: 100%;
+            right: 0;
+            left: auto;
+        }
+        &:after {
+            width: 100%;
+            left: 0;
+            right: auto;
+        }
+        span {
+            color: $white;
+        }
+        em {
+            background: $white;
+            @include transform-mixin( scaleX(0.4));
+        }
+    }
+}
+.iq-button-white{
+    text-decoration: none;
+    cursor: pointer;
+    background-color:$white;
+    color: $warning;
+    line-height: 2;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    display: inline-block;
+    padding: 15px 80px 15px 30px;
+    font-size: 16px;
+    @if $enable-rounded == true {
+        @include radius-mixin($border-radius);
+    }
+    text-transform: capitalize;
+    span {
+        color: $warning;
+        display: block;
+        text-transform: capitalize;
+        @include transform-mixin( scale(0.9));
+        letter-spacing: 3px;
+        transform-origin: center left;
+        @include transition-mixin(all 0.3s ease-in-out);
+        position: relative;
+        z-index: 1;
+        font-size: 16px;
+    }
+    em {
+        position: absolute;
+        height: 1px;
+        background: $warning;
+        width: 47%;
+        right: 30px;
+        top: 46%;
+        @include transform-mixin( scale(0.25));
+        transform-origin: center right;
+        @if $enable-transitions == true {
+            @include transition-mixin(all 0.3s ease-in-out);
+        }
+        z-index: 1;
+    }
+    &:before {
+        z-index: -1;
+        content: '';
+        background: $warning;
+        height: 50%;
+        width: 0;
+        position: absolute;
+        transition: 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        top: 0;
+        left: 0;
+        right: auto;
+    }
+    &:after {
+        z-index: -1;
+        content: '';
+        background: $warning;
+        height: 50%;
+        width: 0;
+        position: absolute;
+        transition: 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        bottom: 0;
+        right: 0;
+        left: auto;
+    }
+    &:hover {
+        &:before {
+            width: 100%;
+            right: 0;
+            left: auto;
+        }
+        &:after {
+            width: 100%;
+            left: 0;
+            right: auto;
+        }
+        span {
+            color: $white;
+        }
+        em {
+            background: $white;
+            @include transform-mixin( scaleX(0.4));
+        }
+    }
+}
+.iq-link-button {
+    color: $warning;
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
+        color: $dark;
+        &:after {
+            background: $dark;
+            @include transform-mixin(scaleX(0.9));
+        }
+    }
+    &:after {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 30px;
+        height: 2px;
+        background-color: $warning;
+        margin-left: 6px;
+        @if $enable-transitions == true {
+               @include transition-mixin(all 0.3s ease-in-out);
+        }
+        @include transform-mixin( scaleX(0.6));
+        transform-origin: center right;
+    }
+}
+.landing-button {
+    &:focus {
+        outline: none;
+    }
+}
+
+/*-----------------------landing-5-------------*/
+.menu-btn {
+    .line {
+        width: 25px;
+        height: 2px;
+        background-color: $white;
+        display: block;
+        margin: 7px auto;
+        @if $enable-transitions == true {
+            @include transition-mixin(all 0.3s ease-in-out);
+        }
+    }
+    vertical-align: middle;
+    &:hover {
+        cursor: pointer;
+    }
+}
+#menu-btn.is-active {
+    @if $enable-transitions == true {
+        @include transition-mixin(all 0.3s ease-in-out);
+    }
+    @include transform-mixin( scale(rotate(45deg)));	
+    .line {
+        &:nth-child(2) {
+            width: 0px;
+        }
+        &:nth-child(1) {
+            @if $enable-transitions == true {
+                @include transition-mixin(all 0.3s ease-in-out);
+            }
+            @include transform-mixin(translateY(9px));
+        }
+        &:nth-child(3) {
+            @if $enable-transitions == true {
+                @include transition-mixin(all 0.3s ease-in-out);
+            }
+            @include transform-mixin(translateY(-9px) rotate(90deg));
+        }
+    }
+}
+
+.landing-btn {
+    height: 55px;
+    width: 55px;
+    position: absolute;
+    top: -63px;
+    right: 5px;
+    @if $enable-rounded == true {
+        @include radius-mixin($border-radius-right);
+    }
+}
+.btn-primary {
+    &:not(:disabled) {
+        &:not(.disabled) {
+            &:active {
+                background: $danger;
+            }
+            &:hover {
+                background: $danger;
+            }
+        }
+    }
+}
+.btn-primary {
+    &:not(:disabled) {
+        &:not(.disabled) {
+            &:active {
+                background: $warning-light;
+            }
+        }
+    }
+}
+.btn-primary {
+    &:not(:disabled) {
+        &:not(.disabled) {
+            &:hover {
+                background:$primary-dark;
+            }
+        }
+    }
+}
+.iq-button-one {
+    color: $white;
+    background: $danger;
+    text-decoration: none;
+    padding: 15px 30px;
+    line-height: 16px;
+    border: none;
+    width: auto;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    &:hover {
+        color: $danger;
+        background: $white;
+        text-decoration: none;
+    }
+    &:focus {
+        color: $danger;
+        background: $white;
+        text-decoration: none;
+    }
+}
+.iq-button {
+    @if $enable-rounded == true {
+            @include radius-mixin($border-radius);
+        }
+}
+.iq-button-two {
+    color: $white;
+    text-decoration: none;
+    padding: 15px 30px;
+    line-height: 16px;
+    border: none;
+    width: auto;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    @if $enable-rounded == true {
+        @include radius-mixin($border-radius);
+    }
+    &:hover {
+        text-decoration: none;
+        background-color: $dark;
+        color:$white;
+    }
+    &:focus {
+        text-decoration: none;
+        background-color: $dark;
+        color:$white;
+    }
+}
+.iq-button-one {
+    @if $enable-rounded == true {
+            @include radius-mixin($border-radius);
+        }
+}
+
+
+/*--------landing-9------*/
+
+.video-btn {
+    a {
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        @include transform-mixin( translateY(-50%));
+        margin-left: -13%;
+        background-color:$primary;
+        color: $white;
+    }
+}
+/*--------landing-10------*/
+.banner-btn{
+    color:$purple;
+    background: $white;
+
+    &:hover{
+        border: 2px solid $white;
+        background: transparent;
+        color: $white;
+        }
+    }

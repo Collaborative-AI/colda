@@ -1,0 +1,25 @@
+/*
+ * Background color 
+ */
+
+@each $color, $value in $colors {
+	@include bg-variant(".bg-#{$color}", $value);
+}
+@each $color, $value in $colors {
+	@include bg-gradient-variant(".bg-gradient-#{$color}", $value);
+}
+@each $color, $value in $theme-colors {
+	@include bg-gradient-variant(".bg-gradient-#{$color}", $value);
+}
+@each $color, $value in $theme-colors {
+	@include bg-variant(".bg-#{$color}", $value, false);
+	@include bg-variant(".badge-#{$color}", $value);
+}
+
+@each $color, $value in $theme-custom {
+	@include bg-variant(".bg-#{$color}-light", $value, true);
+}
+
+/*** Sections backgrounds ***/
+
+/*** Background colors with transparency ***/

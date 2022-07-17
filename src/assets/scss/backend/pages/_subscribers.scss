@@ -1,0 +1,37 @@
+.subscriber-detail {
+	.title {
+		padding: 5px 20px;
+		line-height: 26px;
+	}
+	.iq-card-btn {
+		position: absolute;
+		top: 0px;
+		left: -15px;
+		margin: 0 auto;
+		border: 4px solid $white;
+		padding: 2px;
+		height: 40px;
+		width: 40px;
+		line-height: 22px;
+		font-size: 20px;
+	}
+	.iq-card-btn.title-instagram {
+		background-color: #d6249f !important;
+		background: radial-gradient(circle at 30% 107%, #fdf497 0, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%) !important;
+		color: $white;
+	}
+	.iq-card-btn.title-whatsapp {
+		background-color: #00e676 !important;
+		color: $white;
+		text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.22);
+	}
+	.iq-card-btn.title-twitter {
+		background-color: #1da1f2 !important;
+		color: $white;
+	}
+	.iq-card-btn.title-facebook {
+		background-color: #3b5998 !important;
+		background-image: linear-gradient(#4e69a2, #3b5998 50%) !important;
+		color: $white;
+	}
+}

@@ -1,0 +1,44 @@
+.nav-pills {
+	.nav-item {
+		a {
+			color: $body-color;
+		}
+	}
+	.nav-link.active {
+		color: $primary;
+		background: $primary-light;
+	}
+	.show {
+		>.nav-link {
+			color: $primary;
+			background: $primary-light;
+		}
+	}
+	.nav-link {
+		&:hover {
+			color: $primary;
+		}
+	}
+}
+.nav-tabs {
+	border-bottom: 2px solid $primary-light;
+	margin-bottom: 15px;
+	.nav-item {
+		margin-bottom: -2px;
+		a {
+			color: $body-color;
+			border: none;
+			border-bottom: 2px solid transparent;
+		}
+	}
+	.nav-item.show {
+		.nav-link {
+			border-bottom: 2px solid $primary;
+			color: $primary;
+		}
+	}
+	.nav-link.active {
+		border-bottom: 2px solid $primary;
+		color: $primary;
+	}
+}

@@ -1,0 +1,3 @@
+@each $size,$value in $avatar-size {
+    .avatar-#{$value}{@include avatar($value)}
+}

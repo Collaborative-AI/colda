@@ -1,0 +1,186 @@
+
+.pricing {
+	.table {
+		th {
+			border-top: none;
+			border-bottom: 1px solid #dee2e6;
+		}
+		td {
+			border-top: none !important;
+		}
+		tr {
+			border-bottom: 1px solid #dee2e6;
+			&:last-child {
+				border-bottom: 0;
+			}
+		}
+	}
+}
+.prc-box {
+	background: $primary-light;
+	padding: 15px;
+	position: relative;
+	@if $enable-rounded == true {
+		@include radius-mixin($border-radius);
+	}
+}
+.type {
+	position: absolute;
+	background: $primary;
+	padding: 9px 25px;
+	color: $white;
+	top: -15px;
+	left: 50%;
+	@include transform-mixin( translateX(-50%));
+	font-weight: 500;
+	&:before {
+		position: absolute;
+		content: '';
+		width: 0;
+		height: 0;
+		right: -15px;
+		top: 0px;
+		border-left: 15px solid $primary-dark;
+		border-top: 15px solid transparent;
+	}
+	&:after {
+		position: absolute;
+		content: '';
+		width: 0;
+		height: 0;
+		left: -15px;
+		top: 0px;
+		border-right: 15px solid $primary-dark;
+		border-top: 15px solid transparent;
+	}
+}
+.prc-box.active {
+	background: $primary;
+	.h3{
+		color: $white;
+	}
+	.type {
+		background: $primary-light;
+		color: $dark;
+		&:before {
+			border-left: 16px solid $primary-dark;
+			right: -16px;
+		}
+		&:after {
+			border-right: 16px solid $primary-dark;
+			left: -16px;
+		}
+	}
+}
+.prc-wrap {
+	border-bottom: none !important;
+}
+.i_close {
+	font-size: 22px;
+}
+.p-image {
+	position: absolute;
+	top: auto;
+	right: 6px;
+	bottom: 10px;
+	transition: all .3s ease;
+	background: $primary;
+	color: $white;
+	@include radius-mixin($border-radius-circle);
+	height: 30px;
+	width: 30px;
+	line-height: 28px;
+	text-align: center;
+	font-size: 12px;
+	cursor: pointer;
+}
+.upload-button {
+	font-size: 1.5em;
+}
+.file-upload {
+	display: none;
+}
+.upload_profile {
+	position: relative;
+}
+.child-cell.active {
+	color: $primary;
+}
+.iq-social {
+	ul {
+		li {
+			a {
+				display: block;
+				text-align: center;
+				font-size: 16px;
+				line-height: 43px;
+			}
+		}
+	}
+}
+.card {
+	.pricing-radius-box {
+		@if $enable-rounded == true {
+			@include radius-mixin(60px 0 60px 0);
+		}
+	}
+}
+.pricing-header {
+	padding: 20px 0;
+	background: #f5f6f9;
+	@if $enable-rounded == true {
+		@include radius-mixin(10px 10px 50% 50%);
+	}
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	margin-bottom: 20px;
+}
+.pricing-details {
+	.icon-data {
+		font-size: 50px;
+	}
+}
+.pricing-custom-tab {
+	.tab-pane.fade.active.show {
+		display: block;
+	}
+	.tab-pane.fade {
+		display: none;
+	}
+	li.nav-item {
+		.nav-link {
+			border: 1px solid $border-color;
+			color: $dark;
+			font-size: 16px;
+			padding: 12px 35px;
+			@include radius-mixin(0);
+		}
+		.nav-link.active {
+			color: $white;
+			background: $primary;
+		}
+		.star-circle {
+			background-color: $primary;
+			@include radius-mixin($border-radius-circle);
+			@include shadow-mixin(0 0 0 3px rgba(255, 255, 255, 0.5));
+			color: $white;
+			display: block;
+			font-size: 13px;
+			height: 25px;
+			padding: 0;
+			line-height: 23px;
+			text-align: center;
+			width: 20px;
+			position: absolute;
+			top: -14px;
+			left: -14px;
+			z-index: 1;
+		}
+	}
+}
+.nav-pills {
+    li {
+		position: relative;
+	}
+}

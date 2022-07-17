@@ -1,0 +1,425 @@
+.fc-unthemed {
+	.fc-toolbar {
+		.fc-button {
+			background: $primary-light;
+			color: $primary;
+			border: none;
+			text-transform: capitalize;
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius);
+			}
+			&:active {
+				color: $white;
+				background-color: $primary;
+			}
+			&:focus {
+				color: $white;
+				background-color: $primary;
+			}
+		}
+		.fc-button.fc-button-active {
+			color: $white;
+			background-color: $primary;
+		}
+	}
+}
+.job-classification {
+	li {
+		list-style-type: none;
+		margin-bottom: 10px;
+		>i {
+			margin-right: 10px;
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius-circle);
+			}
+			color: $white;
+		}
+	}
+}
+.today-schedule {
+	li {
+		list-style-type: none;
+		margin-bottom: 10px;
+		i {
+			margin-right: 10px;
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius-circle);
+			}
+			color: $white;
+		}
+	}
+}
+.schedule-text {
+	span {
+		display: block;
+	}
+}
+.calender-small {
+	.flatpickr-calendar.animate.inline {
+		width: 100%;
+		box-shadow: none;
+	}
+	.dayContainer {
+		width: 100%;
+		min-width: auto;
+	}
+	.flatpickr-days {
+		width: 100%;
+	}
+	.flatpickr-day.today {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+		&:hover {
+			color: $white;
+			border-color: $primary;
+			background: $primary;
+		}
+		&:focus {
+			color: $white;
+			border-color: $primary;
+			background: $primary;
+		}
+	}
+	.flatpickr-months {
+		margin-bottom: 10px;
+		.flatpickr-prev-month {
+			padding: 7px 10px;
+		}
+		.flatpickr-next-month {
+			padding: 7px 10px;
+		}
+	}
+	.flatpickr-current-month {
+		.flatpickr-monthDropdown-months {
+			font-size: 12px;
+			&:hover {
+				background: transparent;
+				color: $primary;
+			}
+		}
+		input.cur-year {
+			font-size: 12px;
+		}
+	}
+	.numInputWrapper {
+		&:hover {
+			background: transparent;
+		}
+	}
+	.flatpickr-day.selected {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+		&:focus {
+			color: $white;
+			border-color: $primary;
+			background: $primary;
+		}
+		&:hover {
+			color: $white;
+			border-color: $primary;
+			background: $primary;
+		}
+	}
+	.flatpickr-day.startRange {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+		&:focus {
+			color: $white;
+			border-color: $primary;
+			background: $primary;
+		}
+		&:hover {
+			color: $white;
+			border-color: $primary;
+			background: $primary;
+		}
+	}
+	.flatpickr-day.endRange {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+		&:focus {
+			color: $white;
+			border-color: $primary;
+			background: $primary;
+		}
+		&:hover {
+			color: $white;
+			border-color: $primary;
+			background: $primary;
+		}
+	}
+	.flatpickr-day.selected.inRange {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+	}
+	.flatpickr-day.startRange.inRange {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+	}
+	.flatpickr-day.endRange.inRange {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+	}
+	.flatpickr-day.selected.prevMonthDay {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+	}
+	.flatpickr-day.startRange.prevMonthDay {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+	}
+	.flatpickr-day.endRange.prevMonthDay {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+	}
+	.flatpickr-day.selected.nextMonthDay {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+	}
+	.flatpickr-day.startRange.nextMonthDay {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+	}
+	.flatpickr-day.endRange.nextMonthDay {
+		color: $white;
+		border-color: $primary;
+		background: $primary;
+	}
+	.flatpickr-day.inRange {
+		background: $primary-light;
+		color: $primary;
+		border-color: transparent;
+	}
+	.flatpickr-day.prevMonthDay.inRange {
+		background: $primary-light;
+		color: $primary;
+		border-color: transparent;
+	}
+	.flatpickr-day.nextMonthDay.inRange {
+		background: $primary-light;
+		color: $primary;
+		border-color: transparent;
+	}
+	.flatpickr-day.today.inRange {
+		background: $primary-light;
+		color: $primary;
+		border-color: transparent;
+	}
+	.flatpickr-day.prevMonthDay.today.inRange {
+		background: $primary-light;
+		color: $primary;
+		border-color: transparent;
+	}
+	.flatpickr-day.nextMonthDay.today.inRange {
+		background: $primary-light;
+		color: $primary;
+		border-color: transparent;
+	}
+	.flatpickr-day {
+		&:hover {
+			background: $primary-light;
+			color: $primary;
+			border-color: transparent;
+		}
+		&:focus {
+			background: $primary-light;
+			color: $primary;
+			border-color: transparent;
+		}
+	}
+	.flatpickr-day.prevMonthDay {
+		&:hover {
+			background: $primary-light;
+			color: $primary;
+			border-color: transparent;
+		}
+		&:focus {
+			background: $primary-light;
+			color: $primary;
+			border-color: transparent;
+		}
+	}
+	.flatpickr-day.nextMonthDay {
+		&:hover {
+			background: $primary-light;
+			color: $primary;
+			border-color: transparent;
+		}
+		&:focus {
+			background: $primary-light;
+			color: $primary;
+			border-color: transparent;
+		}
+    }
+
+	.flatpickr-current-month {
+		.numInputWrapper {
+			width: 3ch;
+		}
+	}
+
+}
+.smaill-calender-home {
+	.flatpickr-calendar.animate.inline {
+		margin: 0 auto;
+		width: 100%;
+		box-shadow: none;
+		border: none;
+		@if $enable-rounded == true {
+		@include radius-mixin($border-radius);
+	}
+	}
+	.flatpickr-day.selected {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+		&:focus {
+			color: $white;
+			text-decoration: none;
+			background: $primary;
+			text-decoration: none;
+			border-color: $primary;
+		}
+		&:hover {
+			color: $white;
+			text-decoration: none;
+			background: $primary;
+			text-decoration: none;
+			border-color: $primary;
+		}
+	}
+	.flatpickr-day.startRange {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+		&:focus {
+			color: $white;
+			text-decoration: none;
+			background: $primary;
+			text-decoration: none;
+			border-color: $primary;
+		}
+		&:hover {
+			color: $white;
+			text-decoration: none;
+			background: $primary;
+			text-decoration: none;
+			border-color: $primary;
+		}
+	}
+	.flatpickr-day.endRange {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+		&:focus {
+			color: $white;
+			text-decoration: none;
+			background: $primary;
+			text-decoration: none;
+			border-color: $primary;
+		}
+		&:hover {
+			color: $white;
+			text-decoration: none;
+			background: $primary;
+			text-decoration: none;
+			border-color: $primary;
+		}
+	}
+	.flatpickr-day.selected.inRange {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+	}
+	.flatpickr-day.startRange.inRange {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+	}
+	.flatpickr-day.endRange.inRange {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+	}
+	.flatpickr-day.selected.prevMonthDay {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+	}
+	.flatpickr-day.startRange.prevMonthDay {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+	}
+	.flatpickr-day.endRange.prevMonthDay {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+	}
+	.flatpickr-day.selected.nextMonthDay {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+	}
+	.flatpickr-day.startRange.nextMonthDay {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+	}
+	.flatpickr-day.endRange.nextMonthDay {
+		color: $white;
+		text-decoration: none;
+		background: $primary;
+		text-decoration: none;
+		border-color: $primary;
+	}
+	.flatpickr-days {
+		width: 100%;
+	}
+	.dayContainer {
+		width: 100%;
+	}
+	.flatpickr-innerContainer {
+		justify-content: space-around;
+	}
+}
+
+@media(max-width: 479px){
+	.fc-toolbar.fc-header-toolbar {
+		overflow-x: scroll;
+	}
+}

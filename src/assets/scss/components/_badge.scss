@@ -1,0 +1,15 @@
+.badge {
+	padding: .3em .6em;
+	line-height: 1.3;
+	text-transform: capitalize;
+	@if $enable-rounded == true {
+		@include radius-mixin($border-radius-normal);
+	}
+}
+.breadcrumb.bg-primary {
+	.breadcrumb-item+.breadcrumb-item {
+		&::before {
+			color: $white;
+		}
+	}
+}

@@ -1,33 +1,19 @@
 <template>
-  <div id="app">
-    <div id="preloader" v-show="isLoading">
-      <div class="sk-three-bounce">
-        <div class="sk-child sk-bounce1"></div>
-        <div class="sk-child sk-bounce2"></div>
-        <div class="sk-child sk-bounce3"></div>
-      </div>
-    </div>
-    <!-- <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> -->
-
-    <router-view />
-  </div>
+  <router-view/>
 </template>
-
 <script>
+// import 'line-awesome/dist/line-awesome/css/line-awesome.min.css'
+// import 'remixicon/fonts/remixicon.css'
 export default {
-  name: "App",
-  data() {
-    return {
-      isLoading: true,
-      time: 100,
-      show: 1,
-    };
+  name: 'App',
+  components: {
   },
-  mounted() {
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
-  },
-};
+  mounted () {
+  }
+}
 </script>
+<style lang="scss">
+  @import "./assets/scss/backend.scss";
+  @import "./assets/scss/frontend.scss";
+  @import "./assets/css/custom.css";
+</style>

@@ -1,0 +1,231 @@
+.custom-control-input {
+	&:checked~.custom-control-label {
+		&::before {
+			background-color: $primary;
+			border-color: $primary;
+		}
+	}
+}
+.custom-checkbox {
+	.custom-control-input {
+		&:disabled {
+			&:checked~.custom-control-label {
+				&::before {
+					background-color: $primary-light;
+					color: $primary;
+				}
+			}
+		}
+	}
+}
+.custom-radio {
+	.custom-control-input {
+		&:disabled {
+			&:checked~.custom-control-label {
+				&::before {
+					background-color: $primary-light;
+					color: $primary;
+				}
+			}
+		}
+	}
+}
+.custom-select {
+	&:focus {
+		box-shadow: none;
+	}
+}
+.custom-switch.custom-switch-icon {
+	label {
+		.switch-icon-left {
+			position: absolute;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			top: -3px;
+			left: 8px;
+			right: auto;
+			color: $white;
+			i {
+				font-size: 10px;
+			}
+		}
+		.switch-icon-right {
+			position: absolute;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			top: -3px;
+			right: 5px;
+			left: auto;
+			i {
+				font-size: 10px;
+			}
+		}
+	}
+	padding-left: 0;
+	.custom-control-label {
+		height: 20px;
+		width: 42px;
+		padding: 0;
+		&::before {
+			height: 20px;
+			@if $enable-transitions == true {
+				@include transition-mixin(all 0.3s ease-in-out);
+			}
+			user-select: none;
+			top: 0;
+			left: 1px;
+			width: 2.75rem;
+		}
+		&:after {
+			position: absolute;
+			top: 1px;
+			left: 2px;
+			@if $enable-transitions == true {
+				@include transition-mixin(all 0.3s ease-in-out);
+			}
+			user-select: none;
+			height: 18px;
+			width: 18px;
+		}
+	}
+	.custom-control-input {
+		&:checked~.custom-control-label {
+			&::after {
+				@include transform-mixin( translateX(1.4rem));
+			}
+		}
+	}
+}
+.custom-switch.custom-switch-text {
+	label {
+		.switch-icon-left {
+			position: absolute;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			top: -3px;
+			left: 8px;
+			right: auto;
+			color: $white;
+		}
+		.switch-icon-right {
+			position: absolute;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			top: -3px;
+			right: 5px;
+			left: auto;
+		}
+		&::before {
+			color:$black;
+			content: attr(data-off-label);
+			width: 2.85rem;
+			height: 20px;
+			padding: 0 4px;
+			font-size: 11px;
+			line-height: 18px;
+			text-align: right;
+		}
+		&:after {
+			position: absolute;
+			@if $enable-transitions == true {
+				@include transition-mixin(all 0.3s ease-in-out);
+			}
+			user-select: none;
+			height: 16px;
+			width: 16px;
+		}
+	}
+	padding-left: 0;
+	.custom-control-label {
+		width: 46px;
+		&::before {
+			height: 20px;
+			@if $enable-transitions == true {
+				@include transition-mixin(all 0.3s ease-in-out);
+			}
+			user-select: none;
+			top: 0;
+			left: 1px;
+			width: 2.75rem;
+			width: 100%;
+		}
+		&:after {
+			position: absolute;
+			top: 1px;
+			left: 2px;
+			@if $enable-transitions == true {
+				@include transition-mixin(all 0.3s ease-in-out);
+			}
+			user-select: none;
+			height: 18px;
+			width: 18px;
+		}
+	}
+	.custom-control-input {
+		&:checked~.custom-control-label {
+			&::after {
+				@include transform-mixin( translateX(1.6rem));
+			}
+		}
+	}
+	input {
+		&:checked~label {
+			&::before {
+				color: $white;
+				content: attr(data-on-label);
+				text-align: left;
+			}
+		}
+		&:checked~label.custom-control-label {
+			&::after {
+				@include transform-mixin( translateX(1.6rem));
+			}
+		}
+	}
+}
+.custom-switch-inner {
+	display: block;
+	text-align: center;
+}
+.form-label-group {
+	position: relative;
+	margin-bottom: 1.5rem;
+	>label {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		@if $enable-transitions == true {
+			@include transition-mixin(all 0.3s ease-in-out);
+		}
+		padding: .6rem;
+		color: #475F7B;
+		font-size: .85rem;
+		@include opacity-mixin(0);
+	}
+}
+.counter-value {
+	color: $white;
+	padding: 1px 6px;
+	font-size: .6rem;
+	@if $enable-rounded == true {
+		@include radius-mixin($border-radius-bottom);
+	}
+	margin-right: 1rem;
+}
+.vector-map.h-500 {
+	width: 100%;
+	height: 500px;
+}

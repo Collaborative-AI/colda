@@ -1,0 +1,495 @@
+[
+    {
+        "name": "home",
+        "title": "Dashboard",
+        "short_title": "Home",
+        "href": "backend/index",
+        "link": {
+            "name": "layout.default"
+        },
+        "class_name": "",
+        "icon_class": "las la-home iq-arrow-left"
+    },
+    {
+        "name": "layouts",
+        "title": "Layouts",
+        "short_title": "Layouts",
+        "href": "#layouts",
+        "link": {
+            "name": ""
+        },
+        "class_name": "",
+        "icon_class": "lab la-jira iq-arrow-left",
+        "expanded_icon_class": "las la-minus iq-arrow-right arrow-hover",
+        "collapse_icon_class": "las la-plus iq-arrow-right arrow-active",
+        "children": [
+            {
+                "name": "layout-1",
+                "title": "Layout 1",
+                "icon_class": "las la-hotel",
+                "href": "backend/layout-1",
+                "link": {
+                    "name": "backend.layout-1"
+                }
+            },
+            {
+                "name": "layout-2",
+                "title": "Layout 2",
+                "icon_class": "las la-percent",
+                "href": "backend/layout-2",
+                "link": {
+                    "name": "backend.layout-2"
+                }
+            },
+            {
+                "name": "layout-3",
+                "title": "Layout 3",
+                "icon_class": "las la-dumbbell",
+                "href": "backend/layout-3",
+                "link": {
+                    "name": "backend.layout-3"
+                }
+            },
+            {
+                "name": "layout-4",
+                "title": "Layout 4",
+                "icon_class": "las la-magic",
+                "href": "backend/layout-4",
+                "link": {
+                    "name": "backend.layout-4"
+                }
+            },
+            {
+                "name": "layout-5",
+                "title": "Layout 5",
+                "icon_class": "las la-coins",
+                "href": "backend/layout-5",
+                "link": {
+                    "name": "backend.layout-5"
+                }
+            },
+            {
+                "name": "layout-6",
+                "title": "Layout 6",
+                "icon_class": "las la-utensils",
+                "href": "backend/layout-6",
+                "link": {
+                    "name": "backend.layout-6"
+                }
+            },
+            {
+                "name": "layout-7",
+                "title": "Layout 7",
+                "icon_class": "las la-school",
+                "href": "backend/layout-7",
+                "link": {
+                    "name": "backend.layout-7"
+                }
+            },
+            {
+                "name": "layout-8",
+                "title": "Layout 8",
+                "icon_class": "las la-home",
+                "href": "backend/layout-8",
+                "link": {
+                    "name": "backend.layout-8"
+                }
+            },
+            {
+                "name": "layout-9",
+                "title": "Layout 9",
+                "icon_class": "las la-shopping-bag",
+                "href": "backend/layout-9",
+                "link": {
+                    "name": "backend.layout-9"
+                }
+            },
+            {
+                "name": "layout-10",
+                "title": "Layout 10",
+                "icon_class": "lar la-credit-card",
+                "href": "backend/layout-10",
+                "link": {
+                    "name": "backend.layout-10"
+                }
+            },
+            {
+                "name": "layout-11",
+                "title": "Layout 11",
+                "icon_class": "lar la-hospital",
+                "href": "backend/layout-11",
+                "link": {
+                    "name": "backend.layout-11"
+                }
+
+            },
+            {
+                "name": "layout-12",
+                "title": "Layout 12",
+                "icon_class": "las la-cut",
+                "href": "backend/layout-12",
+                "link": {
+                    "name": "backend.layout-12"
+                }
+            },
+            {
+                "name": "layout-13",
+                "title": "Layout 13",
+                "icon_class": "las la-shopping-cart",
+                "href": "backend/layout-13",
+                "link": {
+                    "name": "backend.layout-13"
+                }
+            },
+            {
+                "name": "layout-14",
+                "title": "Layout 14",
+                "icon_class": "lar la-plus-square",
+                "href": "backend/layout-14",
+                "link": {
+                    "name": "backend.layout-14"
+                }
+            },
+            {
+                "name": "layout-15",
+                "title": "Layout 15",
+                "icon_class": "las la-icons",
+                "href": "backend/layout-15",
+                "link": {
+                    "name": "backend.layout-15"
+                }
+            },
+            {
+                "name": "layout-16",
+                "title": "Layout 16",
+                "icon_class": "las la-icons",
+                "href": "backend/layout-16",
+                "link": {
+                    "name": "backend.layout-16"
+                }
+            }
+        ]
+    },
+    {
+        "name": "ui",
+        "title": "UI Elements",
+        "short_title": "Ui Kit",
+        "href": "#ui",
+        "link": {
+            "name": ""
+        },
+        "class_name": "",
+        "icon_class": "lab la-elementor iq-arrow-left",
+        "expanded_icon_class": "las la-minus iq-arrow-right arrow-hover",
+        "collapse_icon_class": "las la-plus iq-arrow-right arrow-active",
+        "children": [
+            {
+                "name": "ui-avatars",
+                "title": "Avatars",
+                "href": "backend/ui-avatars",
+                "link": {
+                    "name": "Ui.avatars"
+                },
+                "class_name": "",
+                "icon_class": "las la-user-circle"
+            },
+            {
+                "name": "ui-alerts",
+                "title": "Alerts",
+                "href": "backend/ui-alerts",
+                "link": {
+                    "name": "Ui.alerts"
+                },
+                "class_name": "",
+                "icon_class": "las la-tag"
+            },
+            {
+                "name": "ui-badges",
+                "title": "Badges",
+                "href": "backend/ui-badges",
+                "link": {
+                    "name": "Ui.badges"
+                },
+                "class_name": "",
+                "icon_class": "lab la-atlassian"
+            },
+            {
+                "name": "ui-breadcrumb",
+                "title": "Breadcrumb",
+                "href": "backend/ui-breadcrumb",
+                "link": {
+                    "name": "Ui.breadcrumbs"
+                },
+                "class_name": "",
+                "icon_class": "las la-bars"
+            },
+            {
+                "name": "ui-buttons",
+                "title": "Buttons",
+                "href": "backend/ui-buttons",
+                "link": {
+                    "name": "Ui.buttons"
+                },
+                "class_name": "",
+                "icon_class": "las la-tablet"
+            },
+            {
+                "name": "ui-buttons-group",
+                "title": "Buttons Group",
+                "href": "backend/ui-buttons-group",
+                "link": {
+                    "name": "Ui.button-groups"
+                },
+                "class_name": "",
+                "icon_class": "las la-eraser"
+            },
+            {
+                "name": "ui-boxshadow",
+                "title": "Box Shadow",
+                "href": "backend/ui-boxshadow",
+                "link": {
+                    "name": "Ui.boxshadows"
+                },
+                "class_name": "",
+                "icon_class": "las la-chess-board"
+            },
+            {
+                "name": "ui-colors",
+                "title": "Colors",
+                "href": "backend/ui-colors",
+                "link": {
+                    "name": "Ui.colors"
+                },
+                "class_name": "",
+                "icon_class": "las la-palette"
+            },
+            {
+                "name": "ui-cards",
+                "title": "Cards",
+                "href": "backend/ui-cards",
+                "link": {
+                    "name": "Ui.cards"
+                },
+                "class_name": "",
+                "icon_class": "las la-credit-card"
+            },
+            {
+                "name": "ui-carousel",
+                "title": "Carousel",
+                "href": "backend/ui-carousel",
+                "link": {
+                    "name": "Ui.carousels"
+                },
+                "class_name": "",
+                "icon_class": "las la-film"
+            },
+            {
+                "name": "ui-grid",
+                "title": "Grid",
+                "href": "backend/ui-grid",
+                "link": {
+                    "name": "Ui.grids"
+                },
+                "class_name": "",
+                "icon_class": "las la-border-all"
+            },
+            {
+                "name": "ui-helper-classes",
+                "title": "Helper classes",
+                "href": "backend/ui-helper-classes",
+                "link": {
+                    "name": "Ui.helper-classes"
+                },
+                "class_name": "",
+                "icon_class": "las la-stream"
+            },
+            {
+                "name": "ui-images",
+                "title": "Images",
+                "href": "backend/ui-images",
+                "link": {
+                    "name": "Ui.images"
+                },
+                "class_name": "",
+                "icon_class": "las la-images"
+            },
+            {
+                "name": "ui-list-group",
+                "title": "list Group",
+                "href": "backend/ui-list-group",
+                "link": {
+                    "name": "Ui.list-groups"
+                },
+                "class_name": "",
+                "icon_class": "las la-list"
+            },
+            {
+                "name": "ui-media-object",
+                "title": "Media",
+                "href": "backend/ui-media-object",
+                "link": {
+                    "name": "Ui.media-objects"
+                },
+                "class_name": "",
+                "icon_class": "las la-ad"
+            },
+            {
+                "name": "ui-modal",
+                "title": "Modal",
+                "href": "backend/ui-modal",
+                "link": {
+                    "name": "Ui.modals"
+                },
+                "class_name": "",
+                "icon_class": "las la-columns"
+            },
+            {
+                "name": "ui-notifications",
+                "title": "Notifications",
+                "href": "backend/ui-notifications",
+                "link": {
+                    "name": "Ui.notifications"
+                },
+                "class_name": "",
+                "icon_class": "las la-bell"
+            },
+            {
+                "name": "ui-pagination",
+                "title": "Pagination",
+                "href": "backend/ui-pagination",
+                "link": {
+                    "name": "Ui.paginations"
+                },
+                "class_name": "",
+                "icon_class": "las la-ellipsis-h"
+            },
+            {
+                "name": "ui-popovers",
+                "title": "Popovers",
+                "href": "backend/ui-popovers",
+                "link": {
+                    "name": "Ui.popovers"
+                },
+                "class_name": "",
+                "icon_class": "las la-eraser"
+            },
+            {
+                "name": "ui-progressbars",
+                "title": "Progressbars",
+                "href": "backend/ui-progressbars",
+                "link": {
+                    "name": "Ui.progressbars"
+                },
+                "class_name": "",
+                "icon_class": "las la-hdd"
+            },
+            {
+                "name": "ui-typography",
+                "title": "Typography",
+                "href": "backend/ui-typography",
+                "link": {
+                    "name": "Ui.typographys"
+                },
+                "class_name": "",
+                "icon_class": "las la-keyboard"
+            },
+            {
+                "name": "ui-tabs",
+                "title": "Tabs",
+                "href": "backend/ui-tabs",
+                "link": {
+                    "name": "Ui.tabs"
+                },
+                "class_name": "",
+                "icon_class": "las la-database"
+            },
+            {
+                "name": "ui-tooltips",
+                "title": "Tooltips",
+                "href": "backend/ui-tooltips",
+                "link": {
+                    "name": "Ui.tooltips"
+                },
+                "class_name": "",
+                "icon_class": "las la-magnet"
+            },
+            {
+                "name": "ui-embed-video",
+                "title": "Video",
+                "href": "backend/ui-embed-video",
+                "link": {
+                    "name": "Ui.Embed-videos"
+                },
+                "class_name": "",
+                "icon_class": "las la-video"
+            }
+        ]
+    },
+    {
+        "name": "auth",
+        "title": "Authentication",
+        "short_title": "Auth",
+        "href": "#auth",
+        "link": {
+            "name": ""
+        },
+        "class_name": "",
+        "icon_class": "las la-pager iq-arrow-left",
+        "expanded_icon_class": "las la-minus iq-arrow-right arrow-hover",
+        "collapse_icon_class": "las la-plus iq-arrow-right arrow-active",
+        "children": [
+            {
+                "name": "auth-sign-in",
+                "title": "Login",
+                "href": "backend/auth-sign-in",
+                "link": {
+                    "name": "auth.login"
+                },
+                "class_name": "",
+                "icon_class": "las la-sign-in-alt"
+            },
+            {
+                "name": "auth-sign-up",
+                "title": "Register",
+                "href": "backend/auth-sign-up",
+                "link": {
+                    "name": "auth.register"
+                },
+                "class_name": "",
+                "icon_class": "las la-sign-out-alt"
+            },
+            {
+                "name": "auth-recoverpw",
+                "title": "Recover Password",
+                "href": "backend/auth-recoverpw",
+                "link": {
+                    "name": "auth.recover-password"
+                },
+                "class_name": "",
+                "icon_class": "las la-unlock-alt"
+            },
+            {
+                "name": "auth-confirm-mail",
+                "title": "Confirm Mail",
+                "href": "backend/auth-confirm-mail",
+                "link": {
+                    "name": "auth.confirm-mail"
+                },
+                "class_name": "",
+                "icon_class": "las la-envelope-open-text"
+            },
+            {
+                "name": "auth-lock-screen",
+                "title": "Lock Screen",
+                "href": "backend/auth-lock-screen",
+                "link": {
+                    "name": "auth.lock-screen"
+                },
+                "class_name": "",
+                "icon_class": "las la-lock"
+            }
+        ]
+    }
+]
+
+

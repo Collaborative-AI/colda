@@ -1,10 +1,9 @@
 <template>
     <div>
-        about
         <home id="iq-home" />
           <div class="wrapper">
             <div class="main-content " >
-                <Team id="team" />
+                <Team id="iq-team"/>
                 <!-- <Counter /> -->
                 <!-- <AboutUs id="iq-about" /> -->
                 <!-- <Services id="iq-service"  />
@@ -21,7 +20,7 @@
 </template>
 <script>
 import {core} from '../../../config/pluginInit'
-import Team from './components/Team'
+import Team from '../landing-page3/components/Team.vue'
 // import home from './components/home'
 // import Counter  from './components/Counter'
 // import AboutUs from './components/AboutUs'

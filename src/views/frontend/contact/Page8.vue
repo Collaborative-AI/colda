@@ -1,6 +1,5 @@
 <template>
     <div>
-        contact
         <home id="iq-home" />
           <div class="wrapper">
             <div class="main-content " >

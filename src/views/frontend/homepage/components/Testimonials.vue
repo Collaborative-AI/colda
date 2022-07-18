@@ -5,7 +5,7 @@
         <div class="col-sm-12 ">
           <div class="title-box wow fadeInUp text-center">
             <span class="title-design">TESTIMONIALS</span>
-            <h2>100+ Companies are Using Xamin</h2>
+            <h2>What Our Clients Say</h2>
           </div>
         </div>
       </div>
@@ -15,37 +15,42 @@
             <div class="item text-center">
               <div class="iq-testimonial">
                 <div class="testimonial-info">
-                  <img alt="#" class="img-fluid rounded-circle" :src="require('@/assets/images/landing-page/landing-8/37.jpg')">
+                  <img alt="#" class="img-fluid rounded-circle" :src="require('@/assets/images/landing-page/landing-8/united-health.jpg')">
                   <div class="testimonial-name">
-                      <h5>Jack White</h5>
-                      <span class="sub-title">CEO</span>
+                      <h5>United Health</h5>
+                      <span class="sub-title">Healthcare Insurance</span>
                   </div>
                 </div>
-                <p>Richard McClintock, a Latin professor at Hampden-Sydney consectetur adip isicing elit, sed dolore magna aliqua hampden. Latin professor at Hampden-Sydney consectetur. </p>
+                <p>We have more than lots of partners. A few years ago we tried to use blockchain to leverage scattered data, 
+                  but not very successful. Anything that can improve the assessment of risk is useful for us. So we collaborate 
+                  a lot with other organizations. Everybody does not trust another. For example, payers don’t trust service providers.
+                   It would be great if any product can resolve trust issues.</p>
               </div>
             </div>
             <div class="item text-center">
               <div class="iq-testimonial">
                 <div class="testimonial-info">
-                  <img alt="#" class="img-fluid rounded-circle" :src="require('@/assets/images/landing-page/landing-8/38.jpg')">
+                  <img alt="#" class="img-fluid rounded-circle" :src="require('@/assets/images/landing-page/landing-8/anthem.jpg')">
                   <div class="testimonial-name">
-                      <h5>Walhan Bobe</h5>
-                      <span class="sub-title">Business Advisor</span>
+                      <h5>Anthem</h5>
+                      <span class="sub-title">Healthcare Insurance</span>
                   </div>
                 </div>
-                <p>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium incididunt ut labore et dolore Sed ut perspiciatis error. Perspiciatis unde omnis iste."</p>
+                <p>We use API to share data with other insurance companies. There are expensive procedures that require prior 
+                  authorization. Agreement for multiple parties must be constantly settled.</p>
               </div>
             </div>
             <div class="item text-center">
               <div class="iq-testimonial">
                 <div class="testimonial-info">
-                  <img alt="#" class="img-fluid rounded-circle" :src="require('@/assets/images/landing-page/landing-8/39.jpg')">
+                  <img alt="#" class="img-fluid rounded-circle" :src="require('@/assets/images/landing-page/landing-8/cvs.jpg')">
                   <div class="testimonial-name">
-                      <h5>Mark McManus</h5>
-                      <span class="sub-title">COO</span>
+                      <h5>CVS Health</h5>
+                      <span class="sub-title">Pharmacy</span>
                   </div>
                 </div>
-                <p>“Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.” </p>
+                <p>It is not possible to dive into the data market in a short amount of time. We need a recommendation on what 
+                  external data would be useful. </p>
               </div>
             </div>
           </div>

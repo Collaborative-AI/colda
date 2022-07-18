@@ -1,6 +1,5 @@
 <template>
     <div>
-        home
         <home id="iq-home" />
           <div class="wrapper">
             <div class="main-content " >
@@ -10,7 +9,7 @@
                 <Analytic />
                 <WeProvide />
                 <!-- <CaseStudies id="iq-process"  /> -->
-                <Partner />
+                <!-- <Partner /> -->
                 <Testimonials id="iq-testimonial"  />
                 <!-- <Blog id="iq-blog"/> -->
                 <!-- <ContactUs id="iq-contact" /> -->
@@ -27,7 +26,7 @@ import Services  from './components/Services'
 import Analytic  from './components/Analytic'
 import WeProvide from './components/WeProvide'
 // import CaseStudies    from './components/CaseStudies'
-import Partner from './components/Partner'
+// import Partner from './components/Partner'
 import Testimonials   from './components/Testimonials'
 // import Blog from './components/Blog'
 // import ContactUs  from './components/ContactUs'
@@ -41,7 +40,7 @@ export default {
          Analytic,
          WeProvide,
         //  CaseStudies,
-         Partner,
+        //  Partner,
          Testimonials,
         //  Blog,
         //  ContactUs

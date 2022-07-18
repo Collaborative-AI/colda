@@ -6,7 +6,7 @@
         <div class="col-lg-4 col-md-6 col-sm-6">
           <FooterLogo
             :section-image="navLogo"
-            section-text="It is a long established fact that a reader will be distracted by the readable content."
+            section-text="Synspot for decentralized organizations learning AI models without sharing data, models, or objectives."
           >
           <template v-slot:icons>
             <slot name="icon"/>

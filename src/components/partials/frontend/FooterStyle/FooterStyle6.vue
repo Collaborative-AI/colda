@@ -51,17 +51,17 @@ export default {
         {
           icon: true,
           iconClass: 'fas fa-phone-alt',
-          text: '+0123 456 789'
+          text: '+1 4048343911'
         },
         {
           icon: true,
           iconClass: 'fas fa-envelope',
-          text: 'support@iqnonicthemes.com'
+          text: 'support@synspot-ai.com'
         },
         {
           icon: true,
           iconClass: 'fas fa-home',
-          text: '1234 North Luke Lane, South Bend, IN 360001'
+          text: '1366 Ford Hall, 224 Church Street, Minneapolis, MN 55455'
         }
       ],
       footerHome: [

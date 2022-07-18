@@ -19,20 +19,18 @@
             <div class="contact-box d-flex  text- text-white ">
                 <i aria-hidden="true" class="fa fa-phone"></i> 
                 <div class="service-detail">
-                  <h2 class="mb-2  text-white " >Phone Support</h2>
+                  <h2 class="mb-2  text-white " >Call Us</h2>
                   <ul class="list-inline mb-0">
-                      <li><a href="tel:+0123456789"> +0123456789</a> </li>
-                      <li><a href="tel:+0123456789">+0123456789</a></li>
+                      <li><a href="tel:+14048343911"> +1 4048343911</a> </li>
                   </ul>
                 </div>
             </div>
             <div class="contact-box d-flex  text- text-white ">
                 <i aria-hidden="true" class="fa fa-map-marker"  ></i> 
                 <div class="service-detail">
-                  <h2 class="mb-2  text-white">Email us</h2>
+                  <h2 class="mb-2  text-white">Email Us</h2>
                   <ul class="list-inline mb-0">
-                      <li><a href="mailto:support@iqnonicthemes.com">support@themes.com</a>  </li>
-                      <li><a href="mailto:support@iqnonicthemes.com"> support@themes.com</a>  </li>
+                      <li><a href="mailto:support@synspot-ai.com">support@synspot-ai.com</a>  </li>
                   </ul>
                 </div>
             </div>

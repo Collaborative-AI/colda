@@ -5,8 +5,8 @@
         <div class="col-md-6">
           <div class="title-box wow fadeInUp pr-lg-5 text-left" data-wow-delay=".3s" >
             <span class="title-design"></span>
-            <h2>What can you do with Data analytics</h2>
-            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
+            <h2>The Perfect Application for Beginners or Professionals</h2>
+            <p>Synspot is a carefully crafted multi-purpose, responsive, and gorgeous application built with Vue.js and Python. It comes with the features you need to quickly start your data analysis, optimize your AI model cooperatively with others without sharing local data.</p>
           </div>
         </div>
         <div class="col-md-6">

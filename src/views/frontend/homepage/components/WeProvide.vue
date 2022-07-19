@@ -15,8 +15,8 @@
               <div class="square-effect bg">
                   <img :src="require('@/assets/images/landing-page/landing-8/12.png')" alt="fancybox">
               </div>
-              <h5 class="mb-2">Generate Ideas</h5>
-              <p class="mb-0">It is a long established fact that a fre ader will be distracted by the .</p>
+              <h5 class="mb-2">Privacy-Preserving</h5>
+              <p class="mb-0">Preserves the privacy of data, model and objectives for building decentralized AI models.</p>
               </div>
           </div>
           <div class="col-md-3 col-sm-6">
@@ -24,8 +24,8 @@
               <div class="square-effect bg">
                   <img :src="require('@/assets/images/landing-page/landing-8/13.png')" alt="fancybox">
               </div>
-              <h5 class="mb-2">Collect Data</h5>
-              <p class="mb-0">It is a long established fact that a fre ader will be distracted by the .</p>
+              <h5 class="mb-2">Efficient</h5>
+              <p class="mb-0">Reduces communication overhead and leverages local data and computation resources.</p>
               </div>
           </div>
           <div class="col-md-3 col-sm-6">
@@ -33,8 +33,8 @@
               <div class="square-effect bg">
                   <img :src="require('@/assets/images/landing-page/landing-8/14.png')" alt="fancybox">
               </div>
-              <h5 class="mb-2">Create Design</h5>
-              <p class="mb-0">It is a long established fact that a fre ader will be distracted by the .</p>
+              <h5 class="mb-2">Collaborative</h5>
+              <p class="mb-0">Enables collaboration and coorporation across organizations from various industries.</p>
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
@@ -42,8 +42,8 @@
               <div class="square-effect bg">
                 <img :src="require('@/assets/images/landing-page/landing-8/15.png')" alt="fancybox">
               </div>
-              <h5 class="mb-2">Launch Project</h5>
-              <p class="mb-0">It is a long established fact that a fre ader will be distracted by the .</p>
+              <h5 class="mb-2">Mutually Beneficial</h5>
+              <p class="mb-0">Forms a community of shared interest by building a market of trading predictive power.</p>
             </div>
           </div>
       </div>

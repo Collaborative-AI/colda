@@ -40,10 +40,10 @@
               </div>
             </template>
             <template v-slot:cardContent>
-              <h5 class="mb-3">
-                Enmao Diao
+              <h5 class="mb-4">
+                <a href="https://diaoenmao.com/">Enmao Diao</a>
               </h5>
-              <p class="mb-3">
+              <p class="mb-4" style="width:150%">
                 He received the B.S. degree in computer science and electrical engineering from Georgia Institute of 
                 Technology, Georgia, USA, in 2016 and the M.S. degree in electrical engineering from Harvard University, 
                 Cambridge, USA, in 2018. He is currently pursuing the Ph.D. degree in electrical engineering at Duke University, 
@@ -81,10 +81,10 @@
               </div>
             </template>
             <template v-slot:cardContent>
-              <h5 class="mb-3">
-                Jie Ding
+              <h5 class="mb-4">
+                <a href="https://jding.org/" style="text-align:center">Jie Ding</a>
               </h5>
-              <p class="mb-3">
+              <p class="mb-4" style="width:150%">
                 He received his Ph.D. degree in Engineering Sciences from Harvard University, Cambridge, in 2017. 
                 He obtained his B.S. degree from Tsinghua University, Beijing, in 2012. He joined the faculty of the 
                 University of Minnesota, Twin Cities, in 2018, where he has been an Assistant Professor at the School of 

@@ -2,7 +2,7 @@
   <section  class="iq-section-space  pt-0">
     <div class="container">
       <div class="row">
-        <div class="col-sm-12 fadeIn  animated">
+        <div style="margin-top:100px" class="col-sm-12 fadeIn  animated">
           <div class="title-box wow fadeInUp text-center" data-wow-delay=".3s">
             <span class="title-design">CASE STUDIES</span>
             <h2>Our Latest Case Studies</h2>

@@ -1,5 +1,5 @@
 <template>
-   <div class="iq-section-space iq-section-pb-70 pb-0">
+   <div class="iq-section-space iq-section-pb-70 pb-0"> 
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp" data-wow-delay=".3s">

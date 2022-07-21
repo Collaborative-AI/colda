@@ -29,8 +29,7 @@
     </div> -->
     <HeaderStyle :logo-img="logo"  className="main-header header-software" :styledLogo="styleLogo" :nav-item-list="navItems"/>
   
-      
-      <router-view />
+      <router-view></router-view>
       
     <FooterStyle6>
       <template v-slot:icon>
@@ -40,10 +39,10 @@
               <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
             </ul>
           </template>
-      <template v-slot:footer-innertop>
+      <!-- <template v-slot:footer-innertop>
         <div class="row algin-self-center footer_top_block">
           <div class="col-md-6">
-              <h4 class="footer-title">Subscribe for Newsletter</h4>
+              <h4 class="footer-title">Subscribe for Newsletter haha</h4>
           </div>
           <div class="col-md-6">
               <div class="mc4wp-form-fields">
@@ -52,7 +51,7 @@
               </div>
           </div>
       </div>
-      </template>
+      </template> -->
     </FooterStyle6>
     <Scrolltop />
   </div>
@@ -90,6 +89,11 @@ export default {
         // { href: '#iq-contact', title: 'Contact Us' }
         { href: '/', title: 'Home' },
         { href: '/products', title: 'Products' },
+        // { href: '/', title: 'Resourses', children: [
+        //     { href: '/documentation', title: 'Documentation' },
+        //     { href: '/tutorials', title: 'Tutorials' },
+        // ]
+        //     },
         { href: '/usecases', title: 'Usecases' },
         { href: '/about', title: 'About' },
         { href: '/contact', title: 'Contact' },

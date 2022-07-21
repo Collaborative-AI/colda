@@ -77,17 +77,22 @@ export default {
       styleLogo:false,
       logo:logo,
       navItems: [
-        {
-          href: '#iq-home',
-          title: 'Home',
-          _is_active: true
-        },
-        { href: '#iq-about', title: 'About Us' },
-        { href: '#iq-service', title: 'Services' },
-        { href: '#iq-process', title: 'Process' },
-        { href: '#iq-testimonial', title: 'Testimonial' },
-        { href: '#iq-blog', title: 'Blog' },
-        { href: '#iq-contact', title: 'Contact Us' }
+        // {
+        //   href: '#iq-home',
+        //   title: 'Home',
+        //   _is_active: true
+        // },
+        // { href: '#iq-about', title: 'About Us' },
+        // { href: '#iq-service', title: 'Services' },
+        // { href: '#iq-process', title: 'Process' },
+        // { href: '#iq-testimonial', title: 'Testimonial' },
+        // { href: '#iq-blog', title: 'Blog' },
+        // { href: '#iq-contact', title: 'Contact Us' }
+        { href: '/', title: 'Home' },
+        { href: '/products', title: 'Products' },
+        { href: '/usecases', title: 'Usecases' },
+        { href: '/about', title: 'About' },
+        { href: '/contact', title: 'Contact' },
       ],
       footerText:
         'It is a long established fact that a reader will be distracted by the readable content.',

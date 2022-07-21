@@ -1,7 +1,7 @@
 <template>
   <section class="iq-section-space bg-primary">
     <div class="container">
-      <div class="row align-items-center  ">
+      <div class="row align-items-center">
         <div class="col-lg-6 col-md-6 col-sm-12 wow fadeInUp " data-wow-delay=".3s">
           <form method="post" novalidate="novalidate">
           <div class="predict-form  consultab-contact contact-form">

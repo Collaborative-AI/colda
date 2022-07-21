@@ -88,7 +88,7 @@
                             <div class="dropdown">
                                 <span class="dropdown-toggle dropdown-bg border p-1 border-primary text-primary rounded-normal" id="dropdownMenuButton1"
                                     data-toggle="dropdown">
-                                    Weekly<i class="ri-arrow-down-s-line ml-1 text-primary"></i>
+                                    Weekly123<i class="ri-arrow-down-s-line ml-1 text-primary"></i>
                                 </span>
                                 <div class="dropdown-menu dropdown-menu-right shadow-none"
                                     aria-labelledby="dropdownMenuButton1">

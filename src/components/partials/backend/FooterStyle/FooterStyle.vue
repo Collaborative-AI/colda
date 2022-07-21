@@ -9,7 +9,7 @@
                 </ul>
             </div>
             <div class="col-lg-6 text-right">
-                Copyright 2020 <a href="#">{{ appName }}</a> All Rights Reserved.
+                Copyright 2022 <a href="#">Synspot</a> All Rights Reserved.
             </div>
         </div>
     </div>

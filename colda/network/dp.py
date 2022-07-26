@@ -42,6 +42,7 @@ class DP:
         -------
         None
         '''
+        # print(f'network_response_0000: {network_response}, {network_response.status_code}')
         if network_response.status_code != status_code:
             status_code = network_response.status_code
             network_response = cls.load_network_response(network_response=network_response)
@@ -51,7 +52,7 @@ class DP:
                 )
             else:
                 raise StatusCodeError(
-                    f"Wrong network response, status code: {status_code}"
+                    f"Wrong network response, status code: {status_code}, error: {network_response}"
                 )
         return
 
@@ -66,14 +67,19 @@ class DP:
 
         Parameters
         ----------
-        network_response : JSONType
+        network_response : JSONType or Http
         
         Returns
         -------
         Any
         '''
         # print('yyy', network_response.json())
+        # print(f'network_response_1: {network_response}')
         if hasattr(network_response, 'text'):
             network_response = network_response.text
         # print(f'network_response: {network_response}, {type(network_response)}')
-        return json.loads(network_response)
+        # print(f'network_response_2: {network_response}')
+        try:
+            return json.loads(network_response)
+        except:
+            return network_response

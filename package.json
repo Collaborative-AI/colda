@@ -44,6 +44,7 @@
     "vue": "^2.6.11",
     "vue-flatpickr-component": "^8.1.5",
     "vue-morris": "^1.1.0",
+    "vue-navigation-bar": "^4.1.0",
     "vue-router": "^3.2.0",
     "vue-slick": "^1.1.15",
     "vue2-editor": "^2.10.2",

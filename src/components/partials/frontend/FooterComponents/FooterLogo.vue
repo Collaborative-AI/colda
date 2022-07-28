@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="footer-logo"><img class="logo" :src="sectionImage" width="80" alt="#"></p>
+    <p class="footer-logo"><img class="logo" :src="sectionImage" width="250" alt="#"></p>
     <p class="footer-logo">{{ sectionText }}</p>
     <slot name="icons"/>
   </div>

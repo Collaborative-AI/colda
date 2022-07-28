@@ -19,6 +19,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 
+import VueNavbar from'vue-navigation-bar'
+import 'vue-navigation-bar/dist/vue-navigation-bar.css';
+Vue.use(VueNavbar)
+
 
 new Vue({
   router,

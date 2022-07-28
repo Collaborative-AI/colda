@@ -768,13 +768,13 @@ const childRoute = () => [
 ]
 const authchildRoute = () =>[
   {
-    path: 'sign-in',
+    path: '/sign-in',
     name: 'auth.login',
     meta: {  name: 'SignIn' },
     component: SignIn
   },
   {
-    path: 'sign-up',
+    path: '/sign-up',
     name: 'auth.register',
     meta: {  name: 'SignUp' },
     component: SignUp

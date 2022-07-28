@@ -1,5 +1,7 @@
 <template>
+
   <FooterMain class="footer-analytics iq-bg-dark iq-over-dark-90">
+
     <div slot="footerContent" class="footer-top">
       <slot name="footer-innertop"/>
       <div class="row">
@@ -13,24 +15,63 @@
           </template>
           </FooterLogo>
         </div>
-        <div class="col-lg-2 col-md-6 col-sm-6 mt-4 mt-lg-0 mt-md-0">
+
+        <!-- <div class="col-lg-2 col-md-6 col-sm-6 mt-4 mt-lg-0 mt-md-0">
           <FooterLinks :content="footerLinks" title="Important Links"/>
-        </div>
+        </div> -->
         <div class="col-lg-2 col-md-6 col-sm-6 mt-lg-0 mt-4">
+
+          <!-- <FooterLinks :content="footerResources" title="Resources"/> -->
+          <div>
+            <h4 class="footer-title">Important Links</h4>
+            <div class="menu-footer-menu-container">
+
+              <ul class="menu">
+                  <router-link to="/products">Products</router-link>   
+                  <br>
+                  <router-link to="/about">About</router-link> 
+                  <br>
+                  <router-link to="/contact">Contact</router-link>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-2 col-md-6 col-sm-6 mt-lg-0 mt-4">
+
           <!-- <FooterLinks :content="footerResources" title="Resources"/> -->
           <div>
             <h4 class="footer-title">Resources</h4>
             <div class="menu-footer-menu-container">
+
               <ul class="menu">
-                <li class="menu-item">
-                  <a target="_blank" href="html/index.html" >Documentation</a>       
+                <!-- <a href="html/index.html" target="_blank" style="color:#595a5d">Documentation</a>
+                <br>
+                <br>
+                <a href="notebook/User_Guide.html" target="_blank">Tutorials</a> 
+                <br>
+                <br> -->
+                <!-- <li class="menu-item"> -->
+                  <!-- <a href="/html/index.html" target="_blank">Documentation</a>  -->
+                  <!-- <a @Click="window.open('/html/index.html', '_blank')" target="_blank" style="text-decoration:underline">Documentation</a>      -->
+                  <router-link to="/html/index.html" @Click="window.open('/html/index.html', '_blank')" target="_blank">Documentation</router-link>
+                  <br>
+                <!-- </li> -->
+                <!-- <li class="menu-item"> -->
+                  <!-- <a @Click="window.open('/notebook/User_Guide.html', '_blank')" target="_blank" style="text-decoration:underline">Tutorials</a> -->
+                  <router-link to="/notebook/User_Guide.html" @Click="window.open('/notebook/User_Guide.html', '_blank')" target="_blank">Tutorials</router-link>
+                  <br>
+                <!-- </li> -->
+                 <!-- <li class="menu-item">
+                  <a target="_blank" href="https:google.com">Tutorials1</a>
                 </li>
                 <li class="menu-item">
-                  <a target="_blank" href="notebook/User_Guide.html" >Tutorials</a>
-                </li>
-                <li class="menu-item">
+                  <a target="_blank" href="https:google.com">Tutorials</a>
+                  <a href="https:google.com">Tutorials2</a>
+                </li> -->
+                <!-- <li class="menu-item"> -->
                   <router-link to="/usecases">Use Cases</router-link>
-                </li>
+                <!-- </li> -->
               </ul>
             </div>
           </div>
@@ -55,12 +96,16 @@
 import FooterMain from '../FooterComponent/FooterMain'
 import FooterAddress from '../FooterComponents/FooterAddress'
 import FooterLogo from '../FooterComponents/FooterLogo'
-import FooterLinks from '../FooterComponents/FooterLinks'
-import logoImg from '../../../../assets/images/logo1.png'
+// import FooterLinks from '../FooterComponents/FooterLinks'
+import logoImg from '../../../../assets/images/logotext.png'
 
 export default {
   name: 'Footerstyle6',
-  components: { FooterLogo, FooterLinks, FooterAddress, FooterMain },
+  components: 
+  { FooterLogo, 
+  // FooterLinks, 
+  FooterAddress, 
+  FooterMain },
   data () {
     return {
       navLogo: logoImg,
@@ -118,4 +163,11 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+/* a:hover {
+  text-decoration: none;
+} */
+.landing-analytics footer.footer-analytics ul.menu li a:hover {
+   text-decoration: none;
+}
+</style>

@@ -47,7 +47,7 @@
                 He received the B.S. degree in computer science and electrical engineering from Georgia Institute of 
                 Technology, Georgia, USA, in 2016 and the M.S. degree in electrical engineering from Harvard University, 
                 Cambridge, USA, in 2018. He is currently pursuing the Ph.D. degree in electrical engineering at Duke University, 
-                Durham, Georgia, USA. His research interest includes distributed machine learning, data and model compression, 
+                Durham, USA. His research interest includes distributed machine learning, data and model compression, 
                 and audio signal processing. He has published several academic papers in top tier conferences and journals.
               </p>
             </template>

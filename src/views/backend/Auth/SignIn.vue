@@ -38,7 +38,7 @@
                            </b-row>
                            <button type="submit" class="btn btn-primary">Sign In</button>
                            <p class="mt-3">
-                              Create an Account <router-link to="/auth/sign-up" class="text-primary">Sign Up</router-link>
+                              Create an Account <router-link to="/sign-up" class="text-primary">Sign Up</router-link>
                            </p>
                         </form>
                      </b-col>

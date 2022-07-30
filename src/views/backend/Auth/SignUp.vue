@@ -59,7 +59,7 @@
                            </b-row>
                            <button type="submit" class="btn btn-primary">Sign Up</button>
                            <p class="mt-3">
-                              Already have an Account <router-link to="/auth/sign-in" class="text-primary">Sign In</router-link>
+                              Already have an Account <router-link to="/sign-in" class="text-primary">Sign In</router-link>
                            </p>
                         </form>
                      </b-col>

@@ -175,12 +175,12 @@ export default {
               path: "/contact",
               iconRight: '<i class="fa fa-long-arrow-right fa-fw"></i>',
             },
-            {
-              type: "button",
-              text: "Sign Up",
-              path: "",
-              class: "button-red"
-            },
+            // {
+            //   type: "button",
+            //   text: "Sign Up",
+            //   path: "",
+            //   class: "button-red"
+            // },
             {
               type: "button",
               text: "Sign In",

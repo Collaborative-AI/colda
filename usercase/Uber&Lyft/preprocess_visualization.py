@@ -1,4 +1,5 @@
 # %%
+from attr import dataclass
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt # plotting
@@ -7,6 +8,9 @@ import os # accessing directory structure
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import os 
 import colda
+
+# from datetime import datetime
+from datetime import datetime
 # Distribution graphs (histogram/bar graph) of column data
 def plotPerColumnDistribution(df, nGraphShown, nGraphPerRow):
     nunique = df.nunique()
@@ -93,8 +97,9 @@ else:
 
 Rows = None
 Rows_sub_1000 = 1000
+Rows_sub_100 = 100
 # cab_rides.csv has 693071 rows in reality, but we are only loading/previewing the first 1000 rows
-df_rides = pd.read_csv('input/cab_rides.csv', delimiter=',', nrows = Rows)
+df_rides = pd.read_csv('input/cab_rides.csv', delimiter=',', nrows = Rows_sub_100)
 df_rides.dataframeName = 'cab_rides.csv'
 
 nRow, nCol = df_rides.shape
@@ -134,4 +139,65 @@ plotScatterMatrix(df_weather, 20, 10)
 # %%
 # df_rides['merged_date'] = df_rides['source'].astype('str') + ' - ' + df_rides['date'].dt.strftime('%Y-%m-%d').astype('str') + ' - ' + df_rides['date'].dt.hour.astype('str')
 # df_weather['merged_date'] = df_weather['location'].astype('str') + ' - ' + df_weather['date'].dt.strftime('%Y-%m-%d').astype('str') + ' - ' + df_weather['date'].dt.hour.astype('str')
+# %%
+
+wthr_time_max = df_weather.time_stamp.max()
+wthr_time_min = df_weather.time_stamp.min()
+print(f"Max: {wthr_time_max}, Min: {wthr_time_min}")
+
+# %%
+# df_rides['time_stamp'] = round(df_rides['time_stamp'] / 1000)
+pd.set_option('display.float_format', lambda x: '%.0f' % x)
+df_rides.head(5)
+
+# %%
+# Try to train
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+
+
+df_rides.isnull().sum()
+# remove these rows where the price is not present
+df_rides.dropna(axis = 0 , inplace = True)
+
+df_weather.isnull().sum()
+#rain not happening
+df_weather.fillna(0 ,inplace = True)
+# %%
+
+
+df_rides.isnull().sum()
+df_weather.isnull().sum()
+#take average of all values  based on place /locations
+# weather_avg
+weather_avg = df_weather.groupby('location').mean().reset_index()
+print(weather_avg)
+# %%
+
+
+timeseries  = df_rides['time_stamp']
+price = df_rides['price']
+
+plt.plot(timeseries,price)
+# %%
+import time
+timeseries_converting  = df_rides['time_stamp'][0]
+# unix_timestamp = float(timeseries_converting)
+# readabel_time = int(str(timeseries_converting))
+d = datetime.fromtimestamp(timeseries_converting / 1000.0)
+# value = datetime.fromtimestamp(d)
+# %%
+print(d)
+
+# print(timeseries.shape)
+realtime = []
+
+for i,d in enumerate(timeseries):
+    realtime.append(datetime.fromtimestamp(d / 1000.0))
+print(realtime)
+
+plt.plot(realtime,price)
+
+# readabel_time
 # %%

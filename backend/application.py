@@ -3,12 +3,13 @@ from Items import create_app
 from config import Config
 
 application = create_app(Config)
+app = application
 
-@application.route('/')
+@app.route('/')
 def hello_world():
     return 'Hello, World!'
 
-@application.cli.command()
+@app.cli.command()
 def test():
    # flask test
    # flask run
@@ -17,12 +18,13 @@ def test():
     tests = unittest.TestLoader().discover('tests') 
     unittest.TextTestRunner(verbosity=2).run(tests)
 
-@application.shell_context_processor
+@app.shell_context_processor
 def make_shell_context():
     pass
 
 
-
+if __name__ == '__main__':
+    app.run(app)
 
 
 

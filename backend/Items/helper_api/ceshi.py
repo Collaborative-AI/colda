@@ -143,7 +143,7 @@ def ceshi(ID,value):
     #   print(i)
     print("data",request.values.get("Json"))
     print("data",request.values.get("JSON"))
-    print("data2", request.get_data())
+    # print("data2", request.get_data())
     return "good"
 
 @helper_api_bp.route('/create_unittest_user/', methods=['POST'])
@@ -459,7 +459,7 @@ def ceshi_mongo():
     print('dfdfs', id, type(id))
     gridfs = GridFS(pyMongo.db)
     gridfile = gridfs.find_one({"filename": "my-file1.txt"})
-    print('gsdfad', dir(gridfile))
+    # print('gsdfad', dir(gridfile))
     # for key, val in gridfile.__dict__.items():
     #     print('sss', key, val)
 

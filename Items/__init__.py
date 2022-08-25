@@ -135,7 +135,7 @@ def configure_errorhandlers(application):
     from flask.json import jsonify
     @application.errorhandler(Exception)
     def handle_error(e):
-        print('lailelaile', e)
+        print('lailelaile', str(e), type(e).__name__)
         code = 500
         if isinstance(e, HTTPException):
             code = e.code

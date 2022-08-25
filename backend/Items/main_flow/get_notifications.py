@@ -38,7 +38,7 @@ def get_notifications(id):
 
     user_id = obtain_user_id_from_token()
     user_document = mongoDB.search_user_document(user_id=id,username=None, email=None, key_indicator='user_id')
-    print('5124', user_document['username'])
+    # print('5124', user_document['username'])
     # check if the caller of the function and the id is the same
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
@@ -73,6 +73,6 @@ def get_notifications(id):
     if 'new_token' in g.current_user and g.current_user['new_token'] != None:
         response = add_new_token_to_response(response)
 
-    print('cat1', type(response))
-    print('cat1res', response)
+    # print('cat1', type(response))
+    # print('cat1res', response)
     return jsonify(response)

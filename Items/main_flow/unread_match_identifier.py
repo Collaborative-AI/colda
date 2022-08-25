@@ -462,7 +462,7 @@ def send_test_output(id):
         assistor_id=assistor_id, 
         output_id=output_id
     )
-    print('ooooutput content', output_content)
+    # print('ooooutput content', output_content)
     test_message_output.create_test_message_output_document(
         output_id=output_id, 
         test_id=test_id, 

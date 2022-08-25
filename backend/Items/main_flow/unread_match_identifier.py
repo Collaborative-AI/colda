@@ -440,7 +440,7 @@ def send_test_output(id):
         return error_response(403)
 
     output_content = data['output_content']
-    print(f'asdasd: {output_content}')
+    # print(f'asdasd: {output_content}')
     test_id = data['test_id']
     train_id = data['train_id']
     assistor_id = user_id
@@ -462,7 +462,7 @@ def send_test_output(id):
         assistor_id=assistor_id, 
         output_id=output_id
     )
-    print('ooooutput content', output_content)
+    # print('ooooutput content', output_content)
     test_message_output.create_test_message_output_document(
         output_id=output_id, 
         test_id=test_id, 
@@ -478,7 +478,7 @@ def send_test_output(id):
     # check how many assistors have uploaded their output 
     # if the number of output surpasses the ramin_assistor_num, we can send notifications
     test_message_document = test_message.search_test_message_document(test_id=test_id)
-    print('test_message_document', test_message_document)
+    # print('test_message_document', test_message_document)
     output_dict = test_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
     print('test_message_document')
     if len(output_dict) >= remain_assistor_num:

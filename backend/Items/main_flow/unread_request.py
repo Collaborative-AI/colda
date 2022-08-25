@@ -84,8 +84,8 @@ def match_identifier_content(id):
     log(generate_msg('---- unread request begins'), user_id, train_id)
     log(generate_msg('2.1:', 'assistor match_assistor_id begins'), user_id, train_id)
 
-    print(type(identifier_content), len(identifier_content), identifier_content)
-    print(type(sponsor_identifier_content), len(sponsor_identifier_content), sponsor_identifier_content)
+    # print(type(identifier_content), len(identifier_content), identifier_content)
+    # print(type(sponsor_identifier_content), len(sponsor_identifier_content), sponsor_identifier_content)
     a = set(identifier_content)
     b = set(sponsor_identifier_content)
     same_identifiers = list(set(identifier_content) & set(sponsor_identifier_content))

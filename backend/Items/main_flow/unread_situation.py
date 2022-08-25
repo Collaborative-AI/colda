@@ -91,7 +91,7 @@ def get_situation_content(id):
         'situation_content': situation_content,
         'sender_random_id': sender_random_id
     }
-    print('unread situation response', response)
+    # print('unread situation response', response)
     return jsonify(response)  
 
 @main_flow_bp.route('/send_output/<string:id>', methods=['POST'])
@@ -152,7 +152,7 @@ def send_output(id):
     pyMongo.db.Train_Message.update_one({'train_id': train_id}, {'$set':
         {f'rounds_{cur_rounds_num}.output_dict.{assistor_id}.output_id': output_id}
     })
-    print('output_content', output_content, user_id)
+    # print('output_content', output_content, user_id)
     train_message_output.create_train_message_output_document(
         output_id=output_id, 
         train_id=train_id, 

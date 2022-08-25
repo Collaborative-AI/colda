@@ -30,13 +30,17 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
 
+                        <li class="nav-item">
+                          <router-link to="/xiaoguo" class="nav-link">Xiaoguo</router-link>
+                        </li>
+
                         <!-- <li class="nav-item">
                           <router-link to="/resend" class="nav-link">Resend</router-link>
                         </li> -->
                       
-                        <!-- <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user']) && sharedState.username != 'xie1'"  class="nav-item">
+                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user']) && sharedState.username != 'xie1'"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
-                        </li>        -->
+                        </li>       
                         <!-- <button @click="test_axios()">123</button>              -->
                         <!-- <li class="nav-item">
                             <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Brand</span></a>
@@ -129,6 +133,16 @@ export default {
     }
   },
   methods: {
+    timeNow() {
+      let timestamp=new Date().getTime()
+      let now = new Date(timestamp)
+      let y = now.getFullYear()
+      let m = now.getMonth() + 1
+      let d = now.getDate()
+      let x = y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8)
+      console.log(x)
+      return x
+    },
 
     refreshView () {
       this.showView = false // 通过v-if移除router-view节点
@@ -306,10 +320,10 @@ export default {
             // //Log(generate_message_string("2.1 Update the request notification\n"), 'info')
 
             try {
-              fs.appendFileSync(Log_address, "\n You are Assistor\n")
-              fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
-              fs.appendFileSync(Log_address, "----2. Unread Request\n")
-              fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: You are Assistor\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Task ID: " + task_id + "\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2. Unread Request\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2.1 Update the request notification\n")
             } catch (err) {
               console.log(err)
             }
@@ -338,8 +352,8 @@ export default {
                 vm.$toasted.success( `auto: Training Task `+ task_id + ` Starts`, { icon: 'fingerprint' })
 
                 try {
-                  fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
-                  fs.appendFileSync(Log_address, "----2. Unread Request Done\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2.2 assistor uploads id file\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2. Unread Request Done\n")
                 } catch (err) {
                   console.log(err)
                 }
@@ -413,8 +427,8 @@ export default {
         // //Log(generate_message_string("3.1 Update the match id notification\n"), 'info')
 
         try {
-          fs.appendFileSync(Log_address, "---- 3. Unread Match ID\n")
-          fs.appendFileSync(Log_address, "3.1 Update the match id notification\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3. Unread Match ID\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.1 Update the match id notification\n")
         } catch (err) {
           console.log(err)
         }
@@ -424,7 +438,7 @@ export default {
         if (check_sponsor == 'sponsor'){
           // //Log(generate_message_string("3.2 Unread_match_id_sponsor\n"), 'info')
           try {
-            fs.appendFileSync(Log_address, "3.2 Unread_match_id_sponsor\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.2 Unread_match_id_sponsor\n")
           } catch (err) {
             console.log(err)
           }
@@ -433,7 +447,7 @@ export default {
         else{
           //Log(generate_message_string("3.2 Unread_match_id_assistor\n"), 'info')
           try {
-            fs.appendFileSync(Log_address, "3.2 Unread_match_id_assistor\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.2 Unread_match_id_assistor\n")
           } catch (err) {
             console.log(err)
           }
@@ -474,7 +488,7 @@ export default {
           //Log(generate_message_string("3.3 Sponsor gets matched id file\n"), 'info')
     
           try {
-            fs.appendFileSync(Log_address, "3.3 Sponsor gets matched id file\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.3 Sponsor gets matched id file\n")
           } catch (err) {
             console.log(err)
           }
@@ -495,7 +509,7 @@ export default {
               let indicator = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos, "200", "save_match_id")
               if (indicator == false){
                 // console.log("save_match_id_file_pos wrong")
-                fs.appendFileSync(Log_address, "save_match_id_file_pos wrong")
+                fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: save_match_id_file_pos wrong")
                 return 
               }
 
@@ -512,7 +526,7 @@ export default {
             // vm.$toasted.success('3.4 Sponsor Saved Matched id File at ' + save_match_id_file_pos[2], { icon: 'fingerprint' })
             //Log(generate_message_string("3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"), 'info')
             try {
-              fs.appendFileSync(Log_address, "3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.4 Sponsor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
             } catch (err) {
               console.log(err)
             }
@@ -526,7 +540,7 @@ export default {
               let indicator = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
               if (indicator == false){
                 // console.log("make_match_idx_done wrong")
-                fs.appendFileSync(Log_address, "make_match_idx_done wrong")
+                fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: make_match_idx_done wrong")
                 return 
               }
 
@@ -542,7 +556,7 @@ export default {
             //Log(generate_message_string("3.5 Sponsor matches id to index\n"), 'info')
 
             try {
-              fs.appendFileSync(Log_address, "3.5 Sponsor matches id to index\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.5 Sponsor matches id to index\n")
             } catch (err) {
               console.log(err)
             }
@@ -583,7 +597,7 @@ export default {
               let indicator = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
               if (indicator == false){
                 // console.log("make_residual_multiple_paths wrong")
-                fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
+                fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: make_residual_multiple_paths wrong")
                 return 
               }
 
@@ -596,7 +610,7 @@ export default {
             //Log(generate_message_string("3.6 Sponsor makes residual finished\n"), 'info')
 
             try {
-              fs.appendFileSync(Log_address, "3.6 Sponsor makes residual finished\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.6 Sponsor makes residual finished\n")
             } catch (err) {
               console.log(err)
             }
@@ -656,8 +670,8 @@ export default {
               // vm.$toasted.success(`Train: Unread Match ID Done`, { icon: 'fingerprint' })
 
               try {
-                fs.appendFileSync(Log_address, "3.7 Sponsor sends all situations" + "\n")
-                fs.appendFileSync(Log_address, "---- 3. Unread Match ID Done\n")
+                fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.7 Sponsor sends all situations" + "\n")
+                fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3. Unread Match ID Done\n")
               } catch (err) {
                 console.log(err)
               }
@@ -702,7 +716,7 @@ export default {
           //Log(generate_message_string("3.3 Assistor gets matched id file\n"), 'info')
 
           try {
-            fs.appendFileSync(Log_address, "3.3 Assistor gets matched id file\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.3 Assistor gets matched id file\n")
           } catch (err) {
             console.log(err)
           }
@@ -722,7 +736,7 @@ export default {
             let indicator = handle_Algorithm_return_value("save_match_id_file_pos", save_match_id_file_pos, "200", "save_match_id")
             if (indicator == false){
               // console.log("save_match_id_file_pos wrong")
-              fs.appendFileSync(Log_address, "save_match_id_file_pos wrong")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: save_match_id_file_pos wrong")
               return 
             }
 
@@ -738,7 +752,7 @@ export default {
           //Log(generate_message_string("3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n"), 'info')
 
           try {
-            fs.appendFileSync(Log_address, "3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.4 Assistor Saved Matched id File at " + save_match_id_file_pos[2] + "\n")
           } catch (err) {
             console.log(err)
           }
@@ -752,7 +766,7 @@ export default {
             let indicator = handle_Algorithm_return_value("make_match_idx_done", make_match_idx_done, "200", "make_match_idx")
             if (indicator == false){
               // console.log("make_match_idx_done wrong")
-              fs.appendFileSync(Log_address, "make_match_idx_done wrong")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: make_match_idx_done wrong")
               return 
             }
 
@@ -769,8 +783,8 @@ export default {
 
 
           try {
-            fs.appendFileSync(Log_address, "3.5 Assistor matches id to index\n")
-            fs.appendFileSync(Log_address, "---- 3. Unread Match ID Done\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3.5 Assistor matches id to index\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 3. Unread Match ID Done\n")
           } catch (err) {
             console.log(err)
           }
@@ -814,8 +828,8 @@ export default {
         //Log(generate_message_string("4.1 Update the situation notification\n"), 'info')
 
         try {
-          fs.appendFileSync(Log_address, "---- 4. Unread Situation\n")
-          fs.appendFileSync(Log_address, "4.1 Update the situation notification\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4. Unread Situation\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4.1 Update the situation notification\n")
         } catch (err) {
           console.log(err)
         }
@@ -847,7 +861,7 @@ export default {
       //Log(generate_message_string("4.2 Cur round is: " + rounds.toString() + "\n"), 'info')
       
       try {
-        fs.appendFileSync(Log_address, "4.2 Cur round is: " + rounds.toString() + "\n")
+        fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4.2 Cur round is: " + rounds.toString() + "\n")
       } catch (err) {
         console.log(err)
       }
@@ -893,7 +907,7 @@ export default {
 
           if (indicator == false){
             // console.log("train_output wrong")
-            fs.appendFileSync(Log_address, "train_output wrong")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: train_output wrong")
             return 
           }
 
@@ -910,8 +924,8 @@ export default {
 
 
         try {
-          fs.appendFileSync(Log_address, "4.3 Sponsor round " + rounds + " training done." + "\n")
-          fs.appendFileSync(Log_address, "---- 4. Unread Situation Done\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4.3 Sponsor round " + rounds + " training done." + "\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4. Unread Situation Done\n")
         } catch (err) {
           console.log(err)
         }
@@ -945,7 +959,7 @@ export default {
           //Log(generate_message_string("4.2 assistor gets situation file\n"), 'info')
 
           try {
-            fs.appendFileSync(Log_address, "4.2 assistor gets situation file\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4.2 assistor gets situation file\n")
           } catch (err) {
             console.log(err)
           }
@@ -968,7 +982,7 @@ export default {
 
             if (indicator == false){
               // console.log("save_residual_file_pos wrong")
-              fs.appendFileSync(Log_address, "save_residual_file_pos wrong")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: save_residual_file_pos wrong")
               return 
             }
 
@@ -983,7 +997,7 @@ export default {
           //Log(generate_message_string("4.3 Assistor Saved Residual File!\n"), 'info')
 
           try {
-            fs.appendFileSync(Log_address, "4.3 Assistor Saved Residual File!\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4.3 Assistor Saved Residual File!\n")
           }catch (err) {
             console.log(err)
           }
@@ -1083,7 +1097,7 @@ export default {
         // console.log("4.4 Assistor round " + rounds + " training done.");
         // vm.$toasted.success("4.4 Assistor round " + rounds + " training done.", { icon: 'fingerprint' })
         try {
-          fs.appendFileSync(Log_address, "4.4 Assistor round " + rounds + " training done." + "\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4.4 Assistor round " + rounds + " training done." + "\n")
         } catch (err) {
           console.log(err)
         }
@@ -1118,9 +1132,9 @@ export default {
           
           // vm.$toasted.success("4.5 Assistor sends output", { icon: 'fingerprint' })
           try {
-            fs.appendFileSync(Log_address, "4.5 Assistor sends output\n")
-            fs.appendFileSync(Log_address, "---- 4. Unread Situation Done\n")
-            fs.appendFileSync(Log_address, "---- Train stage done\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4.5 Assistor sends output\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 4. Unread Situation Done\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Train stage done\n")
           } catch (err) {
             console.log(err)
           }
@@ -1162,8 +1176,8 @@ export default {
 
         const Log_address = this.handle_train_log_address(task_id)
         try {
-          fs.appendFileSync(Log_address, "---- 5. Unread Output\n")
-          fs.appendFileSync(Log_address, "5.1 Update the output notification\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 5. Unread Output\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 5.1 Update the output notification\n")
         } catch (err) {
           console.log(err)
         }
@@ -1196,7 +1210,7 @@ export default {
           // vm.$toasted.success("5.2 Sponsor gets output model", { icon: 'fingerprint' })
 
           try {
-            fs.appendFileSync(Log_address, "5.2 Sponsor gets output model\n")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 5.2 Sponsor gets output model\n")
             console.log('log address', Log_address)
           } catch (err) {
             console.log(err)
@@ -1229,7 +1243,7 @@ export default {
 
               if (indicator == false){
                 // console.log("save_output_pos wrong")
-                fs.appendFileSync(Log_address, "save_output_pos wrong")
+                fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: save_output_pos wrong")
                 return 
               }
 
@@ -1244,7 +1258,7 @@ export default {
             //Log(generate_message_string("5.3 Sponsor saves Output model\n"), 'info')
 
             try {
-              fs.appendFileSync(Log_address, "5.3 Sponsor saves Output model\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 5.3 Sponsor saves Output model\n")
             } catch (err) {
               console.log(err)
             }
@@ -1336,7 +1350,7 @@ export default {
         //Log(generate_message_string("5.4 Sponsor makes result done." + "\n"), 'info')
 
         try {
-          fs.appendFileSync(Log_address, "5.4 Sponsor makes result done." + "\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 5.4 Sponsor makes result done." + "\n")
         } catch (err) {
           console.log(err)
         }
@@ -1347,7 +1361,7 @@ export default {
 
 
         if (rounds >= vm.max_round){
-          fs.appendFileSync(Log_address, "---- Train stage done\n");
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Train stage done\n");
           vm.$toasted.success(`Training Task: ` + task_id +  ` Done`, { icon: 'fingerprint' })
         }else{        
 
@@ -1365,7 +1379,7 @@ export default {
           let indicator = handle_Algorithm_return_value("make_residual_multiple_paths", make_residual_multiple_paths, "200", "make_residual")
           if (indicator == false){
             // console.log("make_residual_multiple_paths wrong")
-            fs.appendFileSync(Log_address, "make_residual_multiple_paths wrong")
+            fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: make_residual_multiple_paths wrong")
             return 
           }
 
@@ -1378,7 +1392,7 @@ export default {
         //Log(generate_message_string("5.5 Sponsor makes residual finished\n"), 'info')
 
         try {
-          fs.appendFileSync(Log_address, "5.5 Sponsor makes residual finished\n")
+          fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 5.5 Sponsor makes residual finished\n")
         } catch (err) {
           console.log(err)
         }
@@ -1421,8 +1435,8 @@ export default {
             
 
             try {
-              fs.appendFileSync(Log_address, "5.6 Sponsor updates situation done\n")
-              fs.appendFileSync(Log_address, "---- 5. Unread Output Done\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 5.6 Sponsor updates situation done\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 5. Unread Output Done\n")
 
             } catch (err) {
               console.log(err)
@@ -1554,7 +1568,7 @@ export default {
                 // // console.log('daozhele')
                 if (indicator == false){
                   // console.log("test_hash_id_file_address wrong")
-                  fs.appendFileSync(Log_address, "test_hash_id_file_address wrong")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: test_hash_id_file_address wrong")
                   return 
                 }
               }catch(err){
@@ -2008,12 +2022,14 @@ export default {
                 console.log(err)
               }
 
-              let all_test_output = [];
+              let all_test_output = {};
               let make_test_lists = test_outputs_pos.slice(3, test_outputs_pos.length)
               // // console.log("make_test_lists", make_test_lists)
               for (let i = 0; i < make_test_lists.length; i++){
                 let data = fs.readFileSync(make_test_lists[i], {encoding:'utf8', flag:'r'});
-                all_test_output.push(data);
+                
+                let key = 'rounds_' + (i + 1)
+                all_test_output[key] = data
               }
               // // console.log("all_test_output", all_test_output)
 
@@ -2115,6 +2131,7 @@ export default {
       // const url = `/test_output/`
       this.$axios.post(add_prefix(`/get_test_output_content/${vm.sharedState.user_id}/`, `/main_flow`), payload)
         .then((response) => {
+          console.log('response shi', response);
           // console.log("4.2 Test: Sponsor gets assistors' Test output model")
           // vm.$toasted.success("4.2 Test: Sponsor gets assistors' Test output model", { icon: 'fingerprint' })
           try {
@@ -2124,14 +2141,19 @@ export default {
           }
           // iterate the match_id_file
           // List[List[List]] structure: [[[data from one assistor],[data from one assistor]],[[data from another assistor],[data from another assistor]]]
+          console.log('length is', Object.values(response.data.assistor_random_id_to_output_content_dict).length);
+          console.log('object v is', Object.values(response.data.assistor_random_id_to_output_content_dict)[0]);
           for(let i = 0;i < Object.values(response.data.assistor_random_id_to_output_content_dict).length; i++){
+            console.log('dares', Object.values(response.data.assistor_random_id_to_output_content_dict)[i]);
 
             const from_id = Object.keys(response.data.assistor_random_id_to_output_content_dict)[i];
             let multiple_outputs_from_one_assistor = Object.values(response.data.assistor_random_id_to_output_content_dict)[i];
+            console.log('dachiz', Object.values(response.data.assistor_random_id_to_output_content_dict)[i]);
             // // console.log("multiple_outputs_from_one_assistor", multiple_outputs_from_one_assistor)
-
-            for (let j = 0; j < multiple_outputs_from_one_assistor.length; j++){
-              let cur_output = multiple_outputs_from_one_assistor[j];
+            console.log('length is2', Object.values(multiple_outputs_from_one_assistor).length);
+            for (let j = 0; j < Object.values(multiple_outputs_from_one_assistor).length; j++){
+              let cur_output = Object.values(multiple_outputs_from_one_assistor)[j];
+              console.log('cur_output1', cur_output);
               
               // Store test output from assistors
               let test_save_output_pos = null
@@ -2142,6 +2164,7 @@ export default {
 
                 // // console.log('test save output pos', test_save_output_pos)
                 test_save_output_pos = test_save_output_pos.split("?")
+      
                 // // console.log('test_save_output_pos', test_save_output_pos)
                 let indicator = handle_Algorithm_return_value("test_save_output_pos", test_save_output_pos, "200", "save_output")
 
@@ -2160,6 +2183,7 @@ export default {
 
               // Store match_id file
               // // console.log('wokan1', cur_output)
+              console.log('cundizhi', test_save_output_pos[2]);
               fs.writeFileSync(test_save_output_pos[2], cur_output)
             }
 

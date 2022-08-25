@@ -14,10 +14,13 @@ import axios from 'axios'
 axios.defaults.timeout = 50000  // 超时时间
 // axios.defaults.baseURL = 'http://127.0.0.1:5000'
 // axios.defaults.baseURL = 'http://3.145.140.55'
-// axios.defaults.baseURL = 'http://synspot-env.eba-mvtmbnb2.us-east-2.elasticbeanstalk.com/'
-axios.defaults.baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/' 
+// axios.defaults.baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/' 
 // #new web address
 
+//lq xin ceshi
+// axios.defaults.baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com'
+
+axios.defaults.baseURL = 'https://synspotbackend.herokuapp.com/'
 
 
 // axios.defaults.transformRequest = [ function(data) {
@@ -44,10 +47,12 @@ axios.interceptors.request.use(function (config) {
     // return Qs.stringify(config.data.file, {arrayFormat: 'repeat'})
     
   
-  // console.log("config", config)
+  console.log("config shi", config)
   return config
 }, function (error) {
   // Do something with request error
+  console.log('cuo is', str(error), typeof(error), error_name);
+
   return Promise.reject(error)
 })
 
@@ -55,8 +60,10 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
   // Do something with response data
   // console.log("axios response", response)
+  console.log("config shi2", response)
   return response
 }, function (error) {
+  console.log('cuo is', error, error.__name__);
   // Do something with response error
   console.log('Error_https', error)
   if ('response' in error && error.response != undefined){

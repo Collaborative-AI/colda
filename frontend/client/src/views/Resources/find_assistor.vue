@@ -146,6 +146,16 @@ export default {
     }
   },
   methods: {
+    timeNow() {
+      let timestamp=new Date().getTime()
+      let now = new Date(timestamp)
+      let y = now.getFullYear()
+      let m = now.getMonth() + 1
+      let d = now.getDate()
+      let x = y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8)
+      console.log(x)
+      return x
+    },
     get_model_name() {
       for (let i = 0; i < this.task_mode_list.length; i++) {
         let obj = this.task_mode_list[i]
@@ -379,6 +389,7 @@ export default {
             metric_name: vm.metric_name,
             task_name: vm.task_name,
             task_description: vm.task_description,
+            max_round: 2
           }
           // console.log('fins_assistor_data', find_assistor_data)
 
@@ -417,13 +428,14 @@ export default {
 
 
             try {
-              fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
-              fs.appendFileSync(Log_address, "Task ID: " + vm.task_id + "\n")
-              fs.appendFileSync(Log_address, "---- Train Stage Starts\n")
-              fs.appendFileSync(Log_address, "---- 1. Find assistor\n")
-              fs.appendFileSync(Log_address, "1.1 Sponsor calls for help\n")
-              fs.appendFileSync(Log_address, "1.2 Sponsor sends id file\n")
-              fs.appendFileSync(Log_address, "---- 1. Find assistor Done\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: You are Sponsor\n")
+              // fs.appendFileSync(Log_address, "\nYou are SPONSOR\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Task ID: " + vm.task_id + "\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Training stage starts\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 1. Find assistor\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 1.1 Sponsor calls for help\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 1.2 Sponsor sends id file\n")
+              fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 1. Find assistor Done\n")
             } catch (err) {
               console.log(err)
             }

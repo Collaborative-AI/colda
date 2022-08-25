@@ -128,7 +128,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         newObjectId = ObjectId()
         user_id_2 = str(newObjectId)
-        password_hash = generate_password('Xie1@456')
+        password_hash = generate_password('Xie1@123')
         new_user_document = {
             '_id': newObjectId,
             'user_id': user_id_2,
@@ -148,7 +148,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
 
         newObjectId = ObjectId()
         user_id_3 = str(newObjectId)
-        password_hash = generate_password('Xie1@456')
+        password_hash = generate_password('Xie1@123')
         new_user_document = {
             '_id': newObjectId,
             'user_id': user_id_3,
@@ -301,7 +301,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(len(json_response_1['notification_result']['category']), 0)
 
         # Check the Notification of user 2
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest2', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_2, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_2 = json.loads(response.get_data(as_text=True))
@@ -312,12 +312,12 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         assert train_id in json_response_2['notification_result']['category']['unread_request']['train_id_dicts']
 
         # User 3 cannot check the notification of user 2
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_2, headers=headers)
         self.assertEqual(response.status_code, 403)
 
         # Check the Notification of user 3
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_3, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
@@ -326,7 +326,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         assert train_id in json_response_3['notification_result']['category']['unread_request']['train_id_dicts']
 
         # 5. assistor uploads the ID file
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest2', 'Xie1@123')
         identifier_content = user_2_identifier_content
         data = json.dumps({
             'train_id': train_id, 
@@ -357,7 +357,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(len(json_response['notification_result']['category']), 0)
         
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@123')
         identifier_content = user_3_identifier_content
         data = json.dumps({
             'train_id': train_id, 
@@ -407,7 +407,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         assert train_id in json_response_1['notification_result']['category']['unread_match_identifier']['train_id_dicts']
 
         # Check the Notification of user 2
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest2', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_2, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_2 = json.loads(response.get_data(as_text=True))
@@ -416,12 +416,12 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         assert train_id in json_response_2['notification_result']['category']['unread_match_identifier']['train_id_dicts']
 
         # User 3 cannot check the notification of user 2
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_2, headers=headers)
         self.assertEqual(response.status_code, 403)
 
         # Check the Notification of user 3
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_3, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
@@ -449,7 +449,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(set(assistor_random_id_to_identifier_content_dict[user_random_id_2]), set(user_1_identifier_content) & set(user_2_identifier_content))
         self.assertEqual(set(assistor_random_id_to_identifier_content_dict[user_random_id_3]), set(user_1_identifier_content) & set(user_3_identifier_content))
 
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest2', 'Xie1@123')
         data = json.dumps({
             'train_id': train_id
         })
@@ -461,7 +461,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         # test idendifier content
         self.assertEqual(set(sponsor_random_id_to_identifier_content_dict[user_random_id_1]), set(user_1_identifier_content) & set(user_2_identifier_content))
 
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@123')
         data = json.dumps({
             'train_id': train_id
         })
@@ -530,7 +530,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         assert train_id in json_response_1['notification_result']['category']['unread_situation']['train_id_dicts']
         self.assertEqual(json_response_1['notification_result']['category']['unread_situation']['train_id_dicts'][train_id]['cur_rounds_num'], test_rounds_num)
 
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest2', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_2, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_2 = json.loads(response.get_data(as_text=True))
@@ -539,7 +539,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         assert train_id in json_response_2['notification_result']['category']['unread_situation']['train_id_dicts']
         self.assertEqual(json_response_2['notification_result']['category']['unread_situation']['train_id_dicts'][train_id]['cur_rounds_num'], test_rounds_num)
 
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@123')
         response = self.client.get('/main_flow/get_notifications/' + user_id_3, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response_3 = json.loads(response.get_data(as_text=True))
@@ -558,7 +558,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         train_match_document = train_match.search_train_match_document(train_id=train_id)
         sponsor_random_id = train_match_document['sponsor_information'][user_id_1]['sponsor_id_to_random_id']
 
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest2', 'Xie1@123')
         data = json.dumps({
             'train_id': train_id, 
             'rounds': cur_rounds_num
@@ -571,7 +571,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(situation_content, user_2_situation_content)
         self.assertEqual(sender_random_id, sponsor_random_id)
 
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@123')
         data = json.dumps({
             'train_id': train_id, 
             'rounds': cur_rounds_num
@@ -585,7 +585,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         self.assertEqual(sender_random_id, sponsor_random_id)
 
 
-        headers = self.get_token_auth_headers('unittest2', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest2', 'Xie1@123')
         output_content = user_2_output_content
         data = json.dumps({
             'train_id': train_id, 
@@ -596,7 +596,7 @@ class Train_Helper_API_TestCase(unittest.TestCase):
         json_response = json.loads(response.get_data(as_text=True))
         self.assertEqual(json_response['send_output'], "send output successfully")
 
-        headers = self.get_token_auth_headers('unittest3', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest3', 'Xie1@123')
         output_content = user_3_output_content
         data = json.dumps({
             'train_id': train_id, 

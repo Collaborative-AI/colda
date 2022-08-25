@@ -13,7 +13,7 @@ class Test_helper_api(Train_Helper_API_TestCase, Test_Helper_API_TestCase):
         user_id_2 = user_id_list[1]
         user_id_3 = user_id_list[2]
 
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/helper_api/get_user_history/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -23,7 +23,7 @@ class Test_helper_api(Train_Helper_API_TestCase, Test_Helper_API_TestCase):
         assert train_id in participated_sort_task_dict
         assert test_id in participated_sort_task_dict
 
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/main_flow/create_new_test_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -47,7 +47,7 @@ class Test_helper_api(Train_Helper_API_TestCase, Test_Helper_API_TestCase):
         self.assertEqual(json_response['test_id'], test_id_2)
         assistor_num = json_response['assistor_num']
 
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/helper_api/get_user_history/' + user_id_1, headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))
@@ -67,7 +67,7 @@ class Test_helper_api(Train_Helper_API_TestCase, Test_Helper_API_TestCase):
         user_id_2 = user_id_list[1]
         user_id_3 = user_id_list[2]
 
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         data = json.dumps({
             'train_id': train_id, 
         })
@@ -79,7 +79,7 @@ class Test_helper_api(Train_Helper_API_TestCase, Test_Helper_API_TestCase):
         assert len(test_id_of_train_id_dict) == 1
         assert test_id in test_id_of_train_id_dict
 
-        headers = self.get_token_auth_headers('unittest1', 'Xie1@456')
+        headers = self.get_token_auth_headers('unittest1', 'Xie1@123')
         response = self.client.get('/main_flow/create_new_test_task/', headers=headers)
         self.assertEqual(response.status_code, 200)
         json_response = json.loads(response.get_data(as_text=True))

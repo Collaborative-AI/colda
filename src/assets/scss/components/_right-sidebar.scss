@@ -1,0 +1,111 @@
+.iq-right-fixed {
+	margin: 0 15px;
+}
+.right-sidebar-mini {
+	top: 75px;
+	z-index: 100;
+	position: fixed;
+	width: 260px;
+	right: 0;
+	transform: translateX(calc(111% + -2em));
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	.side-left-icon {
+		display: none;
+	}
+}
+.right-sidebar-toggle {
+	position: absolute;
+	margin-left: -44px;
+	background: $white;
+	padding: 15px;
+	display: inline;
+	top: 0;
+	z-index: 99;
+	@include radius-mixin(50px 0 0 50px);
+	@if $enable-shadows == true {
+		@include shadow-mixin($box-shadow);
+	}
+	cursor: pointer;
+	span {
+		display: none !important;
+	}
+}
+.right-sidebar-panel {
+	background-color: $white;
+	@if $enable-shadows == true {
+		@include shadow-mixin($box-shadow);
+	}
+	height: 91vh;
+	padding: 15px;
+	overflow-y: scroll;
+}
+.right-sidebar {
+	transform: translateX(calc(10% + -1em));
+	.side-right-icon {
+		display: none;
+	}
+	.side-left-icon {
+		display: block;
+	}
+}
+@media (min-width:1500px) {
+	.right-sidebar-mini {
+		transform: translateX(calc(10% + -1em));
+		&:hover {
+			.right-sidebar-toggle {
+				@include opacity-mixin(1);
+				margin-left: -44px;
+				@if $enable-transitions == true {
+			@include transition-mixin(all 0.3s ease-in-out);
+		}
+			}
+		}
+	}
+	.right-sidebar-toggle {
+		z-index: -1;
+		@include opacity-mixin(0);
+		margin-left: 0;
+		@if $enable-transitions == true {
+			@include transition-mixin(all 0.3s ease-in-out);
+		}
+	}
+	.right-sidebar-mini.right-sidebar {
+		.right-sidebar-toggle {
+			margin-left: -44px;
+			@include opacity-mixin(1);
+		}
+		transform: translateX(calc(111% + -2em));
+	}
+	body.right-sidebar-close {
+		footer {
+			width: calc(100vw - 260px);
+		}
+	}
+	
+}
+@media (min-width:1300px) and (max-width:1499px) {
+	.right-sidebar-mini {
+		transform: translateX(calc(111% + -8em));
+		.media-body {
+			@include opacity-mixin(0);
+		}
+	}
+	.right-sidebar-mini.right-sidebar {
+		transform: translateX(calc(10% + -1em));
+		.media-body {
+			@include opacity-mixin(1);
+		}
+	}
+		
+}
+
+@media (max-width:1299px){
+	
+
+}
+
+@media (max-width:991px){
+
+}

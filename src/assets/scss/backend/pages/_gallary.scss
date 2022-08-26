@@ -1,0 +1,383 @@
+
+.image-popup-vertical-fit {
+	cursor: zoom-in;
+}
+.grid-m {
+	margin-bottom: 30px;
+	&:nth-last-child(-n+4) {
+		margin-bottom: 0;
+	}
+}
+.g-box {
+	background: $body-bg;
+}
+.g-desc {
+	border: 1px solid rgba(210, 201, 255,0.4);
+}
+.masonry {
+	.item {
+		width: 25%;
+		padding: 10px;
+		display: block;
+		a {
+			cursor: zoom-in;
+		}
+		img {
+			width: 100%;
+		}
+	}
+}
+.grid-sizer {
+	width: 25%;
+	padding: 10px;
+	display: block;
+}
+.b-radius-top {
+	@if $enable-rounded == true {
+		@include radius-mixin($border-radius-top);
+	}
+}
+.b-radius-bottom {
+	@if $enable-rounded == true {
+		@include radius-mixin($border-radius-bottom);
+	}
+}
+.hover-effects {
+	overflow: hidden;
+	position: relative;
+	a {
+		cursor: pointer;
+	}
+	&:hover {
+		.effect-1 {
+			@include transform-mixin( scale3d(1.2,1.2,1));
+		}
+		.effect-2 {
+			@include transform-mixin( scale(1));
+		}
+		.effect-3 {
+			margin-left: 0;
+		}
+		.effect-4 {
+			@include transform-mixin(  rotate(0) scale(1));
+		}
+		.ovrlay-1-a {
+			left: 0;
+			top: 0;
+		}
+		.ovrlay-1-b {
+			left: 0;
+			top: 0;
+		}
+		.ovrlay-2-a {
+			left: 0;
+		}
+		.ovrlay-2-b {
+			left: 0;
+		}
+		.ovrlay-3-a {
+			@include transform-mixin( scale(1));
+		}
+		.ovrlay-3-b {
+			@include transform-mixin( scale(1));
+		}
+		.ovrlay-4-a {
+			top: 0;
+		}
+		.ovrlay-4-b {
+			top: 0;
+		}
+		.ovrlay-5 {
+			left: 0;
+			opacity: 1;
+			visibility: visible;
+		}
+		.ovrlay-6 {
+			visibility: visible;
+			@include transform-mixin( perspective(600px) rotateX(0deg));
+		}
+		.ovrlay-7 {
+			opacity: 1;
+			@include transform-mixin( perspective(400px) rotateX(0deg));
+		}
+		.ovrlay-8 {
+			right: 0;
+		}
+		.effect-8 {
+			right: 40px;
+		}
+	}
+}
+.effect-1 {
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+}
+.effect-2 {
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	@include transform-mixin( scale(1.2));
+}
+.effect-3 {
+	margin-left: 30px;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	@include transform-mixin( scale(1.3));
+}
+.effect-4 {
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	@include transform-mixin( rotate(12deg) scale(1.4));
+}
+.ovrlay-1-a {
+	background: rgba(0, 0, 0, 0.25);
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	left: -100%;
+	top: -100%;
+}
+.ovrlay-1-b {
+	background: rgba(0, 0, 0, 0.25);
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	left: 100%;
+	top: 100%;
+}
+.ovrlay-2-a {
+	background: rgba(0, 0, 0, 0.25);
+	height: 100%;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	left: -100%;
+}
+.ovrlay-2-b {
+	background: rgba(0, 0, 0, 0.25);
+	height: 100%;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	left: 100%;
+}
+.ovrlay-3-a {
+	position: absolute;
+	background: rgba(0, 0, 0, 0.25);
+	height: 100%;
+	left: 0;
+	top: 0;
+	width: 100%;
+	@include transform-mixin( scale(0));
+	@if $enable-transitions == true {
+}
+.ovrlay-3-b {
+	position: absolute;
+	background: rgba(0, 0, 0, 0.25);
+	height: 100%;
+	left: 0;
+	top: 0;
+	width: 100%;
+	@include transform-mixin( scale(0));
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	
+}
+.ovrlay-4-a {
+	background: rgba(0, 0, 0, 0.25);
+	height: 100%;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}	
+	top: -100%;
+}
+.ovrlay-4-b {
+	background: rgba(0, 0, 0, 0.25);
+	height: 100%;
+	position: absolute;
+	left: 0;
+	width: 100%;
+		}
+	top: 100%;
+}
+.ovrlay-5 {
+	position: absolute;
+	background: $primary;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	padding: 0 15px 0 15px;
+	left: -100%;
+	z-index: 1;
+	overflow: auto;
+	visibility: hidden;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	color: $white;
+	h4 {
+		color: $white;
+	}
+}
+.ovrlay-6 {
+	h4 {
+		color: $white;
+	}
+	background: $primary;
+	width: 100%;
+	position: absolute;
+	height: 100%;
+	top: 0;
+	left: 0;
+	overflow: auto;
+	visibility: hidden;
+	padding: 0 15px;
+	@include transform-mixin( perspective(600px) rotateX(-90deg));
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	p {
+		color: $white;
+	}
+}
+.ovrlay-8 {
+	h4 {
+		color: $white;
+	}
+	background: $primary;
+	width: 40%;
+	height: 100%;
+	top: 0;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	position: absolute;
+	right: -40%;
+	overflow: auto;
+	padding: 0 10px;
+	.i-btn {
+		position: absolute;
+		bottom: 10px;
+		right: 10%;
+		width: 40px;
+		height: 40px;
+		line-height: 40px;
+		font-size: 17px;
+		border-radius: 50%;
+		border: 1px solid $white;
+		background: transparent;
+		text-align: center;
+		@include transform-mixin( translateX(-50%));
+		color: $white !important;
+	}
+}
+.ovrlay-7 {
+	position: absolute;
+	background: rgba(0, 0, 0, 0.8);
+	height: 100%;
+	left: 0;
+	top: 0;
+	width: 100%;
+	@include opacity-mixin(0);
+	@include transform-mixin(  perspective(400px) rotateX(-90deg));
+	-webkit-transform-origin: top;
+	-moz-transform-origin: top;
+	-ms-transform-origin: top;
+	-o-transform-origin: top;
+	transform-origin: top;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	.button {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		@include transform-mixin( translate(-50%, -50%));
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: $white;
+		text-align: center;
+		line-height: 40px;
+		i {
+			color: $primary;
+		}
+	}
+}
+.effect-8 {
+	width: 100%;
+	position: relative;
+	right: 0;
+	top: 0;
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}	
+}
+.data-table {
+	.table {
+		th {
+			border-bottom-width: 1px;
+			border-top: none;
+		}
+	}
+}
+.dataTables_filter {
+	.form-control {
+		&:focus {
+			background-color: $body-bg;
+			border-color: $primary;
+		}
+	}
+}
+.dataTables_length {
+	.form-control {
+		&:focus {
+			background-color: $body-bg;
+			border-color: $primary;
+		}
+	}
+}
+
+@media (max-width: 991px){
+	.masonry {
+		.item {
+			width: 33.33%;
+		}
+		.grid-sizer {
+			width: 33.33%;
+		}
+	}
+
+}
+@media(max-width:767px){
+	.masonry {
+		.item {
+			width: 100%;
+			padding: 0 0 18px 0;
+		}
+		.grid-sizer {
+			width: 100%;
+			padding: 0 0 18px 0;
+		}
+	}
+
+}

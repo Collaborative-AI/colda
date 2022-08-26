@@ -1,0 +1,80 @@
+.active-faq {
+	a.accordion-title {
+		display: block;
+		padding-right: 45px;
+	}
+}
+
+.iq-accordion.career-style.faq-style {
+	.iq-accordion-block {
+		.accordion-title {
+			span {
+				padding-left: 0px;
+			}
+		}
+		.accordion-details {
+			p {
+				padding-left: 15px;
+				padding-top: 15px;
+				padding-bottom: 15px;
+			}
+		}
+		padding: 10px 5px;
+		@if $enable-rounded == true {
+			@include radius-mixin($border-radius);
+		}
+	}
+	.accordion-title {
+		&:before {
+			display: inline-block;
+			cursor: pointer;
+			content: $faq-font-icon-content-plus;
+			font-family: $faq-font-icon-family;
+			position: absolute;
+			top: -8px;
+			right: 15px;
+			color: #1e1e1e;
+			font-size: 16px;
+			line-height: 16px;
+			font-weight: normal;
+			@if $enable-transitions == true {
+				@include transition-mixin(all 0.3s ease-in-out);
+			}
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius);
+			}
+			width: 45px;
+			height: 45px;
+			line-height: 45px;
+			text-align: center;
+			@include radius-mixin(90px);
+		}
+	}
+	.iq-accordion-block.accordion-active {
+		.accordion-title {
+			&:before {
+				content: $faq-font-icon-content-minus;
+				display: inline-block;
+				@include radius-mixin(90px);
+			}
+		}
+	}
+	.active-faq {
+		.row {
+			background: transparent;
+			padding: 10px 0px;
+		}
+	}
+}
+.iq-accordion.career-style {
+	.iq-accordion-block {
+		margin-bottom: 30px;
+		.accordion-title {
+			span {
+				font-size: 16px;
+				display: table-cell;
+				color: $dark;
+			}
+		}
+	}
+}

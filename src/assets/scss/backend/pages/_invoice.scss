@@ -1,0 +1,65 @@
+.logo-invoice {
+    height: 55px;
+}
+.print {
+	.card-title {
+		color: $white;
+	}
+	.table {
+		thead {
+			background: $body-bg;
+			th {
+				border: 0;
+			}
+		}
+		th {
+			border: 0;
+		}
+		td {
+			border-top: 0;
+		}
+		tr {
+			border-top: 1px solid #dee2e6;
+			&:first-child {
+				border-top: 0;
+			}
+		}
+	}
+}
+.btn-primary-dark {
+	background: $primary-dark;
+	color: $white;
+	&:hover {
+		color: $white;
+	}
+}
+.or-detail {
+	background: $body-bg;
+	border: 1px solid rgba(210, 201, 255,0.4);
+	p {
+		margin-bottom: 0;
+	}
+}
+.ttl-amt {
+	border-top: 1px solid rgba(210, 201, 255,0.4);
+}
+#scroll1 {
+	position: relative;
+	width: 600px;
+	height: 250px;
+}
+.sweet_al {
+	.btn {
+		margin-right: 5px;
+	}
+}
+
+@media(max-width:479px){
+	.header-invoice {
+		display: block !important;
+		text-align: center;
+		.invoice-btn{
+			margin-top: 15px;
+		}
+	}
+}

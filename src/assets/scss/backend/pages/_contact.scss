@@ -1,0 +1,167 @@
+@keyframes animate-stripes {
+	100% {
+		background-position: -100px 0;
+	}
+}
+.p-card {
+	padding: 12px;
+}
+.profile-card {
+	background: $primary;
+	padding: 37px 0;
+	position: relative;
+	overflow: hidden;
+	&:before {
+		content: '';
+		position: absolute;
+		right: -63px;
+		top: -3px;
+		width: 120px;
+		height: 120px;
+		@if $enable-rounded == true {
+			@include radius-mixin($border-radius);
+		}
+		background: rgba(255,255,255,0.2);
+		transform: rotate(36deg);
+	}
+	&:after {
+		content: '';
+		position: absolute;
+		left: -62px;
+		bottom: 9px;
+		width: 126px;
+		height: 125px;
+		border-radius: 35px;
+		background:rgb(39,113,249);
+		transform: rotate(28deg);
+	}
+}
+.profile-box {
+	background: $body-bg;
+	position: relative;
+	padding-bottom: 240px;
+	@if $enable-rounded == true {
+		@include radius-mixin($border-radius-bottom);
+	}
+}
+.pro-content {
+	margin-top: -55px;
+	position: absolute;
+	background: $white;
+	padding: 20px;
+	left: 20px;
+	right: 20px;
+	@if $enable-shadows == true {
+		@include shadow-mixin(0px 2px 25px 0px rgba(45, 69, 95, 0.06));
+	}
+}
+.p-icon {
+	width: 45px;
+	height: 45px;
+	@if $enable-rounded == true {
+		@include radius-mixin($border-radius);
+	}
+	background: $primary-light;
+	line-height: 45px;
+	color: $primary;
+	text-align: center;
+	font-size: 26px;
+}
+.eml {
+	word-break: break-all;
+}
+.iq-progress-bar.pro-skill {
+	height: 12px;
+	>span {
+		background-image: linear-gradient( 135deg, transparent, transparent 33%, rgba(0,0,0,.1) 33%, rgba(0,0,0,.1) 66%, transparent 66%);
+		background-size: 35px 20px, 100% 100%, 100% 100%;
+		@if $enable-rounded == true {
+			@include radius-mixin($border-radius-normal);
+		}
+		position: relative;
+		animation: animate-stripes 5s linear infinite;
+	}
+	>span.bg1 {
+		background-color: $danger;
+	}
+	>span.bg2 {
+		background-color: $warning;
+	}
+	>span.bg3 {
+		background-color: $info;
+	}
+}
+.social-ic {
+	background: $body-bg;
+	padding: 5px;
+	a {
+		i {
+			color: $body-text;
+			font-size: 18px;
+			@if $enable-transitions == true {
+				@include transition-mixin(all 0.3s ease-in-out);
+			}
+			position: relative;
+			z-index: 3;
+		}
+		margin: 0 5px;
+		width: 40px;
+		height: 40px;
+		text-align: center;
+		line-height: 45px;
+		background: transparent;
+		position: relative;
+		z-index: 1;
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 0;
+			opacity: 0;
+			background: $primary;
+			@if $enable-rounded == true {
+                @include radius-mixin($border-radius-normal);
+            }
+			@if $enable-transitions == true {
+                @include transition-mixin(all 0.3s ease-in-out);
+            }
+			z-index: 2;
+		}
+		&:nth-child(even) {
+			&:before {
+				top: 100%;
+			}
+			&:hover {
+				&:before {
+					top: 0;
+				}
+			}
+		}
+		&:hover {
+			&:before {
+				@include opacity-mixin(1);
+				height: 100%;
+			}
+			i {
+				color: $white !important;
+				transform: rotateY(360deg);
+			}
+		}
+	}
+}
+
+@media(max-width:767px){
+    .social-ic {
+        a {
+            width: 28px;
+            height: 28px;
+            line-height: 34px;
+            i {
+                font-size: 15px;
+            }
+        }
+    }
+    
+}

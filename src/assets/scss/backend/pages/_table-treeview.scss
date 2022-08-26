@@ -1,0 +1,76 @@
+.treegrid-indent {
+	width: 0px;
+	height: 16px;
+	display: inline-block;
+	position: relative;
+}
+.tab-content {
+	.table {
+		tbody {
+			tr {
+				color: $black;
+			}
+		}
+	}
+}
+.table-data {
+	.table {
+		tbody {
+			tr {
+				color: $black;
+			}
+		}
+	}
+}
+.treegrid-expander {
+	width: 0px;
+	height: 16px;
+	display: inline-block;
+	position: relative;
+	left: -17px;
+	cursor: pointer;
+}
+.glyphicon.glyphicon-chevron-right {
+	&:before {
+		position: absolute;
+		content: "\EA6E";
+		font-family: $font-family-remixicon;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+}
+.glyphicon.glyphicon-chevron-down {
+	&:before {
+		position: absolute;
+		content: "\EA4E";
+		font-family: $font-family-remixicon;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+}
+.glyphicon.glyphicon-plus {
+	&:before {
+		position: absolute;
+		content: "\EA13";
+		font-family: $font-family-remixicon;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+}
+.glyphicon.glyphicon-minus {
+	&:before {
+		position: absolute;
+		content: "\F1AF";
+		font-family: $font-family-remixicon;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+}

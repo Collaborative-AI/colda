@@ -1,0 +1,133 @@
+.iq-footer {
+	padding: 15px;
+	margin-left: 260px;
+	width: calc(100vw - 264px);
+	background: $white;
+	@if $enable-shadows == true {
+		@include shadow-mixin($box-shadow);
+	}
+	@if $enable-transitions == true {
+		@include transition-mixin(all 0.3s ease-in-out);
+	}
+	ul {
+		li {
+			a {
+				color: $body-color;
+				&:hover {
+					color: $primary;
+					text-decoration: none;
+				}
+			}
+		}
+	}
+}
+body.tab-horizontal {
+	.iq-footer {
+		margin-left: 0;
+		width: 100%;
+	}
+}
+
+
+.iq-mt--70 {
+	margin-top: -70px;
+}
+.banner-main-text {
+	position: absolute;
+	left: 15%;
+	bottom: 13%;
+}
+.nav.nav-pills.style-three {
+	.nav-link.active {
+		&:before {
+			display: inline-block;
+			width: 100%;
+			height: 3px;
+			background: $primary;
+			content: "";
+			position: absolute;
+			left: 0;
+			bottom: 0px;
+		}
+	}
+	.nav-link {
+		&:hover {
+			&:before {
+				display: inline-block;
+				width: 100%;
+				height: 3px;
+				background: $primary;
+				content: "";
+				position: absolute;
+				left: 0;
+				bottom: 0px;
+			}
+		}
+		&:before {
+			width: 0;
+			@if $enable-transitions == true {
+				@include transition-mixin(all 0.3s ease-in-out);
+			}
+			height: 3px;
+			background: $primary;
+			content: "";
+			position: absolute;
+			right: 0;
+			bottom: 0px;
+		}
+	}
+	margin-top: 10px;
+	a {
+		&:last-child {
+			margin-right: 0px;
+		}
+		background: transparent;
+		position: relative;
+		margin-right: 30px;
+		padding: 10px 0px;
+	}
+}
+.iq-card-body.banner-box {
+	padding-bottom: 0;
+}
+
+
+@media (min-width: 1300px){
+	body.sidebar-main {
+	.iq-footer {
+		margin-left: 80px;
+		width: calc(100vw - 85px);
+	}
+}
+
+}
+
+@media(max-width:1299px){
+	.iq-footer {
+	padding: 15px 10px;
+	margin-left: 0;
+	width: 100%;
+}
+body.sidebar-main {
+	.iq-footer {
+		padding: 15px 10px;
+		margin-left: 0;
+		width: 100%;
+	}
+}
+.without-right-sidebar {
+	.iq-footer {
+		width: 100%;
+	}
+}
+
+}
+@media (max-width:991px){
+	.iq-footer {
+	text-align: center !important;
+	.col-lg-6.text-right {
+		text-align: center !important;
+	}
+}
+
+}

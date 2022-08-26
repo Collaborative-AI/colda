@@ -1,0 +1,609 @@
+
+footer.footer-two {
+		.footer-box {
+			padding: 40px;
+			margin-bottom: 30px;
+			@include shadow-mixin(0px 0px 100px 0px rgba(0, 0, 0, 0.08));
+			@include radius-mixin(8px);
+		}
+		.footer-input {
+			display: flex;
+			.button.sign-up-btn {
+				width: 30%;
+			}
+		}
+		.widget.footer-logo {
+			margin-bottom: 15px;
+			&:nth-child(1) {
+				margin-bottom: 0px;
+			}
+		}
+		#menu-about-menu {
+			li {
+				margin-right: 15px;
+				&:last-child {
+					margin-right: 0px;
+				}
+			}
+		}
+		.info-share {
+			li {
+				margin-right: 30px;
+				&:last-child {
+					margin-right: 0px;
+				}
+			}
+			display: block !important;
+			margin-bottom: 30px;
+		}
+		.widget {
+			ul {
+				li {
+					display: inline-block;
+				}
+			}
+		}
+    }
+    
+    
+/*
+ ----------------------------------------
+Flting layer
+  ----------------------------------------
+ */
+@keyframes bounces {
+	from {
+		@include transform-mixin( translateY(0px));
+	}
+	to {
+		@include transform-mixin(translateY(-25px));
+	}
+}
+@-webkit-keyframes bounces {
+	from {
+		@include transform-mixin(translateY(0px));
+	}
+	to {
+		@include transform-mixin(translateY(-25px));
+	}
+}
+.landing-saas {
+	.iq-objects.style-two {
+		.iq-objects-03 {
+			img {
+				@if $enable-transitions == true {
+					@include transition-mixin(all 0.3s ease-in-out);
+				}
+				-webkit-animation: bounces 2s infinite alternate;
+				position: absolute;
+				z-index: -1;
+				left: -15%;
+				right: 0;
+				bottom: 0;
+			}
+		}
+		.iq-objects-02 {
+			img {
+				@if $enable-transitions == true {
+					@include transition-mixin(all 0.3s ease-in-out);
+				}
+				-webkit-animation: bounces 2s infinite alternate;
+			}
+		}
+	}
+	.iq-objects.style-one.left-top {
+		.iq-objects-01 {
+			img {
+				position: absolute;
+				left: -700px;
+				top: 0;
+				z-index: -2;
+			}
+		}
+	}
+	.iq-objects.style-two.left-top {
+		.iq-objects-02 {
+			img {
+				position: absolute;
+				left: -300px;
+				top: 0;
+				z-index: -2;
+				-webkit-animation: bounces 2s infinite alternate;
+				max-width: 130%;
+			}
+		}
+	}
+	.iq-objects.style-two.right-top {
+		.iq-objects-02 {
+			img {
+				position: absolute;
+				right: -300px;
+				top: 0;
+				z-index: -2;
+				-webkit-animation: bounces 2s infinite alternate;
+			}
+		}
+	}
+	.iq-objects.style-one {
+		.iq-objects-01 {
+			img {
+				-webkit-animation: bounces 2s infinite alternate;
+				z-index: -1;
+			}
+		}
+	}
+	.iq-objects.style-one.right-top {
+		.iq-objects-01 {
+			img {
+				position: absolute;
+				right: -855px;
+				top: -234px;
+				z-index: -2;
+				position: absolute;
+				right: -994px;
+				top: -170px;
+				z-index: -2;
+			}
+		}
+	}
+	.iq-objects.style-one.left {
+		.iq-objects-01 {
+			img {
+				position: absolute;
+				left: -45%;
+				bottom: 0;
+			}
+		}
+	}
+	.uniq-round {
+		.iq-objects.style-one.right-top {
+			.iq-objects-01 {
+				img {
+					right: -500px;
+					top: 25%;
+				}
+			}
+		}
+	}
+}
+.landing-saas {
+	.feature-flip-box.flip-right {
+		&:hover {
+			.back-side {
+				visibility: visible;
+				transform: rotateY(0);
+			}
+		}
+	}
+}
+
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)){
+	.landing-saas {
+		.feature-flip-box {
+			.front-side {
+				-webkit-backface-visibility: hidden;
+				backface-visibility: hidden;
+				transition: transform 0.8s cubic-bezier(0.5, 0.2, 0.2, 0.8);
+			}
+			.back-side {
+				-webkit-backface-visibility: hidden;
+				backface-visibility: hidden;
+				transition: transform 0.8s cubic-bezier(0.5, 0.2, 0.2, 0.8);
+			}
+		}
+	}
+}
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box {
+			.front-side {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				visibility: unset;
+			}
+		}
+	}
+}
+
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box {
+			.back-side {
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+				visibility: unset;
+			}
+		}
+	}
+}
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box.flip-right {
+			&:hover {
+				.front-side {
+					visibility: unset;
+				}
+			}
+		}
+	}
+}
+
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box.flip-right {
+			&:hover {
+				.back-side {
+					visibility: unset;
+				}
+			}
+		}
+	}
+}
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box.flip-left {
+			&:hover {
+				.front-side {
+					visibility: unset;
+				}
+			}
+		}
+	}
+}
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box.flip-left {
+			&:hover {
+				.back-side {
+					visibility: unset;
+				}
+			}
+		}
+	}
+}
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box.flip-top {
+			&:hover {
+				.front-side {
+					visibility: unset;
+				}
+			}
+		}
+	}
+}
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box.flip-top {
+			&:hover {
+				.back-side {
+					visibility: unset;
+				}
+			}
+		}
+	}
+}
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box.flip-bottom {
+			&:hover {
+				.front-side {
+					visibility: unset;
+				}
+			}
+		}
+	}
+}
+@supports ((-webkit-backface-visibility:hidden) or (backface-visibility:hidden)) {
+	.landing-saas {
+		.feature-flip-box.flip-bottom {
+			&:hover {
+				.back-side {
+					visibility: unset;
+				}
+			}
+		}
+	}
+}
+/*---------------------------------------------------------------------
+ Testimonial style 2
+-----------------------------------------------------------------------*/
+.landing-saas {
+	.our-testimonial {
+		.iq-testimonial {
+			padding: 30px;
+			margin-bottom: 25px;
+			p {
+				font-style: italic;
+			}
+		}
+		.testimonial-info {
+			position: relative;
+			text-align: left;
+			display: flex;
+		}
+		.testimonial-name {
+			span {
+				color: $body-text-dark;
+			}
+			flex: 1;
+		}
+		.owl-stage-outer {
+			position: relative;
+			&:before {
+				content: "";
+				display: inline-block;
+				position: absolute;
+				font-size: 84px;
+				width: 205px;
+				font-family: "Font Awesome 5 Free";
+				background: url(~@/assets/images/landing-page/landing-2/qu.png)no-repeat;
+				height: 140px;
+				opacity: 1;
+				left: 10px;
+				top: 0px;
+				z-index: -1;
+			}
+		}
+	}
+	.our-testimonial.owl-carousel {
+		.owl-dots {
+			.owl-dot.active {
+				background:$purple;
+				border: 1px solid $purple;
+			}
+			position: absolute;
+			width: auto;
+			left: 30px;
+			bottom: 0;
+			.owl-dot {
+				background: transparent;
+				border: 1px solid $purple;
+			}
+		}
+		.owl-item {
+			.testimonial-info {
+				img {
+					width: 65px;
+					height: 65px;
+					margin-right: 25px;
+				}
+			}
+		}
+	}
+}
+
+/*---------------------------------------------------------------------
+ custom Tab
+-----------------------------------------------------------------------*/
+.landing-saas {
+	.custom-tab.horizontaltab-demo15 {
+		.nav-pills {
+			position: absolute;
+			bottom: 50px;
+			left: -70%;
+			.nav-link.active {
+				background: $purple;
+				color: $white;
+				font-weight: bold;
+			}
+			.nav-link {
+				padding: 10px 30px;
+			}
+		}
+		a.nav-link.active {
+			h6.tab-title {
+				color: $white;
+				margin-bottom: 0px;
+			}
+		}
+		a.nav-link {
+			h6.tab-title {
+				color: $black;
+				margin-bottom: 0px;
+			}
+		}
+		.tab-pane.active {
+			display: block;
+		}
+		.tab-pane {
+			display: none;
+		}
+	}
+	.nav-pills {
+		.nav-item {
+			a {
+				@if $enable-rounded == true {
+					@include radius-mixin($border-radius-normal);
+				}
+
+			}
+		}
+	}
+	.iq-feedback-testi {
+		overflow: inherit !important;
+		.owl-carousel {
+			.owl-nav {
+				left: -35%;
+				top: 80%;
+				.owl-next {
+					left: 0%;
+				}
+			}
+		}
+		.iq-background {
+			&:before {
+				position: absolute;
+				left: 130px;
+				top: -5%;
+				content: "";
+				height: 120%;
+				width: 200%;
+				background-color: $purple;
+				@if $enable-rounded == true {
+					@include radius-mixin($border-radius-normal);
+				}
+
+			}
+		}
+	}
+}
+
+/*---------------------------------------------------------------------
+ Testimonial
+-----------------------------------------------------------------------*/
+.landing-saas {
+	.testimonial-style.owl-carousel {
+		.item.iq-best-testimonial {
+			.iq-testimonial {
+				&:before {
+					display: none;
+				}
+				&:after {
+					display: none;
+				}
+				.media {
+					.img-box {
+						width: 80px;
+						height: 80px;
+						line-height: 80px;
+						margin-right: 15px;
+					}
+					.testimonial-name {
+						text-align: left;
+						margin-top: 15px;
+					}
+				}
+				margin: 20px;
+				@if $enable-rounded == true {
+					@include radius-mixin($border-radius-normal);
+				}
+				@include shadow-mixin(-10px 10px 10px 0px rgba(0, 0, 0, 0.08));
+				.iq-content {
+					p {
+						margin-bottom: 30px;
+					}
+				}
+			}
+			padding: 75px 0px 40px;
+		}
+	}
+}
+
+
+/*  landing responsive----*/
+@media (max-width:1499px) {
+.landing-saas {
+	.iq-get-team {
+		img {
+			max-width: 100% !important;
+		}
+	}
+}
+
+}
+@media (max-width:1199px) {
+	.landing-saas {
+	.custom-tab.horizontaltab-demo15 {
+		.nav-pills {
+			position: relative;
+			bottom: 0%;
+			left: 0%;
+		}
+	}
+}
+
+
+}
+@media (max-width:992px) {
+	.landing-saas {
+		.iq-best-pricing {
+			margin: 0 15px 60px 15px;
+		}
+	.Fancy-box-position {
+		.fancy-style-five {
+			right: 29%;
+		}
+	}
+	.iq-banner-02 {
+		.banner-text {
+			h1 {
+				font-size: 45px !important;
+			}
+		}
+		padding-top: 50px !important;
+	}
+	
+}
+
+}
+@media (max-width:767px) {
+	.landing-saas {
+	.Fancy-box-position {
+		.fancy-style-five {
+			position: relative;
+			width: 100%;
+			right: 1%;
+		}
+	}
+	.iq-fancy-seo {
+		img {
+			width: 100%;
+		}
+	}
+	.iq-banner-02 {
+		.banner-text {
+			h1 {
+				font-size: 40px !important;
+			}
+		}
+	}
+}
+
+
+}
+@media (max-width:777px) {
+	.landing-saas {
+		.Fancy-box-position {
+			.fancy-style-five {
+				right: 12%;
+				&:hover {
+					right: 0;
+				}
+			}
+		}
+	}
+}
+@media (max-width:576px) {
+	.landing-saas {
+		.iq-banner-02 {
+	.banner-text {
+				margin-top: 12%;
+			}
+		}
+		.Fancy-box-position {
+			.fancy-style-five {
+				right: 0%;
+			}
+		}
+		.iq-best-pricing {
+			margin: 0 15px 60px 15px;
+		}
+	}
+}
+@media (max-width:479px) {
+	.landing-saas {
+		.iq-banner-02 {
+			.banner-text {
+				
+				h1 {
+					font-size: 30px !important;
+				}
+			}
+		}
+	}
+
+
+}

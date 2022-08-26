@@ -1,0 +1,54 @@
+/*
+ * Font Helper
+ */
+ .font-size-12 { font-size: 12px !important; }
+.font-size-14 { font-size: 14px !important; }
+.font-size-16 { font-size: 16px !important; }
+.font-size-18 { font-size: 18px !important; }
+.font-size-20 { font-size: 20px !important; }
+.font-size-32 { font-size: 32px !important; }
+.font-size-40 { font-size: 40px !important; }
+
+/*** Weight and italics ***/
+.font-weight-300 { font-weight: 300 !important; }
+.font-weight-400 { font-weight: 400 !important; }
+.font-weight-500 { font-weight: 500 !important; }
+.font-weight-600 { font-weight: 600 !important; }
+.font-weight-700 { font-weight: 700 !important; }
+.font-weight-800 { font-weight: 800 !important; }
+.font-weight-900 { font-weight: 900 !important; }
+
+/*** Text decorations ***/
+.text-underline { text-decoration: underline; }
+.text-through { text-decoration: line-through; }
+
+/*** Text size ***/
+@include media-breakpoint-up(sm) {
+	.text-xs-chirag {
+		font-size: $font-size-xs !important;
+	} 
+}
+.text-sm { font-size: $font-size-sm !important; }
+.text-lg { font-size: $font-size-lg !important; }
+.text-xl { font-size: $font-size-xl !important; }
+
+/*** Line heights ***/
+.line-height-100 { line-height: 1; }
+.line-height-110 { line-height: 1.1; }
+.line-height-120 { line-height: 1.2; }
+.line-height-130 { line-height: 1.3; }
+.line-height-140 { line-height: 1.4; }
+.line-height-150 { line-height: 1.5; }
+.line-height-160 { line-height: 1.6; }
+.line-height-170 { line-height: 1.7; }
+.line-height-180 { line-height: 1.8; }
+
+/*** Letter spacings ***/
+.letter-spacing-1 { letter-spacing: .0625rem; }
+.letter-spacing-15 { letter-spacing: .09375rem; }
+.letter-spacing-2 { letter-spacing: 0.125rem; }
+
+/*** Text color variations ***/
+@each $color, $value in $colors {
+	@include text-emphasis-variant(".text-#{$color}", $value);
+}

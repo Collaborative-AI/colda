@@ -1,0 +1,24 @@
+.basic-drop-shadow {
+	box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+}
+.bottom-left {
+	box-shadow: -5px 5px 10px rgba(0, 0, 0, .15);
+}
+.bottom-right {
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, .15);
+}
+.top-left {
+	box-shadow: -5px -5px 10px rgba(0, 0, 0, .15);
+}
+.top-right {
+	box-shadow: 5px -5px 10px rgba(0, 0, 0, .15);
+}
+.shadow-bottom {
+	box-shadow: 0 10px 10px -5px rgba(0, 0, 0, .15);
+}
+.inner-shadow {
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, .15);
+}
+.blur-shadow {
+	box-shadow: 1px 1px 25px rgba(0, 0, 0, .15);
+}

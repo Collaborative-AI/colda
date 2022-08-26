@@ -1,0 +1,171 @@
+
+    .tab-container {
+	.nav-pills {
+		.nav-item {
+			a {
+				padding: 20px 10px;
+                font-size: 14px;
+                color: $white;
+				@if $enable-rounded == true {
+                    @include radius-mixin($border-radius-normal);
+                }
+				margin-bottom: 0;
+				margin-left: 1px;
+			}
+			a.nav-link.active {
+                color: $white;
+                background: $primary-dark;
+			}
+			&:hover {
+				a {
+					color: $white;
+				}
+			}
+		}
+	}
+}
+.tab-details {
+	.tab-pane.fade {
+		display: none;
+	}
+	.tab-pane.fade.active.show {
+		display: block;
+	}
+}
+.tab-scrollbar-data {
+	width: 270px;
+	height: 100%;
+	position: fixed;
+	z-index: 99;
+	top: 0;
+	right: 0;
+	background: $white;
+	@if $enable-shadows == true {
+        @include shadow-mixin($box-shadow);
+    }
+	@if $enable-transitions == true {
+        @include transition-mixin(all 0.3s ease-in-out);
+    }
+	display: flex;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+}
+.tab-scrollbar-data.tab-sidebar-close {
+	right: -270px;
+	
+}
+a.iq-tab-toggle {
+	height: 40px;
+    width: 40px;
+    line-height: 35px;
+	font-size: 18px;
+	color: $white;
+	padding: 2px 12px;
+	padding-right: 10px;
+	display: block !important;
+	background: $primary;
+	@if $enable-shadows == true {
+        @include shadow-mixin($box-shadow);
+    }
+	position: absolute;
+	@if $enable-rounded == true {
+        @include radius-mixin($border-radius-left);
+    }
+	top: 50%;
+	left: -40px;
+	.aerrow-icon-right{
+		display: none;
+	}
+	.arr-next{
+		position:relative;
+		@if $enable-transitions == true {
+			@include transition-mixin(all 0.3s ease-in-out);
+		}
+		&:before{
+			content: '\f053';
+			font-family: "Font Awesome 5 Free";
+			 font-weight: 900;
+			position: absolute;
+			left:0;
+			top:0;
+			color:$white;
+			transform: rotate(0deg);
+			animation-name: bounceArrowLeft;
+			animation-duration:1.4s;
+			animation-iteration-count:infinite;
+			animation-timing-function:linear;	
+		}		
+	}
+	.arr-next.arr-two{
+		&:before{
+			left:10px;
+			animation-delay:0.2s;			
+		}
+	}
+}
+a.iq-tab-toggle.active{
+	.aerrow-icon-left{
+		display: none;
+	}
+	.aerrow-icon-right{
+		display: inline-block;
+	}
+	.arr-next{
+		&:before{
+			transform: rotate(180deg);
+			animation-name: bounceArrow;
+		}
+	}
+}
+
+.tab-scrollbar-data{
+	.setting-info{
+		.setting-title{
+			border-bottom:1px solid $border-color;
+			padding-bottom: 10px;
+			margin-top:25px;
+			&:first-child{
+				margin-top:0px;
+			}
+			h5{				
+				i{
+				font-size: 20px;
+				}
+			}			
+		}
+		.set-swtich {
+			margin-top:15px;
+			h6{
+				font-weight:400;
+			}
+			.custom-control-input {
+				&:focus~.custom-control-label {
+					&:before {
+						box-shadow: none;
+					}
+				}
+			}
+			
+		}
+	}
+}
+
+
+//Animation
+@keyframes bounceArrow {
+  0% {opacity: 1; transform: translateX(0px) scale(1) rotate(-180deg);}
+  25%{opacity: 0; transform:translateX(10px) scale(0.9) rotate(-180deg);}
+  26%{opacity: 0; transform:translateX(-10px) scale(0.9) rotate(-180deg);}
+  55% {opacity: 1; transform: translateX(0px) scale(1) rotate(-180deg);}
+}
+@keyframes bounceArrowLeft {
+   0% {opacity: 1; transform: translateX(10px) scale(0.9) rotate(0deg);}
+  25%{opacity: 0; transform:translateX(0px) scale(1) rotate(0deg);}
+  26%{opacity: 0; transform:translateX(0px) scale(1) rotate(0deg);}
+  55% {opacity: 1; transform: translateX(-10px) scale(0.9) rotate(0deg);}
+}

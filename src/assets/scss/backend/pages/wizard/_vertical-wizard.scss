@@ -1,0 +1,101 @@
+#form-wizard3 {
+	fieldset {
+		&:not(:first-of-type) {
+			display: none;
+		}
+	}
+}
+#top-tabbar-vertical {
+	overflow: hidden;
+	color: $body-color;
+	margin: 0 -20px 60px;
+	.active {
+		color: $primary;
+	}
+	li {
+		list-style-type: none;
+		font-size: 18px;
+		width: 100%;
+		float: left;
+		position: relative;
+		font-weight: 400;
+		i {
+			display: inline-block;
+			text-align: center;
+			height: 50px;
+			width: 50px;
+			line-height: 50px;
+			font-size: 20px;
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius-circle);
+			}
+			margin: 0 20px 0 0;
+		}
+		a {
+			background: $white;
+			color: $black;
+			display: block;
+			padding: 20px 15px;
+			margin: 10px 20px;
+			@if $enable-rounded == true {
+				@include radius-mixin($border-radius);
+			}
+			text-decoration: none;
+			border: 1px solid $primary-light;
+		}
+	}
+	li.step1 {
+		i {
+			background: $primary-light;
+			color: $primary;
+		}
+	}
+	li.step2 {
+		i {
+			background: $danger-light;
+			color: $danger;
+		}
+	}
+	li.step3 {
+		i {
+			background: $success-light;
+			color: $success;
+		}
+	}
+	li.step4 {
+		i {
+			background: $warning-light;
+			color: $warning;
+		}
+	}
+	li.active {
+		a {
+			border-color: transparent;
+		}
+		i {
+			background-color: $white;
+			color: $primary;
+			background: $white !important;
+		}
+	}
+	.step1.active {
+		a {
+			background: $primary-light;
+		}
+	}
+	.step2.active {
+		a {
+			background: $danger-light;
+		}
+	}
+	.step3.active {
+		a {
+			background: $success-light;
+		}
+	}
+	.step4.active {
+		a {
+			background: $warning-light;
+		}
+	}
+}

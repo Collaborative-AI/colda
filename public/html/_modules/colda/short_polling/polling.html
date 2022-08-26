@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colda.short_polling.polling &mdash; colda 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/clipboard.min.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Quick Setup Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>colda.short_polling.polling</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for colda.short_polling.polling</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">colda.workflow.api</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TrainMainWorkflow</span><span class="p">,</span>
+    <span class="n">TestMainWorkflow</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">colda.network.api</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">colda.pi.api</span> <span class="kn">import</span> <span class="n">PI</span>
+<span class="kn">from</span> <span class="nn">colda.authentication.api</span> <span class="kn">import</span> <span class="n">Authentication</span>
+
+<span class="kn">from</span> <span class="nn">typeguard</span> <span class="kn">import</span> <span class="n">typechecked</span>
+
+
+<span class="c1">#@typechecked</span>
+<div class="viewcode-block" id="ShortPolling"><a class="viewcode-back" href="../../../reference/short_polling.html#colda.short_polling.polling.ShortPolling">[docs]</a><span class="k">class</span> <span class="nc">ShortPolling</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Short polling to interact with back-end</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    get_instance</span>
+<span class="sd">    start_cooperation</span>
+<span class="sd">    end_cooperation</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">__ShortPolling_instance</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shortpolling</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;running&#39;</span><span class="p">:</span> <span class="kc">False</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__Network_instance</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">get_instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__PI_instance</span> <span class="o">=</span> <span class="n">PI</span><span class="o">.</span><span class="n">get_instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__Authentication_instance</span> <span class="o">=</span> <span class="n">Authentication</span><span class="o">.</span><span class="n">get_instance</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__default_trainMainWorkflow</span> <span class="o">=</span> <span class="n">TrainMainWorkflow</span><span class="o">.</span><span class="n">get_class</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__default_testMainWorkflow</span> <span class="o">=</span> <span class="n">TestMainWorkflow</span><span class="o">.</span><span class="n">get_class</span><span class="p">()</span>
+
+        <span class="c1"># The key of the train stage notification</span>
+        <span class="c1"># returned by the back-end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_notification_category_name</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;unread_request&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;unread_match_identifier&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;unread_situation&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;unread_output&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;unread_train_stop&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># The key of the train stage notification</span>
+        <span class="c1"># returned by the back-end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_notification_category_name</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;unread_test_request&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;unread_test_match_identifier&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;unread_test_output&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;unread_test_stop&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="ShortPolling.get_instance"><a class="viewcode-back" href="../../../reference/short_polling.html#colda.short_polling.polling.ShortPolling.get_instance">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">ShortPolling</span><span class="p">]:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Singleton pattern. </span>
+<span class="sd">        Get instance of current class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        type[ShortPolling]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__ShortPolling_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">__ShortPolling_instance</span> <span class="o">=</span> <span class="n">ShortPolling</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__ShortPolling_instance</span></div>
+
+    <span class="k">def</span> <span class="nf">__distribute_notification</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">notification_category</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        1. Handle the short polling response data</span>
+<span class="sd">        2. Call corresponding functions</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        update_all_notifications_data : dict</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">category_name</span> <span class="ow">in</span> <span class="n">notification_category</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">category_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_notification_category_name</span> <span class="ow">or</span> <span class="n">category_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_notification_category_name</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s1">&#39;unread_request&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__default_trainMainWorkflow</span><span class="o">.</span><span class="n">train_assistor_request</span><span class="p">(</span>
+                        <span class="n">notification_category</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s1">&#39;train_id_dicts&#39;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s1">&#39;unread_match_identifier&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__default_trainMainWorkflow</span><span class="o">.</span><span class="n">train_match_identifier</span><span class="p">(</span>
+                        <span class="n">notification_category</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s1">&#39;train_id_dicts&#39;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s1">&#39;unread_situation&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__default_trainMainWorkflow</span><span class="o">.</span><span class="n">train_situation</span><span class="p">(</span>
+                        <span class="n">notification_category</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s1">&#39;train_id_dicts&#39;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s1">&#39;unread_output&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__default_trainMainWorkflow</span><span class="o">.</span><span class="n">train_output</span><span class="p">(</span>
+                        <span class="n">notification_category</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s1">&#39;train_id_dicts&#39;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s1">&#39;unread_train_stop&#39;</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">elif</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s1">&#39;unread_test_request&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__default_testMainWorkflow</span><span class="o">.</span><span class="n">test_assistor_request</span><span class="p">(</span>
+                        <span class="n">notification_category</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s1">&#39;test_id_dicts&#39;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s1">&#39;unread_test_match_identifier&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__default_testMainWorkflow</span><span class="o">.</span><span class="n">test_match_identifier</span><span class="p">(</span>
+                        <span class="n">notification_category</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s1">&#39;test_id_dicts&#39;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s1">&#39;unread_test_output&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__default_testMainWorkflow</span><span class="o">.</span><span class="n">test_output</span><span class="p">(</span>
+                        <span class="n">notification_category</span><span class="p">[</span><span class="n">category_name</span><span class="p">][</span><span class="s1">&#39;test_id_dicts&#39;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s1">&#39;unread_test_stop&#39;</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            
+                <span class="c1"># print(&quot;category_name: &quot;, category_name, notification_category[category_name])</span>
+        <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">__polling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Short Polling for new Notifications</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">shortpolling</span><span class="p">[</span><span class="s1">&#39;running&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;short polling has already stoped&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># get basic information</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__PI_instance</span><span class="o">.</span><span class="n">user_id</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Network_instance</span><span class="o">.</span><span class="n">token</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please Login First&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">short_polling_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__Network_instance</span><span class="o">.</span><span class="n">get_request_chaining</span><span class="p">(</span>
+            <span class="n">url_prefix</span><span class="o">=</span><span class="s1">&#39;main_flow&#39;</span><span class="p">,</span>
+            <span class="n">url_root</span><span class="o">=</span><span class="s1">&#39;get_notifications&#39;</span><span class="p">,</span>
+            <span class="n">url_suffix</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;short_polling_res: </span><span class="si">{</span><span class="n">short_polling_res</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;new_token&#39;</span> <span class="ow">in</span> <span class="n">short_polling_res</span> <span class="ow">and</span> <span class="n">short_polling_res</span><span class="p">[</span><span class="s1">&#39;new_token&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_token</span> <span class="o">=</span> <span class="n">short_polling_res</span><span class="p">[</span><span class="s1">&#39;new_token&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__Authentication_instance</span><span class="o">.</span><span class="n">process_token</span><span class="p">(</span><span class="n">new_token</span><span class="p">)</span>
+
+        <span class="n">notification_category</span> <span class="o">=</span> <span class="n">short_polling_res</span><span class="p">[</span><span class="s1">&#39;notification_result&#39;</span><span class="p">][</span><span class="s1">&#39;category&#39;</span><span class="p">]</span>
+        
+        <span class="c1"># for unittest, comment back</span>
+        <span class="k">return</span> <span class="n">notification_category</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">__distribute_notification</span><span class="p">(</span><span class="n">notification_category</span><span class="p">)</span>
+        
+        <span class="n">timer</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__polling</span><span class="p">)</span>
+        <span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">return</span>
+
+<div class="viewcode-block" id="ShortPolling.start_cooperation"><a class="viewcode-back" href="../../../reference/short_polling.html#colda.short_polling.polling.ShortPolling.start_cooperation">[docs]</a>    <span class="k">def</span> <span class="nf">start_cooperation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Start short polling</span>
+<span class="sd">        Set indicator to True</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shortpolling</span><span class="p">[</span><span class="s1">&#39;running&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shortpolling</span><span class="p">[</span><span class="s1">&#39;running&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__polling</span><span class="p">()</span>
+
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="ShortPolling.end_cooperation"><a class="viewcode-back" href="../../../reference/short_polling.html#colda.short_polling.polling.ShortPolling.end_cooperation">[docs]</a>    <span class="k">def</span> <span class="nf">end_cooperation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        End short polling</span>
+<span class="sd">        Set indicator to False</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shortpolling</span><span class="p">[</span><span class="s1">&#39;running&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

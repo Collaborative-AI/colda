@@ -1,0 +1,78 @@
+.iq-icons-list {
+	line-height: 50px;
+	margin-bottom: 15px;
+	display: inline-block;
+	i {
+		text-align: center;
+		vertical-align: middle;
+		font-size: 22px;
+		width: 40px;
+		height: 50px;
+		line-height: 50px;
+		margin-right: 10px;
+		display: inline-block;
+	}
+	.icon {
+		text-align: center;
+		vertical-align: middle;
+		font-size: 22px;
+		width: 40px;
+		height: 40px;
+		line-height: 50px;
+		margin-right: 10px;
+		display: inline-block;
+	}
+	span {
+		display: inline-block;
+		vertical-align: middle;
+	}
+}
+.iq-card-icon {
+	height: 60px;
+	width: 60px;
+	display: inline-block;
+	line-height: 60px;
+	text-align: center;
+	font-size: 22px;
+}
+.ion-icon{
+	height: 15px;
+	width: 15px;
+	line-height: 15px;
+	font-size: 22px;
+	margin-right: 10px;
+}
+.iq-iconbox {
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 25px;
+    @if $enable-rounded == true {
+		@include radius-mixin($border-radius);
+	}
+}
+.iq-icon-box {
+    height: 64px;
+    width: 64px;
+    min-width: 64px;
+    line-height: 64px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 26px;
+    text-decoration: none;
+}
+.card.iq-border-box {
+    border-bottom: 4px solid;
+}
+.profile-icon {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    @if $enable-rounded == true {
+		@include radius-mixin($border-radius-circle);
+	}
+}

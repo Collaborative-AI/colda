@@ -1,0 +1,208 @@
+/*------------ Basic Tree -------------------------------------*/
+/*-------------------- Checkbox Tree ----------------------------*/
+.basic-tree {
+	li {
+		list-style-type: none;
+		margin: 0;
+		padding: 10px 5px 0 5px;
+		position: relative;
+		color: $title-text;
+		&::before {
+			content: '';
+			left: -20px;
+			position: absolute;
+			right: auto;
+			border-left: 1px solid #999;
+			bottom: 50px;
+			height: 100%;
+			top: 0;
+			width: 1px;
+		}
+		&::after {
+			content: '';
+			left: -20px;
+			position: absolute;
+			right: auto;
+			border-top: 1px solid #999;
+			height: 20px;
+			top: 25px;
+			width: 25px;
+		}
+		&:last-child {
+			&::before {
+				height: 30px;
+			}
+		}
+	}
+	li.t-parent {
+		>span {
+			cursor: pointer;
+			&:hover {
+				color: $primary;
+				color: $primary;
+			}
+		}
+	}
+	>ul {
+		>li {
+			&::before {
+				border: 0;
+			}
+			&::after {
+				border: 0;
+			}
+		}
+	}
+}
+.flex-tree {
+	li {
+		position: relative;
+		list-style: none;
+		margin: 0;
+		&::before {
+			content: '';
+			left: -20px;
+			position: absolute;
+			right: auto;
+			border-left: 1px solid #999;
+			bottom: 50px;
+			height: 100%;
+			top: 0;
+			width: 1px;
+			left: -25px;
+		}
+		&::after {
+			content: '';
+			left: -20px;
+			position: absolute;
+			right: auto;
+			border-top: 1px solid #999;
+			height: 20px;
+			top: 25px;
+			width: 25px;
+			top: 12px;
+			left: -25px;
+		}
+		&:last-child {
+			&::before {
+				height: 25px;
+			}
+		}
+		label {
+			cursor: pointer;
+		}
+		span {
+			cursor: pointer;
+			label {
+				cursor: pointer;
+			}
+		}
+		span.open {
+			&:after {
+				content: "\025BE";
+				display: inline-block;
+				font: 400 16px/1 Arial, "Helvetica Neue", Helvetica, sans-serif;
+				width: 20px;
+				margin-top: 4px;
+				padding-left: 3px;
+				color: #ababab;
+			}
+		}
+		span.closed {
+			&:after {
+				content: "\025BE";
+				display: inline-block;
+				font: 400 16px/1 Arial, "Helvetica Neue", Helvetica, sans-serif;
+				width: 20px;
+				margin-top: 4px;
+				padding-left: 3px;
+				color: #ababab;
+				content: "\025B4";
+			}
+		}
+	}
+	>ul {
+		>li {
+			&::before {
+				border: 0;
+			}
+			&::after {
+				border: 0;
+			}
+		}
+	}
+	label {
+		font-weight: normal;
+	}
+	label.node {
+		font-weight: bold;
+	}
+	input[type="checkbox"] {
+		border: 1px solid #b4b9be;
+		background: #fff;
+		color: #555;
+		clear: none;
+		cursor: pointer;
+		display: inline-block;
+		line-height: 0;
+		height: 16px;
+		margin: -4px 4px 0 0;
+		outline: 0;
+		padding: 0;
+		text-align: center;
+		vertical-align: middle;
+		width: 16px;
+		min-width: 16px;
+		-webkit-appearance: none;
+		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+		transition: 0.05s border-color ease-in-out;
+		&:focus {
+			border-color: #5b9dd9;
+			box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+		}
+		&:checked {
+			background: $primary;
+			border: none;
+			&:before {
+                float: left;
+				display: inline-block;
+				vertical-align: middle;
+				width: 16px;
+				font: 400 20px/1 Arial, "Helvetica Neue", Helvetica, sans-serif;
+				-webkit-font-smoothing: antialiased;
+				content: "\02713";
+				color: var(--white);
+				margin: 1px 0 0 0;
+				font-size: 17px !important;
+			}
+		}
+		&:indeterminate {
+			&:before {
+                float: left;
+				display: inline-block;
+				vertical-align: middle;
+				width: 16px;
+				font: 400 20px/1 Arial, "Helvetica Neue", Helvetica, sans-serif;
+				-webkit-font-smoothing: antialiased;
+				content: "\02043";
+				color: $primary;
+				margin: -4px 0 0 -1px;
+			}
+		}
+	}
+	input[type="checkbox"].indeterminate {
+		background-color: #eee;
+	}
+}
+.ic-square {
+	width: 20px;
+	height: 20px;
+	background: transparent;
+	border: 1px solid $body-text;
+	text-align: center;
+	line-height: 19px;
+	font-size: 12px;
+}
+.tree-box {
+	margin: 0;
+}

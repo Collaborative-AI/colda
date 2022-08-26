@@ -1,7 +1,0 @@
-@mixin opacity-mixin ($value...) {
-    -webkit-opacity: $value;
-    -moz-opacity: $value;
-    -ms-opacity: $value;
-    -o-opacity: $value;
-    opacity: $value;
-}

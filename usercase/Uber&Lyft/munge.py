@@ -3,6 +3,10 @@ import numpy as np
 import pandas as pd
 
 le = preprocessing.LabelEncoder()
+
+
+
+#####  cab rides
 cab = pd.read_csv("input/cab_rides.csv")
 
 # drop useless cols and na records
@@ -21,3 +25,16 @@ cab.drop('destination', inplace=True, axis=1)
 cab.drop('source', inplace=True, axis=1)
 
 cab.to_csv('input/clean_cab_new.csv')
+
+
+
+
+
+#### weather
+weather = pd.read_csv("input/weather.csv")
+weather.dropna(axis=0, inplace=True)
+
+cols = ['location']
+weather[cols] = weather[cols].apply(le.fit_transform).astype(str)
+
+weather.to_csv('input/clean_weather.csv')

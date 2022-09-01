@@ -8,11 +8,10 @@ lyft = open("./input/lyft.csv", "w")
 gotHeaders = False
 id_index = 0
 
-# text columns: cab_type, destination, source, product_id, name
+# text columns: cab_type, placesination, source, product_id, name
 # uber = 0; lyft = 1
 headers = {}
-dest = {}
-src = {}
+places = {}
 product = {}
 name = {}
 
@@ -40,13 +39,13 @@ for line in raw:
                     else:
                         clean.write("1")
                 elif(headers[i] == "destination"):
-                    if(curLine[i] not in dest):
-                        dest[curLine[i]] = len(dest)
-                    clean.write(str(dest[curLine[i]]))
+                    if(curLine[i] not in places):
+                        places[curLine[i]] = len(places)
+                    clean.write(str(places[curLine[i]]))
                 elif(headers[i] == "source"):
-                    if(curLine[i] not in src):
-                        src[curLine[i]] = len(src)
-                    clean.write(str(src[curLine[i]]))
+                    if(curLine[i] not in places):
+                        places[curLine[i]] = len(places)
+                    clean.write(str(places[curLine[i]]))
                 elif(headers[i] == "product_id"):
                     if(curLine[i] not in product):
                         product[curLine[i]] = len(product)
@@ -77,7 +76,7 @@ uber.close()
 lyft.close()
 
 
-# destination: {'North Station': 0, 
+# placesination: {'North Station': 0, 
 #               'Northeastern University': 1, 
 #               'West End': 2, 
 #               'Haymarket Square': 3, 

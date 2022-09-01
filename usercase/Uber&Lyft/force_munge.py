@@ -7,6 +7,7 @@ lyft = open("./input/lyft.csv", "w")
 
 gotHeaders = False
 id_index = 0
+prod_index = 0
 
 # text columns: cab_type, placesination, source, product_id, name
 # uber = 0; lyft = 1
@@ -17,11 +18,14 @@ name = {}
 
 for line in raw:
     curLine = line.rstrip().split(",")
+
     if gotHeaders == False:
         for i in range(0, len(curLine)-1):
             headers[i] = curLine[i]
-            if(curLine[i] == "id"):
-                id_index = i
+            if(curLine[i] == "id" or curLine[i] == "product_id" or curLine[i] == "cab_type"):
+                continue
+            elif(curLine[i] == "destination"):
+                clean.write("dest_src")
                 continue
             clean.write(curLine[i])
             clean.write(",")
@@ -30,33 +34,48 @@ for line in raw:
         clean.write("\n")
         gotHeaders = True
         continue
+
+    
     else:
-        for i in range(0, len(curLine)-1):
-            if(i != id_index):
-                if(headers[i] == "cab_type"):
-                    if(curLine[i] == "Uber"):
-                        clean.write("0")
-                    else:
-                        clean.write("1")
-                elif(headers[i] == "destination"):
-                    if(curLine[i] not in places):
-                        places[curLine[i]] = len(places)
-                    clean.write(str(places[curLine[i]]))
-                elif(headers[i] == "source"):
-                    if(curLine[i] not in places):
-                        places[curLine[i]] = len(places)
-                    clean.write(str(places[curLine[i]]))
-                elif(headers[i] == "product_id"):
-                    if(curLine[i] not in product):
-                        product[curLine[i]] = len(product)
-                    clean.write(str(product[curLine[i]]))
+        temp = []
+        nulldata = False
+        for i in range(0, len(curLine)): # iterate each line
+            if curLine[i] == "":
+                nulldata = True
+                break
+
+            if headers[i] == "id" or headers[i] == "product_id" or headers[i] == "cab_type":
+                continue
+
+            # elif(headers[i] == "cab_type"):
+            #     if(curLine[i] == "Uber"):
+            #         temp.append("0")
+            #     else:
+            #         temp.append("1")
+            elif(headers[i] == "destination"):
+                if(curLine[i] not in places):
+                    places[curLine[i]] = len(places)
+                if places[curLine[i]] < 10:
+                    temp.append("0"+str(places[curLine[i]]))
                 else:
-                    clean.write(curLine[i])
-                clean.write(",")
-        if(curLine[-1]) not in name:
-            name[curLine[-1]] = len(name)
-        clean.write(str(name[curLine[-1]]))
-        clean.write("\n")
+                    temp.append(str(places[curLine[i]]))
+            elif(headers[i] == "source"):
+                if(curLine[i] not in places):
+                    places[curLine[i]] = len(places)
+                if places[curLine[i]] < 10:
+                    temp[-1] += "0"+str(places[curLine[i]])
+                else:
+                    temp[-1] += str(places[curLine[i]])
+            elif headers[i] == "name":
+                if(curLine[-1]) not in name:
+                    name[curLine[-1]] = len(name)
+                temp.append(str(name[curLine[i]]))
+            else:
+                temp.append(str(curLine[i]))
+        
+        if not nulldata:
+            clean.write(",".join(temp))   # write clean line to csv
+            clean.write("\n")
 
 
 

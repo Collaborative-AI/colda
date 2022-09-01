@@ -99,23 +99,13 @@ Rows = None
 Rows_sub_1000 = 1000
 Rows_sub_100 = 100
 # cab_rides.csv has 693071 rows in reality, but we are only loading/previewing the first 1000 rows
-df_rides = pd.read_csv('input/cab_rides.csv', delimiter=',', nrows = Rows_sub_100)
+df_rides = pd.read_csv('input/cab_rides.csv', delimiter=',', nrows = Rows)
 df_rides.dataframeName = 'cab_rides.csv'
 
 nRow, nCol = df_rides.shape
-print(f'Price Data: There are {nRow} rows and {nCol} columns')
+# print(f'Price Data: There are {nRow} rows and {nCol} columns')
 
-# %%
-Rows = None
-Rows_sub_1000 = 1000
-if os.path.exists('input/weather.csv'):
-    print("path valid")
-else:
-    print("not valid")
-df_weather = pd.read_csv('input/weather.csv',delimiter=',',nrows=Rows)
-df_weather.dataframeName = 'weather.csv'
-nRow, nCol = df_weather.shape
-print(f'Weather Data: There are {nRow} rows and {nCol} columns')
+
 
 
 # %%
@@ -129,21 +119,6 @@ plotPerColumnDistribution(df_rides, 10, 5)
 plotCorrelationMatrix(df_rides, 8)
 plotScatterMatrix(df_rides, 12, 10)
 
-
-# %%
-df_weather.head(5)
-plotPerColumnDistribution(df_weather, 10, 5)
-plotCorrelationMatrix(df_weather, 8)
-plotScatterMatrix(df_weather, 20, 10)
-
-# %%
-# df_rides['merged_date'] = df_rides['source'].astype('str') + ' - ' + df_rides['date'].dt.strftime('%Y-%m-%d').astype('str') + ' - ' + df_rides['date'].dt.hour.astype('str')
-# df_weather['merged_date'] = df_weather['location'].astype('str') + ' - ' + df_weather['date'].dt.strftime('%Y-%m-%d').astype('str') + ' - ' + df_weather['date'].dt.hour.astype('str')
-# %%
-
-wthr_time_max = df_weather.time_stamp.max()
-wthr_time_min = df_weather.time_stamp.min()
-print(f"Max: {wthr_time_max}, Min: {wthr_time_min}")
 
 # %%
 # df_rides['time_stamp'] = round(df_rides['time_stamp'] / 1000)
@@ -200,4 +175,63 @@ print(realtime)
 plt.plot(realtime,price)
 
 # readabel_time
+# %%
+
+if os.path.exists('input/clean_cab.csv'):
+    print("path valid")
+else:
+    print("not valid")
+
+Rows = None
+Rows_sub_1000 = 1000
+Rows_sub_100 = 100
+# cab_rides.csv has 693071 rows in reality, but we are only loading/previewing the first 1000 rows
+df_rides = pd.read_csv('input/clean_cab.csv', delimiter=',', nrows = Rows)
+df_rides.dataframeName = 'clean_cab.csv'
+
+nRow, nCol = df_rides.shape
+print(f'Price Data: There are {nRow} rows and {nCol} columns')
+
+# %%
+# plt.plot()
+price = df_rides["price"]
+
+
+print(max(price))
+print(min(price))
+
+plt.rcParams.update({'figure.figsize':(7,5), 'figure.dpi':100})
+
+# Plot Histogram on x
+x = np.random.normal(size = 100)
+plt.hist(price, bins=50)
+plt.gca().set(title='Frequency Histogram', ylabel='Frequency')
+
+
+
+from sklearn import preprocessing
+import numpy as np
+
+a = np.random.random((1, 4))
+a = a*20
+print("Data = ", a)
+
+# normalize the data attributes
+normalized = preprocessing.normalize(a)
+print("Normalized Data = ", normalized)
+
+
+
+# %%
+des = df_rides['destination']
+source = df_rides['source']
+# print()
+
+des = set(des)
+source = set(source)
+des = list(des)
+source = list(source)
+
+print(des)
+print(source)
 # %%

@@ -382,7 +382,7 @@ export default {
       task_name: '',
       test_id: '',
       task_description: '',
-      page: 'chart',
+      page: 'log',
       test_num: '2',
       backend_log: "",
       task_mode: "",

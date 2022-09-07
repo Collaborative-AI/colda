@@ -30,9 +30,9 @@
                           <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
 
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                           <router-link to="/xiaoguo" class="nav-link">Xiaoguo</router-link>
-                        </li>
+                        </li> -->
 
                         <!-- <li class="nav-item">
                           <router-link to="/xiaoguo" class="nav-link">Xiaoguo</router-link>
@@ -42,9 +42,9 @@
                           <router-link to="/resend" class="nav-link">Resend</router-link>
                         </li> -->
                       
-                        <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user']) && sharedState.username != 'xie1'"  class="nav-item">
+                        <!-- <li v-if="sharedState.is_authenticated && checkAuthority(['admin','user']) && sharedState.username != 'xie1'"  class="nav-item">
                           <router-link  to="/shiyan" class="nav-link">Ceshi</router-link>
-                        </li>       
+                        </li>        -->
                         <!-- <button @click="test_axios()">123</button>              -->
                         <!-- <li class="nav-item">
                             <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Brand</span></a>

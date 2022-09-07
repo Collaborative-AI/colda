@@ -367,13 +367,13 @@ export default {
                   // vm.$toasted.success(`Testing: Find Assistor Done`, { icon: 'fingerprint' })
 
                   try {
-                    fs.appendFileSync(Log_address, "\n You are SPONSOR\n")
-                    fs.appendFileSync(Log_address, "Test ID: " + vm.test_id + "\n")
-                    fs.appendFileSync(Log_address, "---- Test Stage Starts\n")
-                    fs.appendFileSync(Log_address, "---- 1. Test: Find Test assistor\n")
-                    fs.appendFileSync(Log_address, "1.1 Test: Sponsor calls for test\n")
-                    fs.appendFileSync(Log_address, "1.2 Test: Sponsor sends id file\n")
-                    fs.appendFileSync(Log_address, "---- 1. Test: Find Test assistor Done\n")
+                    fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: You are SPONSOR\n")
+                    fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Test ID: " + vm.test_id + "\n")
+                    fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Test Stage Starts\n")
+                    fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 1. Test: Find Test assistor\n")
+                    fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 1.1 Test: Sponsor calls for test\n")
+                    fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 1.2 Test: Sponsor sends id file\n")
+                    fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 1. Test: Find Test assistor Done\n")
                   } catch (err) {
                     console.log(err)
                   }
@@ -393,7 +393,7 @@ export default {
 
                     if (indicator == false){
                       console.log("make_test_local_done wrong")
-                      fs.appendFileSync(Log_address, "make_test_local_done wrong")
+                      fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: make_test_local_done wrong")
                       return 
                     }
 

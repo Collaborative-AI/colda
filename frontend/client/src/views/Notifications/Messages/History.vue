@@ -6,39 +6,38 @@
 
   <div class="btn-group btn-group-toggle" data-toggle="buttons">
     <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option1" value="log" v-model="page"> Log
-  </label>
+      <input type="radio" name="options" id="option1" value="log" v-model="page"> Log
+    </label>
     <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option2" value="chart" v-model="page"> Chart
-  </label>
+      <input type="radio" name="options" id="option2" value="chart" v-model="page"> Chart
+    </label>
+    
   
   <!-- <label class="btn btn-secondary">
     <input type="radio" name="options" id="option3" value="log2" v-model="page"> Log2
   </label> -->
 </div>
   <!-- 历史私信列表 -->
-  <div v-if="page=='log'" class="card border-0 g-mb-15 my-5">
-    
-    <!-- End Panel Header -->
-    <div class="form-group">
+  <div class="form-group">
       <router-link v-bind:to="{ name: 'FindTestAssistorHelper', query: { from: task_id, from_task_name: task_name, from_test_id: test_id } }">
         <button v-show="isSponsor" class="btn btn-success float-right">Call For Test</button>
       </router-link>
       
                 
     </div>
+  <div v-if="page=='log'" class="card border-0 g-mb-15 my-5">
+    
+    <!-- End Panel Header -->
+    
 
 
 
     <!-- Panel Body -->
-    <div class="card-block g-pa-0" >
-      <!-- Chat. Message Area. Messages. -->
-      <div class="g-brd-around g-brd-gray-light-v4 g-pa-20">
+    <!-- <div class="card-block g-pa-0" >
+      <div class="g-brd-around g-brd-gray-light-v4 g-pa-20"> 
         <div v-for="(message, index) in messages" v-bind:key="index">
-          <!-- Chat. Message Area. Message (From). -->
-          <section class="g-mb-30">
+          <section class="g-mb-30"> 
             <div class="media g-mb-12">
-              
               <div class="media-body">
                 <div class="d-inline-block g-width-300 g-width-auto--sm g-bg-gray-light-v8 g-font-size-12 g-font-size-default--lg g-color-gray-dark-v6 g-rounded-10 g-pa-10-15">
                   <p class="mb-0">
@@ -46,18 +45,50 @@
                   </p>
                 </div>
               </div>
-              <!-- End Chat. Message Area. Message. Body. -->
             </div>
-
           </section>
-
-        </div>
-        
+        </div>       
       </div>
       <button @click="getLog($route.query.from); checkSponsor($route.query.from)" class="btn btn-success float-right">Refresh</button>
-      <!-- End Chat. Message Area. Messages. -->
-    </div>
-    <!-- End Panel Body -->
+    </div> -->
+
+    <table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Timstamp</th>
+      <th>Level</th>
+      <th>Content</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(message, index) in messages" v-bind:key="index">
+      <td style="width: 10px">
+        
+          <!-- <img
+              src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+              alt=""
+              style="width: 45px; height: 45px"
+              class="rounded-circle"
+              />
+          <div class="ms-3">
+            <p class="fw-bold mb-1">John Doe</p>
+            <p class="text-muted mb-0">john.doe@gmail.com</p>
+          </div> -->
+          {{timestamp(messages, index)}}
+      </td>
+      <td style="width: 5px">
+        <!-- <p class="fw-normal mb-1">Software engineer</p>
+        <p class="text-muted mb-0">IT department</p> -->
+        <span class="badge badge-success rounded-pill d-inline">Info</span>
+      </td>
+      <td style="word-break: break-word; width: 50px">
+        {{content(messages, index)}}
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+      <button @click="getLog($route.query.from); checkSponsor($route.query.from)" class="btn btn-success float-right">Refresh</button>
   </div>
 
 
@@ -325,6 +356,9 @@ export default {
     Pagination,
     mdbLineChart,
     mdbContainer
+  },
+  computed: {
+    // a computed getter
   },
   
   data () {
@@ -1588,6 +1622,36 @@ export default {
     }
   },
   methods: {
+    timestamp(messages, index) {
+      let reg = /\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}:\d{1,2}/
+      // let reg = /[0-9]+/
+      let myRe = new RegExp(reg);
+      console.log('rr1',messages, index);
+
+      let myArray = myRe.exec(messages[index])
+      if (this.test_id!=null && index==0){
+        myArray = myRe.exec(messages[index+1])
+      }
+      console.log('attxx is', myArray, index)
+      while (myArray == null){
+        console.log('jin myarray');
+        myArray = myRe.exec(messages[index-1])
+        index=index-1
+      }
+      return myArray[0]
+    },
+    content(messages, index){
+      let reg = /Content: .+/
+      // let reg = /[0-9]+/
+      let myRe = new RegExp(reg);
+
+      let myArray = myRe.exec(messages[index])
+      console.log('array1 is', myArray)
+      if (myArray == null){
+        return messages[index]
+      }
+      return myArray[0].slice(9)
+    },
     stop_train_task() {
       const payload = {
         task_id: this.task_id,
@@ -1626,7 +1690,8 @@ export default {
     getLog(task_id) {
       let vm = this
       console.log('hoho',this.root)
-      const train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
+      let train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "train", "log.txt")
+      
       if(fs.existsSync(train_log_address)){
         let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
         Log_content = Log_content.split("\n")
@@ -1644,6 +1709,8 @@ export default {
           }
         }
 
+        
+
         for (let message of this.messages){        
           if (message.search("RMSE:") != -1){
             this.task_mode = 'regression'
@@ -1658,7 +1725,7 @@ export default {
             continue
           }
         }
-
+        console.log('zxzx1', this.messages);
         // const timer = setTimeout(() => {
         //   vm.getLog(task_id)
         // }, 10000)
@@ -1667,6 +1734,28 @@ export default {
         // vm.$once('hook:beforeDestroy', function () {
         //     clearTimeout(timer)
         // })
+
+      }
+      if (this.test_id != null){
+        train_log_address = node_path.join(this.root.toString(), this.sharedState.user_id.toString(), "task", task_id.toString(), "test", this.test_id.toString(), "log.txt")
+      }
+      if(fs.existsSync(train_log_address)){
+        let Log_content = fs.readFileSync(train_log_address, {encoding:'utf8', flag:'r'});
+        Log_content = Log_content.split("\n")
+        console.log('dachu1', vm.test_id)
+        
+        for (let i = 0; i < Log_content.length; i++){
+          this.messages.push(Log_content[i])
+          // console.log('dai',Log_content[i])
+          if (Log_content[i].search("Test Stage Done") != -1){
+            // console.log('zaina',Log_content[i].search("Train stage done"))
+            console.log('cheng2')
+            break
+          }
+        }
+
+        console.log('zxzx2', this.messages);
+        
 
       }
       
@@ -2207,7 +2296,7 @@ export default {
 
     let new_root = store.changeroot()
     this.root = new_root.root;
-    console.log('zxz',this.root)
+    console.log('zxz',this.root, this.task_id, this.test_id)
     this.exe_position = new_root.exe_position
     this.getLog(this.$route.query.from)
     this.checkSponsor(this.$route.query.from)
@@ -2373,6 +2462,18 @@ mdb-line-chart {
 
 [v-cloak] {
   display: none;
+}
+
+table {
+  /*为表格设置合并边框模型*/
+  /* border-collapse: collapse; */
+  /*列宽由表格宽度和列宽度设定*/
+  /* table-layout: fixed; */
+}
+           
+td {
+  border: 1px solid #ddd;
+  /* width: 1px */
 }
 </style>
 

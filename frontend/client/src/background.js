@@ -45,8 +45,8 @@ async function createWindow() {
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
     console.log("process.env.WEBPACK_DEV_SERVER_URL", process.env.WEBPACK_DEV_SERVER_URL)
     // console.log('app get path', app.getAppPath(), path.join(app.getAppPath(), '../src/preload.js'))
-    win.webContents.openDevTools();
-    if (!process.env.IS_TEST) win.webContents.openDevTools();
+    // win.webContents.openDevTools(); //右边debug窗口
+    // if (!process.env.IS_TEST) win.webContents.openDevTools(); //右边debug窗口
   } else {
     createProtocol('app');
     // Load the index.html when not in development

@@ -51,6 +51,8 @@ const MessagesHistory = () => import('../views/Notifications/Messages/History.vu
 // User Personal Settings
 const Settings = () => import('../views/Settings/Settings.vue')
 const Profile = () => import('../views/Settings/Profile.vue')
+const Xiaoguo = () => import('../views/Xiaoguo.vue')
+
 
 console.log("Vue",Vue)
 console.log("VueRouter", VueRouter)
@@ -97,6 +99,11 @@ const routes = [
     meta: {
       requiresAuth: true,
     }
+  },
+  {
+    path: '/xiaoguo',
+    name: 'Xiaoguo',
+    component: Xiaoguo
   },  
   {
     path: '/register',

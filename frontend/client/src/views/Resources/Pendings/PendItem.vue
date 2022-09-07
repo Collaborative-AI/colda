@@ -249,6 +249,9 @@ export default {
             //     });
 
             console.log("2.1 Update request notification response")
+            if(vm.test_id == undefined){
+              vm.test_id = null
+            }
           
             const delete_pending = {
               train_id: vm.task_id,
@@ -283,7 +286,7 @@ export default {
                   Log_address = vm.handle_train_log_address(task_id)
                   if (indicator == false){
                     console.log("hash_id_file_address wrong")
-                    fs.appendFileSync(Log_address, "hash_id_file_address wrong")
+                    fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: hash_id_file_address wrong")
                     return 
                   }
                 }catch(err){
@@ -291,10 +294,10 @@ export default {
                 }
 
                 try {
-                  fs.appendFileSync(Log_address, "\n You are Assistor\n")
-                  fs.appendFileSync(Log_address, "Task ID: " + task_id + "\n")
-                  fs.appendFileSync(Log_address, "----2. Unread Request\n")
-                  fs.appendFileSync(Log_address, "2.1 Update the request notification\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: You are Assistor\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Task ID: " + task_id + "\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2. Unread Request\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2.1 Update the request notification\n")
                 } catch (err) {
                   console.log(err)
                 }
@@ -317,8 +320,8 @@ export default {
                     execute_unittest_list(unittest_callbacks, 3, "PendItem_unittest", unittest_parameters)
                     
                     try {
-                      fs.appendFileSync(Log_address, "2.2 assistor uploads id file\n")
-                      fs.appendFileSync(Log_address, "----2. Unread Request Done\n")
+                      fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2.2 assistor uploads id file\n")
+                      fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2. Unread Request Done\n")
                     } catch (err) {
                       console.log(err)
                     }
@@ -449,7 +452,7 @@ export default {
                   Log_address = vm.handle_test_log_address(task_id, test_id)
                   if (indicator == false){
                     console.log("test_hash_id_file_address wrong")
-                    fs.appendFileSync(Log_address, "test_hash_id_file_address wrong")
+                    fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: error" + ", Content: test_hash_id_file_address wrong")
                     return 
                   }
                 }catch(err){
@@ -457,11 +460,11 @@ export default {
                 }
 
                 try {
-                  fs.appendFileSync(Log_address, "\n You are Assistor\n")
-                  fs.appendFileSync(Log_address, "Test ID: " + test_id + "\n")
-                  fs.appendFileSync(Log_address, "----Test Stage: 2.Unread Test Request\n")
-                  fs.appendFileSync(Log_address, "2.1 Test: Update Test request notification\n")
-                  fs.appendFileSync(Log_address, "2.2 Test: Hashing Done\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: You are Assistor\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Test ID: " + test_id + "\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: Test Stage: 2.Unread Test Request\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2.1 Test: Update Test request notification\n")
+                  fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2.2 Test: Hashing Done\n")
                 } catch (err) {
                   console.log(err)
                 }
@@ -485,8 +488,8 @@ export default {
                     execute_unittest_list(unittest_callbacks, 3, "PendItem_unittest", unittest_parameters)
 
                     try {
-                      fs.appendFileSync(Log_address, "2.2 Test: assistor uploads id file\n")
-                      fs.appendFileSync(Log_address, "----2. Unread Test Request Done\n")
+                      fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2.2 Test: assistor uploads id file\n")
+                      fs.appendFileSync(Log_address, "Timestamp: " + vm.timeNow() + ", Level: info" + ", Content: 2. Unread Test Request Done\n")
                     } catch (err) {
                       console.log(err)
                     }
@@ -570,6 +573,7 @@ export default {
       this.model_name = this.$route.params.model_name,
       this.metric_name = this.$route.params.metric_name,
       this.test_id = this.$route.params.test_id
+      console.log('guolai',this.test_id,this.task_id);
       if (this.test_id == undefined){
         this.test_indicator = 'train'
       }

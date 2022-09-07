@@ -6,20 +6,12 @@
 
   <div class="btn-group btn-group-toggle" data-toggle="buttons">
     <label class="btn btn-secondary">
-<<<<<<< HEAD
       <input type="radio" name="options" id="option1" value="log" v-model="page"> Log
     </label>
     <label class="btn btn-secondary">
       <input type="radio" name="options" id="option2" value="chart" v-model="page"> Chart
     </label>
     
-=======
-      <input type="radio" name="options" id="option2" value="chart" v-model="page"> Chart
-    </label>
-    <label class="btn btn-secondary">
-      <input type="radio" name="options" id="option1" value="log" v-model="page"> Log
-    </label>
->>>>>>> 4087291a7f82dd8a49c2e8463dd010c32ab90e3e
   
   <!-- <label class="btn btn-secondary">
     <input type="radio" name="options" id="option3" value="log2" v-model="page"> Log2
@@ -96,10 +88,7 @@
 
   </tbody>
 </table>
-<<<<<<< HEAD
       <button @click="getLog($route.query.from); checkSponsor($route.query.from)" class="btn btn-success float-right">Refresh</button>
-=======
->>>>>>> 4087291a7f82dd8a49c2e8463dd010c32ab90e3e
   </div>
 
 
@@ -1637,7 +1626,6 @@ export default {
       let reg = /\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2}:\d{1,2}/
       // let reg = /[0-9]+/
       let myRe = new RegExp(reg);
-<<<<<<< HEAD
       console.log('rr1',messages, index);
 
       let myArray = myRe.exec(messages[index])
@@ -1649,13 +1637,6 @@ export default {
         console.log('jin myarray');
         myArray = myRe.exec(messages[index-1])
         index=index-1
-=======
-
-      let myArray = myRe.exec(messages[index])
-      // console.log('array is', myArray)
-      if (myArray == null){
-        myArray = myRe.exec(messages[index-1])
->>>>>>> 4087291a7f82dd8a49c2e8463dd010c32ab90e3e
       }
       return myArray[0]
     },

@@ -24,6 +24,7 @@ from keras.callbacks import ReduceLROnPlateau
 from keras.callbacks import TensorBoard
 from datetime import datetime
 from dateutil import parser
+import time
 
 
 dataset = pd.read_csv('../input/clean_cab_new.csv')
@@ -33,8 +34,20 @@ dataset.head(10)
 # %%
 
 
-import time
+# %%
+
+
+# %%
+dataset = dataset.sort_values('time_stamp')
+
 timeseries_converting  = dataset['time_stamp']
+
+
+# dataset.head(10)
+# timeseries_converting.head(10)
+# d = datetime.fromtimestamp(1543203646318 / 1000.0)
+# print(d)
+# %%
 # unix_timestamp = float(timeseries_converting)
 # readabel_time = int(str(timeseries_converting))
 
@@ -52,38 +65,25 @@ for i,date in enumerate(timeseries_converting):
     # print(d)
     d = str(d)
     if len(d) != 26:
-        # print("yes")
-        count+=1
+        # print(len(d))
+        d = d+'.0'
+    # while d!= 26:
+    #     d = d+'0'
     datelist.append(d)
-print(count)
-print(len(datelist))
-print(datelist[0])
 datelist_train = datelist.copy()
 
 
 
 
 datelist_train = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%f").date() for date in datelist_train]
-# myFormat = "%Y-%m-%d %H:%M:%S"
+print('All timestamps == {}'.format(len(datelist_train)))
 
-# value = datetime.fromtimestamp(d)
-# %%
-
-
-# %%
-dataset = dataset.sort_values('time_stamp')
-
-datelist_train = list(dataset['time_stamp'])
-
-datelist_train = [dt.datetime.strptime(date, '%Y-%m-%d').date() for date in datelist_train]
 
 # dataset.drop(dataset['time_stamp'])
 dataset.drop('time_stamp', axis=1, inplace=True) 
 
 dataset.head(10)
-# dataset.set_index('time_stamp', inplace=True)?
 
-dataset.head(10)
 
 
 # %%
@@ -96,13 +96,12 @@ print('Featured selected: {}'.format(cols))
 # print(cols)
 
 # %%
-print(dataset.shape)
-dataset = dataset.head(5000)
+# print(dataset.shape)
+# dataset = dataset.head(5000)
 
 
 dataset_train = dataset[cols].astype(str)
 
-print(dataset_train['name'])
 # %%
 # for i in cols:
 #     for j in range(0, len(dataset_train)):
@@ -130,19 +129,21 @@ sc_predict.fit_transform(training_set[:, 0:1])
 
 # %%
 
+test = set(datelist_train)
+print(test)
 
+# %%
 # Creating a data structure with 90 timestamps and 1 output
 X_train = []
 y_train = []
 
-n_future = 60   # Number of days we want top predict into the future
-n_past = 90     # Number of past days we want to use to predict the future
+n_future = 6   # Number of days we want top predict into the future
+n_past = 12     # Number of past days we want to use to predict the future
 # print(training_set_scaled[:][:-1])
 # print("\n")
 # print(training_set_scaled[:][:])
 print(training_set_scaled)
 print("\n")
-print(training_set_scaled[1:3, 0:4])
 
 
 for i in range(n_past, len(training_set_scaled) - n_future +1):
@@ -155,9 +156,9 @@ X_train, y_train = np.array(X_train), np.array(y_train)
 print('X_train shape == {}.'.format(X_train.shape))
 print('y_train shape == {}.'.format(y_train.shape))
 
-print(y_train)
+# print(y_train)
 
-
+plt.plot(y_train)
 # %%
 
 
@@ -191,7 +192,7 @@ model.add(Dense(units=1, activation='linear'))
 model.compile(optimizer = Adam(learning_rate=0.01), loss='mean_squared_error')
 
 # %%
-history = model.fit(X_train, y_train, shuffle=True, epochs=30, callbacks=[es, rlr, mcp, tb], validation_split=0.2, verbose=1, batch_size=256)
+history = model.fit(X_train, y_train, shuffle=True, epochs=1, callbacks=[es, rlr, mcp, tb], validation_split=0.2, verbose=1, batch_size=256)
 
 # %%
 
@@ -226,10 +227,48 @@ def datetime_to_timestamp(x):
 y_pred_future = sc_predict.inverse_transform(predictions_future)
 y_pred_train = sc_predict.inverse_transform(predictions_train)
 
-PREDICTIONS_FUTURE = pd.DataFrame(y_pred_future, columns=['Open']).set_index(pd.Series(datelist_future))
-PREDICTION_TRAIN = pd.DataFrame(y_pred_train, columns=['Open']).set_index(pd.Series(datelist_train[2 * n_past + n_future -1:]))
+PREDICTIONS_FUTURE = pd.DataFrame(y_pred_future, columns=['price']).set_index(pd.Series(datelist_future))
+PREDICTION_TRAIN = pd.DataFrame(y_pred_train, columns=['price']).set_index(pd.Series(datelist_train[2 * n_past + n_future -1:]))
 
 # Convert <datetime.date> to <Timestamp> for PREDCITION_TRAIN
 PREDICTION_TRAIN.index = PREDICTION_TRAIN.index.to_series().apply(datetime_to_timestamp)
 
-PREDICTION_TRAIN.head(3)
+
+# %%
+
+
+# Set plot size 
+from pylab import rcParams
+rcParams['figure.figsize'] = 14, 5
+
+# Plot parameters
+START_DATE_FOR_PLOTTING = '2018-11-25'
+
+plt.plot(PREDICTIONS_FUTURE.index, PREDICTIONS_FUTURE['price'], color='r', label='Predicted Uber&Lyft Price')
+plt.plot(PREDICTION_TRAIN.loc[START_DATE_FOR_PLOTTING:].index, PREDICTION_TRAIN.loc[START_DATE_FOR_PLOTTING:]['price'], color='orange', label='Training predictions')
+plt.plot(dataset_train.loc[START_DATE_FOR_PLOTTING:].index, dataset_train.loc[START_DATE_FOR_PLOTTING:]['price'], color='b', label='Uber&Lyft Stock Price')
+
+plt.axvline(x = min(PREDICTIONS_FUTURE.index), color='green', linewidth=2, linestyle='--')
+
+plt.grid(which='major', color='#cccccc', alpha=0.5)
+
+plt.legend(shadow=True)
+plt.title('Predcitions and Acutal Uber&Lyft Prices', family='Arial', fontsize=12)
+plt.xlabel('Timeline', family='Arial', fontsize=10)
+plt.ylabel('Uber&Lyft Price Value', family='Arial', fontsize=10)
+plt.xticks(rotation=45, fontsize=8)
+
+
+# Parse training set timestamp for better visualization
+dataset_train = pd.DataFrame(dataset_train, columns=cols)
+dataset_train.index = datelist_train
+dataset_train.index = pd.to_datetime(dataset_train.index)
+# %%
+
+dataset_train.head(10)
+print(X_train)
+print(y_train)
+# plt.plot(X_train)
+plt.plot(y_train)
+
+# %%

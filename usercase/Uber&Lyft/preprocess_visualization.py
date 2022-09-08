@@ -90,7 +90,7 @@ print("ABOVE TESTS=========================================")
 
 # %%
 # reading files input/cab_rides.csv REMIND: CHANGE THE ROWS FOR TRAINING AND TESTING
-if os.path.exists('input/cab_rides.csv'):
+if os.path.exists('Uber&Lyft/input/cab_rides_new.csv'):
     print("path valid")
 else:
     print("not valid")

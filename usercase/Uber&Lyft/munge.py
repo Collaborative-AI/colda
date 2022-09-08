@@ -18,11 +18,13 @@ cab.dropna(axis = 0 , inplace = True)
 cols = ['destination', 'source', 'name']
 cab[cols] = cab[cols].apply(le.fit_transform).astype(str)
 
-# combine dest and src
-cab['dest_src'] = cab['destination'].str.cat(cab['source'])
+cab = cab[['price','distance','time_stamp','destination','source','surge_multiplier','name']]
 
-cab.drop('destination', inplace=True, axis=1)
-cab.drop('source', inplace=True, axis=1)
+# # combine dest and src
+# cab['dest_src'] = cab['destination'].str.cat(cab['source'])
+
+# cab.drop('destination', inplace=True, axis=1)
+# cab.drop('source', inplace=True, axis=1)
 
 cab.to_csv('input/clean_cab_new.csv')
 

@@ -14,7 +14,7 @@ import time
 import glob
 import pandas as pd
 
-dataset = pd.read_csv('../input/clean_cab.csv')
+dataset = pd.read_csv('../input/clean_cab_new.csv')
 # dataset['price'].fillna(0, inplace=True)
 # dataset.drop('product_id', axis=1, inplace=True) 
 dataset.head(10)

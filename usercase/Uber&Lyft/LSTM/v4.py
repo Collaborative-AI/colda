@@ -132,8 +132,8 @@ class LSTM(nn.Module):
 
     def forward(self, x):
         batch_size = x.shape[0]
-        h0 = torch.zeros(self.num_layers, batch_size, self.hidden_units)
-        c0 = torch.zeros(self.num_layers, batch_size, self.hidden_units)
+        h0 = torch.zeros(self.num_layers, batch_size, self.hidden_units).to('cuda')
+        c0 = torch.zeros(self.num_layers, batch_size, self.hidden_units).to('cuda')
         
         _, (hn, _) = self.lstm(x, (h0, c0))
         out = self.linear(hn[0]).flatten()  # First dim of Hn is num_layers, which is set to 1 above.
@@ -144,12 +144,12 @@ class LSTM(nn.Module):
 # %%
 learning_rate = 0.0001
 num_hidden_units = 265
-
+testround = 1
 model = LSTM(num_sensors=len(features), hidden_units=num_hidden_units)
-loss_function = nn.MSELoss()
+loss_function = nn.MSELoss().to('cuda')
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 # %%
-model = model
+model = model.to('cuda')
 
 
 def train_model(data_loader, model, loss_function, optimizer):
@@ -159,8 +159,8 @@ def train_model(data_loader, model, loss_function, optimizer):
     model.train()
     
     for X, y in data_loader:
-        X = X
-        y = y
+        X = X.to('cuda')
+        y = y.to('cuda')
         output = model(X)
         loss = loss_function(output, y)
         print(loss)
@@ -182,8 +182,8 @@ def test_model(data_loader, model, loss_function):
     model.eval()
     with torch.no_grad():
         for X, y in data_loader:
-            X = X
-            y = y            
+            X = X.to('cuda')
+            y = y.to('cuda')            
             output = model(X)
             # output = output.detach().cpu().numpy()
             total_loss += loss_function(output, y).item()
@@ -199,9 +199,9 @@ print("Untrained test\n--------")
 # test_loader = test_loader.cuda()
 # test_model(test_loader, model, loss_function)
 print()
-model = model
+model = model.to('cuda')
 
-for ix_epoch in range(10):
+for ix_epoch in range(testround):
     print(f"Epoch {ix_epoch}\n---------")
     train_model(train_loader, model, loss_function, optimizer=optimizer)
     test_model(test_loader, model, loss_function)
@@ -209,10 +209,13 @@ for ix_epoch in range(10):
 # %%
 def predict(data_loader, model):
     output = torch.tensor([])
+    output = output.to('cuda')
     # model.eval()
     with torch.no_grad():
         for X, _ in data_loader:
+            X = X.to('cuda')
             y_star = model(X)
+            print(y_star)
             output = torch.cat((output, y_star), 0)
     
     return output
@@ -222,8 +225,9 @@ model.eval()
 
 
 ystar_col = "Model forecast"
-df_train[ystar_col] = predict(train_eval_loader, model).numpy()
-df_test[ystar_col] = predict(test_loader, model).numpy()
+model = model.to("cuda")
+df_train[ystar_col] = predict(train_eval_loader, model).detach().cpu().numpy()
+df_test[ystar_col] = predict(test_loader, model).detach().cpu().numpy()
 
 df_out = pd.concat((df_train, df_test))[[target, ystar_col]]
 
@@ -249,7 +253,3 @@ fig.update_layout(
 )
 fig.show()
 fig.write_image("forecast.png", width=1200, height=600)
-
-
-
-

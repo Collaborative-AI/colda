@@ -25,6 +25,7 @@ from sklearn.neural_network import (
     MLPClassifier
 )
 
+
 from sklearn.multioutput import MultiOutputRegressor
 
 from colda.algorithm.model.base import BaseModel

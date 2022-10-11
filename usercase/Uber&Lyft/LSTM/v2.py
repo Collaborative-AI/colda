@@ -28,6 +28,7 @@ import time
 
 
 dataset = pd.read_csv('../input/clean_cab_new.csv')
+
 # dataset['price'].fillna(0, inplace=True)
 # dataset.drop('product_id', axis=1, inplace=True) 
 dataset.head(10)
@@ -71,20 +72,16 @@ for i,date in enumerate(timeseries_converting):
     #     d = d+'0'
     datelist.append(d)
 datelist_train = datelist.copy()
-# %%
-from datetime import datetime
 
-d = datetime.fromtimestamp(1544894109125/1000.0)
-d = str(d)
-print(d)
-# %%
+
+
+
 datelist_train = [dt.datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%f").date() for date in datelist_train]
 print('All timestamps == {}'.format(len(datelist_train)))
 
 
-# print(datelist_train)
 # dataset.drop(dataset['time_stamp'])
-# dataset.drop('time_stamp', axis=1, inplace=True) 
+dataset.drop('time_stamp', axis=1, inplace=True) 
 
 dataset.head(10)
 
@@ -105,14 +102,6 @@ print('Featured selected: {}'.format(cols))
 
 
 dataset_train = dataset[cols].astype(str)
-dataset_train.head(10)
-
-dataset_train = dataset_train.set_index('time_stamp')
-# %%
-
-
-
-dataset_train.to_csv('data.csv')
 
 # %%
 # for i in cols:
@@ -121,14 +110,10 @@ dataset_train.to_csv('data.csv')
 #         # dataset_train[i][j] = dataset_train[i][j].replace(',', '')
 
 dataset_train = dataset_train.astype(float)
-dataset_train.set_index('time_stamp')
-dataset_train.to_csv('data.csv')
 
 # Using multiple features (predictors)
 print(dataset_train)
 
-
-# df = pd.read_csv("processed_pm25.csv", index_col=0)
 # %%
 training_set = dataset_train.values
 
@@ -208,7 +193,7 @@ model.add(Dense(units=1, activation='linear'))
 model.compile(optimizer = Adam(learning_rate=0.01), loss='mean_squared_error')
 
 # %%
-history = model.fit(X_train, y_train, shuffle=True, epochs=1, callbacks=[es, rlr, mcp, tb], validation_split=0.2, verbose=1, batch_size=256)
+history = model.fit(X_train, y_train, shuffle=True, epochs=100, callbacks=[es, rlr, mcp, tb], validation_split=0.2, verbose=1, batch_size=256)
 
 # %%
 
@@ -275,6 +260,7 @@ plt.ylabel('Uber&Lyft Price Value', family='Arial', fontsize=10)
 plt.xticks(rotation=45, fontsize=8)
 
 
+
 # Parse training set timestamp for better visualization
 dataset_train = pd.DataFrame(dataset_train, columns=cols)
 dataset_train.index = datelist_train
@@ -287,4 +273,6 @@ print(y_train)
 # plt.plot(X_train)
 plt.plot(y_train)
 
+
+plt.savefig("test.png")
 # %%

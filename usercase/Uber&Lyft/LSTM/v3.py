@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
-
+import numpy as np
 
 df = pd.read_csv("data.csv", index_col="time_stamp")
 
@@ -27,7 +27,7 @@ print("Test set fraction:", len(df_test) / len(df))
 target_sensor = "price"
 features = list(df.columns.difference([target_sensor]))
 print(features)
-forecast_lead = 5000
+forecast_lead = 96*2*2
 target = f"{target_sensor}"
 
 df[target] = df[target_sensor].shift(-forecast_lead)
@@ -58,7 +58,7 @@ print(df_test)
 
 
 class SequenceDataset(Dataset):
-    def __init__(self, dataframe, target, features, sequence_length=2000):
+    def __init__(self, dataframe, target, features, sequence_length=96*5):
         self.features = features
         self.target = target
         self.sequence_length = sequence_length
@@ -86,8 +86,8 @@ class SequenceDataset(Dataset):
 # %%
 torch.manual_seed(101)
 
-batch_size = 6000
-sequence_length = 500
+batch_size = 96*5
+sequence_length = 96
 
 train_dataset = SequenceDataset(
     df_train,
@@ -119,7 +119,7 @@ class LSTM(nn.Module):
         super().__init__()
         self.num_sensors = num_sensors  # this is the number of features
         self.hidden_units = hidden_units
-        self.num_layers = 1
+        self.num_layers = 4
 
         self.lstm = nn.LSTM(
             input_size=num_sensors,
@@ -132,8 +132,8 @@ class LSTM(nn.Module):
 
     def forward(self, x):
         batch_size = x.shape[0]
-        h0 = torch.zeros(self.num_layers, batch_size, self.hidden_units)
-        c0 = torch.zeros(self.num_layers, batch_size, self.hidden_units)
+        h0 = torch.zeros(self.num_layers, batch_size, self.hidden_units).to('cuda')
+        c0 = torch.zeros(self.num_layers, batch_size, self.hidden_units).to('cuda')
         
         _, (hn, _) = self.lstm(x, (h0, c0))
         out = self.linear(hn[0]).flatten()  # First dim of Hn is num_layers, which is set to 1 above.
@@ -142,14 +142,16 @@ class LSTM(nn.Module):
 
 
 # %%
-learning_rate = 0.0001
-num_hidden_units = 265
-
+learning_rate = 0.01
+num_hidden_units = 128   
+testround = 100
 model = LSTM(num_sensors=len(features), hidden_units=num_hidden_units)
-loss_function = nn.MSELoss()
+loss_function = nn.MSELoss().to('cuda')
+# loss_function = nn.CrossEntropyLoss().to('cuda')
+
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 # %%
-model = model
+model = model.to('cuda')
 
 
 def train_model(data_loader, model, loss_function, optimizer):
@@ -159,11 +161,11 @@ def train_model(data_loader, model, loss_function, optimizer):
     model.train()
     
     for X, y in data_loader:
-        X = X
-        y = y
+        X = X.to('cuda')
+        y = y.to('cuda')
         output = model(X)
         loss = loss_function(output, y)
-        print(loss)
+        # print(loss)
 
         optimizer.zero_grad()
         loss.backward()
@@ -182,8 +184,8 @@ def test_model(data_loader, model, loss_function):
     model.eval()
     with torch.no_grad():
         for X, y in data_loader:
-            X = X
-            y = y            
+            X = X.to('cuda')
+            y = y.to('cuda')            
             output = model(X)
             # output = output.detach().cpu().numpy()
             total_loss += loss_function(output, y).item()
@@ -199,9 +201,16 @@ print("Untrained test\n--------")
 # test_loader = test_loader.cuda()
 # test_model(test_loader, model, loss_function)
 print()
-model = model
+model = model.to('cuda')
 
-for ix_epoch in range(10):
+
+# check model parameters
+model_parameters = filter(lambda p: p.requires_grad, model.parameters())
+params = sum([np.prod(p.size()) for p in model_parameters])
+print("this is the total parameters in the LSTM")
+print(params)
+
+for ix_epoch in range(testround):
     print(f"Epoch {ix_epoch}\n---------")
     train_model(train_loader, model, loss_function, optimizer=optimizer)
     test_model(test_loader, model, loss_function)
@@ -209,10 +218,13 @@ for ix_epoch in range(10):
 # %%
 def predict(data_loader, model):
     output = torch.tensor([])
+    output = output.to('cuda')
     # model.eval()
     with torch.no_grad():
         for X, _ in data_loader:
+            X = X.to('cuda')
             y_star = model(X)
+            print(y_star)
             output = torch.cat((output, y_star), 0)
     
     return output
@@ -222,13 +234,15 @@ model.eval()
 
 
 ystar_col = "Model forecast"
-df_train[ystar_col] = predict(train_eval_loader, model).numpy()
-df_test[ystar_col] = predict(test_loader, model).numpy()
+model = model.to("cuda")
+df_train[ystar_col] = predict(train_eval_loader, model).detach().cpu().numpy()
+df_test[ystar_col] = predict(test_loader, model).detach().cpu().numpy()
 
 df_out = pd.concat((df_train, df_test))[[target, ystar_col]]
 
-for c in df_out.columns:
-    df_out[c] = df_out[c] * target_stdev + target_mean
+# for c in df_out.columns:
+#     if c!='price':
+#         df_out[c] = df_out[c] * target_stdev + target_mean
 
 print(df_out)
 # %%
@@ -248,8 +262,4 @@ fig.update_layout(
   template=plot_template, legend=dict(orientation='h', y=1.02, title_text="")
 )
 fig.show()
-fig.write_image("forecast.png", width=1200, height=600)
-
-
-
-
+fig.write_image("forecast_newwithoutmean.png", width=1200, height=600)

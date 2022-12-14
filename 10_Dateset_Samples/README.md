@@ -7,3 +7,4 @@ Comprehensive stock datasets have been carefully crafted, providing valuable ins
 - Note: The stock data is collected on a daily basis
 
 ## How to use
+By executing the IPython notebook code located in the `20_Code` folder, users can generate a new set of CSV files that will overwrite the previous files with the same names. The new files will contain the most current information, including any updates or modifications made to the code. To run the code successfully, a compatible environment with all necessary dependencies and libraries must be in place. Upon successful execution, the new CSV files will be generated and saved in the same location as the original files. This process ensures that the dataset remains up-to-date and accurate, providing valuable insights into the stock market and the performance of individual companies.

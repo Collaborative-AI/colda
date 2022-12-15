@@ -12,3 +12,4 @@ It is important to note that the stock data has been grouped by sector. Not all 
 Check Folder `10_Dateset_Samples` for more details to replicate and get the most up-to-date CSVs.
 
 ## Discussion
+The process of obtaining data from an API, such as `yfinance`, can be replicated for use with other APIs. This involves making a request to the API using a predetermined set of parameters, such as a specific stock ticker or time period. Once the API responds, the data must be processed in order to extract the relevant information. This method can be applied to any API that offers the ability to retrieve data through requests and responses, providing a versatile means of accessing and analyzing a wide range of data.

@@ -9,6 +9,6 @@ Daily stock data for the S&P 500 and a selection of other stocks were successful
 ## Usage
 It is important to note that the stock data has been grouped by sector. Not all stocks have sector information available, so there may be null values in the dataset for certain stocks. This should be taken into consideration when analyzing the data, as it may affect the accuracy and completeness of the results. It is also worth mentioning that grouping the data by sector allows for a more detailed and nuanced analysis of the stock market, as it allows for comparison and analysis within specific industries.
 
-Check Folder 10_ for more details.
+Check Folder `10_Dateset_Samples` for more details to replicate and get the most up-to-date CSVs.
 
 ## Discussion

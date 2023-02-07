@@ -20,7 +20,9 @@ axios.defaults.timeout = 50000  // 超时时间
 //lq xin ceshi
 // axios.defaults.baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com'
 
-axios.defaults.baseURL = 'https://synspotbackend.herokuapp.com/'
+axios.defaults.baseURL = 'https://synspot-backend.herokuapp.com/'
+
+
 
 
 // axios.defaults.transformRequest = [ function(data) {

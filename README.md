@@ -133,9 +133,11 @@ tmux
 1. **First time launch:**
    1. cd into backend
    2. pip install pipenv
-   3. pipenv install
-   4. pipenv shell
-   5. flask run
+   3. pipenv lock
+   4. pipenv install
+   5. pipenv shell
+   6. flask run
+   7. flask --app application run --debug --port 5000
 
 2. **launch after first time**
    1. pipenv install

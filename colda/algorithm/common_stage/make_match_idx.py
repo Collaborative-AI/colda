@@ -3,7 +3,7 @@ import os
 
 import numpy as np
 
-from colda.algorithm.base import BaseAlgorithm
+from algorithm.base import BaseAlgorithm
 
 from typing import (
     Any,

@@ -2,9 +2,9 @@ import copy
 from parso import parse
 import pytest
 
-from colda.utils.api import DictHelper
+from utils.api import DictHelper
 
-from colda.error import DictValueNotFound
+from error import DictValueNotFound
 
 
 class TestDictHelper:

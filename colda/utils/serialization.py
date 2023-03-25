@@ -8,7 +8,7 @@ from typing import (
     Any
 )
 
-from colda.utils.dtypes.api import (
+from utils.dtypes.api import (
     is_numpy,
     is_dict_like,
     is_list,
@@ -16,7 +16,7 @@ from colda.utils.dtypes.api import (
     to_serializable
 )
 
-from colda._typing import Serializable_Datatype
+from _typing import Serializable_Datatype
 
 from typeguard import typechecked
 

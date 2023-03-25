@@ -3,9 +3,9 @@ from __future__ import annotations
 import numpy as np
 import os
 
-from colda.algorithm.base import BaseAlgorithm
-from colda.algorithm.utils import load, log, parse_idx
-from colda.algorithm.metric.metrics import Metric
+from algorithm.base import BaseAlgorithm
+from algorithm.utils import load, log, parse_idx
+from algorithm.metric.metrics import Metric
 
 from typing import Union
 from typeguard import typechecked

@@ -4,7 +4,7 @@ import json
 
 from typing import Any
 
-from colda._typing import JSONType
+from _typing import JSONType
 
 
 # def load_json(

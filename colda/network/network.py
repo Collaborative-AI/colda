@@ -2,19 +2,19 @@ from __future__ import annotations
 
 import requests
 
-from colda.utils.api import (
+from utils.api import (
     del_instance,
     Constant,
     Serialization
 )
 
-from colda.network.dp import DP
+from network.dp import DP
 
-from colda.network.base import BaseNetwork
+from network.base import BaseNetwork
 
 from typing import Union
 
-from colda._typing import JSONType
+from _typing import JSONType
 
 from typeguard import typechecked
 
@@ -45,7 +45,10 @@ class Network(BaseNetwork):
     def __init__(self):
         self.__token = ''
         # self.__baseURL = 'http://127.0.0.1:5000'
-        self.__baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/'
+        # self.__baseURL = 'http://synspot-environment.eba-gug8tkzj.us-east-2.elasticbeanstalk.com/'
+        # self.__baseURL = 'https://synspotbackend.herokuapp.com/'
+        self.__baseURL = 'https://synspot-backend.herokuapp.com/'
+        
 
     @classmethod
     def get_instance(cls) -> Network:
@@ -152,9 +155,9 @@ class Network(BaseNetwork):
         )
 
         if 'test successfully!' == res:
-            return 'test successfully'
+            return 'test network successfully'
         else:
-            return 'test failed'
+            return 'test network failed'
 
 
     def process_url(

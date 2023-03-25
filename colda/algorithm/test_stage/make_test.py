@@ -6,11 +6,11 @@ import json
 import collections
 import numpy as np
 
-from colda.algorithm.base import BaseAlgorithm
+from algorithm.base import BaseAlgorithm
 
-from colda.algorithm.utils import parse_idx
+from algorithm.utils import parse_idx
 
-from colda._typing import Role
+from _typing import Role
 
 from typing import Any
 
@@ -59,9 +59,32 @@ class MakeTest(BaseAlgorithm):
             rounds_key = f'rounds_{i}'
             model = trained_models_of_each_round[rounds_key]
             outputs[rounds_key] = model.predict(data)
+            # import time
+            
+            # time.sleep(100)
+            # if (outputs[rounds_key].shape[0])>1:
+            #     # for d in range(outputs[rounds_key].shape[0]):
+            #     # make_test_log[rounds_key].append(copy.deepcopy(outputs[f'rounds_{i}']))
+            #     continue
+            # else:
             for j in range(4):
-                make_test_log[rounds_key].append(copy.deepcopy(outputs[f'rounds_{i}'][j][0]))
-                
+                if (outputs[rounds_key].shape[0])>1:
+                    print("trying copy lstm")
+                    '''
+                    future implementation
+                    copy the output of LSTM
+                    '''
+                    continue
+                else:
+                    make_test_log[rounds_key].append(copy.deepcopy(outputs[f'rounds_{i}'][j][0]))
+            # time.sleep(100)
+            
+        # print("=====================================")
+        # print(make_test_log)
+        # import time 
+        # time .sleep(100)
+        
+        
         super()._store_log(
             user_id=user_id,
             task_id=test_id,

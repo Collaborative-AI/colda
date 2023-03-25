@@ -12,9 +12,9 @@ from sklearn.metrics import (
     roc_auc_score
 )
 
-from colda.algorithm.utils import softmax
+from algorithm.utils import softmax
 
-from colda.algorithm.metric.base import BaseMetric
+from algorithm.metric.base import BaseMetric
 
 from typeguard import typechecked
 

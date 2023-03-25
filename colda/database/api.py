@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import collections
 
-from colda.database.utils import get_user_id
+from database.utils import get_user_id
 
 from typing import(
     List
 )
 
-from colda.database.strategy.api import DatabaseOperator
+from database.strategy.api import DatabaseOperator
 
 from typeguard import typechecked
 
@@ -46,8 +46,9 @@ def get_all_train_id_as_sponsor() -> list[str]:
     '''
     user_id = get_user_id()
     all_train_ids = []
-    DatabaseOperator.set_database(database_type='train_sponsor_metadata')
-    for record_key, record_val in DatabaseOperator.get_all_records().items():
+    # changed: KW
+    DatabaseOperator.get_instance().set_database(database_type='train_sponsor_metadata')
+    for record_key, record_val in DatabaseOperator.get_instance().get_all_records_history().items():
         if user_id == record_key[0]:
             all_train_ids.append(record_val['train_id'])
 
@@ -64,8 +65,8 @@ def get_all_test_id_as_sponsor() -> list[str]:
     '''
     user_id = get_user_id()
     all_test_ids = []
-    DatabaseOperator.set_database(database_type='test_sponsor_metadata')
-    for record_key, record_val in DatabaseOperator.get_all_records().items():
+    DatabaseOperator.get_instance().set_database(database_type='test_sponsor_metadata')
+    for record_key, record_val in DatabaseOperator.get_instance().get_all_records_history().items():
         if user_id == record_key[0]:
             all_test_ids.append(record_val['test_id'])
 
@@ -83,8 +84,8 @@ def get_all_train_id_as_assistor() -> list[str]:
     '''
     user_id = get_user_id()
     all_train_ids = []
-    DatabaseOperator.set_database(database_type='train_assistor_metadata')
-    for record_key, record_val in DatabaseOperator.get_all_records().items():
+    DatabaseOperator.get_instance().set_database(database_type='train_assistor_metadata')
+    for record_key, record_val in DatabaseOperator.get_instance().get_all_records_history().items():
         if user_id == record_key[0]:
             all_train_ids.append(record_val['train_id'])
 
@@ -101,8 +102,8 @@ def get_all_test_id_as_assistor() -> list[str]:
     '''
     user_id = get_user_id()
     all_test_ids = []
-    DatabaseOperator.set_database(database_type='test_assistor_metadata')
-    for record_key, record_val in DatabaseOperator.get_all_records().items():
+    DatabaseOperator.get_instance().set_database(database_type='test_assistor_metadata')
+    for record_key, record_val in DatabaseOperator.get_instance().get_all_records_history().items():
         if user_id == record_key[0]:
             all_test_ids.append(record_val['test_id'])
 

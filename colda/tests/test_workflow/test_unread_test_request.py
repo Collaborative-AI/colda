@@ -6,10 +6,10 @@ Test suite for the curves.py module that handles everything to do with
 supply and demand curves.
 """
 import pytest
-from colda.tests.test_workflow import testing_data
+from .__init__ import testing_data
 
-from colda.tests.test_workflow.Train_helper_function import Train_helper_function
-from colda.tests.test_workflow.Test_helper_function import Test_helper_function
+from .Train_helper_function import Train_helper_function
+from .Test_helper_function import Test_helper_function
 
 
 class Test_unread_test_request(Train_helper_function, Test_helper_function):

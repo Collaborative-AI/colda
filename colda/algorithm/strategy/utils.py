@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from colda.algorithm.strategy.dp import DP
+from algorithm.strategy.dp import DP
 
 from functools import wraps
 
@@ -10,7 +10,7 @@ from typing import Callable
 
 from typeguard import typechecked
 
-from colda._typing import Serializable_Datatype
+from _typing import Serializable_Datatype
 
 
 # @typechecked

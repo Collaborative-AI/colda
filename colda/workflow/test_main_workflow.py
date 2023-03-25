@@ -1,25 +1,25 @@
 from __future__ import annotations
 
-from colda.workflow.abstract_workflow import AbstractTestMainWorkflow
+from workflow.abstract_workflow import AbstractTestMainWorkflow
 
-from colda.workflow.utils import (
+from workflow.utils import (
     obtain_notification_information
 )
 
-from colda.workflow.test_workflow.sponsor.api import (
+from workflow.test_workflow.sponsor.api import (
     TestSponsorFindAssistor,
     TestSponsorMatchIdentifier,
     TestSponsorOutput
 )
 
-from colda.workflow.test_workflow.assistor.api import (
+from workflow.test_workflow.assistor.api import (
     TestAssistorRequest,
     TestAssistorMatchIdentifier
 )
 
-from colda.workflow.utils import CheckSponsor
+from workflow.utils import CheckSponsor
 
-from colda._typing import (
+from _typing import (
     Task_Mode,
     Model_Name,
     Metric_Name

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from colda.algorithm.test_stage.api import (
+from algorithm.test_stage.api import (
     MakeTest,
     MakeEval
 )

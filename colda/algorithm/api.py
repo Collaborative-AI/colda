@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from colda.utils.log.api import GetAlgorithmLog
+from utils.log.api import GetAlgorithmLog
 
 from typing import Any
 from typeguard import typechecked
@@ -26,6 +26,10 @@ def get_algo_log(
     -------
     list
     '''
+    # for key, val in GetAlgorithmLog.get_instance().items():
+    #     print('key', key)
+    #     print('val', val)
+    #     print('\n')
     return GetAlgorithmLog.get_instance().get_log(
         user_id=user_id,
         task_id=task_id,
@@ -41,5 +45,4 @@ def get_all_algo_logs() -> dict[str, Any]:
     -------
     dict[str, Any]
     '''
-    print('algooo1', id(GetAlgorithmLog.get_instance()))
     return GetAlgorithmLog.get_instance().get_all_logs()

@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import collections
 
-from colda.database.base import BaseDatabase
+from database.base import BaseDatabase
 
-from colda.database.abstract_database import AbstractAlgorithmDatabase
+from database.abstract_database import AbstractAlgorithmDatabase
 
-from colda.utils.api import DictHelper
+from utils.api import DictHelper
 
 from typing import (
     Union,

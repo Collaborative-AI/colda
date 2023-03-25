@@ -1,4 +1,4 @@
-from colda.algorithm.utils import log
+from algorithm.utils import log
 
 __all__ = [
     'log'

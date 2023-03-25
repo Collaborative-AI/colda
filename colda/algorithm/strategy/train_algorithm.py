@@ -1,17 +1,17 @@
 from __future__ import annotations
 
-from colda.algorithm.strategy.base import BaseAlgorithmStrategy
+from algorithm.strategy.base import BaseAlgorithmStrategy
 
-from colda.algorithm.strategy.abstract_algorithm_strategy import AbstractTrainAlgorithmStrategy
+from algorithm.strategy.abstract_algorithm_strategy import AbstractTrainAlgorithmStrategy
 
-from colda.algorithm.strategy.utils import algorithm_process
+from algorithm.strategy.utils import algorithm_process
 
-from colda.algorithm.train_stage.api import (
+from algorithm.train_stage.api import (
     MakeResidual,
     MakeTrainLocal,
 )
 
-from colda.algorithm.strategy.custom.api import GetTrainFixedParameter
+from algorithm.strategy.custom.api import GetTrainFixedParameter
 
 from typing import Any
 
@@ -34,11 +34,12 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
     make_train
     make_result
     '''
-
     __TrainAlgorithm_instance = None
+    
 
     def __init__(self) -> None:
         self.__train_custom = GetTrainFixedParameter.get_class()
+
 
     @classmethod
     def get_instance(cls) -> TrainAlgorithm:
@@ -51,6 +52,7 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
         type[TrainAlgorithm]
         '''
         if cls.__TrainAlgorithm_instance == None:
+            
             cls.__TrainAlgorithm_instance = TrainAlgorithm()
 
         return cls.__TrainAlgorithm_instance
@@ -114,4 +116,3 @@ class TrainAlgorithm(AbstractTrainAlgorithmStrategy, BaseAlgorithmStrategy):
         strategy interface
         '''
         return self.__train_custom.make_result(**kwargs)
-

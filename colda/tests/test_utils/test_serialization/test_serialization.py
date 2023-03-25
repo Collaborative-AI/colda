@@ -3,9 +3,9 @@ import pytest
 import numpy as np
 import pandas as pd
 
-from colda.utils.api import Serialization
+from utils.api import Serialization
 
-from colda.error import DataNotSerializable
+from error import DataNotSerializable
 
 class TestSerialization:
 

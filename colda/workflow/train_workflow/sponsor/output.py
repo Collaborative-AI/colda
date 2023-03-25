@@ -3,15 +3,15 @@ from re import L
 
 import time
 
-from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
+from workflow.train_workflow.train_base import TrainBaseWorkflow
 
-from colda.workflow.utils import (
+from workflow.utils import (
     obtain_notification_information
 )
 
-from colda.pi.api import get_user_id
+from pi.api import get_user_id
 
-from colda._typing import (
+from _typing import (
     Task_Mode,
     Model_Name,
     Metric_Name
@@ -20,6 +20,7 @@ from typing import Any
 
 from typeguard import typechecked
 
+from algorithm.api import get_all_algo_logs
 
 #@typechecked
 class TrainSponsorOutput(TrainBaseWorkflow):
@@ -214,6 +215,8 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             url_root='get_max_round',
         )['max_round'] 
 
+        print('train li mian', get_all_algo_logs())
+
         if cur_rounds_num >= max_round:
             msgs = ["---- Train Stage Ends"]
             super()._store_log(
@@ -223,7 +226,7 @@ class TrainSponsorOutput(TrainBaseWorkflow):
             )
             print('Sponsor stage 4: output done')
             print('Sponsor: Training train_id: ', train_id, ' ends')
-            return
+            return 'train task finished'
         else:
             # If cur_rounds_num < max_round, we need to initiate
             # a new round.

@@ -1,4 +1,4 @@
-from colda.database.default_database.default_metadata_database import DefaultMetadataDatabase
+from database.default_database.default_metadata_database import DefaultMetadataDatabase
 
 
 __all__ = [

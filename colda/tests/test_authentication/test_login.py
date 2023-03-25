@@ -1,10 +1,10 @@
 import pytest
 
-from colda.tests.test_authentication.conftest import Authentication_instance
+from .conftest import Authentication_instance
 
-from colda.tests.test_authentication.conftest import Network_instance
+from .conftest import Network_instance
 
-from colda.error import StatusCodeError
+from error import StatusCodeError
 
 
 class TestLogin:

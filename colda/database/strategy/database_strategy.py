@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from colda.database.strategy.abstract_database_strategy import AbstractDatabaseStrategy
+from database.strategy.abstract_database_strategy import AbstractDatabaseStrategy
 
-from colda.database.strategy.base import BaseDatabaseStrategy
+from database.strategy.base import BaseDatabaseStrategy
 
-from colda.database.database_factory import (
+from database.database_factory import (
     GetDefaultMetadataDatabase,
     GetTrainSponsorMetadataDatabase,
     GetTrainAssistorMetadataDatabase,
@@ -16,7 +16,7 @@ from colda.database.database_factory import (
 
 from typing import Union
 
-from colda._typing import (
+from _typing import (
     Train_Database_Type,
     Test_Database_Type
 )
@@ -44,7 +44,7 @@ class DatabaseOperator(AbstractDatabaseStrategy, BaseDatabaseStrategy):
     __DatabaseOperator_instance = None
 
     def __init__(self) -> None:
-        self.__database_operator = GetDefaultMetadataDatabase.get_instance()
+        self.__database_operator = None
 
     @classmethod
     def get_instance(cls) -> DatabaseOperator:

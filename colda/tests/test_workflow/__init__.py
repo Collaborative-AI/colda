@@ -1,34 +1,61 @@
 """
-tests
-~~~~~
-
 Test suite for the colda package.
 """
+
 from typing import List
 from abc import ABC, abstractmethod
 
-from colda.workflow.api import (
-    TrainMainWorkflow,
-    TestMainWorkflow
-)
+# from colda.workflow.api import (
+#     TrainMainWorkflow,
+#     TestMainWorkflow
+# )
     
-from colda.authentication.api import Authentication
-from colda.short_polling.api import ShortPolling
-from colda.pi.api import PI
-from colda.network.api import Network
-from colda.utils.log.api import GetAlgorithmLog
-# from colda import set_default_data_path, get_all_task_id_as_sponsor, get_all_test_id_as_sponsor, get_all_task_id_as_assistor, get_all_test_id_as_assistor
-# from colda import get_all_task_id, get_all_test_id
+# from colda.authentication.api import Authentication
+# from colda.short_polling.api import ShortPolling
+# from colda.pi.api import PI
+# from colda.network.api import Network
+# from colda.utils.log.api import GetAlgorithmLog
 
-_default_authentication = Authentication.get_instance()
-_default_trainMainWorkflow = TrainMainWorkflow.get_class()
-_default_testMainWorkflow = TestMainWorkflow.get_class()
-_default_ShortPolling = ShortPolling.get_instance()
-_default_PI = PI.get_instance()
-_default_Network = Network.get_instance()
-# _default_algorithm_log = GetAlgorithmLog.get_instance()
-# _default_testRequest = TestRequest.get_TestRequest_instance()
-# _default_get_notification = Get_Notification.get_Get_notification_instance()
+import os, sys
+CUR_FILE_PATH = os.path.abspath(__file__)
+UPPER_LEVEL_PATH = os.path.dirname(CUR_FILE_PATH)
+TOP_LEVEL_PATH = os.path.dirname(os.path.dirname(os.path.dirname(UPPER_LEVEL_PATH)))
+# UPPER_UPPER_LEVEL_PATH = os.path.dirname(UPPER_LEVEL_PATH)
+# TOP_LEVEL_PATH = os.path.dirname(UPPER_UPPER_LEVEL_PATH)
+print(f'Colda Test Upper Level Path: {UPPER_LEVEL_PATH}')
+print(f'Colda Test test_workflow TOP_LEVEL_PATH: {TOP_LEVEL_PATH}')
+# print(f'Colda Test Upper Upper Level Path: {UPPER_UPPER_LEVEL_PATH}')
+# sys.path.append(UPPER_LEVEL_PATH)
+sys.path.append(UPPER_LEVEL_PATH)
+sys.path.append(TOP_LEVEL_PATH)
+
+# if '/Users/qile/Documents/synspot_all' in sys.path:
+#     print('###########')
+#     sys.path.remove('/Users/qile/Documents/synspot_all')
+
+
+# if '/Users/qile/Documents/synspot_all/colda/colda/tests' in sys.path:
+#     print('22###########')
+#     sys.path.remove('/Users/qile/Documents/synspot_all/colda/colda/tests')
+
+print(f'------Colda Test Total Path: {sys.path}')
+# print(f'------Colda Test Total Path: {sys.path}')
+
+from colda import Colda
+
+print('Colda Class', dir(Colda))
+coldaInstance = Colda()
+print('Colda Instance', dir(coldaInstance))
+
+# _default_authentication = coldaInstance._default_authentication
+# _default_trainMainWorkflow = coldaInstance._default_trainMainWorkflow
+# _default_testMainWorkflow = coldaInstance._default_testMainWorkflow
+# _default_shortPolling = coldaInstance._default_shortPolling
+# _default_PI = coldaInstance._default_PI
+# _default_network = coldaInstance._default_network
+# _default_algorithm_log = coldaInstance._default_algo_log
+# _default_testRequest = coldaInstance._default_testRequest
+
 
 testing_data = {}
 testing_data['max_round'] = 2
@@ -36,7 +63,7 @@ testing_data['first_user_username'] = 'unittest1'
 testing_data['first_user_password'] = 'Xie1@123'
 testing_data['first_user_email'] = 'ruibasu@gff.com'
 testing_data['second_user_username'] = 'unittest2'
-testing_data['second_user_password'] = 'Xie1@456'
+testing_data['second_user_password'] = 'Xie1@123'
 testing_data['second_user_email'] = 'ruibasu1@gff.com'
 
 testing_data['test_register_username'] = 'leqq'
@@ -44,7 +71,8 @@ testing_data['test_register_email'] = 'lq109945190@gmail.com'
 testing_data['test_register_password'] = 'leq1'
 
 testing_data['sponsor_mode'] = 'regression'
-data_file = 'BostonHousing'
+data_file = 'KCHousing'
+# data_file = 'BostonHousing'
 total_participants = '2'
 match_ratio = '1.0'
 user_id = '0'
@@ -56,9 +84,17 @@ elif testing_data['sponsor_mode'] == 'classification':
 
 testing_data['max_round'] = 2
 testing_data['assistors'] = ['unittest2']
+
+# for KCHousing
 testing_data['train_id_column'] = '1'
-testing_data['train_data_column'] = '2-8'
-testing_data['train_target_column'] = '9'
+testing_data['train_data_column'] = '2-10'
+testing_data['train_target_column'] = '11'
+
+# for Boston Housing
+# testing_data['train_id_column'] = '1'
+# testing_data['train_data_column'] = '2-8'
+# testing_data['train_target_column'] = '9'
+
 testing_data['task_mode'] = 'regression'
 testing_data['model_name'] = 'linear'
 testing_data['metric_name'] = 'MAD_RMSE_R2'
@@ -70,9 +106,14 @@ if testing_data['sponsor_mode'] == 'regression':
     testing_data['test_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 elif testing_data['sponsor_mode'] == 'classification':
     testing_data['test_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
-testing_data['test_id_column'] = '1'
-testing_data['test_data_column'] = '2-8'
-testing_data['test_target_column'] = '9'
+# for KCHousing
+testing_data['train_id_column'] = '1'
+testing_data['train_data_column'] = '2-10'
+testing_data['train_target_column'] = '11'
+# for Boston Housing
+# testing_data['test_id_column'] = '1'
+# testing_data['test_data_column'] = '2-8'
+# testing_data['test_target_column'] = '9'
 testing_data['test_name'] = 'test_ceshi111'
 testing_data['test_description'] = 'wudiwudiw'
 
@@ -81,7 +122,8 @@ testing_data['default_mode'] = 'auto'
 testing_data['default_task_mode'] = 'regression'
 testing_data['default_model_name'] = 'linear'
 
-data_file = 'BostonHousing'
+data_file = 'KCHousing'
+# data_file = 'BostonHousing'
 total_participants = '2'
 match_ratio = '1.0'
 user_id = '1'
@@ -91,8 +133,13 @@ if testing_data['default_task_mode'] == 'regression':
 elif testing_data['default_task_mode'] == 'classification':
     testing_data['default_file_path'] = "/Users/qile/Documents/synspot_all/synspot_Data/data/" + data_file + "/" + data_file + "_" + total_participants + "_123_" + match_ratio + "/" + user_id + "/" + folder_indicator + "/dataset.csv"
 
+# for KCHousing
 testing_data['default_id_column'] = '1'
-testing_data['default_data_column'] = '2-7'
+testing_data['default_data_column'] = '2-10'
+
+# for BostonHousing
+# testing_data['default_id_column'] = '1'
+# testing_data['default_data_column'] = '2-7'
 
 
 class Strategy(ABC):

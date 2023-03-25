@@ -7,14 +7,14 @@ supply and demand curves.
 """
 
 import pytest
-from colda.tests.test_workflow import testing_data
-from colda.tests.test_workflow.Train_helper_function import Train_helper_function
+from .__init__ import testing_data
+from .Train_helper_function import Train_helper_function
 
 
 class Test_find_assistor(Train_helper_function):
 
     def test_find_assistor(self):
-        self.first_user_login()
-        self.clean_db()
-        self.find_assistor()
+        super().first_user_login()
+        super().clean_db()
+        super().find_assistor()
 

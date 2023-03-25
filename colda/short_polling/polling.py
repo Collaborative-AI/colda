@@ -5,13 +5,13 @@ import requests
 import threading
 import time
 
-from colda.workflow.api import (
+from workflow.api import (
     TrainMainWorkflow,
     TestMainWorkflow
 )
-from colda.network.api import Network
-from colda.pi.api import PI
-from colda.authentication.api import Authentication
+from network.api import Network
+from pi.api import PI
+from authentication.api import Authentication
 
 from typeguard import typechecked
 
@@ -96,7 +96,6 @@ class ShortPolling():
         print(f'notification_category: {notification_category}')
         notification_category = sorted(notification_category.items(), key=lambda x:self.notification_category_name[x[0]])
         for notification in notification_category:
-        # for category_name in notification_category:
             key = notification[0]
             value = notification[1]
             if key in self.notification_category_name:
@@ -113,7 +112,7 @@ class ShortPolling():
                         value['train_id_dicts']
                     )
                 elif key == 'unread_output':
-                    self.__default_trainMainWorkflow.train_output(
+                    return self.__default_trainMainWorkflow.train_output(
                         value['train_id_dicts']
                     )
                 elif key == 'unread_train_stop':
@@ -134,9 +133,82 @@ class ShortPolling():
                     pass
             
                 # print("category_name: ", category_name, notification_category[category_name])
+        return None
+
+    def start_cooperation(self):
+        '''
+        infinite loop for sponsor training and
+        sponsor testing
+
+        Returns
+        -------
+        None
+        '''
+        while True:
+            # get basic information
+            user_id = self.__PI_instance.user_id
+            token = self.__Network_instance.token
+            if not token:
+                print('Please Login First')
+                return
+
+            short_polling_res = self.__Network_instance.get_request_chaining(
+                url_prefix='main_flow',
+                url_root='get_notifications',
+                url_suffix=user_id,
+                status_code=200,
+            )
+            # print(f'short_polling_res: {short_polling_res}')
+            if 'new_token' in short_polling_res and short_polling_res['new_token'] != None:
+                new_token = short_polling_res['new_token']
+                self.__Authentication_instance.process_token(new_token)
+
+            notification_category = short_polling_res['notification_result']['category']
+            distribute_res = self.__distribute_notification(notification_category)
+            # 对sponsor来说, 如果是train或者test结束了，中断while loop
+            if distribute_res == 'train task finished':
+                print('Training task finished')
+                return distribute_res
+            elif distribute_res == 'test task finished':
+                print('Testing task finished')
+                return distribute_res
+
+            # sleep 10 seconds
+            # time.sleep(2)
+
+    # def start_cooperation(self):
+    #     '''
+    #     Start short polling
+    #     Set indicator to True
+
+    #     Returns
+    #     -------
+    #     None
+    #     '''
+    #     # print("self.shortpolling['running']", self.shortpolling['running'])
+    #     if self.shortpolling['running'] == False:
+    #         self.shortpolling['running'] = True
+    #         self.__polling()
+    #         print('cooperation starts')
+    #     else:
+    #         print('short polling has already started')
+    #     return 
+
+    def end_cooperation(self):
+        '''
+        End short polling
+        Set indicator to False
+
+        Returns
+        -------
+        None
+        '''
+        self.shortpolling['running'] = False
+        print('cooperation ends')
         return
 
-    def __polling(self):
+
+    def __unittest_polling(self):
         '''
         Short Polling for new Notifications
 
@@ -170,7 +242,7 @@ class ShortPolling():
         notification_category = short_polling_res['notification_result']['category']
         
         # for unittest, comment back
-        # return notification_category
+        return notification_category
         
         self.__distribute_notification(notification_category)
 
@@ -178,35 +250,3 @@ class ShortPolling():
         timer = threading.Timer(10, self.__polling)
         timer.start()
         return
-
-    def start_cooperation(self):
-        '''
-        Start short polling
-        Set indicator to True
-
-        Returns
-        -------
-        None
-        '''
-        # print("self.shortpolling['running']", self.shortpolling['running'])
-        if self.shortpolling['running'] == False:
-            self.shortpolling['running'] = True
-            self.__polling()
-            print('cooperation starts')
-        else:
-            print('short polling has already started')
-        return 
-
-    def end_cooperation(self):
-        '''
-        End short polling
-        Set indicator to False
-
-        Returns
-        -------
-        None
-        '''
-        self.shortpolling['running'] = False
-        print('cooperation ends')
-        return
-

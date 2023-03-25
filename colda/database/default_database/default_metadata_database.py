@@ -2,15 +2,15 @@ from __future__ import annotations
 
 import collections
 
-from colda.database.base import BaseDatabase
+from database.base import BaseDatabase
 
-from colda.database.abstract_database import AbstractMetadataDatabase
+from database.abstract_database import AbstractMetadataDatabase
 
-from colda.utils.api import DictHelper
+from utils.api import DictHelper
 
 from typing import Any
 
-from colda._typing import (
+from _typing import (
     Mode,
     Task_Mode,
     Model_Name,

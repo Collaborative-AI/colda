@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from colda.workflow.base import BaseWorkflow
+from workflow.base import BaseWorkflow
 
-from colda.algorithm.strategy.api import TrainAlgorithm
+from algorithm.strategy.api import TrainAlgorithm
 
 from typing import (
     final,
@@ -27,7 +27,7 @@ class TrainBaseWorkflow(BaseWorkflow):
     _train_local_model
     '''
 
-    __TrainAlgorithm_instance = TrainAlgorithm.get_instance()
+    # __TrainAlgorithm_instance = TrainAlgorithm.get_instance()
     
 
     @final
@@ -47,7 +47,7 @@ class TrainBaseWorkflow(BaseWorkflow):
         -------
         None
         '''
-        return cls.__TrainAlgorithm_instance.make_residual(**kwargs)
+        return TrainAlgorithm.get_instance().make_residual(**kwargs)
 
     @final
     @classmethod
@@ -67,7 +67,7 @@ class TrainBaseWorkflow(BaseWorkflow):
         -------
         None
         '''
-        return cls.__TrainAlgorithm_instance.make_result(**kwargs)
+        return TrainAlgorithm.get_instance().make_result(**kwargs)
 
     @final
     @classmethod
@@ -85,7 +85,7 @@ class TrainBaseWorkflow(BaseWorkflow):
         -------
         None
         '''
-        return cls.__TrainAlgorithm_instance.make_train(**kwargs)
+        return TrainAlgorithm.get_instance().make_train(**kwargs)
 
     @final
     @classmethod
@@ -103,6 +103,6 @@ class TrainBaseWorkflow(BaseWorkflow):
         -------
         None
         '''
-        return cls.__TrainAlgorithm_instance.make_train_local(**kwargs)
+        return TrainAlgorithm.get_instance().make_train_local(**kwargs)
 
 

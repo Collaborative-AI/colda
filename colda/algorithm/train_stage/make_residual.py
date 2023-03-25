@@ -4,13 +4,13 @@ from asyncio import Task
 import copy
 import numpy as np
 
-from colda.algorithm.base import BaseAlgorithm
+from algorithm.base import BaseAlgorithm
 
-from colda.algorithm.utils import makedir_exist_ok, log, parse_idx
+from algorithm.utils import makedir_exist_ok, log, parse_idx
 
-from colda.algorithm.metric.metrics import Metric
+from algorithm.metric.metrics import Metric
 
-from colda._typing import Task_Mode
+from _typing import Task_Mode
 
 from typing import (
     Any,
@@ -18,7 +18,7 @@ from typing import (
     overload,
 )
 
-from colda._typing import (
+from _typing import (
     Task_Mode,
     Model_Name,
     Metric_Name

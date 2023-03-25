@@ -1,6 +1,5 @@
 import pytest
-from colda.tests.test_database.conftest import DatabaseOperator_instance
-
+from .conftest import DatabaseOperator_instance
 
 class TestDefaultMetadataDatabase:
 

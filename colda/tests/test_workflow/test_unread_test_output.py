@@ -6,16 +6,16 @@ Test suite for the curves.py module that handles everything to do with
 supply and demand curves.
 """
 import pytest
-from colda.tests.test_workflow import testing_data
+from . import (
+    testing_data,
+    Regression_1s_1a
+)
 
-from colda.tests.test_workflow.Train_helper_function import Train_helper_function
-from colda.tests.test_workflow.Test_helper_function import Test_helper_function
+from .Train_helper_function import Train_helper_function
+from .Test_helper_function import Test_helper_function
 
-from colda.workflow.base import BaseWorkflow
+from algorithm.api import get_all_algo_logs
 
-from colda.tests.test_workflow import Regression_1s_1a
-
-from colda import get_all_algo_logs
 
 class Test_unread_test_output(Train_helper_function, Test_helper_function):
 
@@ -24,7 +24,7 @@ class Test_unread_test_output(Train_helper_function, Test_helper_function):
         ])
         def test_unread_test_output(self, unittest_strategy):
             
-            BaseWorkflow._max_round = 2
+            testing_data['max_round'] = 2
             super().first_user_login()
             # super().clean_db()
             train_id = super().find_assistor()

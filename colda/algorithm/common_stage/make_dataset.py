@@ -5,9 +5,9 @@ import shutil
 import numpy as np
 import pandas as pd
 
-from colda.algorithm.base import BaseAlgorithm
+from algorithm.base import BaseAlgorithm
 
-from colda.algorithm.utils import (
+from algorithm.utils import (
     makedir_exist_ok, 
     save,
 )
@@ -67,7 +67,7 @@ class MakeDataset(BaseAlgorithm):
             test_match_size = int(len(test_dataset) * match_rate_i)
             train_random_i = np.random.choice(np.arange(len(train_dataset)), train_match_size, replace=False)
             test_random_i = np.random.choice(np.arange(len(test_dataset)), test_match_size, replace=False)
-
+            print("!!!!!!!!!!")
             # Train
             train_id_i = train_id.iloc[train_random_i]
             train_data_i = train_data.iloc[train_random_i, feature_split[i]]
@@ -285,9 +285,9 @@ class MakeDataset(BaseAlgorithm):
             from sklearn.preprocessing import StandardScaler
             train_data = train_dataset.iloc[:, 1:-1].to_numpy()
             test_data = test_dataset.iloc[:, 1:-1].to_numpy()
-            normalizer = StandardScaler().fit(train_data)
-            train_dataset.iloc[:, 1:-1] = normalizer.transform(train_data)
-            test_dataset.iloc[:, 1:-1] = normalizer.transform(test_data)
+            # normalizer = StandardScaler().fit(train_data)
+            # train_dataset.iloc[:, 1:-1] = normalizer.transform(train_data)
+            # test_dataset.iloc[:, 1:-1] = normalizer.transform(test_data)
         return train_dataset, test_dataset
 
 

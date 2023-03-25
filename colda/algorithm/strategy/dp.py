@@ -2,11 +2,11 @@ import numpy as np
 
 import copy
 
-from colda.algorithm.model.api import Model
+from algorithm.model.api import Model
 
-from colda.utils.api import Serialization
+from utils.api import Serialization
 
-from colda.utils.dtypes.api import (
+from utils.dtypes.api import (
     is_numpy,
     is_list,
     is_tuple,
@@ -16,7 +16,7 @@ from colda.utils.dtypes.api import (
     to_list
 )
 
-from colda._typing import Serializable_Datatype
+from _typing import Serializable_Datatype
 
 from typing import (
     Tuple,

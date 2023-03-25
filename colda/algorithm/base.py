@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from colda.utils.log.api import GetAlgorithmLog
+from utils.log.api import GetAlgorithmLog
 
 from typing import (
     Final,
@@ -21,8 +21,9 @@ class BaseAlgorithm:
     '''
 
     __root: Final[str] = './algorithm_log'
-    __log = GetAlgorithmLog.get_instance()
-
+    # __log = GetAlgorithmLog.get_instance()
+    
+    # print('BaseAlgorithm初始化algo log', id(__log))
     # TODO: implement methods
     @final
     def placeholder(self):
@@ -52,7 +53,8 @@ class BaseAlgorithm:
         -------
         list
         '''
-        cls.__log.store_log(
+        print('algo log address', id(GetAlgorithmLog.get_instance()))
+        GetAlgorithmLog.get_instance().store_log(
             user_id=user_id,
             task_id=task_id,
             msgs=msgs,

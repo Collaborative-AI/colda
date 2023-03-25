@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typeguard import typechecked
+# from typeguard import typechecked
 
 
 def handle_base64_padding(

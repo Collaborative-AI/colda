@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from colda.utils.log.algorithm_log import AlgorithmLog
+from utils.log.algorithm_log import AlgorithmLog
 
-from colda.utils.log.workflow_log import WorkflowLog
+from utils.log.workflow_log import WorkflowLog
 
 from typeguard import typechecked
 

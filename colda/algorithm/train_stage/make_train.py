@@ -1,17 +1,17 @@
 from __future__ import annotations
-
+import time
 import os
 import numpy as np
 
-from colda.algorithm.base import BaseAlgorithm
+from algorithm.base import BaseAlgorithm
 
-from colda.algorithm.utils import parse_idx
+from algorithm.utils import parse_idx
 
-from colda.algorithm.model.api import Model
+from algorithm.model.api import Model
 
 from typing import Any
 
-from colda._typing import (
+from _typing import (
     Role,
     Task_Mode,
     Model_Name,
@@ -19,6 +19,8 @@ from colda._typing import (
 )
 
 from typeguard import typechecked
+# make the type same I/O
+
 
 
 class MakeTrain(BaseAlgorithm):
@@ -42,7 +44,6 @@ class MakeTrain(BaseAlgorithm):
         role: Role,
         matched_identifier: Any = None,
     ) -> tuple[Any, np.ndarray]:
-        
         dataset = np.genfromtxt(dataset_path, delimiter=',', skip_header=skip_header)
         data_idx = parse_idx(data_idx)
         data = dataset[:, data_idx]
@@ -51,10 +52,13 @@ class MakeTrain(BaseAlgorithm):
 
         # assostor
         if role == 'assistor':
+            print("current role is assistor")
+            print(data.shape)
             data = data[matched_identifier]
         model = Model(task_mode, model_name)
         
         model.fit(data, cur_round_residual)
+        
         trained_output = model.predict(data)
         
         return model, trained_output

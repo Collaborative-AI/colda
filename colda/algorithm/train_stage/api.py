@@ -1,7 +1,7 @@
-from colda.algorithm.train_stage.make_residual import MakeResidual
-from colda.algorithm.train_stage.make_result import MakeResult
-from colda.algorithm.train_stage.make_train_local import MakeTrainLocal
-from colda.algorithm.train_stage.make_train import MakeTrain
+from algorithm.train_stage.make_residual import MakeResidual
+from algorithm.train_stage.make_result import MakeResult
+from algorithm.train_stage.make_train_local import MakeTrainLocal
+from algorithm.train_stage.make_train import MakeTrain
 
 
 __all__ = [

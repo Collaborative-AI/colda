@@ -16,26 +16,26 @@ from typing import (
 )
 from copy import deepcopy
 
-from colda.tests.test_workflow import testing_data
-from colda.tests.test_workflow import _default_trainMainWorkflow
-from colda.tests.test_workflow import _default_unittest_strategy
-from colda.tests.test_workflow import _default_authentication
-from colda.tests.test_workflow import _default_ShortPolling
-from colda.tests.test_workflow import _default_PI
-from colda.tests.test_workflow import _default_Network
-from colda.algorithm.api import (
+from .__init__ import testing_data
+from .__init__ import coldaInstance
+from .__init__ import _default_unittest_strategy
+
+# from tests.test_workflow import _default_trainMainWorkflow
+# from tests.test_workflow import _default_authentication
+# from tests.test_workflow import _default_shortPolling
+# from tests.test_workflow import _default_PI
+# from tests.test_workflow import _default_network
+from algorithm.api import (
     get_algo_log,
     get_all_algo_logs
 )
-from colda import set_default_info
-from colda.workflow.base import BaseWorkflow
-from colda.short_polling.api import ShortPolling
+
 
 
 class Train_helper_function:
 
     def clean_db(self):
-        _default_Network.get_request_chaining(
+        coldaInstance._default_network.get_request_chaining(
             url_prefix='helper_api',
             url_root='delete_unittest_db',
             url_suffix=None,
@@ -48,12 +48,12 @@ class Train_helper_function:
             'password': testing_data['first_user_password'],
             'email': testing_data['first_user_email']
         }
-        _default_Network.post_request_chaining(
+        coldaInstance._default_network.post_request_chaining(
             data=data,
             url_prefix='helper_api',
             url_root='create_unittest_user',
         )
-        _default_authentication.user_login(
+        coldaInstance._default_authentication.user_login(
             username=testing_data['first_user_username'], 
             password=testing_data['first_user_password']
         )
@@ -65,22 +65,22 @@ class Train_helper_function:
             'password': testing_data['second_user_password'],
             'email': testing_data['second_user_email']
         }
-        _default_Network.post_request_chaining(
+        coldaInstance._default_network.post_request_chaining(
             data=data,
             url_prefix='helper_api',
             url_root='create_unittest_user',
         )
-        _default_authentication.user_login(
+        coldaInstance._default_authentication.user_login(
             username=testing_data['second_user_username'], 
             password=testing_data['second_user_password']
         )
         return
 
     def user_logout(self):
-        _default_authentication.user_logout()
+        coldaInstance._default_authentication.user_logout()
         
     def set_default_information(self):
-        set_default_info(
+        coldaInstance.set_default_info(
             default_mode=testing_data['default_mode'], 
             default_task_mode=testing_data['default_task_mode'], 
             default_model_name=testing_data['default_model_name'], 
@@ -91,16 +91,16 @@ class Train_helper_function:
         return
 
     def get_user_id(self):
-        return _default_PI.user_id
+        return coldaInstance._default_PI.user_id
 
     def get_notification(self):
-        _default_ShortPolling.shortpolling['running'] = True
-        notification = _default_ShortPolling._ShortPolling__polling()
+        coldaInstance._default_shortPolling.shortpolling['running'] = True
+        notification = coldaInstance._default_shortPolling._ShortPolling__unittest_polling()
         print(f'notification: {notification}')
         return notification
 
     def find_assistor(self):
-        find_assistor_res = _default_trainMainWorkflow.find_assistor(
+        find_assistor_res = coldaInstance._default_trainMainWorkflow.find_assistor(
             max_round=testing_data['max_round'], 
             assistors=testing_data['assistors'], 
             train_file_path=testing_data['train_file_path'],
@@ -116,19 +116,19 @@ class Train_helper_function:
         return find_assistor_res
         
     def train_assistor_request(self, notification_category):
-        _default_trainMainWorkflow.train_assistor_request(notification_category['unread_request']['train_id_dicts'])
+        coldaInstance._default_trainMainWorkflow.train_assistor_request(notification_category['unread_request']['train_id_dicts'])
 
     def train_sponsor_match_identifier(self, notification_category):
-        _default_trainMainWorkflow.train_match_identifier(notification_category['unread_match_identifier']['train_id_dicts'])   
+        coldaInstance._default_trainMainWorkflow.train_match_identifier(notification_category['unread_match_identifier']['train_id_dicts'])   
     
     def train_assistor_match_identifier(self, notification_category):
-        _default_trainMainWorkflow.train_match_identifier(notification_category['unread_match_identifier']['train_id_dicts'])   
+        coldaInstance._default_trainMainWorkflow.train_match_identifier(notification_category['unread_match_identifier']['train_id_dicts'])   
     
     def train_sponsor_situation(self, notification_category):
-        _default_trainMainWorkflow.train_situation(notification_category['unread_situation']['train_id_dicts'])   
+        coldaInstance._default_trainMainWorkflow.train_situation(notification_category['unread_situation']['train_id_dicts'])   
     
     def train_assistor_situation(self, notification_category):
-        _default_trainMainWorkflow.train_situation(notification_category['unread_situation']['train_id_dicts'])   
+        coldaInstance._default_trainMainWorkflow.train_situation(notification_category['unread_situation']['train_id_dicts'])   
     
     def _test_algorithm_result(
         self,
@@ -137,7 +137,7 @@ class Train_helper_function:
         log_category: str,
         test_func,
     ):
-        
+    
         data = get_algo_log(
             user_id=user_id,
             task_id=task_id,
@@ -156,7 +156,7 @@ class Train_helper_function:
     ) -> None:
 
         _default_unittest_strategy.unittest_strategy = unittest_strategy
-        _default_trainMainWorkflow.train_output(notification_category['unread_output']['train_id_dicts'])   
+        coldaInstance._default_trainMainWorkflow.train_output(notification_category['unread_output']['train_id_dicts'])   
         
         res = get_all_algo_logs()
         print('&&&', res)

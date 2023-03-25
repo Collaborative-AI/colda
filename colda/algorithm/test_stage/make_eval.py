@@ -6,18 +6,18 @@ import copy
 import json
 import collections
 
-from colda.algorithm.base import BaseAlgorithm
+from algorithm.base import BaseAlgorithm
 
-from colda.algorithm.utils import (
+from algorithm.utils import (
     log, 
     parse_idx
 )
 
-from colda.algorithm.metric.api import Metric
+from algorithm.metric.api import Metric
 
 from typing import Any
 
-from colda._typing import (
+from _typing import (
     Role,
     Task_Mode,
     Model_Name,

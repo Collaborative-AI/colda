@@ -1,7 +1,7 @@
 import pytest
-from colda.tests.test_database.conftest import DatabaseOperator_instance
+from .conftest import DatabaseOperator_instance
 
-from colda.error import DuplicateKeyError
+from error import DuplicateKeyError
 
 
 class TestTestAssistorMetadataDatabase:

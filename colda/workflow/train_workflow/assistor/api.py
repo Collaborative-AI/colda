@@ -1,6 +1,6 @@
-from colda.workflow.train_workflow.assistor.request import TrainAssistorRequest
-from colda.workflow.train_workflow.assistor.match_identifier import TrainAssistorMatchIdentifier
-from colda.workflow.train_workflow.assistor.situation import TrainAssistorSituation
+from workflow.train_workflow.assistor.request import TrainAssistorRequest
+from workflow.train_workflow.assistor.match_identifier import TrainAssistorMatchIdentifier
+from workflow.train_workflow.assistor.situation import TrainAssistorSituation
 
 
 __all__ = [

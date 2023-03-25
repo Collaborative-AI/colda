@@ -2,17 +2,17 @@ from __future__ import annotations
 
 import copy
 import collections
-from colda.utils.log.base import BaseLog
+from utils.log.base import BaseLog
 
-from colda.utils.log.abstract_log import AbstractLog
+from utils.log.abstract_log import AbstractLog
 
-from colda.utils.dict_helper import DictHelper
+from utils.dict_helper import DictHelper
 
 from typing import (
     Union
 )
 
-from colda.utils.dtypes.api import (
+from utils.dtypes.api import (
     is_list,
     is_dict_like
 )
@@ -84,14 +84,14 @@ class AlgorithmLog(BaseLog, AbstractLog):
             root_key=root_key,
             supplement_key=log_category
         )
-        
+        print('dict_supplement_key', key)
         DictHelper.store_value(
             key=key,
             value=msgs,
             container=self.__algorithm_log,
             store_type='append'
         )
-
+        print(self.get_all_logs())
         return 
 
     def get_log(
@@ -123,7 +123,7 @@ class AlgorithmLog(BaseLog, AbstractLog):
             root_key=root_key,
             supplement_key=log_category
         )
-        
+        print('get generate key', key, self.__algorithm_log, self.get_all_logs())
         log = DictHelper.get_value(
             key=key,
             container=self.__algorithm_log,

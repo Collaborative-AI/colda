@@ -1,7 +1,3 @@
 import pytest
 
-from colda.tests.test_workflow import Regression_1s_1a
-
-# @pytest.fixture
-# def Regression_1s_1a_strategy():
-#     return Regression_1s_1a
+from .__init__ import Regression_1s_1a

@@ -3,11 +3,11 @@ from __future__ import annotations
 import time
 import requests
 
-from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
+from workflow.train_workflow.train_base import TrainBaseWorkflow
 
-from colda.workflow.utils import obtain_notification_information
+from workflow.utils import obtain_notification_information
 
-from colda.pi.api import get_user_id
+from pi.api import get_user_id
 
 from typing import Any
 

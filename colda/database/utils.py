@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from colda.pi.api import PI
+from pi.api import PI
 
 from typing import Tuple
 from typeguard import typechecked

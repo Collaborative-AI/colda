@@ -3,9 +3,9 @@ import pytest
 import numpy as np
 import pandas as pd
 
-from colda.utils.dtypes.api import to_serializable
+from utils.dtypes.api import to_serializable
 
-from colda.error import DataNotSerializable
+from error import DataNotSerializable
 
 class TestConvert:
 

@@ -8,14 +8,14 @@ from typing import Any
 
 from collections.abc import Iterable
 
-from colda.utils.dtypes.inference import (
+from utils.dtypes.inference import (
     is_numpy,
     is_set
 )
 
-from colda._typing import Serializable_Datatype
+from _typing import Serializable_Datatype
 
-from colda.error import DataNotSerializable
+from error import DataNotSerializable
 
 
 def to_list(data: Iterable) -> list:

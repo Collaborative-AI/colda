@@ -1,4 +1,4 @@
-from colda.short_polling.polling import ShortPolling
+from short_polling.polling import ShortPolling
 
 
 __all__ = [

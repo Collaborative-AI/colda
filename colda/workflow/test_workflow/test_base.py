@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from colda.workflow.base import BaseWorkflow
+from workflow.base import BaseWorkflow
 
-from colda.algorithm.strategy import TestAlgorithm
+from algorithm.strategy import TestAlgorithm
 
 from typing import (
     final
@@ -24,7 +24,7 @@ class TestBaseWorkflow(BaseWorkflow):
     _test_local_model
     '''
 
-    __TestAlgorithm_instance = TestAlgorithm.get_instance()
+    # __TestAlgorithm_instance = TestAlgorithm.get_instance()
 
     @final
     @classmethod
@@ -42,7 +42,7 @@ class TestBaseWorkflow(BaseWorkflow):
         -------
         None
         '''
-        return cls.__TestAlgorithm_instance.make_eval(**kwargs)
+        return TestAlgorithm.get_instance().make_eval(**kwargs)
 
     @final
     @classmethod
@@ -60,7 +60,7 @@ class TestBaseWorkflow(BaseWorkflow):
         -------
         None
         '''
-        return cls.__TestAlgorithm_instance.make_test(**kwargs)
+        return TestAlgorithm.get_instance().make_test(**kwargs)
 
     @final
     @classmethod
@@ -78,5 +78,5 @@ class TestBaseWorkflow(BaseWorkflow):
         -------
         None
         '''
-        return cls.__TestAlgorithm_instance.make_test_local(**kwargs)
+        return TestAlgorithm.get_instance().make_test_local(**kwargs)
 

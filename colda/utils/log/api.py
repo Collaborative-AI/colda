@@ -1,4 +1,4 @@
-from colda.utils.log.log_factory import (
+from utils.log.log_factory import (
     GetAlgorithmLog,
     GetWorkflowLog
 )

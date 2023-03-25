@@ -1,4 +1,4 @@
-from colda.database.strategy.database_strategy import DatabaseOperator
+from database.strategy.database_strategy import DatabaseOperator
 
 
 __all__ = [

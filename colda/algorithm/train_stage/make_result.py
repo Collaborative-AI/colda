@@ -4,11 +4,11 @@ import numpy as np
 from scipy.optimize import minimize
 import os
 import copy
-from colda.algorithm.base import BaseAlgorithm
-from colda.algorithm.utils import log, parse_idx
-from colda.algorithm.metric.metrics import Metric
+from algorithm.base import BaseAlgorithm
+from algorithm.utils import log, parse_idx
+from algorithm.metric.metrics import Metric
 
-from colda._typing import (
+from _typing import (
     Task_Mode,
     Model_Name,
     Metric_Name
@@ -52,6 +52,7 @@ class MakeResult(BaseAlgorithm):
         cooperative_model_output = cooperative_model_output.reshape(
             cooperative_model_output.shape[0], -1
         )
+        print('------------daozhelile')
         super()._store_log(
             user_id=user_id,
             task_id=train_id,

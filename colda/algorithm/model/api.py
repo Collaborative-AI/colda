@@ -1,4 +1,4 @@
-from colda.algorithm.model.models import Model
+from algorithm.model.models import Model
 
 
 __all__ = [

@@ -1,7 +1,7 @@
 import pytest
-from colda.authentication.api import Authentication
+from authentication.api import Authentication
 
-from colda.network.api import Network
+from network.api import Network
 
 @pytest.fixture
 def Network_instance():

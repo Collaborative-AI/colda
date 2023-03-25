@@ -1,4 +1,4 @@
-from colda.algorithm.strategy.custom.custom_factory import (
+from algorithm.strategy.custom.custom_factory import (
     GetTrainFixedParameter,
     GetTrainOptimizedParameter,
     GetTrainOwnFunction,

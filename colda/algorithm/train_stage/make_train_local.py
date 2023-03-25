@@ -1,22 +1,21 @@
 from __future__ import annotations
 
 import os
-import colda
 import numpy as np
 
-from colda.algorithm.base import BaseAlgorithm
+from algorithm.base import BaseAlgorithm
 
-from colda.algorithm.utils import (
+from algorithm.utils import (
     save, 
     log, 
     parse_idx
 )
 
-from colda.algorithm.model.api import Model
+from algorithm.model.api import Model
 
-from colda.algorithm.metric.metrics import Metric
+from algorithm.metric.metrics import Metric
 
-from colda._typing import (
+from _typing import (
     Task_Mode,
     Model_Name,
     Metric_Name

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import final
 
-from colda.algorithm.common_stage.api import (
+from algorithm.common_stage.api import (
     MakeDataset,
     MakeHash,
     MakeMatchIdx,
@@ -10,11 +10,11 @@ from colda.algorithm.common_stage.api import (
 
 from typing import Callable
 
-from colda.algorithm.strategy.utils import algorithm_process
+from algorithm.strategy.utils import algorithm_process
 
 from typeguard import typechecked
 
-from colda._typing import Serializable_Datatype
+from _typing import Serializable_Datatype
 
 
 #@typechecked

@@ -3,11 +3,11 @@ from cgi import test
 
 import collections
 
-from colda.workflow.test_workflow.test_base import TestBaseWorkflow
+from workflow.test_workflow.test_base import TestBaseWorkflow
 
-from colda.pi.api import get_user_id
+from pi.api import get_user_id
 
-from colda.workflow.utils import (
+from workflow.utils import (
     obtain_notification_information
 )
 

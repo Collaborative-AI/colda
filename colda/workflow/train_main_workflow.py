@@ -2,37 +2,37 @@ from __future__ import annotations
 
 import warnings
 
-from colda.workflow.abstract_workflow import AbstractTrainMainWorkflow
+from workflow.abstract_workflow import AbstractTrainMainWorkflow
 
-from colda.workflow.utils import (
+from workflow.utils import (
     obtain_notification_information,
     CheckSponsor
 )
 
-from colda.workflow.train_workflow.sponsor.api import (
+from workflow.train_workflow.sponsor.api import (
     TrainSponsorFindAssistor,
     TrainSponsorMatchIdentifier,
     TrainSponsorSituation,
     TrainSponsorOutput
 )
 
-from colda.workflow.train_workflow.assistor.api import (
+from workflow.train_workflow.assistor.api import (
     TrainAssistorRequest,
     TrainAssistorMatchIdentifier,
     TrainAssistorSituation
 )
 
-from colda.utils.api import Constant
+from utils.api import Constant
 
-from colda._typing import (
+from _typing import (
     Task_Mode,
     Model_Name,
     Metric_Name
 )
 
-from colda.error import DataOutofRangeWarning
+from error import DataOutofRangeWarning
 
-from colda.workflow.utils import (
+from workflow.utils import (
     is_max_round_valid
 )
 
@@ -332,11 +332,10 @@ class TrainMainWorkflow(AbstractTrainMainWorkflow):
         None
         '''
         for train_id, train_id_dict in train_id_dicts.items():
-            TrainSponsorOutput.train_sponsor_output(
+            return TrainSponsorOutput.train_sponsor_output(
                 train_id=train_id,
                 train_id_dict=train_id_dict
             )
-        return
 
     @classmethod
     def stop_train(cls, unread_train_stop_notification: dict):

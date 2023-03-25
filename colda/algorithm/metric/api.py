@@ -1,4 +1,4 @@
-from colda.algorithm.metric.metrics import Metric
+from algorithm.metric.metrics import Metric
 
 
 __all__ = [

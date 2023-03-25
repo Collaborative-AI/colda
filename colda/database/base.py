@@ -7,9 +7,9 @@ from typing import (
     Any
 )
 
-from colda.error import DictValueNotFound
+from error import DictValueNotFound
 
-from colda.utils.dtypes.api import is_numpy
+from utils.dtypes.api import is_numpy
 
 from typeguard import typechecked
 

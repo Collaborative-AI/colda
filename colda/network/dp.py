@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import json
 
-from colda.error import StatusCodeError
+from error import StatusCodeError
 
 from typing import (
     Union,
     Any
 )
 
-from colda._typing import JSONType
+from _typing import JSONType
 
 from typeguard import typechecked
 

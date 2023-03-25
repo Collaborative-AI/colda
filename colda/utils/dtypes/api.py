@@ -1,5 +1,5 @@
 
-from colda.utils.dtypes.inference import (
+from utils.dtypes.inference import (
     is_numpy,
     is_dict_like,
     is_list_like,
@@ -11,7 +11,7 @@ from colda.utils.dtypes.inference import (
     is_serializable
 )
 
-from colda.utils.dtypes.convert import (
+from utils.dtypes.convert import (
     to_list,
     to_string,
     to_tuple,

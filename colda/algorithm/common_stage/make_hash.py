@@ -4,11 +4,11 @@ import os
 import numpy as np
 import hashlib
 
-from colda.algorithm.base import BaseAlgorithm
+from algorithm.base import BaseAlgorithm
 
-from colda.algorithm.utils import parse_idx
+from algorithm.utils import parse_idx
 
-from colda._typing import Identifier_Type
+from _typing import Identifier_Type
 
 from typeguard import typechecked
 

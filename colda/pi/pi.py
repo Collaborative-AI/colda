@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import os
 
-from colda.pi.base import BasePI
+from pi.base import BasePI
 
-from colda.utils.api import (
+from utils.api import (
     del_instance,
     Constant
 )
 
-from colda._typing import Mode
+from _typing import Mode
 
 from typeguard import typechecked
 

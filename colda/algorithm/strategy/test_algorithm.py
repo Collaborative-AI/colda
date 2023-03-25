@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from colda.algorithm.strategy.base import BaseAlgorithmStrategy
+from algorithm.strategy.base import BaseAlgorithmStrategy
 
-from colda.algorithm.strategy.abstract_algorithm_strategy import AbstractTestAlgorithmStrategy
+from algorithm.strategy.abstract_algorithm_strategy import AbstractTestAlgorithmStrategy
 
-from colda.algorithm.strategy.utils import algorithm_process
+from algorithm.strategy.utils import algorithm_process
 
-from colda.algorithm.test_stage.api import MakeTestLocal
+from algorithm.test_stage.api import MakeTestLocal
 
-from colda.algorithm.strategy.custom.api import GetTestFixedParameter
+from algorithm.strategy.custom.api import GetTestFixedParameter
 
 from typeguard import typechecked
 

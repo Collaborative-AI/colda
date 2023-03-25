@@ -4,17 +4,17 @@ import time
 import warnings
 import threading
 
-from colda.network.api import Network
+from network.api import Network
 
-from colda.pi.api import PI
+from pi.api import PI
 
-from colda.database.strategy.api import DatabaseOperator
+from database.strategy.api import DatabaseOperator
 
-from colda.algorithm.strategy.api import BaseAlgorithmStrategy
+from algorithm.strategy.api import BaseAlgorithmStrategy
 
-from colda.utils.log.api import GetWorkflowLog
+from utils.log.api import GetWorkflowLog
 
-from colda.error import (
+from error import (
     StatusCodeWarning,
     StatusCodeError,
     DictValueNotFound,
@@ -28,7 +28,7 @@ from typing import (
     Final,
 )
 
-from colda._typing import (
+from _typing import (
     Serializable_Datatype,
     Stage,
     Train_Database_Type,
@@ -62,14 +62,6 @@ class BaseWorkflow:
     _helper_api = 'helper_api'
     # _max_round: Final[int] = 3
     # _max_round = 2
-
-    __Network_instance = Network.get_instance()
-    __PI_instance = PI.get_instance()
-    
-    __DatabaseOperator_instance = DatabaseOperator.get_instance()
-    __BaseAlgorithm_instance = BaseAlgorithmStrategy()
-
-    __log = GetWorkflowLog.get_instance()
     
     @final
     @classmethod
@@ -96,7 +88,7 @@ class BaseWorkflow:
         -------
         Any
         '''
-        request_response = cls.__Network_instance.get_request_chaining(
+        request_response = Network.get_instance().get_request_chaining(
             url_prefix=url_prefix,
             url_root=url_root,
             url_suffix=url_suffix,
@@ -139,7 +131,7 @@ class BaseWorkflow:
         -------
         Any
         '''
-        request_response = cls.__Network_instance.post_request_chaining(
+        request_response = Network.get_instance().post_request_chaining(
             data=data,
             url_prefix=url_prefix,
             url_root=url_root,
@@ -177,7 +169,7 @@ class BaseWorkflow:
         -------
         None
         '''
-        cls.__log.store_log(
+        GetWorkflowLog.get_instance().store_log(
             user_id=user_id,
             task_id=task_id,
             msgs=msgs
@@ -205,11 +197,11 @@ class BaseWorkflow:
         -------
         None
         '''
-        cls.__DatabaseOperator_instance.set_database(
+        DatabaseOperator.get_instance().set_database(
             database_type=database_type
         )
 
-        cls.__DatabaseOperator_instance.store_record(
+        DatabaseOperator.get_instance().store_record(
             **kwargs
         )
         return 
@@ -235,11 +227,11 @@ class BaseWorkflow:
         -------
         None
         '''
-        cls.__DatabaseOperator_instance.set_database(
+        DatabaseOperator.get_instance().set_database(
             database_type=database_type
         )
 
-        return cls.__DatabaseOperator_instance.get_record(
+        return DatabaseOperator.get_instance().get_record(
             **kwargs
         )
 
@@ -264,7 +256,7 @@ class BaseWorkflow:
         -------
         list[Identifier_Type]
         '''
-        encrypted_identifer = cls.__BaseAlgorithm_instance.make_hash(
+        encrypted_identifer = BaseAlgorithmStrategy().make_hash(
                 dataset_path=dataset_path, 
                 id_idx=id_idx, 
                 skip_header=skip_header
@@ -290,7 +282,7 @@ class BaseWorkflow:
         -------
         list[str]
         '''
-        matched_identifier = cls.__BaseAlgorithm_instance.make_match_idx(
+        matched_identifier = BaseAlgorithmStrategy().make_match_idx(
             self_id_data=self_id_data,
             from_id_data=from_id_data
         )

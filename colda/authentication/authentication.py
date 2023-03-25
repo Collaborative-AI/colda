@@ -1,17 +1,16 @@
 from __future__ import annotations
-from ast import Del
 
 import requests
 import json
 import base64
 
-from colda.network.api import Network
-from colda.pi.api import PI
+from network.api import Network
+from pi.api import PI
 
-from colda.utils.log.algorithm_log import AlgorithmLog
-from colda.utils.log.workflow_log import WorkflowLog
+from utils.log.algorithm_log import AlgorithmLog
+from utils.log.workflow_log import WorkflowLog
 
-from colda.database.database_factory import (
+from database.database_factory import (
     TrainSponsorMetadataDatabase,
     TrainAssistorMetadataDatabase,
     TrainAlgorithmDatabase,
@@ -21,13 +20,13 @@ from colda.database.database_factory import (
     DefaultMetadataDatabase
 )
 
-from colda.authentication.utils import del_instance
+from authentication.utils import del_instance
 
-from colda.authentication.utils import handle_base64_padding
+from authentication.utils import handle_base64_padding
 
-from colda.authentication.base import AuthenticationBase
+from authentication.base import AuthenticationBase
 
-from colda.network.api import DP
+from network.api import DP
 
 from typeguard import typechecked
 

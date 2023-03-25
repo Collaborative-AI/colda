@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from colda.workflow.train_workflow.train_base import TrainBaseWorkflow
+from workflow.train_workflow.train_base import TrainBaseWorkflow
 
-from colda.workflow.utils import (
+from workflow.utils import (
     obtain_notification_information
 )
 
-from colda.pi.api import (
+from pi.api import (
     get_user_id,
     get_default_mode
 )

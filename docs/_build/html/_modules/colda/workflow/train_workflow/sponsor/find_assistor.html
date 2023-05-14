@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colda.workflow.train_workflow.sponsor.find_assistor &mdash; colda 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../../../about.html" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../README.html">Quick Setup Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+      <li>colda.workflow.train_workflow.sponsor.find_assistor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for colda.workflow.train_workflow.sponsor.find_assistor</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">colda.workflow.train_workflow.train_base</span> <span class="kn">import</span> <span class="n">TrainBaseWorkflow</span>
+
+<span class="kn">from</span> <span class="nn">colda.pi.api</span> <span class="kn">import</span> <span class="n">get_user_id</span>
+
+<span class="kn">from</span> <span class="nn">colda._typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Task_Mode</span><span class="p">,</span>
+    <span class="n">Model_Name</span><span class="p">,</span>
+    <span class="n">Metric_Name</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">typeguard</span> <span class="kn">import</span> <span class="n">typechecked</span>
+
+
+<div class="viewcode-block" id="TrainSponsorFindAssistor"><a class="viewcode-back" href="../../../../../reference/workflow.html#colda.workflow.train_workflow.sponsor.find_assistor.TrainSponsorFindAssistor">[docs]</a><span class="k">class</span> <span class="nc">TrainSponsorFindAssistor</span><span class="p">(</span><span class="n">TrainBaseWorkflow</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Handle sponsor train find assistor.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    find_assistor</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__get_train_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Get new train id for this train task.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">create_new_train_task_response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_request_chaining</span><span class="p">(</span>
+            <span class="n">task_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">url_prefix</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_url_prefix</span><span class="p">,</span>
+            <span class="n">url_root</span><span class="o">=</span><span class="s1">&#39;create_new_train_task&#39;</span><span class="p">,</span>
+            <span class="n">url_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="mi">200</span>
+        <span class="p">)</span>
+        <span class="n">new_train_id</span> <span class="o">=</span> <span class="n">create_new_train_task_response</span><span class="p">[</span><span class="s2">&quot;train_id&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">new_train_id</span>
+
+<div class="viewcode-block" id="TrainSponsorFindAssistor.find_assistor"><a class="viewcode-back" href="../../../../../reference/workflow.html#colda.workflow.train_workflow.sponsor.find_assistor.TrainSponsorFindAssistor.find_assistor">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">find_assistor</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> 
+        <span class="n">maxRound</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+        <span class="n">assistors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> 
+        <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">train_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">task_mode</span><span class="p">:</span> <span class="n">Task_Mode</span><span class="p">,</span> 
+        <span class="n">model_name</span><span class="p">:</span> <span class="n">Model_Name</span><span class="p">,</span> 
+        <span class="n">metric_name</span><span class="p">:</span> <span class="n">Metric_Name</span><span class="p">,</span> 
+        <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+        <span class="n">task_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Execute sponsor find assistor logic.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        maxRound : int</span>
+<span class="sd">        assistors : list</span>
+<span class="sd">        train_file_path : str</span>
+<span class="sd">        train_id_column : str</span>
+<span class="sd">        train_data_column : str</span>
+<span class="sd">        train_target_column : str </span>
+<span class="sd">        task_mode : Task_Mode</span>
+<span class="sd">        model_name : Model_Name</span>
+<span class="sd">        metric_name : Metric_Name</span>
+<span class="sd">        task_name : str=None</span>
+<span class="sd">        task_description : str=None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">train_id</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__get_train_id</span><span class="p">()</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="n">get_user_id</span><span class="p">()</span>
+        
+        <span class="c1"># call make_hash in Algorithm module</span>
+        <span class="n">sponsor_encrypted_identifer</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_encrypt_identifier</span><span class="p">(</span>
+            <span class="n">dataset_path</span><span class="o">=</span><span class="n">train_file_path</span><span class="p">,</span> 
+            <span class="n">id_idx</span><span class="o">=</span><span class="n">train_id_column</span><span class="p">,</span> 
+            <span class="n">skip_header</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_skip_header</span>
+        <span class="p">)</span>        
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;identifier_content&quot;</span><span class="p">:</span> <span class="n">sponsor_encrypted_identifer</span><span class="p">,</span>
+            <span class="s2">&quot;train_id&quot;</span><span class="p">:</span> <span class="n">train_id</span><span class="p">,</span>
+            <span class="s2">&quot;task_mode&quot;</span><span class="p">:</span> <span class="n">task_mode</span><span class="p">,</span>
+            <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+            <span class="s2">&quot;metric_name&quot;</span><span class="p">:</span> <span class="n">metric_name</span><span class="p">,</span>
+            <span class="s2">&quot;assistor_username_list&quot;</span><span class="p">:</span> <span class="n">assistors</span><span class="p">,</span>
+            <span class="s2">&quot;task_name&quot;</span><span class="p">:</span> <span class="n">task_name</span><span class="p">,</span>   
+            <span class="s2">&quot;task_description&quot;</span><span class="p">:</span> <span class="n">task_description</span>
+        <span class="p">}</span>
+
+        <span class="n">find_assistor_response</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_post_request_chaining</span><span class="p">(</span>
+            <span class="n">task_id</span><span class="o">=</span><span class="n">train_id</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">url_prefix</span><span class="o">=</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_url_prefix</span><span class="p">,</span>
+            <span class="n">url_root</span><span class="o">=</span><span class="s1">&#39;find_assistor&#39;</span><span class="p">,</span>
+            <span class="n">url_suffix</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="mi">200</span>
+        <span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_store_database_record</span><span class="p">(</span>
+            <span class="n">database_type</span><span class="o">=</span><span class="s1">&#39;train_sponsor_metadata&#39;</span><span class="p">,</span>
+            <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> 
+            <span class="n">train_id</span><span class="o">=</span><span class="n">train_id</span><span class="p">,</span> 
+            <span class="n">task_mode</span><span class="o">=</span><span class="n">task_mode</span><span class="p">,</span> 
+            <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> 
+            <span class="n">metric_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span>
+            <span class="n">train_file_path</span><span class="o">=</span><span class="n">train_file_path</span><span class="p">,</span> 
+            <span class="n">train_id_column</span><span class="o">=</span><span class="n">train_id_column</span><span class="p">,</span> 
+            <span class="n">train_data_column</span><span class="o">=</span><span class="n">train_data_column</span><span class="p">,</span>
+            <span class="n">train_target_column</span><span class="o">=</span><span class="n">train_target_column</span><span class="p">,</span>
+            <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span> 
+            <span class="n">task_description</span><span class="o">=</span><span class="n">task_description</span><span class="p">,</span> 
+        <span class="p">)</span>
+        
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_store_database_record</span><span class="p">(</span>
+            <span class="n">database_type</span><span class="o">=</span><span class="s1">&#39;train_algorithm&#39;</span><span class="p">,</span>
+            <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> 
+            <span class="n">train_id</span><span class="o">=</span><span class="n">train_id</span><span class="p">,</span> 
+            <span class="n">algorithm_data_name</span><span class="o">=</span><span class="s1">&#39;sponsor_encrypted_identifer&#39;</span><span class="p">,</span>
+            <span class="n">algorithm_data</span><span class="o">=</span><span class="n">sponsor_encrypted_identifer</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Record the history to log file</span>
+        <span class="n">msgs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;You are SPONSOR&quot;</span><span class="p">,</span> 
+            <span class="sa">f</span><span class="s2">&quot;Train ID: </span><span class="si">{</span><span class="n">train_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;---- Train Stage Starts&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;---- 1. Find assistor&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;1.1 Sponsor calls for help&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;1.2 Sponsor sends id file&quot;</span>
+        <span class="p">]</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_store_log</span><span class="p">(</span>
+            <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="n">task_id</span><span class="o">=</span><span class="n">train_id</span><span class="p">,</span>
+            <span class="n">msgs</span><span class="o">=</span><span class="n">msgs</span>
+        <span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training train_id: &#39;</span><span class="p">,</span> <span class="n">train_id</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sponsor: Training train_id: &#39;</span><span class="p">,</span> <span class="n">train_id</span><span class="p">,</span> <span class="s1">&#39; is running&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">train_id</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

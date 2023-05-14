@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colda.database.train_database.sponsor_metadata_database &mdash; colda 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../../about.html" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../README.html">Quick Setup Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>colda.database.train_database.sponsor_metadata_database</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for colda.database.train_database.sponsor_metadata_database</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">from</span> <span class="nn">colda.database.base</span> <span class="kn">import</span> <span class="n">BaseDatabase</span>
+
+<span class="kn">from</span> <span class="nn">colda.database.abstract_database</span> <span class="kn">import</span> <span class="n">AbstractMetadataDatabase</span>
+
+<span class="kn">from</span> <span class="nn">colda._typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Task_Mode</span><span class="p">,</span>
+    <span class="n">Model_Name</span><span class="p">,</span>
+    <span class="n">Metric_Name</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">colda.utils.api</span> <span class="kn">import</span> <span class="n">DictHelper</span>
+
+<span class="kn">from</span> <span class="nn">typeguard</span> <span class="kn">import</span> <span class="n">typechecked</span>
+
+
+<span class="c1">#@typechecked</span>
+<div class="viewcode-block" id="TrainSponsorMetadataDatabase"><a class="viewcode-back" href="../../../../reference/database.html#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase">[docs]</a><span class="k">class</span> <span class="nc">TrainSponsorMetadataDatabase</span><span class="p">(</span><span class="n">BaseDatabase</span><span class="p">,</span> <span class="n">AbstractMetadataDatabase</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Store and manage data generated from sponsor train stage.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    get_instance</span>
+<span class="sd">    get_all_records</span>
+<span class="sd">    store_record</span>
+<span class="sd">    get_record</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">__TrainSponsorMetadataDatabase_instance</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TrainSponsorMetadataDatabase.get_instance"><a class="viewcode-back" href="../../../../reference/database.html#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.get_instance">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">TrainSponsorMetadataDatabase</span><span class="p">]:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Singleton pattern. </span>
+<span class="sd">        Get instance of current class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        type[TrainSponsorMetadataDatabase]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__TrainSponsorMetadataDatabase_instance</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">__TrainSponsorMetadataDatabase_instance</span> <span class="o">=</span> <span class="n">TrainSponsorMetadataDatabase</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__TrainSponsorMetadataDatabase_instance</span></div>
+
+<div class="viewcode-block" id="TrainSponsorMetadataDatabase.get_all_records_history"><a class="viewcode-back" href="../../../../reference/database.html#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.get_all_records_history">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_records_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return all keys of records in this database</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[tuple[str, str]]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">DictHelper</span><span class="o">.</span><span class="n">get_all_key_value_pairs</span><span class="p">(</span><span class="n">container</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="TrainSponsorMetadataDatabase.store_record"><a class="viewcode-back" href="../../../../reference/database.html#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.store_record">[docs]</a>    <span class="k">def</span> <span class="nf">store_record</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> 
+        <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">train_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">task_mode</span><span class="p">:</span> <span class="n">Task_Mode</span><span class="p">,</span> 
+        <span class="n">model_name</span><span class="p">:</span> <span class="n">Model_Name</span><span class="p">,</span> 
+        <span class="n">metric_name</span><span class="p">:</span> <span class="n">Metric_Name</span><span class="p">,</span>
+        <span class="n">train_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">train_id_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">train_data_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">train_target_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">task_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+        <span class="n">task_description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Store record</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        user_id : str</span>
+<span class="sd">        train_id : str </span>
+<span class="sd">        task_mode : Task_Mode</span>
+<span class="sd">        model_name : Model_Name </span>
+<span class="sd">        metric_name : Metric_Name</span>
+<span class="sd">        train_file_path : str</span>
+<span class="sd">        train_id_column : str </span>
+<span class="sd">        train_data_column : str </span>
+<span class="sd">        train_target_column : str</span>
+<span class="sd">        task_name : str=None </span>
+<span class="sd">        task_description : str=None  </span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">root_key</span> <span class="o">=</span> <span class="n">DictHelper</span><span class="o">.</span><span class="n">generate_dict_root_key</span><span class="p">(</span>
+            <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> 
+            <span class="n">task_id</span><span class="o">=</span><span class="n">train_id</span>
+        <span class="p">)</span>  
+    
+        <span class="n">value</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;train_id&#39;</span><span class="p">:</span> <span class="n">train_id</span><span class="p">,</span>
+            <span class="s1">&#39;task_mode&#39;</span><span class="p">:</span> <span class="n">task_mode</span><span class="p">,</span>
+            <span class="s1">&#39;model_name&#39;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+            <span class="s1">&#39;metric_name&#39;</span><span class="p">:</span> <span class="n">metric_name</span><span class="p">,</span>
+            <span class="s1">&#39;train_file_path&#39;</span><span class="p">:</span> <span class="n">train_file_path</span><span class="p">,</span>
+            <span class="s1">&#39;train_id_column&#39;</span><span class="p">:</span> <span class="n">train_id_column</span><span class="p">,</span>
+            <span class="s1">&#39;train_data_column&#39;</span><span class="p">:</span> <span class="n">train_data_column</span><span class="p">,</span>
+            <span class="s1">&#39;train_target_column&#39;</span><span class="p">:</span> <span class="n">train_target_column</span><span class="p">,</span>
+            <span class="s1">&#39;task_name&#39;</span><span class="p">:</span> <span class="n">task_name</span><span class="p">,</span>
+            <span class="s1">&#39;task_description&#39;</span><span class="p">:</span> <span class="n">task_description</span>
+        <span class="p">}</span>
+        <span class="n">DictHelper</span><span class="o">.</span><span class="n">store_value</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">root_key</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">container</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span>
+        <span class="p">)</span>
+        <span class="k">return</span></div>
+    
+<div class="viewcode-block" id="TrainSponsorMetadataDatabase.get_record"><a class="viewcode-back" href="../../../../reference/database.html#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.get_record">[docs]</a>    <span class="k">def</span> <span class="nf">get_record</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> 
+        <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+        <span class="n">train_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get record</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        user_id : str</span>
+<span class="sd">        train_id : str </span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">DictHelper</span><span class="o">.</span><span class="n">generate_dict_root_key</span><span class="p">(</span>
+            <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> 
+            <span class="n">task_id</span><span class="o">=</span><span class="n">train_id</span>
+        <span class="p">)</span>  
+
+        <span class="n">sponsor_metadata</span> <span class="o">=</span> <span class="n">DictHelper</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+            <span class="n">container</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__temp_database</span>
+        <span class="p">)</span>
+
+        <span class="n">train_id</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;train_id&#39;</span><span class="p">]</span>
+        <span class="n">task_mode</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;task_mode&#39;</span><span class="p">]</span>
+        <span class="n">model_name</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;model_name&#39;</span><span class="p">]</span>
+        <span class="n">metric_name</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;metric_name&#39;</span><span class="p">]</span>
+        <span class="n">train_file_path</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;train_file_path&#39;</span><span class="p">]</span>
+        <span class="n">train_id_column</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;train_id_column&#39;</span><span class="p">]</span>
+        <span class="n">train_data_column</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;train_data_column&#39;</span><span class="p">]</span>
+        <span class="n">train_target_column</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;train_target_column&#39;</span><span class="p">]</span>
+        <span class="n">task_name</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;task_name&#39;</span><span class="p">]</span>
+        <span class="n">task_description</span> <span class="o">=</span> <span class="n">sponsor_metadata</span><span class="p">[</span><span class="s1">&#39;task_description&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">train_id</span><span class="p">,</span>
+            <span class="n">task_mode</span><span class="p">,</span> 
+            <span class="n">model_name</span><span class="p">,</span> 
+            <span class="n">metric_name</span><span class="p">,</span> 
+            <span class="n">train_file_path</span><span class="p">,</span> 
+            <span class="n">train_id_column</span><span class="p">,</span> 
+            <span class="n">train_data_column</span><span class="p">,</span> 
+            <span class="n">train_target_column</span><span class="p">,</span> 
+            <span class="n">task_name</span><span class="p">,</span> 
+            <span class="n">task_description</span>
+        <span class="p">)</span></div></div>
+       
+   
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jie_Ding_Group.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

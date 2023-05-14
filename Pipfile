@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+redis = "*"
+jinja2 = "*"
+werkzeug = "*"
+flask-cors = "*"
+flask-httpauth = "*"
+flask-mail = "*"
+python-dotenv = "*"
+pymongo = {extras = ["srv"], version = "*"}
+pyjwt = "*"
+flask-pymongo = "*"
+gunicorn = "*"
+pytest = "*"
+typeguard = "*"
+
+[dev-packages]
+
+#[requires]
+#python_version = "3.8"

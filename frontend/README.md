@@ -58,7 +58,7 @@ npm run test
  - `components` folder contains reusable interface components
  - `network` folder contains request sending and interception configuration
  - `router` folder conatins routing configuration file
- - `store` folder is used store some local information
+ - `store` folder is used for storing some local information
  - `Notifications` folder contains functions that handle notifications and history
  - `Auth` folder contains functions that handle user registration and login
  - `Settings` folder contains functions that handle user customized settings

@@ -18,23 +18,64 @@ ColDA  is an open source project aimed at providing distributed machine learning
 
 The project uses [Gradient Assisted Learning](https://github.com/diaoenmao/GAL-Gradient-Assisted-Learning-for-Decentralized-Multi-Organization-Collaborations) as the fundamental algorithm for collaboratively training distributed models.
 
-## Frontend
+### Frontend
 
-- HTML
-- CSS
-- JavaScript
-- Vue.js
+Run the following command to launch the software for the first time:
 
-### Getting Started
+```bash
+sudo apt install npm
 
-To set up and run the frontend portion of the project, follow these steps:
+# update node
+sudo npm cache clean -f
+dudo npm install -g n
+sudo n stable
+PATH = "$PATH"
 
-1. Clone the repository: `git clone https://github.com/Collaborative-AI/colda.git`
-2. Navigate to the frontend directory: `cd colda/frontend`
-3. Install dependencies: `npm install`
-4. Start the development server: `npm start`
-5. Open your browser and visit `http://localhost:3000` to access the application.
+sudo snap install vue
 
+npm install
+
+npm run electron:serve
+
+./node_modules/.bin/electron-rebuild # If there is bug on windows: .\node_modules\.bin\electron-rebuild
+
+```
+
+Run the following command to launch the software after first time:
+
+```bash
+npm install
+
+npm run electron:serve
+```
+
+Run the following command to package the software:
+
+```bash
+npm install
+
+npm run electron:build
+```
+
+Run the following command to run unittest:
+
+```bash
+npm run test
+```
+
+### Instructions
+
+ - `Navbar.vue` presents the software navigation bar, and the communication between the software and the backend is mainly completed by the functions in this file
+ - `assets` folder contains image, font, css resources used in the software
+ - `components` folder contains reusable interface components
+ - `network` folder contains request sending and interception configuration
+ - `router` folder conatins routing configuration file
+ - `store` folder is used for storing some local information
+ - `Notifications` folder contains functions that handle notifications and history
+ - `Auth` folder contains functions that handle user registration and login
+ - `Settings` folder contains functions that handle user customized settings
+ - `tests` folder contains unittest function
+ 
 ## Backend
 
 - Python

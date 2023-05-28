@@ -29,8 +29,8 @@ The project uses [Gradient Assisted Learning](https://github.com/diaoenmao/GAL-G
 
 To set up and run the frontend portion of the project, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/AwesomeImageProcessing.git`
-2. Navigate to the frontend directory: `cd AwesomeImageProcessing/frontend`
+1. Clone the repository: `git clone https://github.com/Collaborative-AI/colda.git`
+2. Navigate to the frontend directory: `cd colda/frontend`
 3. Install dependencies: `npm install`
 4. Start the development server: `npm start`
 5. Open your browser and visit `http://localhost:3000` to access the application.
@@ -44,7 +44,7 @@ To set up and run the frontend portion of the project, follow these steps:
 
 To set up and run the backend portion of the project, follow these steps:
 
-1. Navigate to the backend directory: `cd AwesomeImageProcessing/backend`
+1. Navigate to the backend directory: `cd colda/backend`
 2. Create a virtual environment: `python3 -m venv env`
 3. Activate the virtual environment:
    - For macOS/Linux: `source env/bin/activate`

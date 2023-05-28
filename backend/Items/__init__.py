@@ -30,12 +30,12 @@ def create_app(config_class=None):
 def configure_app(application, config_class):
     application.config.from_object(config_class)
     
-    # 不检查路由中最后是否有斜杠/
+    # Do not check if there is a slash / at the end of the route.
     application.url_map.strict_slashes = False
 
 
 def configure_blueprints(application):
-    # 注册 blueprint
+    # register blueprint
     # from .main import main as main_blueprint
     # print("main_blueprint", main_blueprint)
     application.register_blueprint(authentication_bp)
@@ -64,13 +64,9 @@ def configure_extensions(application):
 
 def create_MongoDB_Collections():
     print('pyMongo', pyMongo, dir(pyMongo))
-    # print('db_name', pyMongo.sample_airbnb)
-    # print('db_name2', pyMongo.sample_airbnb.list_collection_names())
-    # print('pymongo2', pyMongo.mysynspot_db)
     collection_list = pyMongo.db.list_collection_names()
     print('collection_list', collection_list)
     if 'User' not in collection_list:
-        print('gggg')
         pyMongo.db.User.insert_one( { "user_id": 'placeholder' } )
         pyMongo.db.User.create_index([("user_id", 1)], unique=True)
         pyMongo.db.User.create_index([("username", 1)], unique=True)
@@ -114,7 +110,7 @@ def create_MongoDB_Collections():
         pyMongo.db.Stop.create_index([("stop_informed_user_id", 1)], unique=True)
 
     collection_list = pyMongo.db.list_collection_names()
-    print('fffff', collection_list)
+    return
     
 def configure_before_handlers(application):
     '''Configures the before request handlers'''
@@ -135,7 +131,6 @@ def configure_errorhandlers(application):
     from flask.json import jsonify
     @application.errorhandler(Exception)
     def handle_error(e):
-        print('lailelaile', str(e), type(e).__name__)
         code = 500
         if isinstance(e, HTTPException):
             code = e.code

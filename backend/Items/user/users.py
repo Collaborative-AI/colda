@@ -63,12 +63,8 @@ def create_user():
     user_document = pyMongo.db.User.find_one({'username': username})
     if user_document:
         message['username'] = 'Please use a different username.'
-    # user_document = pyMongo.db.User.find_one({'email': email})
-    # if user_document:
-    #     message['email'] = 'Please use a different email address.'
     
     validate_password_indicator, return_message = validate_password(password)
-    print('register', validate_password_indicator, return_message)
     if not validate_password_indicator:
         raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), return_message)
     
@@ -86,7 +82,6 @@ def create_user():
         'confirm_email': False,
         'participated_train_task': {},
     }
-    print('user doc is', user_document)
     pyMongo.db.User.insert_one(user_document)
 
     token = generate_confirmation_token(email)
@@ -215,7 +210,6 @@ def forgot():
     email = data['email']
 
     user_document = mongoDB.search_user_document(user_id=None, username=username, email=email, key_indicator='username')
-    print('user doc1 is', user_document)
     if not user_document:
         raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name), 'Please type in the correct username.')
     if user_document['email'] != email:
@@ -291,10 +285,8 @@ def forgot_new(token):
         return render_template('password.html', msg=msg)
 
     else:
-        print('123token', token)
         msg = 'Hello ' + user_document['username']
         confirm_url = url_for('user.forgot_new', token=token, _external=True)
-        print("/forgot/new/<token>_confirm_url", confirm_url)
         return render_template('forgot_new.html', confirm_url=confirm_url, msg=msg, token=token)
 
 @user_bp.route('/users/<string:id>', methods=['GET'])

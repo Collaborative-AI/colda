@@ -31,16 +31,12 @@ def get_user_history(id):
     if not verify_token_user_id_and_function_caller_id(user_id, user_document['user_id']):
         return error_response(403)
 
-    # print('zheli')
     page = request.args.get('page', 1, type=int)
     per_page = min(
         request.args.get(
             'per_page', current_app.config['MESSAGES_PER_PAGE'], type=int), 100)
-    print('page', page)
-    print('per_page', per_page)
 
     participated_train_task = user_document['participated_train_task']
-    # print('participated_train_taskddd', participated_train_task)
     participated_task = []
     for train_id in participated_train_task:
         train_task_document = train_task.search_train_task_document(train_id=train_id)
@@ -56,8 +52,6 @@ def get_user_history(id):
         timestamp = train_task_document['_id'].generation_time
         str_timestamp = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
         timestamp = timestamp.timestamp()
-        # print('timestamp is', str_timestamp)
-        # print('timestamp type is', type(timestamp))
         sub_task = {
             'train_id': train_id,
             'timestamp': str_timestamp,
@@ -68,13 +62,8 @@ def get_user_history(id):
             'test_name': None,
             'test_description': None,
         }
-        # print('timestamp', timestamp)
-        # if train_task_document != None:
-        #     
-        # print('current_time', timestamp, type(timestamp))
         heapq.heappush(participated_task, (-timestamp, sub_task))
 
-        # print('train_task_document', train_task_document)
         if train_task_document != None:
             test_id_of_train_id_dict = train_task_document['test_id_of_train_id_dict']
             for test_id in test_id_of_train_id_dict:
@@ -92,7 +81,6 @@ def get_user_history(id):
                 timestamp = test_task_document['_id'].generation_time
                 str_timestamp = timestamp.strftime("%m/%d/%Y, %H:%M:%S")
                 timestamp = timestamp.timestamp()
-                # print('timestamp is', str_timestamp)
                 sub_task = {
                     'train_id': train_id,
                     'timestamp': str_timestamp,
@@ -102,9 +90,7 @@ def get_user_history(id):
                     'test_id': test_id,
                     'test_name': test_name,
                     'test_description': test_description,
-                }
-                # if test_task_document != None:
-                
+                }                
                 heapq.heappush(participated_task, (-timestamp, sub_task))
     
     # sub_task with larger timestamp indicates the closer task
@@ -126,7 +112,6 @@ def get_user_history(id):
             'total_items': len(participated_sort_task_dict),
         },
     }
-    # print('list1', response)
     return jsonify(response)
 
 @helper_api_bp.route('/check_sponsor/<string:id>', methods=['POST'])

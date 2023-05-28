@@ -27,7 +27,6 @@ from typing import (
     List
 )
 
-
 @main_flow_bp.route('/create_new_train_task', methods=['GET'])
 @token_auth.login_required
 def create_new_train_task():
@@ -46,7 +45,6 @@ def create_new_train_task():
     train_id = obtain_unique_id()
 
     response = {"train_id": train_id}
-    print('response is', response)
     return jsonify(response)
 
 @main_flow_bp.route('/create_new_test_task', methods=['GET'])
@@ -93,7 +91,6 @@ def find_assistor(id):
     """
     # check the data sent by the sponsor
     data = request.get_json()
-    # print('data', data)
     if not data:
         raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name, 'You must post JSON data.'))
 
@@ -145,7 +142,6 @@ def find_assistor(id):
     # sponsor_random_id is unique in each task    
     sponsor_random_id = obtain_unique_id()
     identifier_id = obtain_unique_id()
-    print('identifier_id_1', identifier_id)
     sponsor_id = user_id
     # add new train_match document to Train_Match Table
     train_match.create_train_match_document(
@@ -155,10 +151,8 @@ def find_assistor(id):
         sponsor_random_id=sponsor_random_id, 
         identifier_id=identifier_id
     )
-    print('777777777')
     # add new train_match_identifier document to Train_Match_Identifier Table
     train_match_identifier.create_train_match_identifier_document(identifier_id=identifier_id, identifier_content=identifier_content)
-    print('88888888')
     log(generate_msg('1.2:', 'sponsor handles id data done'), user_id, train_id)
 
     # add new train_task document to Train_Task Table
@@ -181,9 +175,7 @@ def find_assistor(id):
         'participated_train_task.' + train_id + '.role': 'sponsor'
     }})
 
-    print('-----sdfasdfsafss')
     # add notifications to all assistors
-    print('assistor_id_dict', user_id, assistor_id_dict)
     for assistor_id in assistor_id_dict:
         mongoDB.update_notification_document(
             user_id=assistor_id, 
@@ -194,7 +186,6 @@ def find_assistor(id):
             cur_rounds_num=1, 
             test_indicator='train'
         )
-    print('sdfsadfasdfascvv')
     log(generate_msg('1.3:', 'sponsor adds all unread request to assistors'), user_id, train_id)
     log(generate_msg('---- sponsor find assistor done \n'), user_id, train_id)
 
@@ -271,13 +262,10 @@ def find_test_assistor(id):
     # update test_id_of_train_id_dict    
     res = train_task.update_train_task_document_test_id_of_train_id_dict(train_id=train_id, test_id=test_id)
     train_task_document = train_task.search_train_task_document(train_id=train_id)
-    print('fsdfasd', res, train_task_document)
 
     log(generate_msg('Sponsor testing stage'), user_id, train_id)
     log(generate_msg('---- find_test_assistor begins'), user_id, train_id, test_id)
     log(generate_msg('Test 1.1', 'sponsor find_assistor'), user_id, train_id, test_id)
-    
-    print("assistor_id_dict", assistor_id_dict)
 
     # sponsor_random_id is unique in each task    
     sponsor_random_id = obtain_unique_id()
@@ -327,7 +315,6 @@ def find_test_assistor(id):
             test_indicator='test',
             test_id=test_id
         )
-    print('sdfsadfasdfascvv')
     log(generate_msg('Test 1.3:', 'sponsor adds all unread request to assistors'), user_id, train_id, test_id)
     log(generate_msg('---- sponsor find_test_assistor done \n'), user_id, train_id, test_id)
 

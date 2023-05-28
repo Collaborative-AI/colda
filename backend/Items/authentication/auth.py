@@ -39,10 +39,6 @@ def get_token():
         return jsonify(msg)
     
     token = jwt_manipulation.get_jwt(g.current_user)
-    # print('token is', type(token), token)
-    # print('token is 1', token.decode("utf-8"))
-    # print('token is 2', dumps({'token': token.decode()}))
-    # print('token is 3', jsonify(dumps({'token': token.decode()})))
     if isinstance(token, str):
         response = {
             'token': token
@@ -70,7 +66,6 @@ def verify_password(username, password):
     Raises:
         KeyError - raises an exception
     """
-    print('password')
     user = pyMongo.db.User.find_one({'username': username})
     if user is None:
         raise ValueError('user cannot found')
@@ -100,9 +95,6 @@ def verify_token(token):
     Raises:
         KeyError - raises an exception
     """
-
-    # print('token is!!!!!', token)
-
     g.current_user, token_payload = jwt_manipulation.verify_jwt(token) if token else None
 
     if g.current_user:
@@ -167,17 +159,6 @@ class jwt_manipulation:
             # create time
             'iat': current_time
         }
-
-        # print('type', type(jwt))
-        # return jwt.encode(
-        #     token_payload,
-        #     current_app.config['SECRET_KEY'],
-        #     algorithm='HS256').decode('utf-8')
-        # a = jwt.encode(
-        #     token_payload,
-        #     current_app.config['SECRET_KEY'],
-        #     algorithm='HS256')
-        # print('aaaaaa', a, type(a))
 
         return jwt.encode(
             token_payload,

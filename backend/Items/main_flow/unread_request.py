@@ -63,11 +63,9 @@ def match_identifier_content(id):
 
     train_id = data.get('train_id')
     identifier_content = data.get('identifier_content')
-    # print('gdsgsdfsdf!!!!!', type(identifier_content))
     assistor_id = user_id
 
     train_match_document = train_match.search_train_match_document(train_id=train_id)
-    # print('train_match_document', train_match_document)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
     sponsor_information = train_match_document['sponsor_information']
     sponsor_random_id = sponsor_information[sponsor_id]['sponsor_id_to_random_id']
@@ -84,12 +82,7 @@ def match_identifier_content(id):
     log(generate_msg('---- unread request begins'), user_id, train_id)
     log(generate_msg('2.1:', 'assistor match_assistor_id begins'), user_id, train_id)
 
-    print(type(identifier_content), len(identifier_content), identifier_content)
-    print(type(sponsor_identifier_content), len(sponsor_identifier_content), sponsor_identifier_content)
-    a = set(identifier_content)
-    b = set(sponsor_identifier_content)
     same_identifiers = list(set(identifier_content) & set(sponsor_identifier_content))
-    # print('same_identifiers', same_identifiers)
 
     assistor_random_id = obtain_unique_id()
     identifier_id = obtain_unique_id()

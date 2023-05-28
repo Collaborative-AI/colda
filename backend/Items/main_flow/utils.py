@@ -52,5 +52,4 @@ def get_max_round():
     response = {
         'max_round': max_round
     }
-    print('responsesss', response)
     return jsonify(response)

@@ -137,7 +137,6 @@ def get_all_pending(id):
         return error_response(403)
 
     pending_document = mongoDB.search_pending_document(user_id=user_id)
-    print('pending_doc', pending_document)
 
     response = {}
     if pending_document != None:
@@ -186,7 +185,6 @@ def dalete_pending(id):
         return error_response(403)
 
     train_id = data['train_id']
-    # print('data is', data)
     if 'test_id' in data:
         test_id = data['test_id']
     test_indicator = data['test_indicator']

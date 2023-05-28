@@ -10,7 +10,6 @@ class train_match_identifier(mongoDB):
     @classmethod
     def create_train_match_identifier_document(cls, identifier_id, identifier_content):
         indicator, BSON_file = cls.if_file_size_exceed_limit(file=identifier_content)
-        print('asda', indicator)
         if not indicator:
             train_match_identifier_document = {
                 'identifier_id': identifier_id,
@@ -18,9 +17,7 @@ class train_match_identifier(mongoDB):
                 'is_large_file': False
             }
         elif indicator:
-            print('75757575')
             file_id = cls.store_large_file(BSON_file=BSON_file)
-            print('88888888')
             train_match_identifier_document = {
                 'identifier_id': identifier_id,
                 'identifier_content': file_id,

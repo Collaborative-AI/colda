@@ -54,12 +54,6 @@ class train_match():
             'assistor_terminate_id_dict': {},
         }
 
-        # print('zhezhezhezhe')
-        # try:
-        #     pyMongo.db.Train_Match.insert_one(train_match_document)
-        # except DocumentTooLarge as err:
-        #     raise DocumentTooLarge('cuolege')
-
         return pyMongo.db.Train_Match.insert_one(train_match_document)
     
     @classmethod

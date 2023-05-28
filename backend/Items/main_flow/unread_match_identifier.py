@@ -255,7 +255,6 @@ def send_situation(id):
 
     # get data from transferred message
     assistor_random_id_to_residual_dict = data.get('assistor_random_id_to_residual_dict')
-    print('residual length', len(assistor_random_id_to_residual_dict))
     train_id = data.get('train_id')
 
     # get recent round
@@ -272,7 +271,6 @@ def send_situation(id):
     elif cur_rounds_num > 1:
         log(generate_msg('5.3:', 'sponsor send_situation begins'), user_id, train_id)
 
-    print('!!$$$cur_rounds_num', cur_rounds_num)
     train_match_document = train_match.search_train_match_document(train_id=train_id)
     sponsor_id = train_match_document['sponsor_information']['sponsor_id']
     total_assistor_num = train_match_document['total_assistor_num']
@@ -293,7 +291,6 @@ def send_situation(id):
     for assistor_random_id, residual in assistor_random_id_to_residual_dict.items():
 
         assistor_id = assistor_random_id_mapping[assistor_random_id]
-        print('send situation assistor_id', assistor_id)
         if assistor_id in assistor_terminate_id_dict:
             continue
         
@@ -344,8 +341,6 @@ def send_situation(id):
     train_message_output.delete_train_message_output_document(train_id=train_id)
 
     # send unread_situation notification to all assistors in this train task 
-    # !zhuyi
-    print('###############send_situation')
     for assistor_id in running_assistor_id_dict:
         # mongoDB.update_notification_document(user_id=assistor_id, notification_name='unread_situation', 
         #                                     id=task_id, sender_random_id=sponsor_random_id, 
@@ -371,7 +366,6 @@ def send_situation(id):
     # mongoDB.update_notification_document(user_id=sponsor_id, notification_name='unread_situation', 
     #                                     id=task_id, sender_random_id=sponsor_random_id, 
     #                                     role='sponsor', cur_rounds_num=cur_rounds_num, test_indicator='train')
-    print('zheli!!!!')
     mongoDB.update_notification_document(
         user_id=sponsor_id, 
         notification_name='unread_situation', 
@@ -440,7 +434,6 @@ def send_test_output(id):
         return error_response(403)
 
     output_content = data['output_content']
-    print(f'asdasd: {output_content}')
     test_id = data['test_id']
     train_id = data['train_id']
     assistor_id = user_id
@@ -462,7 +455,6 @@ def send_test_output(id):
         assistor_id=assistor_id, 
         output_id=output_id
     )
-    # print('ooooutput content', output_content)
     test_message_output.create_test_message_output_document(
         output_id=output_id, 
         test_id=test_id, 
@@ -478,11 +470,8 @@ def send_test_output(id):
     # check how many assistors have uploaded their output 
     # if the number of output surpasses the ramin_assistor_num, we can send notifications
     test_message_document = test_message.search_test_message_document(test_id=test_id)
-    print('test_message_document', test_message_document)
     output_dict = test_message_document['rounds_' + str(cur_rounds_num)]['output_dict']
-    print('test_message_document')
     if len(output_dict) >= remain_assistor_num:
-        print('gggggggggggggg')
         mongoDB.update_notification_document(
             user_id=sponsor_id, 
             notification_name='unread_test_output', 
@@ -493,10 +482,8 @@ def send_test_output(id):
             test_indicator='test',
             test_id=test_id
         )
-
         log(generate_msg('Test 3.4:"', 'assistor uploads all test output'), user_id, train_id, test_id)
     else:
-        print('xxxxxx')
         log(generate_msg('Test 3.4:"', 'assistor send_test_output done'), user_id, train_id, test_id)
 
     log(generate_msg('----------------------- unread_test_match_identifier done\n'), user_id, train_id, test_id)

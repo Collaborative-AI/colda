@@ -36,7 +36,6 @@ def get_backend_log(id):
         KeyError - raises an exception
     """
     data = request.get_json()
-    print('data',data)
     if not data:
         raise ValueError(input_data_err_msg(sys._getframe().f_code.co_name, 'You must post JSON data.'))
         

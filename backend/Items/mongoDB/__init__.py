@@ -33,7 +33,6 @@ class mongoDB():
         if not isinstance(BSON_file, bson.BSON):
             BSON_file = cls.encode_file_to_BSON_file(BSON_file)
 
-        print('hhhh', type(BSON_file))
         fileobj = BytesIO(BSON_file)
         file_id = pyMongo.save_file(filename=filename, fileobj=fileobj, base='fs')
         return file_id
@@ -89,7 +88,6 @@ class mongoDB():
 
         if test_indicator == 'train':
             base_key = f'category.{notification_name}.train_id_dicts.{train_id}'
-            print('base_key$$$', base_key)
             return pyMongo.db.Notification.update_one({'user_id': user_id}, {'$set':{
                 f'{base_key}.sender_random_id': sender_random_id,
                 f'{base_key}.role': role,
@@ -144,7 +142,6 @@ class mongoDB():
     def update_pending_document(cls, user_id, task_id, test_indicator):
         if cls.search_pending_document(user_id) == None:
             cls.create_pending_document(user_id)
-        print('id, test_indicator', id, test_indicator)
         return pyMongo.db.Pending.update_one({'user_id': user_id}, {'$set':{
             f'task_dict.{task_id}.test_indicator': test_indicator
         }})

@@ -18,7 +18,7 @@ ColDA  is an open source project aimed at providing distributed machine learning
 
 The project uses [Gradient Assisted Learning](https://github.com/diaoenmao/GAL-Gradient-Assisted-Learning-for-Decentralized-Multi-Organization-Collaborations) as the fundamental algorithm for collaboratively training distributed models.
 
-### Frontend
+## Frontend
 
 Run the following command to launch the software for the first time:
 

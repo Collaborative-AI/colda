@@ -9,7 +9,7 @@ ColDA  is an open source project aimed at providing distributed machine learning
 
 ## Features
 
--  Algorithm
+- Algorithm
 - Frontend
 - Backend
 - Package
@@ -18,7 +18,40 @@ ColDA  is an open source project aimed at providing distributed machine learning
 
 The project uses [Gradient Assisted Learning](https://github.com/diaoenmao/GAL-Gradient-Assisted-Learning-for-Decentralized-Multi-Organization-Collaborations) as the fundamental algorithm for collaboratively training distributed models.
 
+### Get started
+- Use `data/make_dataset.py` to split csv files
+- Use command in `run_[dataset]_[number_of_sponsor]s_[number of assistor]a.sh` to run experiments
+
+### Instructions
+ - files ends with `_exe.py` are local operations
+ - `baseline.py` produces baseline results on joint datasets
+ - `make_train_local.py` produces baseline results on joint datasets
+ - `make_hash.py` uses `sha256` to encode identification for alignment
+ - `save_match_id.py` saves hash results
+ - `make_match_idx.py` match identification with hash results
+ - `make_residual.py` computes residuals
+ - `save_residual.py` saves residuals
+ - `make_train.py` locally fits the residuals
+ - `save_output.py` saves outputs of trained models
+ - `make_result.py` produces aggregated results
+ - `make_test.py` produces inference results
+ - `make_eval.py` evaluates inference results
+
+### PyInstaller
+```bash
+conda create --name myenv python --no-default-packages  
+conda activate myenv  
+pip install pyinstaller  
+pip install numpy  
+pip install -U scikit-learn  
+cd algorithm
+pyinstaller run.spec  # To one folder
+pyinstaller -F run.py  # To one folder
+```
+
 ## Frontend
+
+### Get started
 
 Run the following command to launch the software for the first time:
 

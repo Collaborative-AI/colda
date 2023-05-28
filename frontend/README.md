@@ -54,6 +54,12 @@ npm run test
 ## Instructions
 
  - `Navbar.vue` presents the software navigation bar, and the communication between the software and the backend is mainly completed by the functions in this file
+ - `assets` folder contains image, font, css resources used in the software
+ - `components` folder contains reusable interface components
+ - `network` folder contains request sending and interception configuration
+ - `router` folder conatins routing configuration file
+ - `store` folder is used store some local information
+ - `Notifications` folder contains functions that handle notifications and history
  - `Auth` folder contains functions that handle user registration and login
  - `Settings` folder contains functions that handle user customized settings
  - `tests` folder contains unittest function

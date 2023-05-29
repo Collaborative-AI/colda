@@ -131,7 +131,7 @@ data/
 .vscode/
 
 exp/
-
+/doc/
 package/
 
 .DS_Store

@@ -306,10 +306,7 @@ class Colda:
         self._default_DatabaseOperator.set_database(
             database_type='train_sponsor_metadata'
         )
-
-        print(f'----Test: {self._default_DatabaseOperator.get_all_records_history()}')
         train_task_key = list(self._default_DatabaseOperator.get_all_records_history().keys())[0]
-        print(f'----Test__1: {train_task_key}')
         train_id = train_task_key[1]
 
         self._default_testMainWorkflow.find_test_assistor(

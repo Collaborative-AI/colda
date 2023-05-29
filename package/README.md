@@ -1,86 +1,87 @@
-Documentaion:
-https://docutils-zh-cn.readthedocs.io/zh_CN/latest/user/rst/cheatsheet.html
-1. 分Module done
-2. (done) 加粗 => ** **
-3. (done )红字 => `` ``
-4. !Note => .. note::
-5. !Warning => .. warning:: 
-6. code block done :py:exc:` `
-7. 文字中分小块 
+# This Package Introduction File is Divided into Following Parts:
 
-1. 
-The 'colda' package
-This package aims to help various entities assist each other in supervised learning tasks without sharing data, models, and objective function. 
+* Use Case 
+* Package Basic Structure
+* How to Manage Package Environment
 
-Available Implementations
-At this time, the 'colda' API is available right out of the box to the general public for personal use in the following programming languages
+-------------------------------------
 
-A Quick Setup Guide
-Getting Started
+## 1. Use case
 
-1. Install the 'slants' package using pip
-# Installing package
-python -m pip install colda
+- Instruction can be found in Sponsor_User_Guide_bos.py and Assistor_User_Guide_bos.py
 
-2. Import the Model and Experiment API classes
-from colda import Package
+-------------------------------------
 
-Using the package
-1. Register
-userRegister(username, email, password)
+## 2. Package Basic Stucture
 
-Password Requirements:
-1. At least 8 characters. At most 25 characters
-2. A mixture of both uppercase and lowercase letters
-3. A mixture of letters and numbers
-4. Inclusion of at least one special character, e.g., ! @ # ? ]
+- Basic package structure can be found in [Github repository](https://github.com/AlexIoannides/py-package-template)
 
-2. Login
-userLogin(username, password)
+- Compared to the Basic package structure, ``docs/`` will contain different element. But at this point, you can follow the template.
 
-3. Set default information
-set_default_data_path(default_mode: str, default_task_mode: str, default_model_name: str, default_file_path: str=None, default_id_column: str=None, default_data_column: str=None)
+- ``py-pkg`` is the main part of the package, you can add more modules (with ``__init__.py``) in this part. For example, if you add ``temp`` module, you can import ``temp`` module by:
 
-Parameters:
-    default_mode - String. Auto or Manual
-    default_task_mode - String. Classification or Regression
-    default_model_name - String. Specific model, such as LinearRegression, DecisionTree.
-    default_file_path - String. File position of dataset using for training and testing
-    default_id_column - String. Data column of default dataset
-    default_data_column - String. Target column of default dataset
+> ```bash
+> import temp from py-pkg
+> ```
 
-3. Start Training
-callForTrain(maxRound: int, assistors: list, train_file_path: str, train_id_column: str, train_data_column: str, train_target_column: str, task_mode: str, model_name: str, metric_name: str, task_name: str=None, task_description: str=None)
+- **This package structure can be improved by learning [PyTorch](https://github.com/pytorch/pytorch) package structure.**
 
-Parameters:
-    maxRound - Integer. Maximum training round
-    assistors - List. The List of assistors' usernames
-    train_file_path - String. Input path address of training data path
-    train_id_column - String. ID column of Input File
-    train_data_column - String. Data column of Input File
-    train_target_column - String. Target column of Input File
-    task_mode - String. Classification or Regression
-    model_name - String. Specific model, such as LinearRegression, DecisionTree.
-    metric_name - String. Metric to measure the result, such as MAD, RMSE, R2.
-    task_name - None or String. The name of current task.
-    task_description - None or String. The description of current task
+- Basic Structure: 
 
-4. Start Testing
-callForTest(task_id: str, test_file_path: str, test_id_column: str, test_data_column: str, 
-            test_target_column: str, test_name: str=None, test_description: str=None):
+> ```bash
+> py-package-tempate/
+>  |-- docs/
+>  |-- |-- build_html/
+>  |-- |-- build_latex/
+>  |-- |-- source/
+>  |-- py-pkg/
+>  |-- |-- __init__.py
+>  |-- |-- __version__.py
+>  |-- |-- curves.py
+>  |-- |-- entry_points.py
+>  |-- tests/
+>  |-- |-- test_data/
+>  |-- |   |-- supply_demand_data.json
+>  |-- |   __init__.py
+>  |-- |   conftest.py
+>  |-- |   test_curves.py
+>  |-- .env
+>  |-- .gitignore
+>  |-- Pipfile
+>  |-- Pipfile.lock
+>  |-- README.md
+>  |-- setup.py
+> ```
 
-Parameters:
-    task_id - String. The task that the user wanted to test
-    test_file_path - String. Input path address of testing data path
-    test_id_column - String. ID column of Input File
-    test_data_column - String. Data column of Input File
-    test_target_column - String. Target column of Input File
-    test_name - None or String. The name of current test
-    test_description - None or String. The description of current test
+---------------------------------------------
 
+## 3. How to Manage Package Environment
 
-x. 
-pipenv install package_name
-pipenv uninstall package_name clean
+- ``pipenv`` is used to manage package. You can install ``pipenv`` by:
 
-pipenv install --dev package_name
+> ```bash
+> pip3 install pipenv
+> ```
+
+- Use ``pipenv`` to install package. The first command is to install the package for development. The second command is to install the package for production.
+
+> ```bash
+> pipenv install --dev
+> pipenv install 
+> ```
+
+- Use ``pipenv`` to uninstall package:
+
+> ```bash
+> pipenv uninstall
+> ```
+
+#### Pipenv Shells
+
+- Entering into a Pipenv-managed shell. Remeber doing this **every time** before running the project. 
+
+> ```bash
+> cd py-package-tempate
+> pipenv install
+> pipenv shell
+> ```

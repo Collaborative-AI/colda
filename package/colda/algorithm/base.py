@@ -53,7 +53,6 @@ class BaseAlgorithm:
         -------
         list
         '''
-        print('algo log address', id(GetAlgorithmLog.get_instance()))
         GetAlgorithmLog.get_instance().store_log(
             user_id=user_id,
             task_id=task_id,

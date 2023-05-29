@@ -173,8 +173,8 @@ class ShortPolling():
                 print('Testing task finished')
                 return distribute_res
 
-            # sleep 10 seconds
-            # time.sleep(2)
+            # sleep 5 seconds
+            time.sleep(5)
 
     # def start_cooperation(self):
     #     '''

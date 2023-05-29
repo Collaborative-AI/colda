@@ -117,15 +117,11 @@ def save_file(file_address, file_content):
 
     try:
         if check_json_format(file_content):
-            print('gggg')
             file_content = load_json_data(file_content, 'file_content')
 
-        print('55555')
         # assert isinstance(file_content, list) == True
         np.savetxt(file_address, file_content, delimiter=",", fmt="%s")
     except:
-        print('file_address', file_address, type(file_address))
-        print('file_content', file_content, type(file_content))
         raise RuntimeError('Python save file wrong')
     return
 

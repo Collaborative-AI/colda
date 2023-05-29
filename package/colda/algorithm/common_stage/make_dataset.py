@@ -67,7 +67,6 @@ class MakeDataset(BaseAlgorithm):
             test_match_size = int(len(test_dataset) * match_rate_i)
             train_random_i = np.random.choice(np.arange(len(train_dataset)), train_match_size, replace=False)
             test_random_i = np.random.choice(np.arange(len(test_dataset)), test_match_size, replace=False)
-            print("!!!!!!!!!!")
             # Train
             train_id_i = train_id.iloc[train_random_i]
             train_data_i = train_data.iloc[train_random_i, feature_split[i]]

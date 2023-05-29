@@ -138,7 +138,7 @@ npm run test
 
 ### Use case
 
-- Instruction can be found in Sponsor_User_Guide_bos.py and Assistor_User_Guide_bos.py
+- Examples and Instructions can be found in `examples/`
 
 ### Package Stucture
 

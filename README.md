@@ -216,11 +216,11 @@ pipenv shell
 
 ## License
 
-ColDA is licensed under the [Apache 2.0 License](LICENSE).
+ColDA is licensed under the [Apache 2.0 License](LICENSE).  
 
 ## Code of Conduct
 
-Please review and adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) when contributing to ColDA.
+Please review and adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) when contributing to ColDA.  
 
 
 

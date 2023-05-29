@@ -6,11 +6,11 @@
 # 2. Please follow the instructions in Assistor_User_Guide_bos.py first
 
 # 3. Replace the 'local_path' in train_file_path and test_file_path with your own path
-local_path = '/colda/package'
-
+# local_path = '/colda/package'
+local_path = 'Users/kewang/colda/package'
 # 4. Open a new terminal and run the following command:
 #   python Sponsor_User_Guide_bos.py
-
+import colda
 from colda import Colda, load
 
 colda_instance = Colda()
@@ -25,7 +25,7 @@ password = "Xie1@123"
 colda_instance.login(username, password)
 colda_instance.clean_db()
 
-train_file_path = f"/{local_path}/BostonHousing/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
+train_file_path = f"/{local_path}/examples/BostonHousing/data/BostonHousing_2_123_1.0/0/train/dataset.csv"
 colda_instance.fit(
     max_round=2, 
     assistors=['xie2'], 
@@ -43,7 +43,7 @@ colda_instance.fit(
 colda_instance.save()
 colda_instance = load()
 
-test_file_path = f"/{local_path}/BostonHousing/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
+test_file_path = f"/{local_path}/examples/BostonHousing/data/BostonHousing_2_123_1.0/0/test/dataset.csv"
 colda_instance.predict(
     test_file_path=test_file_path, 
     test_id_column='1', 

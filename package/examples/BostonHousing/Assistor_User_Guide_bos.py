@@ -20,7 +20,7 @@ password = "Xie2@123"
 
 colda_instance.login(username, password)
 
-default_file_path = f"/{local_path}/BostonHousing/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
+default_file_path = f"/{local_path}/examples/BostonHousing/data/BostonHousing_2_123_1.0/1/all/dataset.csv"
 colda_instance.set_default_info(
     default_mode='auto', 
     default_task_mode='regression', 

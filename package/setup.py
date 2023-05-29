@@ -10,8 +10,8 @@ with open(os.path.join(here, 'colda', '__version__.py')) as f:
     exec(f.read(), about)
 
 # load the README file and use it as the long_description for PyPI
-with open('README.md', 'r') as f:
-    readme = f.read()
+# with open('README.md', 'r') as f:
+#     readme = f.read()
 
 # package configuration - for reference see:
 # https://setuptools.readthedocs.io/en/latest/setuptools.html#id9
@@ -37,7 +37,7 @@ setup(
     #     'console_scripts': ['colda=colda.__init__'],
     # },
 
-    long_description=readme,
+    # long_description=readme,
     long_description_content_type='text/markdown',
     
     # packages=['colda'],

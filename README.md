@@ -4,10 +4,12 @@
     <br>
 <p align="center"><em><strong>Col</strong>laborative <strong>D</strong>ata  <strong>A</strong>nalysis for All</em></p>
 
+[![PyPI Version](https://img.shields.io/pypi/v/colda.svg)](https://pypi.org/project/colda)
+
 ## Introduction
 ColDA  is an open source project aimed at providing distributed machine learning tools for data analysis and machine learning based on [Assisted Learning](https://assisted-learning.org/).
 
-## Features
+### Features
 
 - Algorithm
 - Frontend

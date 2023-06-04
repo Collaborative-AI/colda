@@ -135,6 +135,7 @@ npm run test
 
 
 ## Package
+[Documentation](https://collaborative-ai.github.io/colda/)
 
 ### Getting Started
 

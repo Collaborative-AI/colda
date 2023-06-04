@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colda.utils.dtypes package &mdash; colda 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="colda.utils.log package" href="colda.utils.log.html" />
+    <link rel="prev" title="colda.utils package" href="colda.utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="colda.utils.html">colda.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="colda.utils.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.api">colda.utils.api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.constant">colda.utils.constant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.dict_helper">colda.utils.dict_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.serialization">colda.utils.serialization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.store">colda.utils.store module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.utils">colda.utils.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">colda</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="colda.html">colda package</a></li>
+          <li class="breadcrumb-item"><a href="colda.utils.html">colda.utils package</a></li>
+      <li class="breadcrumb-item active">colda.utils.dtypes package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/colda.utils.dtypes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="colda-utils-dtypes-package">
+<h1>colda.utils.dtypes package<a class="headerlink" href="#colda-utils-dtypes-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-colda.utils.dtypes.api">
+<span id="colda-utils-dtypes-api-module"></span><h2>colda.utils.dtypes.api module<a class="headerlink" href="#module-colda.utils.dtypes.api" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.is_dict_like">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">is_dict_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.is_dict_like" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is dict like</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.is_float">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">is_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.is_float" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is float</p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.is_integer">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">is_integer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.is_integer" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is integer</p>
+<section id="id3">
+<h3>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id4">
+<h3>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.is_list">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">is_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.is_list" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is list</p>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.is_list_like">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">is_list_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.is_list_like" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is list like</p>
+<section id="id7">
+<h3>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id8">
+<h3>Returns<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.is_numpy">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">is_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.is_numpy" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is numpy</p>
+<section id="id9">
+<h3>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id10">
+<h3>Returns<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.is_serializable">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">is_serializable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.is_serializable" title="Permalink to this definition"></a></dt>
+<dd><p>Check if data is serializable.</p>
+<section id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id12">
+<h3>Returns<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.is_set">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">is_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.is_set" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is set</p>
+<section id="id13">
+<h3>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id14">
+<h3>Returns<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.is_tuple">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">is_tuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.is_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is tuple</p>
+<section id="id15">
+<h3>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id16">
+<h3>Returns<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.to_list">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">to_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.to_list" title="Permalink to this definition"></a></dt>
+<dd><p>Change iterable data to list</p>
+<section id="id17">
+<h3>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id18">
+<h3>Returns<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h3>
+<p>list</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.to_serializable">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">to_serializable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.to_serializable" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Change data to serializable data:</dt><dd><ol class="arabic simple">
+<li><p>convert numpy type to list</p></li>
+<li><p>convert set to list</p></li>
+</ol>
+</dd>
+</dl>
+<section id="id19">
+<h3>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id20">
+<h3>Returns<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h3>
+<p>Serializable_Datatype</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.to_string">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.to_string" title="Permalink to this definition"></a></dt>
+<dd><p>Change data to str</p>
+<section id="id21">
+<h3>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id22">
+<h3>Returns<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h3>
+<p>str</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.api.to_tuple">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.api.</span></span><span class="sig-name descname"><span class="pre">to_tuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#colda.utils.dtypes.api.to_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>Change iterable data to tuple</p>
+<section id="id23">
+<h3>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id24">
+<h3>Returns<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h3>
+<p>tuple</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.utils.dtypes.convert">
+<span id="colda-utils-dtypes-convert-module"></span><h2>colda.utils.dtypes.convert module<a class="headerlink" href="#module-colda.utils.dtypes.convert" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.to_list">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">to_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#colda.utils.dtypes.convert.to_list" title="Permalink to this definition"></a></dt>
+<dd><p>Change iterable data to list</p>
+<section id="id25">
+<h3>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id26">
+<h3>Returns<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h3>
+<p>list</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.to_serializable">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">to_serializable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#colda.utils.dtypes.convert.to_serializable" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Change data to serializable data:</dt><dd><ol class="arabic simple">
+<li><p>convert numpy type to list</p></li>
+<li><p>convert set to list</p></li>
+</ol>
+</dd>
+</dl>
+<section id="id27">
+<h3>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id28">
+<h3>Returns<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h3>
+<p>Serializable_Datatype</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.to_string">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#colda.utils.dtypes.convert.to_string" title="Permalink to this definition"></a></dt>
+<dd><p>Change data to str</p>
+<section id="id29">
+<h3>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id30">
+<h3>Returns<a class="headerlink" href="#id30" title="Permalink to this heading"></a></h3>
+<p>str</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.convert.to_tuple">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.convert.</span></span><span class="sig-name descname"><span class="pre">to_tuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#colda.utils.dtypes.convert.to_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>Change iterable data to tuple</p>
+<section id="id31">
+<h3>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id32">
+<h3>Returns<a class="headerlink" href="#id32" title="Permalink to this heading"></a></h3>
+<p>tuple</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.utils.dtypes.inference">
+<span id="colda-utils-dtypes-inference-module"></span><h2>colda.utils.dtypes.inference module<a class="headerlink" href="#module-colda.utils.dtypes.inference" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.inference.is_dict_like">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.inference.</span></span><span class="sig-name descname"><span class="pre">is_dict_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.inference.is_dict_like" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is dict like</p>
+<section id="id33">
+<h3>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id34">
+<h3>Returns<a class="headerlink" href="#id34" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.inference.is_float">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.inference.</span></span><span class="sig-name descname"><span class="pre">is_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.inference.is_float" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is float</p>
+<section id="id35">
+<h3>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id36">
+<h3>Returns<a class="headerlink" href="#id36" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.inference.is_integer">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.inference.</span></span><span class="sig-name descname"><span class="pre">is_integer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.inference.is_integer" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is integer</p>
+<section id="id37">
+<h3>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id38">
+<h3>Returns<a class="headerlink" href="#id38" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.inference.is_list">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.inference.</span></span><span class="sig-name descname"><span class="pre">is_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.inference.is_list" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is list</p>
+<section id="id39">
+<h3>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id40">
+<h3>Returns<a class="headerlink" href="#id40" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.inference.is_list_like">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.inference.</span></span><span class="sig-name descname"><span class="pre">is_list_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.inference.is_list_like" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is list like</p>
+<section id="id41">
+<h3>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id42">
+<h3>Returns<a class="headerlink" href="#id42" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.inference.is_numpy">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.inference.</span></span><span class="sig-name descname"><span class="pre">is_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.inference.is_numpy" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is numpy</p>
+<section id="id43">
+<h3>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id44">
+<h3>Returns<a class="headerlink" href="#id44" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.inference.is_serializable">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.inference.</span></span><span class="sig-name descname"><span class="pre">is_serializable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.inference.is_serializable" title="Permalink to this definition"></a></dt>
+<dd><p>Check if data is serializable.</p>
+<section id="id45">
+<h3>Parameters<a class="headerlink" href="#id45" title="Permalink to this heading"></a></h3>
+<p>data : Any</p>
+</section>
+<section id="id46">
+<h3>Returns<a class="headerlink" href="#id46" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.inference.is_set">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.inference.</span></span><span class="sig-name descname"><span class="pre">is_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.inference.is_set" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is set</p>
+<section id="id47">
+<h3>Parameters<a class="headerlink" href="#id47" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id48">
+<h3>Returns<a class="headerlink" href="#id48" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.utils.dtypes.inference.is_tuple">
+<span class="sig-prename descclassname"><span class="pre">colda.utils.dtypes.inference.</span></span><span class="sig-name descname"><span class="pre">is_tuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#colda.utils.dtypes.inference.is_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>Check if obj is tuple</p>
+<section id="id49">
+<h3>Parameters<a class="headerlink" href="#id49" title="Permalink to this heading"></a></h3>
+<p>obj : Any</p>
+</section>
+<section id="id50">
+<h3>Returns<a class="headerlink" href="#id50" title="Permalink to this heading"></a></h3>
+<p>bool</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.utils.dtypes">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-colda.utils.dtypes" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="colda.utils.html" class="btn btn-neutral float-left" title="colda.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="colda.utils.log.html" class="btn btn-neutral float-right" title="colda.utils.log package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, ColAI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

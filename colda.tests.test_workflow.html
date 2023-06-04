@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colda.tests.test_workflow package &mdash; colda 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="colda.utils package" href="colda.utils.html" />
+    <link rel="prev" title="colda.tests.test_utils.test_serialization package" href="colda.tests.test_utils.test_serialization.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="colda.tests.html">colda.tests package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="colda.tests.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.tests.html#module-colda.tests.api">colda.tests.api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.tests.html#module-colda.tests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">colda</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="colda.html">colda package</a></li>
+          <li class="breadcrumb-item"><a href="colda.tests.html">colda.tests package</a></li>
+      <li class="breadcrumb-item active">colda.tests.test_workflow package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/colda.tests.test_workflow.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="colda-tests-test-workflow-package">
+<h1>colda.tests.test_workflow package<a class="headerlink" href="#colda-tests-test-workflow-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-colda.tests.test_workflow.Test_helper_function">
+<span id="colda-tests-test-workflow-test-helper-function-module"></span><h2>colda.tests.test_workflow.Test_helper_function module<a class="headerlink" href="#module-colda.tests.test_workflow.Test_helper_function" title="Permalink to this heading"></a></h2>
+<section id="tests-test-curves-py">
+<h3>tests.test_curves.py<a class="headerlink" href="#tests-test-curves-py" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Test_helper_function.Test_helper_function">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.Test_helper_function.</span></span><span class="sig-name descname"><span class="pre">Test_helper_function</span></span><a class="headerlink" href="#colda.tests.test_workflow.Test_helper_function.Test_helper_function" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Test_helper_function.Test_helper_function.find_test_assistor">
+<span class="sig-name descname"><span class="pre">find_test_assistor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Test_helper_function.Test_helper_function.find_test_assistor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.Train_helper_function">
+<span id="colda-tests-test-workflow-train-helper-function-module"></span><h2>colda.tests.test_workflow.Train_helper_function module<a class="headerlink" href="#module-colda.tests.test_workflow.Train_helper_function" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h3>tests.test_curves.py<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.Train_helper_function.</span></span><span class="sig-name descname"><span class="pre">Train_helper_function</span></span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.clean_db">
+<span class="sig-name descname"><span class="pre">clean_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.clean_db" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.find_assistor">
+<span class="sig-name descname"><span class="pre">find_assistor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.find_assistor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.first_user_login">
+<span class="sig-name descname"><span class="pre">first_user_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.first_user_login" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.get_notification">
+<span class="sig-name descname"><span class="pre">get_notification</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.get_notification" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.get_user_id">
+<span class="sig-name descname"><span class="pre">get_user_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.get_user_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.second_user_login">
+<span class="sig-name descname"><span class="pre">second_user_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.second_user_login" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.set_default_information">
+<span class="sig-name descname"><span class="pre">set_default_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.set_default_information" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_assistor_match_identifier">
+<span class="sig-name descname"><span class="pre">train_assistor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notification_category</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_assistor_match_identifier" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_assistor_request">
+<span class="sig-name descname"><span class="pre">train_assistor_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notification_category</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_assistor_request" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_assistor_situation">
+<span class="sig-name descname"><span class="pre">train_assistor_situation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notification_category</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_assistor_situation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_output">
+<span class="sig-name descname"><span class="pre">train_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notification_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unittest_strategy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_sponsor_match_identifier">
+<span class="sig-name descname"><span class="pre">train_sponsor_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notification_category</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_sponsor_match_identifier" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_sponsor_situation">
+<span class="sig-name descname"><span class="pre">train_sponsor_situation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notification_category</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.train_sponsor_situation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Train_helper_function.Train_helper_function.user_logout">
+<span class="sig-name descname"><span class="pre">user_logout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function.user_logout" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.conftest">
+<span id="colda-tests-test-workflow-conftest-module"></span><h2>colda.tests.test_workflow.conftest module<a class="headerlink" href="#module-colda.tests.test_workflow.conftest" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-colda.tests.test_workflow.test">
+<span id="colda-tests-test-workflow-test-module"></span><h2>colda.tests.test_workflow.test module<a class="headerlink" href="#module-colda.tests.test_workflow.test" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-colda.tests.test_workflow.test_find_assistor">
+<span id="colda-tests-test-workflow-test-find-assistor-module"></span><h2>colda.tests.test_workflow.test_find_assistor module<a class="headerlink" href="#module-colda.tests.test_workflow.test_find_assistor" title="Permalink to this heading"></a></h2>
+<section id="id2">
+<h3>tests.test_curves.py<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_find_assistor.Test_find_assistor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.test_find_assistor.</span></span><span class="sig-name descname"><span class="pre">Test_find_assistor</span></span><a class="headerlink" href="#colda.tests.test_workflow.test_find_assistor.Test_find_assistor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="colda.tests.test_workflow.Train_helper_function.Train_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train_helper_function</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_find_assistor.Test_find_assistor.test_find_assistor">
+<span class="sig-name descname"><span class="pre">test_find_assistor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.test_find_assistor.Test_find_assistor.test_find_assistor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.test_find_test_assistor">
+<span id="colda-tests-test-workflow-test-find-test-assistor-module"></span><h2>colda.tests.test_workflow.test_find_test_assistor module<a class="headerlink" href="#module-colda.tests.test_workflow.test_find_test_assistor" title="Permalink to this heading"></a></h2>
+<section id="id3">
+<h3>tests.test_curves.py<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_find_test_assistor.Test_find_test_assistor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.test_find_test_assistor.</span></span><span class="sig-name descname"><span class="pre">Test_find_test_assistor</span></span><a class="headerlink" href="#colda.tests.test_workflow.test_find_test_assistor.Test_find_test_assistor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="colda.tests.test_workflow.Train_helper_function.Train_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train_helper_function</span></code></a>, <a class="reference internal" href="#colda.tests.test_workflow.Test_helper_function.Test_helper_function" title="colda.tests.test_workflow.Test_helper_function.Test_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Test_helper_function</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_find_test_assistor.Test_find_test_assistor.test_find_test_assistor">
+<span class="sig-name descname"><span class="pre">test_find_test_assistor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.test_find_test_assistor.Test_find_test_assistor.test_find_test_assistor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.test_unread_match_identifier">
+<span id="colda-tests-test-workflow-test-unread-match-identifier-module"></span><h2>colda.tests.test_workflow.test_unread_match_identifier module<a class="headerlink" href="#module-colda.tests.test_workflow.test_unread_match_identifier" title="Permalink to this heading"></a></h2>
+<section id="id4">
+<h3>tests.test_curves.py<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_match_identifier.Test_unread_match_identifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.test_unread_match_identifier.</span></span><span class="sig-name descname"><span class="pre">Test_unread_match_identifier</span></span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_match_identifier.Test_unread_match_identifier" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="colda.tests.test_workflow.Train_helper_function.Train_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train_helper_function</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_match_identifier.Test_unread_match_identifier.test_unread_match_identifier">
+<span class="sig-name descname"><span class="pre">test_unread_match_identifier</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_match_identifier.Test_unread_match_identifier.test_unread_match_identifier" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.test_unread_output">
+<span id="colda-tests-test-workflow-test-unread-output-module"></span><h2>colda.tests.test_workflow.test_unread_output module<a class="headerlink" href="#module-colda.tests.test_workflow.test_unread_output" title="Permalink to this heading"></a></h2>
+<section id="id5">
+<h3>tests.test_curves.py<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_output.Test_unread_output">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.test_unread_output.</span></span><span class="sig-name descname"><span class="pre">Test_unread_output</span></span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_output.Test_unread_output" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="colda.tests.test_workflow.Train_helper_function.Train_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train_helper_function</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_output.Test_unread_output.test_unread_output">
+<span class="sig-name descname"><span class="pre">test_unread_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unittest_strategy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_output.Test_unread_output.test_unread_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.test_unread_request">
+<span id="colda-tests-test-workflow-test-unread-request-module"></span><h2>colda.tests.test_workflow.test_unread_request module<a class="headerlink" href="#module-colda.tests.test_workflow.test_unread_request" title="Permalink to this heading"></a></h2>
+<section id="id6">
+<h3>tests.test_curves.py<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_request.Test_unread_request">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.test_unread_request.</span></span><span class="sig-name descname"><span class="pre">Test_unread_request</span></span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_request.Test_unread_request" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="colda.tests.test_workflow.Train_helper_function.Train_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train_helper_function</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_request.Test_unread_request.test_unread_request">
+<span class="sig-name descname"><span class="pre">test_unread_request</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_request.Test_unread_request.test_unread_request" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.test_unread_situation">
+<span id="colda-tests-test-workflow-test-unread-situation-module"></span><h2>colda.tests.test_workflow.test_unread_situation module<a class="headerlink" href="#module-colda.tests.test_workflow.test_unread_situation" title="Permalink to this heading"></a></h2>
+<section id="id7">
+<h3>tests.test_curves.py<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_situation.Test_unread_situation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.test_unread_situation.</span></span><span class="sig-name descname"><span class="pre">Test_unread_situation</span></span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_situation.Test_unread_situation" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="colda.tests.test_workflow.Train_helper_function.Train_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train_helper_function</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_situation.Test_unread_situation.test_unread_situation">
+<span class="sig-name descname"><span class="pre">test_unread_situation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_situation.Test_unread_situation.test_unread_situation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.test_unread_test_match_identifier">
+<span id="colda-tests-test-workflow-test-unread-test-match-identifier-module"></span><h2>colda.tests.test_workflow.test_unread_test_match_identifier module<a class="headerlink" href="#module-colda.tests.test_workflow.test_unread_test_match_identifier" title="Permalink to this heading"></a></h2>
+<section id="id8">
+<h3>tests.test_curves.py<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_test_match_identifier.Test_unread_test_match_identifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.test_unread_test_match_identifier.</span></span><span class="sig-name descname"><span class="pre">Test_unread_test_match_identifier</span></span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_test_match_identifier.Test_unread_test_match_identifier" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="colda.tests.test_workflow.Train_helper_function.Train_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train_helper_function</span></code></a>, <a class="reference internal" href="#colda.tests.test_workflow.Test_helper_function.Test_helper_function" title="colda.tests.test_workflow.Test_helper_function.Test_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Test_helper_function</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_test_match_identifier.Test_unread_test_match_identifier.test_unread_test_match_identifier">
+<span class="sig-name descname"><span class="pre">test_unread_test_match_identifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unittest_strategy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_test_match_identifier.Test_unread_test_match_identifier.test_unread_test_match_identifier" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.test_unread_test_output">
+<span id="colda-tests-test-workflow-test-unread-test-output-module"></span><h2>colda.tests.test_workflow.test_unread_test_output module<a class="headerlink" href="#module-colda.tests.test_workflow.test_unread_test_output" title="Permalink to this heading"></a></h2>
+<section id="id9">
+<h3>tests.test_curves.py<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_test_output.Test_unread_test_output">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.test_unread_test_output.</span></span><span class="sig-name descname"><span class="pre">Test_unread_test_output</span></span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_test_output.Test_unread_test_output" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="colda.tests.test_workflow.Train_helper_function.Train_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train_helper_function</span></code></a>, <a class="reference internal" href="#colda.tests.test_workflow.Test_helper_function.Test_helper_function" title="colda.tests.test_workflow.Test_helper_function.Test_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Test_helper_function</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_test_output.Test_unread_test_output.test_unread_test_output">
+<span class="sig-name descname"><span class="pre">test_unread_test_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unittest_strategy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_test_output.Test_unread_test_output.test_unread_test_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow.test_unread_test_request">
+<span id="colda-tests-test-workflow-test-unread-test-request-module"></span><h2>colda.tests.test_workflow.test_unread_test_request module<a class="headerlink" href="#module-colda.tests.test_workflow.test_unread_test_request" title="Permalink to this heading"></a></h2>
+<section id="id10">
+<h3>tests.test_curves.py<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<p>Test suite for the curves.py module that handles everything to do with
+supply and demand curves.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_test_request.Test_unread_test_request">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.test_unread_test_request.</span></span><span class="sig-name descname"><span class="pre">Test_unread_test_request</span></span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_test_request.Test_unread_test_request" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Train_helper_function.Train_helper_function" title="colda.tests.test_workflow.Train_helper_function.Train_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Train_helper_function</span></code></a>, <a class="reference internal" href="#colda.tests.test_workflow.Test_helper_function.Test_helper_function" title="colda.tests.test_workflow.Test_helper_function.Test_helper_function"><code class="xref py py-class docutils literal notranslate"><span class="pre">Test_helper_function</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.test_unread_test_request.Test_unread_test_request.test_unread_test_request">
+<span class="sig-name descname"><span class="pre">test_unread_test_request</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.test_unread_test_request.Test_unread_test_request.test_unread_test_request" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.tests.test_workflow">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-colda.tests.test_workflow" title="Permalink to this heading"></a></h2>
+<p>Test suite for the colda package.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Regression_1s_1a">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.</span></span><span class="sig-name descname"><span class="pre">Regression_1s_1a</span></span><a class="headerlink" href="#colda.tests.test_workflow.Regression_1s_1a" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.tests.test_workflow.Strategy" title="colda.tests.test_workflow.Strategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strategy</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Regression_1s_1a.alpha">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpha</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Regression_1s_1a.alpha" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Regression_1s_1a.assistor_trained_cooperative_model_output">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">assistor_trained_cooperative_model_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Regression_1s_1a.assistor_trained_cooperative_model_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Regression_1s_1a.sponsor_trained_cooperative_model_output">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sponsor_trained_cooperative_model_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Regression_1s_1a.sponsor_trained_cooperative_model_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Regression_1s_1a.unread_test_assistor_match_id_test">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unread_test_assistor_match_id_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Regression_1s_1a.unread_test_assistor_match_id_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Regression_1s_1a.unread_test_make_result">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unread_test_make_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Regression_1s_1a.unread_test_make_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Regression_1s_1a.unread_test_output_test">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unread_test_output_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Regression_1s_1a.unread_test_output_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Regression_1s_1a.unread_test_sponsor_match_id_test">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unread_test_sponsor_match_id_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Regression_1s_1a.unread_test_sponsor_match_id_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Strategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.</span></span><span class="sig-name descname"><span class="pre">Strategy</span></span><a class="headerlink" href="#colda.tests.test_workflow.Strategy" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>The Strategy interface declares operations common to all supported versions
+of some algorithm.</p>
+<p>The Context uses this interface to call the algorithm defined by Concrete
+Strategies.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Strategy.alpha">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpha</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Strategy.alpha" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Strategy.assistor_trained_cooperative_model_output">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">assistor_trained_cooperative_model_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Strategy.assistor_trained_cooperative_model_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Strategy.sponsor_trained_cooperative_model_output">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sponsor_trained_cooperative_model_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Strategy.sponsor_trained_cooperative_model_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Strategy.unread_test_assistor_match_id_test">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unread_test_assistor_match_id_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Strategy.unread_test_assistor_match_id_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Strategy.unread_test_make_result">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unread_test_make_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Strategy.unread_test_make_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Strategy.unread_test_output_test">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unread_test_output_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Strategy.unread_test_output_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.Strategy.unread_test_sponsor_match_id_test">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unread_test_sponsor_match_id_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.Strategy.unread_test_sponsor_match_id_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.unittest_strategy_interface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.tests.test_workflow.</span></span><span class="sig-name descname"><span class="pre">unittest_strategy_interface</span></span><a class="headerlink" href="#colda.tests.test_workflow.unittest_strategy_interface" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Context defines the interface of interest to clients.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.unittest_strategy_interface.alpha">
+<span class="sig-name descname"><span class="pre">alpha</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.unittest_strategy_interface.alpha" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.unittest_strategy_interface.assistor_trained_cooperative_model_output">
+<span class="sig-name descname"><span class="pre">assistor_trained_cooperative_model_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.unittest_strategy_interface.assistor_trained_cooperative_model_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.unittest_strategy_interface.get_unread_test_assistor_match_id_test">
+<span class="sig-name descname"><span class="pre">get_unread_test_assistor_match_id_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.unittest_strategy_interface.get_unread_test_assistor_match_id_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.unittest_strategy_interface.get_unread_test_make_result">
+<span class="sig-name descname"><span class="pre">get_unread_test_make_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.unittest_strategy_interface.get_unread_test_make_result" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.unittest_strategy_interface.get_unread_test_output_test">
+<span class="sig-name descname"><span class="pre">get_unread_test_output_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.unittest_strategy_interface.get_unread_test_output_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.unittest_strategy_interface.get_unread_test_sponsor_match_id_test">
+<span class="sig-name descname"><span class="pre">get_unread_test_sponsor_match_id_test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.unittest_strategy_interface.get_unread_test_sponsor_match_id_test" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.unittest_strategy_interface.sponsor_trained_cooperative_model_output">
+<span class="sig-name descname"><span class="pre">sponsor_trained_cooperative_model_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.tests.test_workflow.unittest_strategy_interface.sponsor_trained_cooperative_model_output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="colda.tests.test_workflow.unittest_strategy_interface.unittest_strategy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unittest_strategy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#colda.tests.test_workflow.Strategy" title="colda.tests.test_workflow.Strategy"><span class="pre">Strategy</span></a></em><a class="headerlink" href="#colda.tests.test_workflow.unittest_strategy_interface.unittest_strategy" title="Permalink to this definition"></a></dt>
+<dd><p>The Context maintains a reference to one of the Strategy objects. The
+Context does not know the concrete class of a strategy. It should work
+with all strategies via the Strategy interface.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="colda.tests.test_utils.test_serialization.html" class="btn btn-neutral float-left" title="colda.tests.test_utils.test_serialization package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="colda.utils.html" class="btn btn-neutral float-right" title="colda.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, ColAI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

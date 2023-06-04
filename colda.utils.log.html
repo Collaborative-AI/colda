@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colda.utils.log package &mdash; colda 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="colda.workflow package" href="colda.workflow.html" />
+    <link rel="prev" title="colda.utils.dtypes package" href="colda.utils.dtypes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="colda.utils.html">colda.utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="colda.utils.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.api">colda.utils.api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.constant">colda.utils.constant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.dict_helper">colda.utils.dict_helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.serialization">colda.utils.serialization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.store">colda.utils.store module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils.utils">colda.utils.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html#module-colda.utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">colda</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="colda.html">colda package</a></li>
+          <li class="breadcrumb-item"><a href="colda.utils.html">colda.utils package</a></li>
+      <li class="breadcrumb-item active">colda.utils.log package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/colda.utils.log.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="colda-utils-log-package">
+<h1>colda.utils.log package<a class="headerlink" href="#colda-utils-log-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-colda.utils.log.abstract_log">
+<span id="colda-utils-log-abstract-log-module"></span><h2>colda.utils.log.abstract_log module<a class="headerlink" href="#module-colda.utils.log.abstract_log" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.abstract_log.AbstractLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.abstract_log.</span></span><span class="sig-name descname"><span class="pre">AbstractLog</span></span><a class="headerlink" href="#colda.utils.log.abstract_log.AbstractLog" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.abstract_log.AbstractLog.get_all_logs">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_all_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.abstract_log.AbstractLog.get_all_logs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.abstract_log.AbstractLog.get_log">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.abstract_log.AbstractLog.get_log" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.abstract_log.AbstractLog.log_serialization">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">log_serialization</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.abstract_log.AbstractLog.log_serialization" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.abstract_log.AbstractLog.store_log">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">store_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.abstract_log.AbstractLog.store_log" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.utils.log.algorithm_log">
+<span id="colda-utils-log-algorithm-log-module"></span><h2>colda.utils.log.algorithm_log module<a class="headerlink" href="#module-colda.utils.log.algorithm_log" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.algorithm_log.</span></span><span class="sig-name descname"><span class="pre">AlgorithmLog</span></span><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLog</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLog</span></code></p>
+<p>Algorithm log is used to store the information
+from the algorithm stage.</p>
+<section id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
+<p>get_instance
+store_log
+get_log
+get_all_logs</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.get_all_logs">
+<span class="sig-name descname"><span class="pre">get_all_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.get_all_logs" title="Permalink to this definition"></a></dt>
+<dd><p>For unittest, change this function later</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.utils.log.algorithm_log.AlgorithmLog" title="colda.utils.log.algorithm_log.AlgorithmLog"><span class="pre">AlgorithmLog</span></a></span></span><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h4>
+<p>AlgorithmLog</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.get_log">
+<span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main_test'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.get_log" title="Permalink to this definition"></a></dt>
+<dd><p>get msgs from log.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+task_id : str
+msgs : list[str]
+log_category : str=’main_test’</p>
+</section>
+<section id="id1">
+<h4>Returns<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.log_serialization">
+<span class="sig-name descname"><span class="pre">log_serialization</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.log_serialization" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.algorithm_log.AlgorithmLog.store_log">
+<span class="sig-name descname"><span class="pre">store_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msgs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main_test'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.utils.log.algorithm_log.AlgorithmLog.store_log" title="Permalink to this definition"></a></dt>
+<dd><p>Store msgs to log.</p>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+task_id : str
+msgs : list[str]
+log_category : str=’main_test’</p>
+</section>
+<section id="id3">
+<h4>Returns<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.utils.log.api">
+<span id="colda-utils-log-api-module"></span><h2>colda.utils.log.api module<a class="headerlink" href="#module-colda.utils.log.api" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.api.GetAlgorithmLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.api.</span></span><span class="sig-name descname"><span class="pre">GetAlgorithmLog</span></span><a class="headerlink" href="#colda.utils.log.api.GetAlgorithmLog" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLogFactory</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.api.GetAlgorithmLog.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.utils.log.algorithm_log.AlgorithmLog" title="colda.utils.log.algorithm_log.AlgorithmLog"><span class="pre">AlgorithmLog</span></a></span></span><a class="headerlink" href="#colda.utils.log.api.GetAlgorithmLog.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>AlgorithmLog factory</p>
+<section id="id4">
+<h3>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>AlgorithmLog</p>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.api.GetWorkflowLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.api.</span></span><span class="sig-name descname"><span class="pre">GetWorkflowLog</span></span><a class="headerlink" href="#colda.utils.log.api.GetWorkflowLog" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLogFactory</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.api.GetWorkflowLog.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.utils.log.workflow_log.WorkflowLog" title="colda.utils.log.workflow_log.WorkflowLog"><span class="pre">WorkflowLog</span></a></span></span><a class="headerlink" href="#colda.utils.log.api.GetWorkflowLog.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>WorkflowLog factory</p>
+<section id="id5">
+<h3>Returns<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<p>WorkflowLog</p>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.utils.log.base">
+<span id="colda-utils-log-base-module"></span><h2>colda.utils.log.base module<a class="headerlink" href="#module-colda.utils.log.base" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.base.BaseLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.base.</span></span><span class="sig-name descname"><span class="pre">BaseLog</span></span><a class="headerlink" href="#colda.utils.log.base.BaseLog" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for log</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.base.BaseLog.placeholder">
+<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">placeholder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.base.BaseLog.placeholder" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.utils.log.log_factory">
+<span id="colda-utils-log-log-factory-module"></span><h2>colda.utils.log.log_factory module<a class="headerlink" href="#module-colda.utils.log.log_factory" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.log_factory.AbstractLogFactory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.log_factory.</span></span><span class="sig-name descname"><span class="pre">AbstractLogFactory</span></span><a class="headerlink" href="#colda.utils.log.log_factory.AbstractLogFactory" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract Factory</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.log_factory.AbstractLogFactory.get_log">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.log_factory.AbstractLogFactory.get_log" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.log_factory.GetAlgorithmLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.log_factory.</span></span><span class="sig-name descname"><span class="pre">GetAlgorithmLog</span></span><a class="headerlink" href="#colda.utils.log.log_factory.GetAlgorithmLog" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.utils.log.log_factory.AbstractLogFactory" title="colda.utils.log.log_factory.AbstractLogFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLogFactory</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.log_factory.GetAlgorithmLog.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.utils.log.algorithm_log.AlgorithmLog" title="colda.utils.log.algorithm_log.AlgorithmLog"><span class="pre">AlgorithmLog</span></a></span></span><a class="headerlink" href="#colda.utils.log.log_factory.GetAlgorithmLog.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>AlgorithmLog factory</p>
+<section id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<p>AlgorithmLog</p>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.log_factory.GetWorkflowLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.log_factory.</span></span><span class="sig-name descname"><span class="pre">GetWorkflowLog</span></span><a class="headerlink" href="#colda.utils.log.log_factory.GetWorkflowLog" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#colda.utils.log.log_factory.AbstractLogFactory" title="colda.utils.log.log_factory.AbstractLogFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLogFactory</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.log_factory.GetWorkflowLog.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.utils.log.workflow_log.WorkflowLog" title="colda.utils.log.workflow_log.WorkflowLog"><span class="pre">WorkflowLog</span></a></span></span><a class="headerlink" href="#colda.utils.log.log_factory.GetWorkflowLog.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>WorkflowLog factory</p>
+<section id="id7">
+<h3>Returns<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<p>WorkflowLog</p>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.utils.log.workflow_log">
+<span id="colda-utils-log-workflow-log-module"></span><h2>colda.utils.log.workflow_log module<a class="headerlink" href="#module-colda.utils.log.workflow_log" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.utils.log.workflow_log.</span></span><span class="sig-name descname"><span class="pre">WorkflowLog</span></span><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLog</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLog</span></code></p>
+<p>Workflow log is used to store the information
+from the workflow stage(train_workflow and
+test_workflow).</p>
+<section id="id8">
+<h3>Methods<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h3>
+<p>get_instance
+store_log
+get_log
+get_all_logs</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.get_all_logs">
+<span class="sig-name descname"><span class="pre">get_all_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.get_all_logs" title="Permalink to this definition"></a></dt>
+<dd><p>For unittest, change this function later</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.utils.log.workflow_log.WorkflowLog" title="colda.utils.log.workflow_log.WorkflowLog"><span class="pre">WorkflowLog</span></a></span></span><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h4>
+<p>WorkflowLog</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.get_log">
+<span class="sig-name descname"><span class="pre">get_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.get_log" title="Permalink to this definition"></a></dt>
+<dd><p>get msgs from log.</p>
+<section id="id10">
+<h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+task_id : str
+msgs : list[str]
+log_category : str=’main_test’</p>
+</section>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.log_serialization">
+<span class="sig-name descname"><span class="pre">log_serialization</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.log_serialization" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.utils.log.workflow_log.WorkflowLog.store_log">
+<span class="sig-name descname"><span class="pre">store_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msgs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.utils.log.workflow_log.WorkflowLog.store_log" title="Permalink to this definition"></a></dt>
+<dd><p>Store msgs to log.</p>
+<section id="id12">
+<h4>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+task_id : str
+msgs : list[str]
+log_category : str=’main_test’</p>
+</section>
+<section id="id13">
+<h4>Returns<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.utils.log">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-colda.utils.log" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="colda.utils.dtypes.html" class="btn btn-neutral float-left" title="colda.utils.dtypes package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="colda.workflow.html" class="btn btn-neutral float-right" title="colda.workflow package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, ColAI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

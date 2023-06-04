@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colda.database.train_database package &mdash; colda 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="colda.error package" href="colda.error.html" />
+    <link rel="prev" title="colda.database.test_database package" href="colda.database.test_database.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="colda.database.html">colda.database package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="colda.database.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.abstract_database">colda.database.abstract_database module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.api">colda.database.api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.base">colda.database.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.database_factory">colda.database.database_factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.utils">colda.database.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">colda</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="colda.html">colda package</a></li>
+          <li class="breadcrumb-item"><a href="colda.database.html">colda.database package</a></li>
+      <li class="breadcrumb-item active">colda.database.train_database package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/colda.database.train_database.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="colda-database-train-database-package">
+<h1>colda.database.train_database package<a class="headerlink" href="#colda-database-train-database-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-colda.database.train_database.algorithm_database">
+<span id="colda-database-train-database-algorithm-database-module"></span><h2>colda.database.train_database.algorithm_database module<a class="headerlink" href="#module-colda.database.train_database.algorithm_database" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.train_database.algorithm_database.TrainAlgorithmDatabase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.train_database.algorithm_database.</span></span><span class="sig-name descname"><span class="pre">TrainAlgorithmDatabase</span></span><a class="headerlink" href="#colda.database.train_database.algorithm_database.TrainAlgorithmDatabase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractAlgorithmDatabase</span></code></p>
+<p>Store and manage train_algorithm database.
+Train algorithm database mainly stores the output and log generated
+from algorithm part of train stage.</p>
+<section id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
+<p>get_instance
+get_all_records
+store_record
+get_record</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>Return all keys of records in this database</p>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h4>
+<p>list[tuple[str, str]]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.database.train_database.algorithm_database.TrainAlgorithmDatabase" title="colda.database.train_database.algorithm_database.TrainAlgorithmDatabase"><span class="pre">colda.database.train_database.algorithm_database.TrainAlgorithmDatabase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id1">
+<h4>Returns<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
+<p>type[TrainAlgorithmDatabase]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>Get record</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+test_id : str 
+algorithm_data_name : str</p>
+</section>
+<section id="id2">
+<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.algorithm_database.TrainAlgorithmDatabase.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>Store record</p>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+test_id : str 
+algorithm_data_name : str
+algorithm_data : Union[list[str], list[list[str]], Any]</p>
+</section>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.database.train_database.api">
+<span id="colda-database-train-database-api-module"></span><h2>colda.database.train_database.api module<a class="headerlink" href="#module-colda.database.train_database.api" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAlgorithmDatabase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.train_database.api.</span></span><span class="sig-name descname"><span class="pre">TrainAlgorithmDatabase</span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAlgorithmDatabase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractAlgorithmDatabase</span></code></p>
+<p>Store and manage train_algorithm database.
+Train algorithm database mainly stores the output and log generated
+from algorithm part of train stage.</p>
+<section id="id5">
+<h3>Methods<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<p>get_instance
+get_all_records
+store_record
+get_record</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAlgorithmDatabase.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.train_database.api.TrainAlgorithmDatabase.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAlgorithmDatabase.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAlgorithmDatabase.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>Return all keys of records in this database</p>
+<section id="id6">
+<h4>Returns<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h4>
+<p>list[tuple[str, str]]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAlgorithmDatabase.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.database.train_database.api.TrainAlgorithmDatabase" title="database.train_database.algorithm_database.TrainAlgorithmDatabase"><span class="pre">database.train_database.algorithm_database.TrainAlgorithmDatabase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAlgorithmDatabase.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id7">
+<h4>Returns<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h4>
+<p>type[TrainAlgorithmDatabase]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAlgorithmDatabase.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAlgorithmDatabase.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>Get record</p>
+<section id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+test_id : str 
+algorithm_data_name : str</p>
+</section>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAlgorithmDatabase.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAlgorithmDatabase.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>Store record</p>
+<section id="id10">
+<h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+test_id : str 
+algorithm_data_name : str
+algorithm_data : Union[list[str], list[list[str]], Any]</p>
+</section>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAssistorMetadataDatabase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.train_database.api.</span></span><span class="sig-name descname"><span class="pre">TrainAssistorMetadataDatabase</span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAssistorMetadataDatabase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMetadataDatabase</span></code></p>
+<p>Store and manage data generated from assistor train stage.</p>
+<section id="id12">
+<h3>Methods<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<p>get_instance
+get_all_records
+store_record
+get_record</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAssistorMetadataDatabase.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.train_database.api.TrainAssistorMetadataDatabase.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAssistorMetadataDatabase.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAssistorMetadataDatabase.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>Return all keys of records in this database</p>
+<section id="id13">
+<h4>Returns<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h4>
+<p>list[tuple[str, str]]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAssistorMetadataDatabase.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.database.train_database.api.TrainAssistorMetadataDatabase" title="database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase"><span class="pre">database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAssistorMetadataDatabase.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id14">
+<h4>Returns<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h4>
+<p>type[TrainAssistorMetadataDatabase]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAssistorMetadataDatabase.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAssistorMetadataDatabase.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>Get record</p>
+<section id="id15">
+<h4>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str</p>
+</section>
+<section id="id16">
+<h4>Returns<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainAssistorMetadataDatabase.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'manual'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'regression'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'decision_tree'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'svm'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'gradient_boosting'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mlp'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainAssistorMetadataDatabase.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>Store record</p>
+<section id="id17">
+<h4>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str 
+mode : Mode
+task_mode : Task_Mode
+model_name : Model_Name 
+train_file_path : str
+train_id_column : str 
+train_data_column : str 
+task_name : str=None
+task_description : str=None</p>
+</section>
+<section id="id18">
+<h4>Returns<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainSponsorMetadataDatabase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.train_database.api.</span></span><span class="sig-name descname"><span class="pre">TrainSponsorMetadataDatabase</span></span><a class="headerlink" href="#colda.database.train_database.api.TrainSponsorMetadataDatabase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMetadataDatabase</span></code></p>
+<p>Store and manage data generated from sponsor train stage.</p>
+<section id="id19">
+<h3>Methods<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
+<p>get_instance
+get_all_records
+store_record
+get_record</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainSponsorMetadataDatabase.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.train_database.api.TrainSponsorMetadataDatabase.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainSponsorMetadataDatabase.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainSponsorMetadataDatabase.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>Return all keys of records in this database</p>
+<section id="id20">
+<h4>Returns<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h4>
+<p>list[tuple[str, str]]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainSponsorMetadataDatabase.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.database.train_database.api.TrainSponsorMetadataDatabase" title="database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase"><span class="pre">database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainSponsorMetadataDatabase.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id21">
+<h4>Returns<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h4>
+<p>type[TrainSponsorMetadataDatabase]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainSponsorMetadataDatabase.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainSponsorMetadataDatabase.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>Get record</p>
+<section id="id22">
+<h4>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str</p>
+</section>
+<section id="id23">
+<h4>Returns<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.api.TrainSponsorMetadataDatabase.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'regression'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'decision_tree'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'svm'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'gradient_boosting'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mlp'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MAD'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'RMSE'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'R2'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Accuracy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'F1'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'AUCROC'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.api.TrainSponsorMetadataDatabase.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>Store record</p>
+<section id="id24">
+<h4>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str 
+task_mode : Task_Mode
+model_name : Model_Name 
+metric_name : Metric_Name
+train_file_path : str
+train_id_column : str 
+train_data_column : str 
+train_target_column : str
+task_name : str=None 
+task_description : str=None</p>
+</section>
+<section id="id25">
+<h4>Returns<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.database.train_database.assistor_metadata_database">
+<span id="colda-database-train-database-assistor-metadata-database-module"></span><h2>colda.database.train_database.assistor_metadata_database module<a class="headerlink" href="#module-colda.database.train_database.assistor_metadata_database" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.train_database.assistor_metadata_database.</span></span><span class="sig-name descname"><span class="pre">TrainAssistorMetadataDatabase</span></span><a class="headerlink" href="#colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMetadataDatabase</span></code></p>
+<p>Store and manage data generated from assistor train stage.</p>
+<section id="id26">
+<h3>Methods<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h3>
+<p>get_instance
+get_all_records
+store_record
+get_record</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>Return all keys of records in this database</p>
+<section id="id27">
+<h4>Returns<a class="headerlink" href="#id27" title="Permalink to this heading"></a></h4>
+<p>list[tuple[str, str]]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase" title="colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase"><span class="pre">colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id28">
+<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h4>
+<p>type[TrainAssistorMetadataDatabase]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>Get record</p>
+<section id="id29">
+<h4>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str</p>
+</section>
+<section id="id30">
+<h4>Returns<a class="headerlink" href="#id30" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'manual'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'regression'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'decision_tree'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'svm'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'gradient_boosting'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mlp'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>Store record</p>
+<section id="id31">
+<h4>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str 
+mode : Mode
+task_mode : Task_Mode
+model_name : Model_Name 
+train_file_path : str
+train_id_column : str 
+train_data_column : str 
+task_name : str=None
+task_description : str=None</p>
+</section>
+<section id="id32">
+<h4>Returns<a class="headerlink" href="#id32" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.database.train_database.sponsor_metadata_database">
+<span id="colda-database-train-database-sponsor-metadata-database-module"></span><h2>colda.database.train_database.sponsor_metadata_database module<a class="headerlink" href="#module-colda.database.train_database.sponsor_metadata_database" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.train_database.sponsor_metadata_database.</span></span><span class="sig-name descname"><span class="pre">TrainSponsorMetadataDatabase</span></span><a class="headerlink" href="#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMetadataDatabase</span></code></p>
+<p>Store and manage data generated from sponsor train stage.</p>
+<section id="id33">
+<h3>Methods<a class="headerlink" href="#id33" title="Permalink to this heading"></a></h3>
+<p>get_instance
+get_all_records
+store_record
+get_record</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>Return all keys of records in this database</p>
+<section id="id34">
+<h4>Returns<a class="headerlink" href="#id34" title="Permalink to this heading"></a></h4>
+<p>list[tuple[str, str]]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase" title="colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase"><span class="pre">colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id35">
+<h4>Returns<a class="headerlink" href="#id35" title="Permalink to this heading"></a></h4>
+<p>type[TrainSponsorMetadataDatabase]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>Get record</p>
+<section id="id36">
+<h4>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str</p>
+</section>
+<section id="id37">
+<h4>Returns<a class="headerlink" href="#id37" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'regression'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'decision_tree'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'svm'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'gradient_boosting'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mlp'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MAD'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'RMSE'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'R2'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Accuracy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'F1'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'AUCROC'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>Store record</p>
+<section id="id38">
+<h4>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str 
+task_mode : Task_Mode
+model_name : Model_Name 
+metric_name : Metric_Name
+train_file_path : str
+train_id_column : str 
+train_data_column : str 
+train_target_column : str
+task_name : str=None 
+task_description : str=None</p>
+</section>
+<section id="id39">
+<h4>Returns<a class="headerlink" href="#id39" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.database.train_database">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-colda.database.train_database" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAlgorithmDatabase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.train_database.</span></span><span class="sig-name descname"><span class="pre">TrainAlgorithmDatabase</span></span><a class="headerlink" href="#colda.database.train_database.TrainAlgorithmDatabase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractAlgorithmDatabase</span></code></p>
+<p>Store and manage train_algorithm database.
+Train algorithm database mainly stores the output and log generated
+from algorithm part of train stage.</p>
+<section id="id40">
+<h3>Methods<a class="headerlink" href="#id40" title="Permalink to this heading"></a></h3>
+<p>get_instance
+get_all_records
+store_record
+get_record</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAlgorithmDatabase.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.train_database.TrainAlgorithmDatabase.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAlgorithmDatabase.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.TrainAlgorithmDatabase.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>Return all keys of records in this database</p>
+<section id="id41">
+<h4>Returns<a class="headerlink" href="#id41" title="Permalink to this heading"></a></h4>
+<p>list[tuple[str, str]]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAlgorithmDatabase.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.database.train_database.algorithm_database.TrainAlgorithmDatabase" title="colda.database.train_database.algorithm_database.TrainAlgorithmDatabase"><span class="pre">colda.database.train_database.algorithm_database.TrainAlgorithmDatabase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.TrainAlgorithmDatabase.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id42">
+<h4>Returns<a class="headerlink" href="#id42" title="Permalink to this heading"></a></h4>
+<p>type[TrainAlgorithmDatabase]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAlgorithmDatabase.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.TrainAlgorithmDatabase.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>Get record</p>
+<section id="id43">
+<h4>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+test_id : str 
+algorithm_data_name : str</p>
+</section>
+<section id="id44">
+<h4>Returns<a class="headerlink" href="#id44" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAlgorithmDatabase.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_data_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.TrainAlgorithmDatabase.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>Store record</p>
+<section id="id45">
+<h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+test_id : str 
+algorithm_data_name : str
+algorithm_data : Union[list[str], list[list[str]], Any]</p>
+</section>
+<section id="id46">
+<h4>Returns<a class="headerlink" href="#id46" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAssistorMetadataDatabase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.train_database.</span></span><span class="sig-name descname"><span class="pre">TrainAssistorMetadataDatabase</span></span><a class="headerlink" href="#colda.database.train_database.TrainAssistorMetadataDatabase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMetadataDatabase</span></code></p>
+<p>Store and manage data generated from assistor train stage.</p>
+<section id="id47">
+<h3>Methods<a class="headerlink" href="#id47" title="Permalink to this heading"></a></h3>
+<p>get_instance
+get_all_records
+store_record
+get_record</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAssistorMetadataDatabase.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.train_database.TrainAssistorMetadataDatabase.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAssistorMetadataDatabase.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.TrainAssistorMetadataDatabase.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>Return all keys of records in this database</p>
+<section id="id48">
+<h4>Returns<a class="headerlink" href="#id48" title="Permalink to this heading"></a></h4>
+<p>list[tuple[str, str]]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAssistorMetadataDatabase.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase" title="colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase"><span class="pre">colda.database.train_database.assistor_metadata_database.TrainAssistorMetadataDatabase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.TrainAssistorMetadataDatabase.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id49">
+<h4>Returns<a class="headerlink" href="#id49" title="Permalink to this heading"></a></h4>
+<p>type[TrainAssistorMetadataDatabase]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAssistorMetadataDatabase.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.TrainAssistorMetadataDatabase.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>Get record</p>
+<section id="id50">
+<h4>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str</p>
+</section>
+<section id="id51">
+<h4>Returns<a class="headerlink" href="#id51" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainAssistorMetadataDatabase.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'manual'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'regression'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'decision_tree'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'svm'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'gradient_boosting'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mlp'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.TrainAssistorMetadataDatabase.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>Store record</p>
+<section id="id52">
+<h4>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str 
+mode : Mode
+task_mode : Task_Mode
+model_name : Model_Name 
+train_file_path : str
+train_id_column : str 
+train_data_column : str 
+task_name : str=None
+task_description : str=None</p>
+</section>
+<section id="id53">
+<h4>Returns<a class="headerlink" href="#id53" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainSponsorMetadataDatabase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.train_database.</span></span><span class="sig-name descname"><span class="pre">TrainSponsorMetadataDatabase</span></span><a class="headerlink" href="#colda.database.train_database.TrainSponsorMetadataDatabase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabase</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractMetadataDatabase</span></code></p>
+<p>Store and manage data generated from sponsor train stage.</p>
+<section id="id54">
+<h3>Methods<a class="headerlink" href="#id54" title="Permalink to this heading"></a></h3>
+<p>get_instance
+get_all_records
+store_record
+get_record</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainSponsorMetadataDatabase.delete">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.train_database.TrainSponsorMetadataDatabase.delete" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainSponsorMetadataDatabase.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.TrainSponsorMetadataDatabase.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>Return all keys of records in this database</p>
+<section id="id55">
+<h4>Returns<a class="headerlink" href="#id55" title="Permalink to this heading"></a></h4>
+<p>list[tuple[str, str]]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainSponsorMetadataDatabase.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase" title="colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase"><span class="pre">colda.database.train_database.sponsor_metadata_database.TrainSponsorMetadataDatabase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.database.train_database.TrainSponsorMetadataDatabase.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id56">
+<h4>Returns<a class="headerlink" href="#id56" title="Permalink to this heading"></a></h4>
+<p>type[TrainSponsorMetadataDatabase]</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainSponsorMetadataDatabase.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.TrainSponsorMetadataDatabase.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>Get record</p>
+<section id="id57">
+<h4>Parameters<a class="headerlink" href="#id57" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str</p>
+</section>
+<section id="id58">
+<h4>Returns<a class="headerlink" href="#id58" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.train_database.TrainSponsorMetadataDatabase.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'classification'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'regression'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'decision_tree'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'svm'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'gradient_boosting'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mlp'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MAD'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'RMSE'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'R2'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Accuracy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'F1'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'AUCROC'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_data_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.train_database.TrainSponsorMetadataDatabase.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>Store record</p>
+<section id="id59">
+<h4>Parameters<a class="headerlink" href="#id59" title="Permalink to this heading"></a></h4>
+<p>user_id : str
+train_id : str 
+task_mode : Task_Mode
+model_name : Model_Name 
+metric_name : Metric_Name
+train_file_path : str
+train_id_column : str 
+train_data_column : str 
+train_target_column : str
+task_name : str=None 
+task_description : str=None</p>
+</section>
+<section id="id60">
+<h4>Returns<a class="headerlink" href="#id60" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="colda.database.test_database.html" class="btn btn-neutral float-left" title="colda.database.test_database package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="colda.error.html" class="btn btn-neutral float-right" title="colda.error package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, ColAI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

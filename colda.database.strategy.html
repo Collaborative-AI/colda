@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colda.database.strategy package &mdash; colda 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="colda.database.test_database package" href="colda.database.test_database.html" />
+    <link rel="prev" title="colda.database.default_database package" href="colda.database.default_database.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="colda.database.html">colda.database package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="colda.database.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.abstract_database">colda.database.abstract_database module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.api">colda.database.api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.base">colda.database.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.database_factory">colda.database.database_factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database.utils">colda.database.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html#module-colda.database">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">colda</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.html">colda.algorithm package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="colda.html">colda package</a></li>
+          <li class="breadcrumb-item"><a href="colda.database.html">colda.database package</a></li>
+      <li class="breadcrumb-item active">colda.database.strategy package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/colda.database.strategy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="colda-database-strategy-package">
+<h1>colda.database.strategy package<a class="headerlink" href="#colda-database-strategy-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-colda.database.strategy.abstract_database_strategy">
+<span id="colda-database-strategy-abstract-database-strategy-module"></span><h2>colda.database.strategy.abstract_database_strategy module<a class="headerlink" href="#module-colda.database.strategy.abstract_database_strategy" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.strategy.abstract_database_strategy.</span></span><span class="sig-name descname"><span class="pre">AbstractDatabaseStrategy</span></span><a class="headerlink" href="#colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy.get_all_records_history">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy.get_instance">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy.get_instance" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy.get_record">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy.get_record" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy.store_record">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.strategy.abstract_database_strategy.AbstractDatabaseStrategy.store_record" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.database.strategy.api">
+<span id="colda-database-strategy-api-module"></span><h2>colda.database.strategy.api module<a class="headerlink" href="#module-colda.database.strategy.api" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.strategy.api.DatabaseOperator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.strategy.api.</span></span><span class="sig-name descname"><span class="pre">DatabaseOperator</span></span><a class="headerlink" href="#colda.database.strategy.api.DatabaseOperator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractDatabaseStrategy</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabaseStrategy</span></code></p>
+<p>Strategy pattern to manage db</p>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<p>database</p>
+</section>
+<section id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
+<p>set_database
+get_all_records_history
+store_record
+get_record</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="colda.database.strategy.api.DatabaseOperator.database">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">database</span></span><a class="headerlink" href="#colda.database.strategy.api.DatabaseOperator.database" title="Permalink to this definition"></a></dt>
+<dd><p>Get strategy object</p>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h4>
+<p>Any</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.api.DatabaseOperator.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#colda.database.strategy.api.DatabaseOperator.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>call specific function</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h4>
+<p><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs : Any</p>
+</section>
+<section id="id3">
+<h4>Returns<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
+<p>list</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.api.DatabaseOperator.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.database.strategy.api.DatabaseOperator" title="database.strategy.database_strategy.DatabaseOperator"><span class="pre">DatabaseOperator</span></a></span></span><a class="headerlink" href="#colda.database.strategy.api.DatabaseOperator.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
+<p>DatabaseOperator</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.api.DatabaseOperator.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#colda.database.strategy.api.DatabaseOperator.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>call specific function</p>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h4>
+<p><a href="#id6"><span class="problematic" id="id7">**</span></a>kwargs : Any</p>
+</section>
+<section id="id8">
+<h4>Returns<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h4>
+<p>list</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.api.DatabaseOperator.set_database">
+<span class="sig-name descname"><span class="pre">set_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'default_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'train_sponsor_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'train_assistor_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'train_algorithm'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'default_metadatatest_sponsor_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'test_assistor_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'test_algorithm'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.strategy.api.DatabaseOperator.set_database" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to set strategy object</p>
+<section id="id9">
+<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h4>
+<p>database_type : Union[Train_Database_Type, Test_Database_Type]</p>
+</section>
+<section id="id10">
+<h4>Returns<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.api.DatabaseOperator.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#colda.database.strategy.api.DatabaseOperator.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>call specific function</p>
+<section id="id11">
+<h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h4>
+<p><a href="#id12"><span class="problematic" id="id13">**</span></a>kwargs : Any</p>
+</section>
+<section id="id14">
+<h4>Returns<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h4>
+<p>list</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.database.strategy.base">
+<span id="colda-database-strategy-base-module"></span><h2>colda.database.strategy.base module<a class="headerlink" href="#module-colda.database.strategy.base" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.strategy.base.BaseDatabaseStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.strategy.base.</span></span><span class="sig-name descname"><span class="pre">BaseDatabaseStrategy</span></span><a class="headerlink" href="#colda.database.strategy.base.BaseDatabaseStrategy" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for database strategy pattern</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.base.BaseDatabaseStrategy.placeholder">
+<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">placeholder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.database.strategy.base.BaseDatabaseStrategy.placeholder" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-colda.database.strategy.database_strategy">
+<span id="colda-database-strategy-database-strategy-module"></span><h2>colda.database.strategy.database_strategy module<a class="headerlink" href="#module-colda.database.strategy.database_strategy" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.database.strategy.database_strategy.DatabaseOperator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.database.strategy.database_strategy.</span></span><span class="sig-name descname"><span class="pre">DatabaseOperator</span></span><a class="headerlink" href="#colda.database.strategy.database_strategy.DatabaseOperator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractDatabaseStrategy</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDatabaseStrategy</span></code></p>
+<p>Strategy pattern to manage db</p>
+<section id="id15">
+<h3>Attributes<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<p>database</p>
+</section>
+<section id="id16">
+<h3>Methods<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<p>set_database
+get_all_records_history
+store_record
+get_record</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="colda.database.strategy.database_strategy.DatabaseOperator.database">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">database</span></span><a class="headerlink" href="#colda.database.strategy.database_strategy.DatabaseOperator.database" title="Permalink to this definition"></a></dt>
+<dd><p>Get strategy object</p>
+<section id="id17">
+<h4>Returns<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h4>
+<p>Any</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.database_strategy.DatabaseOperator.get_all_records_history">
+<span class="sig-name descname"><span class="pre">get_all_records_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#colda.database.strategy.database_strategy.DatabaseOperator.get_all_records_history" title="Permalink to this definition"></a></dt>
+<dd><p>call specific function</p>
+<section id="id18">
+<h4>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h4>
+<p><a href="#id19"><span class="problematic" id="id20">**</span></a>kwargs : Any</p>
+</section>
+<section id="id21">
+<h4>Returns<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h4>
+<p>list</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.database_strategy.DatabaseOperator.get_instance">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#colda.database.strategy.database_strategy.DatabaseOperator" title="colda.database.strategy.database_strategy.DatabaseOperator"><span class="pre">DatabaseOperator</span></a></span></span><a class="headerlink" href="#colda.database.strategy.database_strategy.DatabaseOperator.get_instance" title="Permalink to this definition"></a></dt>
+<dd><p>Singleton pattern. 
+Get instance of current class.</p>
+<section id="id22">
+<h4>Returns<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h4>
+<p>DatabaseOperator</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.database_strategy.DatabaseOperator.get_record">
+<span class="sig-name descname"><span class="pre">get_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#colda.database.strategy.database_strategy.DatabaseOperator.get_record" title="Permalink to this definition"></a></dt>
+<dd><p>call specific function</p>
+<section id="id23">
+<h4>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h4>
+<p><a href="#id24"><span class="problematic" id="id25">**</span></a>kwargs : Any</p>
+</section>
+<section id="id26">
+<h4>Returns<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h4>
+<p>list</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.database_strategy.DatabaseOperator.set_database">
+<span class="sig-name descname"><span class="pre">set_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'default_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'train_sponsor_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'train_assistor_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'train_algorithm'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'default_metadatatest_sponsor_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'test_assistor_metadata'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'test_algorithm'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#colda.database.strategy.database_strategy.DatabaseOperator.set_database" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to set strategy object</p>
+<section id="id27">
+<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading"></a></h4>
+<p>database_type : Union[Train_Database_Type, Test_Database_Type]</p>
+</section>
+<section id="id28">
+<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.database.strategy.database_strategy.DatabaseOperator.store_record">
+<span class="sig-name descname"><span class="pre">store_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#colda.database.strategy.database_strategy.DatabaseOperator.store_record" title="Permalink to this definition"></a></dt>
+<dd><p>call specific function</p>
+<section id="id29">
+<h4>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h4>
+<p><a href="#id30"><span class="problematic" id="id31">**</span></a>kwargs : Any</p>
+</section>
+<section id="id32">
+<h4>Returns<a class="headerlink" href="#id32" title="Permalink to this heading"></a></h4>
+<p>list</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.database.strategy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-colda.database.strategy" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="colda.database.default_database.html" class="btn btn-neutral float-left" title="colda.database.default_database package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="colda.database.test_database.html" class="btn btn-neutral float-right" title="colda.database.test_database package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, ColAI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

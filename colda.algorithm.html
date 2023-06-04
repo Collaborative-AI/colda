@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>colda.algorithm package &mdash; colda 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="colda.algorithm.common_stage package" href="colda.algorithm.common_stage.html" />
+    <link rel="prev" title="colda package" href="colda.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            colda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">colda.algorithm package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-colda.algorithm.api">colda.algorithm.api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-colda.algorithm.base">colda.algorithm.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-colda.algorithm.utils">colda.algorithm.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-colda.algorithm">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">colda</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="colda.html">colda package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="colda.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">colda.algorithm package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.authentication.html">colda.authentication package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.database.html">colda.database package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.error.html">colda.error package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.network.html">colda.network package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.pi.html">colda.pi package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.short_polling.html">colda.short_polling package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.tests.html">colda.tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.utils.html">colda.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.workflow.html">colda.workflow package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.StopRequest">colda.StopRequest module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda.api">colda.api module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.html#module-colda">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">colda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="colda.html">colda package</a></li>
+      <li class="breadcrumb-item active">colda.algorithm package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/colda.algorithm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="colda-algorithm-package">
+<h1>colda.algorithm package<a class="headerlink" href="#colda-algorithm-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="colda.algorithm.common_stage.html">colda.algorithm.common_stage package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.common_stage.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.common_stage.html#module-colda.algorithm.common_stage.api">colda.algorithm.common_stage.api module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.api.MakeDataset"><code class="docutils literal notranslate"><span class="pre">MakeDataset</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.api.MakeDataset.make_dataset"><code class="docutils literal notranslate"><span class="pre">MakeDataset.make_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.api.MakeHash"><code class="docutils literal notranslate"><span class="pre">MakeHash</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.api.MakeHash.make_hash"><code class="docutils literal notranslate"><span class="pre">MakeHash.make_hash()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.api.MakeMatchIdx"><code class="docutils literal notranslate"><span class="pre">MakeMatchIdx</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.api.MakeMatchIdx.make_match_idx"><code class="docutils literal notranslate"><span class="pre">MakeMatchIdx.make_match_idx()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.common_stage.html#module-colda.algorithm.common_stage.make_dataset">colda.algorithm.common_stage.make_dataset module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.make_dataset.MakeDataset"><code class="docutils literal notranslate"><span class="pre">MakeDataset</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.make_dataset.MakeDataset.make_dataset"><code class="docutils literal notranslate"><span class="pre">MakeDataset.make_dataset()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.common_stage.html#module-colda.algorithm.common_stage.make_hash">colda.algorithm.common_stage.make_hash module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.make_hash.MakeHash"><code class="docutils literal notranslate"><span class="pre">MakeHash</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.make_hash.MakeHash.make_hash"><code class="docutils literal notranslate"><span class="pre">MakeHash.make_hash()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.common_stage.html#module-colda.algorithm.common_stage.make_match_idx">colda.algorithm.common_stage.make_match_idx module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.make_match_idx.MakeMatchIdx"><code class="docutils literal notranslate"><span class="pre">MakeMatchIdx</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.common_stage.html#colda.algorithm.common_stage.make_match_idx.MakeMatchIdx.make_match_idx"><code class="docutils literal notranslate"><span class="pre">MakeMatchIdx.make_match_idx()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.common_stage.html#module-colda.algorithm.common_stage">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="colda.algorithm.metric.html">colda.algorithm.metric package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.metric.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.metric.html#module-colda.algorithm.metric.api">colda.algorithm.metric.api module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.api.Metric"><code class="docutils literal notranslate"><span class="pre">Metric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.api.Metric.eval"><code class="docutils literal notranslate"><span class="pre">Metric.eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.api.Metric.make_metric"><code class="docutils literal notranslate"><span class="pre">Metric.make_metric()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.metric.html#module-colda.algorithm.metric.base">colda.algorithm.metric.base module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.base.BaseMetric"><code class="docutils literal notranslate"><span class="pre">BaseMetric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.base.BaseMetric.placeholder"><code class="docutils literal notranslate"><span class="pre">BaseMetric.placeholder()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.metric.html#module-colda.algorithm.metric.metrics">colda.algorithm.metric.metrics module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.metrics.AUCROC"><code class="docutils literal notranslate"><span class="pre">AUCROC()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.metrics.Accuracy"><code class="docutils literal notranslate"><span class="pre">Accuracy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.metrics.F1"><code class="docutils literal notranslate"><span class="pre">F1()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.metrics.MAD"><code class="docutils literal notranslate"><span class="pre">MAD()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.metrics.Metric"><code class="docutils literal notranslate"><span class="pre">Metric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.metrics.Metric.eval"><code class="docutils literal notranslate"><span class="pre">Metric.eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.metrics.Metric.make_metric"><code class="docutils literal notranslate"><span class="pre">Metric.make_metric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.metrics.R2"><code class="docutils literal notranslate"><span class="pre">R2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.metric.html#colda.algorithm.metric.metrics.RMSE"><code class="docutils literal notranslate"><span class="pre">RMSE()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.metric.html#module-colda.algorithm.metric">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="colda.algorithm.model.html">colda.algorithm.model package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.model.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.model.html#module-colda.algorithm.model.api">colda.algorithm.model.api module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.api.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.api.Model.fit"><code class="docutils literal notranslate"><span class="pre">Model.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.api.Model.make_model"><code class="docutils literal notranslate"><span class="pre">Model.make_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.api.Model.predict"><code class="docutils literal notranslate"><span class="pre">Model.predict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.model.html#module-colda.algorithm.model.base">colda.algorithm.model.base module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.base.BaseModel"><code class="docutils literal notranslate"><span class="pre">BaseModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.base.BaseModel.placeholder"><code class="docutils literal notranslate"><span class="pre">BaseModel.placeholder()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.model.html#module-colda.algorithm.model.models">colda.algorithm.model.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.models.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.models.Model.fit"><code class="docutils literal notranslate"><span class="pre">Model.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.models.Model.make_model"><code class="docutils literal notranslate"><span class="pre">Model.make_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.models.Model.predict"><code class="docutils literal notranslate"><span class="pre">Model.predict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.model.html#module-colda.algorithm.model.models_prev">colda.algorithm.model.models_prev module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.models_prev.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.models_prev.Model.fit"><code class="docutils literal notranslate"><span class="pre">Model.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.models_prev.Model.make_model"><code class="docutils literal notranslate"><span class="pre">Model.make_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.models_prev.Model.predict"><code class="docutils literal notranslate"><span class="pre">Model.predict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.model.html#module-colda.algorithm.model.my_model">colda.algorithm.model.my_model module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.my_model.LSTMModel"><code class="docutils literal notranslate"><span class="pre">LSTMModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.my_model.LSTMModel.fit"><code class="docutils literal notranslate"><span class="pre">LSTMModel.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.my_model.LSTMModel.forward"><code class="docutils literal notranslate"><span class="pre">LSTMModel.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.my_model.LSTMModel.lstm_predict"><code class="docutils literal notranslate"><span class="pre">LSTMModel.lstm_predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.my_model.LSTMModel.training"><code class="docutils literal notranslate"><span class="pre">LSTMModel.training</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.my_model.SequenceDataset"><code class="docutils literal notranslate"><span class="pre">SequenceDataset</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.model.html#colda.algorithm.model.my_model.SequenceDataset_handeler"><code class="docutils literal notranslate"><span class="pre">SequenceDataset_handeler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.model.html#module-colda.algorithm.model">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="colda.algorithm.strategy.html">colda.algorithm.strategy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.custom.html">colda.algorithm.strategy.custom package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.custom.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.custom.html#module-colda.algorithm.strategy.custom.api">colda.algorithm.strategy.custom.api module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.custom.html#module-colda.algorithm.strategy.custom.custom_factory">colda.algorithm.strategy.custom.custom_factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.custom.html#module-colda.algorithm.strategy.custom.test_custom">colda.algorithm.strategy.custom.test_custom module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.custom.html#module-colda.algorithm.strategy.custom.train_custom">colda.algorithm.strategy.custom.train_custom module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.custom.html#module-colda.algorithm.strategy.custom">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#module-colda.algorithm.strategy.abstract_algorithm_strategy">colda.algorithm.strategy.abstract_algorithm_strategy module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTestAlgorithmStrategy"><code class="docutils literal notranslate"><span class="pre">AbstractTestAlgorithmStrategy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTestAlgorithmStrategy.get_instance"><code class="docutils literal notranslate"><span class="pre">AbstractTestAlgorithmStrategy.get_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTestAlgorithmStrategy.make_eval"><code class="docutils literal notranslate"><span class="pre">AbstractTestAlgorithmStrategy.make_eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTestAlgorithmStrategy.make_test"><code class="docutils literal notranslate"><span class="pre">AbstractTestAlgorithmStrategy.make_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTestAlgorithmStrategy.make_test_local"><code class="docutils literal notranslate"><span class="pre">AbstractTestAlgorithmStrategy.make_test_local()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTrainAlgorithmStrategy"><code class="docutils literal notranslate"><span class="pre">AbstractTrainAlgorithmStrategy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTrainAlgorithmStrategy.get_instance"><code class="docutils literal notranslate"><span class="pre">AbstractTrainAlgorithmStrategy.get_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTrainAlgorithmStrategy.make_residual"><code class="docutils literal notranslate"><span class="pre">AbstractTrainAlgorithmStrategy.make_residual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTrainAlgorithmStrategy.make_result"><code class="docutils literal notranslate"><span class="pre">AbstractTrainAlgorithmStrategy.make_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTrainAlgorithmStrategy.make_train"><code class="docutils literal notranslate"><span class="pre">AbstractTrainAlgorithmStrategy.make_train()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.abstract_algorithm_strategy.AbstractTrainAlgorithmStrategy.make_train_local"><code class="docutils literal notranslate"><span class="pre">AbstractTrainAlgorithmStrategy.make_train_local()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#module-colda.algorithm.strategy.api">colda.algorithm.strategy.api module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.BaseAlgorithmStrategy"><code class="docutils literal notranslate"><span class="pre">BaseAlgorithmStrategy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.BaseAlgorithmStrategy.make_hash"><code class="docutils literal notranslate"><span class="pre">BaseAlgorithmStrategy.make_hash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.BaseAlgorithmStrategy.make_match_idx"><code class="docutils literal notranslate"><span class="pre">BaseAlgorithmStrategy.make_match_idx()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TestAlgorithm"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TestAlgorithm.get_instance"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.get_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TestAlgorithm.make_eval"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.make_eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TestAlgorithm.make_test"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.make_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TestAlgorithm.make_test_local"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.make_test_local()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TestAlgorithm.test_custom"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.test_custom</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TrainAlgorithm"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TrainAlgorithm.get_instance"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.get_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TrainAlgorithm.make_residual"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_residual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TrainAlgorithm.make_result"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TrainAlgorithm.make_train"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_train()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TrainAlgorithm.make_train_local"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_train_local()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.api.TrainAlgorithm.train_custom"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.train_custom</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#module-colda.algorithm.strategy.base">colda.algorithm.strategy.base module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.base.BaseAlgorithmStrategy"><code class="docutils literal notranslate"><span class="pre">BaseAlgorithmStrategy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.base.BaseAlgorithmStrategy.make_hash"><code class="docutils literal notranslate"><span class="pre">BaseAlgorithmStrategy.make_hash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.base.BaseAlgorithmStrategy.make_match_idx"><code class="docutils literal notranslate"><span class="pre">BaseAlgorithmStrategy.make_match_idx()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#module-colda.algorithm.strategy.dp">colda.algorithm.strategy.dp module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.dp.DP"><code class="docutils literal notranslate"><span class="pre">DP</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.dp.DP.process_input"><code class="docutils literal notranslate"><span class="pre">DP.process_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.dp.DP.process_input_recursion"><code class="docutils literal notranslate"><span class="pre">DP.process_input_recursion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.dp.DP.process_output"><code class="docutils literal notranslate"><span class="pre">DP.process_output()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#module-colda.algorithm.strategy.test_algorithm">colda.algorithm.strategy.test_algorithm module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.test_algorithm.TestAlgorithm"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.test_algorithm.TestAlgorithm.get_instance"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.get_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.test_algorithm.TestAlgorithm.make_eval"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.make_eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.test_algorithm.TestAlgorithm.make_test"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.make_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.test_algorithm.TestAlgorithm.make_test_local"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.make_test_local()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.test_algorithm.TestAlgorithm.test_custom"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.test_custom</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#module-colda.algorithm.strategy.train_algorithm">colda.algorithm.strategy.train_algorithm module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.train_algorithm.TrainAlgorithm"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.train_algorithm.TrainAlgorithm.get_instance"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.get_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.train_algorithm.TrainAlgorithm.make_residual"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_residual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.train_algorithm.TrainAlgorithm.make_result"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.train_algorithm.TrainAlgorithm.make_train"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_train()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.train_algorithm.TrainAlgorithm.make_train_local"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_train_local()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.train_algorithm.TrainAlgorithm.train_custom"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.train_custom</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#module-colda.algorithm.strategy.utils">colda.algorithm.strategy.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.utils.algorithm_process"><code class="docutils literal notranslate"><span class="pre">algorithm_process()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.strategy.html#module-colda.algorithm.strategy">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.BaseAlgorithmStrategy"><code class="docutils literal notranslate"><span class="pre">BaseAlgorithmStrategy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.BaseAlgorithmStrategy.make_hash"><code class="docutils literal notranslate"><span class="pre">BaseAlgorithmStrategy.make_hash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.BaseAlgorithmStrategy.make_match_idx"><code class="docutils literal notranslate"><span class="pre">BaseAlgorithmStrategy.make_match_idx()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TestAlgorithm"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TestAlgorithm.get_instance"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.get_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TestAlgorithm.make_eval"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.make_eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TestAlgorithm.make_test"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.make_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TestAlgorithm.make_test_local"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.make_test_local()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TestAlgorithm.test_custom"><code class="docutils literal notranslate"><span class="pre">TestAlgorithm.test_custom</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TrainAlgorithm"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TrainAlgorithm.get_instance"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.get_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TrainAlgorithm.make_residual"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_residual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TrainAlgorithm.make_result"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TrainAlgorithm.make_train"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_train()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TrainAlgorithm.make_train_local"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.make_train_local()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.strategy.html#colda.algorithm.strategy.TrainAlgorithm.train_custom"><code class="docutils literal notranslate"><span class="pre">TrainAlgorithm.train_custom</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="colda.algorithm.test_stage.html">colda.algorithm.test_stage package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.test_stage.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.test_stage.html#module-colda.algorithm.test_stage.api">colda.algorithm.test_stage.api module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.api.MakeEval"><code class="docutils literal notranslate"><span class="pre">MakeEval</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.api.MakeEval.make_eval"><code class="docutils literal notranslate"><span class="pre">MakeEval.make_eval()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.api.MakeTest"><code class="docutils literal notranslate"><span class="pre">MakeTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.api.MakeTest.make_test"><code class="docutils literal notranslate"><span class="pre">MakeTest.make_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.api.MakeTestLocal"><code class="docutils literal notranslate"><span class="pre">MakeTestLocal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.api.MakeTestLocal.make_test_local"><code class="docutils literal notranslate"><span class="pre">MakeTestLocal.make_test_local()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.test_stage.html#module-colda.algorithm.test_stage.make_eval">colda.algorithm.test_stage.make_eval module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.make_eval.MakeEval"><code class="docutils literal notranslate"><span class="pre">MakeEval</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.make_eval.MakeEval.make_eval"><code class="docutils literal notranslate"><span class="pre">MakeEval.make_eval()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.test_stage.html#module-colda.algorithm.test_stage.make_test">colda.algorithm.test_stage.make_test module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.make_test.MakeTest"><code class="docutils literal notranslate"><span class="pre">MakeTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.make_test.MakeTest.make_test"><code class="docutils literal notranslate"><span class="pre">MakeTest.make_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.test_stage.html#module-colda.algorithm.test_stage.make_test_local">colda.algorithm.test_stage.make_test_local module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.make_test_local.MakeTestLocal"><code class="docutils literal notranslate"><span class="pre">MakeTestLocal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.test_stage.html#colda.algorithm.test_stage.make_test_local.MakeTestLocal.make_test_local"><code class="docutils literal notranslate"><span class="pre">MakeTestLocal.make_test_local()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.test_stage.html#module-colda.algorithm.test_stage">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="colda.algorithm.train_stage.html">colda.algorithm.train_stage package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.train_stage.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.train_stage.html#module-colda.algorithm.train_stage.api">colda.algorithm.train_stage.api module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeResidual"><code class="docutils literal notranslate"><span class="pre">MakeResidual</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeResidual.compute_residual"><code class="docutils literal notranslate"><span class="pre">MakeResidual.compute_residual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeResidual.make_init"><code class="docutils literal notranslate"><span class="pre">MakeResidual.make_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeResidual.make_residual"><code class="docutils literal notranslate"><span class="pre">MakeResidual.make_residual()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeResult"><code class="docutils literal notranslate"><span class="pre">MakeResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeResult.make_result"><code class="docutils literal notranslate"><span class="pre">MakeResult.make_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeResult.result_func"><code class="docutils literal notranslate"><span class="pre">MakeResult.result_func()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeTrain"><code class="docutils literal notranslate"><span class="pre">MakeTrain</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeTrain.make_train"><code class="docutils literal notranslate"><span class="pre">MakeTrain.make_train()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeTrainLocal"><code class="docutils literal notranslate"><span class="pre">MakeTrainLocal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.api.MakeTrainLocal.make_train_local"><code class="docutils literal notranslate"><span class="pre">MakeTrainLocal.make_train_local()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.train_stage.html#module-colda.algorithm.train_stage.make_residual">colda.algorithm.train_stage.make_residual module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_residual.MakeResidual"><code class="docutils literal notranslate"><span class="pre">MakeResidual</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_residual.MakeResidual.compute_residual"><code class="docutils literal notranslate"><span class="pre">MakeResidual.compute_residual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_residual.MakeResidual.make_init"><code class="docutils literal notranslate"><span class="pre">MakeResidual.make_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_residual.MakeResidual.make_residual"><code class="docutils literal notranslate"><span class="pre">MakeResidual.make_residual()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.train_stage.html#module-colda.algorithm.train_stage.make_result">colda.algorithm.train_stage.make_result module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_result.MakeResult"><code class="docutils literal notranslate"><span class="pre">MakeResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_result.MakeResult.make_result"><code class="docutils literal notranslate"><span class="pre">MakeResult.make_result()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_result.MakeResult.result_func"><code class="docutils literal notranslate"><span class="pre">MakeResult.result_func()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.train_stage.html#module-colda.algorithm.train_stage.make_train">colda.algorithm.train_stage.make_train module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_train.MakeTrain"><code class="docutils literal notranslate"><span class="pre">MakeTrain</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_train.MakeTrain.make_train"><code class="docutils literal notranslate"><span class="pre">MakeTrain.make_train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.train_stage.html#module-colda.algorithm.train_stage.make_train_local">colda.algorithm.train_stage.make_train_local module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_train_local.MakeTrainLocal"><code class="docutils literal notranslate"><span class="pre">MakeTrainLocal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="colda.algorithm.train_stage.html#colda.algorithm.train_stage.make_train_local.MakeTrainLocal.make_train_local"><code class="docutils literal notranslate"><span class="pre">MakeTrainLocal.make_train_local()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="colda.algorithm.train_stage.html#module-colda.algorithm.train_stage">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-colda.algorithm.api">
+<span id="colda-algorithm-api-module"></span><h2>colda.algorithm.api module<a class="headerlink" href="#module-colda.algorithm.api" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.algorithm.api.get_algo_log">
+<span class="sig-prename descclassname"><span class="pre">colda.algorithm.api.</span></span><span class="sig-name descname"><span class="pre">get_algo_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.algorithm.api.get_algo_log" title="Permalink to this definition"></a></dt>
+<dd><p>Return unique log determined
+by user_id, task_id and log_category</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
+<p>user_id : str
+task_id : str
+log_category : str</p>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
+<p>list</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.algorithm.api.get_all_algo_logs">
+<span class="sig-prename descclassname"><span class="pre">colda.algorithm.api.</span></span><span class="sig-name descname"><span class="pre">get_all_algo_logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#colda.algorithm.api.get_all_algo_logs" title="Permalink to this definition"></a></dt>
+<dd><p>Return all logs</p>
+<section id="id1">
+<h3>Returns<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>dict[str, Any]</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.algorithm.base">
+<span id="colda-algorithm-base-module"></span><h2>colda.algorithm.base module<a class="headerlink" href="#module-colda.algorithm.base" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="colda.algorithm.base.BaseAlgorithm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">colda.algorithm.base.</span></span><span class="sig-name descname"><span class="pre">BaseAlgorithm</span></span><a class="headerlink" href="#colda.algorithm.base.BaseAlgorithm" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for algorithm</p>
+<section id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h3>
+<p>_store_log</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="colda.algorithm.base.BaseAlgorithm.placeholder">
+<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">placeholder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#colda.algorithm.base.BaseAlgorithm.placeholder" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.algorithm.utils">
+<span id="colda-algorithm-utils-module"></span><h2>colda.algorithm.utils module<a class="headerlink" href="#module-colda.algorithm.utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.algorithm.utils.load">
+<span class="sig-prename descclassname"><span class="pre">colda.algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pickle'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.algorithm.utils.load" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.algorithm.utils.log">
+<span class="sig-prename descclassname"><span class="pre">colda.algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.algorithm.utils.log" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.algorithm.utils.makedir_exist_ok">
+<span class="sig-prename descclassname"><span class="pre">colda.algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">makedir_exist_ok</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.algorithm.utils.makedir_exist_ok" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.algorithm.utils.parse_idx">
+<span class="sig-prename descclassname"><span class="pre">colda.algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">parse_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.algorithm.utils.parse_idx" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.algorithm.utils.save">
+<span class="sig-prename descclassname"><span class="pre">colda.algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pickle'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.algorithm.utils.save" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.algorithm.utils.softmax">
+<span class="sig-prename descclassname"><span class="pre">colda.algorithm.utils.</span></span><span class="sig-name descname"><span class="pre">softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.algorithm.utils.softmax" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the softmax of each element along an axis of X.</p>
+<section id="id2">
+<h3>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>X: ND-Array. Probably should be floats.
+theta (optional): float parameter, used as a multiplier</p>
+<blockquote>
+<div><p>prior to exponentiation. Default = 1.0</p>
+</div></blockquote>
+<dl class="simple">
+<dt>axis (optional): axis to compute values along. Default is the</dt><dd><p>first non-singleton axis.</p>
+</dd>
+</dl>
+<p>Returns an array the same size as X. The result will sum to 1
+along the specified axis.</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-colda.algorithm">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-colda.algorithm" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="colda.algorithm.log">
+<span class="sig-prename descclassname"><span class="pre">colda.algorithm.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#colda.algorithm.log" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="colda.html" class="btn btn-neutral float-left" title="colda package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="colda.algorithm.common_stage.html" class="btn btn-neutral float-right" title="colda.algorithm.common_stage package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, ColAI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

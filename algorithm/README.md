@@ -1,5 +1,4 @@
 # Algorithm
-Algorithm
 
 ### Instructions
 Use `data/make_dataset.py` to split csv files
